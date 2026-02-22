@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5: Geometry & Trigonometry — PSAT/NMSQT Math — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--geo:#f87171;--geo-bg:rgba(248,113,113,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--geo));width:0%;transition:width .3s ease}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--geo);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--geo);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
+.callout-blue strong{color:var(--math)}
+.callout-red{background:var(--geo-bg);border-color:rgba(248,113,113,.3)}
+.callout-red strong{color:var(--geo)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+
+/* FORMULA GRID */
+.fm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.fm-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.fm-name{font-weight:700;font-size:.82rem;color:var(--geo);margin-bottom:4px}
+.fm-eq{font-family:'JetBrains Mono',monospace;font-size:.88rem}
+
+/* SPECIAL TRIANGLES */
+.tri-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.tri-card{background:var(--surface);border:2px solid var(--geo);border-radius:12px;padding:16px;text-align:center}
+.tri-name{font-weight:700;font-size:1rem;color:var(--geo);margin-bottom:4px}
+.tri-ratio{font-family:'JetBrains Mono',monospace;font-size:1.15rem;margin-bottom:6px}
+.tri-sides{font-size:.82rem;color:var(--muted);line-height:1.5}
+
+/* TRIPLES */
+.triples-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.triple{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:.88rem}
+
+/* TOPICS */
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.topic-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer}
+.topic-header:hover{background:rgba(248,113,113,.05)}
+.topic-title{font-weight:700;font-size:.95rem;flex:1}
+.topic-arrow{color:var(--muted);font-size:.9rem;transition:transform .2s;flex-shrink:0}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 18px 18px;font-size:.93rem;color:#ccc;line-height:1.7}
+.topic.open .topic-body{display:block}
+.topic-body h4{color:var(--ink);font-size:.9rem;margin:14px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+.topic-body ul{padding-left:18px;margin-bottom:10px}
+.topic-body li{margin-bottom:6px}
+
+/* EXERCISES */
+.exercise{background:var(--surface);border:2px solid var(--geo);border-radius:14px;padding:22px;margin-bottom:16px}
+.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;margin-bottom:4px}
+.exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+.ex-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
+.ex-prompt{font-size:.93rem;margin-bottom:10px;line-height:1.6;color:#ddd}
+.ex-prompt code{background:var(--geo-bg);color:var(--geo);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+
+/* CLASSIFY OPTIONS */
+.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.classify-opt:hover:not(.cl-dis){border-color:var(--geo);background:var(--geo-bg)}
+.classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.classify-opt.cl-dis{pointer-events:none;opacity:.7}
+
+/* MC CHOICES */
+.mc-choices{display:flex;flex-direction:column;gap:6px}
+.mc-choice{padding:10px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s;display:flex;align-items:center;gap:10px}
+.mc-choice:hover:not(.mc-dis){border-color:var(--geo);background:var(--geo-bg)}
+.mc-letter{font-weight:700;color:var(--muted);min-width:24px;font-family:'JetBrains Mono',monospace}
+.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg)}
+.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}
+.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;padding:8px 12px;border-radius:6px;margin-top:8px;display:none;line-height:1.5;border-left:3px solid var(--correct);background:var(--paper);color:var(--muted)}
+.mc-fb.show{display:block}
+.ex-fb{font-size:.85rem;padding:8px 12px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}
+.ex-fb.show{display:block}
+.ex-fb.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
+.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+
+/* SCORE BAR */
+.score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+.score-bar-label{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.score-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.score-bar-fill{height:100%;background:var(--correct);border-radius:4px;transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;color:var(--correct)}
+
+.tier{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:8px}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}
+.tier-2{background:var(--math-bg);color:var(--math)}
+.tier-3{background:var(--adv-bg);color:var(--advanced)}
+
+/* TRIG CALC */
+.trig-calc{background:var(--surface);border:2px solid var(--geo);border-radius:14px;padding:22px;margin-bottom:16px}
+.trig-inputs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.trig-field{display:flex;flex-direction:column;gap:4px}
+.trig-field label{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.trig-field input{width:90px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;text-align:center}
+.trig-field input:focus{border-color:var(--geo);outline:none}
+.trig-results{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.trig-result{background:var(--paper);border-radius:8px;padding:10px;text-align:center}
+.trig-val{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700}
+.trig-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* NAV */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.fm-grid{grid-template-columns:1fr 1fr}.tri-grid{grid-template-columns:1fr}.classify-opts{flex-direction:column}.trig-results{grid-template-columns:repeat(2,1fr)}.trig-inputs{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to PSAT Math Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Module 5</div>
+  <h1>Geometry & Trigonometry</h1>
+  <p class="subtitle">Fewer questions (~15%), but highly formulaic — memorize the key facts and these become free points.</p>
+  <div class="mod-meta">
+    <span>⏱ ~60 min</span>
+    <span>📋 4 topics</span>
+    <span>🔨 Phase 2: Build</span>
+  </div>
+</div>
+
+<div class="callout-red callout"><strong>The good news:</strong> Geometry & Trig questions are the most formula-dependent on the PSAT. If you memorize the formulas and recognize the patterns, these 5–7 questions become nearly free points.</div>
+
+<!-- ==================== TOPIC 5A ==================== -->
+<div class="section">
+  <div class="section-label">Topic 5A</div>
+  <h2>Lines, Angles & Triangles</h2>
+
+  <div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Angle Relationships</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body">
+      <ul>
+        <li><strong>Vertical angles</strong> are equal (formed by intersecting lines, across from each other)</li>
+        <li><strong>Supplementary angles</strong> add to 180° (on a straight line)</li>
+        <li><strong>Complementary angles</strong> add to 90° (form a right angle)</li>
+      </ul>
+      <h4>Parallel Lines + Transversal</h4>
+      <ul>
+        <li><strong>Corresponding angles:</strong> EQUAL (same position at each intersection)</li>
+        <li><strong>Alternate interior angles:</strong> EQUAL (opposite sides, between the parallels)</li>
+        <li><strong>Co-interior (same-side interior):</strong> SUPPLEMENTARY (add to 180°)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Triangle Facts</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body">
+      <ul>
+        <li><strong>Angle sum:</strong> Interior angles always add to 180°</li>
+        <li><strong>Exterior angle theorem:</strong> Exterior angle = sum of two remote interior angles</li>
+        <li><strong>Similar triangles:</strong> Same shape, proportional sides. Set up a proportion to find missing sides.</li>
+        <li><strong>Triangle inequality:</strong> Any side &lt; sum of the other two sides</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Special Right Triangles & Pythagorean Theorem</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body">
+      <p><strong>Pythagorean Theorem:</strong> a² + b² = c² (c = hypotenuse, always the longest side)</p>
+      <p>These special triangles appear on nearly every PSAT. Memorize the ratios cold.</p>
+    </div>
+  </div>
+
+  <div class="tri-grid">
+    <div class="tri-card">
+      <div class="tri-name">30-60-90</div>
+      <div class="tri-ratio">1 : √3 : 2</div>
+      <div class="tri-sides">Short leg : Long leg : Hypotenuse<br>Opp 30° : Opp 60° : Opp 90°</div>
+    </div>
+    <div class="tri-card">
+      <div class="tri-name">45-45-90</div>
+      <div class="tri-ratio">1 : 1 : √2</div>
+      <div class="tri-sides">Leg : Leg : Hypotenuse<br>Two legs are always equal</div>
+    </div>
+  </div>
+
+  <p style="font-weight:700;font-size:.9rem;margin-bottom:6px">Common Pythagorean Triples (memorize these!):</p>
+  <div class="triples-row">
+    <div class="triple">3 – 4 – 5</div>
+    <div class="triple">5 – 12 – 13</div>
+    <div class="triple">8 – 15 – 17</div>
+    <div class="triple">7 – 24 – 25</div>
+    <div class="triple">6 – 8 – 10</div>
+    <div class="triple">9 – 12 – 15</div>
+  </div>
+  <p style="font-size:.85rem;color:var(--muted)">Last two are multiples of 3-4-5. Any multiple of a triple is also a triple!</p>
+</div>
+
+<!-- ==================== EXERCISE 1: ANGLE SOLVER ==================== -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 1</div>
+  <h2>Angle & Triangle Solver</h2>
+  <p>Find the missing angle or side in each scenario.</p>
+  <div class="exercise" id="angleEx"></div>
+</div>
+
+<!-- ==================== TOPIC 5B: CIRCLES ==================== -->
+<div class="section">
+  <div class="section-label">Topic 5B</div>
+  <h2>Circles</h2>
+
+  <div class="fm-grid">
+    <div class="fm-card"><div class="fm-name">Standard Form</div><div class="fm-eq">(x−h)²+(y−k)²=r²</div></div>
+    <div class="fm-card"><div class="fm-name">Center</div><div class="fm-eq">(h, k)</div></div>
+    <div class="fm-card"><div class="fm-name">Area</div><div class="fm-eq">A = πr²</div></div>
+    <div class="fm-card"><div class="fm-name">Circumference</div><div class="fm-eq">C = 2πr</div></div>
+    <div class="fm-card"><div class="fm-name">Arc Length</div><div class="fm-eq">(θ/360) × 2πr</div></div>
+    <div class="fm-card"><div class="fm-name">Sector Area</div><div class="fm-eq">(θ/360) × πr²</div></div>
+  </div>
+
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Converting General Form to Standard Form</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body">
+      <p>Sometimes the PSAT gives: x² + y² + Dx + Ey + F = 0</p>
+      <p><strong>Strategy:</strong> Complete the square for both x and y.</p>
+      <p><strong>Example:</strong> x² + y² − 6x + 4y − 12 = 0</p>
+      <p>Group: (x² − 6x) + (y² + 4y) = 12</p>
+      <p>Complete: (x² − 6x + 9) + (y² + 4y + 4) = 12 + 9 + 4</p>
+      <p>Result: (x − 3)² + (y + 2)² = 25 → Center (3, −2), Radius 5</p>
+    </div>
+  </div>
+
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Tangent Lines & Inscribed Angles</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body">
+      <ul>
+        <li><strong>Tangent line:</strong> Touches circle at one point. Perpendicular to radius (90°).</li>
+        <li><strong>Central angle:</strong> Vertex at center. Equal to intercepted arc.</li>
+        <li><strong>Inscribed angle:</strong> Vertex on circle. Equals HALF the intercepted arc.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout-blue callout"><strong>Desmos:</strong> Type <code>(x−2)²+(y+3)²=25</code> directly to graph any circle. Find intersections with lines by graphing both.</div>
+</div>
+
+<!-- ==================== EXERCISE 2: CIRCLE EQUATIONS ==================== -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 2</div>
+  <h2>Circle Equation Workshop</h2>
+  <p>Find centers, radii, arc lengths, and sector areas.</p>
+  <div class="exercise" id="circleEx"></div>
+</div>
+
+<!-- ==================== TOPIC 5C: AREA & VOLUME ==================== -->
+<div class="section">
+  <div class="section-label">Topic 5C</div>
+  <h2>Area, Perimeter & Volume</h2>
+  <p>These formulas are on the reference sheet, but memorizing them saves valuable time.</p>
+
+  <div class="fm-grid">
+    <div class="fm-card"><div class="fm-name">Rectangle</div><div class="fm-eq">A = lw</div></div>
+    <div class="fm-card"><div class="fm-name">Triangle</div><div class="fm-eq">A = ½bh</div></div>
+    <div class="fm-card"><div class="fm-name">Trapezoid</div><div class="fm-eq">A = ½(b₁+b₂)h</div></div>
+    <div class="fm-card"><div class="fm-name">Cylinder</div><div class="fm-eq">V = πr²h</div></div>
+    <div class="fm-card"><div class="fm-name">Cone</div><div class="fm-eq">V = ⅓πr²h</div></div>
+    <div class="fm-card"><div class="fm-name">Sphere</div><div class="fm-eq">V = ⁴⁄₃πr³</div></div>
+    <div class="fm-card"><div class="fm-name">Pyramid</div><div class="fm-eq">V = ⅓Bh</div></div>
+    <div class="fm-card"><div class="fm-name">Rect. Prism</div><div class="fm-eq">V = lwh</div></div>
+  </div>
+
+  <div class="callout"><strong>Pattern:</strong> Cones and pyramids are always ⅓ of the corresponding "full" shape. Cone = ⅓ × cylinder. Pyramid = ⅓ × prism.</div>
+</div>
+
+<!-- ==================== EXERCISE 3: FORMULA PICKER ==================== -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 3 — New!</div>
+  <h2>Which Formula Do I Need?</h2>
+  <p>The hardest part of geometry isn't the math — it's knowing which formula to use. Given a scenario, pick the right formula.</p>
+  <div class="exercise" style="border-color:var(--psda)" id="formulaEx"></div>
+</div>
+
+<!-- ==================== TOPIC 5D: TRIG ==================== -->
+<div class="section">
+  <div class="section-label">Topic 5D</div>
+  <h2>Trigonometry</h2>
+
+  <div class="tri-grid">
+    <div class="tri-card" style="border-color:var(--advanced)">
+      <div class="tri-name" style="color:var(--advanced)">SOH-CAH-TOA</div>
+      <div class="tri-ratio" style="font-size:.95rem"><strong>S</strong>in = <strong>O</strong>pp / <strong>H</strong>yp<br><strong>C</strong>os = <strong>A</strong>dj / <strong>H</strong>yp<br><strong>T</strong>an = <strong>O</strong>pp / <strong>A</strong>dj</div>
+    </div>
+    <div class="tri-card" style="border-color:var(--psda)">
+      <div class="tri-name" style="color:var(--psda)">Key Relationships</div>
+      <div style="font-size:.88rem;color:#ccc;line-height:1.7;text-align:left">
+        sin(x) = cos(90° − x)<br>
+        tan(x) = sin(x) / cos(x)<br>
+        sin²(x) + cos²(x) = 1<br>
+        180° = π radians
+      </div>
+    </div>
+  </div>
+
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Radians ↔ Degrees</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body">
+      <p><strong>Degrees → Radians:</strong> multiply by π/180</p>
+      <p><strong>Radians → Degrees:</strong> multiply by 180/π</p>
+      <p><strong>Common conversions:</strong> 30° = π/6 · 45° = π/4 · 60° = π/3 · 90° = π/2 · 180° = π · 360° = 2π</p>
+      <div class="callout-blue callout"><strong>Desmos:</strong> Defaults to radians. Click the wrench icon ⚙ to switch to degrees if needed.</div>
+    </div>
+  </div>
+
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Complementary Angle Relationship</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body">
+      <p><strong>sin(x) = cos(90° − x)</strong> and <strong>cos(x) = sin(90° − x)</strong></p>
+      <p>In a right triangle, the two acute angles add to 90°. The side opposite one angle is adjacent to the other.</p>
+      <p><strong>PSAT question type:</strong> "If sin(x) = cos(32°), what is x?" → x = 90° − 32° = 58°.</p>
+    </div>
+  </div>
+
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Coordinate Geometry</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body">
+      <p><strong>Distance formula:</strong> d = √((x₂−x₁)² + (y₂−y₁)²) — just Pythagorean theorem on a coordinate plane</p>
+      <p><strong>Midpoint formula:</strong> M = ((x₁+x₂)/2, (y₁+y₂)/2) — average the coordinates</p>
+      <p>These often appear combined with circle or line questions on the PSAT.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== EXERCISE 4: SPECIAL TRIANGLES DRILL ==================== -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 4</div>
+  <h2>Special Right Triangles Drill</h2>
+  <p>Find the missing side. These patterns appear on nearly every PSAT.</p>
+  <div class="exercise" id="triEx"></div>
+</div>
+
+<!-- ==================== TRIG CALCULATOR ==================== -->
+<div class="section">
+  <div class="section-label">Interactive Tool</div>
+  <h2>Right Triangle Trig Calculator</h2>
+  <p>Enter any two sides to see all trig ratios and the missing side.</p>
+  <div class="trig-calc">
+    <div class="trig-inputs">
+      <div class="trig-field"><label>Opposite</label><input type="number" id="trigOpp" placeholder="?" oninput="calcTrig()"></div>
+      <div class="trig-field"><label>Adjacent</label><input type="number" id="trigAdj" placeholder="?" oninput="calcTrig()"></div>
+      <div class="trig-field"><label>Hypotenuse</label><input type="number" id="trigHyp" placeholder="?" oninput="calcTrig()"></div>
+    </div>
+    <div class="trig-results" id="trigResults"></div>
+    <div id="trigNote" style="font-size:.82rem;color:var(--muted);margin-top:8px"></div>
+  </div>
+</div>
+
+<!-- ==================== PSAT PRACTICE ==================== -->
+<div class="section">
+  <div class="section-label">PSAT-Style Practice</div>
+  <h2>Practice Questions</h2>
+  <p>8 questions at three difficulty tiers covering all geometry and trig topics.</p>
+  <div id="psatPractice"></div>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Triangle angles sum to 180°. Supplementary = 180°. Complementary = 90°.</li>
+      <li>Memorize <strong>30-60-90 (1:√3:2)</strong> and <strong>45-45-90 (1:1:√2)</strong> ratios cold.</li>
+      <li>Common Pythagorean triples: 3-4-5, 5-12-13, 8-15-17 and their multiples.</li>
+      <li>Circle standard form: (x−h)²+(y−k)²=r². Center = (h,k), Radius = r. Complete the square if needed.</li>
+      <li>Arc and sector formulas: multiply by θ/360 (the fraction of the full circle).</li>
+      <li><strong>SOH-CAH-TOA.</strong> sin(x) = cos(90°−x). 180° = π radians.</li>
+      <li>Cones and pyramids = ⅓ of the corresponding full shape.</li>
+      <li>Distance formula = Pythagorean theorem on coordinates. Midpoint = average the coordinates.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-4.html">← Module 4: Problem-Solving & Data</a>
+  <a href="module-6.html">Module 6: Desmos Mastery →</a>
+</div>
+</div>
+
+<script>
+// ============ PROGRESS BAR ============
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';
+});
+
+// ============ EXERCISE 1: ANGLE SOLVER ============
+const ANGLE_QS=[
+  {prompt:'Two angles are supplementary. One is 65°. What is the other?',correct:0,opts:['115°','25°','65°','180°'],fb:'Supplementary = 180°. 180 − 65 = 115°.'},
+  {prompt:'In a triangle, two angles are 45° and 70°. What is the third?',correct:0,opts:['65°','45°','75°','115°'],fb:'Triangle sum = 180°. 180 − 45 − 70 = 65°.'},
+  {prompt:'Parallel lines cut by a transversal. One angle is 130°. What is the alternate interior angle?',correct:1,opts:['50°','130°','180°','90°'],fb:'Alternate interior angles are EQUAL. Both are 130°.'},
+  {prompt:'An exterior angle of a triangle is 120°. The two remote interior angles are equal. What does each measure?',correct:2,opts:['30°','40°','60°','120°'],fb:'Exterior angle = sum of remote interiors. 120 = 2x → x = 60°.'},
+  {prompt:'Vertical angles: one is (3x + 10)° and the other is (5x − 20)°. Find x.',correct:1,opts:['10','15','20','30'],fb:'Vertical angles equal: 3x + 10 = 5x − 20 → 30 = 2x → x = 15.'},
+  {prompt:'30-60-90: side opposite 30° = 5. Hypotenuse = ?',correct:2,opts:['5√2','5√3','10','15'],fb:'Ratio 1:√3:2. Short leg = 5, hyp = 5 × 2 = 10.'},
+  {prompt:'45-45-90: each leg = 7. Hypotenuse = ?',correct:2,opts:['7','14','7√2','7√3'],fb:'Ratio 1:1:√2. Hyp = 7√2.'},
+  {prompt:'Right triangle: legs 6 and 8. Hypotenuse = ?',correct:0,opts:['10','12','14','√100'],fb:'6-8-10 is 3-4-5 × 2. Or: √(36+64) = √100 = 10.'},
+];
+let angleAns={};
+function renderAngles(){
+  const total=ANGLE_QS.length;const correct=Object.entries(angleAns).filter(([i,v])=>v===ANGLE_QS[i].correct).length;
+  document.getElementById('angleEx').innerHTML=`<h3>📐 Find the Missing Angle/Side</h3><div class="exercise-sub">Apply angle relationships and triangle rules.</div>`+
+    ANGLE_QS.map((q,i)=>{
+      const a=angleAns[i];const has=a!==undefined;
+      return `<div class="ex-item">
+        <div class="ex-prompt">${q.prompt}</div>
+        <div class="classify-opts">${q.opts.map((o,oi)=>{
+          let cls='classify-opt';
+          if(has){cls+=' cl-dis';if(oi===q.correct)cls+=' cl-correct';else if(oi===a&&oi!==q.correct)cls+=' cl-wrong';}
+          return `<div class="${cls}" onclick="ansAngle(${i},${oi})">${o}</div>`;
+        }).join('')}</div>
+        <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ ':'✗ ')+q.fb:''}</div>
+      </div>`;
+    }).join('')+
+    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+}
+function ansAngle(i,v){if(angleAns[i]!==undefined)return;angleAns[i]=v;renderAngles();}
+renderAngles();
+
+// ============ EXERCISE 2: CIRCLE EQUATIONS ============
+const CIRCLE_QS=[
+  {prompt:'<code>(x − 3)² + (y + 2)² = 49</code>. Center?',correct:0,opts:['(3, −2)','(−3, 2)','(3, 2)','(−3, −2)'],fb:'h=3, k=−2 (the +2 means k=−2). Center: (3, −2).'},
+  {prompt:'<code>(x − 3)² + (y + 2)² = 49</code>. Radius?',correct:1,opts:['49','7','14','3.5'],fb:'r² = 49, so r = 7. Trap: equation gives r², not r!'},
+  {prompt:'Center (0, 5), radius 3. Equation?',correct:0,opts:['x² + (y−5)² = 9','x² + (y+5)² = 9','x² + (y−5)² = 3','(x−5)² + y² = 9'],fb:'h=0, k=5, r²=9. Answer: x² + (y−5)² = 9.'},
+  {prompt:'Radius 10, central angle 90°. Arc length?',correct:0,opts:['5π','10π','20π','25π'],fb:'Arc = (90/360) × 2π(10) = ¼ × 20π = 5π.'},
+  {prompt:'Radius 6. Area of a 60° sector?',correct:0,opts:['6π','12π','36π','2π'],fb:'Sector = (60/360) × π(6²) = ⅙ × 36π = 6π.'},
+  {prompt:'<code>x² + y² − 10x + 6y + 18 = 0</code>. Radius?',correct:0,opts:['4','16','√18','6'],fb:'Complete the square: (x−5)²+(y+3)²=25+9−18=16. Radius = √16 = 4.'},
+];
+let circleAns={};
+function renderCircles(){
+  const total=CIRCLE_QS.length;const correct=Object.entries(circleAns).filter(([i,v])=>v===CIRCLE_QS[i].correct).length;
+  document.getElementById('circleEx').innerHTML=`<h3>⭕ Circle Equations</h3><div class="exercise-sub">Identify centers, radii, arcs, and sectors.</div>`+
+    CIRCLE_QS.map((q,i)=>{
+      const a=circleAns[i];const has=a!==undefined;
+      return `<div class="ex-item">
+        <div class="ex-prompt">${q.prompt}</div>
+        <div class="classify-opts">${q.opts.map((o,oi)=>{
+          let cls='classify-opt';
+          if(has){cls+=' cl-dis';if(oi===q.correct)cls+=' cl-correct';else if(oi===a&&oi!==q.correct)cls+=' cl-wrong';}
+          return `<div class="${cls}" onclick="ansCircle(${i},${oi})">${o}</div>`;
+        }).join('')}</div>
+        <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ ':'✗ ')+q.fb:''}</div>
+      </div>`;
+    }).join('')+
+    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+}
+function ansCircle(i,v){if(circleAns[i]!==undefined)return;circleAns[i]=v;renderCircles();}
+renderCircles();
+
+// ============ EXERCISE 3: FORMULA PICKER ============
+const FORMULA_QS=[
+  {scenario:'You need to find the distance around a circular track.',correct:'C = 2πr',opts:['A = πr²','C = 2πr','V = πr²h','(θ/360) × 2πr'],fb:'Distance around = circumference = 2πr.'},
+  {scenario:'You need to find how much paint to cover a circular wall.',correct:'A = πr²',opts:['A = πr²','C = 2πr','V = ⁴⁄₃πr³','A = lw'],fb:'Covering a surface = area = πr².'},
+  {scenario:'A pizza has a 120° slice cut from it. You want the crust length of that slice.',correct:'(θ/360) × 2πr',opts:['C = 2πr','(θ/360) × πr²','(θ/360) × 2πr','A = πr²'],fb:'Crust length of a slice = arc length = (θ/360) × 2πr.'},
+  {scenario:'You\'re filling a cylindrical water tank.',correct:'V = πr²h',opts:['A = πr²','V = πr²h','V = ⅓πr²h','C = 2πr'],fb:'Filling a 3D shape = volume. Cylinder: V = πr²h.'},
+  {scenario:'An ice cream cone\'s capacity.',correct:'V = ⅓πr²h',opts:['V = πr²h','V = ⅓πr²h','V = ⁴⁄₃πr³','A = ½bh'],fb:'Cone volume = ⅓πr²h (one-third of a cylinder).'},
+  {scenario:'You need the area of a triangular garden bed with base 8m and height 5m.',correct:'A = ½bh',opts:['A = bh','A = ½bh','A = ½(b₁+b₂)h','P = 3s'],fb:'Triangle area = ½ × base × height = ½(8)(5) = 20m².'},
+  {scenario:'Finding the distance between two points on a coordinate plane.',correct:'d = √((x₂−x₁)²+(y₂−y₁)²)',opts:['d = √((x₂−x₁)²+(y₂−y₁)²)','M = ((x₁+x₂)/2, (y₁+y₂)/2)','m = (y₂−y₁)/(x₂−x₁)','a²+b²=c²'],fb:'Distance formula — which is just the Pythagorean theorem on coordinates.'},
+  {scenario:'A basketball (sphere) needs to be inflated. How much air does it hold?',correct:'V = ⁴⁄₃πr³',opts:['V = πr²h','V = ⅓πr²h','V = ⁴⁄₃πr³','A = 4πr²'],fb:'Sphere volume = ⁴⁄₃πr³.'},
+];
+let formulaAns={};
+function renderFormulas(){
+  const total=FORMULA_QS.length;const correct=Object.entries(formulaAns).filter(([i,v])=>v===FORMULA_QS[i].correct).length;
+  document.getElementById('formulaEx').innerHTML=`<h3>🧭 Pick the Right Formula</h3><div class="exercise-sub">For each scenario, which formula do you need?</div>`+
+    FORMULA_QS.map((q,i)=>{
+      const a=formulaAns[i];const has=a!==undefined;
+      return `<div class="ex-item">
+        <div class="ex-prompt">${q.scenario}</div>
+        <div class="classify-opts">${q.opts.map((o,oi)=>{
+          let cls='classify-opt';
+          if(has){cls+=' cl-dis';if(o===q.correct)cls+=' cl-correct';else if(formulaAns[i]!==undefined&&q.opts[a]!==q.correct&&oi===a)cls+=' cl-wrong';}
+          return `<div class="${cls}" onclick="ansFormula(${i},${oi})">${o}</div>`;
+        }).join('')}</div>
+        <div class="ex-fb${has?' show':''}${has?(q.opts[a]===q.correct?' correct':' wrong'):''}">${has?(q.opts[a]===q.correct?'✓ ':'✗ ')+q.fb:''}</div>
+      </div>`;
+    }).join('')+
+    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+}
+function ansFormula(i,v){if(formulaAns[i]!==undefined)return;formulaAns[i]=v;renderFormulas();}
+renderFormulas();
+
+// ============ EXERCISE 4: SPECIAL TRIANGLES DRILL ============
+const TRI_QS=[
+  {prompt:'30-60-90: short leg = 4. Hyp = ?',correct:2,opts:['4√2','4√3','8','12'],fb:'Ratio 1:√3:2. Hyp = 4×2 = 8.'},
+  {prompt:'30-60-90: hyp = 14. Long leg = ?',correct:2,opts:['7','7√2','7√3','14√3'],fb:'Short = 14/2 = 7. Long = 7√3.'},
+  {prompt:'45-45-90: hyp = 10. Each leg = ?',correct:1,opts:['5','5√2','10√2','10'],fb:'Leg = hyp/√2 = 10/√2 = 5√2.'},
+  {prompt:'45-45-90: each leg = 3. Hyp = ?',correct:1,opts:['6','3√2','3√3','9'],fb:'Ratio 1:1:√2. Hyp = 3√2.'},
+  {prompt:'Right triangle: legs 5 and 12. Hyp = ?',correct:0,opts:['13','17','√17','15'],fb:'5-12-13 is a Pythagorean triple!'},
+  {prompt:'Right triangle: leg = 9, hyp = 15. Other leg = ?',correct:2,opts:['6','10','12','√144'],fb:'9² + x² = 15² → x² = 144 → x = 12. (3-4-5 × 3.)'},
+  {prompt:'30-60-90: long leg = 6√3. Short leg = ?',correct:1,opts:['3','6','6√2','12'],fb:'Long = short × √3. Short = 6√3/√3 = 6.'},
+  {prompt:'Right triangle: both legs = 1. Hyp = ?',correct:1,opts:['1','√2','2','√3'],fb:'1² + 1² = 2 → hyp = √2. The 45-45-90 base case.'},
+];
+let triAns={};
+function renderTris(){
+  const total=TRI_QS.length;const correct=Object.entries(triAns).filter(([i,v])=>v===TRI_QS[i].correct).length;
+  document.getElementById('triEx').innerHTML=`<h3>📏 Special Triangles Speed Drill</h3><div class="exercise-sub">Find the missing side using special triangle ratios or Pythagorean triples.</div>`+
+    TRI_QS.map((q,i)=>{
+      const a=triAns[i];const has=a!==undefined;
+      return `<div class="ex-item" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px">
+        <div style="flex:1;min-width:180px;font-size:.9rem">${q.prompt}</div>
+        <div class="classify-opts" style="flex:1">${q.opts.map((o,oi)=>{
+          let cls='classify-opt';
+          if(has){cls+=' cl-dis';if(oi===q.correct)cls+=' cl-correct';else if(oi===a&&oi!==q.correct)cls+=' cl-wrong';}
+          return `<div class="${cls}" onclick="ansTri(${i},${oi})">${o}</div>`;
+        }).join('')}</div>
+        ${has?`<div style="width:100%;font-size:.82rem;color:var(--muted)">${a===q.correct?'✓ ':'✗ '}${q.fb}</div>`:''}</div>`;
+    }).join('')+
+    `<div class="score-bar" style="margin:14px 0 0"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+}
+function ansTri(i,v){if(triAns[i]!==undefined)return;triAns[i]=v;renderTris();}
+renderTris();
+
+// ============ TRIG CALCULATOR ============
+function calcTrig(){
+  const o=parseFloat(document.getElementById('trigOpp').value);
+  const a=parseFloat(document.getElementById('trigAdj').value);
+  const h=parseFloat(document.getElementById('trigHyp').value);
+  const has=[!isNaN(o),!isNaN(a),!isNaN(h)];const count=has.filter(v=>v).length;
+  if(count<2){document.getElementById('trigResults').innerHTML='<div style="color:var(--muted);font-size:.88rem;text-align:center;grid-column:1/-1">Enter any two sides to calculate.</div>';document.getElementById('trigNote').innerHTML='';return;}
+  let opp=o,adj=a,hyp=h;
+  if(!has[0])opp=Math.sqrt(hyp*hyp-adj*adj);
+  if(!has[1])adj=Math.sqrt(hyp*hyp-opp*opp);
+  if(!has[2])hyp=Math.sqrt(opp*opp+adj*adj);
+  if(isNaN(opp)||isNaN(adj)||isNaN(hyp)||hyp<=0){document.getElementById('trigResults').innerHTML='<div style="color:var(--wrong);font-size:.88rem;text-align:center;grid-column:1/-1">Invalid triangle.</div>';return;}
+  const sin=opp/hyp,cos=adj/hyp,tan=opp/adj,angle=Math.atan(opp/adj)*180/Math.PI;
+  const r=v=>+(v.toFixed(4));
+  document.getElementById('trigResults').innerHTML=[
+    {l:'Sin θ',v:r(sin),c:'var(--geo)'},{l:'Cos θ',v:r(cos),c:'var(--advanced)'},{l:'Tan θ',v:r(tan),c:'var(--psda)'},
+    {l:'Angle θ',v:r(angle)+'°',c:'var(--algebra)'},{l:'Opp',v:r(opp),c:'var(--ink)'},{l:'Adj',v:r(adj),c:'var(--ink)'},{l:'Hyp',v:r(hyp),c:'var(--ink)'},
+  ].map(s=>`<div class="trig-result"><div class="trig-val" style="color:${s.c}">${s.v}</div><div class="trig-label">${s.l}</div></div>`).join('');
+  document.getElementById('trigNote').innerHTML=`Complementary angle: ${r(90-angle)}° · sin(${r(angle)}°) = cos(${r(90-angle)}°)`;
+}
+calcTrig();
+
+// ============ PSAT PRACTICE ============
+const PSAT_QS=[
+  {tier:1,q:'What is the area of a circle with diameter 10?',
+   choices:['25π','50π','100π','10π'],correct:0,
+   fb:'Diameter = 10, radius = 5. Area = π(5²) = 25π. Trap: using diameter instead of radius.'},
+  {tier:1,q:'In a right triangle, sin(A) = 3/5. What is cos(A)?',
+   choices:['3/5','4/5','5/3','3/4'],correct:1,
+   fb:'sin = opp/hyp = 3/5. Adjacent = √(25−9) = 4. cos = adj/hyp = 4/5.'},
+  {tier:1,q:'A cylinder has radius 4 and height 10. Volume?',
+   choices:['40π','80π','160π','640π'],correct:2,
+   fb:'V = πr²h = π(16)(10) = 160π.'},
+  {tier:2,q:'If sin(x) = cos(40°), what is x?',
+   choices:['40°','50°','60°','90°'],correct:1,
+   fb:'sin(x) = cos(90°−x). So cos(40°) = sin(50°). x = 50°.'},
+  {tier:2,q:'Circle equation: <code>(x+1)² + (y−4)² = 36</code>. Point (−1, y) is on the circle. Find the positive value of y.',
+   choices:['10','4','6','8'],correct:0,
+   fb:'Plug in x=−1: (0)²+(y−4)²=36 → y−4=±6 → y=10 or y=−2. Positive: y=10.'},
+  {tier:2,q:'Convert 240° to radians.',
+   choices:['4π/3','3π/4','2π/3','4π'],correct:0,
+   fb:'240 × π/180 = 240π/180 = 4π/3.'},
+  {tier:3,q:'A cone and cylinder have the same radius and height. Cylinder volume = 90π. Cone volume = ?',
+   choices:['30π','45π','270π','90π'],correct:0,
+   fb:'Cone = ⅓ × cylinder = ⅓ × 90π = 30π.'},
+  {tier:3,q:'Circle has center (2, −3) and passes through (6, 0). What is the equation?',
+   choices:['(x−2)²+(y+3)²=25','(x+2)²+(y−3)²=25','(x−2)²+(y+3)²=5','(x−6)²+y²=25'],correct:0,
+   fb:'Radius = distance from (2,−3) to (6,0) = √(4²+3²) = √25 = 5. r²=25. Equation: (x−2)²+(y+3)²=25.'},
+];
+let psatAns={};
+function renderPSAT(){
+  document.getElementById('psatPractice').innerHTML=PSAT_QS.map((q,i)=>{
+    const a=psatAns[i];const has=a!==undefined;
+    return `<div class="ex-item" style="border-color:${q.tier===1?'var(--algebra)':q.tier===2?'var(--math)':'var(--advanced)'}">
+      <div style="margin-bottom:6px"><span class="tier tier-${q.tier}">${q.tier===1?'Easy':q.tier===2?'Medium':'Hard'}</span></div>
+      <div class="ex-prompt">${q.q}</div>
+      <div class="mc-choices">${q.choices.map((ch,ci)=>{
+        let cls='mc-choice';
+        if(has){cls+=' mc-dis';if(ci===q.correct)cls+=' mc-correct';else if(ci===a&&ci!==q.correct)cls+=' mc-wrong';}
+        return `<div class="${cls}" onclick="ansPSAT(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
+      }).join('')}</div>
+      <div class="mc-fb${has?' show':''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div>
+    </div>`;
+  }).join('');
+}
+function ansPSAT(i,ci){if(psatAns[i]!==undefined)return;psatAns[i]=ci;renderPSAT();}
+renderPSAT();
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>
