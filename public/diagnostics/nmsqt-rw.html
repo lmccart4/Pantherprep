@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSAT/NMSQT R&W Diagnostic — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--spr:#f59e0b;--spr-bg:rgba(245,158,11,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.back-to-app{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;cursor:pointer;text-decoration:none;margin-bottom:12px;margin-top:8px}
+.back-to-app:hover{color:var(--accent)}
+.container{max-width:840px;margin:0 auto;padding:20px}
+.landing{text-align:center;padding:60px 20px}
+.landing-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:20px}
+.landing h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);margin-bottom:8px;font-weight:700}
+.landing .subtitle{color:var(--muted);font-size:1.05rem;margin-bottom:28px}
+.nmsqt-note{background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px;margin:0 auto 28px;max-width:520px;font-size:.9rem;text-align:left}
+.nmsqt-note strong{color:var(--accent)}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;max-width:600px;margin:0 auto 32px;text-align:left}
+.spec-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.spec-card .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px}
+.spec-card .value{font-size:1.1rem;font-weight:600}
+.domain-bar{display:flex;gap:2px;border-radius:8px;overflow:hidden;height:10px;max-width:580px;margin:0 auto 10px}
+.domain-bar div:nth-child(1){flex:28;background:#60a5fa}.domain-bar div:nth-child(2){flex:26;background:#34d399}.domain-bar div:nth-child(3){flex:20;background:#fbbf24}.domain-bar div:nth-child(4){flex:26;background:#f87171}
+.domain-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:32px;font-size:.85rem}
+.domain-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.domain-legend .cs::before{background:#60a5fa}.domain-legend .ii::before{background:#34d399}.domain-legend .ei::before{background:#fbbf24}.domain-legend .sec::before{background:#f87171}
+.skill-list{max-width:600px;margin:0 auto 30px;text-align:left;display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;font-size:.88rem;color:#bbb}
+.skill-list div::before{content:'\2022';margin-right:6px}
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:1rem;font-weight:600;padding:14px 40px;border:none;border-radius:10px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24;transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,16,46,.3)}
+.btn-outline{background:transparent;color:var(--accent);border:2px solid var(--accent)}.btn-outline:hover{background:var(--accent-light)}
+.btn-sm{padding:10px 24px;font-size:.9rem}
+.test-header{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:2px solid var(--ink);margin-bottom:20px}
+.test-header .module-label{font-weight:700;font-size:.95rem}
+.test-header .timer{font-family:'JetBrains Mono',monospace;font-size:1.1rem}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:24px}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.q-nav{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:20px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px}
+.q-nav button{width:30px;height:30px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit}
+.q-nav button.current{background:var(--accent);color:#fff;border-color:var(--accent)}
+.q-nav button.answered{background:var(--accent-light);border-color:var(--accent)}
+.q-nav button.flagged{border-color:#f59e0b;background:rgba(245,158,11,.12)}
+.q-counter{font-size:.85rem;color:var(--muted);margin-bottom:6px}
+.domain-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:12px;margin-bottom:4px}
+.domain-tag.craft{background:rgba(37,99,235,.15);color:#60a5fa}.domain-tag.info{background:rgba(5,150,105,.15);color:#34d399}.domain-tag.express{background:rgba(245,158,11,.12);color:#fbbf24}.domain-tag.convention{background:rgba(239,68,68,.12);color:#f87171}
+.skill-tag{font-size:.8rem;color:var(--muted);margin-bottom:14px;display:block}
+.passage{background:var(--surface);border-left:3px solid var(--border);padding:14px 18px;margin-bottom:16px;border-radius:0 8px 8px 0;font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.75}
+.notes-box{background:#f5f5f4;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px;font-size:.92rem}
+.notes-box ul{list-style:disc;padding-left:20px}.notes-box ul li{margin-bottom:4px}
+.data-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:.9rem;background:var(--surface);border-radius:8px;overflow:hidden}
+.data-table th,.data-table td{padding:8px 12px;border:1px solid var(--border);text-align:left}
+.data-table th{background:#f5f5f4;font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+.q-text{font-size:1.05rem;font-weight:500;margin-bottom:18px;line-height:1.55}
+.choices{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.choice{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;background:var(--surface);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s}
+.choice:hover{border-color:var(--accent);background:var(--accent-light)}
+.choice.selected{border-color:var(--accent);background:var(--accent-light)}
+.choice.correct-choice{border-color:var(--correct);background:var(--correct-bg)}
+.choice.wrong-choice{border-color:var(--wrong);background:var(--wrong-bg)}
+.choice-letter{flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--paper);font-weight:700;font-size:.82rem}
+.choice.selected .choice-letter{background:var(--accent);color:#fff}
+.choice.correct-choice .choice-letter{background:var(--correct);color:#fff}
+.choice.wrong-choice .choice-letter{background:var(--wrong);color:#fff}
+.choice-text{padding-top:2px;line-height:1.5}
+.nav-buttons{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
+.flag-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:.85rem;font-family:inherit;display:flex;align-items:center;gap:6px}
+.flag-btn.flagged{border-color:#f59e0b;background:rgba(245,158,11,.12);color:#f59e0b}
+.explanation-box{margin-top:14px;padding:16px;border-radius:10px;font-size:.92rem;line-height:1.6}
+.explanation-box.correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.explanation-box.wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.explanation-box h4{margin-bottom:8px}.exp-item{margin-bottom:6px}
+.results{text-align:center;padding:40px 0}
+.results h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;margin-bottom:6px}
+.score-circle{width:160px;height:160px;border-radius:50%;border:6px solid var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:24px auto}
+.score-circle .score-num{font-family:'Cormorant Garamond',serif;background:var(--surface);font-size:2.8rem;line-height:1;font-weight:700}
+.score-circle .score-range{font-size:.8rem;color:var(--muted)}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:20px 0}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.stat-box .stat-val{font-size:1.5rem;font-weight:700}.stat-box .stat-label{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.domain-results{text-align:left;margin:28px 0}
+.domain-result-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.domain-result-row .dr-name{flex:1;font-weight:600;font-size:.9rem}
+.domain-result-row .dr-bar-wrap{flex:2;height:12px;background:var(--border);border-radius:6px;overflow:hidden}
+.domain-result-row .dr-bar{height:100%;border-radius:6px;transition:width .8s}
+.domain-result-row .dr-score{width:55px;text-align:right;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.9rem}
+.skill-results{text-align:left;margin:24px 0}
+.skill-result-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:.88rem;border-bottom:1px dotted var(--border)}
+.skill-result-row .sr-score{font-weight:700;font-family:'JetBrains Mono',monospace}
+.review-section{text-align:left;margin:28px 0}
+.review-section h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px}
+.review-q{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.review-q .rq-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.review-q .rq-status{font-weight:700;font-size:.85rem}
+.review-q .rq-status.correct{color:var(--correct)}.review-q .rq-status.wrong{color:var(--wrong)}.review-q .rq-status.skipped{color:var(--muted)}
+.reflection-section{text-align:left;margin:28px 0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px}
+.reflection-section h3{font-family:'Cormorant Garamond',serif;margin-bottom:14px}
+.reflection-q{margin-bottom:14px}
+.reflection-q label{display:block;font-weight:500;margin-bottom:5px;font-size:.93rem}
+.reflection-q textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;resize:vertical;min-height:55px;background:var(--surface);color:var(--ink)}
+@media(max-width:600px){.spec-grid{grid-template-columns:1fr 1fr}.stats-row{grid-template-columns:1fr 1fr}.skill-list{grid-template-columns:1fr}.nav-buttons{flex-direction:column}}
+</style>
+</head>
+<body>
+<div style="height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100"></div>
+<div class="container" id="app"></div>
+<script>
+const Q=[
+// ===== MODULE 1 (Q1-27) =====
+// CRAFT & STRUCTURE: Words in Context (Q1-6)
+{num:1,module:1,domain:"Craft and Structure",skill:"Words in Context",
+passage:"The architect\u2019s newest building design was praised for its _______ approach, combining traditional materials like stone and wood with cutting-edge solar panel technology in a way that felt natural rather than forced.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"controversial",B:"hybrid",C:"antiquated",D:"impractical",correct:"B",
+explanations:{A:"Nothing suggests the approach was controversial or disputed.",B:"'Hybrid' means combining two different elements \u2014 matches 'combining traditional materials with cutting-edge technology.' \u2713",C:"'Antiquated' means outdated, contradicting the use of cutting-edge technology.",D:"The approach 'felt natural,' so it wasn\u2019t impractical."}},
+{num:2,module:1,domain:"Craft and Structure",skill:"Words in Context",
+passage:"After months of failed experiments, the research team\u2019s breakthrough discovery seemed almost _______, arriving suddenly after a routine calibration of their equipment revealed an unexpected pattern in the data.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"inevitable",B:"serendipitous",C:"insignificant",D:"predictable",correct:"B",
+explanations:{A:"'Inevitable' means bound to happen, but a routine calibration revealing unexpected data is chance, not certainty.",B:"'Serendipitous' means occurring by lucky chance \u2014 an unexpected pattern during routine work fits perfectly. \u2713",C:"It was a 'breakthrough,' so not insignificant.",D:"An 'unexpected pattern' is by definition not predictable."}},
+{num:3,module:1,domain:"Craft and Structure",skill:"Words in Context",
+passage:"The documentary filmmaker chose to _______ the complex history of the civil rights movement into a single two-hour film, a decision that some critics felt sacrificed important nuance for accessibility.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"expand",B:"condense",C:"fabricate",D:"broadcast",correct:"B",
+explanations:{A:"'Expand' contradicts fitting complex history into a single short film.",B:"'Condense' means to compress or shorten \u2014 fitting a complex topic into two hours requires condensing. \u2713",C:"'Fabricate' means to invent falsely, not what the filmmaker did.",D:"'Broadcast' means to transmit, not to compress content."}},
+{num:4,module:1,domain:"Craft and Structure",skill:"Words in Context",
+passage:"Unlike her predecessor, who governed through rigid adherence to party platforms, the new mayor adopted a more _______ approach, adjusting her policies in response to changing community needs and emerging data.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"dogmatic",B:"secretive",C:"pragmatic",D:"reckless",correct:"C",
+explanations:{A:"'Dogmatic' means rigidly following doctrine \u2014 that describes the predecessor, not the new mayor.",B:"Nothing suggests secrecy; she responded to community needs openly.",C:"'Pragmatic' means practical and adaptive \u2014 matches 'adjusting policies in response to data and needs.' \u2713",D:"Adjusting to data and community input is thoughtful, not reckless."}},
+{num:5,module:1,domain:"Craft and Structure",skill:"Words in Context",
+passage:"The novelist\u2019s early works were characterized by spare, minimalist prose, but her later novels revealed a marked shift toward _______ description, with passages that lingered on sensory details and elaborate metaphors.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"ambiguous",B:"clinical",C:"ornate",D:"repetitive",correct:"C",
+explanations:{A:"'Ambiguous' means unclear \u2014 the descriptions are elaborate, not vague.",B:"'Clinical' means detached and analytical, which contradicts 'sensory details and elaborate metaphors.'",C:"'Ornate' means elaborately decorated \u2014 directly contrasts with 'spare, minimalist' and matches 'sensory details and elaborate metaphors.' \u2713",D:"Nothing suggests the descriptions were repetitive."}},
+{num:6,module:1,domain:"Craft and Structure",skill:"Words in Context",
+passage:"The city council\u2019s decision to allow commercial development along the riverfront was met with _______ from environmental groups, who argued that construction would destroy critical wetland habitats and pollute the waterway.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"indifference",B:"endorsement",C:"opposition",D:"confusion",correct:"C",
+explanations:{A:"Environmental groups actively argued against it \u2014 not indifferent.",B:"They opposed the development, not endorsed it.",C:"Groups argued construction would 'destroy habitats and pollute' \u2014 clear opposition. \u2713",D:"Their position was clearly stated, not confused."}},
+// CRAFT & STRUCTURE: Text Structure/Purpose (Q7), Cross-Text (Q8)
+{num:7,module:1,domain:"Craft and Structure",skill:"Text Structure and Purpose",
+passage:"Honeybees communicate the location of food sources through a behavior known as the 'waggle dance.' When a forager bee returns to the hive, it performs a figure-eight movement on the honeycomb surface. The angle of the central waggle run relative to vertical indicates the direction of the food source relative to the sun, while the duration of the waggle indicates distance. The longer the waggle, the farther the food.",
+question:"Which choice best describes the overall structure of the text?",
+A:"It proposes a hypothesis about bee behavior and then tests it.",
+B:"It introduces a phenomenon and then explains the specific mechanics of how it works.",
+C:"It compares honeybee communication to human language systems.",
+D:"It argues that the waggle dance is the most sophisticated form of animal communication.",
+correct:"B",
+explanations:{A:"No hypothesis is proposed or tested \u2014 the passage describes known behavior.",B:"Introduces the phenomenon (waggle dance) then explains mechanics (angle=direction, duration=distance). \u2713",C:"No comparison to human language is made.",D:"No argument about sophistication relative to other animals."}},
+{num:8,module:1,domain:"Craft and Structure",skill:"Cross-Text Connections",
+passage:"<strong>Text 1</strong><br>Nutritionist Dr. Sarah Park argues that school lunch programs should eliminate all processed foods and serve only whole, organic meals. Research consistently shows that children who eat whole foods perform better academically and have fewer behavioral issues.<br><br><strong>Text 2</strong><br>School administrator James Cole acknowledges the health benefits of whole foods but notes that organic school meals cost roughly three times more per student than current programs. For districts already struggling to fund basic educational needs, he argues, the cost difference makes a full organic mandate unrealistic without significant new funding.",
+question:"Based on the texts, how would Cole (Text 2) most likely respond to Park\u2019s proposal in Text 1?",
+A:"By arguing that processed foods are actually healthier than organic foods.",
+B:"By acknowledging the health benefits but arguing that implementation costs make a full mandate impractical without additional funding.",
+C:"By claiming that academic performance is unrelated to diet.",
+D:"By proposing that schools eliminate lunch programs entirely.",
+correct:"B",
+explanations:{A:"Cole 'acknowledges the health benefits,' so he wouldn\u2019t claim processed foods are healthier.",B:"Cole agrees on health benefits but raises practical cost concerns \u2014 'three times more' without 'significant new funding.' \u2713",C:"Cole acknowledges the research on health benefits, not disputes it.",D:"Nothing suggests eliminating lunch programs."}},
+// INFORMATION & IDEAS: Central Ideas (Q9-11)
+{num:9,module:1,domain:"Information and Ideas",skill:"Central Ideas and Details",
+passage:"The tiny island nation of Bhutan measures its success not by gross domestic product but by Gross National Happiness (GNH). Introduced in 1972 by King Jigme Singye Wangchuck, GNH evaluates the population\u2019s well-being across nine domains including psychological health, cultural resilience, ecological diversity, and living standards. Government policies must pass a GNH impact assessment before implementation, and Bhutan has used this framework to justify decisions that might seem economically irrational, such as banning plastic bags and keeping over 70% of the country forested.",
+question:"Which choice best states the main idea of the text?",
+A:"Bhutan\u2019s economy is weaker than other nations because it prioritizes happiness over growth.",
+B:"Bhutan uses a unique well-being metric that evaluates national success across multiple dimensions beyond economic output.",
+C:"King Jigme Singye Wangchuck was the most popular leader in Bhutanese history.",
+D:"Environmental policies like banning plastic bags have made Bhutan the happiest country in the world.",
+correct:"B",
+explanations:{A:"The passage doesn\u2019t say Bhutan\u2019s economy is weaker \u2014 it describes a different measurement approach.",B:"The passage introduces GNH as an alternative to GDP, covering nine domains beyond economics. \u2713",C:"The king is mentioned as introducing GNH, not described as most popular.",D:"The passage doesn\u2019t claim Bhutan is the happiest country."}},
+{num:10,module:1,domain:"Information and Ideas",skill:"Central Ideas and Details",
+passage:"Archaeologists studying ancient Pompeii have discovered that many of the city\u2019s residents had surprisingly good dental health. Analysis of skeletal remains reveals few cavities despite the absence of toothbrushes or modern dental care. Researchers attribute this to the Pompeiian diet, which was high in fiber and low in sugar. The volcanic soil around Mount Vesuvius also enriched local water supplies with fluoride, which strengthens tooth enamel.",
+question:"According to the text, what factors contributed to good dental health in Pompeii?",
+A:"Advanced dental tools and frequent visits to physicians.",
+B:"A high-fiber, low-sugar diet and naturally fluoridated water from volcanic soil.",
+C:"The hot climate, which killed bacteria in the mouth.",
+D:"Strict hygiene laws enforced by city officials.",
+correct:"B",
+explanations:{A:"The passage says 'absence of toothbrushes or modern dental care.'",B:"Directly stated: diet 'high in fiber and low in sugar' plus volcanic soil adding fluoride to water. \u2713",C:"Climate is never mentioned.",D:"No laws or officials are discussed."}},
+{num:11,module:1,domain:"Information and Ideas",skill:"Central Ideas and Details",
+passage:"Language extinction is accelerating worldwide. Of the roughly 7,000 languages currently spoken, linguists estimate that one goes silent every two weeks. Most at risk are indigenous languages spoken by fewer than 1,000 people, particularly in regions where economic pressures push younger generations toward dominant languages like English, Mandarin, or Spanish. When a language dies, it takes with it unique knowledge systems, oral histories, and ways of understanding the natural world that cannot be fully captured in translation.",
+question:"The text primarily emphasizes which idea about language extinction?",
+A:"English, Mandarin, and Spanish are the only languages that will survive.",
+B:"Language loss is happening rapidly and carries significant cultural consequences beyond mere communication.",
+C:"Younger generations should be required by law to learn their indigenous languages.",
+D:"Linguists have the tools to prevent all language extinction if given proper funding.",
+correct:"B",
+explanations:{A:"The passage says these are 'dominant' languages, not the only survivors.",B:"'One goes silent every two weeks' (rapid) plus 'unique knowledge systems, oral histories' lost (cultural consequences). \u2713",C:"No legal requirements are discussed or proposed.",D:"No claim about prevention capabilities."}},
+// INFO & IDEAS: Command of Evidence Textual (Q12-13), Quantitative (Q14-15), Inferences (Q16)
+{num:12,module:1,domain:"Information and Ideas",skill:"Command of Evidence (Textual)",
+passage:"Psychologist Mihaly Csikszentmihalyi developed the concept of 'flow' \u2014 a mental state of complete absorption in an activity where a person loses track of time and feels deeply engaged. Csikszentmihalyi argued that flow occurs when the difficulty of a task closely matches a person\u2019s skill level: too easy, and boredom results; too hard, and anxiety takes over.",
+question:"Which finding, if true, would most directly support Csikszentmihalyi\u2019s claim about when flow occurs?",
+A:"People who meditate regularly report feeling calmer throughout the day.",
+B:"A study found that chess players experienced the deepest engagement when playing opponents of similar skill, rather than much stronger or weaker ones.",
+C:"Most people prefer watching television to engaging in creative hobbies.",
+D:"Athletes who train more hours per week earn higher salaries.",
+correct:"B",
+explanations:{A:"Meditation and calm aren\u2019t about the task-difficulty/skill-level match.",B:"Matched opponents = difficulty matching skill. Deepest engagement = flow. Directly supports the claim. \u2713",C:"TV preference doesn\u2019t address the difficulty/skill match.",D:"Training hours and salary don\u2019t relate to the flow experience."}},
+{num:13,module:1,domain:"Information and Ideas",skill:"Command of Evidence (Textual)",
+passage:"Urban ecologist Dr. Maya Thompson argues that cities can support surprising biodiversity when green spaces are intentionally designed to mimic natural habitats rather than maintained as manicured lawns. Her research in Chicago found that parks with native prairie plantings supported four times more pollinator species than parks with traditional landscaping.",
+question:"Which choice best describes the evidence Thompson uses?",
+A:"A nationwide survey of urban park visitors\u2019 preferences.",
+B:"A comparison within one city showing that habitat-mimicking parks supported more pollinators than traditional parks.",
+C:"An experiment testing whether adding bird feeders increases biodiversity.",
+D:"Historical records of species populations in Chicago before urbanization.",
+correct:"B",
+explanations:{A:"No survey of visitors is mentioned.",B:"'Research in Chicago' comparing native prairie plantings (4x more pollinators) to traditional landscaping \u2014 comparison within one city. \u2713",C:"No experiment with bird feeders.",D:"No historical records discussed."}},
+{num:14,module:1,domain:"Information and Ideas",skill:"Command of Evidence (Quantitative)",
+passage:"A school district surveyed teachers about their preferred professional development formats.",
+question:"Which choice most effectively uses data from the table to support the claim that teachers prefer hands-on formats over lecture-based ones?",
+A:"Online webinars were preferred by 15% of teachers, while in-person lectures were preferred by 20%.",
+B:"Hands-on workshops were preferred by 42% of teachers, more than double the 20% who preferred in-person lectures.",
+C:"The survey included responses from teachers at 12 schools across the district.",
+D:"Peer observation was the least preferred format at 8%.",
+correct:"B",
+explanations:{A:"Compares two formats that could both be lecture-based.",B:"Directly compares hands-on (42%) to lecture (20%), showing hands-on preferred by more than double. \u2713",C:"Sample description doesn\u2019t support a preference claim.",D:"Peer observation being least preferred doesn\u2019t address the hands-on vs. lecture comparison."},
+tableData:{headers:["Format","% Preferred"],rows:[["Hands-on workshops","42%"],["Peer observation","8%"],["In-person lectures","20%"],["Online webinars","15%"],["Mentoring programs","15%"]]}},
+{num:15,module:1,domain:"Information and Ideas",skill:"Command of Evidence (Quantitative)",
+passage:"Researchers tracked the average daily screen time of teenagers across three years.",
+question:"Which choice most effectively uses data from the table to describe a trend in teenage screen time?",
+A:"In 2021, social media accounted for 95 minutes of daily screen time.",
+B:"Video streaming remained the largest category of screen time across all three years, growing from 110 to 135 minutes daily.",
+C:"Educational screen time decreased from 55 to 35 minutes between 2021 and 2023.",
+D:"Total daily screen time increased from 300 to 350 minutes between 2021 and 2023.",
+correct:"D",
+explanations:{A:"A single data point doesn\u2019t describe a trend.",B:"True but only describes one category, not the overall trend.",C:"True but describes only one category.",D:"Total screen time increase across three years describes the broadest trend. \u2713"},
+tableData:{headers:["Category","2021","2022","2023"],rows:[["Social media","95 min","110 min","120 min"],["Video streaming","110 min","120 min","135 min"],["Gaming","40 min","50 min","60 min"],["Educational","55 min","45 min","35 min"],["Total","300 min","325 min","350 min"]]}},
+{num:16,module:1,domain:"Information and Ideas",skill:"Inferences",
+passage:"In the 1960s, mathematician Edward Lorenz discovered that tiny rounding differences in weather simulation inputs \u2014 as small as 0.000127 \u2014 could produce dramatically different long-range forecasts. This finding, later popularized as the 'butterfly effect,' demonstrated that weather systems are so sensitive to initial conditions that perfect long-range prediction may be fundamentally impossible. ________",
+question:"Which choice most logically completes the text?",
+A:"This is why modern weather forecasts remain highly accurate only for about 7 to 10 days, despite enormous advances in computing power and data collection.",
+B:"As a result, meteorologists have abandoned all attempts to predict weather.",
+C:"Lorenz\u2019s discovery proved that weather is completely random and follows no patterns.",
+D:"Modern computers are now powerful enough to overcome this limitation entirely.",
+correct:"A",
+explanations:{A:"If perfect long-range prediction is fundamentally impossible, accuracy would be limited to shorter periods even with better technology. \u2713",B:"Meteorologists still forecast; they just accept limits.",C:"Weather follows patterns (physics) but is sensitive to initial conditions \u2014 not random.",D:"Contradicts 'fundamentally impossible' \u2014 it\u2019s a mathematical limit, not a computing one."}},
+// EXPRESSION OF IDEAS: Transitions (Q17-19), Rhetorical Synthesis (Q20-22)
+{num:17,module:1,domain:"Expression of Ideas",skill:"Transitions",
+passage:"The giant panda was once classified as a member of the raccoon family due to certain physical similarities, including a similar body shape and a shared taste for bamboo. _______, genetic analysis conducted in the 1980s conclusively placed pandas within the bear family, Ursidae.",
+question:"Which choice completes the text with the most logical transition?",
+A:"Similarly",B:"However",C:"Therefore",D:"For instance",correct:"B",
+explanations:{A:"The genetic finding contradicts the earlier classification, not supports it.",B:"Shifting from 'classified as raccoon family' to 'conclusively placed in bear family' \u2014 a clear contrast. \u2713",C:"The genetic finding doesn\u2019t follow logically from the raccoon classification.",D:"The genetic analysis isn\u2019t an example of the raccoon classification."}},
+{num:18,module:1,domain:"Expression of Ideas",skill:"Transitions",
+passage:"The city of Amsterdam has invested heavily in cycling infrastructure, with over 500 kilometers of dedicated bike lanes and 800,000 bicycles for a population of 900,000. _______, roughly 63% of Amsterdam residents use their bikes daily for commuting, shopping, and socializing.",
+question:"Which choice completes the text with the most logical transition?",
+A:"Nevertheless",B:"In contrast",C:"As a result",D:"Surprisingly",correct:"C",
+explanations:{A:"'Nevertheless' implies contrast, but high usage follows logically from heavy investment.",B:"No contrasting subject is introduced.",C:"Infrastructure investment leads to high usage \u2014 a cause-and-effect relationship. \u2713",D:"High usage after heavy investment isn\u2019t surprising; it\u2019s expected."}},
+{num:19,module:1,domain:"Expression of Ideas",skill:"Transitions",
+passage:"The Mediterranean monk seal is one of the world\u2019s most endangered marine mammals, with fewer than 700 individuals remaining. Conservation efforts in Greece and Turkey have shown promising results, with some local populations stabilizing. _______, researchers warn that climate change, ocean pollution, and habitat loss continue to threaten the species\u2019 long-term survival.",
+question:"Which choice completes the text with the most logical transition?",
+A:"In addition",B:"For example",C:"Even so",D:"In other words",correct:"C",
+explanations:{A:"The warning doesn\u2019t simply add to the positive news \u2014 it qualifies it.",B:"The warning isn\u2019t an example of stabilizing populations.",C:"'Even so' acknowledges the positive trend while introducing an important caveat. \u2713",D:"The warning restates nothing \u2014 it introduces new cautionary information."}},
+{num:20,module:1,domain:"Expression of Ideas",skill:"Rhetorical Synthesis",
+passage:"A student is writing about the benefits of bilingualism and wants to emphasize cognitive advantages.",
+question:"Which choice most effectively uses the relevant information from the notes to accomplish this goal?",
+A:"Approximately 43% of the world\u2019s population is bilingual or multilingual.",
+B:"Studies show that bilingual individuals switch between tasks more efficiently and show delayed onset of dementia symptoms by an average of 4-5 years compared to monolinguals.",
+C:"Many countries require students to study a second language in school.",
+D:"Bilingualism can sometimes cause temporary difficulty in word retrieval.",
+correct:"B",isNotes:true,
+notes:["About 43% of the global population speaks two or more languages.","Bilingual individuals switch between tasks more efficiently.","Bilingualism is associated with delayed dementia onset by 4-5 years.","Many countries require second language study.","Temporary word retrieval difficulty can occur in bilinguals."],
+explanations:{A:"A statistic about prevalence, not cognitive benefits.",B:"Task switching efficiency and delayed dementia \u2014 both are cognitive advantages. \u2713",C:"Educational policy, not a cognitive benefit.",D:"This is a disadvantage, not a benefit."}},
+{num:21,module:1,domain:"Expression of Ideas",skill:"Rhetorical Synthesis",
+passage:"A student is writing about the history of the printing press and wants to emphasize its revolutionary impact on access to knowledge.",
+question:"Which choice most effectively uses the relevant information from the notes to accomplish this goal?",
+A:"Johannes Gutenberg invented the movable type printing press around 1440 in Mainz, Germany.",
+B:"Before the printing press, a single book could take months to copy by hand, making books so expensive that only the wealthiest institutions could afford libraries; Gutenberg\u2019s invention reduced book production time by over 90%, making written knowledge accessible to a vastly wider audience for the first time.",
+C:"The printing press used individual metal letter molds that could be rearranged and reused.",
+D:"China had developed woodblock printing several centuries before Gutenberg.",
+correct:"B",isNotes:true,
+notes:["Gutenberg invented movable type around 1440.","Books previously took months to copy by hand.","Only wealthy institutions could afford libraries.","The press reduced production time by over 90%.","China developed woodblock printing centuries earlier."],
+explanations:{A:"Factual but doesn\u2019t emphasize the revolutionary impact on access.",B:"Shows the before (expensive, slow) and after (90% faster, wider access) \u2014 directly emphasizes revolutionary impact on knowledge access. \u2713",C:"Technical detail about the mechanism, not impact on access.",D:"Historical context about China, not Gutenberg\u2019s impact."}},
+{num:22,module:1,domain:"Expression of Ideas",skill:"Rhetorical Synthesis",
+passage:"A student is writing about coral reef conservation and wants to highlight a specific successful intervention.",
+question:"Which choice most effectively uses the relevant information from the notes to accomplish this goal?",
+A:"Coral reefs support approximately 25% of all marine species.",
+B:"Coral bleaching occurs when water temperatures rise above normal levels.",
+C:"In Bonaire, a marine park program that restricted fishing and anchoring has helped local reefs recover, with coral cover increasing from 15% to 40% over a 15-year period.",
+D:"Scientists estimate that 50% of the world\u2019s coral reefs have been lost since 1950.",
+correct:"C",isNotes:true,
+notes:["Reefs support ~25% of all marine species.","Bleaching occurs from elevated water temperatures.","Bonaire\u2019s marine park restrictions helped reefs recover.","Coral cover in Bonaire increased from 15% to 40% over 15 years.","50% of global reefs have been lost since 1950."],
+explanations:{A:"General importance of reefs, not a specific intervention.",B:"Cause of bleaching, not a successful intervention.",C:"Names a specific place (Bonaire), intervention (restrictions), and measurable result (15% to 40%). \u2713",D:"Global decline statistic \u2014 the opposite of a success story."}},
+// STANDARD ENGLISH CONVENTIONS: Boundaries (Q23-25), Form/Structure/Sense (Q26-27)
+{num:23,module:1,domain:"Standard English Conventions",skill:"Boundaries",
+passage:"The Great Wall of China, which stretches over 13,000 _______ was built over many centuries by multiple dynasties to protect against invasions from the north.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"miles,",B:"miles;",C:"miles",D:"miles\u2014",correct:"A",
+explanations:{A:"A comma closes the nonrestrictive clause 'which stretches over 13,000 miles' before the main clause continues. \u2713",B:"A semicolon joins independent clauses \u2014 but the portion before is not independent (it\u2019s a nonrestrictive clause modifier).",C:"No punctuation creates a run-on between the relative clause and the main clause.",D:"A dash could work in informal writing but a comma is standard for closing a nonrestrictive clause."}},
+{num:24,module:1,domain:"Standard English Conventions",skill:"Boundaries",
+passage:"The library\u2019s new digital archive contains over 50,000 historical _______ it is free to access for all registered patrons.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"documents,",B:"documents;",C:"documents and",D:"documents",correct:"B",
+explanations:{A:"Comma splice \u2014 two independent clauses cannot be joined by a comma alone.",B:"Semicolon correctly joins two related independent clauses. \u2713",C:"Needs a comma before 'and' to properly join independent clauses.",D:"Run-on sentence."}},
+{num:25,module:1,domain:"Standard English Conventions",skill:"Boundaries",
+passage:"Although the experiment yielded promising initial _______ the team decided to replicate the study with a larger sample size before publishing their findings.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"results;",B:"results",C:"results,",D:"results\u2014",correct:"C",
+explanations:{A:"A semicolon can\u2019t separate a dependent clause from the main clause.",B:"No punctuation between a subordinate clause and main clause creates a run-on.",C:"Comma correctly separates the introductory 'Although' clause from the main clause. \u2713",D:"A dash disrupts the natural subordinate-to-main flow."}},
+{num:26,module:1,domain:"Standard English Conventions",skill:"Form, Structure, and Sense",
+passage:"The group of students _______ already submitted their final projects by the time the professor extended the deadline.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"have",B:"has",C:"had",D:"having",correct:"C",
+explanations:{A:"'Have' is present tense and doesn\u2019t work with the past context ('extended').",B:"'Has' is present tense; both actions are in the past.",C:"'Had submitted' is past perfect, correctly showing the submission happened before the deadline extension. \u2713",D:"'Having' without a helper verb creates a fragment."}},
+{num:27,module:1,domain:"Standard English Conventions",skill:"Form, Structure, and Sense",
+passage:"Each of the volunteers _______ required to complete a background check before working with children at the community center.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"are",B:"is",C:"were",D:"have been",correct:"B",
+explanations:{A:"'Each' is singular; 'are' is plural.",B:"'Each' always takes a singular verb regardless of the prepositional phrase 'of the volunteers.' \u2713",C:"'Were' is plural past tense \u2014 doesn\u2019t agree with singular 'each.'",D:"'Have been' is plural, disagreeing with 'each.'"}},
+// ===== MODULE 2 (Q28-54) \u2014 HARDER =====
+// CRAFT & STRUCTURE: Words in Context (Q28-32)
+{num:28,module:2,domain:"Craft and Structure",skill:"Words in Context",
+passage:"The composer\u2019s latest symphony was a deliberate _______ of classical conventions: where audiences expected harmonic resolution, she introduced dissonance; where tradition demanded a triumphant finale, she ended in quiet ambiguity.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"celebration",B:"subversion",C:"imitation",D:"simplification",correct:"B",
+explanations:{A:"She introduced the opposite of expectations \u2014 not a celebration of convention.",B:"'Subversion' means deliberately undermining or overturning \u2014 she replaced expected elements with their opposites. \u2713",C:"She did the opposite of convention, not imitated it.",D:"Replacing resolution with dissonance isn\u2019t simplification."}},
+{num:29,module:2,domain:"Craft and Structure",skill:"Words in Context",
+passage:"While many economists argue that automation will eventually generate new categories of employment, labor historian Sarah Chen contends that this optimism ignores the _______ nature of current technological displacement \u2014 entire sectors can be transformed within years, not the generations that previous economic transitions required.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"gradual",B:"beneficial",C:"unprecedented",D:"negligible",correct:"C",
+explanations:{A:"'Gradual' contradicts 'within years' \u2014 the point is that displacement is fast.",B:"Chen is arguing against optimism, not supporting it.",C:"'Unprecedented' means never before experienced \u2014 the speed of displacement (years vs. generations) is historically unique. \u2713",D:"'Negligible' means too small to matter, contradicting 'entire sectors transformed.'"}},
+{num:30,module:2,domain:"Craft and Structure",skill:"Words in Context",
+passage:"The philosopher argued that genuine moral courage is not the absence of fear but rather the willingness to act _______ it, choosing what is right even when doing so carries personal risk.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"without",B:"despite",C:"because of",D:"before",correct:"B",
+explanations:{A:"The passage says courage is 'not the absence of fear' \u2014 so fear is present, not absent.",B:"'Despite' means in spite of \u2014 acting even though fear exists. \u2713",C:"Acting because of fear would be panic, not courage.",D:"'Before' doesn\u2019t capture the relationship between fear and action described."}},
+{num:31,module:2,domain:"Craft and Structure",skill:"Words in Context",
+passage:"Critics praised the museum\u2019s new exhibit for its _______ approach to presenting colonial history, giving equal weight to the perspectives of colonizers and colonized peoples rather than privileging one narrative over the other.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"biased",B:"comprehensive",C:"equitable",D:"traditional",correct:"C",
+explanations:{A:"'Biased' contradicts 'equal weight' to both perspectives.",B:"'Comprehensive' means thorough but doesn\u2019t specifically address the balance between perspectives.",C:"'Equitable' means fair and balanced \u2014 matches 'giving equal weight' to both perspectives. \u2713",D:"A 'traditional' approach would likely privilege the colonizer\u2019s perspective."}},
+{num:32,module:2,domain:"Craft and Structure",skill:"Words in Context",
+passage:"The startup\u2019s initial product launch was widely regarded as a failure, but CEO Maria Santos viewed the setback as _______, using customer feedback from the failed launch to redesign the product into what would eventually become the company\u2019s most profitable offering.",
+question:"Which choice completes the text with the most logical and precise word or phrase?",
+A:"catastrophic",B:"irrelevant",C:"instructive",D:"inevitable",correct:"C",
+explanations:{A:"She used it productively, not as a catastrophe.",B:"If she used the feedback, it wasn\u2019t irrelevant.",C:"'Instructive' means providing useful information \u2014 the failure taught her how to improve. \u2713",D:"'Inevitable' doesn\u2019t capture the idea of learning from failure."}},
+// CRAFT & STRUCTURE: Text Structure (Q33)
+{num:33,module:2,domain:"Craft and Structure",skill:"Text Structure and Purpose",
+passage:"In 2018, an international team of researchers drilled into the Chicxulub crater off Mexico\u2019s Yucat\u00e1n Peninsula \u2014 the impact site of the asteroid that caused the mass extinction of dinosaurs 66 million years ago. Core samples revealed that within hours of impact, the crater had been colonized by microorganisms. Within 30,000 years \u2014 a geological blink \u2014 a thriving ecosystem had established itself in what had been, moments before, a zone of total destruction.",
+question:"Which choice best describes the function of the phrase 'a geological blink'?",
+A:"It provides a technical definition of a unit of geological time.",
+B:"It uses figurative language to emphasize how quickly the ecosystem recovered relative to geological timescales.",
+C:"It argues that 30,000 years is an insignificant period.",
+D:"It compares the Chicxulub event to other asteroid impacts.",
+correct:"B",
+explanations:{A:"'A geological blink' isn\u2019t a technical definition \u2014 it\u2019s a metaphor.",B:"Comparing 30,000 years to a 'blink' emphasizes speed in geological context. \u2713",C:"30,000 years matters in the passage; 'blink' shows it\u2019s fast for geology, not insignificant.",D:"No comparison to other impacts."}},
+// INFO & IDEAS: Evidence Textual (Q34-35), Quantitative (Q36), Inferences (Q37-38)
+{num:34,module:2,domain:"Information and Ideas",skill:"Command of Evidence (Textual)",
+passage:"Behavioral economist Dan Ariely argues that people are 'predictably irrational' \u2014 that human decision-making consistently deviates from purely rational models in specific, systematic ways. For instance, people tend to overvalue things they already own (the endowment effect) and are more motivated by potential losses than equivalent gains (loss aversion).",
+question:"Which finding, if true, would most directly support Ariely\u2019s claim about predictable irrationality?",
+A:"A study found that people consistently rejected offers to sell items they owned for twice the market price, even when they had purchased those items at market price just hours earlier.",
+B:"Most consumers read product reviews before making purchases.",
+C:"People with higher incomes make different spending choices than those with lower incomes.",
+D:"A survey found that 60% of people consider themselves good decision-makers.",
+correct:"A",
+explanations:{A:"Refusing to sell for double what you paid demonstrates the endowment effect \u2014 overvaluing what you own. Systematic and irrational. \u2713",B:"Reading reviews is rational behavior.",C:"Income-based differences are expected, not irrational.",D:"Self-perception doesn\u2019t demonstrate actual irrationality."}},
+{num:35,module:2,domain:"Information and Ideas",skill:"Command of Evidence (Textual)",
+passage:"Marine archaeologist Robert Ballard, who discovered the wreck of the Titanic in 1985, has argued that deep-sea shipwrecks should be treated as underwater museums rather than salvage sites. He contends that removing artifacts from wrecks destroys the archaeological context that gives them meaning and that wrecks are better preserved in the cold, oxygen-poor environment of the deep sea than in surface museums.",
+question:"Which finding would most directly weaken Ballard\u2019s argument for leaving wrecks undisturbed?",
+A:"A study showing that deep-sea corrosion is accelerating due to ocean acidification, causing wreck sites to deteriorate faster than previously expected.",
+B:"The discovery of a new deep-sea shipwreck in the Mediterranean.",
+C:"A survey showing that most people have never visited an underwater museum.",
+D:"Evidence that Robert Ballard profited from the Titanic discovery.",
+correct:"A",
+explanations:{A:"If wrecks are deteriorating in situ, Ballard\u2019s claim that they\u2019re 'better preserved' in the deep sea is undermined. \u2713",B:"A new discovery doesn\u2019t address whether wrecks should be disturbed.",C:"Visitor numbers don\u2019t address preservation arguments.",D:"Personal motives don\u2019t address the substance of the argument."}},
+{num:36,module:2,domain:"Information and Ideas",skill:"Command of Evidence (Quantitative)",
+passage:"A city tracked resident satisfaction with public services over five years after implementing a new community engagement program.",
+question:"Which choice most effectively uses data from the table to support the claim that the engagement program improved satisfaction with parks and recreation services specifically?",
+A:"Overall satisfaction increased from 62% to 73% between 2019 and 2023.",
+B:"Parks and recreation satisfaction showed the largest increase of any category, rising from 55% to 78% over the five-year period.",
+C:"Public safety satisfaction remained relatively stable, changing only from 71% to 74%.",
+D:"Road maintenance satisfaction decreased from 58% to 52%.",
+correct:"B",
+explanations:{A:"Overall satisfaction doesn\u2019t isolate parks and recreation.",B:"Specifically shows parks and recreation had the largest gain (55% to 78% = 23 points), directly supporting the claim. \u2713",C:"Public safety stability doesn\u2019t address parks.",D:"Road maintenance declining contradicts the general claim but doesn\u2019t address parks."},
+tableData:{headers:["Service","2019","2023"],rows:[["Parks & Recreation","55%","78%"],["Public Safety","71%","74%"],["Road Maintenance","58%","52%"],["Public Transit","48%","61%"],["Overall","62%","73%"]]}},
+{num:37,module:2,domain:"Information and Ideas",skill:"Inferences",
+passage:"Researchers studying elephant communication have discovered that elephants produce infrasound \u2014 vocalizations below the range of human hearing \u2014 that can travel through the ground for distances of up to 20 miles. Other elephants detect these vibrations through sensitive nerve endings in their feet. This seismic communication system appears to function independently of the elephants\u2019 more familiar trumpet calls. ________",
+question:"Which choice most logically completes the text?",
+A:"Elephants, therefore, are the only animals that communicate using sound.",
+B:"This discovery suggests that elephants possess a dual communication system, using both airborne and ground-based signals to stay connected across vast distances.",
+C:"Scientists have concluded that elephant trumpet calls serve no communicative purpose.",
+D:"Infrasound is too quiet for elephants to detect reliably.",
+correct:"B",
+explanations:{A:"Many animals use sound; the passage doesn\u2019t claim exclusivity.",B:"Infrasound through ground + trumpet calls through air = dual system, functioning 'independently.' \u2713",C:"The passage says infrasound works 'independently of' trumpet calls, implying both are used.",D:"Contradicts 'detect these vibrations through sensitive nerve endings.'"}},
+{num:38,module:2,domain:"Information and Ideas",skill:"Inferences",
+passage:"In the 1950s, psychologist Solomon Asch conducted experiments in which participants were shown lines of clearly different lengths and asked which matched a reference line. When confederates in the room unanimously gave an obviously wrong answer, roughly 75% of participants conformed to the incorrect consensus at least once. ________",
+question:"Which choice most logically completes the text?",
+A:"This demonstrates that most people have poor eyesight.",
+B:"The findings suggest that social pressure can override individuals\u2019 own perceptual judgments, even when the correct answer is unambiguous.",
+C:"Asch concluded that participants actually believed the confederates\u2019 answers were correct.",
+D:"The study proved that group decision-making always produces wrong answers.",
+correct:"B",
+explanations:{A:"The lines were 'clearly different' and the answer 'obviously wrong' \u2014 eyesight isn\u2019t the issue.",B:"Participants knew the right answer (clear differences) but conformed anyway \u2014 social pressure overriding perception. \u2713",C:"Conformity doesn\u2019t mean they believed the wrong answer; they went along despite knowing better.",D:"'Always' is too absolute; 75% conformed 'at least once,' not always."}},
+// EXPRESSION: Transitions (Q39-41), Rhetorical Synthesis (Q42-44)
+{num:39,module:2,domain:"Expression of Ideas",skill:"Transitions",
+passage:"The Japanese art of kintsugi involves repairing broken pottery with gold-infused lacquer, making the cracks visible rather than hiding them. Far from diminishing the object\u2019s value, this technique often makes repaired pieces more prized than undamaged ones. _______, kintsugi has become a popular metaphor in psychology for the idea that overcoming adversity can make a person stronger and more beautiful.",
+question:"Which choice completes the text with the most logical transition?",
+A:"In contrast",B:"Accordingly",C:"Nevertheless",D:"By extension",correct:"D",
+explanations:{A:"The metaphor extends the concept, not contrasts it.",B:"'Accordingly' implies the metaphor is a direct result, but it\u2019s an extension of the idea.",C:"No contradiction between valuing repairs and using it as a metaphor.",D:"'By extension' \u2014 the physical concept extends metaphorically to psychology. \u2713"}},
+{num:40,module:2,domain:"Expression of Ideas",skill:"Transitions",
+passage:"Sleep researcher Matthew Walker has demonstrated that even moderate sleep deprivation \u2014 getting six hours instead of eight \u2014 measurably impairs cognitive function, emotional regulation, and immune response. _______, Walker notes that sleep-deprived individuals consistently overestimate their own performance, believing they are functioning normally when objective tests show significant decline.",
+question:"Which choice completes the text with the most logical transition?",
+A:"On the other hand",B:"Compounding the problem",C:"In summary",D:"By contrast",correct:"B",
+explanations:{A:"The second point doesn\u2019t contradict the first.",B:"Overestimating performance while impaired adds to (compounds) the problem of sleep deprivation. \u2713",C:"The passage isn\u2019t summarizing; it\u2019s adding a new dimension.",D:"Both points describe problems with sleep deprivation, not contrasts."}},
+{num:41,module:2,domain:"Expression of Ideas",skill:"Transitions",
+passage:"Ancient Roman concrete structures like the Pantheon have endured for nearly 2,000 years, while many modern concrete buildings begin deteriorating within decades. _______, researchers have discovered that Roman concrete contained volcanic ash, which reacts with seawater to form mineral crystals that actually strengthen the material over time.",
+question:"Which choice completes the text with the most logical transition?",
+A:"Regardless",B:"Investigating this discrepancy",C:"As a result",D:"In other words",correct:"B",
+explanations:{A:"The research isn\u2019t dismissing the discrepancy.",B:"Scientists investigated why Roman concrete lasts longer and found the answer. \u2713",C:"The discovery isn\u2019t a result of the durability; it\u2019s an explanation for it.",D:"The volcanic ash finding is new information, not a restatement."}},
+{num:42,module:2,domain:"Expression of Ideas",skill:"Rhetorical Synthesis",
+passage:"A student is writing about electric vehicles and wants to address a common concern about charging infrastructure.",
+question:"Which choice most effectively uses the relevant information from the notes to accomplish this goal?",
+A:"Electric vehicles produce zero tailpipe emissions.",
+B:"Tesla was founded in 2003 by a group of engineers in Silicon Valley.",
+C:"While range anxiety remains a barrier to EV adoption, the U.S. now has over 160,000 public charging stations \u2014 triple the number available in 2020 \u2014 with the federal government funding an additional 500,000 by 2030.",
+D:"Lithium-ion batteries are the most common type used in electric vehicles.",
+correct:"C",isNotes:true,
+notes:["EVs produce zero tailpipe emissions.","Tesla was founded in 2003.","The U.S. has 160,000+ public charging stations, triple the 2020 number.","Federal funding targets 500,000 stations by 2030.","Lithium-ion batteries are most commonly used."],
+explanations:{A:"Emissions don\u2019t address charging infrastructure concerns.",B:"Company history is unrelated to infrastructure.",C:"Acknowledges the concern (range anxiety) and responds with concrete data (160K stations, tripling, 500K target). \u2713",D:"Battery type doesn\u2019t address charging access."}},
+{num:43,module:2,domain:"Expression of Ideas",skill:"Rhetorical Synthesis",
+passage:"A student is writing about the history of women in computing and wants to highlight an often-overlooked contribution.",
+question:"Which choice most effectively uses the relevant information from the notes to accomplish this goal?",
+A:"The first electronic computer, ENIAC, was completed in 1945.",
+B:"Ada Lovelace is widely considered the first computer programmer.",
+C:"Though rarely credited in their time, the six women who programmed ENIAC \u2014 Kay McNulty, Betty Jennings, Betty Snyder, Marlyn Meltzer, Fran Bilas, and Ruth Lichterman \u2014 invented many of the fundamental programming techniques still used today, yet their names went unrecognized for decades.",
+D:"Computer science enrollment among women peaked in 1984 at 37%.",
+correct:"C",isNotes:true,
+notes:["ENIAC was completed in 1945.","Ada Lovelace is considered the first programmer.","Six women programmed ENIAC but went unrecognized for decades.","They invented fundamental programming techniques.","Women\u2019s CS enrollment peaked in 1984 at 37%."],
+explanations:{A:"Technical fact about ENIAC, not about overlooked contributions.",B:"Lovelace is widely known, not overlooked.",C:"Names the women, describes their contributions, and emphasizes their lack of recognition \u2014 'often-overlooked.' \u2713",D:"Enrollment statistics aren\u2019t about a specific overlooked contribution."}},
+{num:44,module:2,domain:"Expression of Ideas",skill:"Rhetorical Synthesis",
+passage:"A student is writing about urban heat islands for an environmental science class and wants to propose a specific solution.",
+question:"Which choice most effectively uses the relevant information from the notes to accomplish this goal?",
+A:"Urban areas can be up to 7\u00b0F hotter than surrounding rural areas.",
+B:"Heat-related illness is a leading cause of weather-related deaths in the United States.",
+C:"Cities could significantly reduce heat island effects by replacing dark asphalt with reflective \u2018cool pavements,\u2019 which studies show can lower local surface temperatures by up to 30\u00b0F and reduce energy costs for nearby buildings by 10-15%.",
+D:"Climate change is expected to increase the frequency and intensity of heat waves.",
+correct:"C",isNotes:true,
+notes:["Urban areas can be 7\u00b0F hotter than rural surroundings.","Heat illness is a leading weather-related cause of death.","Cool pavements lower surface temperatures by up to 30\u00b0F.","Cool pavements reduce nearby building energy costs 10-15%.","Climate change will increase heat wave frequency."],
+explanations:{A:"Describes the problem, not a solution.",B:"Health impact, not a solution.",C:"Names a specific solution (cool pavements) with quantified benefits (30\u00b0F reduction, 10-15% energy savings). \u2713",D:"Future projections, not a solution."}},
+// STANDARD ENGLISH CONVENTIONS: Boundaries (Q45-47), Form/Structure/Sense (Q48-54)
+{num:45,module:2,domain:"Standard English Conventions",skill:"Boundaries",
+passage:"The astronomer presented three key _______ the expansion rate of the universe is accelerating, dark energy comprises approximately 68% of the cosmos, and our current models cannot fully explain either phenomenon.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"findings,",B:"findings:",C:"findings;",D:"findings\u2014",correct:"B",
+explanations:{A:"A comma doesn\u2019t properly introduce a list of three items.",B:"A colon correctly introduces the list of three findings. \u2713",C:"A semicolon joins clauses, not a noun and a list.",D:"A dash could work informally but a colon is standard for introducing enumerated items."}},
+{num:46,module:2,domain:"Standard English Conventions",skill:"Boundaries",
+passage:"The restaurant earned praise for its innovative _______ however, some diners felt that the portion sizes did not justify the high prices.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"menu,",B:"menu;",C:"menu",D:"menu, and",correct:"B",
+explanations:{A:"A comma before 'however' connecting independent clauses creates a comma splice.",B:"A semicolon before 'however' correctly separates two independent clauses. \u2713",C:"No punctuation before 'however' creates a run-on.",D:"'And however' is not standard usage."}},
+{num:47,module:2,domain:"Standard English Conventions",skill:"Boundaries",
+passage:"While the initial results were _______ the research team remained cautious about drawing broad conclusions from such a limited data set.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"encouraging;",B:"encouraging",C:"encouraging,",D:"encouraging\u2014",correct:"C",
+explanations:{A:"A semicolon can\u2019t separate a dependent clause from the main clause.",B:"No punctuation creates a run-on.",C:"A comma correctly separates the introductory 'While' clause from the main clause. \u2713",D:"A dash disrupts the natural subordinate-to-main flow."}},
+{num:48,module:2,domain:"Standard English Conventions",skill:"Form, Structure, and Sense",
+passage:"The orchestra\u2019s rendition of Beethoven\u2019s Fifth Symphony, which _______ over 200 years after its premiere, continues to move audiences with its dramatic intensity.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"is performed",B:"are performed",C:"performing",D:"were performed",correct:"A",
+explanations:{A:"Subject is 'rendition' (singular). 'Is performed' agrees and fits present context. \u2713",B:"'Are' is plural, doesn\u2019t agree with singular 'rendition.'",C:"'Performing' without a helper verb creates a fragment.",D:"'Were' is past plural \u2014 wrong number and tense."}},
+{num:49,module:2,domain:"Standard English Conventions",skill:"Form, Structure, and Sense",
+passage:"The committee, together with several outside _______ currently reviewing the grant applications for the upcoming fiscal year.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"consultants, are",B:"consultants, is",C:"consultants are",D:"consultants is",correct:"B",
+explanations:{A:"'Together with' is parenthetical and doesn\u2019t change the subject. 'Committee' is singular.",B:"Comma closes the parenthetical; 'is' agrees with singular 'committee.' \u2713",C:"Missing closing comma for parenthetical phrase.",D:"Missing comma; confusing structure."}},
+{num:50,module:2,domain:"Standard English Conventions",skill:"Form, Structure, and Sense",
+passage:"By the time the documentary _______ in theaters, the controversy it depicted had already been resolved through a landmark court ruling.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"opens",B:"opened",C:"will open",D:"had opened",correct:"B",
+explanations:{A:"Present tense doesn\u2019t match the past-tense context ('had already been resolved').",B:"Simple past 'opened' matches the past narrative. The controversy 'had been resolved' (past perfect) before the release (simple past). \u2713",C:"Future tense contradicts the past context.",D:"'Had opened' would mean the opening happened before the resolution, but the resolution happened first."}},
+{num:51,module:2,domain:"Standard English Conventions",skill:"Form, Structure, and Sense",
+passage:"The author, _______ previous novel had spent 47 weeks on the bestseller list, faced enormous pressure to produce an equally successful follow-up.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"who\u2019s",B:"whom",C:"whose",D:"which",correct:"C",
+explanations:{A:"'Who\u2019s' means 'who is' \u2014 doesn\u2019t fit ('who is previous novel').",B:"'Whom' is an object pronoun; here we need a possessive for 'novel.'",C:"'Whose' is possessive \u2014 'whose previous novel' correctly shows the author owns the novel. \u2713",D:"'Which' doesn\u2019t show possession of the novel."}},
+{num:52,module:2,domain:"Standard English Conventions",skill:"Form, Structure, and Sense",
+passage:"Neither the coach nor the players _______ satisfied with the team\u2019s performance in the first half, leading to a dramatic change in strategy after halftime.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"was",B:"were",C:"is",D:"has been",correct:"B",
+explanations:{A:"With 'neither...nor,' the verb agrees with the nearer subject: 'players' is plural, so 'was' is incorrect.",B:"'Players' (plural, nearest to verb) takes 'were.' \u2713",C:"'Is' is singular present \u2014 wrong number and tense.",D:"'Has been' is singular, disagreeing with 'players.'"}},
+{num:53,module:2,domain:"Standard English Conventions",skill:"Form, Structure, and Sense",
+passage:"The students who _______ in the summer research program presented their findings at the annual science symposium in September.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"participate",B:"participating",C:"had participated",D:"participates",correct:"C",
+explanations:{A:"Present tense doesn\u2019t match the past-tense 'presented.'",B:"'Participating' isn\u2019t a finite verb \u2014 creates a fragment.",C:"'Had participated' (past perfect) correctly shows participation happened before they presented. \u2713",D:"Singular and present tense \u2014 wrong on both counts."}},
+{num:54,module:2,domain:"Standard English Conventions",skill:"Form, Structure, and Sense",
+passage:"The hiking trail, which winds through dense forest for several miles before _______ at a scenic overlook, is one of the most popular routes in the state park.",
+question:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+A:"it terminates",B:"terminated",C:"terminating",D:"having terminated",correct:"C",
+explanations:{A:"'It terminates' introduces a new clause, but 'before' needs a parallel gerund to match 'winds.'",B:"'Terminated' is past tense, breaking parallel structure with the present-tense narrative.",C:"'Terminating' is a gerund matching the structure 'before [verb]-ing' \u2014 parallel to the ongoing description. \u2713",D:"'Having terminated' implies the termination is complete before the winding, which is illogical."}},
+];
+let S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:false,exp:{}};
+function render(){document.getElementById('app').innerHTML=S.screen==='landing'?rL():S.screen==='test'?rT():rR();}
+function rL(){return '<a class="back-to-app" href="../index.html">← Back to PantherPrep</a><div class="landing"><div class="landing-badge">🐾 PantherPrep Diagnostic</div><h1>PSAT/NMSQT Reading & Writing</h1><p class="subtitle">54 questions \u00b7 2 adaptive modules \u00b7 64 minutes total</p><div class="nmsqt-note"><strong>\ud83c\udfc6 National Merit Qualifying Test.</strong> This diagnostic mirrors the PSAT/NMSQT Reading & Writing section. Content is harder than PSAT 8/9 but slightly below SAT level. Passages cover literature, history, science, and humanities.</div><div class="spec-grid"><div class="spec-card"><div class="label">Questions</div><div class="value">54 total</div></div><div class="spec-card"><div class="label">Format</div><div class="value">All MC (4 choices)</div></div><div class="spec-card"><div class="label">Time</div><div class="value">32 min \u00d7 2</div></div><div class="spec-card"><div class="label">Score Range</div><div class="value">160 \u2013 760</div></div></div><div class="domain-bar"><div></div><div></div><div></div><div></div></div><div class="domain-legend"><span class="cs">Craft & Structure (28%)</span><span class="ii">Information & Ideas (26%)</span><span class="ei">Expression of Ideas (20%)</span><span class="sec">Conventions (26%)</span></div><div class="skill-list"><div>Words in Context</div><div>Central Ideas & Details</div><div>Text Structure & Purpose</div><div>Command of Evidence</div><div>Cross-Text Connections</div><div>Inferences</div><div>Transitions</div><div>Rhetorical Synthesis</div><div>Boundaries (punctuation)</div><div>Form, Structure & Sense</div></div><p style="font-size:.85rem;color:var(--muted);margin-bottom:28px">Module 2 simulates the <strong>upper difficulty path</strong>.</p><button class="btn" onclick="startTest()">Begin Diagnostic</button></div>';}
+function startTest(){S.screen='test';S.cq=0;S.st=Date.now();S.mst=Date.now();render();}
+function rT(){
+const q=Q[S.cq],mod=q.module,modQs=Q.filter(x=>x.module===mod),modIdx=modQs.indexOf(q);
+const isSub=S.sub,ua=S.ans[q.num],isFl=S.flags.has(q.num),shExp=S.exp[q.num];
+const dc=q.domain==='Craft and Structure'?'craft':q.domain==='Information and Ideas'?'info':q.domain==='Expression of Ideas'?'express':'convention';
+const si=mod===1?0:27,ei=mod===1?27:54;
+let nav='';for(let i=si;i<ei;i++){const n=Q[i].num;let c='';if(i===S.cq)c='current';else if(S.ans[n]!==undefined)c='answered';if(S.flags.has(n)&&i!==S.cq)c+=' flagged';nav+='<button class="'+c+'" onclick="goTo('+i+')">'+n+'</button>';}
+let tbl='';if(q.tableData){tbl='<table class="data-table"><thead><tr>'+q.tableData.headers.map(function(h){return '<th>'+h+'</th>';}).join('')+'</tr></thead><tbody>'+q.tableData.rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table>';}
+let notes='';if(q.isNotes&&q.notes){notes='<div class="notes-box"><strong style="font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted)">Student\u2019s Notes</strong><ul>'+q.notes.map(function(n){return '<li>'+n+'</li>';}).join('')+'</ul></div>';}
+let ch='<div class="choices">';
+for(var li=0;li<4;li++){var L=['A','B','C','D'][li];var c='choice';if(!isSub&&ua===L)c+=' selected';if(isSub){if(L===q.correct)c+=' correct-choice';else if(ua===L)c+=' wrong-choice';}ch+='<div class="'+c+'" onclick="sel(\''+L+'\')"><div class="choice-letter">'+L+'</div><div class="choice-text">'+q[L]+'</div></div>';}
+ch+='</div>';
+var exp='';if(isSub&&shExp){var ok=ua===q.correct;exp='<div class="explanation-box '+(ok?'correct':'wrong')+'"><h4>'+(ok?'\u2713 Correct!':'\u2717 Incorrect')+'</h4>'+Object.keys(q.explanations).map(function(k){return '<div class="exp-item"><strong>'+k+'.</strong> '+q.explanations[k]+'</div>';}).join('')+'</div>';}
+return '<div class="test-header"><div class="module-label">Module '+mod+' of 2'+(mod===2?' \u2014 Hard Path':'')+'</div><div class="timer">32:00</div></div><div class="progress-bar"><div class="progress-fill" style="width:'+((modIdx+1)/27)*100+'%"></div></div><div class="q-nav">'+nav+'</div><div class="q-counter">Question '+q.num+' of 54</div><span class="domain-tag '+dc+'">'+q.domain+'</span><span class="skill-tag">'+q.skill+'</span>'+(q.passage?'<div class="passage">'+q.passage+'</div>':'')+tbl+notes+'<div class="q-text">'+q.question+'</div>'+ch+exp+(!isSub?'<div style="text-align:center;margin-bottom:14px"><button class="btn btn-sm" onclick="chk()">Check Answer</button></div>':'')+(isSub&&!shExp?'<div style="text-align:center;margin-bottom:14px"><button class="btn btn-sm btn-outline" onclick="tExp('+q.num+')">Show Explanation</button></div>':'')+'<div class="nav-buttons"><div style="display:flex;gap:8px">'+(S.cq>0?'<button class="btn btn-sm btn-outline" onclick="prev()">\u2190 Previous</button>':'<span></span>')+'<button class="flag-btn '+(isFl?'flagged':'')+'" onclick="flag('+q.num+')">'+(isFl?'\ud83d\udea9 Flagged':'\ud83c\udff3 Flag')+'</button></div>'+(S.cq<53?'<button class="btn btn-sm" onclick="next()">Next \u2192</button>':'<button class="btn btn-sm" style="background:#16a34a" onclick="finish()">Finish Test</button>')+'</div>'+(S.cq===26&&mod===1?'<div style="text-align:center;margin-top:18px;padding:14px;background:var(--accent-light);border-radius:10px"><strong>End of Module 1.</strong> Click Next for Module 2 (harder).</div>':'');}
+function sel(L){if(S.sub)return;S.ans[Q[S.cq].num]=L;render();}
+function chk(){if(S.ans[Q[S.cq].num]===undefined)return;S.sub=true;S.exp[Q[S.cq].num]=true;render();}
+function tExp(n){S.exp[n]=!S.exp[n];render();}
+function next(){if(S.cq===26){S.m1t=Date.now()-S.mst;S.mst=Date.now();}S.cq=Math.min(53,S.cq+1);S.sub=false;render();scrollTo(0,0);}
+function prev(){S.cq=Math.max(0,S.cq-1);S.sub=S.ans[Q[S.cq].num]!==undefined;render();scrollTo(0,0);}
+function goTo(i){S.cq=i;S.sub=S.ans[Q[S.cq].num]!==undefined;render();scrollTo(0,0);}
+function flag(n){S.flags.has(n)?S.flags.delete(n):S.flags.add(n);render();}
+function finish(){S.m2t=Date.now()-S.mst;S.screen='results';render();scrollTo(0,0);}
+function rR(){
+var tot=Q.length,cc=0;
+var doms=['Craft and Structure','Information and Ideas','Expression of Ideas','Standard English Conventions'];
+var dcol={'Craft and Structure':'#60a5fa','Information and Ideas':'#34d399','Expression of Ideas':'#fbbf24','Standard English Conventions':'#f87171'};
+var ds={};doms.forEach(function(d){ds[d]={c:0,t:0};});var ss={};
+Q.forEach(function(q){ds[q.domain].t++;if(!ss[q.skill])ss[q.skill]={c:0,t:0};ss[q.skill].t++;
+if(S.ans[q.num]===q.correct){cc++;ds[q.domain].c++;ss[q.skill].c++;}});
+var pct=cc/tot,score=Math.round(160+pct*600);
+var ans=Object.keys(S.ans).length,skip=tot-ans,wrong=ans-cc;
+var m1=S.m1t?Math.floor(S.m1t/60000):'\u2014',m2=S.m2t?Math.floor(S.m2t/60000):'\u2014';
+var dh=doms.map(function(d){var s=ds[d],p=s.t>0?Math.round(s.c/s.t*100):0;return '<div class="domain-result-row"><div class="dr-name" style="color:'+dcol[d]+'">'+d+'</div><div class="dr-bar-wrap"><div class="dr-bar" style="width:'+p+'%;background:'+dcol[d]+'"></div></div><div class="dr-score">'+s.c+'/'+s.t+'</div></div>';}).join('');
+var sh=Object.keys(ss).map(function(k){var v=ss[k],p=v.t>0?Math.round(v.c/v.t*100):0;return '<div class="skill-result-row"><div>'+k+'</div><div class="sr-score">'+v.c+'/'+v.t+' ('+p+'%)</div></div>';}).join('');
+var str=[],wk=[];doms.forEach(function(d){var s=ds[d];(s.t>0&&s.c/s.t>=.7)?str.push(d):wk.push(d);});
+var rev=Q.map(function(q){var a=S.ans[q.num],st,sc;if(a===undefined){st='Skipped';sc='skipped';}else{var ok=a===q.correct;st=ok?'\u2713 Correct':'\u2717 Incorrect';sc=ok?'correct':'wrong';}
+var dc=q.domain==='Craft and Structure'?'craft':q.domain==='Information and Ideas'?'info':q.domain==='Expression of Ideas'?'express':'convention';
+return '<div class="review-q"><div class="rq-header"><div><strong>Q'+q.num+'</strong> <span class="domain-tag '+dc+'" style="font-size:10px;padding:2px 8px">'+q.skill+'</span></div><div class="rq-status '+sc+'">'+st+'</div></div><div style="font-size:.83rem;margin-top:4px">Your answer: <strong>'+(a||'\u2014')+'</strong> \u00b7 Correct: <strong>'+q.correct+'</strong></div></div>';}).join('');
+return '<div class="results"><h1>Diagnostic Results</h1><p style="color:var(--muted)">PSAT/NMSQT Reading & Writing \u00b7 '+tot+' Questions</p>'
++'<div class="score-circle"><div class="score-num">'+score+'</div><div class="score-range">/ 760</div></div>'
++'<div class="stats-row"><div class="stat-box"><div class="stat-val" style="color:var(--correct)">'+cc+'</div><div class="stat-label">Correct</div></div><div class="stat-box"><div class="stat-val" style="color:var(--wrong)">'+wrong+'</div><div class="stat-label">Incorrect</div></div><div class="stat-box"><div class="stat-val" style="color:var(--muted)">'+skip+'</div><div class="stat-label">Skipped</div></div><div class="stat-box"><div class="stat-val">'+Math.round(pct*100)+'%</div><div class="stat-label">Accuracy</div></div></div>'
++'<div class="stats-row"><div class="stat-box"><div class="stat-val">'+m1+'m</div><div class="stat-label">Module 1</div></div><div class="stat-box"><div class="stat-val">'+m2+'m</div><div class="stat-label">Module 2</div></div></div>'
++'<div class="domain-results"><h3 style="font-family:Cormorant Garamond,serif;margin-bottom:12px">Performance by Domain</h3>'+dh+'</div>'
++'<div class="skill-results"><h3 style="font-family:Cormorant Garamond,serif;margin-bottom:12px">Performance by Skill</h3>'+sh+'</div>'
++(str.length?'<div style="text-align:left;margin:20px 0;padding:14px;background:var(--correct-bg);border-radius:10px;border:1px solid rgba(34,197,94,.3)"><strong style="color:var(--correct)">\ud83d\udcaa Strengths:</strong> '+str.join(', ')+'</div>':'')
++(wk.length?'<div style="text-align:left;margin:20px 0;padding:14px;background:var(--wrong-bg);border-radius:10px;border:1px solid rgba(239,68,68,.3)"><strong style="color:var(--wrong)">\ud83c\udfaf Focus Areas:</strong> '+wk.join(', ')+'</div>':'')
++'<div class="review-section"><h3>Question Review</h3>'+rev+'</div>'
++'<div class="reflection-section"><h3>\ud83d\udcdd Post-Test Reflection</h3>'
++'<div class="reflection-q"><label>1. Which question types felt most challenging?</label><textarea placeholder="e.g., inferences, boundaries, vocabulary..."></textarea></div>'
++'<div class="reflection-q"><label>2. Did you struggle more with reading comprehension or grammar/conventions?</label><textarea placeholder="Identify your weaker area..."></textarea></div>'
++'<div class="reflection-q"><label>3. Were there passages where you understood the content but misread the question?</label><textarea placeholder="Note any misread questions..."></textarea></div>'
++'<div class="reflection-q"><label>4. How did Module 2 (harder) feel compared to Module 1?</label><textarea placeholder="Was the difficulty jump noticeable?"></textarea></div>'
++'<div class="reflection-q"><label>5. Rate your pacing: Did you have time to review flagged questions?</label><textarea placeholder="~71 seconds per question target..."></textarea></div>'
++'<div class="reflection-q"><label>6. How does this compare to the SAT R&W diagnostic (if taken)?</label><textarea placeholder="Easier? Same weak areas?"></textarea></div>'
++'<div class="reflection-q"><label>7. What are your top 3 priorities for PSAT R&W prep?</label><textarea placeholder="Be specific..."></textarea></div></div>'
++'<div style="text-align:center;margin-top:28px"><button class="btn btn-outline" onclick="retake()">\u21bb Retake Test</button></div></div>';}
+function retake(){S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:false,exp:{}};render();scrollTo(0,0);}
+render();
+</script>
+<script src="/translate.js"></script></body>
+</html>

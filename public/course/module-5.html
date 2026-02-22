@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5: Reading — The Three Key Questions — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:8px;margin-top:20px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+.callout-blue{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.25)}
+.callout-blue strong{color:var(--craft)}
+
+/* THREE KEY QUESTIONS */
+.tkq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.tkq-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;transition:all .2s}
+.tkq-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tkq-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-weight:700;font-size:1.2rem;color:#fff}
+.tkq-title{font-weight:700;font-size:1rem;margin-bottom:6px}
+.tkq-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+
+/* STRATEGY BOXES */
+.strategy{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.strategy-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background .15s}
+.strategy-header:hover{background:rgba(255,255,255,.03)}
+.strategy-icon{font-size:1.4rem}
+.strategy-title{font-weight:700;font-size:1.05rem;flex:1}
+.strategy-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem;flex-shrink:0}
+.strategy.open .strategy-arrow{transform:rotate(180deg)}
+.strategy-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.strategy.open .strategy-body{max-height:8000px}
+.strategy-content{padding:0 20px 20px}
+
+/* EXAMPLES */
+.example{padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:.9rem;line-height:1.6}
+.example-correct{background:var(--correct-bg);border-left:3px solid var(--correct)}
+.example-wrong{background:var(--wrong-bg);border-left:3px solid var(--wrong)}
+.example-neutral{background:rgba(96,165,250,.08);border-left:3px solid var(--craft)}
+.example-label{font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.example-label.correct{color:var(--correct)}
+.example-label.wrong{color:var(--wrong)}
+
+/* PRACTICE QUESTION */
+.pq{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
+.pq-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px;margin-bottom:12px;color:#fff}
+.pq-badge-info{background:var(--info)}
+.pq-badge-craft{background:var(--craft)}
+.pq-badge-express{background:var(--express)}
+.pq-passage{background:var(--paper);border-left:3px solid var(--border);padding:14px 16px;border-radius:0 8px 8px 0;font-family:'Cormorant Garamond',serif;font-size:1.02rem;line-height:1.75;margin-bottom:14px;color:#ddd}
+.pq-question{font-weight:600;font-size:.95rem;margin-bottom:14px}
+.pq-choices{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.pq-choice{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;font-size:.93rem}
+.pq-choice:hover:not(.disabled){border-color:var(--accent);background:var(--accent-light)}
+.pq-choice.selected{border-color:var(--accent);background:var(--accent-light)}
+.pq-choice.correct{border-color:var(--correct);background:var(--correct-bg)}
+.pq-choice.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.pq-choice.disabled{pointer-events:none}
+.pq-letter{flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.82rem}
+.pq-choice.selected .pq-letter{background:var(--accent);color:#fff}
+.pq-choice.correct .pq-letter{background:var(--correct);color:#fff}
+.pq-choice.wrong .pq-letter{background:var(--wrong);color:#fff}
+.pq-explanation{padding:14px;border-radius:10px;font-size:.88rem;line-height:1.6;margin-top:10px;display:none}
+.pq-explanation.show{display:block}
+.pq-explanation.is-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.pq-explanation.is-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.pq-explanation h4{margin-bottom:6px}
+.pq-exp-item{margin-bottom:4px}
+
+/* PASSAGE ANALYSIS TOOL */
+.analysis-box{background:var(--surface);border:2px solid var(--craft);border-radius:14px;padding:22px;margin-bottom:16px}
+.analysis-box h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:4px}
+.analysis-subtitle{font-size:.85rem;color:var(--muted);margin-bottom:16px}
+.analysis-passage{background:var(--paper);border-left:3px solid var(--craft);padding:16px 18px;border-radius:0 8px 8px 0;font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.85;margin-bottom:16px;color:#ddd}
+.analysis-qs{display:flex;flex-direction:column;gap:10px}
+.analysis-q{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px}
+.analysis-q-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.analysis-q-label.q1{color:var(--craft)}
+.analysis-q-label.q2{color:var(--info)}
+.analysis-q-label.q3{color:var(--express)}
+.analysis-q textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--ink);font-family:inherit;font-size:.88rem;resize:vertical;min-height:50px}
+.analysis-reveal{margin-top:12px}
+.analysis-answer{display:none;background:var(--correct-bg);border:1px solid var(--correct);border-radius:10px;padding:14px;margin-top:8px;font-size:.88rem;line-height:1.6}
+.analysis-answer.show{display:block}
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24}
+.btn-outline{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.btn-outline:hover{background:var(--accent-light)}
+.btn-sm{padding:8px 16px;font-size:.82rem}
+.btn-blue{background:var(--craft)}.btn-blue:hover{background:#4b8fda}
+
+/* ELIMINATION TRACKER */
+.elim-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.elim-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.elim-card h4{font-size:.9rem;margin-bottom:6px}
+.elim-icon{font-size:1.1rem;margin-right:6px}
+.elim-list{font-size:.85rem;color:#ccc;line-height:1.7;padding-left:16px}
+
+/* INFERENCE QUIZ */
+.inf-quiz{background:var(--surface);border:2px solid var(--info);border-radius:14px;padding:22px;margin-bottom:16px}
+.inf-item{padding:14px 0;border-bottom:1px solid var(--border)}
+.inf-item:last-child{border-bottom:none}
+.inf-statement{font-size:.95rem;font-weight:500;margin-bottom:10px;line-height:1.6}
+.inf-btns{display:flex;gap:8px}
+.inf-btn{padding:8px 20px;border:2px solid var(--border);border-radius:8px;background:var(--paper);cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600;transition:all .15s;color:var(--ink)}
+.inf-btn:hover:not(.disabled){border-color:var(--accent)}
+.inf-btn.inf-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.inf-btn.inf-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.inf-btn.disabled{pointer-events:none;opacity:.6}
+.inf-fb{font-size:.82rem;color:var(--muted);margin-top:6px;display:none;line-height:1.5}
+.inf-fb.show{display:block}
+
+/* NAV */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.tkq-grid{grid-template-columns:1fr}.elim-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Module 5</div>
+  <h1>Reading: The Three Key Questions</h1>
+  <p class="subtitle">Every SAT passage can be unlocked by asking three questions.</p>
+  <div class="mod-meta">
+    <span>⏱ 60 minutes per session</span>
+    <span>📋 2–3 sessions</span>
+    <span>🔨 Phase 2: Build</span>
+  </div>
+</div>
+
+<!-- THE THREE KEY QUESTIONS -->
+<div class="section">
+  <div class="section-label">Core Framework</div>
+  <h2>The Three Key Questions</h2>
+  <div class="callout">
+    <strong>Core Principle:</strong> These three questions should become automatic — ask them silently as you read every single SAT passage.
+  </div>
+  <div class="tkq-grid">
+    <div class="tkq-card">
+      <div class="tkq-num" style="background:var(--craft)">1</div>
+      <div class="tkq-title" style="color:var(--craft)">BIG IDEA</div>
+      <div class="tkq-desc">What is the main point the author wants you to understand? Usually in the first or last sentence.</div>
+    </div>
+    <div class="tkq-card">
+      <div class="tkq-num" style="background:var(--info)">2</div>
+      <div class="tkq-title" style="color:var(--info)">STRUCTURE</div>
+      <div class="tkq-desc">How is the passage organized? Cause-effect? Comparison? Claim-evidence? Problem-solution?</div>
+    </div>
+    <div class="tkq-card">
+      <div class="tkq-num" style="background:var(--express)">3</div>
+      <div class="tkq-title" style="color:var(--express)">TONE</div>
+      <div class="tkq-desc">What is the author's attitude? Neutral? Enthusiastic? Skeptical? Critical? Tone eliminates wrong answers.</div>
+    </div>
+  </div>
+</div>
+
+<!-- STRATEGIES (expandable) -->
+<div class="section">
+  <div class="section-label">Question Types & Strategies</div>
+  <h2>How to Attack Each Question Type</h2>
+
+  <div class="strategy open" onclick="this.classList.toggle('open')">
+    <div class="strategy-header">
+      <div class="strategy-icon">🎯</div>
+      <div class="strategy-title">Main Idea Questions</div>
+      <div class="strategy-arrow">▼</div>
+    </div>
+    <div class="strategy-body"><div class="strategy-content">
+      <p>Main idea questions ask you to identify the central point or best summary of the passage. They are among the most common question types.</p>
+      <h4 style="margin-top:14px">The "Predict and Match" Technique</h4>
+      <ol style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8;margin-bottom:14px">
+        <li>Read the passage completely (it's short — don't skip to the question).</li>
+        <li>Before looking at answers, mentally answer Key Question 1: <strong>What is the big idea?</strong></li>
+        <li>Form your own answer in your head FIRST.</li>
+        <li>Now read the choices. Eliminate any that are:</li>
+      </ol>
+      <div class="elim-grid">
+        <div class="elim-card" style="border-left:3px solid var(--wrong)"><h4><span class="elim-icon">🔍</span>Too Narrow</h4><div style="font-size:.85rem;color:#ccc">Only covers one detail from the passage, not the full picture.</div></div>
+        <div class="elim-card" style="border-left:3px solid var(--wrong)"><h4><span class="elim-icon">🌊</span>Too Broad</h4><div style="font-size:.85rem;color:#ccc">Goes beyond what the passage actually discusses.</div></div>
+        <div class="elim-card" style="border-left:3px solid var(--wrong)"><h4><span class="elim-icon">🔄</span>Distorted</h4><div style="font-size:.85rem;color:#ccc">Takes a real detail but changes its meaning or significance.</div></div>
+        <div class="elim-card" style="border-left:3px solid var(--wrong)"><h4><span class="elim-icon">⛔</span>Contradicted</h4><div style="font-size:.85rem;color:#ccc">Directly opposes something stated in the passage.</div></div>
+      </div>
+      <p>The correct answer will match the <strong>scope and focus</strong> of the full passage — not too specific, not too general.</p>
+    </div></div>
+  </div>
+
+  <div class="strategy" onclick="this.classList.toggle('open')">
+    <div class="strategy-header">
+      <div class="strategy-icon">📌</div>
+      <div class="strategy-title">Evidence-Based Questions</div>
+      <div class="strategy-arrow">▼</div>
+    </div>
+    <div class="strategy-body"><div class="strategy-content">
+      <p>These questions ask you to identify which part of a text supports a particular claim.</p>
+      <div class="callout-blue callout" style="margin-top:14px">
+        <strong>Cardinal Rule:</strong> You must be able to point to specific words in the passage that support your answer. If you can't point to them, eliminate the choice.
+      </div>
+      <h4 style="margin-top:14px">Strategy</h4>
+      <ol style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8">
+        <li>Read the claim carefully. What exactly does it say?</li>
+        <li>For each evidence choice, ask: <strong>"Does this DIRECTLY prove the claim, or does it just relate to the same topic?"</strong></li>
+        <li>The evidence must be <strong>specific and direct</strong> — not vaguely related.</li>
+        <li>"Relates to the topic" ≠ "supports the claim." This is the trap.</li>
+      </ol>
+      <div class="example example-correct" style="margin-top:12px"><div class="example-label correct">✓ Direct evidence</div><strong>Claim:</strong> Musical training improves academic performance.<br><strong>Evidence:</strong> "Children who began piano at age six scored 15% higher on math tests."<br><span style="color:var(--muted);font-size:.82rem">→ Directly proves the claim with specific data.</span></div>
+      <div class="example example-wrong"><div class="example-label wrong">✗ Topic-related but not evidence</div><strong>Same claim.</strong><br><strong>Evidence:</strong> "Music programs have been cut in many school districts."<br><span style="color:var(--muted);font-size:.82rem">→ Same topic (music), but says nothing about academic performance.</span></div>
+    </div></div>
+  </div>
+
+  <div class="strategy" onclick="this.classList.toggle('open')">
+    <div class="strategy-header">
+      <div class="strategy-icon">🧠</div>
+      <div class="strategy-title">Inference Questions</div>
+      <div class="strategy-arrow">▼</div>
+    </div>
+    <div class="strategy-body"><div class="strategy-content">
+      <p>Inference questions ask what can be <strong>reasonably concluded</strong> based on the passage. The key word is "reasonably." SAT inferences are small, safe logical steps — never wild leaps.</p>
+      <div class="callout" style="margin-top:14px">
+        <strong>The Golden Rule of SAT Inferences:</strong> SAT inferences are BORING. They are the least exciting, most directly supported conclusion. If an answer feels like an interesting insight that goes beyond the text, it's almost certainly wrong.
+      </div>
+      <h4 style="margin-top:14px">The Inference Safety Test</h4>
+      <p>A correct SAT inference will always pass ALL three tests:</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+        <div class="example example-correct"><div class="example-label correct">Test 1</div>Can I find specific evidence in the passage that makes this conclusion likely? <strong>If NO → eliminate.</strong></div>
+        <div class="example example-correct"><div class="example-label correct">Test 2</div>Does this inference require assumptions beyond what the passage states? <strong>If YES → eliminate.</strong></div>
+        <div class="example example-correct"><div class="example-label correct">Test 3</div>Is this the most conservative, text-supported conclusion among the choices? <strong>If YES → likely correct.</strong></div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+<!-- INTERACTIVE PASSAGE ANALYSIS -->
+<div class="section">
+  <div class="section-label">Interactive Exercise</div>
+  <h2>Passage Analysis Practice</h2>
+  <p>Read the passage below and answer the Three Key Questions. Write your answers first, then reveal the model answers to compare.</p>
+  <div id="analysisExercises"></div>
+</div>
+
+<!-- INFERENCE SAFETY TEST QUIZ -->
+<div class="section">
+  <div class="section-label">Interactive Quiz</div>
+  <h2>Inference Safety Test</h2>
+  <p>Based on the passage below, which inferences are <strong>safe</strong> (directly supported by text) and which are <strong>unsafe</strong> (require assumptions beyond the text)?</p>
+
+  <div class="inf-quiz">
+    <div class="pq-passage" style="margin-bottom:16px">Researchers at Stanford University have developed a thin, flexible material that can cool buildings without electricity. The material works by reflecting sunlight and simultaneously emitting thermal radiation at a specific wavelength that passes directly through the atmosphere into outer space. In tests, surfaces covered with the material remained up to 5°C cooler than the surrounding air, even under direct sunlight.</div>
+    <div id="infItems"></div>
+    <div id="infScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
+  </div>
+</div>
+
+<!-- PRACTICE QUESTIONS -->
+<div class="section">
+  <div class="section-label">Practice</div>
+  <h2>SAT-Style Practice Questions</h2>
+  <p>Apply the Three Key Questions framework and the strategies above. 6 questions covering main idea, evidence, and inference.</p>
+  <div id="practiceQs"></div>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Always ask the Three Key Questions: Big Idea, Structure, Tone.</li>
+      <li>For main idea questions: predict your answer BEFORE reading the choices.</li>
+      <li>Eliminate wrong answers that are too narrow, too broad, distorted, or contradicted.</li>
+      <li>For evidence questions: the evidence must DIRECTLY prove the claim, not just relate to the topic.</li>
+      <li>SAT inferences are boring, safe, and conservative — never exciting leaps.</li>
+      <li>If you can't point to specific text that supports your answer, eliminate it.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- HOMEWORK -->
+<div class="section">
+  <div class="section-label">Before Next Session</div>
+  <h2>Homework</h2>
+  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
+    <p><strong style="color:var(--ink)">1. Practice the Three Key Questions</strong> — Read 3 articles from the recommended reading list. For each, write down the Big Idea, Structure, and Tone before moving on.</p>
+    <p><strong style="color:var(--ink)">2. Complete 10 Reading Practice Questions</strong> — Mix of main idea, evidence, and inference. Use the "Predict and Match" technique on every one.</p>
+    <p><strong style="color:var(--ink)">3. Error Analysis</strong> — For every wrong answer, identify: was it a content gap, misread, or did you fall for a trap answer? What specific clue should have eliminated it?</p>
+    <p style="margin:0"><strong style="color:var(--ink)">4. Continue Daily Reading</strong> — 30 minutes. Consciously identify the Big Idea and Structure of everything you read.</p>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-4.html">← Module 4: Grammar II</a>
+  <a href="module-6.html">Module 6: Advanced Reading →</a>
+</div>
+</div>
+
+<script>
+// ============ PASSAGE ANALYSIS EXERCISES ============
+const ANALYSES=[
+  {passage:`The concept of "rewilding" — reintroducing predators and other keystone species to ecosystems from which they've been removed — has gained traction among conservationists. The most cited example is Yellowstone National Park, where the reintroduction of wolves in 1995 triggered cascading ecological effects: elk herds changed their grazing patterns, allowing streamside vegetation to recover, which in turn stabilized riverbanks and increased biodiversity in riparian zones.`,
+   answers:{
+     q1:'Rewilding (reintroducing keystone species) can trigger widespread, cascading positive ecological effects, as demonstrated by the Yellowstone wolf reintroduction.',
+     q2:'Claim-and-evidence. The first sentence introduces the concept of rewilding, and the rest provides the Yellowstone example as evidence of its effectiveness.',
+     q3:'Neutral to positive. The passage presents rewilding favorably — "gained traction," the Yellowstone example shows positive outcomes (recovery, stabilization, increased biodiversity). No criticism is mentioned.',
+   }},
+  {passage:`Neuroscientist David Eagleman argues that human perception of time is not fixed but varies systematically with emotional state and attention. He proposes that the brain's internal clock speeds up during moments of fear or novelty, creating denser memories that are later interpreted as longer durations. This would explain the common experience of time "slowing down" during a car accident — not because time actually changes, but because the brain records more information per second during high-stress events.`,
+   answers:{
+     q1:'Eagleman argues that our perception of time varies with emotional state — the brain\'s internal clock speeds up during intense moments, creating denser memories that feel like longer durations.',
+     q2:'Claim → mechanism → example. First sentence states the claim, second explains the proposed mechanism, third provides a familiar example (car accidents) that illustrates the theory.',
+     q3:'Explanatory and neutral. The passage explains Eagleman\'s theory without endorsing or criticizing it. Words like "argues" and "proposes" attribute the ideas to him rather than stating them as established fact.',
+   }},
+];
+
+function renderAnalyses(){
+  document.getElementById('analysisExercises').innerHTML=ANALYSES.map((a,i)=>`
+    <div class="analysis-box" style="margin-bottom:16px">
+      <h3>Passage ${i+1}</h3>
+      <div class="analysis-subtitle">Read carefully, then answer the three questions.</div>
+      <div class="analysis-passage">${a.passage}</div>
+      <div class="analysis-qs">
+        <div class="analysis-q">
+          <div class="analysis-q-label q1">Question 1: What is the BIG IDEA?</div>
+          <textarea placeholder="Write your answer..." id="aq${i}_1"></textarea>
+        </div>
+        <div class="analysis-q">
+          <div class="analysis-q-label q2">Question 2: What is the STRUCTURE?</div>
+          <textarea placeholder="Write your answer..." id="aq${i}_2"></textarea>
+        </div>
+        <div class="analysis-q">
+          <div class="analysis-q-label q3">Question 3: What is the TONE?</div>
+          <textarea placeholder="Write your answer..." id="aq${i}_3"></textarea>
+        </div>
+      </div>
+      <div class="analysis-reveal" style="margin-top:12px">
+        <button class="btn btn-blue btn-sm" onclick="document.getElementById('aa${i}').classList.toggle('show')">Reveal Model Answers</button>
+        <div class="analysis-answer" id="aa${i}">
+          <div style="margin-bottom:8px"><strong style="color:var(--craft)">Big Idea:</strong> ${a.answers.q1}</div>
+          <div style="margin-bottom:8px"><strong style="color:var(--info)">Structure:</strong> ${a.answers.q2}</div>
+          <div><strong style="color:var(--express)">Tone:</strong> ${a.answers.q3}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+renderAnalyses();
+
+// ============ INFERENCE SAFETY TEST ============
+const INF_ITEMS=[
+  {statement:'The material could reduce air conditioning costs in hot climates.',safe:true,
+   fb:'SAFE — The passage says surfaces stayed 5°C cooler without electricity, which directly implies reduced AC costs.'},
+  {statement:'Stanford University is the leading institution in materials science research.',safe:false,
+   fb:'UNSAFE — The passage describes one material from Stanford. It says nothing about Stanford\'s overall ranking in materials science.'},
+  {statement:'The material works by reflecting sunlight and emitting thermal radiation.',safe:true,
+   fb:'SAFE — This is explicitly stated in the passage. (This is actually a stated fact, not even an inference.)'},
+  {statement:'This material will eventually replace traditional air conditioning systems worldwide.',safe:false,
+   fb:'UNSAFE — The passage describes test results but says nothing about replacing AC systems. This is a wild leap.'},
+  {statement:'The cooling effect does not require an external energy source.',safe:true,
+   fb:'SAFE — The passage says it works "without electricity" and uses sunlight reflection + radiation. No external energy needed.'},
+  {statement:'The material is inexpensive to manufacture.',safe:false,
+   fb:'UNSAFE — The passage never mentions cost, manufacturing, or production. You\'re assuming beyond the text.'},
+];
+
+let infAnswered={};
+function renderInf(){
+  document.getElementById('infItems').innerHTML=INF_ITEMS.map((item,i)=>{
+    const ans=infAnswered[i];
+    const hasAns=ans!==undefined;
+    const wasCorrect=hasAns&&((ans==='safe')===item.safe);
+    return `
+    <div class="inf-item">
+      <div class="inf-statement">"${item.statement}"</div>
+      <div class="inf-btns">
+        <div class="inf-btn${hasAns?' disabled':''}${hasAns&&ans==='safe'?(item.safe?' inf-correct':' inf-wrong'):''}" onclick="answerInf(${i},'safe')">✓ Safe Inference</div>
+        <div class="inf-btn${hasAns?' disabled':''}${hasAns&&ans==='unsafe'?(!item.safe?' inf-correct':' inf-wrong'):''}" onclick="answerInf(${i},'unsafe')">✗ Unsafe Inference</div>
+      </div>
+      <div class="inf-fb${hasAns?' show':''}">${hasAns?item.fb:''}</div>
+    </div>`;
+  }).join('');
+  updateInfScore();
+}
+
+function answerInf(i,choice){
+  if(infAnswered[i]!==undefined)return;
+  infAnswered[i]=choice;
+  renderInf();
+}
+
+function updateInfScore(){
+  const total=INF_ITEMS.length;
+  const attempted=Object.keys(infAnswered).length;
+  const correct=Object.entries(infAnswered).filter(([i,a])=>(a==='safe')===INF_ITEMS[i].safe).length;
+  const el=document.getElementById('infScore');
+  if(attempted===total){
+    el.innerHTML=`<strong style="color:${correct>=5?'var(--correct)':correct>=3?'var(--express)':'var(--wrong)'}">${correct}/${total} correct</strong> — ${correct>=5?'Great inference judgment!':correct>=3?'Good — review the unsafe ones to sharpen your instincts.':'Keep practicing — remember, SAT inferences are boring and conservative.'}`;
+  }else el.textContent=`${attempted}/${total} completed`;
+}
+renderInf();
+
+// ============ PRACTICE QUESTIONS ============
+const PQS=[
+  {id:'pq1',badge:'Main Idea',badgeClass:'pq-badge-info',
+   passage:'Researchers at the University of Cambridge have found that octopuses alter their skin texture in addition to changing color when camouflaging themselves. Using high-speed cameras, the team documented how octopuses can replicate the exact surface texture of coral, algae, and rocks within milliseconds. The findings suggest that octopus camouflage is far more sophisticated than previously understood, involving not just visual mimicry but tactile mimicry as well.',
+   question:'Which choice best states the main idea of the text?',
+   choices:[
+     {letter:'A',text:'Octopuses are the most intelligent invertebrates in the ocean.',correct:false},
+     {letter:'B',text:'Cambridge researchers discovered that octopus camouflage involves texture changes in addition to color, revealing greater sophistication than previously known.',correct:true},
+     {letter:'C',text:'High-speed cameras have revolutionized marine biology research.',correct:false},
+     {letter:'D',text:'Octopuses can replicate the surface of coral within milliseconds.',correct:false},
+   ],
+   explanations:{
+     A:{text:'Too broad — the passage discusses one specific camouflage ability, not general intelligence.'},
+     B:{text:'Captures the full scope: the discovery (texture + color), the researchers, and the significance (more sophisticated than known). ✓'},
+     C:{text:'Cameras are a detail about methodology, not the main idea.'},
+     D:{text:'Too narrow — this is one specific detail. The main idea is about the broader finding.'},
+   }},
+  {id:'pq2',badge:'Evidence',badgeClass:'pq-badge-craft',
+   passage:'A student is writing about the benefits of urban green spaces. The student wants to provide evidence that green spaces improve mental health outcomes specifically.',
+   question:'Which finding, if true, would most directly support the student\'s claim?',
+   choices:[
+     {letter:'A',text:'Cities with more parks tend to have higher property values in surrounding neighborhoods.',correct:false},
+     {letter:'B',text:'Residents living within 300 meters of a park reported 25% lower rates of anxiety and depression compared to those without nearby green space.',correct:true},
+     {letter:'C',text:'Urban trees absorb approximately 48 pounds of carbon dioxide per year.',correct:false},
+     {letter:'D',text:'Public parks attract tourism and generate significant municipal revenue.',correct:false},
+   ],
+   explanations:{
+     A:{text:'Property values relate to economic benefits, not mental health outcomes.'},
+     B:{text:'Directly measures mental health outcomes (anxiety, depression) in people near green spaces. This is the most specific, direct evidence. ✓'},
+     C:{text:'Environmental benefit (CO₂ absorption), not a mental health outcome.'},
+     D:{text:'Economic benefit (tourism, revenue), not mental health.'},
+   }},
+  {id:'pq3',badge:'Inference',badgeClass:'pq-badge-info',
+   passage:'Archaeological evidence from Göbekli Tepe, a site in southeastern Turkey dating to approximately 9600 BCE, has challenged the long-held assumption that agriculture preceded the construction of monumental architecture. The site features massive stone pillars arranged in circles, carved with elaborate animal reliefs, yet no evidence of permanent settlement or farming has been found nearby. The hunter-gatherer groups who built it apparently traveled significant distances to participate in the construction.',
+   question:'Based on the text, which inference is most strongly supported?',
+   choices:[
+     {letter:'A',text:'Göbekli Tepe was used as a permanent residence by early farming communities.',correct:false},
+     {letter:'B',text:'The desire to create communal gathering sites may have motivated the transition to settled life, rather than the reverse.',correct:true},
+     {letter:'C',text:'Hunter-gatherer societies were more technologically advanced than modern archaeologists had expected.',correct:false},
+     {letter:'D',text:'Monumental architecture is only possible in societies that practice agriculture.',correct:false},
+   ],
+   explanations:{
+     A:{text:'Directly contradicted — the passage states "no evidence of permanent settlement or farming."'},
+     B:{text:'Conservative inference supported by the evidence: monumental construction came BEFORE farming, suggesting communal projects may have driven settlement. ✓'},
+     C:{text:'Too broad — the passage discusses one site, not general technology levels.'},
+     D:{text:'Directly contradicted — Göbekli Tepe proves the opposite.'},
+   }},
+  {id:'pq4',badge:'Main Idea',badgeClass:'pq-badge-info',
+   passage:'The "overnight success" narrative popular in media coverage of startups obscures a more complex reality. A 2023 study by researchers at MIT tracked 2,700 ventures over a ten-year period and found that the median time from founding to significant revenue was 7.4 years. Furthermore, 68% of the ventures that eventually succeeded had pivoted their core business model at least once. The researchers concluded that persistence and adaptability, rather than initial brilliance, were the strongest predictors of success.',
+   question:'Which choice best states the main idea of the text?',
+   choices:[
+     {letter:'A',text:'MIT researchers have conducted the largest study of startup success ever published.',correct:false},
+     {letter:'B',text:'Most startups take much longer to succeed than popular narratives suggest, with persistence and adaptability being the key factors.',correct:true},
+     {letter:'C',text:'Startups should pivot their business model at least once to maximize chances of success.',correct:false},
+     {letter:'D',text:'Media coverage of technology companies is generally unreliable.',correct:false},
+   ],
+   explanations:{
+     A:{text:'The passage doesn\'t claim this is the "largest study" — that\'s an assumption.'},
+     B:{text:'Captures the contrast (media narrative vs. reality) and the conclusion (persistence and adaptability). ✓'},
+     C:{text:'Distorted — the passage says 68% pivoted, not that pivoting is a prescription for success.'},
+     D:{text:'Too broad — the passage criticizes one specific narrative, not all media coverage.'},
+   }},
+  {id:'pq5',badge:'Evidence',badgeClass:'pq-badge-craft',
+   passage:'A student is writing a research paper arguing that sleep deprivation significantly impairs cognitive performance. Which finding would most effectively support this argument?',
+   question:'Which finding most directly supports the claim?',
+   choices:[
+     {letter:'A',text:'Adults who sleep fewer than six hours per night report lower overall life satisfaction.',correct:false},
+     {letter:'B',text:'A study found that participants awake for 24 hours performed cognitive tasks at the same level as those with a blood alcohol content of 0.10%.',correct:true},
+     {letter:'C',text:'Most sleep researchers recommend between seven and nine hours of sleep per night for adults.',correct:false},
+     {letter:'D',text:'Blue light from electronic devices has been shown to delay the onset of melatonin production.',correct:false},
+   ],
+   explanations:{
+     A:{text:'Life satisfaction is related but not the same as cognitive performance.'},
+     B:{text:'Directly measures cognitive performance under sleep deprivation with a striking comparison. ✓'},
+     C:{text:'A recommendation, not evidence of cognitive impairment.'},
+     D:{text:'About sleep disruption mechanisms, not cognitive performance outcomes.'},
+   }},
+  {id:'pq6',badge:'Inference',badgeClass:'pq-badge-info',
+   passage:'When the first photographs of Earth from space were published in the late 1960s, environmental organizations reported a surge in membership and donations. Historian Robert Poole has argued that these images fundamentally shifted public consciousness by making the planet\'s fragility visible for the first time. Before these photographs existed, the concept of Earth as a finite, bounded system was abstract; afterward, it became visceral.',
+   question:'Based on the text, what can most reasonably be inferred?',
+   choices:[
+     {letter:'A',text:'Space exploration was primarily motivated by environmental concerns.',correct:false},
+     {letter:'B',text:'Visual imagery can influence public attitudes and behavior more powerfully than abstract concepts alone.',correct:true},
+     {letter:'C',text:'Environmental organizations were not effective before the 1960s.',correct:false},
+     {letter:'D',text:'Robert Poole is the leading historian of the environmental movement.',correct:false},
+   ],
+   explanations:{
+     A:{text:'The passage says nothing about the motivations for space exploration.'},
+     B:{text:'Conservative inference: the photos (visual) caused a surge in environmental concern that the abstract concept had not. Visual > abstract. ✓'},
+     C:{text:'Too extreme — the passage says membership surged, not that organizations were ineffective before.'},
+     D:{text:'The passage quotes Poole but says nothing about his ranking among historians.'},
+   }},
+];
+
+const pqAnswered={};
+function renderPQs(){
+  document.getElementById('practiceQs').innerHTML=PQS.map(q=>`
+    <div class="pq" id="${q.id}">
+      <div class="pq-badge ${q.badgeClass}">${q.badge}</div>
+      <div class="pq-passage">${q.passage}</div>
+      <div class="pq-question">${q.question}</div>
+      <div class="pq-choices">
+        ${q.choices.map(ch=>{
+          let cls='pq-choice';
+          if(pqAnswered[q.id]!==undefined){
+            cls+=' disabled';
+            if(ch.correct)cls+=' correct';
+            if(ch.letter===pqAnswered[q.id]&&!ch.correct)cls+=' wrong';
+            if(ch.letter===pqAnswered[q.id])cls+=' selected';
+          }
+          return `<div class="${cls}" onclick="answerPQ('${q.id}','${ch.letter}')" id="${q.id}_${ch.letter}">
+            <div class="pq-letter">${ch.letter}</div><div>${ch.text}</div></div>`;
+        }).join('')}
+      </div>
+      <div class="pq-explanation${pqAnswered[q.id]!==undefined?' show':''}${pqAnswered[q.id]!==undefined?(q.choices.find(c=>c.letter===pqAnswered[q.id]).correct?' is-correct':' is-wrong'):''}" id="${q.id}_exp">
+        ${pqAnswered[q.id]!==undefined?buildPQExp(q,pqAnswered[q.id]):''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildPQExp(q,letter){
+  const isCorrect=q.choices.find(c=>c.letter===letter).correct;
+  let html=`<h4>${isCorrect?'✓ Correct!':'✗ Incorrect'}</h4>`;
+  q.choices.forEach(ch=>{
+    const pfx=ch.correct?'<span style="color:var(--correct)">✓</span>':'<span style="color:var(--wrong)">✗</span>';
+    html+=`<div class="pq-exp-item">${pfx} <strong>${ch.letter}) ${ch.text}</strong> — ${q.explanations[ch.letter].text}</div>`;
+  });
+  return html;
+}
+
+function answerPQ(qid,letter){
+  if(pqAnswered[qid]!==undefined)return;
+  pqAnswered[qid]=letter;
+  renderPQs();
+}
+renderPQs();
+</script>
+<script src="/translate.js"></script></body>
+</html>

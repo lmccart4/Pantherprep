@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT R&W Course — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.course-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px;text-align:center}
+.course-icon{font-size:3rem;margin-bottom:12px}
+.course-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:700;margin-bottom:8px}
+.course-header .sub{color:var(--muted);font-size:1rem;max-width:600px;margin:0 auto}
+.stats{display:flex;justify-content:center;gap:24px;margin-top:18px}
+.stat{text-align:center}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--craft)}
+.stat-label{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+
+.domains{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:32px}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.domain-pct{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+.domain-name{font-size:.75rem;color:var(--muted);margin-top:2px}
+
+.phase-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;margin-top:28px}
+.phase-diagnose{color:var(--accent)}
+.phase-build{color:var(--craft)}
+.phase-strategize{color:var(--express)}
+.phase-reflect{color:var(--info)}
+.mod-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.mod-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-decoration:none;color:inherit;transition:all .2s}
+.mod-card:hover{border-color:var(--craft);transform:translateX(4px)}
+.mod-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0}
+.mod-info{flex:1}
+.mod-title{font-weight:700;font-size:.95rem;margin-bottom:2px}
+.mod-desc{font-size:.82rem;color:var(--muted);line-height:1.4}
+.mod-arrow{color:var(--muted);font-size:1.1rem;flex-shrink:0}
+
+@media(max-width:600px){.stats{flex-wrap:wrap;gap:16px}.domains{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="/index.html">← Back to PantherPrep</a>
+
+<div class="course-header">
+  <div class="course-icon">📚</div>
+  <h1>SAT Reading & Writing Course</h1>
+  <p class="sub">10 modules covering all four R&W domains — vocabulary, grammar, reading comprehension, rhetorical analysis, and test-day strategies. Aligned to the Digital SAT adaptive format.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-val">10</div><div class="stat-label">Modules</div></div>
+    <div class="stat"><div class="stat-val">18–28</div><div class="stat-label">Sessions</div></div>
+    <div class="stat"><div class="stat-val">54</div><div class="stat-label">SAT Questions</div></div>
+    <div class="stat"><div class="stat-val">4</div><div class="stat-label">Domains</div></div>
+  </div>
+</div>
+
+<div class="domains">
+  <div class="domain-card"><div class="domain-pct" style="color:var(--craft)">~28%</div><div class="domain-name">Craft & Structure</div></div>
+  <div class="domain-card"><div class="domain-pct" style="color:var(--info)">~26%</div><div class="domain-name">Information & Ideas</div></div>
+  <div class="domain-card"><div class="domain-pct" style="color:var(--express)">~20%</div><div class="domain-name">Expression of Ideas</div></div>
+  <div class="domain-card"><div class="domain-pct" style="color:var(--convention)">~26%</div><div class="domain-name">Standard English Conventions</div></div>
+</div>
+
+<div class="phase-label phase-diagnose">Phase 1: Diagnose</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-1.html">
+    <div class="mod-num" style="background:var(--accent)">1</div>
+    <div class="mod-info"><div class="mod-title">Diagnostic & Orientation</div><div class="mod-desc">Baseline R&W assessment, error analysis framework, study plan creation, SAT R&W structure overview</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+<div class="phase-label phase-build">Phase 2: Build</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-2.html">
+    <div class="mod-num" style="background:var(--craft)">2</div>
+    <div class="mod-info"><div class="mod-title">Vocabulary Foundations</div><div class="mod-desc">Words in context, precision of language, connotation vs. denotation, vocabulary-building strategies</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-3.html">
+    <div class="mod-num" style="background:var(--convention)">3</div>
+    <div class="mod-info"><div class="mod-title">Grammar & Conventions I</div><div class="mod-desc">Sentence boundaries, subject-verb agreement, pronoun clarity, punctuation rules</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-4.html">
+    <div class="mod-num" style="background:var(--convention)">4</div>
+    <div class="mod-info"><div class="mod-title">Grammar & Conventions II</div><div class="mod-desc">Modifiers, parallelism, verb tense, possessives, advanced punctuation patterns</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-5.html">
+    <div class="mod-num" style="background:var(--info)">5</div>
+    <div class="mod-info"><div class="mod-title">Reading — The Three Key Questions</div><div class="mod-desc">Central ideas, command of evidence, inferences, data interpretation in reading passages</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-6.html">
+    <div class="mod-num" style="background:var(--craft)">6</div>
+    <div class="mod-info"><div class="mod-title">Advanced Reading — Rhetoric, Purpose & Synthesis</div><div class="mod-desc">Text structure, author purpose, cross-text connections, rhetorical analysis</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+<div class="phase-label phase-strategize">Phase 3: Strategize</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-7.html">
+    <div class="mod-num" style="background:var(--express)">7</div>
+    <div class="mod-info"><div class="mod-title">Transitions & Rhetorical Synthesis</div><div class="mod-desc">Logical transitions, rhetorical synthesis questions, expression of ideas strategies</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-8.html">
+    <div class="mod-num" style="background:var(--express)">8</div>
+    <div class="mod-info"><div class="mod-title">Test Strategy & Time Management</div><div class="mod-desc">Elimination techniques, time budgeting, question triage, adaptive test strategies</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+<div class="phase-label phase-reflect">Phase 4: Reflect</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-9.html">
+    <div class="mod-num" style="background:var(--info)">9</div>
+    <div class="mod-info"><div class="mod-title">Full Practice Test & Deep Error Analysis</div><div class="mod-desc">Timed full R&W section, pattern report builder, study plan revision</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-10.html">
+    <div class="mod-num" style="background:var(--accent)">10</div>
+    <div class="mod-info"><div class="mod-title">Final Review & Test-Day Preparation</div><div class="mod-desc">Must-know grammar rules, vocabulary review, strategy flash cards, test-day checklist</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+</div>
+<script src="/translate.js"></script></body>
+</html>

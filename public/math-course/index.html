@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Math Course — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geotrig:#f87171}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.course-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px;text-align:center}
+.course-icon{font-size:3rem;margin-bottom:12px}
+.course-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:700;margin-bottom:8px}
+.course-header .sub{color:var(--muted);font-size:1rem;max-width:600px;margin:0 auto}
+.stats{display:flex;justify-content:center;gap:24px;margin-top:18px}
+.stat{text-align:center}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--math)}
+.stat-label{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+
+/* DOMAINS */
+.domains{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:32px}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.domain-pct{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+.domain-name{font-size:.75rem;color:var(--muted);margin-top:2px}
+
+/* MODULES */
+.phase-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;margin-top:28px}
+.phase-diagnose{color:var(--accent)}
+.phase-build{color:var(--math)}
+.phase-strategize{color:var(--psda)}
+.phase-reflect{color:var(--advanced)}
+.mod-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.mod-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-decoration:none;color:inherit;transition:all .2s}
+.mod-card:hover{border-color:var(--math);transform:translateX(4px)}
+.mod-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0}
+.mod-info{flex:1}
+.mod-title{font-weight:700;font-size:.95rem;margin-bottom:2px}
+.mod-desc{font-size:.82rem;color:var(--muted);line-height:1.4}
+.mod-arrow{color:var(--muted);font-size:1.1rem;flex-shrink:0}
+.mod-card.locked{opacity:.4;pointer-events:none}
+.mod-card.locked .mod-arrow::after{content:'🔒';font-size:.8rem}
+
+@media(max-width:600px){.stats{flex-wrap:wrap;gap:16px}.domains{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="../index.html">← Back to PantherPrep</a>
+
+<div class="course-header">
+  <div class="course-icon">📐</div>
+  <h1>SAT Math Course</h1>
+  <p class="sub">10 modules covering all four content domains, Desmos mastery, strategy toolkit, and deep error analysis. Aligned to the Digital SAT adaptive format.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-val">10</div><div class="stat-label">Modules</div></div>
+    <div class="stat"><div class="stat-val">18–28</div><div class="stat-label">Sessions</div></div>
+    <div class="stat"><div class="stat-val">44</div><div class="stat-label">SAT Questions</div></div>
+    <div class="stat"><div class="stat-val">4</div><div class="stat-label">Domains</div></div>
+  </div>
+</div>
+
+<div class="domains">
+  <div class="domain-card"><div class="domain-pct" style="color:var(--algebra)">~32%</div><div class="domain-name">Algebra</div></div>
+  <div class="domain-card"><div class="domain-pct" style="color:var(--advanced)">~32%</div><div class="domain-name">Advanced Math</div></div>
+  <div class="domain-card"><div class="domain-pct" style="color:var(--psda)">~15%</div><div class="domain-name">Problem-Solving & Data</div></div>
+  <div class="domain-card"><div class="domain-pct" style="color:var(--geotrig)">~15%</div><div class="domain-name">Geometry & Trig</div></div>
+</div>
+
+<div class="phase-label phase-diagnose">Phase 1: Diagnose</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-1.html">
+    <div class="mod-num" style="background:var(--accent)">1</div>
+    <div class="mod-info"><div class="mod-title">Diagnostic & Orientation</div><div class="mod-desc">Baseline assessment, error analysis framework, study plan creation, SAT Math structure overview</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+<div class="phase-label phase-build">Phase 2: Build</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-2.html">
+    <div class="mod-num" style="background:var(--algebra)">2</div>
+    <div class="mod-info"><div class="mod-title">Algebra — Linear Equations & Systems</div><div class="mod-desc">One-variable equations, slope-intercept/point-slope/standard forms, systems, inequalities</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-3.html">
+    <div class="mod-num" style="background:var(--advanced)">3</div>
+    <div class="mod-info"><div class="mod-title">Advanced Math — Quadratics & Polynomials</div><div class="mod-desc">Three forms of quadratics, discriminant, factoring, exponent rules, rational expressions</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-4.html">
+    <div class="mod-num" style="background:var(--advanced)">4</div>
+    <div class="mod-info"><div class="mod-title">Advanced Math — Functions & Properties</div><div class="mod-desc">Function notation, transformations, composition, nonlinear systems</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-5.html">
+    <div class="mod-num" style="background:var(--psda)">5</div>
+    <div class="mod-info"><div class="mod-title">Problem-Solving & Data Analysis</div><div class="mod-desc">Ratios, percentages, statistics, scatterplots, probability, study design</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-6.html">
+    <div class="mod-num" style="background:var(--geotrig)">6</div>
+    <div class="mod-info"><div class="mod-title">Geometry & Trigonometry</div><div class="mod-desc">Lines, angles, triangles, circles, area/volume, SOH-CAH-TOA, radians</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+<div class="phase-label phase-strategize">Phase 3: Strategize</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-7.html">
+    <div class="mod-num" style="background:var(--psda)">7</div>
+    <div class="mod-info"><div class="mod-title">Desmos Mastery</div><div class="mod-desc">10 essential skills, calculator discipline, regression, sliders, graphing shortcuts</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-8.html">
+    <div class="mod-num" style="background:var(--psda)">8</div>
+    <div class="mod-info"><div class="mod-title">Strategy Application & Time Management</div><div class="mod-desc">Plug In, Backsolve, Ballpark, 5-second decision tree, time budget, grid-in tips</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+<div class="phase-label phase-reflect">Phase 4: Reflect</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-9.html">
+    <div class="mod-num" style="background:var(--advanced)">9</div>
+    <div class="mod-info"><div class="mod-title">Full Practice Test & Deep Error Analysis</div><div class="mod-desc">Timed full math section, Pattern Report builder, study plan revision</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-10.html">
+    <div class="mod-num" style="background:var(--accent)">10</div>
+    <div class="mod-info"><div class="mod-title">Final Review & Test-Day Preparation</div><div class="mod-desc">Must-memorize facts, formula reference, strategy flash cards, test-day checklist</div></div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+</div>
+<script src="/translate.js"></script></body>
+</html>

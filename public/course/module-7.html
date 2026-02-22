@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 7: Transitions & Rhetorical Synthesis — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--purple:#a78bfa;--purple-bg:rgba(167,139,250,.1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+
+/* EXPANDABLE */
+.strat{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.strat-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background .15s}
+.strat-header:hover{background:rgba(255,255,255,.03)}
+.strat-icon{font-size:1.4rem}
+.strat-title{font-weight:700;font-size:1.05rem;flex:1}
+.strat-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem;flex-shrink:0}
+.strat.open .strat-arrow{transform:rotate(180deg)}
+.strat-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.strat.open .strat-body{max-height:8000px}
+.strat-content{padding:0 20px 20px}
+
+/* TRANSITION REFERENCE TABLE */
+.ref-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px}
+.ref-table th,.ref-table td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+.ref-table th{background:var(--surface);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.ref-table td{color:#ccc}
+.ref-table code{background:rgba(96,165,250,.1);color:var(--craft);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82rem}
+
+/* PRACTICE QUESTION */
+.pq{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
+.pq-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px;margin-bottom:12px;color:#fff}
+.badge-trans{background:var(--craft)}
+.badge-synth{background:var(--express)}
+.pq-passage{background:var(--paper);border-left:3px solid var(--border);padding:14px 16px;border-radius:0 8px 8px 0;font-family:'Cormorant Garamond',serif;font-size:1.02rem;line-height:1.75;margin-bottom:14px;color:#ddd}
+.pq-question{font-weight:600;font-size:.95rem;margin-bottom:14px}
+.pq-choices{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.pq-choice{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;font-size:.93rem}
+.pq-choice:hover:not(.disabled){border-color:var(--accent);background:var(--accent-light)}
+.pq-choice.correct{border-color:var(--correct);background:var(--correct-bg)}
+.pq-choice.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.pq-choice.disabled{pointer-events:none}
+.pq-letter{flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.82rem}
+.pq-choice.correct .pq-letter{background:var(--correct);color:#fff}
+.pq-choice.wrong .pq-letter{background:var(--wrong);color:#fff}
+.pq-explanation{padding:14px;border-radius:10px;font-size:.88rem;line-height:1.6;margin-top:10px;display:none}
+.pq-explanation.show{display:block}
+.pq-explanation.is-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.pq-explanation.is-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.pq-explanation h4{margin-bottom:6px}
+.pq-exp-item{margin-bottom:4px}
+
+/* TRANSITION CLASSIFIER */
+.tc-box{background:var(--surface);border:2px solid var(--craft);border-radius:14px;padding:22px;margin-bottom:16px}
+.tc-pair{background:var(--paper);border-radius:10px;padding:16px;margin-bottom:12px}
+.tc-sent{font-size:.95rem;line-height:1.65;margin-bottom:10px;color:#ddd}
+.tc-sent .tc-blank{display:inline-block;min-width:100px;border-bottom:2px dashed var(--craft);color:var(--craft);font-weight:600;text-align:center;padding:0 4px}
+.tc-options{display:flex;flex-wrap:wrap;gap:6px}
+.tc-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .15s}
+.tc-opt:hover:not(.tc-dis){border-color:var(--accent);background:var(--accent-light)}
+.tc-opt.tc-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.tc-opt.tc-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.tc-opt.tc-dis{pointer-events:none;opacity:.6}
+.tc-fb{margin-top:8px;padding:8px 12px;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}
+.tc-fb.show{display:block}
+.tc-fb.tcfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.tc-fb.tcfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+
+/* RELATIONSHIP CLASSIFIER */
+.rc-box{background:var(--surface);border:2px solid var(--info);border-radius:14px;padding:22px;margin-bottom:16px}
+.rc-pair{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px}
+.rc-sents{font-size:.92rem;line-height:1.65;color:#ddd;margin-bottom:10px}
+.rc-sents .s1{color:var(--craft)}
+.rc-sents .s2{color:var(--info)}
+.rc-options{display:flex;flex-wrap:wrap;gap:6px}
+.rc-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.rc-opt:hover:not(.rc-dis){border-color:var(--accent);background:var(--accent-light)}
+.rc-opt.rc-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.rc-opt.rc-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.rc-opt.rc-dis{pointer-events:none;opacity:.6}
+.rc-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.4}
+.rc-fb.show{display:block}
+
+/* SYNTHESIS WORKSHOP */
+.sw-box{background:var(--surface);border:2px solid var(--express);border-radius:14px;padding:22px;margin-bottom:16px}
+.sw-goal{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:8px;padding:12px 14px;font-size:.9rem;margin-bottom:14px}
+.sw-goal strong{color:var(--accent)}
+.sw-notes{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:14px}
+.sw-note{font-size:.88rem;color:#ccc;padding:4px 0;padding-left:14px;border-left:2px solid var(--border);margin-bottom:6px;line-height:1.5}
+.sw-choices{display:flex;flex-direction:column;gap:8px}
+.sw-choice{padding:12px 14px;background:var(--paper);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .15s;line-height:1.5}
+.sw-choice:hover:not(.sw-dis){border-color:var(--accent);background:var(--accent-light)}
+.sw-choice.sw-correct{border-color:var(--correct);background:var(--correct-bg)}
+.sw-choice.sw-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.sw-choice.sw-dis{pointer-events:none}
+.sw-fb{margin-top:10px;padding:12px;border-radius:8px;font-size:.85rem;line-height:1.6;display:none}
+.sw-fb.show{display:block}
+.sw-fb.swfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.sw-fb.swfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24}
+.btn-sm{padding:8px 16px;font-size:.82rem}
+
+/* NAV */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.tc-options,.rc-options{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Module 7</div>
+  <h1>Craft & Structure: Transitions & Rhetorical Synthesis</h1>
+  <p class="subtitle">The two question types that reward pure logical thinking.</p>
+  <div class="mod-meta">
+    <span>⏱ 60 minutes per session</span>
+    <span>📋 2–3 sessions</span>
+    <span>🔨 Phase 2: Build</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="section">
+  <div class="section-label">Why These Matter</div>
+  <h2>The Logic Questions</h2>
+  <div class="callout">
+    <strong>Transitions and Rhetorical Synthesis are pure logic questions.</strong> You don't need to understand the content deeply — you need to identify the <em>relationship</em> between ideas and choose the answer that expresses it. These are among the most learnable question types on the SAT.
+  </div>
+  <p>Transition questions appear in the middle of each R&W module. Rhetorical synthesis questions appear at the very end — they're the final questions you'll see. Together, they make up roughly 20% of the section (the "Expression of Ideas" domain).</p>
+</div>
+
+<!-- STRATEGIES -->
+<div class="section">
+  <div class="section-label">Strategies</div>
+  <h2>How to Attack Each Type</h2>
+
+  <div class="strat open" onclick="this.classList.toggle('open')">
+    <div class="strat-header">
+      <div class="strat-icon">🔗</div>
+      <div class="strat-title">Transition Questions</div>
+      <div class="strat-arrow">▼</div>
+    </div>
+    <div class="strat-body"><div class="strat-content">
+      <p>Transition questions give you two sentences and ask you to choose the word or phrase that best connects them. The answer choices are all transition words.</p>
+      <h4 style="margin-top:14px">The 3-Step Method</h4>
+      <ol style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8;margin-bottom:14px">
+        <li><strong>Read both sentences carefully.</strong> Ignore the blank at first.</li>
+        <li><strong>Identify the relationship:</strong> Does Sentence 2 continue, contrast, result from, or illustrate Sentence 1?</li>
+        <li><strong>Choose the transition that matches the relationship.</strong> Don't pick a word just because it "sounds right" — it must match the logical relationship.</li>
+      </ol>
+      <div class="callout"><strong>The #1 Mistake:</strong> Students pick a transition that sounds good without checking the actual relationship. "However" sounds sophisticated, but if Sentence 2 agrees with Sentence 1, "however" is wrong.</div>
+      <h4 style="margin-top:14px">The 6 Relationships</h4>
+      <table class="ref-table" style="margin-top:8px">
+        <tr><th>Relationship</th><th>What Happens</th><th>Transitions</th></tr>
+        <tr><td><strong>Continuation</strong></td><td>S2 adds to or extends S1</td><td><code>furthermore</code> <code>moreover</code> <code>additionally</code> <code>similarly</code></td></tr>
+        <tr><td><strong>Contrast</strong></td><td>S2 opposes or qualifies S1</td><td><code>however</code> <code>nevertheless</code> <code>in contrast</code> <code>conversely</code></td></tr>
+        <tr><td><strong>Cause/Effect</strong></td><td>S2 results from S1</td><td><code>therefore</code> <code>consequently</code> <code>as a result</code> <code>thus</code></td></tr>
+        <tr><td><strong>Example</strong></td><td>S2 illustrates S1</td><td><code>for instance</code> <code>for example</code> <code>specifically</code> <code>namely</code></td></tr>
+        <tr><td><strong>Concession</strong></td><td>S2 acknowledges a counterpoint</td><td><code>admittedly</code> <code>granted</code> <code>to be sure</code> <code>of course</code></td></tr>
+        <tr><td><strong>Summary</strong></td><td>S2 synthesizes or concludes</td><td><code>in short</code> <code>ultimately</code> <code>in essence</code> <code>overall</code></td></tr>
+      </table>
+    </div></div>
+  </div>
+
+  <div class="strat" onclick="this.classList.toggle('open')">
+    <div class="strat-header">
+      <div class="strat-icon">✍️</div>
+      <div class="strat-title">Rhetorical Synthesis Questions</div>
+      <div class="strat-arrow">▼</div>
+    </div>
+    <div class="strat-body"><div class="strat-content">
+      <p>These are the <strong>final questions in each R&W module</strong> and are among the most challenging. They present bullet-point notes about a topic and ask you to choose a sentence that accomplishes a specific rhetorical goal.</p>
+      <h4 style="margin-top:14px">The 4-Step Method</h4>
+      <ol style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8;margin-bottom:14px">
+        <li><strong style="color:var(--accent)">Read the GOAL first.</strong> This is the most important step. What specific task must the sentence accomplish? (e.g., "emphasize a difference," "introduce the study's purpose," "highlight a similarity")</li>
+        <li><strong>Skim the notes</strong> to understand the content.</li>
+        <li><strong>Eliminate any answer that doesn't accomplish the goal</strong>, even if it's factually correct based on the notes.</li>
+        <li><strong>Among remaining choices, pick the most direct and complete</strong> accomplishment of the goal.</li>
+      </ol>
+      <div class="callout"><strong>Key Insight:</strong> The notes are often unnecessary! Many rhetorical synthesis questions can be answered from the goal statement alone, since the answer must accomplish that specific purpose regardless of which facts are included.</div>
+      <h4 style="margin-top:14px">Common Goals</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.88rem;color:#ccc">
+        <div style="background:var(--paper);padding:8px 12px;border-radius:6px;border-left:3px solid var(--express)">Emphasize a <strong>difference</strong> between X and Y</div>
+        <div style="background:var(--paper);padding:8px 12px;border-radius:6px;border-left:3px solid var(--express)">Highlight a <strong>similarity</strong> between X and Y</div>
+        <div style="background:var(--paper);padding:8px 12px;border-radius:6px;border-left:3px solid var(--express)">Introduce the <strong>purpose</strong> of a study</div>
+        <div style="background:var(--paper);padding:8px 12px;border-radius:6px;border-left:3px solid var(--express)">Present a <strong>finding</strong> and its significance</div>
+        <div style="background:var(--paper);padding:8px 12px;border-radius:6px;border-left:3px solid var(--express)"><strong>Contrast</strong> two researchers' methods</div>
+        <div style="background:var(--paper);padding:8px 12px;border-radius:6px;border-left:3px solid var(--express)">Explain <strong>why</strong> something matters</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+<!-- RELATIONSHIP CLASSIFIER -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 1</div>
+  <h2>Relationship Classifier</h2>
+  <p>Read each sentence pair and identify the relationship between them. This is the core skill behind every transition question.</p>
+  <div class="rc-box" id="rcBox"></div>
+  <div id="rcScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
+</div>
+
+<!-- TRANSITION FILL-IN -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 2</div>
+  <h2>Fill in the Transition</h2>
+  <p>Now that you can identify relationships, choose the correct transition word to connect each pair of sentences.</p>
+  <div class="tc-box" id="tcBox"></div>
+  <div id="tcScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
+</div>
+
+<!-- RHETORICAL SYNTHESIS WORKSHOP -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 3</div>
+  <h2>Rhetorical Synthesis Workshop</h2>
+  <p>Practice the hardest question type on the SAT. Read the goal, review the notes, and choose the sentence that best accomplishes the goal.</p>
+  <div id="swBox"></div>
+</div>
+
+<!-- PRACTICE QUESTIONS -->
+<div class="section">
+  <div class="section-label">Practice</div>
+  <h2>SAT-Style Practice Questions</h2>
+  <p>6 questions mixing transitions and rhetorical synthesis in full SAT format.</p>
+  <div id="practiceQs"></div>
+</div>
+
+<!-- FULL TRANSITION REFERENCE -->
+<div class="section">
+  <div class="section-label">Reference</div>
+  <h2>Complete Transition Words List</h2>
+  <p>Print or screenshot this for studying. You should recognize every word on this list.</p>
+  <table class="ref-table">
+    <tr><th>Relationship</th><th>Words & Phrases</th></tr>
+    <tr><td><strong>Addition</strong></td><td><code>furthermore</code> <code>moreover</code> <code>additionally</code> <code>in addition</code> <code>similarly</code> <code>likewise</code> <code>also</code> <code>besides</code> <code>equally</code></td></tr>
+    <tr><td><strong>Contrast</strong></td><td><code>however</code> <code>nevertheless</code> <code>nonetheless</code> <code>in contrast</code> <code>conversely</code> <code>on the other hand</code> <code>yet</code> <code>still</code> <code>whereas</code> <code>while</code> <code>although</code></td></tr>
+    <tr><td><strong>Cause/Effect</strong></td><td><code>therefore</code> <code>consequently</code> <code>as a result</code> <code>thus</code> <code>accordingly</code> <code>hence</code> <code>for this reason</code> <code>so</code></td></tr>
+    <tr><td><strong>Example</strong></td><td><code>for instance</code> <code>for example</code> <code>specifically</code> <code>in particular</code> <code>namely</code> <code>to illustrate</code> <code>such as</code></td></tr>
+    <tr><td><strong>Concession</strong></td><td><code>admittedly</code> <code>granted</code> <code>to be sure</code> <code>of course</code> <code>certainly</code> <code>while it is true that</code> <code>despite this</code></td></tr>
+    <tr><td><strong>Summary</strong></td><td><code>in short</code> <code>ultimately</code> <code>in summary</code> <code>overall</code> <code>in essence</code> <code>to summarize</code> <code>in conclusion</code> <code>all in all</code></td></tr>
+    <tr><td><strong>Sequence</strong></td><td><code>first</code> <code>second</code> <code>next</code> <code>then</code> <code>finally</code> <code>subsequently</code> <code>meanwhile</code> <code>previously</code> <code>afterward</code></td></tr>
+    <tr><td><strong>Emphasis</strong></td><td><code>indeed</code> <code>in fact</code> <code>certainly</code> <code>above all</code> <code>most importantly</code> <code>notably</code> <code>significantly</code></td></tr>
+  </table>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Transition questions are logic questions — identify the relationship FIRST, then choose the word.</li>
+      <li>Know the 6 relationships cold: continuation, contrast, cause/effect, example, concession, summary.</li>
+      <li>For rhetorical synthesis: read the GOAL before anything else. The goal determines the answer.</li>
+      <li>Eliminate any answer that doesn't accomplish the stated goal, even if it's factually accurate.</li>
+      <li>These question types are among the most learnable — they reward pattern recognition over deep reading.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- HOMEWORK -->
+<div class="section">
+  <div class="section-label">Before Next Session</div>
+  <h2>Homework</h2>
+  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
+    <p><strong style="color:var(--ink)">1. Memorize the Transition List</strong> — You should be able to name at least 3 words for each of the 6 relationship types.</p>
+    <p><strong style="color:var(--ink)">2. Practice 10 Transition Questions</strong> — For each, write down the relationship before choosing the transition word.</p>
+    <p><strong style="color:var(--ink)">3. Practice 5 Rhetorical Synthesis Questions</strong> — For each, underline the goal statement first. Then eliminate choices that don't match the goal.</p>
+    <p style="margin:0"><strong style="color:var(--ink)">4. Continue Daily Reading</strong> — 30 minutes. Notice how authors use transition words. Circle them as you read.</p>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-6.html">← Module 6: Advanced Reading</a>
+  <a href="module-8.html">Module 8: Test Strategy →</a>
+</div>
+</div>
+
+<script>
+// ============ RELATIONSHIP CLASSIFIER ============
+const RC_ITEMS=[
+  {s1:'The new solar farm will generate enough electricity to power 12,000 homes annually.',
+   s2:'Local residents have raised concerns about the project\'s impact on migratory bird populations.',
+   correct:'Contrast',options:['Continuation','Contrast','Cause/Effect','Example'],
+   fb:'S1 presents a positive fact; S2 introduces an opposing concern. The ideas pull in different directions.'},
+  {s1:'The city\'s new recycling program doubled the amount of plastic diverted from landfills.',
+   s2:'Neighboring municipalities have begun exploring similar initiatives.',
+   correct:'Cause/Effect',options:['Contrast','Example','Cause/Effect','Concession'],
+   fb:'The success of the program (S1) led to other cities exploring similar programs (S2). S2 is a result of S1.'},
+  {s1:'Many researchers believe that octopuses are among the most intelligent invertebrates.',
+   s2:'One study documented an octopus unscrewing a jar from the inside to escape.',
+   correct:'Example',options:['Contrast','Continuation','Summary','Example'],
+   fb:'S2 provides a specific instance that illustrates the claim in S1.'},
+  {s1:'The hurricane caused over $50 billion in property damage across the Gulf Coast.',
+   s2:'It disrupted oil production for three months, contributing to a nationwide spike in fuel prices.',
+   correct:'Continuation',options:['Continuation','Contrast','Example','Summary'],
+   fb:'S2 adds another consequence of the same event — it extends S1 with additional information.'},
+  {s1:'The study found that meditation reduced anxiety symptoms by 30% in participants.',
+   s2:'The sample size was only 45 people, limiting the generalizability of the results.',
+   correct:'Contrast',options:['Continuation','Contrast','Example','Cause/Effect'],
+   fb:'S1 presents a positive finding; S2 introduces a limitation. The ideas work against each other.'},
+  {s1:'The company invested heavily in renewable energy, electric vehicles, and sustainable packaging.',
+   s2:'Its carbon footprint dropped by 40% over three years.',
+   correct:'Cause/Effect',options:['Contrast','Continuation','Cause/Effect','Concession'],
+   fb:'The investments (S1) caused the carbon footprint reduction (S2). Clear cause → effect.'},
+  {s1:'Remote work offers employees greater flexibility and eliminates commuting costs.',
+   s2:'It can also lead to isolation and difficulty separating professional and personal life.',
+   correct:'Contrast',options:['Continuation','Contrast','Summary','Example'],
+   fb:'S1 lists benefits; S2 introduces drawbacks. The ideas pull in opposite directions.'},
+  {s1:'Dozens of studies have confirmed a strong link between sleep deprivation and impaired cognitive function.',
+   s2:'Getting sufficient sleep is essential for maintaining mental sharpness.',
+   correct:'Summary',options:['Contrast','Example','Cause/Effect','Summary'],
+   fb:'S2 synthesizes the research described in S1 into a concluding statement.'},
+];
+
+let rcAns={};
+function renderRC(){
+  document.getElementById('rcBox').innerHTML=RC_ITEMS.map((r,i)=>{
+    const ans=rcAns[i];const has=ans!==undefined;
+    return `<div class="rc-pair">
+      <div class="rc-sents"><span class="s1">S1: ${r.s1}</span><br><span class="s2">S2: ${r.s2}</span></div>
+      <div class="rc-options">${r.options.map(o=>{
+        let cls='rc-opt';
+        if(has){cls+=' rc-dis';if(o===r.correct)cls+=' rc-correct';else if(o===ans&&o!==r.correct)cls+=' rc-wrong';}
+        return `<div class="${cls}" onclick="ansRC(${i},'${o}')">${o}</div>`;
+      }).join('')}</div>
+      <div class="rc-fb${has?' show':''}">${has?r.fb:''}</div>
+    </div>`;
+  }).join('');
+  const t=RC_ITEMS.length,a=Object.keys(rcAns).length,c=Object.entries(rcAns).filter(([i,v])=>v===RC_ITEMS[i].correct).length;
+  document.getElementById('rcScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--express)':'var(--wrong)'}">${c}/${t} correct</strong> — ${c>=6?'Excellent relationship recognition!':c>=4?'Good — review the tricky ones.':'Keep studying the 6 relationships.'}`:`${a}/${t} completed`;
+}
+function ansRC(i,v){if(rcAns[i]!==undefined)return;rcAns[i]=v;renderRC();}
+renderRC();
+
+// ============ FILL-IN TRANSITIONS ============
+const TC_ITEMS=[
+  {s1:'The company\'s profits rose 20% in the third quarter.',
+   s2:'_______, its stock price remained unchanged, puzzling analysts.',
+   correct:'However',options:['Therefore','However','For example','Furthermore'],
+   fb:'Profits up (positive) but stock unchanged (unexpected negative). This is a contrast → "However."'},
+  {s1:'Ancient Roman concrete has survived for over 2,000 years without significant degradation.',
+   s2:'_______, the Pantheon\'s unreinforced dome remains the largest of its kind in the world.',
+   correct:'For instance',options:['However','As a result','For instance','In short'],
+   fb:'The Pantheon dome is a specific example illustrating the durability claim in S1 → "For instance."'},
+  {s1:'The drought destroyed most of the region\'s wheat crop.',
+   s2:'_______, bread prices at local bakeries doubled within two months.',
+   correct:'As a result',options:['Furthermore','In contrast','Admittedly','As a result'],
+   fb:'Crop destruction (cause) → price doubling (effect). Clear cause-and-effect → "As a result."'},
+  {s1:'The new vaccine showed 94% efficacy in clinical trials.',
+   s2:'_______, it also produced milder side effects than its predecessor.',
+   correct:'Furthermore',options:['However','Furthermore','Therefore','For example'],
+   fb:'Both sentences present positive attributes of the vaccine. S2 adds to S1 → "Furthermore."'},
+  {s1:'_______, early childhood exposure to multiple languages may cause confusion.',
+   s2:'Research consistently shows that bilingual children develop stronger cognitive flexibility than monolingual peers.',
+   correct:'Admittedly',options:['Therefore','For example','Admittedly','In short'],
+   fb:'S1 acknowledges a concern, then S2 counters it with research. S1 is a concession → "Admittedly."'},
+  {s1:'The expedition documented 47 previously unknown insect species in the canopy.',
+   s2:'_______, tropical rainforest canopies remain among the least explored ecosystems on Earth.',
+   correct:'In short',options:['However','For instance','Furthermore','In short'],
+   fb:'S2 synthesizes the broader implication of S1\'s finding. This is a summary/conclusion → "In short."'},
+];
+
+let tcAns={};
+function renderTC(){
+  document.getElementById('tcBox').innerHTML=TC_ITEMS.map((t,i)=>{
+    const ans=tcAns[i];const has=ans!==undefined;
+    return `<div class="tc-pair">
+      <div class="tc-sent">${t.s1} ${t.s2}</div>
+      <div class="tc-options">${t.options.map(o=>{
+        let cls='tc-opt';
+        if(has){cls+=' tc-dis';if(o===t.correct)cls+=' tc-correct';else if(o===ans&&o!==t.correct)cls+=' tc-wrong';}
+        return `<div class="${cls}" onclick="ansTC(${i},'${o}')">${o}</div>`;
+      }).join('')}</div>
+      <div class="tc-fb${has?' show':''}${has?(ans===t.correct?' tcfb-correct':' tcfb-wrong'):''}">${has?(ans===t.correct?'✓ ':'✗ ')+t.fb:''}</div>
+    </div>`;
+  }).join('');
+  const tot=TC_ITEMS.length,a=Object.keys(tcAns).length,c=Object.entries(tcAns).filter(([i,v])=>v===TC_ITEMS[i].correct).length;
+  document.getElementById('tcScore').innerHTML=a===tot?`<strong style="color:${c>=5?'var(--correct)':c>=3?'var(--express)':'var(--wrong)'}">${c}/${tot} correct</strong> — ${c>=5?'Great transition instincts!':c>=3?'Good — keep practicing.':'Review the transition table and try again.'}`:`${a}/${tot} completed`;
+}
+function ansTC(i,v){if(tcAns[i]!==undefined)return;tcAns[i]=v;renderTC();}
+renderTC();
+
+// ============ RHETORICAL SYNTHESIS WORKSHOP ============
+const SW_ITEMS=[
+  {goal:'While writing a report about renewable energy adoption, a student wants to <strong>emphasize a difference</strong> between solar and wind energy production.',
+   notes:['Solar energy production peaks during midday hours when sunlight is strongest.','Wind energy production is often highest at night and during seasonal storms.','Both solar and wind energy have seen costs drop by over 70% since 2010.','Solar farms require large flat areas; wind farms can be placed on agricultural land.'],
+   choices:[
+     'Both solar and wind energy have seen their production costs drop by more than 70% since 2010, making them increasingly competitive with fossil fuels.',
+     'While solar energy production peaks during midday hours, wind energy is often most productive at night and during storms, meaning the two sources can complement each other.',
+     'Solar farms require large, flat areas of land, which has led to concerns about habitat disruption in desert ecosystems.',
+     'Renewable energy sources like solar and wind power have transformed the electricity market in recent decades.',
+   ],
+   correct:1,
+   fb:'The goal is to emphasize a DIFFERENCE. Choice B directly contrasts the production patterns of solar (midday) vs. wind (night/storms) using "While…" structure. Choice A emphasizes a similarity. Choice C only discusses solar. Choice D is too general.'},
+  {goal:'A student is writing about the history of coffee and wants to <strong>introduce the surprising scope of the coffee industry</strong>.',
+   notes:['Coffee was first cultivated in Ethiopia in the 9th century.','Coffee is now the second most traded commodity in the world after crude oil.','Over 2.25 billion cups of coffee are consumed daily worldwide.','Brazil produces approximately one-third of the world\'s coffee supply.'],
+   choices:[
+     'Coffee was first cultivated in Ethiopia in the 9th century before spreading to the Arabian Peninsula and eventually to Europe.',
+     'Brazil dominates global coffee production, supplying approximately one-third of the world\'s beans from its vast plantations.',
+     'From its origins in 9th-century Ethiopia, coffee has grown into the second most traded commodity on Earth, with over 2.25 billion cups consumed every day.',
+     'The coffee industry faces significant challenges from climate change, which threatens production in traditional growing regions.',
+   ],
+   correct:2,
+   fb:'The goal is to introduce the SURPRISING SCOPE. Choice C combines the origin (9th-century Ethiopia) with the enormous modern scale (second most traded, 2.25 billion cups), creating a sense of surprising growth. Choice A is just history. Choice B is just Brazil. Choice D isn\'t in the notes.'},
+  {goal:'A student researching ocean conservation wants to <strong>present a finding and explain its significance</strong>.',
+   notes:['Marine Protected Areas (MPAs) cover about 8% of the world\'s oceans.','A 2023 study found that fish populations in well-managed MPAs were 670% larger than in unprotected areas.','Many existing MPAs lack adequate enforcement and funding.','Scientists recommend protecting at least 30% of oceans by 2030.'],
+   choices:[
+     'Marine Protected Areas currently cover roughly 8% of the world\'s oceans, though scientists have recommended expanding coverage to 30% by 2030.',
+     'Many Marine Protected Areas suffer from inadequate enforcement and insufficient funding, undermining their conservation goals.',
+     'A 2023 study found that fish populations in well-managed MPAs were 670% larger than in unprotected areas, a finding that underscores the effectiveness of ocean conservation when properly implemented.',
+     'Scientists have set an ambitious goal of protecting at least 30% of the world\'s oceans by the year 2030.',
+   ],
+   correct:2,
+   fb:'The goal requires BOTH a finding AND its significance. Choice C presents the finding (670% larger fish populations) and explains the significance ("underscores the effectiveness of ocean conservation"). The other choices present facts but don\'t combine a finding with its significance.'},
+];
+
+let swAns={};
+function renderSW(){
+  document.getElementById('swBox').innerHTML=SW_ITEMS.map((s,i)=>{
+    const ans=swAns[i];const has=ans!==undefined;
+    return `<div class="sw-box">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;margin-bottom:8px">Synthesis Question ${i+1}</h3>
+      <div class="sw-goal"><strong>Goal:</strong> ${s.goal}</div>
+      <div class="sw-notes"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Notes</div>${s.notes.map(n=>`<div class="sw-note">• ${n}</div>`).join('')}</div>
+      <div class="sw-choices">${s.choices.map((ch,ci)=>{
+        let cls='sw-choice';
+        if(has){cls+=' sw-dis';if(ci===s.correct)cls+=' sw-correct';else if(ci===ans&&ci!==s.correct)cls+=' sw-wrong';}
+        return `<div class="${cls}" onclick="ansSW(${i},${ci})">${ch}</div>`;
+      }).join('')}</div>
+      <div class="sw-fb${has?' show':''}${has?(ans===s.correct?' swfb-correct':' swfb-wrong'):''}">${has?(ans===s.correct?'✓ Correct! ':'✗ Incorrect. ')+s.fb:''}</div>
+    </div>`;
+  }).join('');
+}
+function ansSW(i,ci){if(swAns[i]!==undefined)return;swAns[i]=ci;renderSW();}
+renderSW();
+
+// ============ PRACTICE QUESTIONS ============
+const PQS=[
+  {id:'pq1',badge:'Transition',badgeClass:'badge-trans',
+   passage:'Archaeologists have long assumed that ancient Polynesians navigated the Pacific using simple observations of stars and waves. Recent research, _______, has revealed that they employed a sophisticated system of "star compasses" — mental maps of over 200 stellar positions that enabled precise navigation across thousands of miles of open ocean.',
+   question:'Which choice completes the text with the most logical transition?',
+   choices:[
+     {letter:'A',text:'furthermore',correct:false},
+     {letter:'B',text:'for example',correct:false},
+     {letter:'C',text:'however',correct:true},
+     {letter:'D',text:'as a result',correct:false},
+   ],
+   explanations:{
+     A:{text:'"Furthermore" adds to the same idea. But S2 contradicts "simple observations" with "sophisticated system."'},
+     B:{text:'"For example" introduces an illustration, but S2 challenges the assumption, not illustrates it.'},
+     C:{text:'S1 says "simple observations." S2 says "sophisticated system." This is a contrast — "however" fits perfectly. ✓'},
+     D:{text:'S2 is not a result of the assumption in S1 — it\'s a contradiction of it.'},
+   }},
+  {id:'pq2',badge:'Transition',badgeClass:'badge-trans',
+   passage:'The Mediterranean diet has been associated with reduced cardiovascular risk in numerous epidemiological studies. _______, a 2018 randomized trial involving 7,447 participants found that those following a Mediterranean diet supplemented with olive oil had a 31% lower rate of major cardiovascular events.',
+   question:'Which choice completes the text with the most logical transition?',
+   choices:[
+     {letter:'A',text:'In contrast',correct:false},
+     {letter:'B',text:'Nevertheless',correct:false},
+     {letter:'C',text:'In particular',correct:true},
+     {letter:'D',text:'As a result',correct:false},
+   ],
+   explanations:{
+     A:{text:'S2 supports S1, not contrasts it.'},
+     B:{text:'"Nevertheless" signals contrast. Both sentences point in the same direction (diet reduces risk).'},
+     C:{text:'S2 provides a specific study that illustrates the general claim in S1. "In particular" introduces a specific example. ✓'},
+     D:{text:'The trial is not a result of the association — it\'s evidence supporting it.'},
+   }},
+  {id:'pq3',badge:'Transition',badgeClass:'badge-trans',
+   passage:'The company invested $2.3 billion in autonomous vehicle research over five years and recruited top engineers from leading universities. _______, its self-driving cars still failed to perform reliably in adverse weather conditions, prompting a strategic pivot to driver-assistance technology.',
+   question:'Which choice completes the text with the most logical transition?',
+   choices:[
+     {letter:'A',text:'Therefore',correct:false},
+     {letter:'B',text:'Similarly',correct:false},
+     {letter:'C',text:'For instance',correct:false},
+     {letter:'D',text:'Nevertheless',correct:true},
+   ],
+   explanations:{
+     A:{text:'"Therefore" signals a logical result. Failure is not the logical result of massive investment — it\'s the opposite of what you\'d expect.'},
+     B:{text:'"Similarly" signals continuation. S2 is about failure, which is unexpected after S1\'s investment.'},
+     C:{text:'"For instance" introduces a specific example, but S2 is a surprising outcome, not an illustration.'},
+     D:{text:'Despite huge investment (S1), the cars still failed (S2). "Nevertheless" signals that S2 happened despite S1. ✓'},
+   }},
+  {id:'pq4',badge:'Rhetorical Synthesis',badgeClass:'badge-synth',
+   passage:'<strong>Notes:</strong><br>• Ecologist Dr. Maria Santos studied pollinator decline in California almond orchards from 2015 to 2022.<br>• She found that orchards surrounded by wildflower strips had 47% more bee visits than orchards without them.<br>• Almond production in orchards with wildflower strips was 23% higher.<br>• The study was published in <em>Ecological Applications</em> in 2023.',
+   question:'The student wants to emphasize the <strong>practical agricultural benefit</strong> of the research finding. Which choice most effectively accomplishes this goal?',
+   choices:[
+     {letter:'A',text:'Dr. Maria Santos, an ecologist, published a study in Ecological Applications in 2023 examining pollinator behavior in California almond orchards.',correct:false},
+     {letter:'B',text:'A 2022 study found that California almond orchards surrounded by wildflower strips attracted 47% more pollinators than those without such plantings.',correct:false},
+     {letter:'C',text:'Research by Dr. Santos showed that adding wildflower strips near almond orchards increased production by 23%, demonstrating that supporting pollinators directly benefits crop yields.',correct:true},
+     {letter:'D',text:'Pollinator decline has become a growing concern in California agriculture, where almond production depends heavily on bee pollination.',correct:false},
+   ],
+   explanations:{
+     A:{text:'Introduces the study but doesn\'t mention any agricultural benefit.'},
+     B:{text:'Mentions bee visits but not crop production — the ecological finding, not the agricultural benefit.'},
+     C:{text:'Connects the wildflower strips to a 23% production increase and explicitly states the practical benefit ("directly benefits crop yields"). ✓'},
+     D:{text:'Discusses the broader concern but doesn\'t present Dr. Santos\'s finding or any specific benefit.'},
+   }},
+  {id:'pq5',badge:'Rhetorical Synthesis',badgeClass:'badge-synth',
+   passage:'<strong>Notes:</strong><br>• The James Webb Space Telescope (JWST) was launched in December 2021.<br>• It cost approximately $10 billion and took over 25 years to develop.<br>• Within its first year, JWST detected galaxies formed only 300 million years after the Big Bang — far earlier than previously thought possible.<br>• These early galaxies appeared more structured and mature than existing models predicted.',
+   question:'The student wants to <strong>contrast the development challenges with the scientific payoff</strong> of the telescope. Which choice most effectively accomplishes this goal?',
+   choices:[
+     {letter:'A',text:'The James Webb Space Telescope, launched in 2021, detected galaxies that formed only 300 million years after the Big Bang.',correct:false},
+     {letter:'B',text:'After 25 years of development and $10 billion in costs, the James Webb Space Telescope rewarded the investment by discovering unexpectedly mature galaxies from the universe\'s earliest era.',correct:true},
+     {letter:'C',text:'The JWST\'s early observations have challenged existing models of galaxy formation by revealing surprisingly structured galaxies in the young universe.',correct:false},
+     {letter:'D',text:'Development of the James Webb Space Telescope began in the 1990s, and the project faced numerous delays and cost overruns before its successful 2021 launch.',correct:false},
+   ],
+   explanations:{
+     A:{text:'Mentions only the finding, not the development challenges. No contrast.'},
+     B:{text:'"After 25 years…and $10 billion" (challenge) → "rewarded the investment by discovering" (payoff). Both elements are present in a clear contrast structure. ✓'},
+     C:{text:'Focuses only on the scientific findings with no mention of development challenges.'},
+     D:{text:'Focuses only on development problems with no mention of scientific payoff.'},
+   }},
+  {id:'pq6',badge:'Transition',badgeClass:'badge-trans',
+   passage:'The museum\'s new exhibition features interactive holographic displays that allow visitors to "handle" fragile artifacts virtually. _______, a 3,000-year-old Egyptian scarab can be rotated, enlarged, and examined from angles that would be impossible with the physical object behind glass.',
+   question:'Which choice completes the text with the most logical transition?',
+   choices:[
+     {letter:'A',text:'In contrast',correct:false},
+     {letter:'B',text:'As a result',correct:false},
+     {letter:'C',text:'For instance',correct:true},
+     {letter:'D',text:'Nevertheless',correct:false},
+   ],
+   explanations:{
+     A:{text:'S2 doesn\'t contradict S1 — it illustrates the same point.'},
+     B:{text:'The scarab example isn\'t a result of the displays — it\'s a specific instance of them.'},
+     C:{text:'S2 provides a specific example (Egyptian scarab) of the general feature described in S1 (interactive holographic displays). ✓'},
+     D:{text:'"Nevertheless" signals contrast, but S2 supports and illustrates S1.'},
+   }},
+];
+
+const pqAns={};
+function renderPQs(){
+  document.getElementById('practiceQs').innerHTML=PQS.map(q=>`
+    <div class="pq" id="${q.id}">
+      <div class="pq-badge ${q.badgeClass}">${q.badge}</div>
+      <div class="pq-passage">${q.passage}</div>
+      <div class="pq-question">${q.question}</div>
+      <div class="pq-choices">${q.choices.map(ch=>{
+        let cls='pq-choice';
+        if(pqAns[q.id]!==undefined){cls+=' disabled';if(ch.correct)cls+=' correct';if(ch.letter===pqAns[q.id]&&!ch.correct)cls+=' wrong';}
+        return `<div class="${cls}" onclick="ansPQ('${q.id}','${ch.letter}')" id="${q.id}_${ch.letter}"><div class="pq-letter">${ch.letter}</div><div>${ch.text}</div></div>`;
+      }).join('')}</div>
+      <div class="pq-explanation${pqAns[q.id]!==undefined?' show':''}${pqAns[q.id]!==undefined?(q.choices.find(c=>c.letter===pqAns[q.id]).correct?' is-correct':' is-wrong'):''}" id="${q.id}_exp">${pqAns[q.id]!==undefined?buildExp(q,pqAns[q.id]):''}</div>
+    </div>`).join('');
+}
+function buildExp(q,l){
+  const ok=q.choices.find(c=>c.letter===l).correct;
+  let h=`<h4>${ok?'✓ Correct!':'✗ Incorrect'}</h4>`;
+  q.choices.forEach(ch=>{const p=ch.correct?'<span style="color:var(--correct)">✓</span>':'<span style="color:var(--wrong)">✗</span>';h+=`<div class="pq-exp-item">${p} <strong>${ch.letter}) ${ch.text}</strong> — ${q.explanations[ch.letter].text}</div>`;});
+  return h;
+}
+function ansPQ(qid,l){if(pqAns[qid]!==undefined)return;pqAns[qid]=l;renderPQs();}
+renderPQs();
+</script>
+<script src="/translate.js"></script></body>
+</html>

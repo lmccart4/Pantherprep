@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3: Grammar & Conventions I — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:8px;margin-top:20px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.card-green{border-left:3px solid var(--correct)}
+.card-red{border-left:3px solid var(--wrong)}
+.card h4{font-weight:700;font-size:.95rem;margin-bottom:6px}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+
+/* RULE CARDS */
+.rule{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.rule-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background .15s}
+.rule-header:hover{background:rgba(255,255,255,.03)}
+.rule-num{flex-shrink:0;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.9rem;font-family:'JetBrains Mono',monospace}
+.rule-title{font-weight:700;font-size:1.05rem;flex:1}
+.rule-yield{font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:8px;flex-shrink:0}
+.yield-high{background:var(--correct-bg);color:var(--correct)}
+.yield-med{background:rgba(245,158,11,.12);color:var(--express)}
+.rule-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem;flex-shrink:0}
+.rule.open .rule-arrow{transform:rotate(180deg)}
+.rule-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.rule.open .rule-body{max-height:5000px}
+.rule-content{padding:0 20px 20px}
+
+/* EXAMPLES */
+.example{padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:.9rem;line-height:1.6;font-family:'Source Sans 3',sans-serif}
+.example-correct{background:var(--correct-bg);border-left:3px solid var(--correct)}
+.example-wrong{background:var(--wrong-bg);border-left:3px solid var(--wrong)}
+.example-neutral{background:rgba(96,165,250,.08);border-left:3px solid var(--craft)}
+.example-label{font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.example-label.correct{color:var(--correct)}
+.example-label.wrong{color:var(--wrong)}
+
+/* PRACTICE QUESTION */
+.pq{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
+.pq-badge{display:inline-block;background:var(--convention);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px;margin-bottom:12px}
+.pq-passage{background:var(--paper);border-left:3px solid var(--border);padding:14px 16px;border-radius:0 8px 8px 0;font-family:'Cormorant Garamond',serif;font-size:1.02rem;line-height:1.75;margin-bottom:14px;color:#ddd}
+.pq-question{font-weight:600;font-size:.95rem;margin-bottom:14px}
+.pq-choices{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.pq-choice{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;font-size:.93rem}
+.pq-choice:hover:not(.disabled){border-color:var(--accent);background:var(--accent-light)}
+.pq-choice.selected{border-color:var(--accent);background:var(--accent-light)}
+.pq-choice.correct{border-color:var(--correct);background:var(--correct-bg)}
+.pq-choice.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.pq-choice.disabled{pointer-events:none}
+.pq-letter{flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.82rem}
+.pq-choice.selected .pq-letter{background:var(--accent);color:#fff}
+.pq-choice.correct .pq-letter{background:var(--correct);color:#fff}
+.pq-choice.wrong .pq-letter{background:var(--wrong);color:#fff}
+.pq-explanation{padding:14px;border-radius:10px;font-size:.88rem;line-height:1.6;margin-top:10px;display:none}
+.pq-explanation.show{display:block}
+.pq-explanation.is-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.pq-explanation.is-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.pq-explanation h4{margin-bottom:6px}
+.pq-exp-item{margin-bottom:4px}
+
+/* QUICK REF TABLE */
+.ref-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px}
+.ref-table th,.ref-table td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+.ref-table th{background:var(--surface);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.ref-table td{color:#ccc}
+.ref-table code{background:rgba(200,16,46,.1);color:var(--convention);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82rem}
+
+/* NAV */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.ref-table{font-size:.8rem}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Module 3</div>
+  <h1>Grammar & Conventions I</h1>
+  <p class="subtitle">The High-Yield Rules — Master the rules that earn the most points.</p>
+  <div class="mod-meta">
+    <span>⏱ 60 minutes per session</span>
+    <span>📋 2–3 sessions</span>
+    <span>🔨 Phase 2: Build</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="section">
+  <div class="section-label">Approach</div>
+  <h2>The Triage Principle</h2>
+  <div class="callout">
+    <strong>Core Principle:</strong> Master the rules that appear most frequently and yield the most points per hour of study. A student who masters only the first 3 rules will handle the majority of Standard English Conventions questions.
+  </div>
+  <p>This module follows Princeton Review's triage principle: not all grammar rules are tested equally. The rules below are listed in order of frequency on the Digital SAT. We start with the highest-yield rules and work down.</p>
+</div>
+
+<!-- RULES -->
+<div class="section">
+  <div class="section-label">The 6 High-Yield Rules</div>
+  <h2>Grammar Rules</h2>
+  <p>Click each rule to expand it. Study them in order — Rule 1 appears more than any other.</p>
+
+  <div id="rules"></div>
+</div>
+
+<!-- PUNCTUATION TABLE -->
+<div class="section">
+  <div class="section-label">Reference</div>
+  <h2>Punctuation Quick Reference</h2>
+  <table class="ref-table">
+    <tr><th>Mark</th><th>Use It When…</th><th>Example</th></tr>
+    <tr>
+      <td><code>.</code> Period</td>
+      <td>Ending a complete sentence</td>
+      <td>The experiment succeeded<code>.</code> The team celebrated.</td>
+    </tr>
+    <tr>
+      <td><code>;</code> Semicolon</td>
+      <td>Two closely related independent clauses (no conjunction)</td>
+      <td>The coral showed resilience<code>;</code> researchers attributed this to genetic diversity.</td>
+    </tr>
+    <tr>
+      <td><code>,</code> + FANBOYS</td>
+      <td>Joining two independent clauses with a coordinating conjunction</td>
+      <td>The experiment succeeded<code>,</code> <code>and</code> the team celebrated.</td>
+    </tr>
+    <tr>
+      <td><code>:</code> Colon</td>
+      <td>Independent clause followed by a list, explanation, or elaboration</td>
+      <td>The study revealed one finding<code>:</code> coral bleaching accelerated in shallower waters.</td>
+    </tr>
+    <tr>
+      <td><code>—</code> Dash</td>
+      <td>Setting off a dramatic aside, interruption, or emphasis</td>
+      <td>The species<code>—</code>thought to be extinct since 1987<code>—</code>was rediscovered off Belize.</td>
+    </tr>
+    <tr>
+      <td><code>,</code> <code>,</code> Paired commas</td>
+      <td>Enclosing a nonessential phrase</td>
+      <td>Dr. Vasquez<code>,</code> a marine biologist<code>,</code> confirmed the finding.</td>
+    </tr>
+  </table>
+</div>
+
+<!-- PRACTICE QUESTIONS -->
+<div class="section">
+  <div class="section-label">Practice</div>
+  <h2>Practice Questions</h2>
+  <p>Try these SAT-style grammar questions. Click an answer to check it.</p>
+  <div id="practiceQs"></div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<div class="section">
+  <div class="section-label">Reference</div>
+  <h2>Grammar Rules Quick Reference</h2>
+  <table class="ref-table">
+    <tr><th>#</th><th>Rule</th><th>Quick Test</th></tr>
+    <tr><td>1</td><td>Sentence Boundaries</td><td>Can each side of the comma/period stand alone as a sentence?</td></tr>
+    <tr><td>2</td><td>Essential vs. Nonessential</td><td>Remove the phrase. Does the sentence still identify the same thing?</td></tr>
+    <tr><td>3</td><td>Subject-Verb Agreement</td><td>Cross out prepositional phrases. Does the subject match the verb?</td></tr>
+    <tr><td>4</td><td>Pronoun Clarity</td><td>Can the pronoun refer to only ONE noun? Do they agree in number?</td></tr>
+    <tr><td>5</td><td>Verb Tense Consistency</td><td>What is the dominant tense? Is there a time marker justifying a shift?</td></tr>
+    <tr><td>6</td><td>Colons, Semicolons & Dashes</td><td>Colon: IC + list/explanation. Semicolon: two ICs. Dash: emphasis/aside.</td></tr>
+  </table>
+</div>
+
+<!-- FANBOYS -->
+<div class="section">
+  <div class="section-label">Mnemonic</div>
+  <h2>FANBOYS — The 7 Coordinating Conjunctions</h2>
+  <div class="card card-accent" style="text-align:center">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;letter-spacing:6px;margin-bottom:8px;color:var(--accent)">F A N B O Y S</div>
+    <div style="font-size:.95rem;color:#ccc;display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+      <div><strong>F</strong>or</div><div><strong>A</strong>nd</div><div><strong>N</strong>or</div><div><strong>B</strong>ut</div><div><strong>O</strong>r</div><div><strong>Y</strong>et</div><div><strong>S</strong>o</div>
+    </div>
+    <p style="margin-top:12px;font-size:.85rem;color:var(--muted);margin-bottom:0">Only these 7 words can join two independent clauses with a comma. Any other word after a comma creates a comma splice.</p>
+  </div>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Sentence boundaries are the #1 tested grammar concept — master fragments, run-ons, and comma splices.</li>
+      <li>The essential/nonessential test: remove the phrase. If the sentence still works, use commas.</li>
+      <li>"Trim the sentence" to find the true subject for agreement questions.</li>
+      <li>Every pronoun must point to exactly one noun and agree in number.</li>
+      <li>Keep verb tense consistent unless a time marker justifies a shift.</li>
+      <li>Know the specific jobs of colons, semicolons, and dashes.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- HOMEWORK -->
+<div class="section">
+  <div class="section-label">Before Next Session</div>
+  <h2>Homework</h2>
+  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
+    <p><strong style="color:var(--ink)">1. Memorize FANBOYS</strong> — You must know all 7 coordinating conjunctions cold.</p>
+    <p><strong style="color:var(--ink)">2. Practice 10 Boundary Questions</strong> — Use your practice materials. For each, identify whether it's testing fragments, run-ons, or comma splices.</p>
+    <p><strong style="color:var(--ink)">3. "Trim" 5 Sentences</strong> — Find 5 long sentences in your reading and cross out prepositional phrases to find the true subject-verb pair.</p>
+    <p style="margin:0"><strong style="color:var(--ink)">4. Continue Daily Reading</strong> — 30 minutes. Pay attention to how professional writers use commas, semicolons, and dashes.</p>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-2.html">← Module 2: Vocabulary</a>
+  <a href="module-4.html">Module 4: Grammar II →</a>
+</div>
+</div>
+
+<script>
+// ============ RULES ============
+const RULES = [
+  {num:1,title:"Sentence Boundaries",yield:"highest yield",yieldClass:"yield-high",
+   content:`
+    <p>This is the <strong>single highest-yield grammar concept</strong> on the SAT. You must identify complete sentences and know the legal ways to connect them.</p>
+    <h4 style="margin-top:14px">What makes a complete sentence?</h4>
+    <p>A complete sentence (independent clause) must have: <strong>a subject + a conjugated verb + a complete thought.</strong></p>
+    <h4 style="margin-top:14px">LEGAL ways to connect two independent clauses:</h4>
+    <div class="example example-correct"><div class="example-label correct">✓ Period</div>The experiment succeeded. The team celebrated.</div>
+    <div class="example example-correct"><div class="example-label correct">✓ Semicolon</div>The experiment succeeded; the team celebrated.</div>
+    <div class="example example-correct"><div class="example-label correct">✓ Comma + FANBOYS</div>The experiment succeeded, and the team celebrated.</div>
+    <div class="example example-correct"><div class="example-label correct">✓ Colon (when second explains first)</div>The experiment yielded a clear result: the hypothesis was confirmed.</div>
+    <div class="example example-correct"><div class="example-label correct">✓ Dash</div>The experiment yielded a clear result—the hypothesis was confirmed.</div>
+    <h4 style="margin-top:14px">ILLEGAL connections:</h4>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Comma splice</div>The experiment succeeded, the team celebrated.</div>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Run-on</div>The experiment succeeded the team celebrated.</div>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Comma + non-FANBOYS word</div>The experiment succeeded, however the team celebrated.</div>
+  `},
+  {num:2,title:"Nonessential vs. Essential Elements",yield:"high yield",yieldClass:"yield-high",
+   content:`
+    <p>The SAT frequently tests whether you can distinguish information that is <strong>essential</strong> to a sentence's meaning (no commas) from information that is <strong>nonessential / parenthetical</strong> (commas required).</p>
+    <h4 style="margin-top:14px">The Test</h4>
+    <p><strong>Remove the phrase in question.</strong> If the sentence still makes sense and identifies the same specific thing → the phrase is <strong>NONESSENTIAL → use commas</strong>. If removing it changes what the sentence refers to → <strong>ESSENTIAL → no commas</strong>.</p>
+    <div class="example example-correct"><div class="example-label correct">✓ Nonessential (commas needed)</div>Dr. Vasquez<strong>, who has studied coral reefs for twenty years,</strong> published her findings last month.<br><span style="color:var(--muted);font-size:.82rem">→ We already know which Dr. Vasquez. The clause adds bonus info.</span></div>
+    <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">✓ Essential (no commas)</div>Researchers <strong>who study coral reefs</strong> have observed surprising resilience in certain species.<br><span style="color:var(--muted);font-size:.82rem">→ Without "who study coral reefs," we don't know which researchers. The clause is defining.</span></div>
+  `},
+  {num:3,title:"Subject-Verb Agreement",yield:"high yield",yieldClass:"yield-high",
+   content:`
+    <p>The SAT makes this tricky by inserting <strong>long phrases between the subject and verb</strong>. You must learn to <strong>"trim the sentence"</strong> to find the true subject.</p>
+    <h4 style="margin-top:14px">The Trimming Technique</h4>
+    <p>Cross out all prepositional phrases, relative clauses, and parenthetical phrases between the subject and verb. What remains must agree.</p>
+    <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">Example</div>The collection <s style="color:var(--muted)">of rare manuscripts</s> <s style="color:var(--muted)">from the university's archive</s> <strong>has</strong> been digitized.<br><span style="color:var(--muted);font-size:.82rem">→ Subject is "collection" (singular) → "has" ✓</span></div>
+    <h4 style="margin-top:14px">Watch for these tricky subjects:</h4>
+    <ul style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8">
+      <li><strong>Collective nouns</strong> (team, group, committee) → singular</li>
+      <li><strong>Each, every, neither, either</strong> → singular</li>
+      <li><strong>"one of the students who…"</strong> → "who" refers to "students" (plural)</li>
+      <li><strong>Inverted sentences:</strong> "Among the ruins <strong>were</strong> the remnants…" → subject is "remnants" (plural)</li>
+    </ul>
+  `},
+  {num:4,title:"Pronoun Clarity and Agreement",yield:"medium yield",yieldClass:"yield-med",
+   content:`
+    <p>Pronouns must have a <strong>clear, unambiguous antecedent</strong> and must <strong>agree in number</strong> with that antecedent.</p>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Ambiguous</div>When the researcher presented findings to the committee, <strong>they</strong> were skeptical.<br><span style="color:var(--muted);font-size:.82rem">→ Who was skeptical — the researcher or the committee? Unclear.</span></div>
+    <div class="example example-correct"><div class="example-label correct">✓ Clear</div>When the researcher presented findings to the committee, <strong>its members</strong> were skeptical.</div>
+    <h4 style="margin-top:14px">Key rules:</h4>
+    <ul style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8">
+      <li>A pronoun must refer to exactly <strong>one</strong> noun</li>
+      <li>Singular nouns → singular pronouns; plural nouns → plural pronouns</li>
+      <li>"Each," "every," "neither," "either" → takes singular pronoun</li>
+      <li>If a pronoun is ambiguous, the SAT answer will replace it with a specific noun</li>
+    </ul>
+  `},
+  {num:5,title:"Verb Tense Consistency",yield:"medium yield",yieldClass:"yield-med",
+   content:`
+    <p>Tense should remain <strong>consistent within a passage</strong> unless there is a clear reason for a shift (a time marker like "previously" or "in the future").</p>
+    <h4 style="margin-top:14px">Strategy</h4>
+    <ol style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8">
+      <li>Identify the <strong>dominant tense</strong> of the passage (most verbs will share it)</li>
+      <li>Check: does the underlined verb match?</li>
+      <li>If a different tense is used, look for a <strong>time marker</strong> that justifies the shift</li>
+      <li>No time marker? The verb should match the dominant tense</li>
+    </ol>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Inconsistent</div>The team <strong>analyzed</strong> the data carefully and <strong>publishes</strong> their findings in a leading journal.<br><span style="color:var(--muted);font-size:.82rem">→ "analyzed" is past; "publishes" is present. No time marker justifies the shift.</span></div>
+    <div class="example example-correct"><div class="example-label correct">✓ Consistent</div>The team <strong>analyzed</strong> the data carefully and <strong>published</strong> their findings in a leading journal.</div>
+  `},
+  {num:6,title:"Colons, Semicolons & Dashes",yield:"medium yield",yieldClass:"yield-med",
+   content:`
+    <p>Beyond sentence boundaries, the SAT tests specific punctuation marks in specific contexts.</p>
+    <h4 style="margin-top:14px">The Rules</h4>
+    <ul style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8;margin-bottom:12px">
+      <li><code style="background:rgba(200,16,46,.1);color:var(--convention);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace">:</code> <strong>Colon</strong> — Must follow an independent clause. Introduces a list, explanation, or elaboration.</li>
+      <li><code style="background:rgba(200,16,46,.1);color:var(--convention);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace">;</code> <strong>Semicolon</strong> — Joins two independent clauses that are closely related. No conjunction needed.</li>
+      <li><code style="background:rgba(200,16,46,.1);color:var(--convention);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace">—</code> <strong>Dash</strong> — Sets off a dramatic aside, interruption, or emphasis. Can replace commas, colons, or parentheses.</li>
+      <li><code style="background:rgba(200,16,46,.1);color:var(--convention);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace">— —</code> <strong>Paired dashes</strong> — Enclose a nonessential phrase. Both dashes required.</li>
+    </ul>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Common error</div>The study found: that coral bleaching had accelerated.<br><span style="color:var(--muted);font-size:.82rem">→ "The study found" is not an independent clause. Don't use a colon here.</span></div>
+    <div class="example example-correct"><div class="example-label correct">✓ Correct colon</div>The study found one key result: coral bleaching had accelerated in shallower waters.</div>
+  `},
+];
+
+function renderRules(){
+  const c=document.getElementById('rules');
+  c.innerHTML=RULES.map((r,i)=>`
+    <div class="rule${i===0?' open':''}" onclick="this.classList.toggle('open')">
+      <div class="rule-header">
+        <div class="rule-num">${r.num}</div>
+        <div class="rule-title">${r.title}</div>
+        <span class="rule-yield ${r.yieldClass}">${r.yield}</span>
+        <div class="rule-arrow">▼</div>
+      </div>
+      <div class="rule-body"><div class="rule-content">${r.content}</div></div>
+    </div>
+  `).join('');
+}
+renderRules();
+
+// ============ PRACTICE QUESTIONS ============
+const PQS=[
+  {id:'pq1',badge:'Sentence Boundaries',
+   passage:'The Rosetta Stone, carved in 196 BCE, contains the same decree in three _______ Egyptian hieroglyphics, Demotic script, and ancient Greek. Its 1799 discovery gave scholars the key to deciphering hieroglyphics.',
+   question:'Which choice completes the text so that it conforms to Standard English?',
+   choices:[
+     {letter:'A',text:'scripts,',correct:false},
+     {letter:'B',text:'scripts:',correct:true},
+     {letter:'C',text:'scripts—',correct:false},
+     {letter:'D',text:'scripts;',correct:false},
+   ],
+   explanations:{
+     A:{text:'A comma doesn\'t properly introduce this specifying list.'},
+     B:{text:'A colon correctly introduces the list that explains "three scripts." The text before the colon is an independent clause. ✓'},
+     C:{text:'A dash could work informally, but a colon is the standard choice for introducing a list.'},
+     D:{text:'A semicolon joins independent clauses, not a noun and its list.'},
+   }},
+  {id:'pq2',badge:'Subject-Verb Agreement',
+   passage:'The museum\'s collection of Impressionist paintings, which _______ more than 300 works by Monet, Renoir, and Degas, attracts over a million visitors annually.',
+   question:'Which choice completes the text so that it conforms to Standard English?',
+   choices:[
+     {letter:'A',text:'include',correct:false},
+     {letter:'B',text:'includes',correct:true},
+     {letter:'C',text:'are including',correct:false},
+     {letter:'D',text:'have included',correct:false},
+   ],
+   explanations:{
+     A:{text:'Subject is "collection" (singular), not "paintings." "Include" is plural.'},
+     B:{text:'"Includes" agrees with singular "collection." Trim: the collection…includes. ✓'},
+     C:{text:'Plural and wrong tense for a permanent state.'},
+     D:{text:'Plural ("have"), disagreeing with singular "collection."'},
+   }},
+  {id:'pq3',badge:'Comma Splice vs. Correct Join',
+   passage:'The committee reviewed applications from over two hundred _______ only twelve candidates were invited to interview for the fellowship.',
+   question:'Which choice completes the text so that it conforms to Standard English?',
+   choices:[
+     {letter:'A',text:'candidates,',correct:false},
+     {letter:'B',text:'candidates but',correct:false},
+     {letter:'C',text:'candidates, but',correct:true},
+     {letter:'D',text:'candidates;',correct:false},
+   ],
+   explanations:{
+     A:{text:'Comma splice — two independent clauses joined by only a comma.'},
+     B:{text:'Missing the comma before the conjunction when joining two full independent clauses.'},
+     C:{text:'Comma + "but" (FANBOYS) correctly joins two contrasting independent clauses. ✓'},
+     D:{text:'Grammatically valid but misses the explicit contrast that "but" provides.'},
+   }},
+];
+
+function renderPQs(){
+  const c=document.getElementById('practiceQs');
+  c.innerHTML=PQS.map(q=>`
+    <div class="pq" id="${q.id}">
+      <div class="pq-badge">${q.badge}</div>
+      <div class="pq-passage">${q.passage}</div>
+      <div class="pq-question">${q.question}</div>
+      <div class="pq-choices" id="${q.id}_choices">
+        ${q.choices.map(ch=>`
+          <div class="pq-choice" onclick="answerPQ('${q.id}','${ch.letter}')" id="${q.id}_${ch.letter}">
+            <div class="pq-letter">${ch.letter}</div>
+            <div>${ch.text}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="pq-explanation" id="${q.id}_exp"></div>
+    </div>
+  `).join('');
+}
+
+const answered={};
+function answerPQ(qid,letter){
+  if(answered[qid])return;
+  answered[qid]=true;
+  const q=PQS.find(p=>p.id===qid);
+  const isCorrect=q.choices.find(c=>c.letter===letter).correct;
+
+  q.choices.forEach(ch=>{
+    const el=document.getElementById(qid+'_'+ch.letter);
+    el.classList.add('disabled');
+    if(ch.letter===letter&&!ch.correct)el.classList.add('wrong');
+    if(ch.correct)el.classList.add('correct');
+    if(ch.letter===letter)el.classList.add('selected');
+  });
+
+  const expEl=document.getElementById(qid+'_exp');
+  let html=`<h4>${isCorrect?'✓ Correct!':'✗ Incorrect'}</h4>`;
+  q.choices.forEach(ch=>{
+    const prefix=ch.correct?'<span style="color:var(--correct)">✓</span>':'<span style="color:var(--wrong)">✗</span>';
+    html+=`<div class="pq-exp-item">${prefix} <strong>${ch.letter}) ${ch.text}</strong> — ${q.explanations[ch.letter].text}</div>`;
+  });
+  expEl.innerHTML=html;
+  expEl.className=`pq-explanation show ${isCorrect?'is-correct':'is-wrong'}`;
+}
+renderPQs();
+</script>
+<script src="/translate.js"></script></body>
+</html>

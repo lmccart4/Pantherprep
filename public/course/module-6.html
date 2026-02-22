@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6: Advanced Reading — Rhetoric, Purpose & Synthesis — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--purple:#a78bfa;--purple-bg:rgba(167,139,250,.1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:8px;margin-top:20px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+
+/* EXPANDABLE SECTIONS */
+.strat{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.strat-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background .15s}
+.strat-header:hover{background:rgba(255,255,255,.03)}
+.strat-icon{font-size:1.4rem}
+.strat-title{font-weight:700;font-size:1.05rem;flex:1}
+.strat-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem;flex-shrink:0}
+.strat.open .strat-arrow{transform:rotate(180deg)}
+.strat-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.strat.open .strat-body{max-height:8000px}
+.strat-content{padding:0 20px 20px}
+
+/* EXAMPLES */
+.example{padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:.9rem;line-height:1.6}
+.example-correct{background:var(--correct-bg);border-left:3px solid var(--correct)}
+.example-wrong{background:var(--wrong-bg);border-left:3px solid var(--wrong)}
+.example-neutral{background:rgba(96,165,250,.08);border-left:3px solid var(--craft)}
+.example-purple{background:var(--purple-bg);border-left:3px solid var(--purple)}
+.example-label{font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.example-label.correct{color:var(--correct)}
+.example-label.wrong{color:var(--wrong)}
+
+/* PRACTICE QUESTION */
+.pq{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
+.pq-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px;margin-bottom:12px;color:#fff}
+.badge-rhetoric{background:var(--purple)}
+.badge-purpose{background:var(--craft)}
+.badge-structure{background:var(--info)}
+.badge-synthesis{background:var(--express)}
+.badge-tone{background:var(--convention)}
+.pq-passage{background:var(--paper);border-left:3px solid var(--border);padding:14px 16px;border-radius:0 8px 8px 0;font-family:'Cormorant Garamond',serif;font-size:1.02rem;line-height:1.75;margin-bottom:14px;color:#ddd}
+.pq-question{font-weight:600;font-size:.95rem;margin-bottom:14px}
+.pq-choices{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.pq-choice{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;font-size:.93rem}
+.pq-choice:hover:not(.disabled){border-color:var(--accent);background:var(--accent-light)}
+.pq-choice.correct{border-color:var(--correct);background:var(--correct-bg)}
+.pq-choice.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.pq-choice.disabled{pointer-events:none}
+.pq-letter{flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.82rem}
+.pq-choice.correct .pq-letter{background:var(--correct);color:#fff}
+.pq-choice.wrong .pq-letter{background:var(--wrong);color:#fff}
+.pq-explanation{padding:14px;border-radius:10px;font-size:.88rem;line-height:1.6;margin-top:10px;display:none}
+.pq-explanation.show{display:block}
+.pq-explanation.is-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.pq-explanation.is-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.pq-explanation h4{margin-bottom:6px}
+.pq-exp-item{margin-bottom:4px}
+
+/* TONE VOCABULARY BUILDER */
+.tone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:16px}
+.tone-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;position:relative}
+.tone-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.tone-card.flipped .tone-front{display:none}
+.tone-card.flipped .tone-back{display:block}
+.tone-word{font-weight:700;font-size:1rem;margin-bottom:3px}
+.tone-hint{font-size:.78rem;color:var(--muted);font-style:italic}
+.tone-back{display:none}
+.tone-def{font-size:.88rem;color:#ccc;margin-bottom:4px;line-height:1.5}
+.tone-example{font-size:.8rem;color:var(--muted);font-style:italic}
+.tone-flip-hint{position:absolute;top:8px;right:10px;font-size:.7rem;color:var(--muted)}
+
+/* STRUCTURE MATCHING */
+.match-exercise{background:var(--surface);border:2px solid var(--info);border-radius:14px;padding:22px;margin-bottom:16px}
+.match-pair{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:start;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.match-pair:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.match-passage{background:var(--paper);border-radius:8px;padding:10px 12px;font-size:.85rem;line-height:1.5;color:#ddd}
+.match-arrow{color:var(--muted);font-size:1.2rem;padding-top:8px;text-align:center}
+.match-options{display:flex;flex-direction:column;gap:6px}
+.match-opt{padding:7px 12px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s;text-align:center}
+.match-opt:hover:not(.m-disabled){border-color:var(--accent);background:var(--accent-light)}
+.match-opt.m-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.match-opt.m-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.match-opt.m-disabled{pointer-events:none;opacity:.6}
+.match-fb{font-size:.8rem;margin-top:6px;display:none;line-height:1.4;color:var(--muted)}
+.match-fb.show{display:block}
+
+/* PURPOSE ANALYZER */
+.analyzer{background:var(--surface);border:2px solid var(--purple);border-radius:14px;padding:22px;margin-bottom:16px}
+.analyzer-passage{background:var(--paper);border-left:3px solid var(--purple);padding:14px 16px;border-radius:0 8px 8px 0;font-family:'Cormorant Garamond',serif;font-size:1.02rem;line-height:1.85;margin-bottom:16px;color:#ddd}
+.analyzer-step{margin-bottom:16px}
+.analyzer-step-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.analyzer-step-label.step1{color:var(--craft)}
+.analyzer-step-label.step2{color:var(--info)}
+.analyzer-step-label.step3{color:var(--express)}
+.analyzer-step-label.step4{color:var(--purple)}
+.az-options{display:flex;flex-wrap:wrap;gap:6px}
+.az-opt{padding:7px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .15s}
+.az-opt:hover:not(.az-disabled){border-color:var(--accent);background:var(--accent-light)}
+.az-opt.az-selected{border-color:var(--accent);background:var(--accent-light)}
+.az-opt.az-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.az-opt.az-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.az-opt.az-disabled{pointer-events:none;opacity:.6}
+.az-fb{margin-top:8px;padding:10px;border-radius:8px;font-size:.85rem;line-height:1.5;display:none}
+.az-fb.show{display:block}
+.az-fb.fb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.az-fb.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24}
+.btn-sm{padding:8px 16px;font-size:.82rem}
+
+/* NAV */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.tone-grid{grid-template-columns:1fr 1fr}.match-pair{grid-template-columns:1fr;gap:4px}.match-arrow{display:none}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Module 6</div>
+  <h1>Advanced Reading: Rhetoric, Purpose & Synthesis</h1>
+  <p class="subtitle">Move beyond "what does it say" to "why does the author say it that way?"</p>
+  <div class="mod-meta">
+    <span>⏱ 60 minutes per session</span>
+    <span>📋 2–3 sessions</span>
+    <span>🔨 Phase 2: Build</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="section">
+  <div class="section-label">The Shift</div>
+  <h2>From Comprehension to Analysis</h2>
+  <div class="callout">
+    <strong>Module 5 asked "What does the passage say?"</strong> Module 6 asks <strong>"Why does the author say it this way?"</strong> This shift — from content to craft — is where the hardest SAT reading questions live.
+  </div>
+  <p>The Digital SAT tests four increasingly sophisticated reading skills. Module 5 covered the first two (Main Idea and Evidence). This module covers the next two:</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+    <div class="card" style="border-left:3px solid var(--purple)"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--purple);margin-bottom:4px">This Module</div><strong>Rhetorical Purpose</strong><br><span style="color:var(--muted);font-size:.88rem">Why the author uses a specific word, detail, example, or structure</span></div>
+    <div class="card" style="border-left:3px solid var(--express)"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--express);margin-bottom:4px">This Module</div><strong>Synthesis & Structure</strong><br><span style="color:var(--muted);font-size:.88rem">How pieces of information relate to each other across a passage</span></div>
+  </div>
+</div>
+
+<!-- STRATEGIES -->
+<div class="section">
+  <div class="section-label">Strategies</div>
+  <h2>Question Types & How to Attack Them</h2>
+
+  <div class="strat open" onclick="this.classList.toggle('open')">
+    <div class="strat-header">
+      <div class="strat-icon">🎭</div>
+      <div class="strat-title">Rhetorical Purpose Questions</div>
+      <div class="strat-arrow">▼</div>
+    </div>
+    <div class="strat-body"><div class="strat-content">
+      <p>These questions ask <em>why</em> the author made a specific choice. Common phrasings: "The author most likely includes the example of X in order to…" or "The primary function of the third sentence is to…"</p>
+      <h4 style="margin-top:14px">The 4-Step Purpose Analysis</h4>
+      <ol style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8;margin-bottom:14px">
+        <li><strong style="color:var(--craft)">Locate</strong> the specific element the question asks about.</li>
+        <li><strong style="color:var(--info)">Look at what comes before and after</strong> — purpose is always about context. What claim or point does this element serve?</li>
+        <li><strong style="color:var(--express)">Ask: What would be LOST</strong> if this element were removed? That tells you its purpose.</li>
+        <li><strong style="color:var(--purple)">Match your analysis</strong> to the answer choices. Beware of answers that describe what the element <em>says</em> rather than what it <em>does</em>.</li>
+      </ol>
+      <div class="callout"><strong>Key Distinction:</strong> "What it says" ≠ "What it does." A statistic might <em>say</em> "37% of coral reefs have bleached" but it <em>does</em> "provide quantitative evidence supporting the claim that coral degradation is widespread."</div>
+      <h4 style="margin-top:14px">Common Rhetorical Purposes</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.88rem;color:#ccc">
+        <div class="example example-purple">Illustrate a claim with a specific example</div>
+        <div class="example example-purple">Concede a counterargument before refuting it</div>
+        <div class="example example-purple">Provide evidence for a preceding assertion</div>
+        <div class="example example-purple">Introduce a complication or nuance</div>
+        <div class="example example-purple">Transition between ideas</div>
+        <div class="example example-purple">Establish the significance of a finding</div>
+        <div class="example example-purple">Challenge a commonly held assumption</div>
+        <div class="example example-purple">Qualify or limit an earlier claim</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="strat" onclick="this.classList.toggle('open')">
+    <div class="strat-header">
+      <div class="strat-icon">🏗️</div>
+      <div class="strat-title">Text Structure Questions</div>
+      <div class="strat-arrow">▼</div>
+    </div>
+    <div class="strat-body"><div class="strat-content">
+      <p>These questions ask how a passage is organized or how one part relates to the whole.</p>
+      <h4 style="margin-top:14px">The 6 Common SAT Structures</h4>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+        <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">Claim → Evidence</div>Author states a position, then provides supporting data, examples, or expert testimony.</div>
+        <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">Problem → Solution</div>Presents a challenge, then describes how it was (or could be) addressed.</div>
+        <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">Cause → Effect</div>Describes an event or condition and traces its consequences.</div>
+        <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">Compare / Contrast</div>Examines similarities and/or differences between two or more things.</div>
+        <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">Chronological / Narrative</div>Presents events or developments in time order.</div>
+        <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">Concession → Rebuttal</div>Acknowledges a counterpoint ("While X is true…") then argues against it ("however, Y…").</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="strat" onclick="this.classList.toggle('open')">
+    <div class="strat-header">
+      <div class="strat-icon">🎨</div>
+      <div class="strat-title">Tone & Word Choice Questions</div>
+      <div class="strat-arrow">▼</div>
+    </div>
+    <div class="strat-body"><div class="strat-content">
+      <p>These questions ask you to characterize the author's attitude or explain why a particular word was chosen. The key is having <strong>precise vocabulary for describing tone</strong>.</p>
+      <h4 style="margin-top:14px">The Tone Spectrum</h4>
+      <p>Most SAT tone answers fall on a spectrum from negative to positive. The trick is choosing the answer with the <strong>right intensity</strong> — the SAT almost always prefers moderate tones.</p>
+      <div style="background:var(--paper);border-radius:10px;padding:16px;margin:12px 0;text-align:center">
+        <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:6px">
+          <span>STRONGLY NEGATIVE</span><span>NEUTRAL</span><span>STRONGLY POSITIVE</span>
+        </div>
+        <div style="height:8px;border-radius:4px;background:linear-gradient(90deg,var(--wrong),var(--express) 30%,var(--muted) 50%,var(--info) 70%,var(--correct));margin-bottom:8px"></div>
+        <div style="display:flex;justify-content:space-between;font-size:.8rem;color:#ccc">
+          <span>scornful</span><span>skeptical</span><span>objective</span><span>cautiously optimistic</span><span>enthusiastic</span>
+        </div>
+      </div>
+      <div class="callout"><strong>SAT Trap:</strong> Wrong answers often have the right direction but wrong intensity. If the author is "cautiously optimistic," wrong answers will be "wildly enthusiastic" or "deeply skeptical." Match the intensity precisely.</div>
+    </div></div>
+  </div>
+
+  <div class="strat" onclick="this.classList.toggle('open')">
+    <div class="strat-header">
+      <div class="strat-icon">🔗</div>
+      <div class="strat-title">Synthesis & Dual-Passage Questions</div>
+      <div class="strat-arrow">▼</div>
+    </div>
+    <div class="strat-body"><div class="strat-content">
+      <p>Some SAT questions present two related texts or data + text and ask you to connect them.</p>
+      <h4 style="margin-top:14px">Strategy for Paired Texts</h4>
+      <ol style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8;margin-bottom:14px">
+        <li>Read Text 1 completely. Identify its main claim.</li>
+        <li>Read Text 2 completely. Identify its main claim.</li>
+        <li>Before looking at answers, ask: <strong>How do these two claims relate?</strong></li>
+      </ol>
+      <h4>Common Relationships</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.88rem;color:#ccc">
+        <div class="example example-neutral"><strong>Agreement:</strong> Text 2 supports or extends Text 1's argument.</div>
+        <div class="example example-neutral"><strong>Disagreement:</strong> Text 2 challenges or contradicts Text 1.</div>
+        <div class="example example-neutral"><strong>Qualification:</strong> Text 2 partially agrees but adds limits or conditions.</div>
+        <div class="example example-neutral"><strong>Different Scope:</strong> Same topic, different aspects or perspectives.</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+<!-- TONE VOCABULARY BUILDER -->
+<div class="section">
+  <div class="section-label">Interactive Tool</div>
+  <h2>Tone Vocabulary Builder</h2>
+  <p>The SAT uses specific words to describe tone. Click each card to reveal the definition and example. Master these 16 words and you'll nail every tone question.</p>
+  <div class="tone-grid" id="toneGrid"></div>
+</div>
+
+<!-- STRUCTURE MATCHING EXERCISE -->
+<div class="section">
+  <div class="section-label">Interactive Exercise</div>
+  <h2>Structure Identification</h2>
+  <p>Read each passage excerpt and identify its organizational structure.</p>
+  <div class="match-exercise" id="matchExercise"></div>
+  <div id="matchScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
+</div>
+
+<!-- PURPOSE ANALYZER -->
+<div class="section">
+  <div class="section-label">Interactive Exercise</div>
+  <h2>Rhetorical Purpose Analyzer</h2>
+  <p>Work through these passages step-by-step to identify rhetorical purpose.</p>
+  <div id="analyzers"></div>
+</div>
+
+<!-- PRACTICE QUESTIONS -->
+<div class="section">
+  <div class="section-label">Practice</div>
+  <h2>SAT-Style Practice Questions</h2>
+  <p>Apply everything from this module. 6 questions across all question types.</p>
+  <div id="practiceQs"></div>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>"What it says" ≠ "What it does." Rhetorical purpose is about function, not content.</li>
+      <li>For purpose questions: look at what comes before and after, and ask what would be lost without it.</li>
+      <li>Know the 6 common text structures — they appear repeatedly on the SAT.</li>
+      <li>Tone answers require precise vocabulary. Match both direction AND intensity.</li>
+      <li>For paired texts: identify each text's claim FIRST, then determine the relationship.</li>
+      <li>The SAT rewards moderate, nuanced answers. Extreme tones are almost always wrong.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- HOMEWORK -->
+<div class="section">
+  <div class="section-label">Before Next Session</div>
+  <h2>Homework</h2>
+  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
+    <p><strong style="color:var(--ink)">1. Master the Tone Cards</strong> — Flip through all 16 tone words above until you can define each one from memory.</p>
+    <p><strong style="color:var(--ink)">2. Practice 10 Rhetoric/Purpose Questions</strong> — For each, explicitly identify: what does this element DO in the passage? Don't summarize what it says.</p>
+    <p><strong style="color:var(--ink)">3. Structure Hunt</strong> — Read 3 articles from the reading list. For each, identify which of the 6 structures the author uses.</p>
+    <p style="margin:0"><strong style="color:var(--ink)">4. Continue Daily Reading</strong> — 30 minutes. When you notice an interesting example or statistic, ask: why did the author include this here?</p>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-5.html">← Module 5: Reading</a>
+  <a href="module-7.html">Module 7: Strategy →</a>
+</div>
+</div>
+
+<script>
+// ============ TONE VOCABULARY ============
+const TONES=[
+  {word:'Skeptical',hint:'doubtful',def:'Questioning or doubtful; not easily convinced.',ex:'"While the study claims a breakthrough, the small sample size warrants caution."'},
+  {word:'Laudatory',hint:'praising',def:'Expressing enthusiastic praise or admiration.',ex:'"Her groundbreaking work has fundamentally transformed the field."'},
+  {word:'Ambivalent',hint:'mixed',def:'Having mixed or conflicting feelings about something.',ex:'"The policy has clear economic benefits, though its environmental costs give pause."'},
+  {word:'Sardonic',hint:'mocking',def:'Grimly mocking or cynical; dryly humorous.',ex:'"The committee\'s solution was, predictably, to form another committee."'},
+  {word:'Reverent',hint:'deeply respectful',def:'Showing deep respect or awe.',ex:'"The ancient cathedral, standing for eight centuries, commands silent admiration."'},
+  {word:'Dismissive',hint:'rejecting',def:'Treating something as unworthy of consideration.',ex:'"Such claims lack any credible scientific basis whatsoever."'},
+  {word:'Objective',hint:'neutral',def:'Presenting facts without emotional bias or personal opinion.',ex:'"The population increased by 3.2% between 2010 and 2020."'},
+  {word:'Wistful',hint:'gently sad',def:'Having a feeling of gentle sadness or longing.',ex:'"She recalled the summers of her childhood, when the orchards still bloomed."'},
+  {word:'Pragmatic',hint:'practical',def:'Dealing with things sensibly and realistically.',ex:'"Rather than pursuing an ideal solution, the team focused on what was achievable."'},
+  {word:'Indignant',hint:'offended anger',def:'Feeling or showing anger at perceived unfairness.',ex:'"That such conditions persist in a nation of this wealth is unconscionable."'},
+  {word:'Measured',hint:'careful/restrained',def:'Careful and restrained; deliberately moderate.',ex:'"While promising, these early results should be interpreted with appropriate caution."'},
+  {word:'Effusive',hint:'overflowing praise',def:'Expressing feelings of gratitude or pleasure in an unrestrained way.',ex:'"An absolutely magnificent achievement that will be remembered for generations!"'},
+  {word:'Didactic',hint:'instructional',def:'Intending to teach or instruct, sometimes excessively so.',ex:'"Students must understand that thesis statements require three components."'},
+  {word:'Whimsical',hint:'playfully imaginative',def:'Playfully quaint or fanciful; acting on impulse.',ex:'"What if, the scientist mused, the universe were a vast sheet of bubble wrap?"'},
+  {word:'Candid',hint:'honest/blunt',def:'Truthful and straightforward; frank.',ex:'"The program has failed. Pretending otherwise wastes everyone\'s time."'},
+  {word:'Conciliatory',hint:'peace-making',def:'Intended to pacify or reconcile; willing to compromise.',ex:'"Both sides raise valid concerns, and a workable compromise is within reach."'},
+];
+
+function renderTones(){
+  document.getElementById('toneGrid').innerHTML=TONES.map((t,i)=>`
+    <div class="tone-card" onclick="this.classList.toggle('flipped')" id="tc${i}">
+      <div class="tone-flip-hint">tap to flip</div>
+      <div class="tone-front">
+        <div class="tone-word">${t.word}</div>
+        <div class="tone-hint">${t.hint}</div>
+      </div>
+      <div class="tone-back">
+        <div class="tone-def">${t.def}</div>
+        <div class="tone-example">${t.ex}</div>
+      </div>
+    </div>
+  `).join('');
+}
+renderTones();
+
+// ============ STRUCTURE MATCHING ============
+const MATCHES=[
+  {passage:'Rising sea temperatures have caused widespread coral bleaching in the Great Barrier Reef. As a result, fish populations that depend on coral for shelter have declined by 40%, and local fishing communities have seen their annual catch drop significantly.',
+   correct:'Cause → Effect',
+   options:['Claim → Evidence','Cause → Effect','Problem → Solution','Compare / Contrast'],
+   fb:'The passage describes a cause (rising temperatures → bleaching) and traces its cascading effects (fish decline → fishing community impact).'},
+  {passage:'While some critics argue that standardized testing unfairly disadvantages students from low-income backgrounds, proponents contend that such tests provide the only objective, comparable measure of academic readiness across diverse school systems.',
+   correct:'Compare / Contrast',
+   options:['Chronological','Cause → Effect','Compare / Contrast','Problem → Solution'],
+   fb:'The passage presents two opposing viewpoints ("some critics argue" vs. "proponents contend") on the same topic.'},
+  {passage:'Urban heat islands — areas where dense construction absorbs and re-emits solar energy — pose serious health risks in cities. A growing number of municipalities have begun mandating reflective roofing materials and expanding urban tree canopies to mitigate the effect.',
+   correct:'Problem → Solution',
+   options:['Claim → Evidence','Cause → Effect','Concession → Rebuttal','Problem → Solution'],
+   fb:'First sentence establishes the problem (urban heat islands → health risks), second describes solutions (reflective roofs, tree canopies).'},
+  {passage:'Linguist Noam Chomsky has long argued that humans possess an innate capacity for language acquisition. His evidence includes the observation that children across all cultures acquire grammar at roughly the same developmental stages, regardless of the complexity of their native language.',
+   correct:'Claim → Evidence',
+   options:['Claim → Evidence','Problem → Solution','Compare / Contrast','Chronological'],
+   fb:'First sentence states the claim (innate language capacity). Second provides the evidence (universal developmental stages).'},
+  {passage:'Admittedly, the initial cost of solar panel installation remains prohibitive for many homeowners. However, when long-term energy savings, federal tax credits, and increased property values are factored in, solar energy represents a net financial benefit within seven years for the average household.',
+   correct:'Concession → Rebuttal',
+   options:['Problem → Solution','Cause → Effect','Claim → Evidence','Concession → Rebuttal'],
+   fb:'"Admittedly" signals a concession (high cost), then "However" introduces the rebuttal (long-term benefits outweigh costs).'},
+];
+
+let matchAnswered={};
+function renderMatches(){
+  document.getElementById('matchExercise').innerHTML=MATCHES.map((m,i)=>{
+    const ans=matchAnswered[i];
+    const hasAns=ans!==undefined;
+    return `
+    <div class="match-pair">
+      <div class="match-passage">${m.passage}</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-options">
+          ${m.options.map(opt=>{
+            let cls='match-opt';
+            if(hasAns){
+              cls+=' m-disabled';
+              if(opt===m.correct)cls+=' m-correct';
+              else if(opt===ans&&opt!==m.correct)cls+=' m-wrong';
+            }
+            return `<div class="${cls}" onclick="answerMatch(${i},'${opt}')">${opt}</div>`;
+          }).join('')}
+        </div>
+        <div class="match-fb${hasAns?' show':''}">${hasAns?m.fb:''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  updateMatchScore();
+}
+function answerMatch(i,choice){
+  if(matchAnswered[i]!==undefined)return;
+  matchAnswered[i]=choice;
+  renderMatches();
+}
+function updateMatchScore(){
+  const t=MATCHES.length,a=Object.keys(matchAnswered).length;
+  const c=Object.entries(matchAnswered).filter(([i,v])=>v===MATCHES[i].correct).length;
+  const el=document.getElementById('matchScore');
+  if(a===t)el.innerHTML=`<strong style="color:${c>=4?'var(--correct)':c>=3?'var(--express)':'var(--wrong)'}">${c}/${t} correct</strong> — ${c>=4?'Excellent structure recognition!':c>=3?'Good work — review the ones you missed.':'Keep studying the 6 structures and try again.'}`;
+  else el.textContent=`${a}/${t} completed`;
+}
+renderMatches();
+
+// ============ PURPOSE ANALYZERS ============
+const ANALYZERS=[
+  {passage:`Economist Ha-Joon Chang argues that free trade policies, contrary to popular belief, were not the primary driver of economic growth in today's wealthy nations. He notes that the United States, for example, maintained some of the highest tariff rates in the world throughout the 19th century — the very period during which it industrialized most rapidly. <u>Chang suggests that developed nations are now "kicking away the ladder" by pressuring developing countries to adopt the free trade policies that they themselves never followed.</u>`,
+   steps:[
+     {label:'Step 1: What is the underlined sentence about?',labelClass:'step1',
+      options:['Free trade policies in general','Developed nations\' hypocrisy on trade policy','U.S. tariff rates in the 1800s','Economic growth in developing nations'],
+      correct:1,fb:'The sentence describes how developed nations are pressuring others to follow rules they didn\'t follow themselves — hypocrisy on trade policy.'},
+     {label:'Step 2: What comes before it?',labelClass:'step2',
+      options:['A counterexample that weakens Chang\'s argument','Evidence (U.S. tariffs) supporting Chang\'s claim','A concession to the opposing view','A chronological history of trade'],
+      correct:1,fb:'The U.S. tariff example provides historical evidence that wealthy nations did NOT use free trade to grow — supporting Chang\'s argument.'},
+     {label:'Step 3: What would be LOST without this sentence?',labelClass:'step3',
+      options:['The historical evidence','The emotional appeal of the argument','The broader implication and critique of current policy','The definition of free trade'],
+      correct:2,fb:'Without it, we\'d have a historical claim but no connection to the present. The sentence extends the argument from history to current policy critique.'},
+     {label:'Step 4: What is its RHETORICAL PURPOSE?',labelClass:'step4',
+      options:['To define "free trade" for the reader','To concede that free trade has some benefits','To extend the historical argument into a critique of current policy','To provide statistical evidence for Chang\'s claim'],
+      correct:2,fb:'The sentence takes the historical evidence and draws a present-day implication — that current policies are hypocritical. It extends and sharpens the argument.'},
+   ]},
+  {passage:`A 2022 study published in <em>Nature</em> examined the hunting behavior of sperm whales using acoustic tags attached to 23 individuals across three ocean basins. The researchers found that sperm whales hunt cooperatively, using coordinated clicking patterns to herd prey into dense clusters before feeding. <u>Remarkably, different whale populations appeared to use distinct "dialects" of clicking patterns, suggesting that hunting strategies may be culturally transmitted rather than purely instinctive.</u>`,
+   steps:[
+     {label:'Step 1: What is the underlined sentence about?',labelClass:'step1',
+      options:['The acoustic tags used in the study','The cooperative hunting behavior','Distinct clicking dialects suggesting cultural transmission','The number of whales studied'],
+      correct:2,fb:'The sentence introduces the idea that different populations use different "dialects," pointing to cultural (learned) rather than instinctive behavior.'},
+     {label:'Step 2: What comes before it?',labelClass:'step2',
+      options:['A finding about cooperative hunting with clicking patterns','A critique of previous whale research','A description of the ocean environments','A definition of cultural transmission'],
+      correct:0,fb:'The previous sentence describes the basic finding: cooperative hunting with coordinated clicking.'},
+     {label:'Step 3: What would be LOST without this sentence?',labelClass:'step3',
+      options:['The methodology of the study','The most surprising and significant finding','The location of the study','The basic description of whale behavior'],
+      correct:1,fb:'The word "Remarkably" signals this is the most striking finding. Without it, we\'d know whales click together — but not the deeper implication about culture.'},
+     {label:'Step 4: What is its RHETORICAL PURPOSE?',labelClass:'step4',
+      options:['To describe the study\'s methodology','To present the study\'s most significant finding and its broader implication','To challenge previous research on whale communication','To provide a counterargument to the cooperative hunting claim'],
+      correct:1,fb:'The sentence elevates the passage from a behavioral finding to a much bigger implication — that whale behavior may be cultural, not just instinctive.'},
+   ]},
+];
+
+let azState={};
+function renderAnalyzers(){
+  document.getElementById('analyzers').innerHTML=ANALYZERS.map((a,ai)=>`
+    <div class="analyzer">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px">Passage ${ai+1}</h3>
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:12px">Work through all 4 steps in order.</div>
+      <div class="analyzer-passage">${a.passage}</div>
+      ${a.steps.map((s,si)=>{
+        const key=ai+'_'+si;
+        const ans=azState[key];
+        const hasAns=ans!==undefined;
+        const prevDone=si===0||azState[ai+'_'+(si-1)]!==undefined;
+        return `
+        <div class="analyzer-step" style="${!prevDone?'opacity:.4;pointer-events:none':''}">
+          <div class="analyzer-step-label ${s.labelClass}">${s.label}</div>
+          <div class="az-options">
+            ${s.options.map((opt,oi)=>{
+              let cls='az-opt';
+              if(hasAns){
+                cls+=' az-disabled';
+                if(oi===s.correct)cls+=' az-correct';
+                else if(oi===ans&&oi!==s.correct)cls+=' az-wrong';
+              }
+              return `<div class="${cls}" onclick="answerAz(${ai},${si},${oi})">${opt}</div>`;
+            }).join('')}
+          </div>
+          <div class="az-fb${hasAns?' show':''}${hasAns?(ans===s.correct?' fb-correct':' fb-wrong'):''}">${hasAns?(ans===s.correct?'✓ ':'✗ ')+s.fb:''}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  `).join('');
+}
+function answerAz(ai,si,oi){
+  const key=ai+'_'+si;
+  if(azState[key]!==undefined)return;
+  azState[key]=oi;
+  renderAnalyzers();
+}
+renderAnalyzers();
+
+// ============ PRACTICE QUESTIONS ============
+const PQS=[
+  {id:'pq1',badge:'Rhetorical Purpose',badgeClass:'badge-rhetoric',
+   passage:'Historian Frederick Jackson Turner\'s "frontier thesis," first presented in 1893, argued that American democracy was shaped not by European traditions but by the experience of settling the western frontier. While the thesis has been criticized for ignoring the experiences of women, Native Americans, and other marginalized groups, it remains one of the most influential frameworks in American historiography, continuing to generate scholarly debate more than a century after its introduction.',
+   question:'The author mentions criticisms of Turner\'s thesis primarily in order to:',
+   choices:[
+     {letter:'A',text:'argue that the frontier thesis should be abandoned in favor of newer frameworks.',correct:false},
+     {letter:'B',text:'acknowledge the thesis\'s limitations while affirming its continued scholarly significance.',correct:true},
+     {letter:'C',text:'provide evidence that American democracy was shaped by European traditions.',correct:false},
+     {letter:'D',text:'explain why the thesis was not widely accepted when first presented.',correct:false},
+   ],
+   explanations:{
+     A:{text:'The passage says the thesis "remains one of the most influential" — the author isn\'t calling for abandonment.'},
+     B:{text:'The "While…it remains" structure concedes limitations but then affirms lasting importance. Classic concession-rebuttal. ✓'},
+     C:{text:'The passage doesn\'t argue for European influence — it describes Turner\'s argument against it.'},
+     D:{text:'The passage says nothing about the thesis\'s initial reception.'},
+   }},
+  {id:'pq2',badge:'Tone',badgeClass:'badge-tone',
+   passage:'The city council\'s proposal to replace the century-old oak trees lining Elm Street with "low-maintenance ornamental shrubs" reflects a troubling pattern of prioritizing short-term convenience over long-term community value. These trees, which have sheltered generations of residents and define the street\'s character, deserve more than a cost-benefit analysis conducted on a spreadsheet.',
+   question:'Which choice best describes the tone of the passage?',
+   choices:[
+     {letter:'A',text:'Objective and analytical',correct:false},
+     {letter:'B',text:'Indignant and critical',correct:true},
+     {letter:'C',text:'Wistful and nostalgic',correct:false},
+     {letter:'D',text:'Dismissive and contemptuous',correct:false},
+   ],
+   explanations:{
+     A:{text:'The passage takes a clear position ("troubling pattern") — not objective.'},
+     B:{text:'"Troubling pattern," "deserve more than," and the sarcastic quotation marks around "low-maintenance ornamental shrubs" signal anger at perceived unfairness. ✓'},
+     C:{text:'There\'s nostalgia ("sheltered generations"), but the dominant tone is criticism, not gentle sadness.'},
+     D:{text:'Too extreme — the author is upset but engages seriously with the issue, not dismissing it.'},
+   }},
+  {id:'pq3',badge:'Structure',badgeClass:'badge-structure',
+   passage:'For decades, astronomers assumed that most galaxies harbored supermassive black holes at their centers. Recent observations from the James Webb Space Telescope have not only confirmed this assumption but revealed something unexpected: some of these black holes appear to have formed before the galaxies themselves, challenging the prevailing model in which galaxies form first and black holes develop later.',
+   question:'Which choice best describes the overall structure of the text?',
+   choices:[
+     {letter:'A',text:'It presents a long-held assumption, then describes a discovery that both confirms and complicates it.',correct:true},
+     {letter:'B',text:'It contrasts two competing scientific theories and argues in favor of one.',correct:false},
+     {letter:'C',text:'It describes a problem in astronomical research and proposes a solution.',correct:false},
+     {letter:'D',text:'It presents findings in chronological order from earliest to most recent.',correct:false},
+   ],
+   explanations:{
+     A:{text:'Perfect match: assumption (galaxies have black holes) → confirmation + complication (black holes may have formed first). ✓'},
+     B:{text:'Only one "theory" is described. The new finding challenges it but doesn\'t present a competing theory.'},
+     C:{text:'No problem is identified and no solution is proposed.'},
+     D:{text:'The passage is organized conceptually (assumption → finding), not as a timeline of discoveries.'},
+   }},
+  {id:'pq4',badge:'Synthesis',badgeClass:'badge-synthesis',
+   passage:'<strong>Text 1:</strong> Psychologist Carol Dweck\'s research on "growth mindset" — the belief that abilities can be developed through effort — has been enormously influential in education. Schools across the country have adopted growth-mindset curricula, and Dweck\'s TED talk has been viewed over 15 million times.<br><br><strong>Text 2:</strong> A 2019 meta-analysis of growth-mindset interventions, examining 29 studies involving over 50,000 students, found that the average effect on academic achievement was "small to negligible." The researchers noted that the strongest effects appeared among low-income students, but even these effects were modest.',
+   question:'Based on both texts, which statement best characterizes the relationship between them?',
+   choices:[
+     {letter:'A',text:'Text 2 provides specific evidence supporting the broad claims made in Text 1.',correct:false},
+     {letter:'B',text:'Text 2 presents findings that complicate the enthusiasm described in Text 1.',correct:true},
+     {letter:'C',text:'Text 2 completely refutes the central claims made in Text 1.',correct:false},
+     {letter:'D',text:'Text 2 addresses a different aspect of education than Text 1.',correct:false},
+   ],
+   explanations:{
+     A:{text:'Text 2 shows "small to negligible" effects — this weakens, not supports, Text 1\'s enthusiasm.'},
+     B:{text:'Text 1 = widespread adoption and enthusiasm. Text 2 = evidence that effects are small. This complicates but doesn\'t fully refute. ✓'},
+     C:{text:'Too strong — Text 2 found small effects and some benefit for low-income students, not zero effect.'},
+     D:{text:'Both texts address growth mindset in education — same topic.'},
+   }},
+  {id:'pq5',badge:'Rhetorical Purpose',badgeClass:'badge-rhetoric',
+   passage:'The Amazon rainforest is often called "the lungs of the Earth," a metaphor that, while evocative, is scientifically misleading. Mature rainforests consume roughly as much oxygen through decomposition as they produce through photosynthesis. The Amazon\'s true climate value lies not in oxygen production but in its role as a massive carbon sink, storing an estimated 150 to 200 billion tons of carbon in its biomass.',
+   question:'The author\'s primary purpose in discussing the "lungs of the Earth" metaphor is to:',
+   choices:[
+     {letter:'A',text:'argue that the Amazon rainforest is not important for the global climate.',correct:false},
+     {letter:'B',text:'correct a common misconception in order to highlight the Amazon\'s actual climate significance.',correct:true},
+     {letter:'C',text:'criticize scientists who have used the metaphor in their research.',correct:false},
+     {letter:'D',text:'explain the process of photosynthesis in tropical forests.',correct:false},
+   ],
+   explanations:{
+     A:{text:'The passage explicitly argues the Amazon IS important — just for carbon storage, not oxygen.'},
+     B:{text:'The author debunks the metaphor ("scientifically misleading") then redirects to the real value (carbon sink). Correct misconception → provide accurate significance. ✓'},
+     C:{text:'The passage doesn\'t mention or criticize scientists.'},
+     D:{text:'Photosynthesis is mentioned briefly as part of the correction, not as the purpose of the passage.'},
+   }},
+  {id:'pq6',badge:'Tone',badgeClass:'badge-tone',
+   passage:'The startup ecosystem\'s fixation on "disruption" has produced, alongside genuine innovations in healthcare and communication, a steady stream of ventures that amount to reinventing services that already work perfectly well — but with an app and a venture-backed marketing budget. One wonders whether the world truly needed a subscription service for artisanal toast.',
+   question:'Which choice best describes the author\'s tone?',
+   choices:[
+     {letter:'A',text:'Bitter and resentful',correct:false},
+     {letter:'B',text:'Entirely dismissive of technological innovation',correct:false},
+     {letter:'C',text:'Sardonic but balanced',correct:true},
+     {letter:'D',text:'Enthusiastically supportive',correct:false},
+   ],
+   explanations:{
+     A:{text:'The humor ("artisanal toast") suggests playful mockery, not bitterness.'},
+     B:{text:'The author acknowledges "genuine innovations in healthcare and communication" — not entirely dismissive.'},
+     C:{text:'Sardonic (dry, mocking humor — "artisanal toast") but balanced (acknowledges real innovations alongside the criticism). ✓'},
+     D:{text:'The passage is clearly critical of much of the startup ecosystem.'},
+   }},
+];
+
+const pqAns={};
+function renderPQs(){
+  document.getElementById('practiceQs').innerHTML=PQS.map(q=>`
+    <div class="pq" id="${q.id}">
+      <div class="pq-badge ${q.badgeClass}">${q.badge}</div>
+      <div class="pq-passage">${q.passage}</div>
+      <div class="pq-question">${q.question}</div>
+      <div class="pq-choices">
+        ${q.choices.map(ch=>{
+          let cls='pq-choice';
+          if(pqAns[q.id]!==undefined){
+            cls+=' disabled';
+            if(ch.correct)cls+=' correct';
+            if(ch.letter===pqAns[q.id]&&!ch.correct)cls+=' wrong';
+          }
+          return `<div class="${cls}" onclick="answerPQ('${q.id}','${ch.letter}')" id="${q.id}_${ch.letter}">
+            <div class="pq-letter">${ch.letter}</div><div>${ch.text}</div></div>`;
+        }).join('')}
+      </div>
+      <div class="pq-explanation${pqAns[q.id]!==undefined?' show':''}${pqAns[q.id]!==undefined?(q.choices.find(c=>c.letter===pqAns[q.id]).correct?' is-correct':' is-wrong'):''}" id="${q.id}_exp">
+        ${pqAns[q.id]!==undefined?buildExp(q,pqAns[q.id]):''}
+      </div>
+    </div>
+  `).join('');
+}
+function buildExp(q,letter){
+  const ok=q.choices.find(c=>c.letter===letter).correct;
+  let h=`<h4>${ok?'✓ Correct!':'✗ Incorrect'}</h4>`;
+  q.choices.forEach(ch=>{
+    const p=ch.correct?'<span style="color:var(--correct)">✓</span>':'<span style="color:var(--wrong)">✗</span>';
+    h+=`<div class="pq-exp-item">${p} <strong>${ch.letter}) ${ch.text}</strong> — ${q.explanations[ch.letter].text}</div>`;
+  });
+  return h;
+}
+function answerPQ(qid,letter){
+  if(pqAns[qid]!==undefined)return;
+  pqAns[qid]=letter;
+  renderPQs();
+}
+renderPQs();
+</script>
+<script src="/translate.js"></script></body>
+</html>

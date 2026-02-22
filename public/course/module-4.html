@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4: Grammar & Conventions II — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:8px;margin-top:20px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+
+/* RULE CARDS */
+.rule{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.rule-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background .15s}
+.rule-header:hover{background:rgba(255,255,255,.03)}
+.rule-num{flex-shrink:0;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.9rem;font-family:'JetBrains Mono',monospace}
+.rule-title{font-weight:700;font-size:1.05rem;flex:1}
+.rule-yield{font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:8px;flex-shrink:0}
+.yield-high{background:var(--correct-bg);color:var(--correct)}
+.yield-med{background:rgba(245,158,11,.12);color:var(--express)}
+.rule-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem;flex-shrink:0}
+.rule.open .rule-arrow{transform:rotate(180deg)}
+.rule-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.rule.open .rule-body{max-height:6000px}
+.rule-content{padding:0 20px 20px}
+
+/* EXAMPLES */
+.example{padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:.9rem;line-height:1.6}
+.example-correct{background:var(--correct-bg);border-left:3px solid var(--correct)}
+.example-wrong{background:var(--wrong-bg);border-left:3px solid var(--wrong)}
+.example-neutral{background:rgba(96,165,250,.08);border-left:3px solid var(--craft)}
+.example-label{font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.example-label.correct{color:var(--correct)}
+.example-label.wrong{color:var(--wrong)}
+
+/* PRACTICE QUESTION */
+.pq{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
+.pq-badge{display:inline-block;background:var(--convention);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px;margin-bottom:12px}
+.pq-passage{background:var(--paper);border-left:3px solid var(--border);padding:14px 16px;border-radius:0 8px 8px 0;font-family:'Cormorant Garamond',serif;font-size:1.02rem;line-height:1.75;margin-bottom:14px;color:#ddd}
+.pq-question{font-weight:600;font-size:.95rem;margin-bottom:14px}
+.pq-choices{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.pq-choice{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;font-size:.93rem}
+.pq-choice:hover:not(.disabled){border-color:var(--accent);background:var(--accent-light)}
+.pq-choice.selected{border-color:var(--accent);background:var(--accent-light)}
+.pq-choice.correct{border-color:var(--correct);background:var(--correct-bg)}
+.pq-choice.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.pq-choice.disabled{pointer-events:none}
+.pq-letter{flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.82rem}
+.pq-choice.selected .pq-letter{background:var(--accent);color:#fff}
+.pq-choice.correct .pq-letter{background:var(--correct);color:#fff}
+.pq-choice.wrong .pq-letter{background:var(--wrong);color:#fff}
+.pq-explanation{padding:14px;border-radius:10px;font-size:.88rem;line-height:1.6;margin-top:10px;display:none}
+.pq-explanation.show{display:block}
+.pq-explanation.is-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.pq-explanation.is-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.pq-explanation h4{margin-bottom:6px}
+.pq-exp-item{margin-bottom:4px}
+
+/* SENTENCE REPAIR WORKSHOP */
+.repair-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;transition:border-color .2s}
+.repair-item.solved{border-color:var(--correct)}
+.repair-sentence{font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.7;margin-bottom:10px;color:#ddd}
+.repair-sentence .error-highlight{background:var(--wrong-bg);color:var(--wrong);padding:1px 4px;border-radius:4px;font-weight:600}
+.repair-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.repair-label{font-size:.82rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.repair-options{display:flex;gap:6px;flex-wrap:wrap}
+.repair-opt{padding:6px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s;font-family:inherit}
+.repair-opt:hover:not(.disabled){border-color:var(--accent);background:var(--accent-light)}
+.repair-opt.selected{border-color:var(--accent);background:var(--accent-light)}
+.repair-opt.opt-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.repair-opt.opt-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.repair-opt.disabled{pointer-events:none;opacity:.7}
+.repair-feedback{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:.85rem;line-height:1.6;display:none}
+.repair-feedback.show{display:block}
+.repair-feedback.fb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.repair-feedback.fb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+
+/* SELF-QUIZ */
+.quiz-box{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:22px;margin-bottom:16px}
+.quiz-box h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:4px}
+.quiz-subtitle{font-size:.85rem;color:var(--muted);margin-bottom:16px}
+.quiz-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.quiz-progress-bar{flex:1;height:6px;background:var(--border);border-radius:3px;margin:0 14px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
+.quiz-score{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--muted)}
+.quiz-q{margin-bottom:16px}
+.quiz-q-text{font-size:1rem;font-weight:500;margin-bottom:12px;line-height:1.6}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;font-size:.9rem}
+.quiz-opt:hover:not(.disabled){border-color:var(--accent);background:var(--accent-light)}
+.quiz-opt.q-selected{border-color:var(--accent);background:var(--accent-light)}
+.quiz-opt.q-correct{border-color:var(--correct);background:var(--correct-bg)}
+.quiz-opt.q-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.quiz-opt.disabled{pointer-events:none}
+.quiz-opt-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
+.quiz-opt.q-selected .quiz-opt-letter{background:var(--accent);color:#fff}
+.quiz-opt.q-correct .quiz-opt-letter{background:var(--correct);color:#fff}
+.quiz-opt.q-wrong .quiz-opt-letter{background:var(--wrong);color:#fff}
+.quiz-fb{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:.85rem;line-height:1.5;display:none}
+.quiz-fb.show{display:block}
+.quiz-fb.qfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.quiz-fb.qfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.quiz-nav{display:flex;justify-content:space-between;margin-top:14px}
+.quiz-results{text-align:center;padding:20px 0}
+.quiz-results .big-score{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:700;margin-bottom:4px}
+.quiz-results .big-score.great{color:var(--correct)}
+.quiz-results .big-score.ok{color:var(--express)}
+.quiz-results .big-score.low{color:var(--wrong)}
+
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24}
+.btn-outline{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.btn-outline:hover{background:var(--accent-light)}
+.btn-sm{padding:8px 16px;font-size:.82rem}
+
+/* REF TABLE */
+.ref-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px}
+.ref-table th,.ref-table td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+.ref-table th{background:var(--surface);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.ref-table td{color:#ccc}
+
+/* NAV */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.repair-controls{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Module 4</div>
+  <h1>Grammar & Conventions II</h1>
+  <p class="subtitle">Precision & Polish — The rules that separate good scores from great ones.</p>
+  <div class="mod-meta">
+    <span>⏱ 60 minutes per session</span>
+    <span>📋 2–3 sessions</span>
+    <span>🔨 Phase 2: Build</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="section">
+  <div class="section-label">Overview</div>
+  <h2>Building on the Foundation</h2>
+  <div class="callout">
+    <strong>Where Module 3 = the basics that earn the most points,</strong> Module 4 = the precision rules that push your score higher. These are the concepts that distinguish a 650 from a 750+.
+  </div>
+  <p>Module 3 covered the highest-yield grammar rules: sentence boundaries, essential/nonessential elements, subject-verb agreement, pronouns, tense, and punctuation marks. This module adds four more rules that appear frequently and reward careful attention to structure.</p>
+</div>
+
+<!-- RULES -->
+<div class="section">
+  <div class="section-label">The 4 Precision Rules</div>
+  <h2>Grammar Rules</h2>
+  <p>Click each rule to expand. These build directly on Module 3.</p>
+  <div id="rules"></div>
+</div>
+
+<!-- SENTENCE REPAIR WORKSHOP -->
+<div class="section">
+  <div class="section-label">Interactive Workshop</div>
+  <h2>Sentence Repair Workshop</h2>
+  <p>Each sentence below contains an error highlighted in <span style="background:var(--wrong-bg);color:var(--wrong);padding:1px 6px;border-radius:4px">red</span>. Choose the correct fix.</p>
+  <div id="repairItems"></div>
+  <div id="repairScore" style="text-align:center;padding:14px 0;font-size:.9rem;color:var(--muted)"></div>
+</div>
+
+<!-- PRACTICE QUESTIONS -->
+<div class="section">
+  <div class="section-label">Practice</div>
+  <h2>SAT-Style Practice Questions</h2>
+  <p>These mirror real Digital SAT question format. Try all 6.</p>
+  <div id="practiceQs"></div>
+</div>
+
+<!-- SELF-QUIZ -->
+<div class="section">
+  <div class="section-label">Self-Assessment</div>
+  <h2>Module 3 + 4 Review Quiz</h2>
+  <p>Test your knowledge of ALL grammar rules from both modules. 10 questions, instant scoring.</p>
+  <div class="quiz-box" id="quizBox"></div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<div class="section">
+  <div class="section-label">Reference</div>
+  <h2>All 10 Grammar Rules — Combined Reference</h2>
+  <p>Modules 3 and 4 combined. Print or screenshot this for studying.</p>
+  <table class="ref-table">
+    <tr><th>#</th><th>Rule</th><th>Quick Test</th><th>Module</th></tr>
+    <tr><td>1</td><td>Sentence Boundaries</td><td>Can each side stand alone?</td><td>3</td></tr>
+    <tr><td>2</td><td>Essential vs. Nonessential</td><td>Remove the phrase — does meaning change?</td><td>3</td></tr>
+    <tr><td>3</td><td>Subject-Verb Agreement</td><td>Trim prepositional phrases to find true subject</td><td>3</td></tr>
+    <tr><td>4</td><td>Pronoun Clarity</td><td>Can it refer to only ONE noun?</td><td>3</td></tr>
+    <tr><td>5</td><td>Verb Tense Consistency</td><td>Dominant tense? Time marker for shift?</td><td>3</td></tr>
+    <tr><td>6</td><td>Colons, Semicolons, Dashes</td><td>Colon = IC + list. Semi = two ICs. Dash = emphasis.</td><td>3</td></tr>
+    <tr><td>7</td><td>Modifier Placement</td><td>Does the modifier sit next to what it describes?</td><td>4</td></tr>
+    <tr><td>8</td><td>Parallel Structure</td><td>All items in a list/comparison share the same form?</td><td>4</td></tr>
+    <tr><td>9</td><td>Possessives & Plurals</td><td>Apostrophe = ownership. No apostrophe = plural. its ≠ it's.</td><td>4</td></tr>
+    <tr><td>10</td><td>Concision & Redundancy</td><td>Can the same meaning be expressed in fewer words?</td><td>4</td></tr>
+  </table>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Modifiers must sit directly next to the word they describe — especially opening phrases.</li>
+      <li>Items in lists, pairs, and comparisons must share the same grammatical form.</li>
+      <li>Apostrophes show ownership, NOT plurals. "It's" always means "it is."</li>
+      <li>When two answers are grammatically correct, choose the more concise one.</li>
+      <li>You now know 10 rules that cover nearly all Standard English Conventions questions on the SAT.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- HOMEWORK -->
+<div class="section">
+  <div class="section-label">Before Next Session</div>
+  <h2>Homework</h2>
+  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
+    <p><strong style="color:var(--ink)">1. Complete the Review Quiz above</strong> — Score at least 8/10 before moving on. Retake if needed.</p>
+    <p><strong style="color:var(--ink)">2. Practice 15 Conventions Questions</strong> — Mix of all types. For each wrong answer, identify which of the 10 rules was being tested.</p>
+    <p><strong style="color:var(--ink)">3. Error Journal</strong> — Start writing down every grammar error you make. Next to each, write the rule number (1–10).</p>
+    <p style="margin:0"><strong style="color:var(--ink)">4. Continue Daily Reading</strong> — 30 minutes. Watch for parallelism and modifier placement in professional writing.</p>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-3.html">← Module 3: Grammar I</a>
+  <a href="module-5.html">Module 5: Reading →</a>
+</div>
+</div>
+
+<script>
+// ============ RULES ============
+const RULES=[
+  {num:7,title:"Modifier Placement",yield:"high yield",yieldClass:"yield-high",
+   content:`
+    <p>A modifier (word, phrase, or clause that describes something) must be placed <strong>directly next to the thing it modifies</strong>. When it isn't, the sentence becomes confusing or absurd.</p>
+    <h4 style="margin-top:14px">The Opening Modifier Rule</h4>
+    <p>When a sentence starts with a descriptive phrase followed by a comma, <strong>the subject immediately after the comma must be what that phrase describes.</strong></p>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Dangling modifier</div><strong>Having studied coral reefs for two decades,</strong> the research paper was finally published.<br><span style="color:var(--muted);font-size:.82rem">→ The paper didn't study coral reefs. Who did? The sentence doesn't say.</span></div>
+    <div class="example example-correct"><div class="example-label correct">✓ Fixed</div><strong>Having studied coral reefs for two decades,</strong> Dr. Vasquez finally published her research paper.<br><span style="color:var(--muted);font-size:.82rem">→ Dr. Vasquez studied the reefs. She comes right after the comma.</span></div>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Misplaced modifier</div>The musician performed a solo <strong>wearing a vintage tuxedo</strong> on a grand piano.<br><span style="color:var(--muted);font-size:.82rem">→ Was the piano wearing the tuxedo?</span></div>
+    <div class="example example-correct"><div class="example-label correct">✓ Fixed</div><strong>Wearing a vintage tuxedo,</strong> the musician performed a solo on a grand piano.</div>
+    <h4 style="margin-top:14px">SAT Strategy</h4>
+    <p>When you see an opening phrase + comma, immediately check: <strong>does the next word logically do/be the thing described?</strong> If not, it's wrong.</p>
+  `},
+  {num:8,title:"Parallel Structure",yield:"high yield",yieldClass:"yield-high",
+   content:`
+    <p>Items in a <strong>list, pair, or comparison</strong> must share the same grammatical form. Mixing forms creates an error.</p>
+    <h4 style="margin-top:14px">Common Patterns</h4>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Not parallel</div>The researcher enjoys <strong>collecting data, to analyze results,</strong> and <strong>publication</strong> of findings.<br><span style="color:var(--muted);font-size:.82rem">→ gerund, infinitive, noun — three different forms.</span></div>
+    <div class="example example-correct"><div class="example-label correct">✓ Parallel</div>The researcher enjoys <strong>collecting</strong> data, <strong>analyzing</strong> results, and <strong>publishing</strong> findings.<br><span style="color:var(--muted);font-size:.82rem">→ gerund, gerund, gerund — all match.</span></div>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Not parallel</div>The policy was praised for its <strong>clarity</strong>, <strong>comprehensiveness</strong>, and for being <strong>easy to implement</strong>.</div>
+    <div class="example example-correct"><div class="example-label correct">✓ Parallel</div>The policy was praised for its <strong>clarity</strong>, <strong>comprehensiveness</strong>, and <strong>ease of implementation</strong>.</div>
+    <h4 style="margin-top:14px">Correlative Conjunctions</h4>
+    <p>These pairs demand parallel structure on BOTH sides:</p>
+    <ul style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8">
+      <li><strong>both…and</strong> → both <em>X</em> and <em>Y</em> (X and Y must match)</li>
+      <li><strong>either…or</strong> / <strong>neither…nor</strong></li>
+      <li><strong>not only…but also</strong></li>
+      <li><strong>whether…or</strong></li>
+    </ul>
+    <div class="example example-wrong"><div class="example-label wrong">✗</div>She <strong>not only</strong> discovered <strong>but also</strong> was documenting the species.</div>
+    <div class="example example-correct"><div class="example-label correct">✓</div>She <strong>not only</strong> discovered <strong>but also</strong> documented the species.</div>
+  `},
+  {num:9,title:"Possessives & Plurals",yield:"medium yield",yieldClass:"yield-med",
+   content:`
+    <p>The SAT loves testing the difference between possessive forms and plain plurals. This is a <strong>free-point rule</strong> if you memorize it.</p>
+    <h4 style="margin-top:14px">The Core Rules</h4>
+    <table class="ref-table" style="margin-top:8px">
+      <tr><th>Form</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><strong>students</strong></td><td>Plural (more than one student)</td><td>The students left.</td></tr>
+      <tr><td><strong>student's</strong></td><td>Singular possessive (one student owns it)</td><td>The student's essay was excellent.</td></tr>
+      <tr><td><strong>students'</strong></td><td>Plural possessive (multiple students own it)</td><td>The students' essays were collected.</td></tr>
+    </table>
+    <h4 style="margin-top:14px">The Big Three Traps</h4>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">it's vs. its</div><strong>it's</strong> = it is (always). <strong>its</strong> = possessive (the dog wagged <em>its</em> tail).</div>
+      <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">who's vs. whose</div><strong>who's</strong> = who is. <strong>whose</strong> = possessive (the scientist <em>whose</em> research…).</div>
+      <div class="example example-neutral"><div class="example-label" style="color:var(--craft)">they're vs. their vs. there</div><strong>they're</strong> = they are. <strong>their</strong> = possessive. <strong>there</strong> = location/existence.</div>
+    </div>
+    <div class="callout" style="margin-top:14px"><strong>Instant test:</strong> Can you replace it with "it is"? → Use <strong>it's</strong>. If not → <strong>its</strong>. This works every single time.</div>
+  `},
+  {num:10,title:"Concision & Redundancy",yield:"medium yield",yieldClass:"yield-med",
+   content:`
+    <p>When two or more answer choices are grammatically correct, the SAT almost always prefers the <strong>most concise option</strong>. Wordiness is an error.</p>
+    <h4 style="margin-top:14px">Types of Wordiness</h4>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Redundancy</div>The biography tells the story of her <strong>past history</strong> and early life.<br><span style="color:var(--muted);font-size:.82rem">→ "History" is already about the past. "Past history" is redundant.</span></div>
+    <div class="example example-correct"><div class="example-label correct">✓ Concise</div>The biography tells the story of her history and early life.</div>
+    <div class="example example-wrong"><div class="example-label wrong">✗ Unnecessary words</div>Due to the fact that the experiment failed, the team had to start over.</div>
+    <div class="example example-correct"><div class="example-label correct">✓ Concise</div>Because the experiment failed, the team had to start over.</div>
+    <h4 style="margin-top:14px">Common Redundancies on the SAT</h4>
+    <ul style="padding-left:18px;color:#ccc;font-size:.9rem;line-height:1.8">
+      <li><s style="color:var(--muted)">past history</s> → history</li>
+      <li><s style="color:var(--muted)">advance planning</s> → planning</li>
+      <li><s style="color:var(--muted)">cooperate together</s> → cooperate</li>
+      <li><s style="color:var(--muted)">consensus of opinion</s> → consensus</li>
+      <li><s style="color:var(--muted)">refer back</s> → refer</li>
+      <li><s style="color:var(--muted)">due to the fact that</s> → because</li>
+      <li><s style="color:var(--muted)">in order to</s> → to</li>
+      <li><s style="color:var(--muted)">at this point in time</s> → now / currently</li>
+    </ul>
+    <div class="callout" style="margin-top:14px"><strong>SAT rule of thumb:</strong> If two choices say the same thing, pick the shorter one. The SAT rewards precision.</div>
+  `},
+];
+
+function renderRules(){
+  document.getElementById('rules').innerHTML=RULES.map((r,i)=>`
+    <div class="rule${i===0?' open':''}" onclick="this.classList.toggle('open')">
+      <div class="rule-header">
+        <div class="rule-num">${r.num}</div>
+        <div class="rule-title">${r.title}</div>
+        <span class="rule-yield ${r.yieldClass}">${r.yield}</span>
+        <div class="rule-arrow">▼</div>
+      </div>
+      <div class="rule-body"><div class="rule-content">${r.content}</div></div>
+    </div>
+  `).join('');
+}
+renderRules();
+
+// ============ SENTENCE REPAIR WORKSHOP ============
+const REPAIRS=[
+  {sentence:'<span class="error-highlight">Exhausted from the long flight,</span> the hotel bed looked incredibly inviting to the travelers.',
+   error:'Dangling modifier',
+   options:['the hotel bed looked inviting to the travelers','the travelers found the hotel bed incredibly inviting','it was the hotel bed that looked inviting','the bed, it looked inviting to the travelers'],
+   correct:1,
+   feedback:'The opening phrase "Exhausted from the long flight" must modify a person — "the travelers" must come right after the comma.'},
+  {sentence:'The study examined both the <span class="error-highlight">environmental impact and how economically feasible</span> the proposed dam would be.',
+   error:'Broken parallelism',
+   options:['environmental impact and how economically feasible','environmental impact and economic feasibility','environment\'s impact and the economy\'s feasibility','impact on the environment and if it was feasible'],
+   correct:1,
+   feedback:'"Both X and Y" requires parallel structure. "Environmental impact" (adj+noun) must match "economic feasibility" (adj+noun).'},
+  {sentence:'The orchestra, along with <span class="error-highlight">it\'s</span> guest conductor, performed Beethoven\'s Ninth Symphony.',
+   error:'Possessive error',
+   options:["it's","its","their","they're"],
+   correct:1,
+   feedback:'"It\'s" always means "it is." Here we need the possessive "its" (the orchestra\'s guest conductor).'},
+  {sentence:'Because of the fact that <span class="error-highlight">rainfall amounts were insufficient in quantity,</span> the harvest was poor.',
+   error:'Redundancy',
+   options:['rainfall amounts were insufficient in quantity','the rainfall was insufficient in its amount','rainfall was insufficient','there was not enough rainfall amounts'],
+   correct:2,
+   feedback:'"Amounts" and "in quantity" are redundant with "insufficient." "Rainfall was insufficient" says it all.'},
+  {sentence:'The professor reminded students that <span class="error-highlight">the chapters, which were assigned last week, needs</span> to be read by Friday.',
+   error:'Subject-verb disagreement',
+   options:['the chapters, which were assigned last week, needs','the chapters which was assigned last week need','the chapters, which were assigned last week, need','the chapter, which were assigned last week, needs'],
+   correct:2,
+   feedback:'Subject is "chapters" (plural). Trim the nonessential clause: "the chapters…need." Plural subject → plural verb.'},
+  {sentence:'Neither the director <span class="error-highlight">or</span> the producers were available for comment after the screening.',
+   error:'Correlative conjunction error',
+   options:['or','nor','and','but also'],
+   correct:1,
+   feedback:'"Neither" must be paired with "nor" — never "or." Neither…nor is a fixed correlative pair.'},
+];
+
+let repairAnswered={};
+function renderRepairs(){
+  const c=document.getElementById('repairItems');
+  c.innerHTML=REPAIRS.map((r,i)=>`
+    <div class="repair-item${repairAnswered[i]!==undefined?(repairAnswered[i]===r.correct?' solved':''):''}" id="rep${i}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--convention)">${r.error}</span>
+        <span style="font-size:.78rem;color:var(--muted)">${i+1}/${REPAIRS.length}</span>
+      </div>
+      <div class="repair-sentence">${r.sentence}</div>
+      <div class="repair-controls">
+        <div class="repair-label">Fix:</div>
+        <div class="repair-options">
+          ${r.options.map((opt,j)=>{
+            let cls='repair-opt';
+            if(repairAnswered[i]!==undefined){
+              cls+=' disabled';
+              if(j===r.correct)cls+=' opt-correct';
+              else if(j===repairAnswered[i]&&j!==r.correct)cls+=' opt-wrong';
+            }
+            return `<div class="${cls}" onclick="answerRepair(${i},${j})">${opt}</div>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="repair-feedback${repairAnswered[i]!==undefined?' show':''}${repairAnswered[i]===r.correct?' fb-correct':repairAnswered[i]!==undefined?' fb-wrong':''}" id="repfb${i}">
+        ${repairAnswered[i]!==undefined?(repairAnswered[i]===r.correct?'✓ ':'✗ ')+r.feedback:''}
+      </div>
+    </div>
+  `).join('');
+  updateRepairScore();
+}
+
+function answerRepair(i,j){
+  if(repairAnswered[i]!==undefined)return;
+  repairAnswered[i]=j;
+  renderRepairs();
+}
+
+function updateRepairScore(){
+  const total=REPAIRS.length;
+  const attempted=Object.keys(repairAnswered).length;
+  const correct=Object.entries(repairAnswered).filter(([i,j])=>j===REPAIRS[i].correct).length;
+  const el=document.getElementById('repairScore');
+  if(attempted===total){
+    el.innerHTML=`<strong style="color:${correct>=5?'var(--correct)':correct>=3?'var(--express)':'var(--wrong)'}">${correct}/${total} correct</strong> — ${correct>=5?'Excellent work!':correct>=3?'Good effort — review the ones you missed.':'Keep studying the rules and try again.'}`;
+  }else{
+    el.textContent=`${attempted}/${total} completed`;
+  }
+}
+renderRepairs();
+
+// ============ PRACTICE QUESTIONS ============
+const PQS=[
+  {id:'pq1',badge:'Modifier Placement',
+   passage:'Having been preserved in amber for millions of years, scientists were amazed by the insect specimen\'s level of detail when they examined it under a microscope.',
+   question:'Which choice most effectively corrects the underlined portion?',
+   choices:[
+     {letter:'A',text:'scientists were amazed by the insect specimen\'s level of detail',correct:false},
+     {letter:'B',text:'the insect specimen amazed scientists with its level of detail',correct:true},
+     {letter:'C',text:'amazement was felt by scientists at the insect specimen\'s detail',correct:false},
+     {letter:'D',text:'it was amazing to scientists, the level of detail in the insect specimen',correct:false},
+   ],
+   explanations:{
+     A:{text:'Dangling modifier — "Having been preserved in amber" modifies "scientists," but scientists weren\'t preserved in amber.'},
+     B:{text:'Correct. "The insect specimen" comes right after the comma, properly modified by "Having been preserved in amber." ✓'},
+     C:{text:'Passive and awkward. "Amazement" can\'t be preserved in amber either.'},
+     D:{text:'Vague "it" and awkward construction. Still doesn\'t fix the dangling modifier.'},
+   }},
+  {id:'pq2',badge:'Parallel Structure',
+   passage:'The grant proposal outlined three objectives: developing a new water filtration system, _______ the system in rural communities, and measuring long-term health outcomes.',
+   question:'Which choice completes the text so that it conforms to Standard English?',
+   choices:[
+     {letter:'A',text:'to test',correct:false},
+     {letter:'B',text:'the testing of',correct:false},
+     {letter:'C',text:'testing',correct:true},
+     {letter:'D',text:'they would test',correct:false},
+   ],
+   explanations:{
+     A:{text:'Infinitive ("to test") breaks the gerund pattern (developing…testing…measuring).'},
+     B:{text:'Noun phrase ("the testing of") doesn\'t match the gerund form.'},
+     C:{text:'"Testing" matches the parallel gerund pattern: developing, testing, measuring. ✓'},
+     D:{text:'Full clause breaks the pattern entirely.'},
+   }},
+  {id:'pq3',badge:'Possessives',
+   passage:'The company announced that _______ quarterly earnings exceeded analyst expectations by a significant margin, sending the stock price to a fifty-two-week high.',
+   question:'Which choice completes the text so that it conforms to Standard English?',
+   choices:[
+     {letter:'A',text:"it's",correct:false},
+     {letter:'B',text:'its',correct:true},
+     {letter:'C',text:"its'",correct:false},
+     {letter:'D',text:'their',correct:false},
+   ],
+   explanations:{
+     A:{text:'"It\'s" = "it is." "It is quarterly earnings" doesn\'t make sense.'},
+     B:{text:'"Its" is the possessive form of "it." The company\'s earnings. ✓'},
+     C:{text:'"Its\'" is not a valid English word.'},
+     D:{text:'"Their" is plural but "company" is singular.'},
+   }},
+  {id:'pq4',badge:'Concision',
+   passage:'In the final analysis, the researchers came to the conclusion that there was an__(insufficient amount of evidence)__ to support the original hypothesis.',
+   question:'Which choice is the most concise while maintaining the meaning?',
+   choices:[
+     {letter:'A',text:'insufficient amount of evidence',correct:false},
+     {letter:'B',text:'insufficient evidence',correct:true},
+     {letter:'C',text:'evidence that was not sufficient in amount',correct:false},
+     {letter:'D',text:'not enough evidence to be considered sufficient',correct:false},
+   ],
+   explanations:{
+     A:{text:'"Amount of" is unnecessary — "evidence" is already a quantity.'},
+     B:{text:'Most concise. Says exactly the same thing in fewer words. ✓'},
+     C:{text:'Wordier than the original. Adds nothing.'},
+     D:{text:'Redundant — "not enough" and "to be considered sufficient" say the same thing.'},
+   }},
+  {id:'pq5',badge:'Modifier Placement',
+   passage:'While reviewing the archaeological findings, the pottery fragments _______ to be much older than the team had initially estimated.',
+   question:'Which choice completes the text so that it conforms to Standard English?',
+   choices:[
+     {letter:'A',text:'were determined by the researchers',correct:false},
+     {letter:'B',text:'the researchers determined them',correct:false},
+     {letter:'C',text:'the researchers determined the fragments',correct:true},
+     {letter:'D',text:'a determination was made that they were found',correct:false},
+   ],
+   explanations:{
+     A:{text:'Dangling modifier — "While reviewing" modifies "pottery fragments," but fragments don\'t review findings.'},
+     B:{text:'Creates a comma splice (two independent clauses with no proper join).'},
+     C:{text:'"The researchers" comes right after the comma, properly modified by "While reviewing the archaeological findings." ✓'},
+     D:{text:'Passive, wordy, and still doesn\'t fix the modifier.'},
+   }},
+  {id:'pq6',badge:'Parallel Structure + Concision',
+   passage:'The renovation plan called for the building to be updated with energy-efficient windows, a modernized HVAC system, and _______ throughout all common areas.',
+   question:'Which choice completes the text so that it conforms to Standard English?',
+   choices:[
+     {letter:'A',text:'the installation of LED lighting fixtures',correct:false},
+     {letter:'B',text:'to install LED lighting',correct:false},
+     {letter:'C',text:'LED lighting',correct:true},
+     {letter:'D',text:'they wanted LED lighting installed',correct:false},
+   ],
+   explanations:{
+     A:{text:'Wordy. "The installation of" adds unnecessary words.'},
+     B:{text:'Infinitive breaks the noun pattern (windows, system, lighting).'},
+     C:{text:'Concise noun phrase matching the parallel pattern: windows, system, lighting. ✓'},
+     D:{text:'Full clause breaks parallelism and adds unnecessary words.'},
+   }},
+];
+
+const pqAnswered={};
+function renderPQs(){
+  document.getElementById('practiceQs').innerHTML=PQS.map(q=>`
+    <div class="pq" id="${q.id}">
+      <div class="pq-badge">${q.badge}</div>
+      <div class="pq-passage">${q.passage}</div>
+      <div class="pq-question">${q.question}</div>
+      <div class="pq-choices">
+        ${q.choices.map(ch=>{
+          let cls='pq-choice';
+          if(pqAnswered[q.id]!==undefined){
+            cls+=' disabled';
+            if(ch.correct)cls+=' correct';
+            if(ch.letter===pqAnswered[q.id]&&!ch.correct)cls+=' wrong';
+            if(ch.letter===pqAnswered[q.id])cls+=' selected';
+          }
+          return `<div class="${cls}" onclick="answerPQ('${q.id}','${ch.letter}')" id="${q.id}_${ch.letter}">
+            <div class="pq-letter">${ch.letter}</div><div>${ch.text}</div></div>`;
+        }).join('')}
+      </div>
+      <div class="pq-explanation${pqAnswered[q.id]!==undefined?' show':''}${pqAnswered[q.id]!==undefined?(q.choices.find(c=>c.letter===pqAnswered[q.id]).correct?' is-correct':' is-wrong'):''}" id="${q.id}_exp">
+        ${pqAnswered[q.id]!==undefined?buildPQExp(q,pqAnswered[q.id]):''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildPQExp(q,letter){
+  const isCorrect=q.choices.find(c=>c.letter===letter).correct;
+  let html=`<h4>${isCorrect?'✓ Correct!':'✗ Incorrect'}</h4>`;
+  q.choices.forEach(ch=>{
+    const pfx=ch.correct?'<span style="color:var(--correct)">✓</span>':'<span style="color:var(--wrong)">✗</span>';
+    html+=`<div class="pq-exp-item">${pfx} <strong>${ch.letter}) ${ch.text}</strong> — ${q.explanations[ch.letter].text}</div>`;
+  });
+  return html;
+}
+
+function answerPQ(qid,letter){
+  if(pqAnswered[qid]!==undefined)return;
+  pqAnswered[qid]=letter;
+  renderPQs();
+}
+renderPQs();
+
+// ============ REVIEW QUIZ (10 questions) ============
+const QUIZ=[
+  {q:'A comma splice occurs when two independent clauses are joined by:',
+   opts:['A period','A comma alone','A semicolon','A comma + FANBOYS conjunction'],correct:1,
+   fb:'A comma splice = two independent clauses joined by only a comma, with no coordinating conjunction.'},
+  {q:'In the sentence "The team of researchers have published their findings," what is the error?',
+   opts:['Wrong pronoun','Comma splice','Subject-verb disagreement','No error'],correct:2,
+   fb:'Subject is "team" (singular). Should be "has published." The prepositional phrase "of researchers" doesn\'t change the subject.'},
+  {q:'"Hoping to finish early, the project was submitted ahead of schedule." What\'s wrong?',
+   opts:['Comma splice','Dangling modifier','Verb tense error','Nothing — it\'s correct'],correct:1,
+   fb:'The project wasn\'t "hoping to finish early" — a person was. The subject after the comma must be the one doing the hoping.'},
+  {q:'Which is correct? "The company announced (its / it\'s) new product line."',
+   opts:["it's (it is)","its (possessive)","its' (plural possessive)","Either works"],correct:1,
+   fb:'"Its" is the possessive form. "It\'s" always means "it is" — and "it is new product line" doesn\'t make sense.'},
+  {q:'Choose the parallel version: "The program aims to educate, inspire, and _____ participants."',
+   opts:['the motivation of','to motivate','motivating','motivate'],correct:3,
+   fb:'Pattern: to educate, inspire, and motivate. All base verbs after "to" (shared infinitive marker).'},
+  {q:'"Due to the fact that" should usually be replaced with:',
+   opts:['Since the fact that','Because','In light of the fact','Owing to the reason that'],correct:1,
+   fb:'"Due to the fact that" is wordy. "Because" is the concise equivalent.'},
+  {q:'A colon can be used after:',
+   opts:['Any noun','A dependent clause','An independent clause','A conjunction'],correct:2,
+   fb:'A colon MUST follow an independent clause (complete sentence). It then introduces a list, explanation, or elaboration.'},
+  {q:'"Neither the students nor the teacher (was/were) prepared for the drill." Which verb?',
+   opts:['was','were','has been','had been'],correct:0,
+   fb:'With neither…nor, the verb agrees with the noun closest to it. "Teacher" is singular → "was."'},
+  {q:'Which sentence has a nonessential clause that requires commas?',
+   opts:['Students who study regularly perform better.','My sister who lives in Boston called me.','Dr. Park, who joined the faculty last year, teaches biology.','The car that was parked illegally was towed.'],correct:2,
+   fb:'Dr. Park is already identified by name. "Who joined the faculty last year" is bonus info → nonessential → commas required.'},
+  {q:'"The detective carefully and with great patience examined the evidence." What\'s the error?',
+   opts:['Verb tense','Dangling modifier','Broken parallelism','Redundancy'],correct:2,
+   fb:'"Carefully" (adverb) and "with great patience" (prepositional phrase) aren\'t parallel. Fix: "carefully and patiently."'},
+];
+
+let quizState={current:0,answers:{},submitted:false};
+
+function renderQuiz(){
+  const box=document.getElementById('quizBox');
+  const total=QUIZ.length;
+  const answered=Object.keys(quizState.answers).length;
+
+  if(quizState.submitted){
+    const correct=Object.entries(quizState.answers).filter(([i,a])=>a===QUIZ[i].correct).length;
+    const pct=Math.round(correct/total*100);
+    const cls=correct>=8?'great':correct>=6?'ok':'low';
+    box.innerHTML=`
+      <div class="quiz-results">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px">Quiz Complete!</h3>
+        <div class="big-score ${cls}">${correct}/${total}</div>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:20px">${correct>=8?'Outstanding! You\'ve mastered both grammar modules.':correct>=6?'Good work! Review the rules you missed before moving on.':'Keep studying — review Modules 3 and 4, then retake this quiz.'}</p>
+        <div style="text-align:left;margin-bottom:16px">
+          ${QUIZ.map((q,i)=>{
+            const userAns=quizState.answers[i];
+            const isCorrect=userAns===q.correct;
+            return `<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:.88rem">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                <span style="color:var(--muted)">Q${i+1}</span>
+                <span style="color:${isCorrect?'var(--correct)':'var(--wrong)'};font-weight:700">${isCorrect?'✓ Correct':'✗ Incorrect'}</span>
+              </div>
+              ${!isCorrect?`<div style="color:#ccc;font-size:.82rem;margin-top:2px">${q.fb}</div>`:''}
+            </div>`;
+          }).join('')}
+        </div>
+        <button class="btn btn-sm" onclick="resetQuiz()">Retake Quiz</button>
+      </div>`;
+    return;
+  }
+
+  const q=QUIZ[quizState.current];
+  const i=quizState.current;
+  const userAns=quizState.answers[i];
+  const hasAnswered=userAns!==undefined;
+
+  box.innerHTML=`
+    <h3>📝 Grammar Review Quiz</h3>
+    <p class="quiz-subtitle">Modules 3 + 4 combined — 10 questions</p>
+    <div class="quiz-progress">
+      <span class="quiz-score">Q${i+1}/${total}</span>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${Math.round(answered/total*100)}%"></div></div>
+      <span class="quiz-score">${answered} answered</span>
+    </div>
+    <div class="quiz-q">
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((opt,j)=>{
+          let cls='quiz-opt';
+          if(hasAnswered){
+            cls+=' disabled';
+            if(j===q.correct)cls+=' q-correct';
+            if(j===userAns&&j!==q.correct)cls+=' q-wrong';
+            if(j===userAns)cls+=' q-selected';
+          }
+          return `<div class="${cls}" onclick="answerQuiz(${i},${j})">
+            <div class="quiz-opt-letter">${String.fromCharCode(65+j)}</div><div>${opt}</div></div>`;
+        }).join('')}
+      </div>
+      <div class="quiz-fb${hasAnswered?' show':''}${hasAnswered?(userAns===q.correct?' qfb-correct':' qfb-wrong'):''}" id="quizfb">
+        ${hasAnswered?(userAns===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}
+      </div>
+    </div>
+    <div class="quiz-nav">
+      <button class="btn btn-outline btn-sm" onclick="quizNav(-1)" ${i===0?'disabled style="opacity:.3;pointer-events:none"':''}>← Previous</button>
+      ${hasAnswered&&i<total-1?`<button class="btn btn-sm" onclick="quizNav(1)">Next →</button>`:''}
+      ${answered===total&&!quizState.submitted?`<button class="btn btn-sm" style="background:var(--correct)" onclick="submitQuiz()">See Results</button>`:''}
+    </div>
+  `;
+}
+
+function answerQuiz(i,j){
+  if(quizState.answers[i]!==undefined)return;
+  quizState.answers[i]=j;
+  renderQuiz();
+}
+
+function quizNav(dir){
+  quizState.current=Math.max(0,Math.min(QUIZ.length-1,quizState.current+dir));
+  renderQuiz();
+}
+
+function submitQuiz(){
+  quizState.submitted=true;
+  renderQuiz();
+}
+
+function resetQuiz(){
+  quizState={current:0,answers:{},submitted:false};
+  renderQuiz();
+}
+
+renderQuiz();
+</script>
+<script src="/translate.js"></script></body>
+</html>

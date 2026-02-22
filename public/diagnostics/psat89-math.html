@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSAT 8/9 Math Diagnostic — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--spr:#f59e0b;--spr-bg:rgba(245,158,11,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+.back-to-app{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;cursor:pointer;text-decoration:none;margin-bottom:12px;margin-top:8px}
+.back-to-app:hover{color:var(--accent)}
+.container{max-width:820px;margin:0 auto;padding:20px}
+.landing{text-align:center;padding:60px 20px}
+.landing-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:20px}
+.landing h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3.2rem);margin-bottom:8px}
+.landing .subtitle{color:var(--muted);font-size:1.05rem;margin-bottom:36px}
+.grade-note{background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px;margin:0 auto 28px;max-width:500px;font-size:.9rem;text-align:left}
+.grade-note strong{color:var(--accent)}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;max-width:600px;margin:0 auto 32px;text-align:left}
+.spec-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.spec-card .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px}
+.spec-card .value{font-size:1.1rem;font-weight:600}
+.domain-bar{display:flex;gap:2px;border-radius:8px;overflow:hidden;height:10px;max-width:580px;margin:0 auto 10px}
+.domain-bar div:nth-child(1){flex:32;background:#60a5fa}.domain-bar div:nth-child(2){flex:18;background:#a78bfa}.domain-bar div:nth-child(3){flex:27;background:#34d399}.domain-bar div:nth-child(4){flex:23;background:#fb923c}
+.domain-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:32px;font-size:.85rem}
+.domain-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.domain-legend .alg::before{background:#60a5fa}.domain-legend .adv::before{background:#a78bfa}.domain-legend .psd::before{background:#34d399}.domain-legend .geo::before{background:#fb923c}
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:1rem;font-weight:600;padding:14px 40px;border:none;border-radius:10px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24;transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,16,46,.3)}
+.btn-outline{background:transparent;color:var(--accent);border:2px solid var(--accent)}.btn-outline:hover{background:var(--accent-light);transform:translateY(-1px);box-shadow:none}
+.btn-sm{padding:10px 24px;font-size:.9rem}
+.test-header{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:2px solid var(--ink);margin-bottom:20px}
+.test-header .module-label{font-weight:700;font-size:.95rem}
+.test-header .timer{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:500}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:24px}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.q-nav{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:20px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px}
+.q-nav button{width:30px;height:30px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit}
+.q-nav button.current{background:var(--accent);color:#fff;border-color:var(--accent)}
+.q-nav button.answered{background:var(--accent-light);border-color:var(--accent)}
+.q-nav button.flagged{border-color:#f59e0b;background:rgba(245,158,11,.12)}
+.q-counter{font-size:.85rem;color:var(--muted);margin-bottom:6px}
+.domain-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:12px;margin-bottom:10px}
+.domain-tag.algebra{background:rgba(37,99,235,.15);color:#60a5fa}.domain-tag.advanced{background:rgba(124,58,237,.15);color:#a78bfa}.domain-tag.psda{background:rgba(5,150,105,.15);color:#34d399}.domain-tag.geometry{background:rgba(234,88,12,.15);color:#fb923c}
+.spr-badge{display:inline-block;background:var(--spr-bg);color:var(--spr);font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;margin-left:8px;border-left:3px solid var(--spr)}
+.passage{background:var(--surface);border-left:3px solid var(--border);padding:14px 18px;margin-bottom:16px;border-radius:0 8px 8px 0;font-size:.95rem;line-height:1.7}
+.q-text{font-size:1.1rem;font-weight:500;margin-bottom:20px;line-height:1.6}
+.choices{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.choice{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;background:var(--surface);border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s}
+.choice:hover{border-color:var(--accent);background:var(--accent-light)}
+.choice.selected{border-color:var(--accent);background:var(--accent-light)}
+.choice.correct-choice{border-color:var(--correct);background:var(--correct-bg)}
+.choice.wrong-choice{border-color:var(--wrong);background:var(--wrong-bg)}
+.choice-letter{flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);color:var(--ink);font-weight:700;font-size:.85rem}
+.choice.selected .choice-letter{background:var(--accent);color:#fff}
+.choice.correct-choice .choice-letter{background:var(--correct);color:#fff}
+.choice.wrong-choice .choice-letter{background:var(--wrong);color:#fff}
+.choice-text{padding-top:3px}
+.spr-input{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.spr-input input{font-family:'JetBrains Mono',monospace;font-size:1.2rem;padding:12px 16px;border:2px solid var(--spr);border-radius:10px;background:var(--spr-bg);width:200px;outline:none}
+.spr-input input:focus{box-shadow:0 0 0 3px rgba(234,88,12,.2)}
+.nav-buttons{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
+.flag-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:.85rem;font-family:inherit;display:flex;align-items:center;gap:6px}
+.flag-btn.flagged{border-color:#f59e0b;background:rgba(245,158,11,.12);color:#f59e0b}
+.explanation-box{margin-top:14px;padding:16px;border-radius:10px;font-size:.93rem;line-height:1.6}
+.explanation-box.correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.explanation-box.wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.explanation-box h4{margin-bottom:8px}.exp-item{margin-bottom:6px}
+.reference-sheet{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:14px;margin-bottom:20px;font-size:.88rem}
+.reference-sheet summary{font-weight:700;cursor:pointer;color:#f59e0b}
+.reference-sheet .formulas{margin-top:10px;columns:2;column-gap:20px}
+.reference-sheet .formulas p{margin-bottom:4px;font-family:'JetBrains Mono',monospace;font-size:.82rem;break-inside:avoid}
+.results{text-align:center;padding:40px 0}
+.results h1{font-family:'DM Serif Display',serif;font-size:2.2rem;margin-bottom:6px}
+.score-circle{width:160px;height:160px;border-radius:50%;border:6px solid var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:24px auto}
+.score-circle .score-num{font-family:'DM Serif Display',serif;background:var(--surface);font-size:2.8rem;line-height:1}
+.score-circle .score-range{font-size:.8rem;color:var(--muted)}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:20px 0}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.stat-box .stat-val{font-size:1.5rem;font-weight:700}.stat-box .stat-label{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.domain-results{text-align:left;margin:28px 0}
+.domain-result-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.domain-result-row .dr-name{flex:1;font-weight:600;font-size:.9rem}
+.domain-result-row .dr-bar-wrap{flex:2;height:12px;background:var(--border);border-radius:6px;overflow:hidden}
+.domain-result-row .dr-bar{height:100%;border-radius:6px;transition:width .8s}
+.domain-result-row .dr-score{width:55px;text-align:right;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.9rem}
+.review-section{text-align:left;margin:28px 0}
+.review-section h3{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:14px}
+.review-q{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.review-q .rq-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.review-q .rq-status{font-weight:700;font-size:.85rem}
+.review-q .rq-status.correct{color:var(--correct)}.review-q .rq-status.wrong{color:var(--wrong)}.review-q .rq-status.skipped{color:var(--muted)}
+.reflection-section{text-align:left;margin:28px 0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px}
+.reflection-section h3{font-family:'DM Serif Display',serif;margin-bottom:14px}
+.reflection-q{margin-bottom:14px}
+.reflection-q label{display:block;font-weight:500;margin-bottom:5px;font-size:.93rem}
+.reflection-q textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;resize:vertical;min-height:55px;background:var(--surface);color:var(--ink)}
+@media(max-width:600px){.spec-grid{grid-template-columns:1fr 1fr}.stats-row{grid-template-columns:1fr 1fr}.reference-sheet .formulas{columns:1}.nav-buttons{flex-direction:column}}
+</style>
+</head>
+<body>
+<div style="height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100"></div>
+<div class="container" id="app"></div>
+<script>
+const Q=[
+// ===== MODULE 1 (Q1-22) =====
+// ALGEBRA (Q1-7)
+{num:1,module:1,type:"MC",passage:"",
+question:"If 3x + 7 = 22, what is the value of x?",
+A:"3",B:"5",C:"7",D:"15",correct:"B",domain:"Algebra",skill:"Linear equations in 1 variable",
+explanations:{A:"3(3)+7=16, not 22.",B:"Subtract 7: 3x=15. Divide by 3: x=5. Check: 3(5)+7=22. \u2713",C:"3(7)+7=28, not 22.",D:"15 is the value of 3x, not x."}},
+{num:2,module:1,type:"MC",
+passage:"A gym charges a $50 enrollment fee plus $30 per month.",
+question:"Which equation represents the total cost C after m months?",
+A:"C = 50m + 30",B:"C = 30m + 50",C:"C = 80m",D:"C = 50m \u2212 30",correct:"B",domain:"Algebra",skill:"Linear equations in 2 variables",
+explanations:{A:"$50 is one-time, not monthly. This charges $50 each month.",B:"$30 per month (30m) plus one-time $50 fee. \u2713",C:"80m assumes $80/month with no separation of costs.",D:"Subtracting $30 doesn\u2019t model any real cost."}},
+{num:3,module:1,type:"MC",passage:"",
+question:"What is the slope of the line y = \u22124x + 9?",
+A:"\u22124",B:"4",C:"9",D:"\u22129",correct:"A",domain:"Algebra",skill:"Linear functions",
+explanations:{A:"In y=mx+b, m is the slope. Here m=\u22124. \u2713",B:"4 drops the negative sign.",C:"9 is the y-intercept (b), not the slope.",D:"\u22129 isn\u2019t related to slope or intercept here."}},
+{num:4,module:1,type:"SPR",
+passage:"The system:\nx + y = 8\nx \u2212 y = 2",
+question:"What is the value of x?",
+correct:"5",domain:"Algebra",skill:"Systems of linear equations",
+explanations:{correct:"Add equations: 2x=10, x=5. Then y=3. Check: 5+3=8, 5\u22123=2. \u2713"}},
+{num:5,module:1,type:"MC",
+passage:"A plumber charges $40 for a house call plus $25 per hour of labor.",
+question:"What is the total charge for 3 hours of work?",
+A:"$65",B:"$75",C:"$115",D:"$120",correct:"C",domain:"Algebra",skill:"Linear equations (word problems)",
+explanations:{A:"40+25=65 only counts 1 hour.",B:"25\u00d73=75 forgets the house call fee.",C:"40+25(3)=40+75=115. \u2713",D:"40\u00d73=120 multiplies the wrong amount."}},
+{num:6,module:1,type:"MC",passage:"",
+question:"Which inequality represents 'a number n is at least 12'?",
+A:"n > 12",B:"n < 12",C:"n \u2265 12",D:"n \u2264 12",correct:"C",domain:"Algebra",skill:"Linear inequalities",
+explanations:{A:"'Greater than' excludes 12 itself.",B:"Less than 12 is the opposite.",C:"'At least' means 12 or more: n \u2265 12. \u2713",D:"'At most' would be \u2264, not 'at least.'"}},
+{num:7,module:1,type:"MC",passage:"",
+question:"What is the value of 4(2x \u2212 3) when x = 5?",
+A:"17",B:"28",C:"32",D:"37",correct:"B",domain:"Algebra",skill:"Evaluating expressions",
+explanations:{A:"May have done 2(5)\u22123=7, then forgot to multiply by 4.",B:"2(5)\u22123=7. 4(7)=28. \u2713",C:"4\u00d72(5)=40, 40\u22123=37? Multiple errors.",D:"4(2\u00d75)\u22123=40\u22123=37 \u2014 didn\u2019t distribute correctly."}},
+// ADVANCED MATH (Q8-11)
+{num:8,module:1,type:"MC",passage:"",
+question:"Which expression is equivalent to (x + 3)(x + 5)?",
+A:"x\u00b2 + 8x + 15",B:"x\u00b2 + 15x + 8",C:"x\u00b2 + 8x + 8",D:"2x + 8",correct:"A",domain:"Advanced Math",skill:"Quadratic expressions (FOIL)",
+explanations:{A:"FOIL: x\u00b2+5x+3x+15 = x\u00b2+8x+15. \u2713",B:"Coefficients are swapped.",C:"Constant should be 3\u00d75=15, not 8.",D:"Only added the x-terms, ignoring the x\u00b2 and constant."}},
+{num:9,module:1,type:"MC",passage:"",
+question:"What are the solutions of x\u00b2 \u2212 9 = 0?",
+A:"x = 3 only",B:"x = \u22123 only",C:"x = 3 and x = \u22123",D:"x = 9 and x = \u22129",correct:"C",domain:"Advanced Math",skill:"Solving quadratics",
+explanations:{A:"Only one of two solutions.",B:"Only one of two solutions.",C:"x\u00b2=9 gives x=\u00b13. Or factor: (x+3)(x\u22123)=0. \u2713",D:"9 and \u22129 are the values of x\u00b2, not x."}},
+{num:10,module:1,type:"MC",
+passage:"A population of 500 bacteria doubles every 3 hours.",
+question:"Which expression gives the population after 9 hours?",
+A:"500 + 2(9)",B:"500 \u00d7 2\u00b3",C:"500 \u00d7 9\u00b2",D:"500 \u00d7 3\u00b2",correct:"B",domain:"Advanced Math",skill:"Exponential concepts",
+explanations:{A:"Linear model, not exponential.",B:"9 hours \u00f7 3 hours per doubling = 3 doublings. 500\u00d72\u00b3=500\u00d78=4000. \u2713",C:"Base should be 2 (doubling), not 9.",D:"3\u00b2=9 doesn\u2019t represent doubling."}},
+{num:11,module:1,type:"SPR",passage:"",
+question:"If f(x) = 2x + 1, what is f(6)?",
+correct:"13",domain:"Advanced Math",skill:"Function evaluation",
+explanations:{correct:"f(6)=2(6)+1=12+1=13."}},
+// PS&DA (Q12-17)
+{num:12,module:1,type:"MC",
+passage:"A recipe calls for 2 cups of flour for every 3 cups of sugar.",
+question:"If you use 8 cups of flour, how many cups of sugar do you need?",
+A:"9",B:"10",C:"12",D:"16",correct:"C",domain:"Problem-Solving & Data Analysis",skill:"Ratios and proportions",
+explanations:{A:"No clear mathematical path to 9.",B:"8+2=10? Not a valid proportion approach.",C:"2/3=8/s. Cross multiply: 2s=24, s=12. \u2713",D:"8\u00d72=16 doubles the flour, not the ratio."}},
+{num:13,module:1,type:"MC",
+passage:"A shirt originally costs $40 and is on sale for 25% off.",
+question:"What is the sale price?",
+A:"$10",B:"$15",C:"$25",D:"$30",correct:"D",domain:"Problem-Solving & Data Analysis",skill:"Percentages",
+explanations:{A:"$10 is 25% of $40 \u2014 that\u2019s the discount amount, not the price.",B:"No clear path.",C:"$25 is 40\u221225, subtracting the percentage as dollars.",D:"25% of 40=10. Sale price: 40\u221210=30. Or 40\u00d70.75=30. \u2713"}},
+{num:14,module:1,type:"SPR",
+passage:"A data set has values: 4, 7, 7, 9, 13.",
+question:"What is the mean of this data set?",
+correct:"8",domain:"Problem-Solving & Data Analysis",skill:"Measures of center",
+explanations:{correct:"Sum=4+7+7+9+13=40. Mean=40/5=8."}},
+{num:15,module:1,type:"MC",
+passage:"A class survey asked 30 students about their favorite sport. The results: Basketball 12, Soccer 8, Baseball 6, Other 4.",
+question:"What percentage of students chose Basketball?",
+A:"12%",B:"25%",C:"30%",D:"40%",correct:"D",domain:"Problem-Solving & Data Analysis",skill:"Data interpretation",
+explanations:{A:"12 is the count, not the percentage.",B:"25% would be 7.5 students.",C:"30 is the total students, not a percentage.",D:"12/30=0.40=40%. \u2713"}},
+{num:16,module:1,type:"MC",
+passage:"A scatterplot shows the relationship between hours of study and test scores. The data points generally go upward from left to right.",
+question:"Which best describes the relationship?",
+A:"Negative linear association",B:"Positive linear association",C:"No association",D:"Exponential association",correct:"B",domain:"Problem-Solving & Data Analysis",skill:"Scatterplots",
+explanations:{A:"Negative means downward; the data goes upward.",B:"Upward from left to right = as one variable increases, so does the other. Positive linear. \u2713",C:"A clear upward trend is an association.",D:"The question says 'generally upward' which suggests linear, not curved."}},
+{num:17,module:1,type:"SPR",
+passage:"A bag contains 5 red marbles, 3 blue, and 2 green.",
+question:"What is the probability of randomly drawing a red marble? (Enter as a decimal.)",
+correct:"0.5",domain:"Problem-Solving & Data Analysis",skill:"Probability",
+explanations:{correct:"Total=5+3+2=10. P(red)=5/10=0.5."}},
+// GEOMETRY (Q18-22)
+{num:18,module:1,type:"MC",passage:"",
+question:"A rectangle has length 12 cm and width 5 cm. What is its area?",
+A:"17 cm\u00b2",B:"34 cm\u00b2",C:"60 cm\u00b2",D:"120 cm\u00b2",correct:"C",domain:"Geometry",skill:"Area",
+explanations:{A:"12+5=17 is the semi-perimeter, not area.",B:"2(12+5)=34 is the perimeter.",C:"A=l\u00d7w=12\u00d75=60. \u2713",D:"12\u00d710=120? No mathematical basis."}},
+{num:19,module:1,type:"MC",passage:"",
+question:"Two angles are supplementary. One measures 65\u00b0. What is the other?",
+A:"25\u00b0",B:"65\u00b0",C:"115\u00b0",D:"295\u00b0",correct:"C",domain:"Geometry",skill:"Angles",
+explanations:{A:"90\u221265=25 is the complement, not supplement.",B:"65\u00b0 would make them equal, not supplementary.",C:"Supplementary=180\u00b0. 180\u221265=115. \u2713",D:"360\u221265=295 uses the wrong total."}},
+{num:20,module:1,type:"SPR",passage:"",
+question:"A right triangle has legs of length 6 and 8. What is the hypotenuse?",
+correct:"10",domain:"Geometry",skill:"Pythagorean theorem",
+explanations:{correct:"c\u00b2=6\u00b2+8\u00b2=36+64=100. c=10. (Classic 6-8-10 triple.)"}},
+{num:21,module:1,type:"MC",passage:"",
+question:"A cylinder has radius 3 cm and height 10 cm. What is its volume? (V = \u03c0r\u00b2h)",
+A:"30\u03c0 cm\u00b3",B:"60\u03c0 cm\u00b3",C:"90\u03c0 cm\u00b3",D:"900\u03c0 cm\u00b3",correct:"C",domain:"Geometry",skill:"Volume",
+explanations:{A:"30=3\u00d710, forgot to square the radius.",B:"\u03c0(6)(10)? Used diameter instead of r\u00b2.",C:"V=\u03c0(3)\u00b2(10)=\u03c0(9)(10)=90\u03c0. \u2713",D:"(30)\u00b2\u03c0? Squared the wrong thing."}},
+{num:22,module:1,type:"MC",passage:"",
+question:"In a triangle, two angles measure 45\u00b0 and 70\u00b0. What is the third angle?",
+A:"25\u00b0",B:"45\u00b0",C:"65\u00b0",D:"115\u00b0",correct:"C",domain:"Geometry",skill:"Triangle angle sum",
+explanations:{A:"180\u2212(45+70)=65, not 25.",B:"Not necessarily equal to one of the given angles.",C:"180\u221245\u221270=65. \u2713",D:"45+70=115 is the sum of the given angles, not the missing one."}},
+// ===== MODULE 2 (Q23-44) \u2014 SLIGHTLY HARDER =====
+// ALGEBRA (Q23-29)
+{num:23,module:2,type:"MC",passage:"",
+question:"If 4(x \u2212 2) = 20, what is x?",
+A:"3",B:"5",C:"7",D:"8",correct:"C",domain:"Algebra",skill:"Linear equations in 1 variable",
+explanations:{A:"4(3\u22122)=4, not 20.",B:"4(5\u22122)=12, not 20.",C:"Divide by 4: x\u22122=5. Add 2: x=7. Check: 4(7\u22122)=4(5)=20. \u2713",D:"4(8\u22122)=24, not 20."}},
+{num:24,module:2,type:"MC",
+passage:"A car rental costs $35 per day plus $0.20 per mile driven.",
+question:"What is the cost for a 4-day rental with 150 miles?",
+A:"$140",B:"$155",C:"$170",D:"$200",correct:"C",domain:"Algebra",skill:"Linear equations (word problems)",
+explanations:{A:"35\u00d74=140 forgot the mileage.",B:"Miscalculated mileage cost.",C:"35(4)+0.20(150)=140+30=170. \u2713",D:"No clear mathematical path."}},
+{num:25,module:2,type:"SPR",passage:"",
+question:"What is the y-intercept of the line 2x + y = 10? (Enter the y-value.)",
+correct:"10",domain:"Algebra",skill:"Linear functions",
+explanations:{correct:"Set x=0: 2(0)+y=10, so y=10. The y-intercept is (0,10)."}},
+{num:26,module:2,type:"MC",passage:"",
+question:"Which expression is equivalent to 3(x + 4) \u2212 2(x \u2212 1)?",
+A:"x + 10",B:"x + 14",C:"5x + 10",D:"x + 12",correct:"B",domain:"Algebra",skill:"Equivalent expressions",
+explanations:{A:"Forgot to distribute \u22122 to \u22121: should be +2, giving +14.",B:"3x+12\u22122x+2=x+14. \u2713",C:"Added 3+2=5 for the x coefficient instead of 3\u22122=1.",D:"3(4)\u22122(1)=12\u22122=10? Partial distribution error."}},
+{num:27,module:2,type:"MC",
+passage:"Train A leaves at 8:00 AM going 60 mph. Train B leaves at 9:00 AM going 80 mph on the same route.",
+question:"At what time does Train B catch Train A?",
+A:"11:00 AM",B:"12:00 PM",C:"1:00 PM",D:"2:00 PM",correct:"B",domain:"Algebra",skill:"Systems (word problems)",
+explanations:{A:"At 11 AM: A has gone 3h\u00d760=180mi, B has gone 2h\u00d780=160mi. Not caught up.",B:"At 12 PM: A has gone 4h\u00d760=240mi, B has gone 3h\u00d780=240mi. Equal! \u2713",C:"B would be ahead by 1 PM.",D:"Way past the meeting point."}},
+{num:28,module:2,type:"MC",passage:"",
+question:"If 2x + 5 > 17, which values of x satisfy the inequality?",
+A:"x > 6",B:"x > 11",C:"x > 8.5",D:"x < 6",correct:"A",domain:"Algebra",skill:"Linear inequalities",
+explanations:{A:"Subtract 5: 2x>12. Divide by 2: x>6. \u2713",B:"Only subtracted 5 from 17 without dividing.",C:"(17\u22125)/2=6, not 8.5. Computation error.",D:"Flipped the inequality direction without reason."}},
+{num:29,module:2,type:"SPR",
+passage:"A phone plan costs $20/month plus $0.05 per text. Last month the bill was $27.50.",
+question:"How many texts were sent?",
+correct:"150",domain:"Algebra",skill:"Linear equations (word problems)",
+explanations:{correct:"20+0.05t=27.50. 0.05t=7.50. t=150."}},
+// ADVANCED MATH (Q30-33)
+{num:30,module:2,type:"MC",passage:"",
+question:"Which expression is equivalent to (x \u2212 4)(x + 6)?",
+A:"x\u00b2 + 2x \u2212 24",B:"x\u00b2 \u2212 2x \u2212 24",C:"x\u00b2 + 10x \u2212 24",D:"x\u00b2 \u2212 24",correct:"A",domain:"Advanced Math",skill:"Quadratic expressions (FOIL)",
+explanations:{A:"x\u00b2+6x\u22124x\u221224=x\u00b2+2x\u221224. \u2713",B:"Middle term: 6x+(\u22124x)=+2x, not \u22122x.",C:"Added magnitudes: 6+4=10 instead of 6\u22124=2.",D:"Forgot the middle terms entirely."}},
+{num:31,module:2,type:"MC",passage:"",
+question:"If g(x) = x\u00b2 \u2212 3x, what is g(\u22122)?",
+A:"\u221210",B:"\u22122",C:"2",D:"10",correct:"D",domain:"Advanced Math",skill:"Function evaluation",
+explanations:{A:"(\u22122)\u00b2=+4, not \u22124.",B:"Partial calculation error.",C:"4\u22126=\u22122? But \u22123(\u22122)=+6.",D:"g(\u22122)=(\u22122)\u00b2\u22123(\u22122)=4+6=10. \u2713"}},
+{num:32,module:2,type:"SPR",passage:"",
+question:"What is the positive solution of x\u00b2 = 49?",
+correct:"7",domain:"Advanced Math",skill:"Solving quadratics",
+explanations:{correct:"x\u00b2=49 gives x=\u00b17. The positive solution is 7."}},
+{num:33,module:2,type:"MC",
+passage:"A savings account earns 5% interest per year, compounded annually. The initial deposit is $200.",
+question:"Which expression gives the account balance after t years?",
+A:"200 + 0.05t",B:"200(1.05)\u1d57",C:"200(0.05)\u1d57",D:"200(1.5)\u1d57",correct:"B",domain:"Advanced Math",skill:"Exponential growth",
+explanations:{A:"Linear model \u2014 compound interest is exponential.",B:"Compound: multiply by (1+rate) each year. 200(1.05)\u1d57. \u2713",C:"0.05 alone is the rate, not the growth factor.",D:"1.5 means 50% growth, not 5%."}},
+// PS&DA (Q34-38)
+{num:34,module:2,type:"MC",
+passage:"A survey of 200 students found: 90 prefer pizza, 60 prefer burgers, 35 prefer tacos, 15 prefer salad.",
+question:"What is the ratio of pizza lovers to burger lovers?",
+A:"2:3",B:"3:2",C:"9:4",D:"6:9",correct:"B",domain:"Problem-Solving & Data Analysis",skill:"Ratios",
+explanations:{A:"60:90=2:3 is the inverse.",B:"90:60=3:2. \u2713",C:"90:40 would be 9:4, but burgers=60.",D:"6:9 simplifies to 2:3 \u2014 inverse again."}},
+{num:35,module:2,type:"MC",
+passage:"A data set: 3, 5, 5, 8, 8, 8, 10, 12. ",
+question:"What is the mode of this data set?",
+A:"5",B:"7.375",C:"8",D:"10",correct:"C",domain:"Problem-Solving & Data Analysis",skill:"Measures of center",
+explanations:{A:"5 appears twice, but 8 appears three times.",B:"7.375 is the mean, not the mode.",C:"Mode = most frequent value. 8 appears 3 times. \u2713",D:"10 appears once."}},
+{num:36,module:2,type:"SPR",
+passage:"A map has a scale where 1 inch = 15 miles. Two cities are 4.5 inches apart on the map.",
+question:"What is the actual distance in miles?",
+correct:"67.5",domain:"Problem-Solving & Data Analysis",skill:"Ratios and proportions",
+explanations:{correct:"4.5\u00d715=67.5 miles."}},
+{num:37,module:2,type:"MC",
+passage:"A store raises prices by 10% and then offers a 10% discount on the new price.",
+question:"Is the final price equal to, higher than, or lower than the original?",
+A:"Equal to the original",B:"Higher than the original",C:"Lower than the original",D:"Cannot be determined",correct:"C",domain:"Problem-Solving & Data Analysis",skill:"Percentages",
+explanations:{A:"10% up then 10% down does NOT return to original because the bases are different.",B:"The discount is on a higher base, but the net effect is a loss.",C:"Example: $100\u2192+10%=$110\u2192\u221210%=$99. Final=$99<$100. Always lower. \u2713",D:"It can be determined \u2014 the result is always lower."}},
+{num:38,module:2,type:"MC",
+passage:"A researcher wants to know if a new fertilizer helps plants grow taller. She grows 20 plants with fertilizer and 20 without, measuring height after 4 weeks.",
+question:"What type of study is this?",
+A:"Observational study",B:"Survey",C:"Experiment",D:"Census",correct:"C",domain:"Problem-Solving & Data Analysis",skill:"Study design",
+explanations:{A:"She actively applied a treatment, not just observed.",B:"No questions were asked; growth was measured.",C:"Treatments (fertilizer/no fertilizer) were assigned to groups \u2192 experiment. \u2713",D:"Census measures an entire population, not a sample."}},
+// GEOMETRY (Q39-44)
+{num:39,module:2,type:"MC",passage:"",
+question:"A circle has a diameter of 14 cm. What is its circumference? (C = \u03c0d)",
+A:"7\u03c0 cm",B:"14\u03c0 cm",C:"49\u03c0 cm",D:"196\u03c0 cm",correct:"B",domain:"Geometry",skill:"Circles",
+explanations:{A:"7 is the radius, and C=\u03c0d, not \u03c0r.",B:"C=\u03c0d=14\u03c0\u224843.98 cm. \u2713",C:"49\u03c0=\u03c0r\u00b2 is the area, not circumference.",D:"196\u03c0=\u03c0d\u00b2 \u2014 doesn\u2019t correspond to any formula."}},
+{num:40,module:2,type:"SPR",passage:"",
+question:"A rectangular box has length 6, width 4, and height 3. What is its volume?",
+correct:"72",domain:"Geometry",skill:"Volume",
+explanations:{correct:"V=lwh=6\u00d74\u00d73=72."}},
+{num:41,module:2,type:"MC",passage:"",
+question:"Two parallel lines are cut by a transversal. One angle formed is 125\u00b0. What is the measure of its corresponding angle?",
+A:"55\u00b0",B:"65\u00b0",C:"125\u00b0",D:"180\u00b0",correct:"C",domain:"Geometry",skill:"Parallel lines and angles",
+explanations:{A:"180\u2212125=55 is the supplementary angle, not corresponding.",B:"No geometric basis.",C:"Corresponding angles formed by parallel lines and a transversal are equal: 125\u00b0. \u2713",D:"180\u00b0 is a straight angle, not an angle measure here."}},
+{num:42,module:2,type:"MC",passage:"",
+question:"A right triangle has a hypotenuse of 13 and one leg of 5. What is the other leg?",
+A:"8",B:"10",C:"12",D:"18",correct:"C",domain:"Geometry",skill:"Pythagorean theorem",
+explanations:{A:"13\u22125=8 just subtracts \u2014 not how Pythagorean theorem works.",B:"No triple matches.",C:"a\u00b2+5\u00b2=13\u00b2. a\u00b2+25=169. a\u00b2=144. a=12. (5-12-13 triple.) \u2713",D:"5+13=18 just adds \u2014 not valid."}},
+{num:43,module:2,type:"MC",passage:"",
+question:"A square has a perimeter of 36 inches. What is its area?",
+A:"9 in\u00b2",B:"36 in\u00b2",C:"81 in\u00b2",D:"144 in\u00b2",correct:"C",domain:"Geometry",skill:"Area",
+explanations:{A:"Side=36/4=9, but 9 is the side length, not the area.",B:"36 is the perimeter, not area.",C:"Side=36/4=9. Area=9\u00b2=81. \u2713",D:"36\u00d74=144 multiplies perimeter by sides."}},
+{num:44,module:2,type:"MC",passage:"",
+question:"A triangle has a base of 10 cm and a height of 7 cm. What is its area?",
+A:"17 cm\u00b2",B:"35 cm\u00b2",C:"70 cm\u00b2",D:"140 cm\u00b2",correct:"B",domain:"Geometry",skill:"Area",
+explanations:{A:"10+7=17 is the sum, not area.",B:"A=\u00bd(10)(7)=35. \u2713",C:"10\u00d77=70 forgot the \u00bd.",D:"No mathematical basis."}},
+];
+let S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:false,exp:{}};
+function render(){document.getElementById('app').innerHTML=S.screen==='landing'?rL():S.screen==='test'?rT():rR();}
+function rL(){return '<a class="back-to-app" href="../index.html">← Back to PantherPrep</a><div class="landing"><div class="landing-badge">🐾 PantherPrep Diagnostic</div><h1>PSAT 8/9 Math</h1><p class="subtitle">44 questions \u00b7 2 adaptive modules \u00b7 70 minutes total</p><div class="grade-note"><strong>\ud83c\udf93 Grades 8 & 9.</strong> This diagnostic mirrors the PSAT 8/9 Math section \u2014 the entry point to the College Board test suite. No trigonometry or complex algebra. Focuses on core skills: linear equations, basic quadratics, ratios, percentages, geometry fundamentals.</div><div class="spec-grid"><div class="spec-card"><div class="label">Questions</div><div class="value">44 total</div></div><div class="spec-card"><div class="label">Format</div><div class="value">MC + SPR</div></div><div class="spec-card"><div class="label">Time</div><div class="value">35 min \u00d7 2</div></div><div class="spec-card"><div class="label">Score Range</div><div class="value">120 \u2013 720</div></div></div><div class="domain-bar"><div></div><div></div><div></div><div></div></div><div class="domain-legend"><span class="alg">Algebra (32%)</span><span class="adv">Adv. Math (18%)</span><span class="psd">PS & Data (27%)</span><span class="geo">Geometry (23%)</span></div><p style="font-size:.85rem;color:var(--muted);margin-bottom:28px">Calculator allowed. ~25% are student-produced response (SPR).</p><button class="btn" onclick="startTest()">Begin Diagnostic</button></div>';}
+function startTest(){S.screen='test';S.cq=0;S.st=Date.now();S.mst=Date.now();render();}
+function chkSPR(a,c){if(!a)return false;var x=parseFloat(a),y=parseFloat(c);if(isNaN(x)||isNaN(y))return a.trim().toLowerCase()===c.trim().toLowerCase();return Math.abs(x-y)<0.01;}
+function rT(){
+var q=Q[S.cq],mod=q.module,modQs=Q.filter(function(x){return x.module===mod;}),modIdx=modQs.indexOf(q);
+var isSub=S.sub,ua=S.ans[q.num],isFl=S.flags.has(q.num),shExp=S.exp[q.num];
+var dc=q.domain==='Algebra'?'algebra':q.domain==='Advanced Math'?'advanced':q.domain==='Problem-Solving & Data Analysis'?'psda':'geometry';
+var si=mod===1?0:22,ei=mod===1?22:44;
+var nav='';for(var i=si;i<ei;i++){var n=Q[i].num;var c='';if(i===S.cq)c='current';else if(S.ans[n]!==undefined)c='answered';if(S.flags.has(n)&&i!==S.cq)c+=' flagged';nav+='<button class="'+c+'" onclick="goTo('+i+')">'+n+'</button>';}
+var inp='';
+if(q.type==='MC'){inp='<div class="choices">';['A','B','C','D'].forEach(function(L){var c='choice';if(!isSub&&ua===L)c+=' selected';if(isSub){if(L===q.correct)c+=' correct-choice';else if(ua===L)c+=' wrong-choice';}inp+='<div class="'+c+'" onclick="sel(\''+L+'\')"><div class="choice-letter">'+L+'</div><div class="choice-text">'+q[L]+'</div></div>';});inp+='</div>';}
+else{var v=ua||'';var st='';if(isSub){st=chkSPR(v,q.correct)?'style="border-color:var(--correct);background:var(--correct-bg)"':'style="border-color:var(--wrong);background:var(--wrong-bg)"';}
+inp='<div class="spr-input"><input type="text" id="sprI" value="'+v+'" placeholder="Your answer" '+st+(isSub?' disabled':'')+' onkeyup="sprK(event)">'+(!isSub?'<button class="btn btn-sm" onclick="sprS()">Enter</button>':'')+'</div>';if(isSub)inp+='<p style="font-size:.9rem;color:var(--muted)">Correct answer: <strong>'+q.correct+'</strong></p>';}
+var exp='';if(isSub&&shExp){var ok=q.type==='MC'?ua===q.correct:chkSPR(ua,q.correct);var ec=ok?'correct':'wrong';
+if(q.type==='MC'){exp='<div class="explanation-box '+ec+'"><h4>'+(ok?'\u2713 Correct!':'\u2717 Incorrect')+'</h4>';['A','B','C','D'].forEach(function(k){if(q.explanations[k])exp+='<div class="exp-item"><strong>'+k+'.</strong> '+q.explanations[k]+'</div>';});exp+='</div>';}
+else{exp='<div class="explanation-box '+ec+'"><h4>'+(ok?'\u2713 Correct!':'\u2717 Incorrect')+'</h4><div>'+q.explanations.correct+'</div></div>';}}
+var ref='<details class="reference-sheet"><summary>\ud83d\udcd0 Reference Formulas</summary><div class="formulas"><p>A = lw</p><p>A = \u00bdbh</p><p>A = \u03c0r\u00b2</p><p>C = 2\u03c0r = \u03c0d</p><p>P = 2l + 2w</p><p>V = lwh</p><p>V = \u03c0r\u00b2h</p><p>c\u00b2 = a\u00b2 + b\u00b2</p></div></details>';
+return '<div class="test-header"><div class="module-label">Module '+mod+' of 2</div><div class="timer">35:00</div></div><div class="progress-bar"><div class="progress-fill" style="width:'+((modIdx+1)/22)*100+'%"></div></div><div class="q-nav">'+nav+'</div>'+ref+'<div class="q-counter">Question '+q.num+' of 44</div><span class="domain-tag '+dc+'">'+q.domain+'</span>'+(q.type==='SPR'?'<span class="spr-badge">Student-Produced Response</span>':'')+(q.passage?'<div class="passage">'+q.passage.replace(/\n/g,'<br>')+'</div>':'')+'<div class="q-text">'+q.question+'</div>'+inp+exp+(!isSub?'<div style="text-align:center;margin-bottom:14px"><button class="btn btn-sm" onclick="chk()">Check Answer</button></div>':'')+(isSub&&!shExp?'<div style="text-align:center;margin-bottom:14px"><button class="btn btn-sm btn-outline" onclick="tExp('+q.num+')">Show Explanation</button></div>':'')+'<div class="nav-buttons"><div style="display:flex;gap:8px">'+(S.cq>0?'<button class="btn btn-sm btn-outline" onclick="prev()">\u2190 Previous</button>':'<span></span>')+'<button class="flag-btn '+(isFl?'flagged':'')+'" onclick="flag('+q.num+')">'+(isFl?'\ud83d\udea9 Flagged':'\ud83c\udff3 Flag')+'</button></div>'+(S.cq<43?'<button class="btn btn-sm" onclick="next()">Next \u2192</button>':'<button class="btn btn-sm" style="background:#16a34a" onclick="finish()">Finish Test</button>')+'</div>'+(S.cq===21&&mod===1?'<div style="text-align:center;margin-top:18px;padding:14px;background:var(--accent-light);border-radius:10px"><strong>End of Module 1.</strong> Click Next for Module 2.</div>':'');}
+function sel(L){if(S.sub)return;S.ans[Q[S.cq].num]=L;render();}
+function sprS(){var i=document.getElementById('sprI');if(i&&i.value.trim())S.ans[Q[S.cq].num]=i.value.trim();}
+function sprK(e){var i=document.getElementById('sprI');S.ans[Q[S.cq].num]=i.value.trim();if(e.key==='Enter'){sprS();chk();}}
+function chk(){var q=Q[S.cq];if(S.ans[q.num]===undefined)return;S.sub=true;S.exp[q.num]=true;render();}
+function tExp(n){S.exp[n]=!S.exp[n];render();}
+function next(){if(S.cq===21){S.m1t=Date.now()-S.mst;S.mst=Date.now();}S.cq=Math.min(43,S.cq+1);S.sub=false;render();scrollTo(0,0);}
+function prev(){S.cq=Math.max(0,S.cq-1);S.sub=S.ans[Q[S.cq].num]!==undefined;render();scrollTo(0,0);}
+function goTo(i){S.cq=i;S.sub=S.ans[Q[S.cq].num]!==undefined;render();scrollTo(0,0);}
+function flag(n){S.flags.has(n)?S.flags.delete(n):S.flags.add(n);render();}
+function finish(){S.m2t=Date.now()-S.mst;S.screen='results';render();scrollTo(0,0);}
+function rR(){
+var tot=Q.length,cc=0;
+var doms=['Algebra','Advanced Math','Problem-Solving & Data Analysis','Geometry'];
+var dcol={'Algebra':'#60a5fa','Advanced Math':'#a78bfa','Problem-Solving & Data Analysis':'#34d399','Geometry':'#ea580c'};
+var ds={};doms.forEach(function(d){ds[d]={c:0,t:0};});
+Q.forEach(function(q){ds[q.domain].t++;var a=S.ans[q.num];var ok=false;if(q.type==='MC')ok=a===q.correct;else ok=chkSPR(a,q.correct);if(ok){cc++;ds[q.domain].c++;}});
+var pct=cc/tot,score=Math.round(120+pct*600);
+var ans=Object.keys(S.ans).length,skip=tot-ans,wrong=ans-cc;
+var m1=S.m1t?Math.floor(S.m1t/60000):'\u2014',m2=S.m2t?Math.floor(S.m2t/60000):'\u2014';
+var dh=doms.map(function(d){var s=ds[d],p=s.t>0?Math.round(s.c/s.t*100):0;return '<div class="domain-result-row"><div class="dr-name" style="color:'+dcol[d]+'">'+d+'</div><div class="dr-bar-wrap"><div class="dr-bar" style="width:'+p+'%;background:'+dcol[d]+'"></div></div><div class="dr-score">'+s.c+'/'+s.t+'</div></div>';}).join('');
+var str=[],wk=[];doms.forEach(function(d){var s=ds[d];(s.t>0&&s.c/s.t>=.7)?str.push(d):wk.push(d);});
+var rev=Q.map(function(q){var a=S.ans[q.num],st,sc;if(a===undefined){st='Skipped';sc='skipped';}else{var ok=q.type==='MC'?a===q.correct:chkSPR(a,q.correct);st=ok?'\u2713 Correct':'\u2717 Incorrect';sc=ok?'correct':'wrong';}
+var dc=q.domain==='Algebra'?'algebra':q.domain==='Advanced Math'?'advanced':q.domain==='Problem-Solving & Data Analysis'?'psda':'geometry';
+return '<div class="review-q"><div class="rq-header"><div><strong>Q'+q.num+'</strong> <span class="domain-tag '+dc+'" style="font-size:10px;padding:2px 8px">'+q.domain+'</span>'+(q.type==='SPR'?'<span class="spr-badge" style="font-size:9px;padding:2px 6px">SPR</span>':'')+'</div><div class="rq-status '+sc+'">'+st+'</div></div><div style="font-size:.83rem;margin-top:4px">Your answer: <strong>'+(a||'\u2014')+'</strong> \u00b7 Correct: <strong>'+q.correct+'</strong></div></div>';}).join('');
+return '<div class="results"><h1>Diagnostic Results</h1><p style="color:var(--muted)">PSAT 8/9 Math \u00b7 '+tot+' Questions</p>'
++'<div class="score-circle"><div class="score-num">'+score+'</div><div class="score-range">/ 720</div></div>'
++'<div class="stats-row"><div class="stat-box"><div class="stat-val" style="color:var(--correct)">'+cc+'</div><div class="stat-label">Correct</div></div><div class="stat-box"><div class="stat-val" style="color:var(--wrong)">'+wrong+'</div><div class="stat-label">Incorrect</div></div><div class="stat-box"><div class="stat-val" style="color:var(--muted)">'+skip+'</div><div class="stat-label">Skipped</div></div><div class="stat-box"><div class="stat-val">'+Math.round(pct*100)+'%</div><div class="stat-label">Accuracy</div></div></div>'
++'<div class="stats-row"><div class="stat-box"><div class="stat-val">'+m1+'m</div><div class="stat-label">Module 1</div></div><div class="stat-box"><div class="stat-val">'+m2+'m</div><div class="stat-label">Module 2</div></div></div>'
++'<div class="domain-results"><h3 style="font-family:DM Serif Display,serif;margin-bottom:12px">Performance by Domain</h3>'+dh+'</div>'
++(str.length?'<div style="text-align:left;margin:20px 0;padding:14px;background:var(--correct-bg);border-radius:10px;border:1px solid rgba(34,197,94,.3)"><strong style="color:var(--correct)">\ud83d\udcaa Strengths:</strong> '+str.join(', ')+'</div>':'')
++(wk.length?'<div style="text-align:left;margin:20px 0;padding:14px;background:var(--wrong-bg);border-radius:10px;border:1px solid rgba(239,68,68,.3)"><strong style="color:var(--wrong)">\ud83c\udfaf Focus Areas:</strong> '+wk.join(', ')+'</div>':'')
++'<div class="review-section"><h3>Question Review</h3>'+rev+'</div>'
++'<div class="reflection-section"><h3>\ud83d\udcdd Post-Test Reflection</h3>'
++'<div class="reflection-q"><label>1. Which question types felt most challenging?</label><textarea placeholder="e.g., word problems, geometry, percentages..."></textarea></div>'
++'<div class="reflection-q"><label>2. Were there questions where you knew the concept but made a calculation error?</label><textarea placeholder="Identify careless mistakes..."></textarea></div>'
++'<div class="reflection-q"><label>3. Did you finish both modules with time to spare?</label><textarea placeholder="~95 seconds per question target..."></textarea></div>'
++'<div class="reflection-q"><label>4. Which topics do you need to review?</label><textarea placeholder="List specific skills..."></textarea></div>'
++'<div class="reflection-q"><label>5. Were SPR questions harder than multiple choice? Why?</label><textarea placeholder="SPR requires recall, not recognition..."></textarea></div>'
++'<div class="reflection-q"><label>6. What are your top 3 priorities for math prep?</label><textarea placeholder="Be specific..."></textarea></div>'
++'<div class="reflection-q"><label>7. Are you ready to try the PSAT/NMSQT Math diagnostic next?</label><textarea placeholder="Compare your readiness..."></textarea></div></div>'
++'<div style="text-align:center;margin-top:28px"><button class="btn btn-outline" onclick="retake()">\u21bb Retake Test</button></div></div>';}
+function retake(){S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:false,exp:{}};render();scrollTo(0,0);}
+render();
+</script>
+<script src="/translate.js"></script></body>
+</html>

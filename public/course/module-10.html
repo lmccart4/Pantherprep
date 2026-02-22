@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 10: Final Review & Test-Day Preparation — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--purple:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+
+/* STRATEGY CARDS */
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:16px}
+.strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .2s;cursor:pointer}
+.strat-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.strat-card.flipped .sc-front{display:none}
+.strat-card.flipped .sc-back{display:block}
+.sc-icon{font-size:1.5rem;margin-bottom:6px}
+.sc-title{font-weight:700;font-size:.95rem;margin-bottom:4px}
+.sc-hint{font-size:.78rem;color:var(--muted);font-style:italic}
+.sc-flip-hint{font-size:.68rem;color:var(--muted);text-align:right;margin-top:6px}
+.sc-back{display:none;font-size:.85rem;color:#ccc;line-height:1.6}
+
+/* CHECKLIST */
+.checklist{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.checklist h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:12px}
+.cl-group{margin-bottom:14px}
+.cl-group-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.cl-group-label.cg-red{color:var(--accent)}
+.cl-group-label.cg-blue{color:var(--craft)}
+.cl-group-label.cg-green{color:var(--info)}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:.9rem;color:#ccc;cursor:pointer;transition:opacity .2s}
+.cl-item.done{opacity:.5;text-decoration:line-through}
+.cl-check{flex-shrink:0;width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .15s}
+.cl-item.done .cl-check{background:var(--correct);border-color:var(--correct);color:#fff}
+.cl-progress{font-size:.82rem;color:var(--muted);margin-top:8px;text-align:right}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:28px;margin-bottom:16px}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;padding:10px 0 10px 20px;font-size:.9rem;color:#ccc}
+.tl-item::before{content:'';position:absolute;left:-22px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.tl-time{font-weight:700;color:var(--ink);font-size:.88rem;margin-bottom:2px}
+.tl-desc{line-height:1.5}
+
+/* QUIZ */
+.quiz-box{background:var(--surface);border:2px solid var(--info);border-radius:14px;padding:22px;margin-bottom:16px}
+.quiz-progress{height:6px;background:var(--border);border-radius:3px;margin-bottom:16px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:var(--info);border-radius:3px;transition:width .3s}
+.quiz-q{margin-bottom:16px}
+.quiz-q-num{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.quiz-q-text{font-size:.95rem;font-weight:500;margin-bottom:12px;line-height:1.6}
+.quiz-passage{background:var(--paper);border-left:3px solid var(--border);padding:12px 14px;border-radius:0 8px 8px 0;font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.75;margin-bottom:12px;color:#ddd}
+.quiz-choices{display:flex;flex-direction:column;gap:7px}
+.quiz-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--paper);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .15s}
+.quiz-choice:hover:not(.qc-dis){border-color:var(--accent);background:var(--accent-light)}
+.quiz-choice.qc-correct{border-color:var(--correct);background:var(--correct-bg)}
+.quiz-choice.qc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.quiz-choice.qc-dis{pointer-events:none}
+.qc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
+.quiz-choice.qc-correct .qc-letter{background:var(--correct);color:#fff}
+.quiz-choice.qc-wrong .qc-letter{background:var(--wrong);color:#fff}
+.quiz-fb{margin-top:8px;padding:10px;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}
+.quiz-fb.show{display:block}
+.quiz-fb.qfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.quiz-fb.qfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.quiz-nav button{padding:8px 18px;border:2px solid var(--border);border-radius:8px;background:var(--paper);cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600;color:var(--ink);transition:all .15s}
+.quiz-nav button:hover{border-color:var(--accent);background:var(--accent-light)}
+.quiz-nav button:disabled{opacity:.3;pointer-events:none}
+.quiz-results{text-align:center;padding:24px}
+.quiz-results-score{font-family:'JetBrains Mono',monospace;font-size:2.5rem;font-weight:700;margin-bottom:8px}
+.quiz-results-msg{font-size:1rem;color:#ccc;margin-bottom:16px}
+
+/* READING LIST */
+.reading-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.reading-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.reading-cat{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.reading-list{font-size:.85rem;color:#ccc;line-height:1.8}
+
+/* COMPLETION BANNER */
+.completion{background:linear-gradient(135deg,rgba(200,16,46,.15),rgba(167,139,250,.15));border:2px solid var(--accent);border-radius:16px;padding:32px;text-align:center;margin-bottom:24px}
+.completion h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;margin-bottom:8px}
+.completion p{color:#ccc;font-size:.95rem;max-width:600px;margin:0 auto;line-height:1.7}
+.completion-badge{display:inline-block;font-size:3rem;margin-bottom:12px}
+
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24}
+.btn-sm{padding:8px 16px;font-size:.82rem}
+
+/* NAV */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.strat-grid{grid-template-columns:1fr}.reading-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Module 10</div>
+  <h1>Final Review & Test-Day Preparation</h1>
+  <p class="subtitle">You've built the skills. Now lock them in and walk into test day with confidence.</p>
+  <div class="mod-meta">
+    <span>⏱ 60–90 minutes</span>
+    <span>📋 1–2 sessions</span>
+    <span>🔄 Phase 4: Reflect</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="section">
+  <div class="section-label">The Final Module</div>
+  <h2>What Module 10 Is — and Isn't</h2>
+  <div class="callout">
+    <strong>Module 10 is NOT the time to learn new material.</strong> If you try to cram new concepts the night before, you'll undermine the knowledge you've already built. This module is about consolidation, confidence, and logistics.
+  </div>
+  <p>Your Module 9 Pattern Report identified your top priority areas. Use this final review to sharpen those 2–3 areas, review your strategy plan, and prepare everything you need for test day.</p>
+</div>
+
+<!-- STRATEGY QUICK REFERENCE -->
+<div class="section">
+  <div class="section-label">Quick Reference</div>
+  <h2>Strategy Flash Cards</h2>
+  <p>Click each card to review the strategy. You should know all of these by heart.</p>
+  <div class="strat-grid" id="stratGrid"></div>
+</div>
+
+<!-- MODULE-BY-MODULE REVIEW -->
+<div class="section">
+  <div class="section-label">Targeted Review</div>
+  <h2>Course Summary: What You've Learned</h2>
+  <p>Use this as a final review checklist. If any module feels weak, go back and review it before test day.</p>
+
+  <div class="card" style="border-left:3px solid var(--craft)">
+    <div style="display:flex;justify-content:space-between;align-items:start">
+      <div><strong>Module 2: Vocabulary</strong><br><span style="font-size:.85rem;color:var(--muted)">8 thematic categories · Words in context · Connotation vs. denotation</span></div>
+      <a href="module-2.html" style="font-size:.82rem;color:var(--craft);text-decoration:none">Review →</a>
+    </div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--convention)">
+    <div style="display:flex;justify-content:space-between;align-items:start">
+      <div><strong>Modules 3–4: Grammar</strong><br><span style="font-size:.85rem;color:var(--muted)">10 grammar rules · Sentence boundaries · Modifiers · Parallelism · Possessives</span></div>
+      <a href="module-3.html" style="font-size:.82rem;color:var(--convention);text-decoration:none">Review →</a>
+    </div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--info)">
+    <div style="display:flex;justify-content:space-between;align-items:start">
+      <div><strong>Module 5: Reading</strong><br><span style="font-size:.85rem;color:var(--muted)">Three Key Questions · Main idea · Evidence · Inference Safety Test</span></div>
+      <a href="module-5.html" style="font-size:.82rem;color:var(--info);text-decoration:none">Review →</a>
+    </div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--purple)">
+    <div style="display:flex;justify-content:space-between;align-items:start">
+      <div><strong>Module 6: Advanced Reading</strong><br><span style="font-size:.85rem;color:var(--muted)">Rhetorical purpose · Tone · Text structure · Synthesis · Dual passages</span></div>
+      <a href="module-6.html" style="font-size:.82rem;color:var(--purple);text-decoration:none">Review →</a>
+    </div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--express)">
+    <div style="display:flex;justify-content:space-between;align-items:start">
+      <div><strong>Module 7: Transitions & Synthesis</strong><br><span style="font-size:.85rem;color:var(--muted)">6 relationship types · Transition words · Rhetorical synthesis goals</span></div>
+      <a href="module-7.html" style="font-size:.82rem;color:var(--express);text-decoration:none">Review →</a>
+    </div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <div style="display:flex;justify-content:space-between;align-items:start">
+      <div><strong>Module 8: Test Strategy</strong><br><span style="font-size:.85rem;color:var(--muted)">POE · POOD · Second Half First · Letter of the Day · Bluebook tools</span></div>
+      <a href="module-8.html" style="font-size:.82rem;color:var(--accent);text-decoration:none">Review →</a>
+    </div>
+  </div>
+</div>
+
+<!-- TEST-DAY TIMELINE -->
+<div class="section">
+  <div class="section-label">Test Day</div>
+  <h2>Test-Day Timeline</h2>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-time">The Night Before</div><div class="tl-desc">Review your strategy notes (LOTD letter, Second Half First plan, POE process). Do NOT study new material. Pack your bag. Set two alarms. Get 8+ hours of sleep.</div></div>
+    <div class="tl-item"><div class="tl-time">Morning — 2 Hours Before</div><div class="tl-desc">Eat a solid breakfast with protein and complex carbs (eggs, oatmeal, toast with peanut butter). Drink water. Light stretching or walk — no cramming.</div></div>
+    <div class="tl-item"><div class="tl-time">Morning — 1 Hour Before</div><div class="tl-desc">Arrive at the test center. Doors typically open at 7:45 AM. Bring your admission ticket, photo ID, approved calculator, pencils, snack, and water.</div></div>
+    <div class="tl-item"><div class="tl-time">Before Module 1 Begins</div><div class="tl-desc">Deep breath. Remind yourself: stick to your strategies. Nothing new. You've practiced this. Write your LOTD letter on scratch paper.</div></div>
+    <div class="tl-item"><div class="tl-time">Module 1 — Minutes 0-1</div><div class="tl-desc">If using Second Half First: navigate to Q16. Otherwise: start at Q1. Activate highlighting and strikethrough tools.</div></div>
+    <div class="tl-item"><div class="tl-time">Module 1 — Midpoint Check</div><div class="tl-desc">At the halfway point (~Q14 or 16 min remaining): check your pace. If behind, speed up on easy questions. Flag hard ones and move on.</div></div>
+    <div class="tl-item"><div class="tl-time">Module 1 — Final Minutes</div><div class="tl-desc">Answer every remaining question. Use your LOTD for anything you haven't attempted. Never leave a blank.</div></div>
+    <div class="tl-item"><div class="tl-time">Break Between Modules</div><div class="tl-desc">Stand up. Stretch. Eat your snack. Drink water. Do NOT think about Module 1 — it's done. Reset mentally for Module 2.</div></div>
+    <div class="tl-item"><div class="tl-time">Module 2</div><div class="tl-desc">Same strategies. Same process. Module 2 difficulty adapts based on Module 1, but your approach doesn't change. Stick to the plan.</div></div>
+  </div>
+</div>
+
+<!-- TEST-DAY CHECKLIST -->
+<div class="section">
+  <div class="section-label">Interactive Checklist</div>
+  <h2>Test-Day Packing List</h2>
+  <div class="checklist" id="testDayChecklist"></div>
+</div>
+
+<!-- FINAL CONFIDENCE QUIZ -->
+<div class="section">
+  <div class="section-label">Final Assessment</div>
+  <h2>Course Confidence Quiz</h2>
+  <p>10 questions spanning everything you've learned. This is your final check — if you can ace this, you're ready.</p>
+  <div class="quiz-box" id="quizBox"></div>
+</div>
+
+<!-- RECOMMENDED READING -->
+<div class="section">
+  <div class="section-label">Long-Term Growth</div>
+  <h2>Recommended Reading List</h2>
+  <p>Continued reading from diverse sources is the single best way to maintain and extend your gains beyond this course.</p>
+  <div class="reading-grid">
+    <div class="reading-card"><div class="reading-cat" style="color:var(--craft)">Science Journalism</div><div class="reading-list">Scientific American · NYT Science · Nature (news) · Quanta Magazine · Ars Technica</div></div>
+    <div class="reading-card"><div class="reading-cat" style="color:var(--info)">Social Science & History</div><div class="reading-list">The Atlantic · The Economist · Smithsonian · Foreign Affairs · Harvard Business Review</div></div>
+    <div class="reading-card"><div class="reading-cat" style="color:var(--express)">Literary Nonfiction</div><div class="reading-list">The New Yorker (long-form) · Granta · The Paris Review · Best American Essays</div></div>
+    <div class="reading-card"><div class="reading-cat" style="color:var(--purple)">Fiction</div><div class="reading-list">Toni Morrison · George Orwell · Chinua Achebe · Jane Austen · Kazuo Ishiguro</div></div>
+  </div>
+</div>
+
+<!-- COURSE COMPLETION -->
+<div class="completion">
+  <div class="completion-badge">🎓</div>
+  <h2>Course Complete</h2>
+  <p>You've completed all 10 modules of the PantherPrep SAT Reading & Writing Course. You've built vocabulary, mastered grammar rules, developed reading strategies, learned test-taking techniques, and analyzed your performance. Trust your preparation. Walk into test day with confidence. You've earned it.</p>
+</div>
+
+<div class="mod-nav">
+  <a href="module-9.html">← Module 9: Practice Test</a>
+  <a href="index.html">Back to Course Hub →</a>
+</div>
+</div>
+
+<script>
+// ============ STRATEGY FLASH CARDS ============
+const STRATS=[
+  {icon:'🎯',title:'POE',hint:'Process of Elimination',back:'Don\'t find the right answer — eliminate wrong ones. Use Bluebook\'s strikethrough on every question. Eliminate 1 = 33%. Eliminate 2 = 50%. Look for: contradicts passage, extreme language, outside info, partial accuracy.'},
+  {icon:'🔄',title:'Second Half First',hint:'Start at Q16',back:'Q1–15 = Reading (slower). Q16–27 = Grammar (faster, rule-based). Start at Q16 to bank points quickly. Then tackle reading with more time and confidence. Practice this before test day!'},
+  {icon:'📐',title:'POOD',hint:'Personal Order of Difficulty',back:'Not every question is equally hard FOR YOU. Do your easiest question types first, hardest last. Skip and flag hard ones — come back with remaining time.'},
+  {icon:'🔤',title:'LOTD',hint:'Letter of the Day',back:'When guessing, always guess the same letter (e.g., always B). No penalty for wrong answers. Never leave a blank. Eliminates decision fatigue on guesses.'},
+  {icon:'❓',title:'Three Key Questions',hint:'Big Idea · Structure · Tone',back:'Ask on every passage: 1) What is the main point? 2) How is it organized? 3) What is the author\'s attitude? These unlock every reading question.'},
+  {icon:'🔍',title:'Predict & Match',hint:'Answer before reading choices',back:'For main idea and evidence Qs: form your own answer FIRST, then find the match. Prevents trap answers from luring you away from the correct response.'},
+  {icon:'😴',title:'Boring Inferences',hint:'SAT inferences are conservative',back:'The correct inference is the LEAST exciting, most text-supported conclusion. If it feels like an insight that goes beyond the text, it\'s probably wrong.'},
+  {icon:'✂️',title:'Trim the Sentence',hint:'Find the true subject',back:'Cross out prepositional phrases and parenthetical clauses. What remains = subject + verb. They must agree. "The collection of manuscripts [has/have]" → "The collection… has."'},
+  {icon:'🎯',title:'Read the GOAL',hint:'Rhetorical synthesis strategy',back:'On synthesis Qs, read the goal statement FIRST. Eliminate anything that doesn\'t accomplish that specific goal, even if factually correct. The goal determines the answer.'},
+  {icon:'⏱️',title:'Pace Check',hint:'Midpoint time management',back:'At Q14 (halfway): you should have ~16 min left. If behind: speed up on easy ones, flag hard ones. Final minutes: answer everything, use LOTD for remaining blanks.'},
+];
+
+function renderStrats(){
+  document.getElementById('stratGrid').innerHTML=STRATS.map((s,i)=>`
+    <div class="strat-card" onclick="this.classList.toggle('flipped')">
+      <div class="sc-front">
+        <div class="sc-icon">${s.icon}</div>
+        <div class="sc-title">${s.title}</div>
+        <div class="sc-hint">${s.hint}</div>
+        <div class="sc-flip-hint">tap to flip</div>
+      </div>
+      <div class="sc-back">${s.back}</div>
+    </div>
+  `).join('');
+}
+renderStrats();
+
+// ============ TEST-DAY CHECKLIST ============
+const CL_GROUPS=[
+  {label:'Logistics',cls:'cg-red',items:[
+    'Test center location confirmed — know exactly where to go',
+    'Admission ticket printed or accessible on phone',
+    'Acceptable photo ID ready',
+    'Two alarms set for the morning',
+    'Route to test center planned (parking, transit, etc.)',
+  ]},
+  {label:'Pack Your Bag',cls:'cg-blue',items:[
+    'Testing device fully charged (if using your own)',
+    'Bluebook app downloaded and updated',
+    'Approved calculator with fresh batteries',
+    'Two sharpened pencils',
+    'Snack for the break (nuts, granola bar, fruit)',
+    'Water bottle',
+    'Watch or small clock (phones silenced during test)',
+  ]},
+  {label:'Mental Preparation',cls:'cg-green',items:[
+    'Reviewed strategy plan: LOTD letter, Second Half First, POE process',
+    'Did NOT study new material today — only reviewed what you know',
+    'Ate a solid meal with protein and complex carbs',
+    'Got 8+ hours of sleep last night',
+    'Reminded yourself: stick to practiced strategies — nothing new on test day',
+  ]},
+];
+
+function renderChecklist(){
+  const saved=JSON.parse(localStorage.getItem('pp_m10_cl')||'{}');
+  const total=CL_GROUPS.reduce((s,g)=>s+g.items.length,0);
+  const done=Object.values(saved).filter(v=>v).length;
+  let idx=0;
+  document.getElementById('testDayChecklist').innerHTML=`<h3>✅ Test-Day Packing & Prep</h3>`+
+    CL_GROUPS.map(g=>`
+      <div class="cl-group">
+        <div class="cl-group-label ${g.cls}">${g.label}</div>
+        ${g.items.map(item=>{
+          const i=idx++;const checked=saved[i]||false;
+          return `<div class="cl-item${checked?' done':''}" onclick="toggleCL(${i})">
+            <div class="cl-check">${checked?'✓':''}</div><div>${item}</div></div>`;
+        }).join('')}
+      </div>`).join('')+
+    `<div class="cl-progress">${done}/${total} completed</div>`;
+}
+function toggleCL(i){
+  const s=JSON.parse(localStorage.getItem('pp_m10_cl')||'{}');
+  s[i]=!s[i];localStorage.setItem('pp_m10_cl',JSON.stringify(s));renderChecklist();
+}
+renderChecklist();
+
+// ============ FINAL CONFIDENCE QUIZ ============
+const QUIZ=[
+  {q:'What is the FIRST thing you should do when you encounter a rhetorical synthesis question?',
+   choices:['Read all the bullet-point notes carefully','Read the GOAL statement','Eliminate the shortest answer choice','Look for the answer with the most detail'],
+   correct:1,fb:'Always read the GOAL first — it determines which answer is correct, regardless of the notes.'},
+  {q:'A sentence reads: "The committee have decided to postpone the vote." What error does this contain?',
+   choices:['Run-on sentence','Pronoun error','Subject-verb disagreement — "committee" is singular, should be "has"','No error'],
+   correct:2,fb:'Collective nouns (committee, team, group) take singular verbs. "The committee has decided." (Module 3, Rule 3)'},
+  {q:'Which transition word signals a CONTRAST between two sentences?',
+   choices:['Furthermore','Therefore','Nevertheless','For instance'],
+   correct:2,fb:'"Nevertheless" means "in spite of that" — pure contrast. "Furthermore" = addition, "Therefore" = cause/effect, "For instance" = example. (Module 7)'},
+  {q:'You\'re stuck on a reading question with 90 seconds left in the module and 3 questions remaining. What should you do?',
+   choices:['Spend all 90 seconds on this question since you\'re already working on it','Guess your LOTD letter on all 3 and review if time remains','Skip this question and answer the other 2 first','Leave the hard questions blank'],
+   correct:1,fb:'LOTD on all remaining, then use any time to review. Never leave blanks. (Module 8)'},
+  {q:'Which of the following is a SAFE inference from this passage: "Researchers found that plants exposed to classical music grew 20% taller than control plants."',
+   choices:['Classical music is superior to other genres for plant growth','Sound waves may have an effect on plant development','Music should be played in all commercial greenhouses','Plants can hear and enjoy music'],
+   correct:1,fb:'"May have an effect" is conservative and text-supported. The others are exciting leaps beyond the evidence. SAT inferences are boring. (Module 5)'},
+  {q:'"Having completed the marathon in record time, the medal was awarded to the runner." What\'s wrong with this sentence?',
+   choices:['Comma splice','Subject-verb disagreement','Dangling modifier — "the medal" didn\'t complete the marathon','Pronoun ambiguity'],
+   correct:2,fb:'The opening modifier "Having completed the marathon" must be followed by WHO completed it — the runner, not the medal. (Module 4, Rule 7)'},
+  {q:'What does "corroborate" mean?',
+   choices:['To contradict with evidence','To confirm or support with evidence','To carefully examine','To publicly criticize'],
+   correct:1,fb:'"Corroborate" = to confirm or support something with additional evidence. Language of Argument & Persuasion category. (Module 2)'},
+  {q:'You see this sentence pair: "Solar energy costs dropped 89% in the last decade. _______, many utilities still rely primarily on natural gas." Which transition fits?',
+   choices:['Therefore','For example','Furthermore','Nevertheless'],
+   correct:3,fb:'Solar costs dropped (positive) BUT utilities still use gas (unexpected/contrary). This is a contrast → "Nevertheless." (Module 7)'},
+  {q:'The SAT\'s "Second Half First" strategy recommends starting with which questions?',
+   choices:['Questions 1–15 (reading comprehension)','The hardest questions in the module','Questions 16–27 (grammar and conventions)','The questions with the shortest passages'],
+   correct:2,fb:'Q16–27 are grammar/conventions — faster, rule-based, more predictable. Bank those points first, then tackle reading with remaining time. (Module 8)'},
+  {q:'After finishing a practice test, which step is MOST valuable for improvement?',
+   choices:['Checking only your total score','Doing the error analysis worksheet for every missed AND uncertain question','Moving immediately to the next practice test','Reviewing only the questions you got wrong'],
+   correct:1,fb:'Error analysis — including uncertain-but-correct answers — reveals hidden weaknesses and patterns. The analysis is where the real learning happens. (Module 9)'},
+];
+
+let quizState={current:0,answers:{},done:false};
+function renderQuiz(){
+  const el=document.getElementById('quizBox');
+  if(quizState.done){
+    const correct=Object.entries(quizState.answers).filter(([i,a])=>a===QUIZ[i].correct).length;
+    const pct=Math.round(correct/QUIZ.length*100);
+    const color=correct>=8?'var(--correct)':correct>=6?'var(--express)':'var(--wrong)';
+    const msg=correct>=8?'You\'re ready for test day! Trust your preparation and go crush it. 🎉':correct>=6?'Solid foundation! Review the questions you missed and the corresponding modules before test day.':'Some areas need more review. Go back to the modules indicated in the feedback and review before test day.';
+    el.innerHTML=`<div class="quiz-results">
+      <div class="quiz-results-score" style="color:${color}">${correct}/${QUIZ.length}</div>
+      <div class="quiz-results-msg">${msg}</div>
+      <div style="text-align:left;margin-top:16px">
+        ${QUIZ.map((q,i)=>{
+          const ans=quizState.answers[i];const ok=ans===q.correct;
+          return `<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:.88rem">
+            <span style="color:${ok?'var(--correct)':'var(--wrong)'}">Q${i+1}: ${ok?'✓':'✗'}</span>
+            ${!ok?`<span style="color:var(--muted)"> — ${q.fb}</span>`:''}
+          </div>`;
+        }).join('')}
+      </div>
+      <button class="btn" style="margin-top:16px" onclick="quizState={current:0,answers:{},done:false};renderQuiz()">Retake Quiz</button>
+    </div>`;
+    return;
+  }
+  const i=quizState.current;const q=QUIZ[i];const ans=quizState.answers[i];const has=ans!==undefined;
+  el.innerHTML=`
+    <div class="quiz-progress"><div class="quiz-progress-fill" style="width:${((i+1)/QUIZ.length)*100}%"></div></div>
+    <div class="quiz-q">
+      <div class="quiz-q-num">Question ${i+1} of ${QUIZ.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-choices">
+        ${q.choices.map((ch,ci)=>{
+          let cls='quiz-choice';
+          if(has){cls+=' qc-dis';if(ci===q.correct)cls+=' qc-correct';else if(ci===ans&&ci!==q.correct)cls+=' qc-wrong';}
+          return `<div class="${cls}" onclick="ansQuiz(${ci})"><div class="qc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
+        }).join('')}
+      </div>
+      <div class="quiz-fb${has?' show':''}${has?(ans===q.correct?' qfb-correct':' qfb-wrong'):''}">${has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div>
+    </div>
+    <div class="quiz-nav">
+      <button ${i===0?'disabled':''} onclick="quizState.current--;renderQuiz()">← Previous</button>
+      <span style="font-size:.82rem;color:var(--muted)">${i+1}/${QUIZ.length}</span>
+      ${has?(i<QUIZ.length-1?
+        `<button onclick="quizState.current++;renderQuiz()">Next →</button>`:
+        `<button onclick="quizState.done=true;renderQuiz()" style="background:var(--correct);border-color:var(--correct);color:#fff">See Results</button>`
+      ):'<button disabled>Answer to continue</button>'}
+    </div>`;
+}
+function ansQuiz(ci){
+  if(quizState.answers[quizState.current]!==undefined)return;
+  quizState.answers[quizState.current]=ci;renderQuiz();
+}
+renderQuiz();
+</script>
+<script src="/translate.js"></script></body>
+</html>

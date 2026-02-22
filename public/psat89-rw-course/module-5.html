@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 5: Practice Set 3 — Advanced Challenge (Q1–10) — PSAT 8/9 R&W — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.1);--info:#34d399;--info-bg:rgba(52,211,153,.1);--express:#fbbf24;--express-bg:rgba(251,191,36,.1);--convention:#f87171;--convention-bg:rgba(248,113,113,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--purple:#a78bfa;--purple-bg:rgba(167,139,250,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--purple);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+
+/* DIFFICULTY BANNER */
+.diff-banner{background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(200,16,46,.1));border:2px solid var(--purple);border-radius:14px;padding:20px;margin-bottom:24px;text-align:center}
+.diff-banner h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--purple);margin-bottom:6px}
+.diff-banner p{color:var(--muted);font-size:.9rem;line-height:1.6;max-width:560px;margin:0 auto}
+.diff-stars{font-size:1.4rem;margin-bottom:8px;letter-spacing:4px}
+
+/* SKILL FOCUS */
+.skill-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:16px}
+.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.skill-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
+.skill-card.sk-quant::before{background:var(--express)}
+.skill-card.sk-twopart::before{background:var(--wrong)}
+.skill-card.sk-tone::before{background:var(--purple)}
+.skill-card.sk-semi::before{background:var(--info)}
+.skill-card:hover{border-color:var(--accent);transform:translateX(4px)}
+.skill-name{font-weight:700;font-size:1rem;margin-bottom:4px}
+.skill-desc{font-size:.85rem;color:var(--muted);line-height:1.5}
+.skill-tip{display:none;margin-top:10px;padding:10px 12px;background:var(--paper);border-radius:8px;font-size:.84rem;color:#ddd;line-height:1.6;border:1px solid var(--border)}
+.skill-card.open .skill-tip{display:block}
+.skill-toggle{position:absolute;top:16px;right:16px;font-size:.75rem;color:var(--muted);transition:transform .2s}
+.skill-card.open .skill-toggle{transform:rotate(180deg)}
+
+/* MINI-QUIZ */
+.miniquiz{background:var(--surface);border:2px solid var(--purple);border-radius:14px;padding:20px;margin-bottom:16px}
+.miniquiz h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;margin-bottom:4px}
+.miniquiz-sub{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+.mq-item{padding:14px;background:var(--paper);border:1px solid var(--border);border-radius:10px;margin-bottom:10px}
+.mq-prompt{font-size:.9rem;font-weight:600;margin-bottom:10px}
+.mq-opts{display:flex;flex-direction:column;gap:6px}
+.mq-opt{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .15s}
+.mq-opt:hover:not(.mq-dis){border-color:var(--accent);background:var(--accent-light)}
+.mq-opt.mq-right{border-color:var(--correct);background:var(--correct-bg)}
+.mq-opt.mq-nope{border-color:var(--wrong);background:var(--wrong-bg)}
+.mq-opt.mq-dis{pointer-events:none;opacity:.55}
+.mq-opt.mq-right.mq-dis,.mq-opt.mq-nope.mq-dis{opacity:1}
+.mq-fb{margin-top:8px;font-size:.82rem;color:var(--muted);line-height:1.5;display:none}
+.mq-fb.show{display:block}
+.mq-score{text-align:center;font-size:.9rem;padding:10px 0;color:var(--muted);display:none}
+.mq-score.show{display:block}
+
+/* TIMER */
+.timer-bar{background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:16px;text-align:center;margin-bottom:16px}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:2.2rem;font-weight:700;margin-bottom:8px}
+.timer-display.running{color:var(--express)}
+.timer-display.done{color:var(--correct)}
+.timer-display.warning{color:var(--wrong)}
+.timer-btn{display:inline-block;padding:8px 24px;border:2px solid var(--accent);border-radius:8px;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;margin:0 4px;transition:all .15s}
+.timer-btn:hover{background:#a00d24}
+.timer-btn.outline{background:transparent;color:var(--accent)}
+.timer-btn.outline:hover{background:var(--accent-light)}
+
+/* SAT PRACTICE */
+.sat-q{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
+.sat-passage{background:var(--surface);border-left:3px solid var(--craft);padding:12px 14px;border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.75;margin-bottom:12px;color:#ddd;font-style:italic}
+.sat-stem{font-size:.95rem;font-weight:600;margin-bottom:10px}
+.sat-choices{display:flex;flex-direction:column;gap:6px}
+.sat-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.sat-choice:hover:not(.sc-dis){border-color:var(--accent);background:var(--accent-light)}
+.sat-choice.sc-correct{border-color:var(--correct);background:var(--correct-bg)}
+.sat-choice.sc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.sat-choice.sc-dis{pointer-events:none;opacity:.6}
+.sat-choice.sc-correct.sc-dis,.sat-choice.sc-wrong.sc-dis{opacity:1}
+.sc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
+.sat-choice.sc-correct .sc-letter{background:var(--correct);color:#fff}
+.sat-choice.sc-wrong .sc-letter{background:var(--wrong);color:#fff}
+.sat-fb{margin-top:8px;padding:10px;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}
+.sat-fb.show{display:block}
+.sat-fb.sfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.sat-fb.sfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+.domain-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-right:6px}
+.ex-num{font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px}
+.ex-score{text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)}
+
+/* CONFIDENCE TRACKER */
+.conf-meter{background:var(--surface);border:2px solid var(--express);border-radius:14px;padding:20px;margin-bottom:16px}
+.conf-meter h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;margin-bottom:4px}
+.conf-sub{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+.conf-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.conf-row:last-child{border-bottom:none}
+.conf-qnum{font-family:'JetBrains Mono',monospace;font-weight:700;width:36px;text-align:center;flex-shrink:0}
+.conf-btns{display:flex;gap:4px;flex-shrink:0}
+.conf-btn{padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:var(--paper);color:var(--muted);font-size:.78rem;cursor:pointer;transition:all .15s;font-family:inherit}
+.conf-btn:hover{border-color:var(--express)}
+.conf-btn.cb-active{border-color:var(--express);background:var(--express-bg);color:var(--express);font-weight:600}
+.conf-result{font-size:.78rem;color:var(--muted);flex:1;text-align:right}
+.conf-summary{margin-top:14px;padding:12px;background:var(--paper);border-radius:10px;border:1px solid var(--border);font-size:.85rem;color:#ccc;line-height:1.7}
+
+/* PROGRESS RING */
+.progress-ring-wrap{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.progress-ring{position:relative;width:80px;height:80px}
+.progress-ring svg{transform:rotate(-90deg)}
+.progress-ring circle{fill:none;stroke-width:6}
+.progress-ring .bg{stroke:var(--border)}
+.progress-ring .fg{stroke:var(--correct);stroke-linecap:round;transition:stroke-dashoffset .5s ease}
+.progress-ring .ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700}
+.progress-stats{font-size:.88rem;color:#ccc;line-height:1.7}
+
+/* ERROR CODES */
+.ec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:16px}
+.ec-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.ec-code{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;margin-bottom:2px}
+.ec-name{font-weight:700;font-size:.85rem;margin-bottom:2px}
+.ec-desc{font-size:.78rem;color:var(--muted);line-height:1.4}
+
+/* ERROR LOG */
+.elog{background:var(--surface);border:2px solid var(--convention);border-radius:14px;padding:22px;margin-bottom:16px}
+.elog h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
+.elog-sub{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+.elog-row{display:grid;grid-template-columns:50px 1fr 1fr 1fr;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:.84rem}
+.elog-row:last-child{border-bottom:none}
+.elog-head{font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.elog-qnum{font-weight:700;font-family:'JetBrains Mono',monospace;text-align:center}
+.elog-sel{padding:5px 8px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.82rem;width:100%}
+.elog-sel:focus{border-color:var(--convention);outline:none}
+.elog-summary{margin-top:16px;padding:14px;background:var(--paper);border-radius:10px;border:1px solid var(--border)}
+.elog-summary h4{margin-bottom:8px;font-size:.95rem}
+.elog-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.elog-bar-label{width:120px;font-size:.82rem;color:#ccc;flex-shrink:0}
+.elog-bar{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+.elog-bar-fill{height:100%;border-radius:5px;transition:width .3s}
+.elog-bar-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--muted);width:30px;text-align:right;flex-shrink:0}
+
+/* REFLECTION */
+.reflect-q{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:8px;border:1px solid var(--border)}
+.reflect-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.75rem;margin-right:8px}
+.reflect-text{font-size:.9rem;color:#ccc;display:inline}
+.reflect-input{width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem;margin-top:8px;resize:vertical;min-height:40px}
+.reflect-input:focus{border-color:var(--accent);outline:none}
+
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24}
+.btn-sm{padding:8px 16px;font-size:.82rem}
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.ec-grid{grid-template-columns:1fr 1fr}.elog-row{grid-template-columns:40px 1fr 1fr}.conf-row{flex-wrap:wrap;gap:6px}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to R&W Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Session 5 · Advanced</div>
+  <h1>Practice Set 3: Advanced Challenge (Q1–10)</h1>
+  <p class="subtitle">Harder questions with subtler distractors — quantitative evidence, tone, cross-text, and more.</p>
+  <div class="mod-meta">
+    <span>⏱ 60 minutes</span>
+    <span>📋 6 sections</span>
+    <span>🔥 Phase 3: Advanced Challenge</span>
+  </div>
+</div>
+
+<!-- DIFFICULTY BANNER -->
+<div class="diff-banner">
+  <div class="diff-stars">⬥ ⬥ ⬥ ⬥ ⬥</div>
+  <h3>Difficulty Level: Advanced</h3>
+  <p>These questions are intentionally harder than Sets 1 and 2. If your score drops, that's expected and normal — it means you're stretching into new territory. Focus on learning from the harder distractors.</p>
+</div>
+
+<!-- SKILL FOCUS -->
+<div class="section">
+  <div class="section-label">Part 1 · 5 min</div>
+  <h2>Set 3: Harder Question Types</h2>
+  <p>This set introduces four advanced patterns. Tap each card to reveal what makes them tricky and how to handle them.</p>
+  <div class="skill-grid">
+    <div class="skill-card sk-quant" onclick="toggleSkill(this)">
+      <span class="skill-toggle">▼</span>
+      <div class="skill-name">Quantitative Evidence</div>
+      <div class="skill-desc">Read data carefully — wrong answers misstate, reverse, or exaggerate numbers. Ask: "Does the answer match what the data actually says?"</div>
+      <div class="skill-tip">💡 <strong>Watch for:</strong> "Identical" when numbers are close but not equal. "Always" or "proves" from a single study. Reversed comparisons (saying A > B when data shows B > A). Overgeneralization from one task to "all tasks."</div>
+    </div>
+    <div class="skill-card sk-twopart" onclick="toggleSkill(this)">
+      <span class="skill-toggle">▼</span>
+      <div class="skill-name">Two-Part Wrong Answers</div>
+      <div class="skill-desc">At higher difficulty, wrong answers get one thing right and one wrong. Read every word of every choice.</div>
+      <div class="skill-tip">💡 <strong>Strategy:</strong> Break each answer choice into its individual claims. Check each claim against the passage separately. If ANY part is wrong, the whole answer is wrong — even if the other part is perfect.</div>
+    </div>
+    <div class="skill-card sk-tone" onclick="toggleSkill(this)">
+      <span class="skill-toggle">▼</span>
+      <div class="skill-name">Tone and Attitude</div>
+      <div class="skill-desc">Look for loaded words, sarcasm, and the gap between what's described and HOW it's described.</div>
+      <div class="skill-tip">💡 <strong>Strategy:</strong> Circle adjectives and descriptive phrases — they reveal attitude. Sarcasm = saying the opposite of what you mean. If the author calls something a "masterclass" but clearly thinks it's terrible, that's sardonic. Neutral tone uses no evaluative language.</div>
+    </div>
+    <div class="skill-card sk-semi" onclick="toggleSkill(this)">
+      <span class="skill-toggle">▼</span>
+      <div class="skill-name">Semicolons + Conjunctive Adverbs</div>
+      <div class="skill-desc">Pattern: [clause]; however, / moreover, / therefore, [clause]. Semicolon before, comma after.</div>
+      <div class="skill-tip">💡 <strong>Rule:</strong> Conjunctive adverbs (however, moreover, therefore, nevertheless, consequently) are NOT conjunctions. They can't join clauses with just a comma. Use: semicolon + adverb + comma, OR period + Adverb + comma.</div>
+    </div>
+  </div>
+</div>
+
+<!-- WARM-UP MINI-QUIZ -->
+<div class="section">
+  <div class="section-label">Part 1b · Interactive Warm-Up</div>
+  <h2>Trap Spotter Drill</h2>
+  <p>Can you spot the trap in each of these? This warm-up trains your eye for the advanced distractor patterns you'll see in Set 3.</p>
+  <div class="miniquiz" id="miniQuiz"></div>
+</div>
+
+<!-- CONFIDENCE TRACKER -->
+<div class="section">
+  <div class="section-label">Part 2a · Interactive</div>
+  <h2>Confidence Tracker</h2>
+  <p>Rate your confidence on each question as you go. After grading, you'll see where confidence and accuracy align — or don't.</p>
+  <div class="conf-meter" id="confMeter"></div>
+</div>
+
+<!-- TIMED PRACTICE -->
+<div class="section">
+  <div class="section-label">Part 2b · 15 min</div>
+  <h2>Practice Questions 1–10</h2>
+  <p>This set covers <strong>Info & Ideas</strong> (Q1–6) and <strong>Craft & Structure</strong> (Q7–10). These are harder than previous sets — take your time with each passage.</p>
+  <div class="callout"><strong>Advanced Protocol:</strong> Before selecting an answer, try to eliminate at least TWO choices using specific reasoning. If you can't, flag it and come back. On harder questions, the "almost right" answer is designed to catch you.</div>
+  <div class="timer-bar">
+    <div class="timer-display" id="timerDisplay">15:00</div>
+    <button class="timer-btn" id="timerStart" onclick="startTimer()">▶ Start Timer</button>
+    <button class="timer-btn outline" onclick="resetTimer()">↺ Reset</button>
+  </div>
+  <div id="satQuestions"></div>
+  <div style="text-align:center;margin:12px 0">
+    <button class="btn" id="showBtn" onclick="showAllAnswers()">Show All Answers</button>
+  </div>
+  <div id="satScore" class="ex-score"></div>
+</div>
+
+<!-- PROGRESS SNAPSHOT -->
+<div class="section" id="progressSection" style="display:none">
+  <div class="section-label">Score Snapshot</div>
+  <h2>Your Performance</h2>
+  <div class="progress-ring-wrap">
+    <div class="progress-ring">
+      <svg width="80" height="80"><circle class="bg" cx="40" cy="40" r="34"/><circle class="fg" id="ringFg" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6"/></svg>
+      <div class="ring-label" id="ringLabel">—</div>
+    </div>
+    <div class="progress-stats" id="progressStats"></div>
+  </div>
+</div>
+
+<!-- ERROR TYPE CODES -->
+<div class="section">
+  <div class="section-label">Part 3</div>
+  <h2>Error Type Codes</h2>
+  <p>Classify every error. On harder questions, "TF — Trap/Distractor" may be more common — that's the point.</p>
+  <div class="ec-grid">
+    <div class="ec-card"><div class="ec-code" style="color:var(--wrong)">MR</div><div class="ec-name">Misread</div><div class="ec-desc">Didn't read the passage or question carefully enough</div></div>
+    <div class="ec-card"><div class="ec-code" style="color:var(--craft)">CG</div><div class="ec-name">Content Gap</div><div class="ec-desc">Didn't know the concept or vocabulary</div></div>
+    <div class="ec-card"><div class="ec-code" style="color:var(--express)">TF</div><div class="ec-name">Trap/Distractor</div><div class="ec-desc">Chose an answer that was "almost right" but had a flaw</div></div>
+    <div class="ec-card"><div class="ec-code" style="color:#f97316">RS</div><div class="ec-name">Rushed</div><div class="ec-desc">Went too fast and made a careless mistake</div></div>
+    <div class="ec-card"><div class="ec-code" style="color:var(--info)">OT</div><div class="ec-name">Overthought</div><div class="ec-desc">Talked myself out of the right answer</div></div>
+    <div class="ec-card"><div class="ec-code" style="color:var(--muted)">GS</div><div class="ec-name">Guessed</div><div class="ec-desc">Ran out of time or had no idea</div></div>
+  </div>
+</div>
+
+<!-- ERROR LOG -->
+<div class="section">
+  <div class="section-label">Part 4 · Interactive</div>
+  <h2>Error Log</h2>
+  <p>For every question you got wrong, select the domain and error type.</p>
+  <div class="elog" id="errorLog"></div>
+</div>
+
+<!-- REFLECTION -->
+<div class="section">
+  <div class="section-label">Part 5</div>
+  <h2>Reflection Questions</h2>
+  <p>These are especially important after a harder set. Be honest — growth comes from understanding what tripped you up.</p>
+  <div id="reflections"></div>
+  <div style="text-align:center;margin-top:12px">
+    <button class="btn btn-sm" onclick="exportAll()">📋 Export Everything</button>
+  </div>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Quantitative evidence questions test whether you read data precisely — "close" is not "identical," and one study doesn't "prove" anything.</li>
+      <li>At advanced difficulty, wrong answers are designed to be half-right. Break each choice into separate claims and verify each one.</li>
+      <li>Tone questions require you to distinguish WHAT is described from HOW the author describes it. Loaded words and irony are key signals.</li>
+      <li>Words-in-context at this level test subtle secondary meanings. The most obvious definition is almost always the trap.</li>
+      <li>A score drop on harder material is progress — you're building the skills to handle test-day surprises.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-4.html">← Session 4: Set 2 (Q11–20)</a>
+  <a href="module-6.html">Session 6: Set 3 (Q11–20) →</a>
+</div>
+</div>
+
+<script>
+// ============ SKILL TOGGLE ============
+function toggleSkill(el){el.classList.toggle('open');}
+
+// ============ MINI-QUIZ ============
+const MQ=[
+  {prompt:'A study found Group A scored 14.1 and Group B scored 13.8. An answer choice says they had "identical effects." Is this a valid conclusion?',
+   opts:['Yes — the difference is small enough to be identical','No — 14.1 and 13.8 are close but not identical; the answer misstates the data','Yes — any difference under 1.0 counts as identical','It depends on the sample size'],
+   ans:1,fb:'On the PSAT, "identical" means exactly the same. 14.1 ≠ 13.8. Close is not identical. This is one of the most common data-misstatement traps — watch for words like "identical," "equal," "the same."'},
+  {prompt:'An answer choice says: "Farmers benefited temporarily; NYC permanently." The passage says farmers had "immediate" benefits and NYC\'s were "slower but more transformative." What\'s wrong with this answer?',
+   opts:['Nothing — it\'s correct','It confuses "immediate" with "temporary" — the passage never says farmer benefits ended','It gets NYC wrong — NYC didn\'t benefit permanently','Both parts are wrong'],
+   ans:1,fb:'Classic two-part trap. The first half swaps "immediate" (about timing) for "temporary" (about duration) — a subtle but critical difference. The passage never says farmer benefits ended. Always check each claim independently.'},
+  {prompt:'An author calls a corporate memo a "masterclass in bureaucratic deflection." What tone is this?',
+   opts:['Respectful and admiring','Neutral and factual','Sardonic — using "masterclass" ironically to criticize','Confused and uncertain'],
+   ans:2,fb:'"Masterclass" sounds positive, but in context it means the memo is expertly evasive — which is a criticism, not praise. This gap between literal meaning and intended meaning = sarcasm/sardonic tone. Always check: does the author actually think this is good?'},
+];
+let mqAns={};
+function renderMQ(){
+  let h='<h3>🎯 Trap Spotter Drill</h3><div class="miniquiz-sub">3 questions to sharpen your eye for advanced traps before you start.</div>';
+  MQ.forEach((q,i)=>{
+    const picked=mqAns[i];const done=picked!==undefined;
+    h+=`<div class="mq-item"><div class="mq-prompt">${i+1}. ${q.prompt}</div><div class="mq-opts">`;
+    q.opts.forEach((o,oi)=>{
+      let cls='mq-opt';
+      if(done){cls+=' mq-dis';if(oi===q.ans)cls+=' mq-right';else if(oi===picked&&oi!==q.ans)cls+=' mq-nope';}
+      h+=`<div class="${cls}" onclick="pickMQ(${i},${oi})">${o}</div>`;
+    });
+    h+=`</div><div class="mq-fb${done?' show':''}">${done?(picked===q.ans?'✓ Correct! ':'✗ Not quite. ')+q.fb:''}</div></div>`;
+  });
+  const total=Object.keys(mqAns).length;
+  const correct=Object.entries(mqAns).filter(([i,v])=>v===MQ[i].ans).length;
+  h+=`<div class="mq-score${total===MQ.length?' show':''}">${correct}/${MQ.length} — ${correct===MQ.length?'Sharp eye! You\'re ready for the advanced set.':correct>=2?'Good instincts. Stay vigilant on the practice questions.':'Review the skill cards above — these trap patterns will appear in the practice set.'}</div>`;
+  document.getElementById('miniQuiz').innerHTML=h;
+}
+function pickMQ(i,oi){if(mqAns[i]!==undefined)return;mqAns[i]=oi;renderMQ();}
+renderMQ();
+
+// ============ TIMER ============
+let timerSec=900,timerInt=null,timerRunning=false;
+function updateTimerUI(){
+  const m=Math.floor(timerSec/60),s=timerSec%60;
+  const el=document.getElementById('timerDisplay');
+  el.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  el.className='timer-display'+(timerRunning?' running':'')+(timerSec===0?' done':'')+(timerSec<=120&&timerSec>0?' warning':'');
+}
+function startTimer(){
+  if(timerRunning)return;timerRunning=true;
+  document.getElementById('timerStart').textContent='⏸ Running';
+  timerInt=setInterval(()=>{
+    if(timerSec>0){timerSec--;updateTimerUI();}
+    else{clearInterval(timerInt);timerRunning=false;document.getElementById('timerStart').textContent='⏰ Time!';}
+  },1000);
+}
+function resetTimer(){clearInterval(timerInt);timerRunning=false;timerSec=900;updateTimerUI();document.getElementById('timerStart').textContent='▶ Start Timer';}
+updateTimerUI();
+
+// ============ PRACTICE QUESTIONS ============
+const QS=[
+  {domain:'Info & Ideas',skill:'Quantitative Evidence',
+   passage:'Stanford study on background music and creative problem-solving. Four groups: silence (11.3 ideas), classical (14.1), ambient electronic (13.8), popular with lyrics (8.7). Task: divergent thinking — generating novel uses for common objects.',
+   stem:'Which conclusion is best supported by the data?',
+   choices:['Classical music is superior for every kind of cognitive task.','Music with lyrics appears to hinder creative thinking, while instrumental music may enhance it relative to silence.','Students should always listen to classical music while studying.','Ambient electronic and classical music have identical effects on creativity.'],
+   correct:1,fb:'A overgeneralizes — only tested divergent thinking, not "every kind." B is correct: instrumental groups (14.1, 13.8) beat silence (11.3); lyrics (8.7) was worst. "Appears to" and "may" are appropriately cautious. C is too strong — one study ≠ "always" or "proves." D misstates the data: 14.1 ≠ 13.8 ("identical" is wrong).'},
+  {domain:'Info & Ideas',skill:'Command of Evidence',
+   passage:'Barcelona\'s "superblocks" program: pedestrian-priority zones, NO2 down 25%, noise down 5dB, pedestrians up 33%. 67% of businesses reported stable/increased revenue. A critic argues the program primarily benefits wealthier neighborhoods.',
+   stem:'Which would most effectively counter this criticism?',
+   choices:['The first six superblocks were in the city\'s most affluent districts.','Barcelona plans to expand to 503 superblocks citywide, including low-income neighborhoods, by 2030.','Similar programs in other European cities also reduced pollution.','The evaluation data was collected by an independent institute.'],
+   correct:1,fb:'A actually SUPPORTS the critic. B directly addresses the equity concern: expansion to 503 blocks including low-income areas shows benefits will be broadly distributed. C confirms effectiveness but doesn\'t address which neighborhoods benefit. D addresses research bias, not geographic equity.'},
+  {domain:'Info & Ideas',skill:'Cross-Text',
+   passage:'Text 1: Dr. Fontaine — English as global lingua franca accelerates minority language extinction. 40% of 7,000 languages endangered.<br>Text 2: Dr. Okafor — technology may help preserve endangered languages (apps, social media, machine learning). Acknowledges globalization poses risks but argues tech can be redirected toward preservation.',
+   stem:'On which point would they most likely agree?',
+   choices:['English should be replaced in international business.','Technology is the most important factor in preservation.','Minority languages face genuine threats in the current global environment.','Social media is entirely beneficial for minority languages.'],
+   correct:2,fb:'A — neither argues for replacing English. B — only Okafor focuses on tech, and doesn\'t call it "most important." C is correct: Fontaine says languages are endangered; Okafor "acknowledges globalization poses risks." Both agree the threat is real — they differ on solutions. D — "entirely beneficial" is too extreme for either author.'},
+  {domain:'Info & Ideas',skill:'Inferences',
+   passage:'Dr. Nair: urban green roofs as pollinator habitats. 2-year study of 40 Chicago roofs: native wildflower roofs attracted 3.2x more native bee species than sedum roofs (the industry standard). However, native wildflower roofs required 60% more maintenance and irrigation.',
+   stem:'What tension does Dr. Nair\'s research reveal?',
+   choices:['Green roofs are too expensive for most building owners.','Native wildflower roofs are better for pollinators but significantly more resource-intensive than the industry standard.','Sedum roofs attract more pollinators than wildflower roofs.','Urban areas don\'t have enough space for green roofs.'],
+   correct:1,fb:'A discusses installation costs, not mentioned. B captures the trade-off: 3.2x more bees (better ecology) vs. 60% more maintenance (higher cost). C REVERSES the data — wildflower roofs attracted more, not sedum. D is about space, but 40 existing roofs shows they\'re already being installed.'},
+  {domain:'Info & Ideas',skill:'Central Ideas',
+   passage:'Erie Canal (1820s): Western farmers saw immediate benefits — shipping cost dropped from $100 to $10/ton, farmland values tripled in 5 years. NYC\'s benefits were "slower to materialize but ultimately more transformative" — became the nation\'s commercial gateway and financial capital by 1850s.',
+   stem:'How did the timing of benefits differ?',
+   choices:['Western farmers benefited temporarily; NYC permanently.','NYC saw benefits before completion; farmers had to wait.','Western farmers had rapid, concrete gains; NYC\'s benefits developed gradually into a broader structural advantage.','Both benefited equally and simultaneously.'],
+   correct:2,fb:'A swaps "immediate" for "temporary" — the passage never says farmer benefits ended (classic two-part trap). B reverses the timing. C is correct: farmers got immediate, quantifiable gains ($100→$10, land tripled); NYC\'s were "slower but ultimately more transformative." D directly contradicts the passage\'s central point.'},
+  {domain:'Info & Ideas',skill:'Inferences',
+   passage:'Sleep deprivation study: 48 participants kept awake 53 hours. Sleep-deprived took 40% longer on moral dilemmas but showed NO significant difference on non-moral logical problems. Also 28% more likely to endorse utilitarian solutions.',
+   stem:'What can be inferred from slower moral reasoning but NOT slower logical reasoning?',
+   choices:['Sleep deprivation impairs all cognitive processing equally.','Moral reasoning depends on cognitive resources particularly vulnerable to sleep deprivation, while basic logic is more resilient.','The logical problems were too easy to show differences.','Sleep-deprived people are incapable of making ethical decisions.'],
+   correct:1,fb:'A is directly contradicted — moral = slower, logical = no difference, so NOT equal. B is correct: selective impairment suggests moral reasoning draws on capacities more affected by sleep loss. C dismisses the finding without evidence. D is too extreme — slower ≠ incapable.'},
+  {domain:'Craft & Structure',skill:'Words in Context',
+   passage:'The political situation had grown increasingly volatile — daily protests, shifting military alliances, contradictory government statements, citizens uncertain about who held power.',
+   stem:'What does "volatile" most nearly mean?',
+   choices:['Tending to evaporate quickly at normal temperatures','Unstable and liable to change rapidly or unpredictably','Expressing anger or strong emotions frequently','Related to volcanic or geological activity'],
+   correct:1,fb:'A is the chemistry definition (evaporating liquids). B is correct: protests, shifting alliances, contradictory statements = markers of instability and unpredictability. C describes a person\'s temperament, but the subject is "the political situation." D confuses etymology (volcano) with definition.'},
+  {domain:'Craft & Structure',skill:'Words in Context',
+   passage:'The governor\'s enthusiasm for the infrastructure bill was tempered by concerns about its long-term fiscal impact. She publicly praised it but privately urged stricter cost controls.',
+   stem:'What does "tempered" most nearly mean?',
+   choices:['Heated then cooled to increase hardness (metal)','Made moderate or restrained by a counterbalancing factor','Displayed in an outburst of anger or frustration','Adjusted to a specific musical pitch or tuning'],
+   correct:1,fb:'A is metallurgical (tempering steel). B is correct: enthusiasm counterbalanced by concerns — public praise + private caution = restrained by a competing consideration. C confuses "tempered" with "losing one\'s temper." D is musical (tempered scale).'},
+  {domain:'Craft & Structure',skill:'Tone',
+   passage:'The department head\'s email was "a masterclass in bureaucratic deflection." Nowhere did it address unsafe working conditions. It praised "resilience," announced a "Wellness Task Force," promised concerns "are being taken seriously" — "so generic it could have been copied from any corporate template." Closed by reminding of the "open door policy," though the head\'s door had been literally closed for three weeks.',
+   stem:'Which best describes the author\'s tone?',
+   choices:['Respectful but slightly confused','Neutral and purely informational','Sharply critical and sardonic','Sympathetic and understanding'],
+   correct:2,fb:'A — no respect here; "masterclass in bureaucratic deflection" is pointed criticism. B — the passage is loaded with evaluative language and editorial commentary. C is correct: clearly critical (deflection, never addresses core issue) + sardonic wit ("masterclass," ironic "open door" from someone literally closed off). D — every detail exposes the gap between the email\'s language and reality; mocking, not understanding.'},
+  {domain:'Craft & Structure',skill:'Text Structure',
+   passage:'Most discussions of Hamilton focus on Treasury Secretary and Federalist Papers. However, Dr. Reyes argues his most lasting contribution was establishing the precedent that government could actively shape the economy — national bank, tariffs, manufacturing subsidies. A fundamentally different vision: government as active participant, not just referee.',
+   stem:'What is the function of the first sentence?',
+   choices:['Introduces the argument the passage will defend.','Establishes conventional understanding that the passage will then expand beyond.','Presents a view the passage will reject as incorrect.','Provides biographical details essential to understanding Hamilton\'s ideas.'],
+   correct:1,fb:'A — the passage doesn\'t defend the conventional view; it uses it as a springboard. B is correct: "Most discussions" = conventional wisdom, then "However" pivots to a deeper claim. Classic "common view → deeper analysis" structure. C — doesn\'t reject it as incorrect (Hamilton WAS Treasury Secretary); expanding ≠ rejecting. D — no biographical details (birth, education); summarizes reputation, not biography.'},
+];
+const DOM_COLORS={
+  'Info & Ideas':{bg:'rgba(52,211,153,.15)',color:'#34d399'},
+  'Craft & Structure':{bg:'rgba(96,165,250,.15)',color:'#60a5fa'},
+};
+let satAns={};let answersShown=false;
+function renderSAT(){
+  document.getElementById('satQuestions').innerHTML=QS.map((q,i)=>{
+    const ans=satAns[i];const has=ans!==undefined;const showFb=answersShown&&has;
+    const dc=DOM_COLORS[q.domain]||{bg:'rgba(200,16,46,.15)',color:'#C8102E'};
+    return `<div class="sat-q">
+      <div class="ex-num"><span class="domain-tag" style="background:${dc.bg};color:${dc.color}">${q.domain}</span> ${q.skill} · Q${i+1}</div>
+      <div class="sat-passage">${q.passage}</div>
+      <div class="sat-stem">${q.stem}</div>
+      <div class="sat-choices">${q.choices.map((ch,ci)=>{
+        let cls='sat-choice';
+        if(answersShown&&has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}
+        return `<div class="${cls}" style="${has&&ci===ans&&!answersShown?'border-color:var(--accent);background:var(--accent-light)':''}" onclick="pickAns(${i},${ci})"><div class="sc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
+      }).join('')}</div>
+      <div class="sat-fb${showFb?' show':''}${showFb?(ans===q.correct?' sfb-correct':' sfb-wrong'):''}">${showFb?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
+  }).join('');
+  if(answersShown){
+    const t=QS.length,c=Object.entries(satAns).filter(([i,v])=>v===QS[i].correct).length;
+    document.getElementById('satScore').innerHTML=`<strong style="color:${c>=8?'var(--correct)':c>=5?'var(--express)':'var(--wrong)'}">${c}/${t} correct</strong> (${Math.round(c/t*100)}%)${c<7?' — Remember: a score drop on harder material is normal and expected!':''}`;
+    document.getElementById('showBtn').style.display='none';
+    showProgress(c,t);
+    renderErrorLog();
+    renderConfidence();
+  }
+}
+function pickAns(i,ci){if(answersShown)return;satAns[i]=ci;renderSAT();}
+function showAllAnswers(){
+  if(Object.keys(satAns).length<QS.length){
+    const m=QS.length-Object.keys(satAns).length;
+    if(!confirm(`You have ${m} unanswered question${m>1?'s':''}. Show answers anyway?`))return;
+  }
+  answersShown=true;if(timerRunning){clearInterval(timerInt);timerRunning=false;}
+  renderSAT();
+}
+renderSAT();
+
+// ============ PROGRESS RING ============
+function showProgress(correct,total){
+  const pct=Math.round(correct/total*100);
+  const circ=213.6;const offset=circ-(pct/100*circ);
+  document.getElementById('progressSection').style.display='block';
+  document.getElementById('ringLabel').textContent=pct+'%';
+  setTimeout(()=>{document.getElementById('ringFg').style.strokeDashoffset=offset;},100);
+  const domStats={};
+  QS.forEach((q,i)=>{
+    if(!domStats[q.domain])domStats[q.domain]={total:0,correct:0};
+    domStats[q.domain].total++;
+    if(satAns[i]===q.correct)domStats[q.domain].correct++;
+  });
+  let h=`<strong>${correct}/${total}</strong> overall<br>`;
+  Object.entries(domStats).forEach(([dom,s])=>{
+    const dc=DOM_COLORS[dom]||{color:'#ccc'};
+    h+=`<span style="color:${dc.color}">${dom}:</span> ${s.correct}/${s.total}<br>`;
+  });
+  document.getElementById('progressStats').innerHTML=h;
+}
+
+// ============ CONFIDENCE TRACKER ============
+const CONF_LEVELS=['Sure','Maybe','Guess'];
+const confData={};
+function setConf(i,level){confData[i]=level;renderConfidence();}
+function renderConfidence(){
+  let h=`<h3>🎯 Confidence Tracker</h3><div class="conf-sub">Rate each question: Sure, Maybe, or Guess.</div>`;
+  QS.forEach((q,i)=>{
+    h+=`<div class="conf-row"><div class="conf-qnum">Q${i+1}</div><div class="conf-btns">`;
+    CONF_LEVELS.forEach(lv=>{
+      const active=confData[i]===lv?' cb-active':'';
+      h+=`<button class="conf-btn${active}" onclick="setConf(${i},'${lv}')">${lv}</button>`;
+    });
+    h+=`</div>`;
+    if(answersShown&&satAns[i]!==undefined&&confData[i]){
+      const correct=satAns[i]===QS[i].correct;const conf=confData[i];
+      let tag='';
+      if(correct&&conf==='Sure')tag='<span style="color:var(--correct)">✓ Calibrated</span>';
+      else if(!correct&&conf==='Sure')tag='<span style="color:var(--wrong)">⚠ Blind spot</span>';
+      else if(correct&&conf==='Guess')tag='<span style="color:var(--info)">★ Lucky or instinct?</span>';
+      else if(!correct&&conf==='Guess')tag='<span style="color:var(--muted)">Expected</span>';
+      else if(correct)tag='<span style="color:var(--correct)">✓ Nice</span>';
+      else tag='<span style="color:var(--express)">Review this one</span>';
+      h+=`<div class="conf-result">${tag}</div>`;
+    }
+    h+=`</div>`;
+  });
+  if(answersShown){
+    const bs=QS.filter((_,i)=>confData[i]==='Sure'&&satAns[i]!==undefined&&satAns[i]!==QS[i].correct).length;
+    const cal=QS.filter((_,i)=>confData[i]==='Sure'&&satAns[i]!==undefined&&satAns[i]===QS[i].correct).length;
+    const luck=QS.filter((_,i)=>confData[i]==='Guess'&&satAns[i]!==undefined&&satAns[i]===QS[i].correct).length;
+    h+=`<div class="conf-summary"><strong>Confidence Summary:</strong><br>`;
+    h+=`✓ Calibrated (sure & correct): <strong>${cal}</strong><br>`;
+    h+=`⚠ Blind spots (sure & wrong): <strong style="color:${bs>0?'var(--wrong)':'var(--correct)'};">${bs}</strong>${bs>0?' — on advanced questions, this reveals specific trap patterns to study':''}<br>`;
+    h+=`★ Lucky guesses: <strong>${luck}</strong>${luck>0?' — study these skills so you can be confident next time':''}`;
+    h+=`</div>`;
+  }
+  document.getElementById('confMeter').innerHTML=h;
+}
+renderConfidence();
+
+// ============ ERROR LOG ============
+const DOMAINS=['Info & Ideas','Craft & Structure','Expression of Ideas','Standard English'];
+const ETYPES=['MR — Misread','CG — Content Gap','TF — Trap/Distractor','RS — Rushed','OT — Overthought','GS — Guessed'];
+const ETYPE_COLORS={'MR':'var(--wrong)','CG':'var(--craft)','TF':'var(--express)','RS':'#f97316','OT':'var(--info)','GS':'var(--muted)'};
+const ELK='pp_p89rw_s5_elog';
+function loadEL(){return JSON.parse(localStorage.getItem(ELK)||'{}');}
+function saveEL(d){localStorage.setItem(ELK,JSON.stringify(d));}
+function renderErrorLog(){
+  const el=loadEL();const wrongQs=[];
+  if(answersShown){QS.forEach((q,i)=>{if(satAns[i]!==undefined&&satAns[i]!==q.correct)wrongQs.push(i);});}
+  let html=`<h3>📋 Error Log</h3><div class="elog-sub">${wrongQs.length===0&&answersShown?'No errors! Impressive on an advanced set!':'Log each error with its domain and error type.'}</div>`;
+  if(wrongQs.length>0){
+    html+=`<div class="elog-row"><div class="elog-head">Q#</div><div class="elog-head">Domain</div><div class="elog-head">Error Type</div><div class="elog-head">Skill</div></div>`;
+    wrongQs.forEach(i=>{
+      const q=QS[i];
+      html+=`<div class="elog-row"><div class="elog-qnum">${i+1}</div><div><select class="elog-sel" onchange="updateEL(${i},'dom',this.value)"><option value="">—</option>${DOMAINS.map(d=>`<option${el[i]?.dom===d?' selected':''}>${d}</option>`).join('')}</select></div><div><select class="elog-sel" onchange="updateEL(${i},'et',this.value)"><option value="">—</option>${ETYPES.map(e=>`<option${el[i]?.et===e?' selected':''}>${e}</option>`).join('')}</select></div><div style="font-size:.8rem;color:var(--muted)">${q.skill}</div></div>`;
+    });
+    const etCounts={};const domCounts={};
+    wrongQs.forEach(i=>{const d=el[i];if(!d)return;if(d.et){const code=d.et.split(' — ')[0];etCounts[code]=(etCounts[code]||0)+1;}if(d.dom){domCounts[d.dom]=(domCounts[d.dom]||0)+1;}});
+    const maxET=Math.max(1,...Object.values(etCounts));const maxDom=Math.max(1,...Object.values(domCounts));
+    html+=`<div class="elog-summary"><h4>Error Summary</h4>`;
+    if(Object.keys(etCounts).length>0){
+      html+=`<div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">By Type</div>`;
+      Object.entries(etCounts).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{html+=`<div class="elog-bar-row"><div class="elog-bar-label" style="color:${ETYPE_COLORS[k]||'var(--muted)'}">${k}</div><div class="elog-bar"><div class="elog-bar-fill" style="width:${v/maxET*100}%;background:${ETYPE_COLORS[k]||'var(--muted)'}"></div></div><div class="elog-bar-val">${v}</div></div>`;});
+    }
+    if(Object.keys(domCounts).length>0){
+      html+=`<div style="font-size:.78rem;font-weight:700;color:var(--muted);margin:10px 0 6px;text-transform:uppercase;letter-spacing:1px">By Domain</div>`;
+      const dc2={'Info & Ideas':'var(--info)','Craft & Structure':'var(--craft)','Expression of Ideas':'var(--express)','Standard English':'var(--convention)'};
+      Object.entries(domCounts).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{html+=`<div class="elog-bar-row"><div class="elog-bar-label" style="color:${dc2[k]||'#ccc'}">${k}</div><div class="elog-bar"><div class="elog-bar-fill" style="width:${v/maxDom*100}%;background:${dc2[k]||'var(--muted)'}"></div></div><div class="elog-bar-val">${v}</div></div>`;});
+    }
+    html+=`</div>`;
+  } else if(!answersShown){
+    html+=`<p style="color:var(--muted);font-size:.88rem;text-align:center;padding:20px 0">Complete the practice questions and click "Show Answers" to populate the error log.</p>`;
+  }
+  document.getElementById('errorLog').innerHTML=html;
+}
+function updateEL(i,field,val){const d=loadEL();if(!d[i])d[i]={};d[i][field]=val;saveEL(d);renderErrorLog();}
+renderErrorLog();
+
+// ============ REFLECTIONS ============
+const REFLECT_QS=[
+  'How did your score compare to Sets 1 and 2? If it dropped, which question types caused the most trouble?',
+  'Did you fall for any "two-part wrong answers" — choices that were half right? Which ones?',
+  'Were there questions where you spotted the trap during the warm-up but still fell for it in the real set?',
+  'Look at your confidence tracker: how many blind spots did you have? What do they have in common?',
+  'Which of the four new skill types (Quantitative Evidence, Two-Part, Tone, Semicolons) do you need to practice most?',
+  'What is ONE strategy you\'ll bring to Set 3 (Q11–20) next session?',
+];
+const RK='pp_p89rw_s5_reflect';
+function loadR(){return JSON.parse(localStorage.getItem(RK)||'{}');}
+function saveR(d){localStorage.setItem(RK,JSON.stringify(d));}
+function renderReflect(){
+  const d=loadR();
+  document.getElementById('reflections').innerHTML=REFLECT_QS.map((q,i)=>`
+    <div class="reflect-q"><span class="reflect-num">${i+1}</span><span class="reflect-text">${q}</span>
+    <textarea class="reflect-input" placeholder="Your answer..." oninput="saveReflect(${i},this.value)">${d[i]||''}</textarea></div>`).join('');
+}
+function saveReflect(i,v){const d=loadR();d[i]=v;saveR(d);}
+renderReflect();
+
+// ============ EXPORT ============
+function exportAll(){
+  const el=loadEL();const r=loadR();
+  let t='SESSION 5 — ADVANCED CHALLENGE REPORT — PantherPrep PSAT 8/9 R&W\n═══════════════════════════════════════════════════════\n\n';
+  if(answersShown){
+    const c=Object.entries(satAns).filter(([i,v])=>v===QS[i].correct).length;
+    t+=`SET 3 (Q1-10) SCORE: ${c}/${QS.length} (${Math.round(c/QS.length*100)}%)\n\n`;
+  }
+  t+='CONFIDENCE TRACKER:\n';
+  QS.forEach((_,i)=>{
+    const conf=confData[i]||'—';
+    const correct=answersShown&&satAns[i]!==undefined?(satAns[i]===QS[i].correct?'✓':'✗'):'?';
+    t+=`  Q${i+1}: ${conf} → ${correct}\n`;
+  });
+  t+='\nERROR LOG:\n';
+  Object.entries(el).forEach(([i,d])=>{t+=`  Q${parseInt(i)+1}: ${d.dom||'—'} | ${d.et||'—'} | ${QS[i]?.skill||''}\n`;});
+  t+='\nREFLECTIONS:\n';
+  REFLECT_QS.forEach((q,i)=>{t+=`  ${i+1}. ${q}\n     → ${r[i]||'(not answered)'}\n\n`;});
+  navigator.clipboard.writeText(t).then(()=>alert('Copied to clipboard!')).catch(()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);alert('Copied!');});
+}
+</script>
+<script src="/translate.js"></script></body>
+</html>

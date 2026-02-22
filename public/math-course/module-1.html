@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1: Diagnostic & Orientation — SAT Math — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geotrig:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
+.callout-blue strong{color:var(--math)}
+
+/* TEST STRUCTURE TABLE */
+.struct-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px}
+.struct-table th,.struct-table td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+.struct-table th{background:var(--surface);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.struct-table td{color:#ccc}
+.struct-table code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82rem}
+
+/* DOMAIN BREAKDOWN */
+.domain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .2s;cursor:pointer}
+.domain-card:hover{transform:translateY(-2px)}
+.domain-card.flipped .dc-front{display:none}
+.domain-card.flipped .dc-back{display:block}
+.dc-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dc-pct{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+.dc-name{font-weight:700;font-size:.95rem}
+.dc-qs{font-size:.82rem;color:var(--muted)}
+.dc-topics{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:4px}
+.dc-back{display:none;font-size:.85rem;color:#ccc;line-height:1.6}
+.dc-flip{font-size:.68rem;color:var(--muted);text-align:right;margin-top:6px}
+
+/* STRATEGY TOOLKIT */
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
+.strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
+.strat-card:hover{border-color:var(--math);transform:translateY(-2px)}
+.strat-card.flipped .sf-front{display:none}
+.strat-card.flipped .sf-back{display:block}
+.sf-icon{font-size:1.5rem;margin-bottom:4px}
+.sf-title{font-weight:700;font-size:.95rem;margin-bottom:2px}
+.sf-hint{font-size:.78rem;color:var(--muted);font-style:italic}
+.sf-flip{font-size:.68rem;color:var(--muted);text-align:right;margin-top:4px}
+.sf-back{display:none;font-size:.83rem;color:#ccc;line-height:1.5}
+
+/* CHECKLIST */
+.checklist{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.checklist h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:12px}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;cursor:pointer;transition:opacity .2s}
+.cl-item:last-child{border-bottom:none}
+.cl-item.done{opacity:.5;text-decoration:line-through}
+.cl-check{flex-shrink:0;width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .15s}
+.cl-item.done .cl-check{background:var(--correct);border-color:var(--correct);color:#fff}
+.cl-progress{font-size:.82rem;color:var(--muted);margin-top:8px;text-align:right}
+
+/* PROTOCOL STEPS */
+.protocol{background:var(--surface);border:2px solid var(--accent);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.protocol-title{background:var(--accent);padding:12px 20px;font-weight:700;font-size:.95rem}
+.protocol-step{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;align-items:flex-start}
+.protocol-step:last-child{border-bottom:none}
+.step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent-light);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--accent);font-family:'JetBrains Mono',monospace}
+
+/* ERROR CLASSIFICATION */
+.ec-box{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
+.ec-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px}
+.ec-scenario{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
+.ec-options{display:flex;flex-wrap:wrap;gap:6px}
+.ec-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.ec-opt:hover:not(.ec-dis){border-color:var(--accent);background:var(--accent-light)}
+.ec-opt.ec-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.ec-opt.ec-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.ec-opt.ec-dis{pointer-events:none;opacity:.6}
+.ec-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.4}
+.ec-fb.show{display:block}
+
+/* ERROR ANALYSIS WORKSHEET */
+.worksheet{background:var(--surface);border:2px solid var(--advanced);border-radius:14px;padding:22px;margin-bottom:16px}
+.ws-entry{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
+.ws-row{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;margin-bottom:6px}
+.ws-label{font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.ws-input{padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem}
+.ws-input:focus{border-color:var(--math);outline:none}
+.ws-select{padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem;cursor:pointer}
+.ws-select:focus{border-color:var(--math);outline:none}
+.ws-textarea{width:100%;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem;resize:vertical;min-height:40px}
+.ws-textarea:focus{border-color:var(--math);outline:none}
+.ws-actions{display:flex;gap:8px;margin-top:12px}
+
+/* ADAPTIVE VISUAL */
+.adaptive{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.adaptive-flow{display:flex;flex-direction:column;align-items:center;gap:8px}
+.adaptive-box{padding:12px 20px;border-radius:10px;text-align:center;font-size:.88rem;font-weight:600;min-width:200px}
+.adaptive-arrow{color:var(--muted);font-size:1.2rem}
+.adaptive-split{display:flex;gap:16px;width:100%}
+.adaptive-branch{flex:1;text-align:center}
+
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24}
+.btn-sm{padding:8px 16px;font-size:.82rem}
+.btn-blue{background:var(--math)}.btn-blue:hover{background:#4b8fda}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent-light)}
+
+/* NAV */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.domain-grid{grid-template-columns:1fr}.strat-grid{grid-template-columns:1fr}.adaptive-split{flex-direction:column}.ec-options{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to Math Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Module 1</div>
+  <h1>Diagnostic & Orientation</h1>
+  <p class="subtitle">Establish your baseline, learn the test structure, and build your personalized study plan.</p>
+  <div class="mod-meta">
+    <span>⏱ 90 min + test time</span>
+    <span>📋 2 sessions</span>
+    <span>🔍 Phase 1: Diagnose</span>
+  </div>
+</div>
+
+<!-- SAT MATH STRUCTURE -->
+<div class="section">
+  <div class="section-label">Know Your Test</div>
+  <h2>Digital SAT Math: Structure & Format</h2>
+  <table class="struct-table">
+    <tr><th>Feature</th><th>Details</th></tr>
+    <tr><td><strong>Total Questions</strong></td><td><code>44</code> (22 per module)</td></tr>
+    <tr><td><strong>Total Time</strong></td><td><code>70 minutes</code> (35 per module)</td></tr>
+    <tr><td><strong>Adaptive Format</strong></td><td>Module 2 difficulty adjusts based on Module 1 performance</td></tr>
+    <tr><td><strong>Question Types</strong></td><td>Multiple choice (~75%) and student-produced response / grid-in (~25%)</td></tr>
+    <tr><td><strong>Calculator</strong></td><td>Built-in Desmos graphing calculator on ALL questions</td></tr>
+    <tr><td><strong>Question Order</strong></td><td>Within each module: easiest → hardest</td></tr>
+    <tr><td><strong>Reference Sheet</strong></td><td>Area/volume formulas, special right triangles, circle properties</td></tr>
+  </table>
+</div>
+
+<!-- ADAPTIVE MODULE VISUAL -->
+<div class="section">
+  <div class="section-label">How It Works</div>
+  <h2>The Adaptive Module System</h2>
+  <div class="adaptive">
+    <div class="adaptive-flow">
+      <div class="adaptive-box" style="background:var(--math-bg);border:2px solid var(--math)">Module 1: Mixed difficulty<br><span style="font-size:.78rem;color:var(--muted)">22 questions · 35 minutes · Easy → Hard</span></div>
+      <div class="adaptive-arrow">↓ Your performance determines...</div>
+      <div class="adaptive-split">
+        <div class="adaptive-branch">
+          <div class="adaptive-box" style="background:var(--correct-bg);border:2px solid var(--correct)">Module 2: <strong>Harder</strong><br><span style="font-size:.78rem;color:var(--muted)">Unlocks scores up to 800</span></div>
+        </div>
+        <div class="adaptive-branch">
+          <div class="adaptive-box" style="background:var(--wrong-bg);border:2px solid var(--wrong)">Module 2: <strong>Easier</strong><br><span style="font-size:.78rem;color:var(--muted)">Score ceiling limited</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout"><strong>Strategic Implication:</strong> Performing well on Module 1 is critical — it unlocks your ability to reach top scores. Get the first 10 questions right (the easiest ones) and you're much more likely to reach the harder Module 2.</div>
+</div>
+
+<!-- FOUR DOMAINS -->
+<div class="section">
+  <div class="section-label">Content Breakdown</div>
+  <h2>The Four Content Domains</h2>
+  <p>Click each domain card to see the specific topics covered.</p>
+  <div class="domain-grid" id="domainGrid"></div>
+  <div class="callout-blue callout"><strong>Key Insight:</strong> Algebra and Advanced Math together account for roughly 64% of the test. Mastering these two domains is the single highest-impact investment of your study time.</div>
+</div>
+
+<!-- STRATEGY TOOLKIT INTRO -->
+<div class="section">
+  <div class="section-label">Preview</div>
+  <h2>The SAT Math Strategy Toolkit</h2>
+  <p>These six strategies will be your weapons throughout the entire course. Click each card to learn more. We'll practice all of them in Modules 7–8.</p>
+  <div class="strat-grid" id="stratGrid"></div>
+</div>
+
+<!-- BASELINE PROTOCOL -->
+<div class="section">
+  <div class="section-label">Session 1</div>
+  <h2>Baseline Assessment Protocol</h2>
+  <div class="protocol">
+    <div class="protocol-title">Baseline Test Protocol</div>
+    <div class="protocol-step"><div class="step-num">1</div><div>Open the <a href="https://bluebook.collegeboard.org/" target="_blank" style="color:var(--math)">Bluebook app</a> and select a full Math section (44 questions, 70 minutes). Use an official College Board practice test.</div></div>
+    <div class="protocol-step"><div class="step-num">2</div><div><strong>Use the built-in Desmos calculator</strong> during the baseline. This establishes your current comfort level with the tool.</div></div>
+    <div class="protocol-step"><div class="step-num">3</div><div>Simulate test conditions: no phone, no notes, timed modules, no pausing between modules.</div></div>
+    <div class="protocol-step"><div class="step-num">4</div><div>After completion, <strong>self-score BEFORE</strong> the instructor reviews results. Self-scoring develops metacognitive awareness.</div></div>
+    <div class="protocol-step"><div class="step-num">5</div><div>Mark every question you were <strong>unsure about</strong>, even if you got it correct. "Lucky correct" answers mask skill gaps.</div></div>
+    <div class="protocol-step"><div class="step-num">6</div><div>Complete the Error Analysis Worksheet below for every missed AND uncertain question.</div></div>
+  </div>
+</div>
+
+<!-- PRE-TEST CHECKLIST -->
+<div class="section">
+  <div class="section-label">Preparation</div>
+  <h2>Pre-Test Checklist</h2>
+  <div class="checklist" id="preChecklist"></div>
+</div>
+
+<!-- ERROR CLASSIFICATION EXERCISE -->
+<div class="section">
+  <div class="section-label">Session 2: Interactive Exercise</div>
+  <h2>Error Classification Practice</h2>
+  <p>Before analyzing your own test, practice classifying these sample math errors. Correctly identifying your error type is the key to knowing what to study.</p>
+  <div class="ec-box" id="ecBox"></div>
+  <div id="ecScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
+</div>
+
+<!-- ERROR ANALYSIS WORKSHEET -->
+<div class="section">
+  <div class="section-label">Session 2: Interactive Tool</div>
+  <h2>Error Analysis Worksheet</h2>
+  <p>For every missed or uncertain question on your baseline test, fill in one entry below. Click "Add Entry" to analyze more questions. Data saves in your browser.</p>
+  <div class="worksheet" id="worksheet">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px">📊 Math Error Analysis</h3>
+    <div style="font-size:.85rem;color:var(--muted);margin-bottom:14px">Complete one entry per missed/uncertain question.</div>
+    <div id="wsEntries"></div>
+    <div class="ws-actions">
+      <button class="btn btn-blue btn-sm" onclick="addEntry()">+ Add Entry</button>
+      <button class="btn btn-sm btn-outline" onclick="exportWS()">📋 Export to Clipboard</button>
+      <button class="btn btn-sm" style="background:var(--wrong)" onclick="if(confirm('Clear all entries?')){localStorage.removeItem('pp_m1_math_ws');loadWS();}">Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCORE & STUDY PLAN -->
+<div class="section">
+  <div class="section-label">Session 2: Results</div>
+  <h2>Baseline Score & Study Plan</h2>
+  <div class="card" style="border:2px solid var(--math)">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div>
+        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Module 1 Raw Score</div>
+        <input type="number" id="m1Score" placeholder="/22" min="0" max="22" style="width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.2rem;text-align:center" oninput="updateScores()">
+      </div>
+      <div>
+        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Module 2 Raw Score</div>
+        <input type="number" id="m2Score" placeholder="/22" min="0" max="22" style="width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.2rem;text-align:center" oninput="updateScores()">
+      </div>
+    </div>
+    <div id="scoreResult" style="text-align:center;font-size:.9rem;color:var(--muted);margin-bottom:16px">Enter both scores to see your total and recommended pathway.</div>
+    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;margin-top:16px">Top 3 Priority Areas</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <input type="text" placeholder="e.g., Quadratic equations — vertex form" style="padding:8px 10px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem" id="pri1">
+      <input type="text" placeholder="e.g., Systems of equations — elimination method" style="padding:8px 10px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem" id="pri2">
+      <input type="text" placeholder="e.g., Desmos — not comfortable with regressions" style="padding:8px 10px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem" id="pri3">
+    </div>
+  </div>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>The Digital SAT Math section has 44 questions in 70 minutes, split into two adaptive modules.</li>
+      <li>Module 1 performance determines whether you get the harder (high-ceiling) or easier (low-ceiling) Module 2.</li>
+      <li>Algebra + Advanced Math = 64% of the test. These are your highest-impact study areas.</li>
+      <li>Desmos is available on EVERY question — learning to use it strategically is a huge advantage.</li>
+      <li>Six core strategies (Plug In, Backsolve, Ballpark, Desmos, POE, POOD) apply across all content areas.</li>
+      <li>Error analysis is the foundation of improvement. Know your error type → know what to study.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- HOMEWORK -->
+<div class="section">
+  <div class="section-label">Before Next Session</div>
+  <h2>Homework</h2>
+  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
+    <p><strong style="color:var(--ink)">1. Complete Your Baseline Test</strong> — Full 44 questions, 70 minutes, official Bluebook practice test under test conditions.</p>
+    <p><strong style="color:var(--ink)">2. Self-Score & Mark Uncertain Questions</strong> — Score yourself before reviewing. Flag every question you weren't sure about.</p>
+    <p><strong style="color:var(--ink)">3. Complete the Error Analysis Worksheet</strong> — One entry for every missed AND uncertain question.</p>
+    <p><strong style="color:var(--ink)">4. Identify Your Top 3 Priority Areas</strong> — Based on the error analysis, what are the three domains/topics where you're losing the most points?</p>
+    <p style="margin:0"><strong style="color:var(--ink)">5. Explore Desmos</strong> — Go to <a href="https://desmos.com/calculator" target="_blank" style="color:var(--math)">desmos.com/calculator</a> and spend 15 minutes graphing equations, making tables, and finding intersection points.</p>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="index.html">← Course Hub</a>
+  <a href="module-2.html">Module 2: Algebra →</a>
+</div>
+</div>
+
+<script>
+// ============ DOMAIN CARDS ============
+const DOMAINS=[
+  {name:'Algebra',pct:'~32%',qs:'13–15 questions',color:'var(--algebra)',
+   topics:'Linear equations in one variable · Linear equations in two variables · Systems of linear equations · Linear inequalities',
+   back:'The single largest content area. Mastering linear equations and systems alone can be worth 60–80 points. You\'ll cover this in Module 2.'},
+  {name:'Advanced Math',pct:'~32%',qs:'13–15 questions',color:'var(--advanced)',
+   topics:'Quadratic equations · Polynomials · Exponentials & radicals · Rational expressions · Functions & transformations',
+   back:'Equal in weight to Algebra. Quadratics are the most tested topic — know all three forms. Covered in Modules 3–4.'},
+  {name:'Problem-Solving & Data',pct:'~15%',qs:'5–7 questions',color:'var(--psda)',
+   topics:'Ratios, rates, proportions · Percentages · Statistics (mean, median) · Scatterplots & data · Probability · Study design',
+   back:'Highest proportion of word problems. Tests mathematical reasoning more than computation. Covered in Module 5.'},
+  {name:'Geometry & Trig',pct:'~15%',qs:'5–7 questions',color:'var(--geotrig)',
+   topics:'Lines, angles, triangles · Circles & their equations · Area, perimeter, volume · SOH-CAH-TOA · Radians · Special right triangles',
+   back:'Fewest questions but formulas are provided on the reference sheet. Memorize for speed. Covered in Module 6.'},
+];
+
+function renderDomains(){
+  document.getElementById('domainGrid').innerHTML=DOMAINS.map((d,i)=>`
+    <div class="domain-card" onclick="this.classList.toggle('flipped')">
+      <div class="dc-front">
+        <div class="dc-header"><div class="dc-pct" style="color:${d.color}">${d.pct}</div><div><div class="dc-name">${d.name}</div><div class="dc-qs">${d.qs}</div></div></div>
+        <div class="dc-topics">${d.topics}</div>
+        <div class="dc-flip">tap for details</div>
+      </div>
+      <div class="dc-back">${d.back}</div>
+    </div>
+  `).join('');
+}
+renderDomains();
+
+// ============ STRATEGY CARDS ============
+const STRATS=[
+  {icon:'🔌',title:'Plug In (PIYON)',hint:'Variables in answer choices? Choose numbers.',
+   back:'When you see variables in the answer choices, pick easy numbers (2, 3, 5, 10, 100), solve to get a target answer, then test each choice with your numbers. Avoid 0 and 1.'},
+  {icon:'🔄',title:'Backsolve (PITA)',hint:'Number answers? Plug them back in.',
+   back:'When answer choices are specific numbers, start with B or C (middle value) and plug it into the problem. If too big, try smaller; if too small, try larger. Eliminates multiple choices at once.'},
+  {icon:'📏',title:'Ballpark',hint:'Estimate first, eliminate the impossible.',
+   back:'Before calculating, estimate the answer to eliminate clearly wrong choices. 15% of 820 ≈ 120 — any choice far from that is gone. Especially powerful on geometry questions.'},
+  {icon:'📊',title:'Desmos',hint:'Your built-in graphing superpower.',
+   back:'~1/3 of SAT math questions can be solved or verified with Desmos. Graph equations, find intersections, use sliders, run regressions on data tables. Master the keyboard shortcuts.'},
+  {icon:'❌',title:'POE for Math',hint:'Wrong answers reveal themselves.',
+   back:'If the question asks for a positive value, eliminate negatives. If context requires small numbers, eliminate large ones. POE turns a 25% guess into 33% or 50%.'},
+  {icon:'⏱️',title:'POOD + LOTD',hint:'Your order, your pace, your backup letter.',
+   back:'Answer confident questions first, flag uncertain ones. On second pass, attempt flagged questions. Use Letter of the Day (always the same letter, e.g., B) for remaining guesses. Never leave blanks.'},
+];
+
+function renderStrats(){
+  document.getElementById('stratGrid').innerHTML=STRATS.map((s,i)=>`
+    <div class="strat-card" onclick="this.classList.toggle('flipped')">
+      <div class="sf-front">
+        <div class="sf-icon">${s.icon}</div>
+        <div class="sf-title">${s.title}</div>
+        <div class="sf-hint">${s.hint}</div>
+        <div class="sf-flip">tap to flip</div>
+      </div>
+      <div class="sf-back">${s.back}</div>
+    </div>
+  `).join('');
+}
+renderStrats();
+
+// ============ CHECKLIST ============
+const CL_ITEMS=[
+  'Bluebook app downloaded, updated, and logged in',
+  'Quiet testing environment — no distractions, door closed',
+  'Timer ready (Bluebook manages timing, but keep a clock visible)',
+  'Scratch paper and pencil available',
+  'Phone silenced and out of reach',
+  'Water and snack for break between modules',
+  'Desmos practice: spent at least 5 minutes exploring the calculator',
+  'Understand the plan: complete test → self-score → error analysis worksheet',
+];
+function renderChecklist(){
+  const saved=JSON.parse(localStorage.getItem('pp_mm1_cl')||'{}');
+  const done=Object.values(saved).filter(v=>v).length;
+  document.getElementById('preChecklist').innerHTML=`<h3>✅ Pre-Test Setup</h3>`+
+    CL_ITEMS.map((item,i)=>`<div class="cl-item${saved[i]?' done':''}" onclick="toggleCL(${i})">
+      <div class="cl-check">${saved[i]?'✓':''}</div><div>${item}</div></div>`).join('')+
+    `<div class="cl-progress">${done}/${CL_ITEMS.length} completed</div>`;
+}
+function toggleCL(i){const s=JSON.parse(localStorage.getItem('pp_mm1_cl')||'{}');s[i]=!s[i];localStorage.setItem('pp_mm1_cl',JSON.stringify(s));renderChecklist();}
+renderChecklist();
+
+// ============ ERROR CLASSIFICATION ============
+const EC_ITEMS=[
+  {scenario:'You missed a question asking for the slope of a line perpendicular to y = 3x + 2. You chose 3 instead of −1/3 because you forgot that perpendicular slopes are negative reciprocals.',
+   correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
+   fb:'You didn\'t know (or forgot) the perpendicular slope rule. That\'s a content gap — review Module 2, Topic 2B.'},
+  {scenario:'On a system of equations question, you correctly set up the algebra but accidentally wrote 3 × 4 = 9 instead of 12. Your setup was right but the arithmetic was wrong.',
+   correct:'Careless Error',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
+   fb:'You knew the math but made a simple arithmetic mistake. Write more carefully and double-check calculations.'},
+  {scenario:'You had 3 questions left with only 1 minute remaining. You guessed randomly on all three and got them wrong.',
+   correct:'Time Pressure',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
+   fb:'Running out of time. Practice pacing: first pass in ~25 min, second pass ~8 min, final check ~2 min.'},
+  {scenario:'A question asked for the value of 2x, not x. You correctly solved for x = 5 but entered 5 as your answer instead of 10.',
+   correct:'Misread/Trap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
+   fb:'Classic SAT trap! Always re-read what the question is asking for BEFORE selecting your answer. Circle what they want.'},
+  {scenario:'You spent 4 minutes doing algebra on a question with variables in the answer choices. Plugging in numbers would have taken 45 seconds.',
+   correct:'Strategy Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
+   fb:'You knew the content but used the wrong approach. When you see variables in answer choices, Plug In is almost always faster.'},
+  {scenario:'A question asked how many solutions a system of equations has. You tried to solve the full system instead of recognizing that the equations were multiples of each other (infinite solutions).',
+   correct:'Strategy Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
+   fb:'Recognizing patterns (like identical lines) is a strategy skill. You could solve it, but there\'s a faster way.'},
+  {scenario:'You missed a quadratic question because you don\'t know how to complete the square to convert from standard form to vertex form.',
+   correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
+   fb:'You don\'t know the technique yet. This is a content gap — you\'ll learn it in Module 3, Topic 3A.'},
+  {scenario:'On a percentage question asking for "percent increase," you calculated the new value correctly but forgot to subtract the original and divide. You selected the new value as your answer.',
+   correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
+   fb:'Not knowing the percent change formula (new−old)/old × 100 is a content gap. You\'ll cover this in Module 5.'},
+];
+
+let ecAns={};
+function renderEC(){
+  document.getElementById('ecBox').innerHTML=EC_ITEMS.map((e,i)=>{
+    const ans=ecAns[i];const has=ans!==undefined;
+    return `<div class="ec-item">
+      <div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px">Scenario ${i+1}</div>
+      <div class="ec-scenario">${e.scenario}</div>
+      <div class="ec-options">${e.options.map(o=>{
+        let cls='ec-opt';
+        if(has){cls+=' ec-dis';if(o===e.correct)cls+=' ec-correct';else if(o===ans&&o!==e.correct)cls+=' ec-wrong';}
+        return `<div class="${cls}" onclick="ansEC(${i},'${o}')">${o}</div>`;
+      }).join('')}</div>
+      <div class="ec-fb${has?' show':''}">${has?(ans===e.correct?'✓ Correct! ':'✗ Incorrect. ')+e.fb:''}</div>
+    </div>`;
+  }).join('');
+  const t=EC_ITEMS.length,a=Object.keys(ecAns).length,c=Object.entries(ecAns).filter(([i,v])=>v===EC_ITEMS[i].correct).length;
+  document.getElementById('ecScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--express, var(--psda))':'var(--wrong)'}">${c}/${t} correct</strong> — ${c>=6?'Excellent! You\'re ready to classify your own errors.':c>=4?'Good — review the ones you missed.':'Review the 5 error types before analyzing your test.'}`:`${a}/${t} completed`;
+}
+function ansEC(i,v){if(ecAns[i]!==undefined)return;ecAns[i]=v;renderEC();}
+renderEC();
+
+// ============ ERROR ANALYSIS WORKSHEET ============
+const WS_KEY='pp_m1_math_ws';
+function loadWS(){return JSON.parse(localStorage.getItem(WS_KEY)||'[]');}
+function saveWS(d){localStorage.setItem(WS_KEY,JSON.stringify(d));}
+
+function addEntry(){
+  const d=loadWS();
+  d.push({qnum:'',domain:'',topic:'',errorType:'',shouldHave:'',desmos:''});
+  saveWS(d);
+  renderWS();
+}
+
+function updateEntry(idx,field,val){
+  const d=loadWS();
+  if(d[idx])d[idx][field]=val;
+  saveWS(d);
+}
+
+function removeEntry(idx){
+  const d=loadWS();
+  d.splice(idx,1);
+  saveWS(d);
+  renderWS();
+}
+
+function renderWS(){
+  const d=loadWS();
+  if(d.length===0){addEntry();return;}
+  document.getElementById('wsEntries').innerHTML=d.map((e,i)=>`
+    <div class="ws-entry">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-weight:700;font-size:.88rem;color:var(--math)">Question ${i+1}</div>
+        <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.82rem" onclick="removeEntry(${i})">✕ Remove</button>
+      </div>
+      <div class="ws-row">
+        <div class="ws-label">Q #</div>
+        <input class="ws-input" type="number" min="1" max="44" placeholder="1–44" value="${e.qnum}" onchange="updateEntry(${i},'qnum',this.value)" style="width:80px">
+      </div>
+      <div class="ws-row">
+        <div class="ws-label">Domain</div>
+        <select class="ws-select" onchange="updateEntry(${i},'domain',this.value)">
+          <option value="">Select domain...</option>
+          <option${e.domain==='Algebra'?' selected':''}>Algebra</option>
+          <option${e.domain==='Advanced Math'?' selected':''}>Advanced Math</option>
+          <option${e.domain==='Problem-Solving & Data'?' selected':''}>Problem-Solving & Data</option>
+          <option${e.domain==='Geometry & Trig'?' selected':''}>Geometry & Trig</option>
+        </select>
+      </div>
+      <div class="ws-row">
+        <div class="ws-label">Topic</div>
+        <input class="ws-input" placeholder="e.g., Quadratic vertex form" value="${e.topic||''}" onchange="updateEntry(${i},'topic',this.value)" style="width:100%">
+      </div>
+      <div class="ws-row">
+        <div class="ws-label">Error Type</div>
+        <select class="ws-select" onchange="updateEntry(${i},'errorType',this.value)">
+          <option value="">Select type...</option>
+          <option${e.errorType==='Content Gap'?' selected':''}>Content Gap</option>
+          <option${e.errorType==='Careless Error'?' selected':''}>Careless Error</option>
+          <option${e.errorType==='Time Pressure'?' selected':''}>Time Pressure</option>
+          <option${e.errorType==='Misread/Trap'?' selected':''}>Misread/Trap</option>
+          <option${e.errorType==='Strategy Gap'?' selected':''}>Strategy Gap</option>
+        </select>
+      </div>
+      <div class="ws-row" style="grid-template-columns:1fr">
+        <div class="ws-label">What I should have done</div>
+      </div>
+      <textarea class="ws-textarea" placeholder="Write the correct approach in your own words..." onchange="updateEntry(${i},'shouldHave',this.value)">${e.shouldHave||''}</textarea>
+      <div class="ws-row" style="margin-top:6px">
+        <div class="ws-label">Desmos?</div>
+        <select class="ws-select" onchange="updateEntry(${i},'desmos',this.value)">
+          <option value="">Could Desmos have helped?</option>
+          <option${e.desmos==='Yes'?' selected':''}>Yes</option>
+          <option${e.desmos==='No'?' selected':''}>No</option>
+          <option${e.desmos==='I used it but incorrectly'?' selected':''}>I used it but incorrectly</option>
+        </select>
+      </div>
+    </div>
+  `).join('');
+}
+
+function exportWS(){
+  const d=loadWS();
+  let txt='MATH ERROR ANALYSIS WORKSHEET — PantherPrep\n';
+  txt+='════════════════════════════════════\n\n';
+  const counts={};const domCounts={};
+  d.forEach((e,i)=>{
+    txt+=`Q${e.qnum||'?'} | ${e.domain||'—'} | ${e.topic||'—'} | ${e.errorType||'—'} | Desmos: ${e.desmos||'—'}\n`;
+    txt+=`  → ${e.shouldHave||'—'}\n\n`;
+    if(e.errorType)counts[e.errorType]=(counts[e.errorType]||0)+1;
+    if(e.domain)domCounts[e.domain]=(domCounts[e.domain]||0)+1;
+  });
+  txt+='ERROR TYPE SUMMARY:\n';
+  Object.entries(counts).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
+  txt+='\nDOMAIN SUMMARY:\n';
+  Object.entries(domCounts).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
+  navigator.clipboard.writeText(txt).then(()=>alert('Worksheet copied to clipboard!')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Copied!');
+  });
+}
+renderWS();
+
+// ============ SCORES ============
+function updateScores(){
+  const m1=parseInt(document.getElementById('m1Score').value);
+  const m2=parseInt(document.getElementById('m2Score').value);
+  const el=document.getElementById('scoreResult');
+  if(isNaN(m1)||isNaN(m2)){el.textContent='Enter both scores to see your total and recommended pathway.';return;}
+  const total=m1+m2;
+  let path='',color='';
+  if(total<18){path='Developing (below 400) — Focus on Modules 1, 2, 5A–B, 6A, 7. Priority: linear equations, basic ratios, Desmos basics.';color='var(--wrong)';}
+  else if(total<28){path='Approaching (400–530) — Complete all modules with extra time on your weakest domain.';color='var(--psda)';}
+  else if(total<36){path='Proficient (530–650) — Focus on Modules 3, 4, 7, 8, 9. Priority: quadratics, functions, Desmos power moves.';color='var(--math)';}
+  else{path='Advanced (650+) — Focus on Modules 3D, 4C, 5D, 6D, 8, 9. Priority: rational expressions, nonlinear systems, trig.';color='var(--correct)';}
+  el.innerHTML=`<div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:${color}">${total}/44</div>
+    <div style="margin-top:6px;font-size:.88rem;color:#ccc">${path}</div>`;
+}
+</script>
+<script src="/translate.js"></script></body>
+</html>
