@@ -249,18 +249,40 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="strat-grid" id="stratGrid"></div>
 </div>
 
+<!-- MINI DIAGNOSTIC ASSESSMENT -->
+<div class="section">
+  <div class="section-label">Session 2: Diagnostic</div>
+  <h2>Mini Diagnostic Assessment</h2>
+  <p>Answer these 20 questions spanning all four domains. For each question, first rate your confidence, then select your answer. This helps identify both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
+  <div id="diagQuestions"></div>
+  <div style="text-align:center;margin-top:16px">
+    <button class="btn btn-blue" id="diagSubmit" onclick="scoreDiag()" style="display:none">Score My Diagnostic →</button>
+  </div>
+  <div id="diagResults" style="display:none"></div>
+</div>
+
+<!-- ERROR CLASSIFICATION EXERCISE -->
+<div class="section">
+  <div class="section-label">Session 2: Interactive Exercise</div>
+  <h2>Error Classification Practice</h2>
+  <p>Before analyzing your own mistakes, practice classifying these common SAT math errors. Correctly identifying your error type is the key to knowing what to study.</p>
+  <div class="ec-box" id="ecBox"></div>
+  <div id="ecScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
+</div>
+
 <!-- BASELINE PROTOCOL -->
 <div class="section">
-  <div class="section-label">Session 2</div>
+  <div class="section-label">Session 3: Full Baseline</div>
   <h2>Baseline Assessment Protocol</h2>
+  <p>After the mini diagnostic, take a full-length SAT Math section using the Bluebook app. This establishes your true baseline score.</p>
   <div class="protocol">
-    <div class="protocol-title">Baseline Test Protocol</div>
+    <div class="protocol-title">Full Baseline Protocol</div>
     <div class="protocol-step"><div class="step-num">1</div><div>Open the <a href="https://bluebook.collegeboard.org/" target="_blank" style="color:var(--math)">Bluebook app</a> and select a full Math section (44 questions, 70 minutes). Use an official College Board practice test.</div></div>
-    <div class="protocol-step"><div class="step-num">2</div><div><strong>Use the built-in Desmos calculator</strong> during the baseline. This establishes your current comfort level with the tool.</div></div>
-    <div class="protocol-step"><div class="step-num">3</div><div>Simulate test conditions: no phone, no notes, timed modules, no pausing between modules.</div></div>
-    <div class="protocol-step"><div class="step-num">4</div><div>After completion, <strong>self-score BEFORE</strong> the instructor reviews results. Self-scoring develops metacognitive awareness.</div></div>
-    <div class="protocol-step"><div class="step-num">5</div><div>Mark every question you were <strong>unsure about</strong>, even if you got it correct. "Lucky correct" answers mask skill gaps.</div></div>
-    <div class="protocol-step"><div class="step-num">6</div><div>Complete the Error Analysis Worksheet below for every missed AND uncertain question.</div></div>
+    <div class="protocol-step"><div class="step-num">2</div><div><strong>Use the built-in Desmos calculator</strong> during the baseline — this establishes your current comfort level with the tool.</div></div>
+    <div class="protocol-step"><div class="step-num">3</div><div>Simulate test conditions: no phone, no notes, timed modules, quiet environment. No pausing between modules.</div></div>
+    <div class="protocol-step"><div class="step-num">4</div><div>After completion, <strong>mark every question you were unsure about</strong>, even if you got it correct. "Lucky correct" answers mask skill gaps.</div></div>
+    <div class="protocol-step"><div class="step-num">5</div><div>Review your score report. Note which domain(s) had the most errors.</div></div>
+    <div class="protocol-step"><div class="step-num">6</div><div>Complete the Error Analysis Worksheet below for every missed <strong>and</strong> uncertain question.</div></div>
   </div>
 </div>
 
@@ -271,40 +293,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="checklist" id="preChecklist"></div>
 </div>
 
-<!-- MINI DIAGNOSTIC ASSESSMENT -->
-<div class="section">
-  <div class="section-label">Session 1: Quick Assessment</div>
-  <h2>Mini Diagnostic Assessment</h2>
-  <p>Answer these 20 questions spanning all four domains. For each question, <strong>first rate your confidence</strong>, then select your answer. This reveals both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
-  <div id="diagQuestions"></div>
-  <div style="text-align:center;margin-top:16px">
-    <button class="btn btn-blue" id="diagSubmit" onclick="scoreDiag()" style="display:none">Score My Diagnostic →</button>
-  </div>
-  <div id="diagResults" style="display:none"></div>
-</div>
-
-<!-- ERROR CLASSIFICATION EXERCISE -->
-<div class="section">
-  <div class="section-label">Session 3: Interactive Exercise</div>
-  <h2>Error Classification Practice</h2>
-  <p>Before analyzing your own test, practice classifying these sample math errors. Correctly identifying your error type is the key to knowing what to study.</p>
-  <div class="ec-box" id="ecBox"></div>
-  <div id="ecScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
-</div>
-
 <!-- ERROR ANALYSIS WORKSHEET -->
 <div class="section">
   <div class="section-label">Session 3: Interactive Tool</div>
   <h2>Error Analysis Worksheet</h2>
-  <p>For every missed or uncertain question on your baseline test, fill in one entry below. Click "Add Entry" to analyze more questions. Data saves in your browser.</p>
+  <p>For every missed or uncertain question on your baseline test, fill in one entry. Data saves in your browser.</p>
   <div class="worksheet" id="worksheet">
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px">📊 Math Error Analysis</h3>
-    <div style="font-size:.85rem;color:var(--muted);margin-bottom:14px">Complete one entry per missed/uncertain question.</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px">📊 SAT Math Error Analysis</h3>
+    <div style="font-size:.85rem;color:var(--muted);margin-bottom:14px">Complete one entry per missed/uncertain question</div>
     <div id="wsEntries"></div>
-    <div class="ws-actions">
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
       <button class="btn btn-blue btn-sm" onclick="addEntry()">+ Add Entry</button>
       <button class="btn btn-sm btn-outline" onclick="exportWS()">📋 Export to Clipboard</button>
-      <button class="btn btn-sm" style="background:var(--wrong)" onclick="if(confirm('Clear all entries?')){localStorage.removeItem('pp_m1_math_ws');loadWS();}">Reset</button>
+      <button class="btn btn-sm" style="background:var(--wrong)" onclick="if(confirm('Clear all entries?')){localStorage.removeItem(WS_KEY);renderWS();}">Reset</button>
     </div>
   </div>
 </div>
@@ -768,8 +769,8 @@ function renderWS(){
 
 function exportWS(){
   const d=loadWS();
-  let txt='MATH ERROR ANALYSIS WORKSHEET — PantherPrep\n';
-  txt+='════════════════════════════════════\n\n';
+  let txt='SAT MATH ERROR ANALYSIS — PantherPrep\n';
+  txt+='════════════════════════════════════════════\n\n';
   const counts={};const domCounts={};
   d.forEach((e,i)=>{
     txt+=`Q${e.qnum||'?'} | ${e.domain||'—'} | ${e.topic||'—'} | ${e.errorType||'—'} | Desmos: ${e.desmos||'—'}\n`;
