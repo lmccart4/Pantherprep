@@ -611,8 +611,14 @@ let state = {
   module1Time: null,
   module2Time: null,
   submitted: false,
-  showExplanation: {}
+  showExplanation: {},
+  timeLeft: 0,
+  timerRef: null
 };
+
+function fmtTimer(s){var m=Math.floor(s/60),sec=s%60;return m+':'+(sec<10?'0':'')+sec;}
+function startTimer(secs){clearInterval(state.timerRef);state.timeLeft=secs;state.timerRef=setInterval(function(){state.timeLeft--;if(state.timeLeft<=0){clearInterval(state.timerRef);state.timeLeft=0;}var el=document.getElementById('diagTimer');if(el)el.textContent=fmtTimer(state.timeLeft);if(state.timeLeft<=60&&el)el.style.color='var(--wrong)';else if(state.timeLeft<=300&&el)el.style.color='var(--spr)';},1000);}
+window.addEventListener('beforeunload',function(e){if(state.screen==='test'){e.preventDefault();e.returnValue='';}});
 
 function render() {
   const app = document.getElementById('app');
@@ -658,6 +664,7 @@ function startTest() {
   state.currentQ = 0;
   state.startTime = Date.now();
   state.moduleStartTime = Date.now();
+  startTimer(35*60);
   render();
 }
 
@@ -700,7 +707,7 @@ function renderTest() {
         if(letter === q.correct) cls += ' correct-choice';
         else if(userAnswer === letter) cls += ' wrong-choice';
       }
-      inputHtml += `<div class="${cls}" onclick="selectAnswer('${letter}')">
+      inputHtml += `<div class="${cls}" role="button" tabindex="0" onclick="selectAnswer('${letter}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectAnswer('${letter}');}">
         <div class="choice-letter">${letter}</div>
         <div class="choice-text">${q[letter]}</div>
       </div>`;
@@ -762,7 +769,7 @@ function renderTest() {
   return `
     <div class="test-header">
       <div class="module-label">Module ${module} of 2${module===2?' — Hard Path':''}</div>
-      <div class="timer" id="timer">35:00</div>
+      <div class="timer" id="diagTimer">${fmtTimer(state.timeLeft)}</div>
     </div>
     <div class="progress-bar"><div class="progress-fill" style="width:${((moduleIdx+1)/22)*100}%"></div></div>
     <div class="q-nav">${navHtml}</div>
@@ -844,6 +851,7 @@ function nextQ() {
   if(state.currentQ === 21) {
     state.module1Time = Date.now() - state.moduleStartTime;
     state.moduleStartTime = Date.now();
+    startTimer(35*60);
   }
   state.currentQ = Math.min(43, state.currentQ + 1);
   state.submitted = false;
@@ -872,6 +880,7 @@ function toggleFlag(num) {
 }
 
 function finishTest() {
+  clearInterval(state.timerRef);
   state.module2Time = Date.now() - state.moduleStartTime;
   state.screen = 'results';
   render();

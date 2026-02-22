@@ -2,25 +2,47 @@ const { onRequest } = require('firebase-functions/v2/https');
 const { TranslationServiceClient } = require('@google-cloud/translate');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
+const { getAuth } = require('firebase-admin/auth');
 const crypto = require('crypto');
 
 initializeApp();
 const db = getFirestore();
 const translationClient = new TranslationServiceClient();
 
+const MAX_TEXT_LENGTH = 5000;
+const MAX_TOTAL_LENGTH = 500000;
+
 function hashText(text) {
-  return crypto.createHash('md5').update(text).digest('hex').substring(0, 12);
+  return crypto.createHash('sha256').update(text).digest('hex').substring(0, 16);
 }
 
 exports.translateText = onRequest(
   {
-    cors: true,
+    cors: ['https://pantherprep.web.app', 'https://pantherprep.firebaseapp.com'],
     maxInstances: 10,
     region: 'us-central1',
   },
   async (req, res) => {
     if (req.method !== 'POST') {
       res.status(405).json({ error: 'Method not allowed' });
+      return;
+    }
+
+    // Verify Firebase auth token
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      res.status(401).json({ error: 'Missing authorization token' });
+      return;
+    }
+    try {
+      const token = authHeader.split('Bearer ')[1];
+      const decoded = await getAuth().verifyIdToken(token);
+      if (!decoded.email || !decoded.email.endsWith('@paps.net')) {
+        res.status(403).json({ error: 'Unauthorized domain' });
+        return;
+      }
+    } catch (e) {
+      res.status(403).json({ error: 'Invalid token' });
       return;
     }
 
@@ -39,29 +61,48 @@ exports.translateText = onRequest(
       return;
     }
 
+    // Validate individual text lengths
+    let totalLength = 0;
+    for (const text of texts) {
+      if (typeof text !== 'string') {
+        res.status(400).json({ error: 'Each text must be a string' });
+        return;
+      }
+      if (text.length > MAX_TEXT_LENGTH) {
+        res.status(400).json({ error: `Individual text exceeds ${MAX_TEXT_LENGTH} char limit` });
+        return;
+      }
+      totalLength += text.length;
+    }
+    if (totalLength > MAX_TOTAL_LENGTH) {
+      res.status(400).json({ error: 'Total text size exceeds limit' });
+      return;
+    }
+
     try {
       const results = new Array(texts.length);
       const uncached = [];
       const uncachedIndices = [];
 
-      // Check Firestore cache
-      const cacheChecks = texts.map(async (text, i) => {
+      // Batch Firestore cache reads (up to 50 per batch)
+      const docRefs = texts.map((text) => {
         const docId = targetLanguage + '_' + hashText(text);
-        try {
-          const doc = await db.collection('translations').doc(docId).get();
-          if (doc.exists && doc.data().translated) {
-            results[i] = doc.data().translated;
-          } else {
-            uncached.push(text);
-            uncachedIndices.push(i);
-          }
-        } catch (e) {
-          uncached.push(text);
-          uncachedIndices.push(i);
-        }
+        return db.collection('translations').doc(docId);
       });
 
-      await Promise.all(cacheChecks);
+      for (let b = 0; b < docRefs.length; b += 50) {
+        const batchRefs = docRefs.slice(b, b + 50);
+        const docs = await db.getAll(...batchRefs);
+        docs.forEach((doc, idx) => {
+          const origIdx = b + idx;
+          if (doc.exists && doc.data().translated && doc.data().source === texts[origIdx]) {
+            results[origIdx] = doc.data().translated;
+          } else {
+            uncached.push(texts[origIdx]);
+            uncachedIndices.push(origIdx);
+          }
+        });
+      }
 
       // Translate only uncached texts
       if (uncached.length > 0) {

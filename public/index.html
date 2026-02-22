@@ -1061,7 +1061,7 @@ if(s.lastPractice===today)return s;
 const yest=new Date();yest.setDate(yest.getDate()-1);
 if(s.lastPractice===yest.toDateString()){s.streak++;s.streakFrozen=false}
 else if(s.lastPractice&&s.lastPractice!==today){
-if(s.streak>=7&&!s.streakFrozen){s.streakFrozen=true}
+if(s.streak>=7&&!s.streakFrozen){s.streakFrozen=true;/* freeze preserves streak */}
 else{s.streak=1;s.streakFrozen=false}
 }else{s.streak=1}
 s.lastPractice=today;return s
@@ -1078,7 +1078,7 @@ return pts
 
 function recordSession(s,test,domain,correct,total,isTest){
 s=checkStreak(s);
-const pct=Math.round(correct/total*100);
+const pct=total?Math.round(correct/total*100):0;
 if(total>=10&&pct===100)s.perfectSessions=(s.perfectSessions||0)+1;
 if(isTest&&pct>=80)s.speedDemon=true;
 // Domain tracking
@@ -1383,7 +1383,7 @@ const qs=useMemo(()=>{if(savedQIds)return getQsFromIds(savedQIds);let p=QS.filte
 const[idx,setIdx]=useState(0);const[res,setRes]=useState([]);const[sessionXP,setSessionXP]=useState(0);const[xpFlash,setXpFlash]=useState(0);
 const[levelModal,setLevelModal]=useState(null);const[badgeModal,setBadgeModal]=useState(null);
 useEffect(()=>{if(!uid||restored)return;loadProgress(uid,sessionKey).then(d=>{if(d&&d.qIds&&d.idx<d.qIds.length){setSavedQIds(d.qIds);setIdx(d.idx||0);setRes(d.res||[]);setSessionXP(d.sessionXP||0)}setRestored(true)}).catch(()=>setRestored(true))},[uid]);
-useEffect(()=>{if(!restored||!uid||idx>=qs.length)return;saveProgress(uid,sessionKey,{qIds:qs.map(q=>q.id),idx,res,sessionXP,test,domain,mode:'practice'})},[idx,res,restored]);
+useEffect(()=>{if(!restored||!uid||idx>=qs.length)return;saveProgress(uid,sessionKey,{qIds:qs.map(q=>q.id),idx,res,sessionXP,test,domain,mode:'practice'})},[idx,res,restored,uid,sessionXP]);
 if(idx>=qs.length){const c=res.filter(r=>r).length;const p=qs.length?Math.round(c/qs.length*100):0;const cls=p>=80?'score-great':p>=60?'score-good':p>=40?'score-ok':'score-low';
 // Record session
 if(uid){const s=getUserStats(uid);const{stats:ns,newBadges}=recordSession(s,test,domain==='all'?'Mixed':domain,c,qs.length,false);setUserStats(uid,ns);
@@ -1417,7 +1417,7 @@ const[ci,setCi]=useState(0);const[ans,setAns]=useState({});const[flags,setFlags]
 useEffect(()=>{if(!uid||restored)return;loadProgress(uid,sessionKey).then(d=>{if(d&&d.qIds&&!d.fin){setSavedQIds(d.qIds);setSavedState(d)}setRestored(true)}).catch(()=>setRestored(true))},[uid]);
 useEffect(()=>{if(!savedState||!restored)return;setCi(savedState.ci||0);setAns(savedState.ans||{});setFlags(new Set(savedState.flags||[]));setTl(savedState.tl!=null?savedState.tl:info.mins*60);setSavedState(null)},[savedState,restored]);
 useEffect(()=>{if(!restored)return;tr.current=setInterval(()=>setTl(p=>{if(p<=1){clearInterval(tr.current);setFin(true);return 0}return p-1}),1000);return()=>clearInterval(tr.current)},[restored]);
-useEffect(()=>{if(!restored||!uid||fin)return;saveProgress(uid,sessionKey,{qIds:qs.map(q=>q.id),ci,ans,flags:[...flags],tl,fin:false,test,mode:'test'})},[ci,ans,flags,tl,restored]);
+useEffect(()=>{if(!restored||!uid||fin)return;saveProgress(uid,sessionKey,{qIds:qs.map(q=>q.id),ci,ans,flags:[...flags],tl,fin:false,test,mode:'test'})},[ci,ans,flags,tl,restored,uid]);
 const finish=()=>{clearInterval(tr.current);setFin(true);if(uid)clearProgress(uid,sessionKey)};
 if(fin){let c=0;const ds={};qs.forEach((q,i)=>{const a=ans[i];let ok=q.type==='gridin'?(q.accept||[q.ans]).includes(String(a||'').trim()):a===q.ans;if(ok)c++;if(!ds[q.domain])ds[q.domain]={c:0,t:0};ds[q.domain].t++;if(ok)ds[q.domain].c++});
 const p=qs.length?Math.round(c/qs.length*100):0;const cls=p>=80?'score-great':p>=60?'score-good':p>=40?'score-ok':'score-low';const msg=p>=80?'Excellent work, Panther!':p>=60?'Good hustle — keep sharpening.':p>=40?'Building your foundation. Focus on weak spots.':'Every rep counts. Keep grinding.';

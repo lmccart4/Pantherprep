@@ -2,6 +2,8 @@
   'use strict';
 
   var TRANSLATE_API = 'https://us-central1-pantherprep-a5a73.cloudfunctions.net/translateText';
+  var FETCH_TIMEOUT = 10000;
+  var CACHE_MAX_ENTRIES = 1000;
 
   var LANGUAGES = [
     { code: 'en', name: 'English', native: 'English', flag: '\u{1F1FA}\u{1F1F8}' },
@@ -18,9 +20,23 @@
     { code: 'de', name: 'German', native: 'Deutsch', flag: '\u{1F1E9}\u{1F1EA}' }
   ];
 
+  var RTL_LANGUAGES = ['ar'];
+
   var cache = {};
   try { var stored = sessionStorage.getItem('pp_cache'); if (stored) cache = JSON.parse(stored); } catch(e) {}
-  function saveCache() { try { sessionStorage.setItem('pp_cache', JSON.stringify(cache)); } catch(e) {} }
+
+  function saveCache() {
+    try {
+      var keys = Object.keys(cache);
+      if (keys.length > CACHE_MAX_ENTRIES) {
+        var toRemove = keys.length - CACHE_MAX_ENTRIES;
+        keys.slice(0, toRemove).forEach(function(k) { delete cache[k]; });
+      }
+      sessionStorage.setItem('pp_cache', JSON.stringify(cache));
+    } catch(e) {
+      try { cache = {}; sessionStorage.setItem('pp_cache', '{}'); } catch(e2) {}
+    }
+  }
 
   function collectTextNodes() {
     var texts = new Map();
@@ -67,11 +83,33 @@
   var allAttrs = new Map();
 
   function refreshSnapshot() {
+    // Clean stale DOM references before adding new ones
+    var stale = [];
+    allTextNodes.forEach(function(val, node) {
+      if (!node.parentElement || !document.contains(node)) stale.push(node);
+    });
+    stale.forEach(function(node) { allTextNodes.delete(node); });
+
+    var staleEls = [];
+    allAttrs.forEach(function(val, el) {
+      if (!el.parentElement || !document.contains(el)) staleEls.push(el);
+    });
+    staleEls.forEach(function(el) { allAttrs.delete(el); });
+
     var newTexts = collectTextNodes();
     var newAttrs = collectAttrs();
     newTexts.forEach(function(val, key) { allTextNodes.set(key, val); });
     newAttrs.forEach(function(val, key) { allAttrs.set(key, val); });
     return { newTexts: newTexts, newAttrs: newAttrs };
+  }
+
+  function fetchWithTimeout(url, options) {
+    return Promise.race([
+      fetch(url, options),
+      new Promise(function(_, reject) {
+        setTimeout(function() { reject(new Error('Request timeout')); }, FETCH_TIMEOUT);
+      })
+    ]);
   }
 
   function translateBatch(texts, lang) {
@@ -89,7 +127,7 @@
         var chunk = uncached.slice(start, start + CHUNK);
         var chunkIdx = uncachedIdx.slice(start, start + CHUNK);
         promises.push(
-          fetch(TRANSLATE_API, {
+          fetchWithTimeout(TRANSLATE_API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ texts: chunk, targetLanguage: lang, sourceLanguage: 'en' })
@@ -113,11 +151,12 @@
   }
 
   var currentLang = 'en';
+  var pendingRequestId = 0;
 
-  function translateAllNodes(langCode) {
+  function translateAllNodes(langCode, requestId) {
     if (langCode === 'en') {
       allTextNodes.forEach(function(orig, node) {
-        if (node.parentElement) node.textContent = orig;
+        if (node.parentElement && document.contains(node)) node.textContent = orig;
       });
       allAttrs.forEach(function(attrs, el) {
         Object.keys(attrs).forEach(function(a) { el.setAttribute(a, attrs[a]); });
@@ -128,7 +167,7 @@
 
     var textNodes = [], textsArr = [];
     allTextNodes.forEach(function(orig, node) {
-      if (node.parentElement) { textNodes.push(node); textsArr.push(orig); }
+      if (node.parentElement && document.contains(node)) { textNodes.push(node); textsArr.push(orig); }
     });
     var attrEntries = [];
     allAttrs.forEach(function(attrs, el) {
@@ -141,23 +180,26 @@
     if (textsArr.length === 0) return Promise.resolve();
 
     return translateBatch(textsArr, langCode).then(function(translated) {
+      // Discard stale results if language changed while translating
+      if (requestId !== pendingRequestId) return;
       textNodes.forEach(function(node, i) {
-        if (node.parentElement) node.textContent = translated[i];
+        if (node.parentElement && document.contains(node)) node.textContent = translated[i];
       });
       var offset = textNodes.length;
       attrEntries.forEach(function(entry, i) {
         entry.el.setAttribute(entry.attr, translated[offset + i]);
       });
-      document.documentElement.dir = langCode === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.dir = RTL_LANGUAGES.indexOf(langCode) >= 0 ? 'rtl' : 'ltr';
     });
   }
 
   function translateNewNodes(newTexts, newAttrs, langCode) {
     if (langCode === 'en' || (newTexts.size === 0 && newAttrs.size === 0)) return;
+    if (langCode !== currentLang) return;
 
     var textNodes = [], textsArr = [];
     newTexts.forEach(function(orig, node) {
-      if (node.parentElement) { textNodes.push(node); textsArr.push(orig); }
+      if (node.parentElement && document.contains(node)) { textNodes.push(node); textsArr.push(orig); }
     });
     var attrEntries = [];
     newAttrs.forEach(function(attrs, el) {
@@ -169,9 +211,11 @@
 
     if (textsArr.length === 0) return;
 
+    var snapLang = currentLang;
     translateBatch(textsArr, langCode).then(function(translated) {
+      if (currentLang !== snapLang) return;
       textNodes.forEach(function(node, i) {
-        if (node.parentElement) node.textContent = translated[i];
+        if (node.parentElement && document.contains(node)) node.textContent = translated[i];
       });
       var offset = textNodes.length;
       attrEntries.forEach(function(entry, i) {
@@ -183,13 +227,23 @@
   function translatePage(langCode) {
     if (langCode === currentLang) return;
     currentLang = langCode;
+    pendingRequestId++;
+    var requestId = pendingRequestId;
     try { localStorage.setItem('pp_lang', langCode); } catch(e) {}
     updateDisplay(langCode);
     setLoading(true);
     refreshSnapshot();
-    translateAllNodes(langCode).then(function() {
-      setLoading(false);
-    });
+    translateAllNodes(langCode, requestId)
+      .then(function() {
+        if (requestId === pendingRequestId) {
+          setLoading(false);
+          adjustDropdownPosition(langCode);
+        }
+      })
+      .catch(function(err) {
+        console.error('Translation failed:', err);
+        if (requestId === pendingRequestId) setLoading(false);
+      });
   }
 
   var mutationTimer = null;
@@ -216,6 +270,19 @@
     var label = document.querySelector('.pp-translate__label');
     var lang = LANGUAGES.find(function(l) { return l.code === langCode; });
     if (label && lang) label.textContent = lang.flag + '  ' + lang.native;
+  }
+
+  function adjustDropdownPosition(langCode) {
+    var dd = document.querySelector('.pp-translate');
+    if (!dd) return;
+    var isRTL = RTL_LANGUAGES.indexOf(langCode) >= 0;
+    if (isRTL) {
+      dd.style.right = 'auto';
+      dd.style.left = '24px';
+    } else {
+      dd.style.right = '24px';
+      dd.style.left = 'auto';
+    }
   }
 
   function createDropdown() {
