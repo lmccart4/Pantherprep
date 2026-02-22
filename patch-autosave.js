@@ -1,7 +1,8 @@
 // patch-autosave.js
 // Replaces PracticeSession and TestMode functions with auto-save versions
 const fs = require('fs');
-const path = '/Users/lukemccarthy/pantherprep/public/index.html';
+const pathMod = require('path');
+const path = pathMod.join(__dirname, 'public', 'index.html');
 
 let html = fs.readFileSync(path, 'utf8');
 

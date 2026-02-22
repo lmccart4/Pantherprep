@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -324,7 +324,7 @@ textarea.qm-form-input{min-height:80px;resize:vertical;font-family:var(--font-bo
 </head>
 <body>
 <div id="root"></div>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
@@ -366,9 +366,11 @@ catch(e){out.push('$'+inner+'$')}
 last=match.index+match[0].length}}
 if(last<s.length)out.push(s.slice(last));
 var result=[];
+var allowedTags=/^<\/?(b|i|em|strong|br|sup|sub|u|span|p|div|ul|ol|li|table|tr|td|th|thead|tbody|img|hr)\b[^>]*>$/i;
+function sanitizeHtml(html){return html.replace(/<[^>]*>/g,function(tag){return allowedTags.test(tag)?tag:tag.replace(/</g,'&lt;').replace(/>/g,'&gt;')})}
 for(var i=0;i<out.length;i++){
 if(typeof out[i]==='string'){var str=out[i];
-if(str.indexOf('<')>=0){result.push(h('span',{key:'h'+i,dangerouslySetInnerHTML:{__html:str}}))}
+if(str.indexOf('<')>=0){result.push(h('span',{key:'h'+i,dangerouslySetInnerHTML:{__html:sanitizeHtml(str)}}))}
 else{result.push(str)}}
 else{result.push(out[i])}}
 return result}
@@ -1382,7 +1384,7 @@ const[idx,setIdx]=useState(0);const[res,setRes]=useState([]);const[sessionXP,set
 const[levelModal,setLevelModal]=useState(null);const[badgeModal,setBadgeModal]=useState(null);
 useEffect(()=>{if(!uid||restored)return;loadProgress(uid,sessionKey).then(d=>{if(d&&d.qIds&&d.idx<d.qIds.length){setSavedQIds(d.qIds);setIdx(d.idx||0);setRes(d.res||[]);setSessionXP(d.sessionXP||0)}setRestored(true)}).catch(()=>setRestored(true))},[uid]);
 useEffect(()=>{if(!restored||!uid||idx>=qs.length)return;saveProgress(uid,sessionKey,{qIds:qs.map(q=>q.id),idx,res,sessionXP,test,domain,mode:'practice'})},[idx,res,restored]);
-if(idx>=qs.length){const c=res.filter(r=>r).length;const p=Math.round(c/qs.length*100);const cls=p>=80?'score-great':p>=60?'score-good':p>=40?'score-ok':'score-low';
+if(idx>=qs.length){const c=res.filter(r=>r).length;const p=qs.length?Math.round(c/qs.length*100):0;const cls=p>=80?'score-great':p>=60?'score-good':p>=40?'score-ok':'score-low';
 // Record session
 if(uid){const s=getUserStats(uid);const{stats:ns,newBadges}=recordSession(s,test,domain==='all'?'Mixed':domain,c,qs.length,false);setUserStats(uid,ns);
 saveSessionToFirestore(uid,user?.displayName,user?.email,test,domain==='all'?'Mixed':domain,c,qs.length,false);clearProgress(uid,sessionKey)}
@@ -1398,12 +1400,14 @@ setUserStats(uid,s);setSessionXP(p=>p+pts);
 if(pts>0){setXpFlash(pts);setTimeout(()=>setXpFlash(0),1600)}
 saveQuestionResult(q.id,ok)}
 setRes(p=>[...p,ok]);setIdx(p=>p+1)};
+if(!qs.length)return h('div',{className:'empty-state'},h('div',{className:'empty-icon'},'📭'),h('div',{className:'empty-text'},'No questions available for this selection.'),h('div',{className:'q-actions',style:{justifyContent:'center',marginTop:'16px'}},h('button',{className:'btn btn-secondary',onClick:onBack},'Go Back')));
 return h(Fragment,null,xpFlash>0&&h(XPPopup,{amount:xpFlash}),levelModal&&h(LevelUpModal,{level:levelModal,onClose:()=>setLevelModal(null)}),
 h(PracticeQ,{q:qs[idx],idx,total:qs.length,onNext:handleNext,onBack}))}
 
 // TEST MODE
 function TestMode({test,onFinish,uid,user}){
 const info=TESTS[test];
+if(!info)return h('div',{className:'empty-state'},h('div',{className:'empty-icon'},'⚠️'),h('div',{className:'empty-text'},'Unknown test type.'));
 const sessionKey='test_'+test;
 const[restored,setRestored]=useState(false);
 const[savedQIds,setSavedQIds]=useState(null);
@@ -1416,12 +1420,12 @@ useEffect(()=>{if(!restored)return;tr.current=setInterval(()=>setTl(p=>{if(p<=1)
 useEffect(()=>{if(!restored||!uid||fin)return;saveProgress(uid,sessionKey,{qIds:qs.map(q=>q.id),ci,ans,flags:[...flags],tl,fin:false,test,mode:'test'})},[ci,ans,flags,tl,restored]);
 const finish=()=>{clearInterval(tr.current);setFin(true);if(uid)clearProgress(uid,sessionKey)};
 if(fin){let c=0;const ds={};qs.forEach((q,i)=>{const a=ans[i];let ok=q.type==='gridin'?(q.accept||[q.ans]).includes(String(a||'').trim()):a===q.ans;if(ok)c++;if(!ds[q.domain])ds[q.domain]={c:0,t:0};ds[q.domain].t++;if(ok)ds[q.domain].c++});
-const p=Math.round(c/qs.length*100);const cls=p>=80?'score-great':p>=60?'score-good':p>=40?'score-ok':'score-low';const msg=p>=80?'Excellent work, Panther!':p>=60?'Good hustle — keep sharpening.':p>=40?'Building your foundation. Focus on weak spots.':'Every rep counts. Keep grinding.';
+const p=qs.length?Math.round(c/qs.length*100):0;const cls=p>=80?'score-great':p>=60?'score-good':p>=40?'score-ok':'score-low';const msg=p>=80?'Excellent work, Panther!':p>=60?'Good hustle — keep sharpening.':p>=40?'Building your foundation. Focus on weak spots.':'Every rep counts. Keep grinding.';
 // Gamification
 let testXP=0;
 if(uid){const s=getUserStats(uid);const qResults=[];qs.forEach((q,i)=>{const a=ans[i];let ok=q.type==='gridin'?(q.accept||[q.ans]).includes(String(a||'').trim()):a===q.ans;if(ok){const pts=awardXP(s,true,1,q.diff,true);testXP+=pts;s.xp+=pts;s.totalCorrect++}s.totalQ++;qResults.push({qId:q.id,correct:ok})});const{stats:ns,newBadges}=recordSession(s,test,'Mixed',c,qs.length,true);setUserStats(uid,ns);
 saveSessionToFirestore(uid,user?.displayName,user?.email,test,'Mixed',c,qs.length,true);saveQuestionResults(qResults);clearProgress(uid,sessionKey)}
-return h('div',{className:'score-screen'},h('div',{className:`score-circle ${cls}`},h('div',{className:'score-pct'},p+'%'),h('div',{className:'score-frac'},`${c}/${qs.length}`)),h('div',{className:'score-title'},info.name+' RESULTS'),h('div',{className:'score-msg'},msg),testXP>0&&h('div',{style:{textAlign:'center',marginBottom:'16px',fontFamily:'var(--font-mono)',color:'var(--accent-blue)',fontSize:'1.1rem'}},`+${testXP} XP earned`),h('div',{className:'score-domains'},Object.entries(ds).map(([d,v])=>{const dp=Math.round(v.c/v.t*100);const col=dp>=70?'var(--accent-green)':dp>=50?'var(--accent-amber)':'var(--accent-red)';return h('div',{key:d,className:'score-dom'},h('div',{className:'score-dom-name'},d),h('div',{className:'score-dom-pct',style:{color:col}},dp+'%'))})),h('div',{className:'q-actions',style:{justifyContent:'center'}},h('button',{className:'btn btn-primary',onClick:onFinish},'Back to Home')))}
+return h('div',{className:'score-screen'},h('div',{className:`score-circle ${cls}`},h('div',{className:'score-pct'},p+'%'),h('div',{className:'score-frac'},`${c}/${qs.length}`)),h('div',{className:'score-title'},info.name+' RESULTS'),h('div',{className:'score-msg'},msg),testXP>0&&h('div',{style:{textAlign:'center',marginBottom:'16px',fontFamily:'var(--font-mono)',color:'var(--accent-blue)',fontSize:'1.1rem'}},`+${testXP} XP earned`),h('div',{className:'score-domains'},Object.entries(ds).map(([d,v])=>{const dp=v.t?Math.round(v.c/v.t*100):0;const col=dp>=70?'var(--accent-green)':dp>=50?'var(--accent-amber)':'var(--accent-red)';return h('div',{key:d,className:'score-dom'},h('div',{className:'score-dom-name'},d),h('div',{className:'score-dom-pct',style:{color:col}},dp+'%'))})),h('div',{className:'q-actions',style:{justifyContent:'center'}},h('button',{className:'btn btn-primary',onClick:onFinish},'Back to Home')))}
 const q=qs[ci];const isGI=q.type==='gridin';const ca=ans[ci];const tc=tl<60?'timer timer-danger':tl<300?'timer timer-warn':'timer';
 return h('div',{className:'q-container animate-in'},
 h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',flexWrap:'wrap',gap:'8px'}},h('div',{className:tc},h('span',null,'⏱ '),fmtTime(tl)),h('div',{style:{display:'flex',gap:'8px'}},h('button',{className:`flag-btn${flags.has(ci)?' flagged':''}`,onClick:()=>{const n=new Set(flags);n.has(ci)?n.delete(ci):n.add(ci);setFlags(n)}},flags.has(ci)?'🚩 Flagged':'🏳 Flag'),h('button',{className:'btn btn-secondary',onClick:finish},'Finish Test'))),
