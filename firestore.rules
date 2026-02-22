@@ -1,25 +1,46 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Helper: authenticated paps.net user
+    function isPapsUser() {
+      return request.auth != null && request.auth.token.email.matches('.*@paps\\.net$');
+    }
+
     // Students can write their own profile
     match /students/{uid} {
-      allow read: if request.auth != null && request.auth.token.email.matches('.*@paps\\.net$');
+      allow read: if isPapsUser();
       allow write: if request.auth != null && request.auth.uid == uid;
     }
     // Sessions - students write their own, teachers read all
     match /sessions/{sessionId} {
-      allow read: if request.auth != null && request.auth.token.email.matches('.*@paps\\.net$');
-      allow create: if request.auth != null && request.auth.token.email.matches('.*@paps\\.net$');
+      allow read: if isPapsUser();
+      allow create: if isPapsUser();
     }
     // Question analytics - any authenticated user can read/write
     match /questionStats/{qId} {
-      allow read: if request.auth != null && request.auth.token.email.matches('.*@paps\\.net$');
-      allow write: if request.auth != null && request.auth.token.email.matches('.*@paps\\.net$');
+      allow read: if isPapsUser();
+      allow write: if isPapsUser();
     }
-    // Custom questions - any authenticated paps.net user can read, teachers can write
+    // Custom questions - any authenticated paps.net user can read/create
     match /customQuestions/{qId} {
-      allow read: if request.auth != null && request.auth.token.email.matches('.*@paps\\.net$');
-      allow create: if request.auth != null && request.auth.token.email.matches('.*@paps\\.net$');
+      allow read: if isPapsUser();
+      allow create: if isPapsUser();
+    }
+    // Session auto-save progress - users can only access their own progress
+    match /progress/{progressId} {
+      allow read: if request.auth != null && progressId.matches(request.auth.uid + '_.*');
+      allow write: if request.auth != null && progressId.matches(request.auth.uid + '_.*');
+    }
+    // Classes - teachers create/manage, students read
+    match /classes/{classId} {
+      allow read: if isPapsUser();
+      allow create: if isPapsUser();
+      allow update: if isPapsUser();
+    }
+    // Translation cache - Cloud Function manages this, no client access needed
+    match /translations/{translationId} {
+      allow read: if false;
+      allow write: if false;
     }
   }
 }

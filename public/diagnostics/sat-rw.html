@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAT R&W Diagnostic — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
 <style>
 :root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--spr:#f59e0b;--spr-bg:rgba(245,158,11,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -501,7 +501,10 @@ explanations:{A:"Present tense, inconsistent with past-tense 'found' and 'showed
 // ============================================================
 // APP STATE & RENDERING
 // ============================================================
-let S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:false,exp:{}};
+let S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:false,exp:{},tl:0,timerRef:null};
+function fmtTimer(s){var m=Math.floor(s/60),sec=s%60;return m+':'+(sec<10?'0':'')+sec;}
+function startTimer(secs){clearInterval(S.timerRef);S.tl=secs;S.timerRef=setInterval(function(){S.tl--;if(S.tl<=0){clearInterval(S.timerRef);S.tl=0;}var el=document.getElementById('diagTimer');if(el)el.textContent=fmtTimer(S.tl);if(S.tl<=60&&el)el.style.color='var(--wrong)';else if(S.tl<=300&&el)el.style.color='var(--spr)';},1000);}
+window.addEventListener('beforeunload',function(e){if(S.screen==='test'){e.preventDefault();e.returnValue='';}});
 function render(){document.getElementById('app').innerHTML=S.screen==='landing'?renderLanding():S.screen==='test'?renderTest():renderResults();}
 
 function renderLanding(){return `<a class="back-to-app" href="../index.html">← Back to PantherPrep</a>
@@ -534,7 +537,7 @@ function renderLanding(){return `<a class="back-to-app" href="../index.html">←
 <button class="btn" onclick="startTest()">Begin Diagnostic</button>
 </div>`;}
 
-function startTest(){S.screen='test';S.cq=0;S.st=Date.now();S.mst=Date.now();render();}
+function startTest(){S.screen='test';S.cq=0;S.st=Date.now();S.mst=Date.now();startTimer(32*60);render();}
 
 function renderTest(){
 const q=Q[S.cq],mod=q.module,modQs=Q.filter(x=>x.module===mod),modIdx=modQs.indexOf(q);
@@ -545,10 +548,10 @@ let nav='';for(let i=si;i<ei;i++){const n=Q[i].num;let c='';if(i===S.cq)c='curre
 let tbl='';if(q.tableData){tbl=`<table class="data-table"><thead><tr>${q.tableData.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${q.tableData.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;}
 let notes='';if(q.isNotes&&q.notes){notes=`<div class="notes-box"><strong style="font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted)">Student\u2019s Notes</strong><ul>${q.notes.map(n=>`<li>${n}</li>`).join('')}</ul></div>`;}
 let ch=`<div class="choices">`;
-for(const L of ['A','B','C','D']){let c='choice';if(!isSub&&ua===L)c+=' selected';if(isSub){if(L===q.correct)c+=' correct-choice';else if(ua===L)c+=' wrong-choice';}ch+=`<div class="${c}" onclick="sel('${L}')"><div class="choice-letter">${L}</div><div class="choice-text">${q[L]}</div></div>`;}
+for(const L of ['A','B','C','D']){let c='choice';if(!isSub&&ua===L)c+=' selected';if(isSub){if(L===q.correct)c+=' correct-choice';else if(ua===L)c+=' wrong-choice';}ch+=`<div class="${c}" role="button" tabindex="0" onclick="sel('${L}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sel('${L}');}"><div class="choice-letter">${L}</div><div class="choice-text">${q[L]}</div></div>`;}
 ch+=`</div>`;
 let exp='';if(isSub&&shExp){const ok=ua===q.correct;exp=`<div class="explanation-box ${ok?'correct':'wrong'}"><h4>${ok?'\u2713 Correct!':'\u2717 Incorrect'}</h4>${Object.entries(q.explanations).map(([k,v])=>`<div class="exp-item"><strong>${k}.</strong> ${v}</div>`).join('')}</div>`;}
-return `<div class="test-header"><div class="module-label">Module ${mod} of 2${mod===2?' \u2014 Hard Path':''}</div><div class="timer">32:00</div></div>
+return `<div class="test-header"><div class="module-label">Module ${mod} of 2${mod===2?' \u2014 Hard Path':''}</div><div class="timer" id="diagTimer">${fmtTimer(S.tl)}</div></div>
 <div class="progress-bar"><div class="progress-fill" style="width:${((modIdx+1)/27)*100}%"></div></div>
 <div class="q-nav">${nav}</div>
 <div class="q-counter">Question ${q.num} of 54</div>
@@ -565,11 +568,11 @@ ${S.cq===26&&mod===1?`<div style="text-align:center;margin-top:18px;padding:14px
 function sel(L){if(S.sub)return;S.ans[Q[S.cq].num]=L;render();}
 function chk(){if(S.ans[Q[S.cq].num]===undefined)return;S.sub=true;S.exp[Q[S.cq].num]=true;render();}
 function tExp(n){S.exp[n]=!S.exp[n];render();}
-function next(){if(S.cq===26){S.m1t=Date.now()-S.mst;S.mst=Date.now();}S.cq=Math.min(53,S.cq+1);S.sub=false;render();scrollTo(0,0);}
+function next(){if(S.cq===26){S.m1t=Date.now()-S.mst;S.mst=Date.now();startTimer(32*60);}S.cq=Math.min(53,S.cq+1);S.sub=false;render();scrollTo(0,0);}
 function prev(){S.cq=Math.max(0,S.cq-1);S.sub=S.ans[Q[S.cq].num]!==undefined;render();scrollTo(0,0);}
 function goTo(i){S.cq=i;S.sub=S.ans[Q[S.cq].num]!==undefined;render();scrollTo(0,0);}
 function flag(n){S.flags.has(n)?S.flags.delete(n):S.flags.add(n);render();}
-function finish(){S.m2t=Date.now()-S.mst;S.screen='results';render();scrollTo(0,0);}
+function finish(){clearInterval(S.timerRef);S.m2t=Date.now()-S.mst;S.screen='results';render();scrollTo(0,0);}
 function renderResults(){
 const tot=Q.length;let cc=0;
 const doms=['Craft and Structure','Information and Ideas','Expression of Ideas','Standard English Conventions'];
