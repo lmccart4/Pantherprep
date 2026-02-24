@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1 — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+input[type="range"] { width: 100%; }
+button { font-family: inherit; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback, useRef } = React;
+const ACCENT = "#10b981";
+const ACCENT2 = "#f59e0b";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const LESSONS = [
+  {
+    id: "intro",
+    title: "Why Boundaries Matter",
+    subtitle: "The #1 grammar skill on the SAT",
+    body: [
+      `Sentence boundary questions make up roughly 10% of the entire SAT R&W section — about 5-6 questions per test. They're also the grammar rule students miss most often, because comma splices "sound natural" in everyday speech.`,
+      "The core concept is simple: every sentence must have clear boundaries. A sentence starts with a capital letter and ends with a period, question mark, or exclamation point. Between sentences, you need proper punctuation — not just a comma.",
+      "This module teaches you the four boundary tools the SAT tests, how to spot the three boundary crimes, and gives you practice until the rules feel automatic."
+    ],
+    visual: "stats"
+  },
+  {
+    id: "independent",
+    title: "Independent Clauses: The Building Blocks",
+    subtitle: "What makes a complete sentence",
+    body: [
+      "An independent clause has a subject and a verb and expresses a complete thought. It can stand alone as a sentence.",
+      '"The researchers published their findings." ← This is an independent clause. It has a subject (researchers), a verb (published), and expresses a complete thought.',
+      '"Although the researchers published their findings" ← This is NOT independent. The word "although" makes it dependent — it needs more information to be complete.'
+    ],
+    visual: "clause-check"
+  },
+  {
+    id: "comma-splice",
+    title: "Crime #1: The Comma Splice",
+    subtitle: "The most common boundary error on the SAT",
+    body: [
+      "A comma splice occurs when two independent clauses are joined with just a comma — no conjunction, no stronger punctuation.",
+      'WRONG: "The experiment failed, the team started over."',
+      "This is wrong because both halves are independent clauses. A comma alone can't hold them together. Think of it this way: a comma is like a speed bump, but two independent clauses need a stop sign.",
+      "This is the SAT's favorite trick because comma splices sound perfectly natural when you read them aloud. Your ear won't catch this — you need to know the rule."
+    ],
+    visual: "comma-splice-demo"
+  },
+  {
+    id: "run-on",
+    title: "Crime #2: The Run-On (Fused Sentence)",
+    subtitle: "Two sentences crammed together with nothing between them",
+    body: [
+      "A run-on sentence (or fused sentence) joins two independent clauses with no punctuation at all.",
+      'WRONG: "The experiment failed the team started over."',
+      "Run-ons are less common on the SAT than comma splices because they're easier to spot. But they still appear, especially in longer sentences where the boundary gets buried in complex phrasing."
+    ],
+    visual: null
+  },
+  {
+    id: "fragment",
+    title: "Crime #3: The Fragment",
+    subtitle: "An incomplete thought pretending to be a sentence",
+    body: [
+      "A fragment is a group of words that lacks a subject, a verb, or a complete thought — but is punctuated as if it were a sentence.",
+      'WRONG: "Although the experiment produced promising results." ← The word "although" makes this dependent. It needs a main clause to complete the thought.',
+      'WRONG: "The team of researchers from three different universities." ← No verb. We know who, but not what they did.',
+      "On the SAT, fragments often appear as answer choices that use a period or semicolon to separate a dependent clause from the independent clause it belongs to."
+    ],
+    visual: null
+  },
+  {
+    id: "fix-period",
+    title: "Fix #1: The Period",
+    subtitle: "The simplest boundary — make two sentences",
+    body: [
+      "The most straightforward fix is to use a period to create two separate sentences.",
+      '"The experiment failed. The team started over."',
+      "This always works when both halves are independent clauses. On the SAT, if you see a period separating two independent clauses, it's grammatically correct — though the question may test whether it's the BEST choice given the context."
+    ],
+    visual: null
+  },
+  {
+    id: "fix-semicolon",
+    title: "Fix #2: The Semicolon",
+    subtitle: "Joining related independent clauses",
+    body: [
+      'A semicolon joins two independent clauses that are closely related in meaning. Think of it as a "soft period" — it creates a boundary but signals continuation.',
+      '"The experiment failed; the team started over."',
+      "KEY RULE: Both sides of a semicolon must be independent clauses. You cannot use a semicolon between an independent clause and a dependent clause or a phrase.",
+      'WRONG: "Although the experiment failed; the team started over." ← The left side is dependent.',
+      "The SAT loves testing this. If you see a semicolon in an answer choice, check both sides — each must be able to stand alone as a sentence."
+    ],
+    visual: "semicolon-test"
+  },
+  {
+    id: "fix-colon",
+    title: "Fix #3: The Colon",
+    subtitle: "Introducing what comes next",
+    body: [
+      "A colon introduces an explanation, example, or list that elaborates on the preceding clause.",
+      '"The experiment revealed one clear finding: the treatment was ineffective."',
+      "KEY RULE: The part BEFORE the colon must be an independent clause. What comes after can be a clause, phrase, or list — it doesn't have to be independent.",
+      '"The team needed three things: funding, equipment, and volunteers." ← List after colon = fine.',
+      'WRONG: "The team needed: funding, equipment, and volunteers." ← "The team needed" is not a complete thought on its own.'
+    ],
+    visual: "colon-test"
+  },
+  {
+    id: "fix-dash",
+    title: "Fix #4: The Em-Dash",
+    subtitle: "The flexible boundary tool",
+    body: [
+      "An em-dash (—) is the most flexible punctuation mark. It can replace a comma, colon, or parentheses. On the SAT, em-dashes most commonly:",
+      '1. Set off an interruption or aside: "The lead researcher — who had been skeptical from the start — agreed to publish the results."',
+      '2. Introduce an explanation (like a colon): "The team reached a conclusion — the treatment was ineffective."',
+      "CRITICAL RULE: Dashes come in pairs when they set off a mid-sentence element. If there's a dash before an interruption, there must be a dash after it (not a comma, not a parenthesis). The SAT frequently tests this matching rule."
+    ],
+    visual: null
+  },
+  {
+    id: "fix-comma-conjunction",
+    title: "Fix #5: Comma + FANBOYS",
+    subtitle: "The conjunction junction",
+    body: [
+      "A comma followed by a coordinating conjunction (FANBOYS: For, And, Nor, But, Or, Yet, So) can join two independent clauses.",
+      '"The experiment failed, so the team started over."',
+      '"The data was promising, but the sample size was too small."',
+      "KEY RULE: You need BOTH the comma AND the conjunction. A conjunction alone (no comma) is technically a run-on with longer sentences, and a comma alone (no conjunction) is a comma splice.",
+      `NOTE: You do NOT use a comma before FANBOYS when what follows is not an independent clause: "The team collected data and published their findings." ← No comma needed because "published their findings" has no subject — it's not independent.`
+    ],
+    visual: null
+  },
+  {
+    id: "decision",
+    title: "The Boundary Decision Framework",
+    subtitle: "How to approach every boundary question",
+    body: [
+      "When you see a boundary question on the SAT, follow this process:",
+      "STEP 1: Read the full sentence. Identify how many independent clauses are present.",
+      "STEP 2: Find the boundary point — where does one clause end and the next begin?",
+      "STEP 3: Check each answer choice against the rules:\n  • Period/Semicolon → both sides must be independent clauses\n  • Colon → left side must be independent; right side explains/lists\n  • Comma + FANBOYS → both sides independent, correct conjunction for meaning\n  • Comma alone → ONLY legal if one side is dependent\n  • Dash → can replace comma, colon, or parentheses; dashes must match in pairs",
+      "STEP 4: Eliminate any choice that creates a comma splice, run-on, or fragment."
+    ],
+    visual: "decision-tree"
+  }
+];
+const COURTROOM_CASES = [
+  { sentence: "The comet was visible for three nights, astronomers from around the world gathered to observe it.", verdict: "guilty", crime: "Comma Splice", fix: "The comet was visible for three nights; astronomers from around the world gathered to observe it.", explain: "Two independent clauses joined by only a comma." },
+  { sentence: "Although the museum had recently renovated its west wing, attendance figures remained disappointingly low.", verdict: "innocent", crime: null, fix: null, explain: '"Although...wing" is a dependent clause, so the comma correctly attaches it to the independent clause.' },
+  { sentence: "The city council approved the new budget; however, several members expressed reservations about the timeline.", verdict: "innocent", crime: null, fix: null, explain: 'Semicolon correctly joins two independent clauses. "However" is a conjunctive adverb, not a FANBOYS conjunction, so it needs a semicolon (not just a comma).' },
+  { sentence: "The novelist spent years researching the historical period she wanted her characters to feel authentic.", verdict: "guilty", crime: "Run-On", fix: "The novelist spent years researching the historical period; she wanted her characters to feel authentic.", explain: "Two independent clauses with no punctuation between them." },
+  { sentence: "Having studied the effects of sleep deprivation on cognitive performance for over a decade.", verdict: "guilty", crime: "Fragment", fix: "Having studied the effects of sleep deprivation on cognitive performance for over a decade, Dr. Reyes published her comprehensive findings.", explain: "This is a participial phrase with no independent clause. It has no main subject performing a main action." },
+  { sentence: "The orchestra performed Beethoven's Fifth Symphony, and the audience responded with a standing ovation.", verdict: "innocent", crime: null, fix: null, explain: 'Comma + "and" (FANBOYS) correctly joins two independent clauses.' },
+  { sentence: "The archaeological dig revealed artifacts from three distinct periods: Bronze Age tools, Roman pottery, and Medieval coins.", verdict: "innocent", crime: null, fix: null, explain: 'Colon correctly introduces a list that specifies "three distinct periods." The left side is an independent clause.' },
+  { sentence: "Dr. Okafor's research challenged decades of assumptions, it demonstrated that the prevailing theory was fundamentally flawed.", verdict: "guilty", crime: "Comma Splice", fix: "Dr. Okafor's research challenged decades of assumptions: it demonstrated that the prevailing theory was fundamentally flawed.", explain: "Two independent clauses joined by only a comma. A colon works here because the second clause explains the first." },
+  { sentence: "The medication showed promise in early trials, but the side effects — which ranged from mild headaches to severe nausea — concerned the review board.", verdict: "innocent", crime: null, fix: null, explain: 'Comma + "but" joins the two independent clauses. The em-dashes correctly set off the parenthetical aside, and they match as a pair.' },
+  { sentence: "The team collected samples from the riverbed, they analyzed them in the university's new laboratory.", verdict: "guilty", crime: "Comma Splice", fix: "The team collected samples from the riverbed and analyzed them in the university's new laboratory.", explain: 'Two independent clauses joined only by a comma. One fix: combine into one clause with "and" (no comma needed since "analyzed" shares the subject "team").' },
+  { sentence: "While the northern regions experienced record rainfall this season.", verdict: "guilty", crime: "Fragment", fix: "While the northern regions experienced record rainfall this season, the southern plains remained in drought.", explain: '"While" makes this a dependent clause. It cannot stand alone.' },
+  { sentence: "The professor's lecture covered three major topics — the causes of the revolution, its key figures, and its lasting impact on constitutional law.", verdict: "innocent", crime: null, fix: null, explain: "The em-dash introduces a list (functioning like a colon). The left side is an independent clause." }
+];
+const BUILDER_ITEMS = [
+  {
+    parts: ["The researchers published their findings", "the scientific community responded with skepticism"],
+    options: [", ", "; ", ": ", ". "],
+    correct: [1, 3],
+    // semicolon or period both work
+    bestAnswer: 1,
+    explain: "Both sides are independent clauses. A semicolon joins them (they're closely related). A period also works. A comma alone would be a splice. A colon doesn't fit because the second clause doesn't explain the first."
+  },
+  {
+    parts: ["The study identified one critical flaw", "the sample size was far too small to draw meaningful conclusions"],
+    options: [", ", "; ", ": ", " — "],
+    correct: [2, 3],
+    // colon or dash
+    bestAnswer: 2,
+    explain: 'The second clause explains/specifies the "critical flaw" mentioned in the first. A colon is ideal here. An em-dash also works (it can replace a colon). A comma would be a splice.'
+  },
+  {
+    parts: ["The coral reef ecosystem had been deteriorating for decades", "conservation efforts finally began to show results"],
+    options: [", but ", "; ", ", ", ". "],
+    correct: [0, 1, 3],
+    bestAnswer: 0,
+    explain: 'The second clause contrasts with the first (deterioration → results). "Comma + but" signals this contrast perfectly. Semicolon and period are grammatically correct but miss the contrast. Comma alone = splice.'
+  },
+  {
+    parts: ["Although the evidence was compelling", "the jury remained unconvinced"],
+    options: [", ", "; ", ": ", ". "],
+    correct: [0],
+    bestAnswer: 0,
+    explain: '"Although the evidence was compelling" is a DEPENDENT clause. It cannot stand alone. Only a comma works here — a semicolon, colon, or period would all create a fragment on the left side.'
+  },
+  {
+    parts: ["The company announced three major initiatives", "expanding into Asian markets, launching a sustainability program, and restructuring the executive team"],
+    options: [", ", "; ", ": ", " — "],
+    correct: [2, 3],
+    bestAnswer: 2,
+    explain: 'The second part is a list that specifies the "three major initiatives." A colon is the standard choice for introducing a specifying list. An em-dash also works.'
+  },
+  {
+    parts: ["The ancient manuscript — which had been presumed lost for centuries", "was discovered in a private collection in Istanbul"],
+    options: [" — ", ", ", "; ", ": "],
+    correct: [0],
+    bestAnswer: 0,
+    explain: `There's already an opening em-dash before "which," so you need a closing em-dash to complete the pair. Dashes must match! Using a comma, semicolon, or colon here would be mismatched punctuation.`
+  },
+  {
+    parts: ["The musician practiced for eight hours every day", "she won the international competition at age seventeen"],
+    options: [", and ", ", ", "; ", ". "],
+    correct: [0, 2, 3],
+    bestAnswer: 2,
+    explain: "Both are independent clauses. Semicolon, period, and comma+and all work grammatically. Comma alone = splice."
+  },
+  {
+    parts: ["The senator voted against the bill", "citing concerns about its potential impact on small businesses"],
+    options: [", ", "; ", ": ", ". "],
+    correct: [0],
+    bestAnswer: 0,
+    explain: '"Citing concerns..." is a participial phrase (not an independent clause). It CANNOT stand alone. Only a comma works — semicolon, colon, and period would all create a fragment on the right side.'
+  }
+];
+const QUIZ_QUESTIONS = [
+  {
+    id: 1,
+    diff: "easy",
+    subtype: "Comma Splice",
+    passage: "The volcano had been dormant for over two centuries ______ geologists warned that recent seismic activity suggested an eruption was possible within the next decade.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["centuries,", "centuries, but", "centuries but", "centuries"],
+    answer: 1,
+    explain: 'Two independent clauses with a contrast relationship. "Comma + but" (FANBOYS) correctly joins them. Comma alone = splice. "But" alone (no comma) is technically a run-on. No punctuation = fused sentence.'
+  },
+  {
+    id: 2,
+    diff: "easy",
+    subtype: "Semicolon",
+    passage: "Marine biologist Dr. Tanaka spent three years studying whale migration patterns ______ her research has since been cited in over forty peer-reviewed journals.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["patterns,", "patterns;", "patterns:", "patterns"],
+    answer: 1,
+    explain: "Two independent clauses. Semicolon correctly joins them. Comma alone = splice. Colon doesn't fit (second clause doesn't explain the first). No punctuation = run-on."
+  },
+  {
+    id: 3,
+    diff: "medium",
+    subtype: "Colon",
+    passage: "The architect's design incorporated several sustainable features ______ solar panels on the roof, rainwater collection systems, and walls made from recycled materials.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["features,", "features:", "features;", "features"],
+    answer: 1,
+    explain: 'The second part is a list specifying the "sustainable features." Colon correctly introduces a list after an independent clause. Semicolon would require an independent clause on the right. Comma = splice.'
+  },
+  {
+    id: 4,
+    diff: "medium",
+    subtype: "Fragment",
+    passage: "While the northern hemisphere experiences summer ______ the southern hemisphere experiences winter due to the tilt of Earth's axis relative to the sun.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["summer;", "summer:", "summer,", "summer."],
+    answer: 2,
+    explain: '"While the northern hemisphere experiences summer" is a DEPENDENT clause (starts with "while"). Only a comma works. Semicolon, colon, and period would each create a fragment on the left.'
+  },
+  {
+    id: 5,
+    diff: "medium",
+    subtype: "Comma + FANBOYS",
+    passage: "The playwright's early works were largely ignored by critics ______ her later plays — which explored themes of identity and displacement — earned widespread acclaim.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["critics,", "critics, but", "critics;", "critics —"],
+    answer: 1,
+    explain: 'Two independent clauses with contrast. "Comma + but" is correct. Note the em-dashes in the second clause correctly match as a pair around the aside. Comma alone = splice.'
+  },
+  {
+    id: 6,
+    diff: "hard",
+    subtype: "Colon",
+    passage: "Dr. Okonkwo's analysis revealed a striking pattern ______ regions that had invested heavily in early childhood education consistently outperformed those that had not, regardless of other socioeconomic factors.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["pattern,", "pattern:", "pattern;", "pattern —"],
+    answer: 1,
+    explain: `The second part explains/specifies the "striking pattern." A colon introduces this explanation. An em-dash would also work (though it's not among the best choices here). Comma = splice. Semicolon is grammatically fine but misses the explanatory relationship.`
+  },
+  {
+    id: 7,
+    diff: "hard",
+    subtype: "Fragment",
+    passage: "The expedition team, which had been preparing for the ascent for over two ______ that weather conditions at the summit had deteriorated beyond what their equipment could safely handle.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["years discovered", "years, discovered", "years; discovered", "years. Discovered"],
+    answer: 1,
+    explain: '"Which had been preparing...two years" is a nonrestrictive clause set off by commas. The comma after "years" closes this clause, returning to the main sentence: "The expedition team...discovered." Semicolon and period would fragment the sentence. No comma would fuse the modifier into the verb.'
+  },
+  {
+    id: 8,
+    diff: "hard",
+    subtype: "Semicolon",
+    passage: "The senator argued that the proposed legislation would not merely address the immediate crisis ______ it would establish a framework for preventing similar situations in the future.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["crisis,", "crisis;", "crisis:", "crisis, rather,"],
+    answer: 1,
+    explain: 'Two independent clauses. The semicolon correctly joins them. Comma alone = splice. Colon is possible but less conventional here since the second clause extends rather than explains. "Rather" between commas creates a comma splice with extra interruption.'
+  },
+  {
+    id: 9,
+    diff: "hard",
+    subtype: "Em-Dash",
+    passage: "The muralist — whose large-scale works depicting scenes of community resilience have earned her international ______ recently announced a new public art initiative in three underserved neighborhoods.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["recognition —", "recognition,", "recognition;", "recognition:"],
+    answer: 0,
+    explain: `There's an opening em-dash before "whose," so we need a closing em-dash after the aside to match. This returns us to the main clause: "The muralist...recently announced." Dashes must come in pairs!`
+  },
+  {
+    id: 10,
+    diff: "hard",
+    subtype: "Semicolon",
+    passage: "Researchers found that participants who received the experimental treatment showed significant improvement; ______ those in the control group showed no change over the same period.",
+    stem: "Which choice completes the text so that it conforms to Standard English?",
+    choices: ["however,", "however;", "however", ", however,"],
+    answer: 0,
+    explain: 'After a semicolon, "however," (with a comma) correctly begins the second independent clause. The semicolon already provides the boundary. "However;" would create a double boundary. No comma after "however" violates the convention for conjunctive adverbs.'
+  }
+];
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px",
+  borderRadius: 10,
+  border: "none",
+  background: bg,
+  color,
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: "pointer",
+  transition: "transform .12s",
+  ...extra
+});
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${ACCENT}22`, border: `1px solid ${ACCENT}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: ACCENT, marginBottom: 12, fontWeight: 600 } }, "Unit 1 • Module 1"), /* @__PURE__ */ React.createElement("h1", { style: { fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 800, color: ACCENT, lineHeight: 1.1, textAlign: "center", marginBottom: 16 } }, "Sentence Boundaries"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 40 } }, "Master the punctuation rules that control where one sentence ends and the next begins. This is the most testable — and most commonly missed — grammar concept on the SAT."), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 16, maxWidth: 750, width: "100%", marginBottom: 48 } }, [
+    { icon: "📖", title: "Learn the Rules", desc: "5 fixes for 3 boundary crimes" },
+    { icon: "⚖️", title: "Courtroom Game", desc: "Judge sentences guilty or innocent" },
+    { icon: "🔧", title: "Boundary Builder", desc: "Choose the right punctuation" },
+    { icon: "📝", title: "Practice Quiz", desc: "10 SAT-style questions" }
+  ].map((c, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 32, marginBottom: 8 } }, c.icon), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 4 } }, c.title), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13, lineHeight: 1.5 } }, c.desc)))), /* @__PURE__ */ React.createElement("button", { onClick: onNext, style: btn(`linear-gradient(135deg,${ACCENT},#059669)`, DARK), onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.04)", onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)" }, "Start Learning →"), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 13, marginTop: 24 } }, "~60 minutes • Standard English Conventions"));
+}
+function LessonViewer({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const lesson = LESSONS[idx];
+  const total = LESSONS.length;
+  function renderVisual() {
+    if (lesson.visual === "stats") {
+      return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", padding: 16 } }, [
+        { n: "~10%", label: "of SAT R&W", sub: "Boundary questions" },
+        { n: "5-6", label: "questions/test", sub: "High frequency" },
+        { n: "#1", label: "missed rule", sub: "Comma splices" }
+      ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: `${ACCENT}11`, border: `1px solid ${ACCENT}33`, borderRadius: 14, padding: "16px 24px", textAlign: "center", minWidth: 140 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontWeight: 900, fontSize: 28 } }, s.n), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13, fontWeight: 600 } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, s.sub))));
+    }
+    if (lesson.visual === "clause-check") {
+      return /* @__PURE__ */ React.createElement(ClauseChecker, null);
+    }
+    if (lesson.visual === "comma-splice-demo") {
+      return /* @__PURE__ */ React.createElement("div", { style: { padding: "16px 24px" } }, /* @__PURE__ */ React.createElement("div", { style: { background: "#ef444418", border: "1px solid #ef444444", borderRadius: 12, padding: 16, marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#ef4444", fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "COMMA SPLICE"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 15, fontFamily: "Georgia, serif", lineHeight: 1.8 } }, "The experiment failed", /* @__PURE__ */ React.createElement("span", { style: { color: "#ef4444", fontWeight: 900, fontSize: 20, padding: "0 2px" } }, ","), " the team started over."), /* @__PURE__ */ React.createElement("div", { style: { color: "#ef4444", fontSize: 12, marginTop: 4 } }, "Two independent clauses — only a comma between them")), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13, textAlign: "center", margin: "12px 0" } }, "Fix it with any of these:"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 } }, [
+        { mark: ".", text: "The experiment failed. The team started over." },
+        { mark: ";", text: "The experiment failed; the team started over." },
+        { mark: ", so", text: "The experiment failed, so the team started over." },
+        { mark: "—", text: "The experiment failed — the team started over." }
+      ].map((f, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: `${ACCENT}11`, border: `1px solid ${ACCENT}33`, borderRadius: 10, padding: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontWeight: 800, fontSize: 18, marginBottom: 4 } }, f.mark), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 12, lineHeight: 1.5 } }, f.text)))));
+    }
+    if (lesson.visual === "semicolon-test") {
+      return /* @__PURE__ */ React.createElement(SemicolonTester, null);
+    }
+    if (lesson.visual === "colon-test") {
+      return /* @__PURE__ */ React.createElement(ColonTester, null);
+    }
+    if (lesson.visual === "decision-tree") {
+      return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } }, [
+        { q: "Are there two independent clauses?", yes: "Need a boundary →", no: "Comma or no punctuation may work" },
+        { q: "Does the second part explain/list the first?", yes: "→ Use a COLON or EM-DASH", no: "↓" },
+        { q: "Is there a contrast or specific logical link?", yes: "→ Use COMMA + FANBOYS", no: "→ Use SEMICOLON or PERIOD" }
+      ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 14 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 14, marginBottom: 6 } }, s.q), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontSize: 12 } }, "YES: ", s.yes), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 12 } }, "NO: ", s.no))))));
+    }
+    return null;
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 6, marginBottom: 32 } }, LESSONS.map((_, i) => /* @__PURE__ */ React.createElement("div", { key: i, onClick: () => setIdx(i), style: { width: i === idx ? 24 : 8, height: 8, borderRadius: 4, background: i === idx ? ACCENT : i < idx ? `${ACCENT}66` : BORDER, cursor: "pointer", transition: "all .3s" } }))), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "28px 28px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontSize: 12, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 } }, lesson.subtitle), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: "clamp(1.2rem,3vw,1.6rem)", fontWeight: 800, marginBottom: 16, lineHeight: 1.2 } }, lesson.title), lesson.body.map((p, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { color: SUB, fontSize: 14, lineHeight: 1.75, marginBottom: 14, whiteSpace: "pre-line" } }, p))), lesson.visual && /* @__PURE__ */ React.createElement("div", { style: { padding: "8px 4px 20px" } }, renderVisual())), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setIdx(Math.max(0, idx - 1)),
+      disabled: idx === 0,
+      style: { ...btn("transparent", idx === 0 ? "#334155" : SUB), border: `1px solid ${BORDER}`, padding: "10px 20px", fontSize: 14 }
+    },
+    "← Back"
+  ), idx < total - 1 ? /* @__PURE__ */ React.createElement("button", { onClick: () => setIdx(idx + 1), style: btn(ACCENT, DARK, { fontSize: 14, padding: "10px 20px" }) }, "Next →") : /* @__PURE__ */ React.createElement("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${ACCENT},#059669)`, DARK, { fontSize: 14, padding: "10px 24px" }) }, "Start Courtroom Game →")));
+}
+function ClauseChecker() {
+  const items = [
+    { text: "The researchers published their findings.", independent: true },
+    { text: "Although the data was inconclusive.", independent: false },
+    { text: "Running through the forest at dawn.", independent: false },
+    { text: "She discovered a new species.", independent: true },
+    { text: "Because the funding was cut.", independent: false },
+    { text: "The committee voted unanimously.", independent: true }
+  ];
+  const [answers, setAnswers] = useState({});
+  const handleClick = (i, val) => {
+    setAnswers((p) => ({ ...p, [i]: val }));
+  };
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT2, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Quick Check: Independent or Dependent?"), items.map((item, i) => {
+    const answered = answers[i] !== void 0;
+    const correct = answers[i] === item.independent;
+    return /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 8, padding: "8px 12px", background: answered ? correct ? `${ACCENT}11` : "#ef444411" : "transparent", borderRadius: 8, transition: "all .2s" } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13, flex: 1, fontFamily: "Georgia, serif" } }, item.text), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 4 } }, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => handleClick(i, true),
+        disabled: answered,
+        style: { padding: "4px 10px", borderRadius: 6, border: `1px solid ${answered && answers[i] === true ? correct ? ACCENT : "#ef4444" : BORDER}`, background: "transparent", color: answered && answers[i] === true ? correct ? ACCENT : "#ef4444" : MUTED, fontSize: 11, fontWeight: 600, cursor: answered ? "default" : "pointer" }
+      },
+      "Independent"
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => handleClick(i, false),
+        disabled: answered,
+        style: { padding: "4px 10px", borderRadius: 6, border: `1px solid ${answered && answers[i] === false ? correct ? ACCENT : "#ef4444" : BORDER}`, background: "transparent", color: answered && answers[i] === false ? correct ? ACCENT : "#ef4444" : MUTED, fontSize: 11, fontWeight: 600, cursor: answered ? "default" : "pointer" }
+      },
+      "Dependent"
+    )), answered && /* @__PURE__ */ React.createElement("span", { style: { fontSize: 14 } }, correct ? "✅" : "❌"));
+  }));
+}
+function SemicolonTester() {
+  const tests = [
+    { left: "The concert was sold out", right: "thousands of fans waited outside", ok: true, reason: "Both sides are independent clauses ✓" },
+    { left: "Although the rain continued", right: "the match went ahead as planned", ok: false, reason: "Left side is dependent (starts with 'although') ✗" },
+    { left: "The chef prepared three dishes", right: "a risotto, a steak, and a soufflé", ok: false, reason: "Right side is a list/phrase, not an independent clause ✗ (Use a colon instead)" }
+  ];
+  const [revealed, setRevealed] = useState({});
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT2, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Semicolon Test: Can you use one here?"), tests.map((t, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { marginBottom: 12, background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 14, cursor: "pointer" }, onClick: () => setRevealed((p) => ({ ...p, [i]: true })) }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontFamily: "Georgia, serif" } }, t.left, " ", /* @__PURE__ */ React.createElement("span", { style: { color: ACCENT2, fontWeight: 900 } }, ";"), " ", t.right), revealed[i] && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 8, color: t.ok ? ACCENT : "#ef4444", fontSize: 12, fontWeight: 600 } }, t.reason), !revealed[i] && /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11, marginTop: 4 } }, "Tap to check"))));
+}
+function ColonTester() {
+  const tests = [
+    { left: "The study reached a clear conclusion", right: "the drug was ineffective", ok: true, reason: "Left is independent; right explains the conclusion ✓" },
+    { left: "The team needed", right: "more funding, better equipment, and additional staff", ok: false, reason: '"The team needed" is NOT a complete sentence ✗' },
+    { left: "Three factors contributed to the decline", right: "pollution, overfishing, and climate change", ok: true, reason: "Left is independent; right lists the three factors ✓" }
+  ];
+  const [revealed, setRevealed] = useState({});
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT2, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Colon Test: Is the left side independent?"), tests.map((t, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { marginBottom: 12, background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 14, cursor: "pointer" }, onClick: () => setRevealed((p) => ({ ...p, [i]: true })) }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontFamily: "Georgia, serif" } }, t.left, " ", /* @__PURE__ */ React.createElement("span", { style: { color: ACCENT2, fontWeight: 900 } }, ":"), " ", t.right), revealed[i] && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 8, color: t.ok ? ACCENT : "#ef4444", fontSize: 12, fontWeight: 600 } }, t.reason), !revealed[i] && /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11, marginTop: 4 } }, "Tap to check"))));
+}
+function Courtroom({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [verdict, setVerdict] = useState(null);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+  const c = COURTROOM_CASES[idx];
+  function handleVerdict(v) {
+    setVerdict(v);
+    if (v === c.verdict) setScore((s) => s + 1);
+  }
+  function next() {
+    if (idx < COURTROOM_CASES.length - 1) {
+      setIdx(idx + 1);
+      setVerdict(null);
+    } else {
+      setDone(true);
+    }
+  }
+  if (done) {
+    return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "80px 20px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 48, marginBottom: 16 } }, "⚖️"), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, "Court Adjourned"), /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontSize: 48, fontWeight: 900 } }, score, "/", COURTROOM_CASES.length), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 15, marginTop: 8, marginBottom: 32 } }, "correct verdicts"), /* @__PURE__ */ React.createElement("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${ACCENT},#059669)`, DARK) }, "Continue to Boundary Builder →"));
+  }
+  const correct = verdict === c.verdict;
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 650, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT2, fontSize: 13, fontWeight: 700 } }, "⚖️ Comma Splice Courtroom"), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13 } }, "Case ", idx + 1, " of ", COURTROOM_CASES.length, " • Score: ", score)), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 28, marginBottom: 24 } }, /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 12, fontWeight: 600, marginBottom: 12, textTransform: "uppercase", letterSpacing: 1 } }, "The Accused Sentence"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 17, fontFamily: "Georgia, serif", lineHeight: 1.8, padding: "12px 0" } }, c.sentence)), !verdict && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 16, justifyContent: "center", marginBottom: 24 } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => handleVerdict("guilty"),
+      style: { ...btn("#ef444422", "#ef4444"), border: "2px solid #ef444444", flex: 1, maxWidth: 200, textAlign: "center" },
+      onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.03)",
+      onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)"
+    },
+    "🔨 Guilty"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => handleVerdict("innocent"),
+      style: { ...btn(`${ACCENT}22`, ACCENT), border: `2px solid ${ACCENT}44`, flex: 1, maxWidth: 200, textAlign: "center" },
+      onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.03)",
+      onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)"
+    },
+    "✅ Innocent"
+  )), verdict && /* @__PURE__ */ React.createElement("div", { style: { background: correct ? `${ACCENT}11` : "#ef444411", border: `1px solid ${correct ? ACCENT : "#ef4444"}44`, borderRadius: 16, padding: 20, marginBottom: 24 } }, /* @__PURE__ */ React.createElement("div", { style: { color: correct ? ACCENT : "#ef4444", fontWeight: 800, fontSize: 16, marginBottom: 8 } }, correct ? "Correct!" : `Incorrect — the sentence is ${c.verdict}`, c.crime && ` (${c.crime})`), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 14, lineHeight: 1.6, marginBottom: c.fix ? 12 : 0 } }, c.explain), c.fix && /* @__PURE__ */ React.createElement("div", { style: { background: `${ACCENT}11`, borderRadius: 8, padding: 12, marginTop: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontSize: 12, fontWeight: 600, marginBottom: 4 } }, "Corrected version:"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontFamily: "Georgia, serif" } }, c.fix)), /* @__PURE__ */ React.createElement("button", { onClick: next, style: { ...btn(ACCENT, DARK, { fontSize: 14, padding: "10px 20px", marginTop: 16 }) } }, idx < COURTROOM_CASES.length - 1 ? "Next Case →" : "See Results →")));
+}
+function BoundaryBuilder({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+  const item = BUILDER_ITEMS[idx];
+  function handleConfirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (item.correct.includes(selected)) setScore((s) => s + 1);
+  }
+  function next() {
+    if (idx < BUILDER_ITEMS.length - 1) {
+      setIdx(idx + 1);
+      setSelected(null);
+      setConfirmed(false);
+    } else {
+      setDone(true);
+    }
+  }
+  if (done) {
+    return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "80px 20px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 48, marginBottom: 16 } }, "🔧"), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, "Builder Complete"), /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontSize: 48, fontWeight: 900 } }, score, "/", BUILDER_ITEMS.length), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 15, marginTop: 8, marginBottom: 32 } }, "correct boundaries"), /* @__PURE__ */ React.createElement("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${ACCENT},#059669)`, DARK) }, "Continue to Practice Quiz →"));
+  }
+  const isCorrect = confirmed && item.correct.includes(selected);
+  const isBest = confirmed && selected === item.bestAnswer;
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 650, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 24 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontSize: 13, fontWeight: 700 } }, "🔧 Boundary Builder"), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13 } }, idx + 1, " of ", BUILDER_ITEMS.length, " • Score: ", score)), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 28, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 12, fontWeight: 600, marginBottom: 16, textTransform: "uppercase", letterSpacing: 1 } }, "Choose the punctuation that belongs in the gap"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 17, fontFamily: "Georgia, serif", lineHeight: 1.8 } }, item.parts[0], /* @__PURE__ */ React.createElement("span", { style: { display: "inline-block", minWidth: 40, borderBottom: `3px solid ${ACCENT}`, margin: "0 4px", textAlign: "center", color: confirmed ? isCorrect ? ACCENT : "#ef4444" : ACCENT2, fontWeight: 800, fontSize: 20 } }, confirmed ? item.options[selected] : selected !== null ? item.options[selected] : "___"), item.parts[1])), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 24 } }, item.options.map((opt, oi) => {
+    let bg = CARD;
+    let border = `1px solid ${BORDER}`;
+    let color = TEXT;
+    if (confirmed) {
+      if (oi === item.bestAnswer) {
+        bg = `${ACCENT}22`;
+        border = `2px solid ${ACCENT}`;
+        color = ACCENT;
+      } else if (item.correct.includes(oi)) {
+        bg = `${ACCENT}11`;
+        border = `1px solid ${ACCENT}66`;
+        color = ACCENT;
+      } else if (oi === selected) {
+        bg = "#ef444422";
+        border = "2px solid #ef4444";
+        color = "#ef4444";
+      }
+    } else if (oi === selected) {
+      bg = `${ACCENT2}22`;
+      border = `2px solid ${ACCENT2}`;
+      color = ACCENT2;
+    }
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: oi,
+        onClick: () => {
+          if (!confirmed) setSelected(oi);
+        },
+        disabled: confirmed,
+        style: { padding: "14px 8px", borderRadius: 12, background: bg, border, color, fontWeight: 800, fontSize: 20, cursor: confirmed ? "default" : "pointer", textAlign: "center", fontFamily: "Georgia, serif" }
+      },
+      opt.trim() || "(nothing)"
+    );
+  })), confirmed && /* @__PURE__ */ React.createElement("div", { style: { background: isCorrect ? `${ACCENT}11` : "#ef444411", border: `1px solid ${isCorrect ? ACCENT : "#ef4444"}44`, borderRadius: 12, padding: 16, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: isCorrect ? ACCENT : "#ef4444", fontWeight: 700, fontSize: 14, marginBottom: 6 } }, isCorrect ? isBest ? "Best answer!" : "Correct! (Though there's an even better option)" : "Not quite."), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, item.explain)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } }, !confirmed ? /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: handleConfirm,
+      disabled: selected === null,
+      style: btn(selected === null ? BORDER : ACCENT, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" })
+    },
+    "Check"
+  ) : /* @__PURE__ */ React.createElement("button", { onClick: next, style: btn(ACCENT, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < BUILDER_ITEMS.length - 1 ? "Next →" : "See Results →")));
+}
+function PracticeQuiz({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(10 * 80); // 80 sec per question
+  const timerRef = useRef(null);
+  const q = QUIZ_QUESTIONS[idx];
+  const total = QUIZ_QUESTIONS.length;
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setTimeLeft(t => {
+        if (t <= 1) { clearInterval(timerRef.current); return 0; }
+        return t - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, []);
+
+  function handleConfirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    setAnswers((p) => [...p, { correct: selected === q.answer, subtype: q.subtype, diff: q.diff, qIdx: idx }]);
+  }
+  function next() {
+    if (idx < total - 1) {
+      setIdx(idx + 1);
+      setSelected(null);
+      setConfirmed(false);
+    } else {
+      clearInterval(timerRef.current);
+      const finalAnswers = [...answers];
+      onComplete(finalAnswers.filter((a) => a.correct).length, total, finalAnswers);
+    }
+  }
+  const mins = Math.floor(timeLeft / 60);
+  const secs = timeLeft % 60;
+  const timerPct = (timeLeft / (10 * 80)) * 100;
+
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" } },
+    // Timer bar
+    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 } },
+      React.createElement("div", { style: { color: ACCENT, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" } }, "📝 Timed Practice Quiz"),
+      React.createElement("div", { style: { fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: timerPct < 20 ? "#ef4444" : MUTED } }, mins, ":", String(secs).padStart(2, "0"))
+    ),
+    React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 8, overflow: "hidden" } },
+      React.createElement("div", { style: { height: "100%", width: timerPct + "%", background: timerPct < 20 ? "#ef4444" : `linear-gradient(90deg,${ACCENT},#059669)`, borderRadius: 2, transition: "width 1s linear" } })
+    ),
+    // Score tracker dots
+    React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 16, flexWrap: "wrap" } },
+      QUIZ_QUESTIONS.map((_, i) => {
+        const answered = answers[i];
+        let bg = BORDER;
+        let color = MUTED;
+        let border = `2px solid ${BORDER}`;
+        if (answered) {
+          bg = answered.correct ? `${ACCENT}22` : "#ef444422";
+          color = answered.correct ? ACCENT : "#ef4444";
+          border = `2px solid ${answered.correct ? ACCENT : "#ef4444"}`;
+        } else if (i === idx) {
+          border = `2px solid ${ACCENT2}`;
+          bg = `${ACCENT2}15`;
+          color = ACCENT2;
+        }
+        return React.createElement("div", { key: i, style: { width: 28, height: 28, borderRadius: "50%", border, background: bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color, transition: "all .2s" } }, i + 1);
+      })
+    ),
+    // Difficulty badge
+    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 } },
+      React.createElement("div", { style: { color: TEXT, fontWeight: 800, fontSize: 15 } }, "Question ", idx + 1, " of ", total),
+      React.createElement("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 700, background: q.diff === "easy" ? `${ACCENT}22` : q.diff === "medium" ? `${ACCENT2}22` : "#ef444422", color: q.diff === "easy" ? ACCENT : q.diff === "medium" ? ACCENT2 : "#ef4444" } }, q.diff)
+    ),
+    // Passage
+    React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 20 } },
+      React.createElement("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, q.passage)
+    ),
+    React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, q.stem),
+    // Choices
+    React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } },
+      q.choices.map((c, ci) => {
+        const letter = "ABCD"[ci];
+        const isSelected = selected === ci;
+        const isCorrect = ci === q.answer;
+        let bg = CARD, border = `1px solid ${BORDER}`, tc = "#cbd5e1";
+        if (confirmed && isCorrect) { bg = `${ACCENT}18`; border = `2px solid ${ACCENT}`; tc = ACCENT; }
+        else if (confirmed && isSelected && !isCorrect) { bg = "#ef444418"; border = "2px solid #ef4444"; tc = "#ef4444"; }
+        else if (isSelected && !confirmed) { bg = `${ACCENT2}15`; border = `2px solid ${ACCENT2}`; tc = ACCENT2; }
+        return React.createElement("button", { key: ci, onClick: () => { if (!confirmed) setSelected(ci); }, disabled: confirmed, style: { display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" } },
+          React.createElement("span", { style: { minWidth: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, background: confirmed && isCorrect ? ACCENT : confirmed && isSelected && !isCorrect ? "#ef4444" : isSelected ? ACCENT2 : BORDER, color: isSelected || confirmed ? DARK : MUTED } }, letter),
+          React.createElement("span", { style: { color: tc, fontSize: 14, fontFamily: "Georgia, serif" } }, c)
+        );
+      })
+    ),
+    // Explanation
+    confirmed && React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: "4px solid #3b82f6" } },
+      React.createElement("div", { style: { color: "#3b82f6", fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "Explanation"),
+      React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 } }, q.explain)
+    ),
+    // Buttons
+    React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } },
+      !confirmed ? React.createElement("button", { onClick: handleConfirm, disabled: selected === null, style: btn(selected === null ? BORDER : ACCENT, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Confirm Answer")
+      : React.createElement("button", { onClick: next, style: btn(`linear-gradient(135deg,${ACCENT},#059669)`, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < total - 1 ? "Next →" : "See Results →")
+    )
+  );
+}
+// ═══════════════ CHALLENGE DATA ═══════════════
+const CHALLENGE_QUESTIONS = [
+  { passage: "The researchers — who had spent nearly a decade studying the effects of microplastics on marine ecosystems ______ published their findings in a landmark paper that has since been cited over 2,000 times.", choices: ["—", ",", ";", ":"], answer: 0, diff: "hard", subtype: "Em-Dash", explain: "An opening em-dash before 'who' requires a closing em-dash after the aside to match. Dashes must come in pairs. The aside interrupts the main clause: 'The researchers...published their findings.'" },
+  { passage: "The CEO announced three strategic priorities for the coming fiscal year ______ expanding into Southeast Asian markets, reducing operational costs by 15%, and launching a direct-to-consumer platform.", choices: ["year,", "year:", "year;", "year —"], answer: 1, diff: "hard", subtype: "Colon", explain: "The list specifies the 'three strategic priorities.' A colon correctly introduces a specifying list after an independent clause. An em-dash would also work, but the colon is the standard choice." },
+  { passage: "Although the archaeological evidence strongly suggested that the settlement had been continuously inhabited for over three millennia ______ the lead researcher cautioned that carbon dating alone could not confirm such a claim with absolute certainty.", choices: ["millennia;", "millennia:", "millennia,", "millennia."], answer: 2, diff: "hard", subtype: "Fragment", explain: "'Although...millennia' is a dependent clause. Only a comma correctly attaches it to the independent clause. Semicolon, colon, and period would all create a fragment on the left." },
+  { passage: "The composer's final symphony was performed posthumously in Vienna in 1828 ______ it was not until the late twentieth century that scholars recognized it as one of the most innovative works of the Romantic period.", choices: ["1828,", "1828;", "1828:", "1828"], answer: 1, diff: "hard", subtype: "Semicolon", explain: "Two independent clauses. The semicolon correctly joins them. Comma = splice. Colon doesn't fit because the second clause doesn't explain the first — it adds contrasting information about a different time period." },
+  { passage: "The new trade agreement, which was negotiated over eighteen months by representatives from twelve ______ is expected to reduce tariffs on agricultural exports by an average of 23%.", choices: ["nations —", "nations;", "nations,", "nations:"], answer: 2, diff: "hard", subtype: "Fragment", explain: "'Which was negotiated...nations' is a nonrestrictive clause set off by commas. The comma after 'nations' closes this clause, returning to the main sentence: 'The new trade agreement...is expected.' A dash would require a matching opening dash (there isn't one). Semicolon/colon would break the sentence." },
+  { passage: "The evidence was ______ even the defense attorney acknowledged that her client's alibi had significant inconsistencies.", choices: ["overwhelming,", "overwhelming;", "overwhelming:", "overwhelming, so"], answer: 2, diff: "hard", subtype: "Colon", explain: "The second clause explains HOW overwhelming the evidence was. A colon signals this explanatory relationship. Comma = splice. Semicolon works grammatically but misses the causal relationship. 'So' would also work but the colon is stronger." }
+];
+
+const BOUNDARY_RULES = [
+  { num: 1, text: "Period, semicolon, or colon between two independent clauses. Never a comma alone." },
+  { num: 2, text: "Comma + FANBOYS (For, And, Nor, But, Or, Yet, So) can join two ICs. 'However,' 'therefore,' and 'moreover' are NOT FANBOYS." },
+  { num: 3, text: "Comma after a dependent clause that comes before an independent clause. (DC, IC)" },
+  { num: 4, text: "A semicolon requires an IC on both sides. A phrase or DC can't go on either side of a semicolon." },
+  { num: 5, text: "A colon requires an IC before it. What follows can be an IC, list, or explanation." },
+  { num: 6, text: "Em-dashes come in pairs when setting off a mid-sentence aside. If there's a dash before, there must be a dash after." },
+  { num: 7, text: "A comma alone CANNOT join two independent clauses (comma splice). Add FANBOYS or upgrade to semicolon/period." },
+  { num: 8, text: "A fragment lacks a subject, verb, or complete thought. Don't let periods or semicolons create fragments." }
+];
+
+function ModuleComplete({ quizScore, quizTotal, quizAnswers }) {
+  const pct = Math.round(quizScore / quizTotal * 100);
+  const [tab, setTab] = useState("results");
+  const [challengeIdx, setChallengeIdx] = useState(0);
+  const [challengeSel, setChallengeSel] = useState(null);
+  const [challengeConf, setChallengeConf] = useState(false);
+  const [challengeAnswers, setChallengeAnswers] = useState([]);
+  const [challengeDone, setChallengeDone] = useState(false);
+
+  // Error log computation
+  const errors = (quizAnswers || []).filter(a => !a.correct);
+  const errorsBySubtype = {};
+  errors.forEach(e => { errorsBySubtype[e.subtype] = (errorsBySubtype[e.subtype] || 0) + 1; });
+  const sortedErrors = Object.entries(errorsBySubtype).sort((a, b) => b[1] - a[1]);
+
+  function copyRules() {
+    const txt = "SAT R&W — 8 BOUNDARY RULES\n" + BOUNDARY_RULES.map(r => r.num + ". " + r.text).join("\n");
+    navigator.clipboard.writeText(txt).then(() => alert("Rules copied!")).catch(() => alert("Copy failed."));
+  }
+
+  // Challenge handlers
+  function challengeConfirm() {
+    if (challengeSel === null) return;
+    setChallengeConf(true);
+    setChallengeAnswers(p => [...p, { correct: challengeSel === CHALLENGE_QUESTIONS[challengeIdx].answer }]);
+  }
+  function challengeNext() {
+    if (challengeIdx < CHALLENGE_QUESTIONS.length - 1) {
+      setChallengeIdx(i => i + 1);
+      setChallengeSel(null);
+      setChallengeConf(false);
+    } else {
+      setChallengeDone(true);
+    }
+  }
+
+  const tabs = [
+    { id: "results", label: "📊 Results" },
+    { id: "errors", label: "🔍 Error Log" },
+    { id: "rules", label: "📋 Rules" },
+    { id: "challenge", label: "⭐ Challenge" },
+    { id: "homework", label: "📝 Homework" }
+  ];
+
+  return React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" } },
+    // Tab navigation
+    React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 24, flexWrap: "wrap" } },
+      tabs.map(t => React.createElement("button", { key: t.id, onClick: () => setTab(t.id), style: { padding: "8px 16px", borderRadius: 8, border: tab === t.id ? `2px solid ${ACCENT}` : `1px solid ${BORDER}`, background: tab === t.id ? `${ACCENT}18` : CARD, color: tab === t.id ? ACCENT : MUTED, fontSize: 13, fontWeight: 600, cursor: "pointer" } }, t.label))
+    ),
+
+    // ═══ RESULTS TAB ═══
+    tab === "results" && React.createElement("div", null,
+      React.createElement("div", { style: { textAlign: "center", marginBottom: 32 } },
+        React.createElement("div", { style: { fontSize: 48, marginBottom: 12 } }, "🎉"),
+        React.createElement("h1", { style: { color: ACCENT, fontSize: "clamp(1.6rem,4vw,2.4rem)", fontWeight: 800, marginBottom: 6 } }, "Module 1 Complete"),
+        React.createElement("p", { style: { color: SUB, fontSize: 15 } }, "You've learned the boundary rules and practiced applying them.")
+      ),
+      React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 32, marginBottom: 24, textAlign: "center" } },
+        React.createElement("div", { style: { color: ACCENT, fontSize: 56, fontWeight: 900 } }, quizScore, "/", quizTotal),
+        React.createElement("div", { style: { color: SUB, fontSize: 14, marginTop: 4 } }, "Practice Quiz Score (", pct, "%)"),
+        React.createElement("div", { style: { height: 8, background: BORDER, borderRadius: 4, marginTop: 16, overflow: "hidden" } },
+          React.createElement("div", { style: { height: "100%", width: pct + "%", background: `linear-gradient(90deg,${ACCENT},${ACCENT2})`, borderRadius: 4 } })
+        )
+      ),
+      // Score dot recap
+      React.createElement("div", { style: { display: "flex", gap: 4, justifyContent: "center", marginBottom: 24, flexWrap: "wrap" } },
+        (quizAnswers || []).map((a, i) => React.createElement("div", { key: i, style: { width: 28, height: 28, borderRadius: "50%", border: `2px solid ${a.correct ? ACCENT : "#ef4444"}`, background: a.correct ? `${ACCENT}22` : "#ef444422", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: a.correct ? ACCENT : "#ef4444" } }, i + 1))
+      ),
+      React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, marginBottom: 24 } },
+        React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 } }, "Key Takeaways"),
+        React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.7, textAlign: "left" } },
+          pct >= 80 ? "Excellent work! You have a strong grasp of sentence boundary rules. Check the Error Log tab for any patterns, then try the Challenge section for harder questions." :
+          pct >= 60 ? "Good foundation! Check the Error Log tab to see which boundary types tripped you up most. Review those specific rules before trying the Challenge." :
+          "Keep practicing! Check the Error Log to identify your weak spots, then review the Rules tab. The Courtroom game is worth replaying to lock in patterns."
+        )
+      ),
+      React.createElement("div", { style: { color: MUTED, fontSize: 13, textAlign: "center" } }, "Next up: Module 2 — Agreement & Verb Tense")
+    ),
+
+    // ═══ ERROR LOG TAB ═══
+    tab === "errors" && React.createElement("div", null,
+      React.createElement("h2", { style: { color: TEXT, fontSize: 22, fontWeight: 800, marginBottom: 16 } }, "Error Pattern Analysis"),
+      errors.length === 0
+        ? React.createElement("div", { style: { background: `${ACCENT}11`, border: `1px solid ${ACCENT}44`, borderRadius: 16, padding: 24, textAlign: "center" } },
+            React.createElement("div", { style: { fontSize: 32, marginBottom: 8 } }, "🎯"),
+            React.createElement("div", { style: { color: ACCENT, fontSize: 16, fontWeight: 700 } }, "Zero errors! Perfect quiz performance.")
+          )
+        : React.createElement("div", null,
+            React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, marginBottom: 16 } },
+              React.createElement("div", { style: { color: "#ef4444", fontSize: 13, fontWeight: 700, marginBottom: 12 } }, errors.length, " error", errors.length > 1 ? "s" : "", " across subtypes:"),
+              sortedErrors.map(([subtype, count], i) =>
+                React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", background: DARK, borderRadius: 8, marginBottom: 6, border: `1px solid ${BORDER}` } },
+                  React.createElement("span", { style: { background: "#ef444422", color: "#ef4444", padding: "2px 10px", borderRadius: 4, fontSize: 12, fontWeight: 700, minWidth: 32, textAlign: "center" } }, count, "×"),
+                  React.createElement("span", { style: { color: TEXT, fontSize: 14, fontWeight: 600 } }, subtype)
+                )
+              )
+            ),
+            React.createElement("div", { style: { background: `${ACCENT2}11`, border: `1px solid ${ACCENT2}44`, borderRadius: 12, padding: 16 } },
+              React.createElement("div", { style: { color: ACCENT2, fontSize: 13, fontWeight: 700, marginBottom: 4 } }, "Priority drill:"),
+              React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, "Focus on ", React.createElement("strong", { style: { color: TEXT } }, sortedErrors[0][0]), " questions first — this is where you're losing the most points. Review Rule ", sortedErrors[0][0] === "Comma Splice" ? "#1 and #7" : sortedErrors[0][0] === "Semicolon" ? "#4" : sortedErrors[0][0] === "Colon" ? "#5" : sortedErrors[0][0] === "Fragment" ? "#8" : sortedErrors[0][0] === "Em-Dash" ? "#6" : "#2", " on the Rules tab.")
+            )
+          )
+    ),
+
+    // ═══ RULES TAB ═══
+    tab === "rules" && React.createElement("div", null,
+      React.createElement("h2", { style: { color: TEXT, fontSize: 22, fontWeight: 800, marginBottom: 4 } }, "Boundary Rules Reference"),
+      React.createElement("p", { style: { color: SUB, fontSize: 13, marginBottom: 16 } }, "The 8 rules that cover every sentence boundary question on the SAT."),
+      React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, marginBottom: 16 } },
+        BOUNDARY_RULES.map((r, i) => React.createElement("div", { key: i, style: { display: "flex", gap: 10, padding: "12px 10px", background: i % 2 === 0 ? "transparent" : `${BORDER}44`, borderRadius: 8, marginBottom: 4 } },
+          React.createElement("div", { style: { fontWeight: 900, color: ACCENT, fontSize: 16, minWidth: 28, textAlign: "center" } }, r.num),
+          React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, r.text)
+        ))
+      ),
+      React.createElement("div", { style: { textAlign: "center" } },
+        React.createElement("button", { onClick: copyRules, style: btn(ACCENT, DARK, { fontSize: 13, padding: "10px 20px" }) }, "📋 Copy Rules to Clipboard")
+      )
+    ),
+
+    // ═══ CHALLENGE TAB ═══
+    tab === "challenge" && React.createElement("div", null,
+      React.createElement("div", { style: { background: `${ACCENT2}08`, border: `2px solid ${ACCENT2}44`, borderRadius: 16, padding: 20, marginBottom: 20 } },
+        React.createElement("div", { style: { fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: ACCENT2, marginBottom: 8 } }, "⭐ Challenge Mode"),
+        React.createElement("h2", { style: { color: TEXT, fontSize: 20, fontWeight: 800, marginBottom: 6 } }, "Hard Boundary Questions"),
+        React.createElement("p", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, "6 questions at the highest difficulty level — the kind that appear on the hard module. These test em-dash pairing, colon vs. semicolon judgment calls, and fragments disguised by complex syntax.")
+      ),
+      challengeDone
+        ? React.createElement("div", { style: { background: CARD, border: `2px solid ${ACCENT2}`, borderRadius: 16, padding: 24, textAlign: "center" } },
+            React.createElement("div", { style: { color: ACCENT2, fontSize: 48, fontWeight: 900 } }, challengeAnswers.filter(a => a.correct).length, "/", CHALLENGE_QUESTIONS.length),
+            React.createElement("div", { style: { color: SUB, fontSize: 14, marginTop: 8 } },
+              challengeAnswers.filter(a => a.correct).length >= 5 ? "Outstanding! You're handling the hardest boundary questions with confidence." :
+              challengeAnswers.filter(a => a.correct).length >= 3 ? "Solid. The colon-vs-semicolon and dash-pairing questions are worth drilling further." :
+              "These are the hardest boundary questions on the test. Review the Rules tab and try again — the patterns will click."
+            )
+          )
+        : React.createElement("div", null,
+            // Challenge score dots
+            React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 16 } },
+              CHALLENGE_QUESTIONS.map((_, i) => {
+                const a = challengeAnswers[i];
+                let bg = BORDER, color = MUTED, border = `2px solid ${BORDER}`;
+                if (a) { bg = a.correct ? `${ACCENT}22` : "#ef444422"; color = a.correct ? ACCENT : "#ef4444"; border = `2px solid ${color}`; }
+                else if (i === challengeIdx) { border = `2px solid ${ACCENT2}`; bg = `${ACCENT2}15`; color = ACCENT2; }
+                return React.createElement("div", { key: i, style: { width: 28, height: 28, borderRadius: "50%", border, background: bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color } }, i + 1);
+              })
+            ),
+            (() => {
+              const cq = CHALLENGE_QUESTIONS[challengeIdx];
+              return React.createElement("div", null,
+                React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 } },
+                  React.createElement("div", { style: { color: TEXT, fontWeight: 800, fontSize: 14 } }, "Challenge ", challengeIdx + 1, " of ", CHALLENGE_QUESTIONS.length),
+                  React.createElement("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 700, background: "#ef444422", color: "#ef4444" } }, cq.diff)
+                ),
+                React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 16 } },
+                  React.createElement("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, cq.passage)
+                ),
+                React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 12 } }, "Which choice completes the text so that it conforms to Standard English?"),
+                React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 } },
+                  cq.choices.map((c, ci) => {
+                    const letter = "ABCD"[ci];
+                    let bg = CARD, border = `1px solid ${BORDER}`, tc = "#cbd5e1";
+                    if (challengeConf && ci === cq.answer) { bg = `${ACCENT}18`; border = `2px solid ${ACCENT}`; tc = ACCENT; }
+                    else if (challengeConf && challengeSel === ci && ci !== cq.answer) { bg = "#ef444418"; border = "2px solid #ef4444"; tc = "#ef4444"; }
+                    else if (challengeSel === ci && !challengeConf) { bg = `${ACCENT2}15`; border = `2px solid ${ACCENT2}`; tc = ACCENT2; }
+                    return React.createElement("button", { key: ci, onClick: () => { if (!challengeConf) setChallengeSel(ci); }, disabled: challengeConf, style: { display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 10, background: bg, border, cursor: challengeConf ? "default" : "pointer", textAlign: "left", width: "100%" } },
+                      React.createElement("span", { style: { minWidth: 26, height: 26, borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 12, background: challengeConf && ci === cq.answer ? ACCENT : challengeConf && challengeSel === ci ? "#ef4444" : challengeSel === ci ? ACCENT2 : BORDER, color: (challengeSel === ci || challengeConf) ? DARK : MUTED } }, letter),
+                      React.createElement("span", { style: { color: tc, fontSize: 14, fontFamily: "Georgia, serif" } }, c)
+                    );
+                  })
+                ),
+                challengeConf && React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 16, marginBottom: 16, borderLeft: "4px solid #3b82f6" } },
+                  React.createElement("div", { style: { color: "#3b82f6", fontWeight: 700, fontSize: 12, marginBottom: 4 } }, "Explanation"),
+                  React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, cq.explain)
+                ),
+                React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } },
+                  !challengeConf
+                    ? React.createElement("button", { onClick: challengeConfirm, disabled: challengeSel === null, style: btn(challengeSel === null ? BORDER : ACCENT2, challengeSel === null ? "#475569" : DARK, { fontSize: 13, padding: "10px 20px" }) }, "Confirm Answer")
+                    : React.createElement("button", { onClick: challengeNext, style: btn(ACCENT2, DARK, { fontSize: 13, padding: "10px 20px" }) }, challengeIdx < CHALLENGE_QUESTIONS.length - 1 ? "Next →" : "See Results →")
+                )
+              );
+            })()
+          )
+    ),
+
+    // ═══ HOMEWORK TAB ═══
+    tab === "homework" && React.createElement("div", null,
+      React.createElement("h2", { style: { color: TEXT, fontSize: 22, fontWeight: 800, marginBottom: 16 } }, "Homework & Action Items"),
+      React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24 } },
+        [
+          { title: "1. Boundary Hunt", desc: "Find a news article online. Read the first 5 paragraphs and identify every sentence boundary. For each one, classify it: period, semicolon, colon, comma+FANBOYS, or em-dash. How many of each did you find?" },
+          { title: "2. Comma Splice Patrol", desc: "Write 5 sentences that contain comma splices (on purpose). Then fix each one using a different method: period, semicolon, colon, comma+FANBOYS, and em-dash. This locks in all five fixes." },
+          { title: "3. Review the 8 Rules", desc: "Read through the Rules tab one time. Circle any rule you don't feel 100% confident on — those are your drilling priorities for the week." },
+          { title: "4. Preview Module 2", desc: "Next up: Subject-Verb Agreement and Verb Tense. Try reading one paragraph from a textbook and identifying the subject and verb of every sentence. Which ones are separated by prepositional phrases?" }
+        ].map((item, i) => React.createElement("div", { key: i, style: { marginBottom: i < 3 ? 16 : 0 } },
+          React.createElement("div", { style: { color: ACCENT, fontWeight: 700, fontSize: 14, marginBottom: 4 } }, item.title),
+          React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.7 } }, item.desc)
+        ))
+      )
+    )
+  );
+}
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [quizScore, setQuizScore] = useState(0);
+  const [quizTotal, setQuizTotal] = useState(10);
+  const [quizAnswers, setQuizAnswers] = useState([]);
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    inset: 0,
+    pointerEvents: "none",
+    opacity: 0.03,
+    backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",
+    backgroundSize: "40px 40px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } }, screen === "welcome" && /* @__PURE__ */ React.createElement(Welcome, { onNext: () => go("lesson") }), screen === "lesson" && /* @__PURE__ */ React.createElement(LessonViewer, { onComplete: () => go("courtroom") }), screen === "courtroom" && /* @__PURE__ */ React.createElement(Courtroom, { onComplete: () => go("builder") }), screen === "builder" && /* @__PURE__ */ React.createElement(BoundaryBuilder, { onComplete: () => go("quiz") }), screen === "quiz" && /* @__PURE__ */ React.createElement(PracticeQuiz, { onComplete: (s, t, answers) => {
+    setQuizScore(s);
+    setQuizTotal(t);
+    setQuizAnswers(answers || []);
+    go("complete");
+  } }), screen === "complete" && /* @__PURE__ */ React.createElement(ModuleComplete, { quizScore, quizTotal, quizAnswers })));
+}
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>

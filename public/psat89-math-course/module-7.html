@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 7: Strategy & Time Management — PSAT 8/9 Math — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#0891b2 0%,#0891b2 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--math));width:0%;transition:width .3s ease}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(8,145,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}.callout strong{color:var(--accent)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
+.callout-gold{background:rgba(8,145,178,.08);border-color:rgba(8,145,178,.3)}.callout-gold strong{color:var(--accent)}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.topic-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
+.topic-badge{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
+.topic-info{flex:1}.topic-title{font-weight:700;font-size:.95rem}.topic-sub{font-size:.82rem;color:var(--muted);margin-top:2px}
+.topic-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem}.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 20px 18px;font-size:.9rem;color:#ccc;line-height:1.7}.topic.open .topic-body{display:block}
+.topic-body h4{font-size:.95rem;color:var(--ink);margin:14px 0 6px;font-weight:700}
+.topic-body ul{padding-left:18px;margin-bottom:10px}.topic-body li{margin-bottom:6px}
+.formula-box{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:1.8}
+.formula-box .fn{color:var(--accent);font-weight:700}.formula-box .fl{color:var(--math);font-weight:700}
+.exercise{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:22px;margin-bottom:16px}
+.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
+.exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+.ex-item{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.ex-prompt{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
+.ex-prompt code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+.ex-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ex-input{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;width:100px;text-align:center}.ex-input:focus{border-color:var(--accent);outline:none}
+.ex-btn{padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600}.ex-btn:hover{filter:brightness(1.15)}
+.ex-fb{font-size:.82rem;padding:8px 10px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}.ex-fb.show{display:block}.ex-fb.correct{background:var(--correct-bg);color:var(--correct)}.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong)}
+.tier{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:rgba(167,139,250,.15);color:var(--advanced)}
+.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.classify-opt:hover:not(.cl-dis){border-color:var(--accent);background:rgba(8,145,178,.08)}
+.classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);opacity:1}
+.classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.classify-opt.cl-dis{pointer-events:none;opacity:.6}.classify-opt.cl-correct{opacity:1}
+.mc-choices{display:flex;flex-direction:column;gap:6px}
+.mc-choice{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.mc-choice:hover:not(.mc-dis){border-color:var(--accent);background:rgba(8,145,178,.05)}
+.mc-letter{font-weight:700;color:var(--muted);min-width:20px}
+.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg);opacity:1}
+.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}.mc-choice.mc-correct{opacity:1}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:10px;padding:10px;background:var(--paper);border-radius:8px;display:none;border-left:3px solid var(--correct)}.mc-fb.show{display:block}
+.score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
+.mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
+.mod-nav a{color:var(--accent);text-decoration:none}.mod-nav a:hover{text-decoration:underline}
+/* Two-way table */
+.tw-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+.tw-table th,.tw-table td{padding:8px 10px;border:1px solid var(--border);text-align:center}
+.tw-table th{background:var(--surface);font-weight:700;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.tw-table td{color:#ccc}
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{gap:4px}}
+
+
+
+
+
+
+
+
+
+
+.fm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:12px 0}
+.fm-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.fm-name{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
+.fm-eq{font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:700;color:var(--math)}
+.tri-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:12px 0}
+.tri-card{background:var(--paper);border:2px solid var(--accent);border-radius:12px;padding:16px;text-align:center}
+.tri-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.tri-ratio{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.tri-sides{font-size:.82rem;color:var(--muted);line-height:1.5}
+.triples-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.triple{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;color:var(--math)}
+
+.skill-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+.skill-table th,.skill-table td{padding:10px 12px;border:1px solid var(--border);text-align:left}
+.skill-table th{background:var(--surface);font-weight:700;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.skill-table td{color:#ccc;vertical-align:top}
+.skill-num{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;align-items:center;justify-content:center;margin-right:8px}
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:12px 0}
+.sc-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.sc-key{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:4px}
+.sc-desc{font-size:.78rem;color:var(--muted)}
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.do-card,.dont-card{background:var(--surface);border-radius:12px;padding:16px;font-size:.88rem}
+.do-card{border:2px solid var(--correct)}.dont-card{border:2px solid var(--wrong)}
+.do-card h4{color:var(--correct);margin-bottom:8px}.dont-card h4{color:var(--wrong);margin-bottom:8px}
+.do-card li,.dont-card li{margin-bottom:4px;color:#ccc}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:10px}
+.step-num{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.85rem;font-weight:700;align-items:center;justify-content:center;margin-right:10px;flex-shrink:0}
+.step-header{display:flex;align-items:center;margin-bottom:8px;font-weight:700;font-size:.95rem}
+.step-body{font-size:.88rem;color:#ccc;line-height:1.6;padding-left:38px}
+.step-body code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+@media(max-width:600px){.do-dont{grid-template-columns:1fr}.sc-grid{grid-template-columns:repeat(2,1fr)}}
+
+:root{--strat:#f59e0b;--strat-bg:rgba(245,158,11,.08)}
+.dt-flow{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.dt-step{display:flex;align-items:stretch;gap:0}
+.dt-num{width:38px;min-height:38px;border-radius:10px 0 0 10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;flex-shrink:0}
+.dt-body{flex:1;padding:10px 14px;border-radius:0 10px 10px 0;font-size:.88rem;line-height:1.5;border:1px solid var(--border);border-left:none}
+.dt-yes{color:var(--correct);font-weight:700}.dt-no{color:var(--muted);font-weight:600}
+.worked{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--strat);border-radius:10px;padding:16px;margin:12px 0;font-size:.9rem}
+.worked-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--strat);margin-bottom:8px}
+.gi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin:12px 0}
+.gi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start}
+.gi-icon{font-size:1.2rem;flex-shrink:0}.gi-rule{font-size:.85rem;color:#ccc;line-height:1.5}
+.trap-card{background:var(--paper);border:1px solid var(--border);border-left:3px solid var(--wrong);border-radius:10px;padding:14px;margin-bottom:10px}
+.trap-title{font-weight:700;color:var(--wrong);font-size:.9rem;margin-bottom:4px}
+.trap-body{font-size:.85rem;color:#ccc;line-height:1.5}
+.trap-fix{font-size:.82rem;color:var(--correct);margin-top:6px;font-weight:600}
+</style></head>
+<body>
+<div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to PSAT 8/9 Math Course</a>
+<div class="mod-header">
+  <div class="mod-badge" style="background:var(--strat)">Module 7</div>
+  <h1>Strategy Toolkit & Time Management</h1>
+  <p class="subtitle">The difference between a good math student and a good test-taker is strategy. This module teaches you how to work smarter.</p>
+  <div class="mod-meta"><span>⏱ ~50 min</span><span>📋 5 strategies + 5 exercises</span><span>🛠 Phase 3: Strategize</span></div>
+</div>
+
+<div class="callout" style="background:var(--strat-bg);border-color:rgba(245,158,11,.3)"><strong style="color:var(--strat)">Strategy > Speed:</strong> Most students lose points not because they can't do the math, but because they misread problems, pick the wrong approach, or run out of time. This module fixes all three. Every strategy here works on the PSAT 8/9, PSAT 10, PSAT/NMSQT, and SAT.</div>
+
+<!-- ADAPTIVE MODULE STRATEGY -->
+<div class="section">
+  <div class="section-label">Test Structure</div>
+  <h2>Understanding the Adaptive Format</h2>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--strat)">📋</div>
+    <div class="topic-info"><div class="topic-title">Module 1 vs. Module 2 Strategy</div><div class="topic-sub">Why accuracy in Module 1 matters more than speed</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p>The PSAT 8/9 Math section has <strong>two modules</strong>, each with 22 questions in 35 minutes.</p>
+    <ul>
+      <li><strong>Module 1</strong> is the same difficulty for everyone. Your performance here determines whether Module 2 is <em>easier</em> or <em>harder</em>.</li>
+      <li>Getting <strong>14+ correct in Module 1</strong> → harder Module 2 (higher score ceiling)</li>
+      <li>Getting <strong>fewer than 11 correct</strong> → easier Module 2 (lower score ceiling)</li>
+    </ul>
+    <div class="formula-box">
+      <div><span class="fn">Key Insight:</span> Getting into the HARD Module 2 is worth ~40–80 points.</div>
+      <div style="color:var(--muted);font-size:.82rem">Even if you miss more questions in hard M2, your ceiling is much higher.</div>
+    </div>
+    <p><strong>Module 1 strategy:</strong> Prioritize accuracy over speed. Double-check every answer. It's better to get 18/22 right with careful work than 22/22 attempted with careless mistakes.</p>
+    <p><strong>Module 2 strategy:</strong> If you get hard M2, expect tougher questions — use Desmos aggressively and skip/flag questions you're stuck on. If you get easy M2, aim for near-perfect accuracy to maximize your score.</p>
+  </div>
+</div>
+
+<!-- TIME MANAGEMENT -->
+<div class="section">
+  <div class="section-label">Time Management</div>
+  <h2>Time Budget Per Module</h2>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--strat)">⏱</div>
+    <div class="topic-info"><div class="topic-title">The Two-Pass System</div><div class="topic-sub">35 minutes, 22 questions, ~95 seconds each</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <div class="formula-box">
+      <div><span class="fn">Pass 1 (25 min):</span> Answer everything you can do in under 90 seconds. Flag anything you're unsure about.</div>
+      <div><span class="fn">Pass 2 (10 min):</span> Return to flagged questions. Use Desmos, backsolve, or POE to pick up extra points.</div>
+    </div>
+    <h4>Per-Question Targets</h4>
+    <ul>
+      <li><strong>Easy questions (Tier 1):</strong> ~60 seconds. Don't overthink these — they're testing basic skills.</li>
+      <li><strong>Medium questions (Tier 2):</strong> ~90 seconds. May need 2–3 steps or a Desmos graph.</li>
+      <li><strong>Hard questions (Tier 3):</strong> ~120 seconds max. If you don't see a path forward, flag and move on.</li>
+    </ul>
+    <div class="callout"><strong>The 2-Minute Rule:</strong> If you've spent 2 minutes on a question and aren't close to an answer, flag it and move on. There's no penalty for wrong answers — always guess before time expires.</div>
+    <h4>No Penalty for Guessing</h4>
+    <p>The PSAT 8/9 does NOT deduct points for wrong answers. <strong>Never leave a question blank.</strong> If you're running out of time, quickly select an answer for every remaining question.</p>
+  </div>
+</div>
+
+<!-- 5-SECOND DECISION TREE -->
+<div class="section">
+  <div class="section-label">Core Framework</div>
+  <h2>The 5-Second Decision Tree</h2>
+  <p>When you read a question, use this decision tree within 5 seconds to choose the fastest approach.</p>
+</div>
+
+<div class="dt-flow">
+  <div class="dt-step"><div class="dt-num" style="background:var(--strat)">1</div><div class="dt-body" style="background:var(--strat-bg)">Do I immediately see how to solve this?<br><span class="dt-yes">YES → Solve directly.</span> <span class="dt-no">NO → Step 2</span></div></div>
+  <div class="dt-step"><div class="dt-num" style="background:var(--advanced)">2</div><div class="dt-body" style="background:rgba(167,139,250,.08)">Variables in the answer choices?<br><span class="dt-yes">YES → Use Plug In (PIYON).</span> <span class="dt-no">NO → Step 3</span></div></div>
+  <div class="dt-step"><div class="dt-num" style="background:var(--algebra)">3</div><div class="dt-body" style="background:rgba(52,211,153,.08)">Answer choices are specific numbers?<br><span class="dt-yes">YES → Use Backsolve (PITA).</span> <span class="dt-no">NO → Step 4</span></div></div>
+  <div class="dt-step"><div class="dt-num" style="background:var(--accent)">4</div><div class="dt-body" style="background:var(--accent-light)">Involves a function, graph, or system?<br><span class="dt-yes">YES → Use Desmos.</span> <span class="dt-no">NO → Step 5</span></div></div>
+  <div class="dt-step"><div class="dt-num" style="background:var(--psda)">5</div><div class="dt-body" style="background:rgba(251,191,36,.08)">Can I eliminate clearly wrong answers?<br><span class="dt-yes">YES → Ballpark + POE, then pick.</span> <span class="dt-no">Flag and move on.</span></div></div>
+</div>
+
+<!-- STRATEGY 1: PIYON -->
+<div class="section">
+  <div class="section-label">Strategy 1</div>
+  <h2>Plug In Your Own Numbers (PIYON)</h2>
+  <div class="callout" style="background:var(--strat-bg);border-color:rgba(245,158,11,.3)"><strong style="color:var(--strat)">When to use:</strong> Variables in answer choices. "Which expression is equivalent to…" Questions with no specific values.</div>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--strat)">PI</div>
+    <div class="topic-info"><div class="topic-title">How It Works — Step by Step</div><div class="topic-sub">Choose numbers, find a target, check each answer choice</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Choose simple numbers. Best picks: <strong>2, 3, 5, 10</strong>, or <strong>100</strong> (for percent problems).</p>
+    <p><strong>Step 2:</strong> Work the problem with your numbers to get a <strong>TARGET</strong> answer.</p>
+    <p><strong>Step 3:</strong> Plug the SAME numbers into each answer choice.</p>
+    <p><strong>Step 4:</strong> The choice that matches your target is correct.</p>
+    <p><strong>Avoid 0 and 1</strong> — they have special properties that make multiple answers look right. If two answers match, try different numbers.</p>
+  </div>
+</div>
+
+<div class="worked">
+  <div class="worked-label">Worked Example</div>
+  <div class="ex-prompt" style="margin-bottom:8px">If x is positive, which is equivalent to <code>(x² + 2x) / x</code>?</div>
+  <div style="color:#ccc">A) x + 2 &nbsp;&nbsp; B) x² + 2 &nbsp;&nbsp; C) 2x &nbsp;&nbsp; D) x</div>
+  <div style="margin-top:8px"><strong>Plug in x = 3:</strong> (9 + 6) / 3 = 15/3 = <strong>5</strong> ← target</div>
+  <div style="color:#ccc">A) 3 + 2 = 5 ✓ &nbsp;&nbsp; B) 11 ✗ &nbsp;&nbsp; C) 6 ✗ &nbsp;&nbsp; D) 3 ✗</div>
+  <div style="margin-top:4px;color:var(--correct);font-weight:700">Answer: A</div>
+</div>
+
+<!-- STRATEGY 2: BACKSOLVE -->
+<div class="section">
+  <div class="section-label">Strategy 2</div>
+  <h2>Backsolve (Plug In The Answers — PITA)</h2>
+  <div class="callout" style="background:var(--strat-bg);border-color:rgba(245,158,11,.3)"><strong style="color:var(--strat)">When to use:</strong> Answer choices are specific numbers. "What value of x…" "How many…"</div>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--strat)">BS</div>
+    <div class="topic-info"><div class="topic-title">How It Works — Step by Step</div><div class="topic-sub">Start with answer choice B or C and test it</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Start with answer choice <strong>B or C</strong> (middle values).</p>
+    <p><strong>Step 2:</strong> Plug that number into the problem. Does it work?</p>
+    <p><strong>Step 3:</strong> If it works → that's your answer. If the result is too big or too small, adjust up or down.</p>
+    <p><strong>Key advantage:</strong> You're working with <em>concrete numbers</em> instead of abstract algebra. This is often easier and less error-prone.</p>
+  </div>
+</div>
+
+<div class="worked">
+  <div class="worked-label">Worked Example</div>
+  <div class="ex-prompt" style="margin-bottom:8px">If <code>3x − 7 = 2x + 5</code>, what is x?</div>
+  <div style="color:#ccc">A) 8 &nbsp;&nbsp; B) 10 &nbsp;&nbsp; C) 12 &nbsp;&nbsp; D) 14</div>
+  <div style="margin-top:8px"><strong>Try C (x = 12):</strong> Left: 3(12) − 7 = 29. Right: 2(12) + 5 = 29. ✓ They match!</div>
+  <div style="margin-top:4px;color:var(--correct);font-weight:700">Answer: C</div>
+  <div style="font-size:.82rem;color:var(--muted);margin-top:4px">Algebraically: x = 12. Same answer, but backsolving can be faster when algebra is messy.</div>
+</div>
+
+<!-- STRATEGY 3: BALLPARK & POE -->
+<div class="section">
+  <div class="section-label">Strategy 3</div>
+  <h2>Ballpark & Process of Elimination (POE)</h2>
+  <div class="callout" style="background:var(--strat-bg);border-color:rgba(245,158,11,.3)"><strong style="color:var(--strat)">When to use:</strong> Hard questions where you're stuck. When you can estimate the answer should be "around 40" and eliminate clearly wrong options.</div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--strat)">BE</div>
+    <div class="topic-info"><div class="topic-title">How It Works</div><div class="topic-sub">Estimate, eliminate, then pick from what's left</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1: Estimate.</strong> Before calculating, think: "The answer should be roughly ___."</p>
+    <p><strong>Step 2: Eliminate.</strong> Cross off answers that are clearly too big, too small, or the wrong sign.</p>
+    <p><strong>Step 3: Pick.</strong> From the remaining options, choose the most reasonable one.</p>
+    <p><strong>Common eliminations:</strong></p>
+    <ul>
+      <li>Negative answer when context requires positive (lengths, counts, prices)</li>
+      <li>Answer that's obviously too large or too small for context</li>
+      <li>Answer with wrong units (asked for hours, answer is in minutes)</li>
+      <li>One answer that looks completely different from the other three</li>
+    </ul>
+  </div>
+</div>
+
+<!-- GRID-IN / SPR -->
+<div class="section">
+  <div class="section-label">Grid-In Rules</div>
+  <h2>Student-Produced Response (SPR) Tips</h2>
+  <p>About 25% of PSAT 8/9 math questions ask you to type your answer instead of choosing from options. Know these rules:</p>
+</div>
+
+<div class="gi-grid">
+  <div class="gi-card"><div class="gi-icon">✅</div><div class="gi-rule"><strong>Fractions OK:</strong> Both 3/7 and 0.4286 are accepted.</div></div>
+  <div class="gi-card"><div class="gi-icon">✂️</div><div class="gi-rule"><strong>Long decimals:</strong> Truncate or round. Don't leave blank.</div></div>
+  <div class="gi-card"><div class="gi-icon">➖</div><div class="gi-rule"><strong>Negatives OK:</strong> The digital PSAT accepts negative answers.</div></div>
+  <div class="gi-card"><div class="gi-icon">🎯</div><div class="gi-rule"><strong>Multiple correct:</strong> If several answers work, any valid one is accepted.</div></div>
+  <div class="gi-card"><div class="gi-icon">⚠️</div><div class="gi-rule"><strong>#1 Trap:</strong> Question asks for 2x, not x. ALWAYS re-read what they want.</div></div>
+  <div class="gi-card"><div class="gi-icon">🚫</div><div class="gi-rule"><strong>No mixed numbers:</strong> Enter 3½ as 7/2 or 3.5, never "3 1/2".</div></div>
+</div>
+
+<!-- PREVENTABLE MISTAKES DIAGNOSTIC -->
+<div class="section">
+  <div class="section-label">New: Preventable Mistakes</div>
+  <h2>The Top 6 Misreading Traps</h2>
+  <p>These mistakes have nothing to do with math ability — they're about careful reading. Fixing them can be worth 2–4 questions per test.</p>
+</div>
+
+<div class="trap-card">
+  <div class="trap-title">Trap 1: Solving for the Wrong Variable</div>
+  <div class="trap-body">The question asks for <code>3x + 2</code>, not x. You solve for x = 4 and pick 4. The answer was 14.</div>
+  <div class="trap-fix">✓ Fix: Underline exactly what the question asks for BEFORE solving.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 2: Intermediate vs. Final Answer</div>
+  <div class="trap-body">"A shirt is 20% off, then taxed 8%. What is the total cost?" You find the discount ($32) and pick that — but the question asks for the final price after tax ($34.56).</div>
+  <div class="trap-fix">✓ Fix: Make sure your answer addresses the FINAL part of the question.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 3: "At Least" vs. "More Than"</div>
+  <div class="trap-body">"At least 5" means ≥ 5 (includes 5). "More than 5" means > 5 (does NOT include 5). Mixing these up changes the answer.</div>
+  <div class="trap-fix">✓ Fix: "At least" = ≥. "More than" = >. "No more than" = ≤. "Fewer than" = <.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 4: Negation Words</div>
+  <div class="trap-body">"Which is NOT a solution?" Your brain skips the NOT and you pick a solution. Wrong.</div>
+  <div class="trap-fix">✓ Fix: Circle negative words (NOT, CANNOT, EXCEPT, LEAST) when you see them.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 5: Axis Scale / Units</div>
+  <div class="trap-body">A graph's y-axis increases by 10s (10, 20, 30…) but you read a point as if it's ones. Or the x-axis is in months but the question asks about years.</div>
+  <div class="trap-fix">✓ Fix: Always read axis labels AND the scale before reading data.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 6: Positive vs. Negative in Context</div>
+  <div class="trap-body">You solve correctly and get x = −3, but forget the negative sign when entering your SPR answer. Or the question says "what is the DECREASE" and you give the negative value instead of the positive magnitude.</div>
+  <div class="trap-fix">✓ Fix: For SPR, double-check the sign. For "increase/decrease" questions, give positive values.</div>
+</div>
+
+<!-- EXERCISES -->
+<div class="section"><div class="section-label">Interactive Exercise 1</div><h2>5-Second Decision Tree Trainer</h2><p>For each question, choose the BEST strategy. Speed matters!</p><div class="exercise" style="border-color:var(--strat)" id="dtEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 2</div><h2>Plug In Workshop</h2><p>Use PIYON on each problem. Pick the answer that matches your target.</p><div class="exercise" style="border-color:var(--strat)" id="piyonEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 3</div><h2>Backsolve Workshop</h2><p>Start from the answer choices and test them.</p><div class="exercise" style="border-color:var(--strat)" id="bsEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 4</div><h2>Ballpark Eliminator</h2><p>Estimate and eliminate. No full solving needed.</p><div class="exercise" style="border-color:var(--strat)" id="bpEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 5</div><h2>Misread Trap Detector</h2><p>Each question has a common misread trap. Identify it.</p><div class="exercise" style="border-color:var(--wrong)" id="trapEx"></div></div>
+
+<div class="section"><div class="section-label">PSAT 8/9 Practice</div><h2>Strategy-Tagged Practice</h2><p>10 questions — each tagged with the recommended strategy.</p><div id="psatPractice"></div></div>
+
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Module 1 accuracy > Module 2 speed. Getting into hard M2 is worth 40–80 points.</li>
+      <li>Two-pass system: Pass 1 (25 min) = answer what you can. Pass 2 (10 min) = return to flagged.</li>
+      <li>5-Second Decision Tree: direct solve → plug in → backsolve → Desmos → ballpark.</li>
+      <li>PIYON: Variables in answers → choose simple numbers, find target, match.</li>
+      <li>Backsolve: Number answers → start with B/C and test.</li>
+      <li>Ballpark: Estimate first, eliminate clearly wrong, pick from what's left.</li>
+      <li>SPR rules: fractions OK, negatives OK, no mixed numbers, always re-read what they ask for.</li>
+      <li><strong>No penalty for guessing — never leave a question blank.</strong></li>
+      <li>Most missed points are from misreading, not math. Underline what the question asks.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-6.html">← Module 6: Desmos Mastery</a>
+  <a href="module-8.html">Module 8: Practice Test →</a>
+</div>
+</div>
+<script>
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';});
+
+// ============ EXERCISE 1: DECISION TREE TRAINER ============
+const DT=[
+  {q:'Which expression is equivalent to <code>2(x+3)−x</code>?<br>A) x+6 B) x+3 C) 3x+3 D) 2x+6',c:'Direct Solve',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Distribute and simplify — straightforward algebra. 2x+6−x = x+6.'},
+  {q:'If <code>3x−5=22</code>, what is x?<br>A) 7 B) 9 C) 11 D) 13',c:'Backsolve',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Number answers → try B or C. 3(9)−5=22 ✓. Or direct solve works too.'},
+  {q:'If a is a positive integer, which expression equals <code>(a²−a)/a</code>?<br>A) a−1 B) a C) a²−1 D) a+1',c:'Plug In',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Variables in answers → PIYON. Try a=3: (9−3)/3=2. A) 2 ✓.'},
+  {q:'Where do <code>y=x²−4</code> and <code>y=x+2</code> intersect?',c:'Desmos',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Two functions → graph both in Desmos and click the intersection dots.'},
+  {q:'A rectangle has area 180 and width 12. What is the perimeter?<br>A) 30 B) 48 C) 54 D) 60',c:'Direct Solve',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Length = 180/12 = 15. Perimeter = 2(15+12) = 54. Quick arithmetic.'},
+  {q:'A shirt originally costs $60. After a 30% discount and 8% tax, which is closest to the final price?<br>A) $38 B) $42 C) $45 D) $50',c:'Ballpark',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Ballpark: 30% off $60 ≈ $42, then tax adds ~$3.50 ≈ $45. Or compute exactly.'},
+  {q:'For what value of k does <code>y=kx+4</code> pass through (6, 22)?<br>A) 2 B) 3 C) 4 D) 6',c:'Backsolve',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Number answers → try B: 3(6)+4=22 ✓. Or use a Desmos slider.'},
+  {q:'A study finds students who sleep more get better grades. Valid conclusion?<br>A) Sleep causes better grades B) Correlation only C) No relationship D) Need more data',c:'Direct Solve',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Conceptual question — no math needed. Observational → correlation only.'},
+];
+var dtA={};
+function renderDt(){
+  document.getElementById('dtEx').innerHTML='<h3>🌳 Pick the Strategy</h3><div class="exercise-sub">Choose the FASTEST approach for each.</div>'+
+    DT.map(function(q,i){var a=dtA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+q.opts.map(function(o,oi){var c='classify-opt';if(h){c+=' cl-dis';if(o===q.c)c+=' cl-correct';else if(o===a)c+=' cl-wrong';}return '<div class="'+c+'" onclick="aDt('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(h?' show':'')+(h?(a===q.c?' correct':' wrong'):'')+'">'+((h)?((a===q.c?'✓ ':'✗ Best: '+q.c+'. ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aDt(i,idx){if(dtA[i]!==undefined)return;dtA[i]=DT[i].opts[idx];renderDt();}
+renderDt();
+
+// ============ EXERCISE 2: PLUG IN WORKSHOP ============
+const PIY=[
+  {q:'If n is a positive integer, which equals <code>(n² + n) / n</code>?',ch:['n + 1','n²','n − 1','2n'],c:0,fb:'Plug in n=2: (4+2)/2 = 3. A) 2+1=3 ✓. (Or simplify: n+1.)'},
+  {q:'If x = 5, which expression has the greatest value?',ch:['2x + 1','x² / 5','3(x − 1)','x + 7'],c:2,fb:'x=5: A) 11, B) 5, C) 12, D) 12. C and D tie — but C = 3(4)=12, D = 12. Check another: x=10: C=27, D=17. C wins.'},
+  {q:'A store marks up items by p percent. If an item costs $c, the selling price is:',ch:['c + p','c(1 + p/100)','cp/100','c + 100p'],c:1,fb:'Plug in c=100, p=20: price should be $120. B) 100(1.20) = 120 ✓.'},
+  {q:'If a rectangle has length 2w and width w, its perimeter is:',ch:['3w','4w','6w','8w'],c:2,fb:'Plug in w=5: length=10, width=5. P = 2(10+5)=30. C) 6(5)=30 ✓.'},
+];
+var piyA={};
+function renderPiy(){
+  document.getElementById('piyonEx').innerHTML='<h3>🔌 Plug In</h3><div class="exercise-sub">Choose simple numbers, find your target, match.</div>'+
+    PIY.map(function(q,i){var a=piyA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){var c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return '<div class="'+c+'" onclick="aPiy('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(h?' show':'')+'">'+(h?((a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aPiy(i,v){if(piyA[i]!==undefined)return;piyA[i]=v;renderPiy();}
+renderPiy();
+
+// ============ EXERCISE 3: BACKSOLVE WORKSHOP ============
+const BS=[
+  {q:'If <code>2x + 7 = 19</code>, what is x?',ch:['4','5','6','7'],c:2,fb:'Try C: 2(6)+7 = 19 ✓. Done.'},
+  {q:'A number tripled and then decreased by 5 equals 22. What is the number?',ch:['7','8','9','10'],c:2,fb:'Try C: 3(9)−5 = 22 ✓.'},
+  {q:'If the area of a square is 144, what is the side length?',ch:['10','11','12','14'],c:2,fb:'Try C: 12² = 144 ✓. (Or recognize sqrt(144) = 12.)'},
+  {q:'If <code>x² − 5x = 14</code>, what positive value of x satisfies the equation?',ch:['2','5','7','9'],c:2,fb:'Try C: 49−35=14 ✓. (Negative solution x=−2 also works but question asks for positive.)'},
+];
+var bsA={};
+function renderBs(){
+  document.getElementById('bsEx').innerHTML='<h3>🔄 Backsolve</h3><div class="exercise-sub">Start with B or C and test.</div>'+
+    BS.map(function(q,i){var a=bsA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){var c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return '<div class="'+c+'" onclick="aBs('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(h?' show':'')+'">'+(h?((a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aBs(i,v){if(bsA[i]!==undefined)return;bsA[i]=v;renderBs();}
+renderBs();
+
+// ============ EXERCISE 4: BALLPARK ELIMINATOR ============
+const BP=[
+  {q:'A car travels 287 miles in 4.5 hours. What is the average speed?',ch:['48 mph','64 mph','72 mph','128 mph'],c:1,fb:'Ballpark: 280/4.5 ≈ 280/5 = 56, but /4.5 is bigger → ~63. Eliminate A (too low) and D (way too high). B is closest.'},
+  {q:'15% of 392 is approximately:',ch:['20','39','59','79'],c:2,fb:'10% of 392 = 39.2. 15% = 39.2 + half of 39.2 ≈ 39 + 20 = ~59. Eliminate A and D immediately.'},
+  {q:'A circle has diameter 20. Its area is closest to:',ch:['63','126','314','1257'],c:2,fb:'r=10, A=pi(100) ≈ 314. Eliminate A (too small), D (way too big). C is exact.'},
+  {q:'If 3/8 of a class of 200 students play sports, how many play sports?',ch:['24','60','75','125'],c:2,fb:'3/8 is a bit less than half. Half of 200 = 100. So answer < 100. Eliminate D. 3/8 × 200 = 75. C.'},
+];
+var bpA={};
+function renderBp(){
+  document.getElementById('bpEx').innerHTML='<h3>🎯 Estimate & Eliminate</h3><div class="exercise-sub">No full solving needed — use ballpark reasoning.</div>'+
+    BP.map(function(q,i){var a=bpA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){var c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return '<div class="'+c+'" onclick="aBp('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(h?' show':'')+'">'+(h?((a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aBp(i,v){if(bpA[i]!==undefined)return;bpA[i]=v;renderBp();}
+renderBp();
+
+// ============ EXERCISE 5: MISREAD TRAP DETECTOR ============
+const TRP=[
+  {q:'Solve <code>2x + 4 = 12</code>. What is <code>3x − 1</code>?<br>A student solves x = 4 and picks 4. What went wrong?',c:'Solved for x, not 3x − 1',opts:['Solved for x, not 3x − 1','Arithmetic error','Wrong equation','Forgot negative'],fb:'The question asks for 3x−1, not x. Answer: 3(4)−1 = 11.'},
+  {q:'A graph has y-axis labeled 0, 50, 100, 150. A student reads a point at y ≈ 3 grid lines up as "3." What went wrong?',c:'Misread axis scale',opts:['Misread axis scale','Wrong point','Calculator error','Mixed up x and y'],fb:'Each grid line = 50, not 1. The point is at y = 150, not 3.'},
+  {q:'"Which of the following is NOT a solution?" A student picks a correct solution. What went wrong?',c:'Missed the word NOT',opts:['Missed the word NOT','Wrong formula','Calculator error','Forgot to simplify'],fb:'Negation trap — the student missed NOT and picked a solution instead of a non-solution.'},
+  {q:'A price drops 25% then gets 10% tax. A student gives the discounted price (before tax) as the answer. What went wrong?',c:'Gave intermediate answer',opts:['Gave intermediate answer','Wrong percent','Misread axis scale','Forgot negative'],fb:'The question asks for the FINAL price (after tax), not the intermediate discounted price.'},
+  {q:'"At least 18 students passed." A student writes the inequality as x > 18. What went wrong?',c:'At least means >=, not >',opts:['At least means >=, not >','Wrong variable','Arithmetic error','Mixed up x and y'],fb:'"At least 18" means 18 or more → x >= 18, not x > 18.'},
+  {q:'The answer to a problem is x = −5. A student enters 5 in the SPR box. What went wrong?',c:'Dropped the negative sign',opts:['Dropped the negative sign','Wrong equation','Misread axis scale','Gave intermediate answer'],fb:'Sign errors are the #1 SPR mistake. Always double-check positive/negative.'},
+];
+var trpA={};
+function renderTrp(){
+  document.getElementById('trapEx').innerHTML='<h3>🚨 Spot the Trap</h3><div class="exercise-sub">What went wrong in each scenario?</div>'+
+    TRP.map(function(q,i){var a=trpA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+q.opts.map(function(o,oi){var c='classify-opt';if(h){c+=' cl-dis';if(o===q.c)c+=' cl-correct';else if(o===a)c+=' cl-wrong';}return '<div class="'+c+'" onclick="aTrp('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(h?' show':'')+(h?(a===q.c?' correct':' wrong'):'')+'">'+((h)?((a===q.c?'✓ ':'✗ ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aTrp(i,idx){if(trpA[i]!==undefined)return;trpA[i]=TRP[i].opts[idx];renderTrp();}
+renderTrp();
+
+// ============ PSAT 8/9 PRACTICE (STRATEGY-TAGGED) ============
+const PST=[
+  {t:1,q:'<span class="tier tier-1" style="margin-right:6px">Direct Solve</span> Solve: <code>5x − 3 = 17</code>',ch:['2','3','4','5'],c:2,fb:'5x=20 → x=4. Quick one-step algebra.'},
+  {t:1,q:'<span class="tier tier-1" style="margin-right:6px">Direct Solve</span> What is the area of a triangle with base 10 and height 6?',ch:['16','30','60','120'],c:1,fb:'A = (1/2)(10)(6) = 30.'},
+  {t:1,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Backsolve</span> If <code>x² − 3x = 10</code>, what positive value of x works?',ch:['2','3','4','5'],c:3,fb:'Try D: 25−15=10 ✓. Backsolving is fast here.'},
+  {t:2,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Plug In</span> If m is positive, which equals <code>(4m + 8) / 4</code>?',ch:['m + 2','m + 8','4m + 2','m/2 + 2'],c:0,fb:'Plug in m=4: (16+8)/4 = 6. A) 4+2=6 ✓.'},
+  {t:2,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Desmos</span> At what point do <code>y = 2x − 1</code> and <code>y = −x + 8</code> intersect?',ch:['(2, 3)','(3, 5)','(4, 4)','(3, 6)'],c:1,fb:'Graph both in Desmos, click intersection → (3, 5). Check: 2(3)−1=5 ✓, −3+8=5 ✓.'},
+  {t:2,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Ballpark</span> 18% of 495 is closest to:',ch:['49','72','89','99'],c:2,fb:'20% of 500 = 100. 18% is a bit less → ~89. Eliminate A (too low) and D (too close to 20%).'},
+  {t:2,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Trap Alert</span> If <code>4x + 2 = 18</code>, what is <code>2x + 1</code>?',ch:['4','8','9','18'],c:2,fb:'4x+2=18 → 2(2x+1)=18 → 2x+1=9. Or solve x=4, then 2(4)+1=9. Trap: picking x=4.'},
+  {t:3,q:'<span class="tier tier-3" style="margin-right:6px;background:var(--advanced)">Plug In</span> For all positive n, which is equivalent to <code>n/(n+1) + 1/(n+1)</code>?',ch:['1','n','2n/(n+1)','(n+1)/(n+2)'],c:0,fb:'Same denominator: (n+1)/(n+1) = 1. Or plug in n=2: 2/3+1/3=1. A) 1 ✓.'},
+  {t:3,q:'<span class="tier tier-3" style="margin-right:6px;background:var(--advanced)">Desmos</span> How many real solutions does <code>x² + 4x + 5 = 0</code> have?',ch:['0','1','2','Infinite'],c:0,fb:'Graph y=x²+4x+5. The parabola sits above the x-axis — never touches it. Zero solutions.'},
+  {t:3,q:'<span class="tier tier-3" style="margin-right:6px;background:var(--advanced)">Trap Alert</span> SPR: If <code>|x − 3| = 7</code>, what is one possible value of x?<br><em>(Enter either valid answer.)</em>',ch:['10','−4','Both 10 and −4 are correct','3'],c:2,fb:'x−3=7 → x=10. Or x−3=−7 → x=−4. Both are valid SPR answers. Trap: forgetting the negative case.'},
+];
+var pstA={};
+function renderPST(){
+  document.getElementById('psatPractice').innerHTML=PST.map(function(q,i){var a=pstA[i],h=a!==undefined;
+    return '<div class="ex-item" style="border-color:'+(q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)')+'"><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){var c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return '<div class="'+c+'" onclick="aPST('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(h?' show':'')+'">'+(h?((a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb):'')+'</div></div>';
+  }).join('');
+}
+function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;renderPST();}
+renderPST();
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

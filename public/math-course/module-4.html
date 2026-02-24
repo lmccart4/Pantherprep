@@ -10,45 +10,31 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--adv));width:0%;transition:width .3s ease}
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
-.back-link:hover{color:var(--accent)}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}.back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
 .mod-badge{display:inline-block;background:var(--adv);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
 .mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
 .mod-header .subtitle{color:var(--muted);font-size:1rem}
 .mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
-.section{margin-bottom:36px}
-.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section{margin-bottom:36px}.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
-.card-accent{border-left:3px solid var(--accent)}
-.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
-.callout strong{color:var(--accent)}
-.callout-purple{background:var(--adv-bg);border-color:rgba(167,139,250,.3)}
-.callout-purple strong{color:var(--adv)}
-.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
-.callout-blue strong{color:var(--math)}
-
-/* EXPANDABLE */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}.callout strong{color:var(--accent)}
+.callout-purple{background:var(--adv-bg);border-color:rgba(167,139,250,.3)}.callout-purple strong{color:var(--adv)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
 .topic{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
-.topic-header{padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .15s}
-.topic-header:hover{background:rgba(167,139,250,.05)}
-.topic-title{font-weight:700;font-size:.95rem}
-.topic-arrow{transition:transform .2s;color:var(--muted);font-size:.9rem}
-.topic.open .topic-arrow{transform:rotate(90deg)}
-.topic-body{display:none;padding:0 20px 20px;font-size:.9rem;color:#ccc;line-height:1.7}
-.topic.open .topic-body{display:block}
-
-/* TRANSFORMATION TABLE */
+.topic-header{padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .15s}.topic-header:hover{background:rgba(167,139,250,.05)}
+.topic-title{font-weight:700;font-size:.95rem}.topic-arrow{transition:transform .2s;color:var(--muted);font-size:.9rem}
+.topic.open .topic-arrow{transform:rotate(90deg)}.topic-body{display:none;padding:0 20px 20px;font-size:.9rem;color:#ccc;line-height:1.7}.topic.open .topic-body{display:block}
 .tf-table{width:100%;border-collapse:collapse;font-size:.86rem;margin-bottom:14px}
 .tf-table th,.tf-table td{padding:9px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
 .tf-table th{background:var(--surface);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
 .tf-table code{background:var(--adv-bg);color:var(--adv);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.84rem}
 .tf-table .tf-arrow{color:var(--psda);font-weight:700}
-
-/* EXERCISES */
 .exercise{background:var(--surface);border:2px solid var(--adv);border-radius:14px;padding:22px;margin-bottom:16px}
 .exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
 .exercise-sub{font-size:.85rem;color:var(--muted);margin-bottom:14px}
@@ -62,78 +48,49 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .ex-opt.ex-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
 .ex-opt.ex-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .ex-opt.ex-dis{pointer-events:none;opacity:.6}
-.ex-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.5}
-.ex-fb.show{display:block}
+.ex-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.5}.ex-fb.show{display:block}
 .ex-score{text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)}
-
-/* INPUT EXERCISES */
 .ex-input-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .ex-input{width:120px;padding:8px 10px;background:var(--surface);border:2px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;text-align:center}
 .ex-input:focus{border-color:var(--adv);outline:none}
-.ex-input.inp-correct{border-color:var(--correct);background:var(--correct-bg)}
-.ex-input.inp-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.ex-check-btn{padding:7px 16px;background:var(--adv);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600}
-.ex-check-btn:hover{background:#8b6fd4}
-.ex-check-btn:disabled{opacity:.4;pointer-events:none}
-
-/* DOMAIN/RANGE VISUAL */
+.ex-input.inp-correct{border-color:var(--correct);background:var(--correct-bg)}.ex-input.inp-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.ex-check-btn{padding:7px 16px;background:var(--adv);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600}.ex-check-btn:hover{background:#8b6fd4}.ex-check-btn:disabled{opacity:.4;pointer-events:none}
 .dr-visual{display:flex;gap:20px;align-items:center;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
 .dr-box{background:var(--paper);border:2px solid var(--border);border-radius:12px;padding:16px 24px;text-align:center;min-width:140px}
 .dr-box-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
 .dr-box-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700}
 .dr-arrow{font-size:1.8rem;color:var(--adv)}
-
-/* SAT PRACTICE */
 .sat-q{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
-.sat-passage{background:var(--surface);border-left:3px solid var(--adv);padding:12px 14px;border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.7;margin-bottom:12px;color:#ddd}
 .sat-choices{display:flex;flex-direction:column;gap:6px}
 .sat-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:.88rem;transition:all .15s}
 .sat-choice:hover:not(.sc-dis){border-color:var(--adv);background:var(--adv-bg)}
-.sat-choice.sc-correct{border-color:var(--correct);background:var(--correct-bg)}
-.sat-choice.sc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.sat-choice.sc-dis{pointer-events:none;opacity:.6}
+.sat-choice.sc-correct{border-color:var(--correct);background:var(--correct-bg)}.sat-choice.sc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.sat-choice.sc-dis{pointer-events:none;opacity:.6}.sat-choice.sc-dis.sc-correct{opacity:1}
 .sc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
-.sat-choice.sc-correct .sc-letter{background:var(--correct);color:#fff}
-.sat-choice.sc-wrong .sc-letter{background:var(--wrong);color:#fff}
-.sat-fb{margin-top:8px;padding:10px;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}
-.sat-fb.show{display:block}
-.sat-fb.sfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
-.sat-fb.sfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
-
-/* INTERSECTION VISUAL */
+.sat-choice.sc-correct .sc-letter{background:var(--correct);color:#fff}.sat-choice.sc-wrong .sc-letter{background:var(--wrong);color:#fff}
+.sat-fb{margin-top:8px;padding:10px;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}.sat-fb.show{display:block}
+.sat-fb.sfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}.sat-fb.sfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
 .int-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
 .int-card{background:var(--paper);border:2px solid var(--border);border-radius:10px;padding:14px;text-align:center}
-.int-count{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;margin-bottom:4px}
-.int-label{font-size:.82rem;color:var(--muted)}
-.int-icon{font-size:2rem;margin-bottom:6px}
-
-.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
-.btn:hover{background:#a00d24}
-
+.int-count{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;margin-bottom:4px}.int-label{font-size:.82rem;color:var(--muted)}.int-icon{font-size:2rem;margin-bottom:6px}
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}.btn:hover{background:#a00d24}
 .mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
-
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}.mod-nav a:hover{text-decoration:underline}
 @media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.tf-table{font-size:.78rem}.int-grid{grid-template-columns:1fr}.dr-visual{flex-direction:column}.ex-options{flex-direction:column}}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div class="container">
 <a class="back-link" href="index.html">← Back to Math Course</a>
-
 <div class="mod-header">
   <div class="mod-badge">Module 4 · Advanced Math</div>
   <h1>Functions & Their Properties</h1>
   <p class="subtitle">Functions are the language of Advanced Math. Learn to read, transform, compose, and solve them.</p>
-  <div class="mod-meta">
-    <span>⏱ 1–2 sessions</span>
-    <span>📋 3 topics</span>
-    <span>🔨 Phase 2: Build</span>
-  </div>
+  <div class="mod-meta"><span>⏱ 2–3 sessions</span><span>📋 4 topics</span><span>🔨 Phase 2: Build</span></div>
 </div>
 
-<!-- INTRO -->
 <div class="section">
   <div class="section-label">Big Picture</div>
   <h2>Why Functions Matter</h2>
@@ -146,11 +103,10 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <p>A function is a machine: you put in an input (x), it runs a rule, and you get an output (f(x)). <strong>Domain</strong> = all allowed inputs. <strong>Range</strong> = all possible outputs.</p>
 </div>
 
-<!-- TOPIC 4A: NOTATION & EVALUATION -->
+<!-- TOPIC 4A -->
 <div class="section">
   <div class="section-label">Topic 4A</div>
   <h2>Function Notation & Evaluation</h2>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Reading f(x) Notation</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -161,20 +117,18 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <p>You can evaluate functions from equations, tables, or graphs. On a graph, f(3) means "go to x = 3 and read the y-value."</p>
     </div>
   </div>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Domain & Range</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
       <p><strong>Domain:</strong> All x-values for which the function is defined.</p>
       <p><strong>Range:</strong> All y-values the function actually outputs.</p>
       <p>Common domain restrictions on the SAT:</p>
-      <p>• <strong>Fractions:</strong> Denominator ≠ 0 (exclude values that make denominator zero)</p>
-      <p>• <strong>Square roots:</strong> Expression under radical ≥ 0 (no negative under even roots)</p>
+      <p>• <strong>Fractions:</strong> Denominator ≠ 0</p>
+      <p>• <strong>Square roots:</strong> Expression under radical ≥ 0</p>
       <p>• <strong>Context:</strong> If x represents time or quantity, x ≥ 0</p>
       <p>For range, think about what y-values are possible. A parabola opening up with vertex at (2, −3) has range y ≥ −3.</p>
     </div>
   </div>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Interpreting Function Values in Context</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -188,13 +142,22 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<!-- INTERACTIVE: FUNCTION EVALUATOR -->
+<!-- EXERCISE 1: FUNCTION EVALUATOR -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 1</div>
   <h2>Function Evaluator</h2>
   <p>Evaluate each function at the given input. Type your numerical answer.</p>
   <div class="exercise" id="evalExercise"></div>
   <div id="evalScore" class="ex-score"></div>
+</div>
+
+<!-- NEW EXERCISE 2: DOMAIN/RANGE CLASSIFIER -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 2</div>
+  <h2>Domain & Range Classifier</h2>
+  <p>For each function description, identify the correct domain or range. This is one of the most common conceptual question types on the SAT.</p>
+  <div class="exercise" style="border-color:var(--psda)" id="drExercise"></div>
+  <div id="drScore" class="ex-score"></div>
 </div>
 
 <!-- TOPIC 4B: TRANSFORMATIONS -->
@@ -202,7 +165,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="section-label">Topic 4B</div>
   <h2>Function Transformations</h2>
   <p>The SAT tests whether you can predict how a graph changes when the equation changes. Memorize this table — it covers every transformation the SAT tests.</p>
-
   <table class="tf-table">
     <tr><th>Transformation</th><th>Equation Change</th><th>Graph Effect</th></tr>
     <tr><td>Shift UP k</td><td><code>f(x) + k</code></td><td class="tf-arrow">↑ Moves graph UP k units</td></tr>
@@ -214,15 +176,13 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     <tr><td>Reflect over x-axis</td><td><code>−f(x)</code></td><td class="tf-arrow">⇅ Flips upside down</td></tr>
     <tr><td>Reflect over y-axis</td><td><code>f(−x)</code></td><td class="tf-arrow">⇄ Flips left-right</td></tr>
   </table>
-
   <div class="callout"><strong>The #1 Trap:</strong> Horizontal transformations work <em>backward</em>. <code>f(x − 3)</code> shifts <strong>RIGHT</strong> 3, not left. Think of it as: the input needs to be 3 bigger to get the same output, so the graph moves right.</div>
-
   <div class="callout-blue callout"><strong>Desmos Tip:</strong> Graph <code>f(x) = x²</code> on line 1, then type <code>(x − 3)²</code> on line 2. Watch the parabola shift right. Change numbers to build intuition for every transformation type.</div>
 </div>
 
-<!-- INTERACTIVE: TRANSFORMATION IDENTIFIER -->
+<!-- EXERCISE 3: TRANSFORMATION IDENTIFIER -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 3</div>
   <h2>Transformation Identifier</h2>
   <p>Given the original function f(x), identify what transformation was applied.</p>
   <div class="exercise" id="tfExercise"></div>
@@ -233,7 +193,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <div class="section">
   <div class="section-label">Topic 4C</div>
   <h2>Composition of Functions</h2>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">f(g(x)) — The Inside-Out Rule</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -247,75 +206,66 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <p>f(g(x)) = f(x + 3) = (x + 3)² = x² + 6x + 9</p>
     </div>
   </div>
-
   <div class="callout-purple callout"><strong>SAT Pattern:</strong> Composition questions usually give you two simple functions and ask for f(g(specific number)). Work inside-out: evaluate g first, then plug the result into f. Don't overthink it.</div>
 </div>
 
-<!-- INTERACTIVE: COMPOSITION WORKSHOP -->
+<!-- EXERCISE 4: COMPOSITION WORKSHOP -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 4</div>
   <h2>Composition Workshop</h2>
-  <p>Given f(x) and g(x), evaluate the composition. Type your numerical answer.</p>
+  <p>Given f(x) and g(x), evaluate the composition. Includes absolute value and nested functions — matching real SAT difficulty.</p>
   <div class="exercise" id="compExercise"></div>
   <div id="compScore" class="ex-score"></div>
 </div>
 
+<!-- NEW EXERCISE 5: FUNCTION BEHAVIOR CLASSIFIER -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 5</div>
+  <h2>Function Behavior Classifier</h2>
+  <p>The SAT tests conceptual understanding of functions — not just computation. For each description, classify the function's behavior.</p>
+  <div class="exercise" style="border-color:var(--algebra)" id="behaviorEx"></div>
+  <div id="behaviorScore" class="ex-score"></div>
+</div>
+
 <!-- TOPIC 4D: NONLINEAR SYSTEMS -->
 <div class="section">
-  <div class="section-label">Topic 4C (Curriculum)</div>
+  <div class="section-label">Topic 4D</div>
   <h2>Nonlinear Systems</h2>
   <p>When the SAT gives you a system where one equation is linear and one is quadratic (or both nonlinear), you can solve by substitution — or graph both in Desmos.</p>
-
   <div class="int-grid">
-    <div class="int-card" style="border-color:var(--correct)">
-      <div class="int-icon">✕✕</div>
-      <div class="int-count" style="color:var(--correct)">2</div>
-      <div class="int-label">Line crosses parabola at 2 points</div>
-    </div>
-    <div class="int-card" style="border-color:var(--psda)">
-      <div class="int-icon">✕</div>
-      <div class="int-count" style="color:var(--psda)">1</div>
-      <div class="int-label">Line is tangent to parabola</div>
-    </div>
-    <div class="int-card" style="border-color:var(--wrong)">
-      <div class="int-icon">∅</div>
-      <div class="int-count" style="color:var(--wrong)">0</div>
-      <div class="int-label">Line doesn't touch parabola</div>
-    </div>
+    <div class="int-card" style="border-color:var(--correct)"><div class="int-icon">✕✕</div><div class="int-count" style="color:var(--correct)">2</div><div class="int-label">Line crosses parabola at 2 points</div></div>
+    <div class="int-card" style="border-color:var(--psda)"><div class="int-icon">✕</div><div class="int-count" style="color:var(--psda)">1</div><div class="int-label">Line is tangent to parabola</div></div>
+    <div class="int-card" style="border-color:var(--wrong)"><div class="int-icon">∅</div><div class="int-count" style="color:var(--wrong)">0</div><div class="int-label">Line doesn't touch parabola</div></div>
   </div>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Solving Nonlinear Systems</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
       <p><strong>Method 1: Substitution</strong></p>
       <p>1. Set the two equations equal: if y = x + 1 and y = x², then x + 1 = x²</p>
       <p>2. Rearrange to standard form: x² − x − 1 = 0</p>
-      <p>3. Solve the resulting equation (factor, quadratic formula, or Desmos)</p>
+      <p>3. Solve the resulting equation</p>
       <p>4. Plug solutions back in to find y-values</p>
       <p><strong>Method 2: Desmos (faster!)</strong></p>
       <p>Graph both equations. Click the intersection points for exact coordinates.</p>
-      <p><strong>Key insight:</strong> The discriminant of the resulting equation tells you how many intersection points exist. This is a common SAT question: "How many solutions does the system have?"</p>
+      <p><strong>Key insight:</strong> The discriminant of the resulting equation tells you how many intersection points exist.</p>
     </div>
   </div>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Systems with a Parameter</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
       <p>A harder SAT question type: "For what value of k does the system have exactly one solution?"</p>
-      <p><strong>Strategy:</strong> Set the equations equal, rearrange to standard form, then set the discriminant = 0 (for one solution) or &gt; 0 (for two solutions).</p>
-      <p><strong>Example:</strong> y = kx + 1 and y = x². Set equal: kx + 1 = x² → x² − kx − 1 = 0</p>
-      <p>For exactly one solution: discriminant = 0 → k² − 4(1)(−1) = 0 → k² + 4 = 0 → k² = −4 → no real k!</p>
-      <p>This means the line y = kx + 1 always intersects y = x² at exactly two points for any real k.</p>
+      <p><strong>Strategy:</strong> Set the equations equal, rearrange to standard form, then set the discriminant = 0.</p>
       <p><strong>Desmos Power Move:</strong> Use a slider for k and watch the line move until it's tangent to the parabola.</p>
     </div>
   </div>
+  <div class="callout-blue callout"><strong>Desmos Bridge:</strong> For every nonlinear system problem, try solving it BOTH algebraically and by graphing in Desmos. In Module 7, you'll learn when Desmos is faster — but building the habit of verifying starts here.</div>
 </div>
 
 <!-- SAT PRACTICE -->
 <div class="section">
   <div class="section-label">SAT-Style Practice</div>
   <h2>Practice Questions</h2>
-  <p>8 questions across all topics. 3 foundational, 3 intermediate, 2 advanced.</p>
+  <p>10 questions across all topics. 3 foundational, 4 intermediate, 3 advanced.</p>
   <div id="satQuestions"></div>
   <div id="satScore" class="ex-score"></div>
 </div>
@@ -330,8 +280,9 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <li>Domain = allowed inputs, Range = possible outputs. Watch for division by zero and negative square roots.</li>
       <li>Horizontal transformations work backward: f(x − 3) shifts RIGHT, f(x + 3) shifts LEFT.</li>
       <li>Composition f(g(x)): work inside-out. Evaluate g first, then plug into f.</li>
+      <li>Increasing functions go up as x increases; decreasing functions go down. The SAT tests this conceptually.</li>
       <li>For nonlinear systems: set equations equal, rearrange, and use the discriminant to count solutions.</li>
-      <li>Desmos can graph any system and show exact intersection points — use it!</li>
+      <li>Always verify nonlinear system solutions with Desmos — build the algebra + graphing habit now.</li>
       <li>In context questions, identify what the constants and coefficients REPRESENT.</li>
     </ol>
   </div>
@@ -344,49 +295,51 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <script>
-// ============ HELPERS ============
-function showScore(id,ans,items,keyFn){
-  const t=items.length,a=Object.keys(ans).length;
-  const c=Object.entries(ans).filter(([i,v])=>keyFn?keyFn(i,v):v===items[i].correct).length;
-  document.getElementById(id).innerHTML=a===t?`<strong style="color:${c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
-}
+// ============ PROGRESS BAR ============
+window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;var pct=h>0?(window.scrollY/h)*100:0;document.getElementById('progressFill').style.width=pct+'%';});
 
-// ============ FUNCTION EVALUATOR ============
-const EVALS=[
+// ============ HELPERS ============
+function showScore(id,ans,items){var t=items.length,a=Object.keys(ans).length,c=0;Object.entries(ans).forEach(function(p){var i=parseInt(p[0]),v=p[1];if(v===items[i].correct||v===true)c++;});document.getElementById(id).innerHTML=a===t?'<strong style="color:'+(c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';}
+
+// ============ EXERCISE 1: FUNCTION EVALUATOR ============
+var EVALS=[
   {prompt:'f(x) = 3x − 7. Find f(4).',answer:5,solution:'3(4) − 7 = 12 − 7 = 5'},
   {prompt:'g(x) = x² + 1. Find g(−3).',answer:10,solution:'(−3)² + 1 = 9 + 1 = 10'},
-  {prompt:'h(x) = 2x² − x. Find h(5).',answer:45,solution:'2(5²) − 5 = 2(25) − 5 = 50 − 5 = 45'},
+  {prompt:'h(x) = 2x² − x. Find h(5).',answer:45,solution:'2(5²) − 5 = 50 − 5 = 45'},
   {prompt:'f(x) = x³ − 2x. Find f(−2).',answer:-4,solution:'(−2)³ − 2(−2) = −8 + 4 = −4'},
-  {prompt:'p(x) = 4x + 10. Find p(0).',answer:10,solution:'4(0) + 10 = 0 + 10 = 10. This is the y-intercept!'},
-  {prompt:'f(x) = (x + 1)(x − 3). Find f(3).',answer:0,solution:'(3 + 1)(3 − 3) = (4)(0) = 0. x = 3 is a zero of f!'},
-  {prompt:'g(x) = |2x − 8|. Find g(1).',answer:6,solution:'|2(1) − 8| = |2 − 8| = |−6| = 6'},
-  {prompt:'f(x) = 100(0.5)ˣ. Find f(3).',answer:12.5,solution:'100(0.5)³ = 100(0.125) = 12.5. This is exponential decay!'},
+  {prompt:'p(x) = 4x + 10. Find p(0).',answer:10,solution:'4(0) + 10 = 10. This is the y-intercept!'},
+  {prompt:'f(x) = (x + 1)(x − 3). Find f(3).',answer:0,solution:'(3+1)(3−3) = (4)(0) = 0. x = 3 is a zero of f!'},
+  {prompt:'g(x) = |2x − 8|. Find g(1).',answer:6,solution:'|2(1) − 8| = |−6| = 6'},
+  {prompt:'f(x) = 100(0.5)ˣ. Find f(3).',answer:12.5,solution:'100(0.5)³ = 100(0.125) = 12.5. Exponential decay!'},
 ];
-let evalAns={};
+var evalAns={};
 function renderEvals(){
-  document.getElementById('evalExercise').innerHTML=`<h3>🔢 Evaluate These Functions</h3><div class="exercise-sub">Type the numerical answer.</div>`+
-    EVALS.map((e,i)=>{
-      const ans=evalAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Problem ${i+1}</div>
-        <div class="ex-prompt">${e.prompt}</div>
-        <div class="ex-input-row">
-          <input class="ex-input${has?(ans?' inp-correct':' inp-wrong'):''}" id="eInp${i}" placeholder="?" ${has?'disabled':''} onkeydown="if(event.key==='Enter')checkEval(${i})">
-          <button class="ex-check-btn" onclick="checkEval(${i})" ${has?'disabled':''}>Check</button>
-        </div>
-        <div class="ex-fb${has?' show':''}" style="${has?(ans?'color:var(--correct)':'color:var(--wrong)'):''}">${has?(ans?'✓ Correct! ':'✗ Incorrect. ')+e.solution:''}</div></div>`;
-    }).join('');
-  const t=EVALS.length,a=Object.keys(evalAns).length,c=Object.values(evalAns).filter(v=>v).length;
-  document.getElementById('evalScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('evalExercise').innerHTML='<h3>🔢 Evaluate These Functions</h3><div class="exercise-sub">Type the numerical answer.</div>'+EVALS.map(function(e,i){var ans=evalAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">'+e.prompt+'</div><div class="ex-input-row"><input class="ex-input'+(has?(ans?' inp-correct':' inp-wrong'):'')+'" id="eInp'+i+'" placeholder="?" '+(has?'disabled':'')+' onkeydown="if(event.key===\'Enter\')checkEval('+i+')"><button class="ex-check-btn" onclick="checkEval('+i+')" '+(has?'disabled':'')+'>Check</button></div><div class="ex-fb'+(has?' show':'')+'" style="'+(has?(ans?'color:var(--correct)':'color:var(--wrong)'):'')+'">'+( has?(ans?'✓ Correct! ':'✗ Incorrect. ')+e.solution:'')+'</div></div>';}).join('');
+  var t=EVALS.length,a=Object.keys(evalAns).length,c=0;Object.values(evalAns).forEach(function(v){if(v)c++;});
+  document.getElementById('evalScore').innerHTML=a===t?'<strong style="color:'+(c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
 }
-function checkEval(i){
-  const v=parseFloat(document.getElementById('eInp'+i).value);
-  evalAns[i]=Math.abs(v-EVALS[i].answer)<0.01;
-  renderEvals();
-}
+function checkEval(i){var v=parseFloat(document.getElementById('eInp'+i).value);evalAns[i]=Math.abs(v-EVALS[i].answer)<0.01;renderEvals();}
 renderEvals();
 
-// ============ TRANSFORMATION IDENTIFIER ============
-const TFS=[
+// ============ EXERCISE 2: DOMAIN/RANGE CLASSIFIER ============
+var DR_QS=[
+  {q:'f(x) = 1/(x − 3). What is the domain?',correct:'All real numbers except x = 3',opts:['All real numbers','All real numbers except x = 3','x ≥ 3','x > 0'],fb:'Denominator can\'t be 0. x − 3 = 0 when x = 3, so exclude x = 3.'},
+  {q:'f(x) = √(x − 5). What is the domain?',correct:'x ≥ 5',opts:['All real numbers','x > 5','x ≥ 5','x ≥ 0'],fb:'Expression under square root must be ≥ 0. x − 5 ≥ 0 → x ≥ 5.'},
+  {q:'f(x) = x² + 1. What is the range?',correct:'y ≥ 1',opts:['All real numbers','y ≥ 0','y ≥ 1','y > 1'],fb:'x² is always ≥ 0, so x² + 1 ≥ 1. Minimum output is 1 (when x = 0).'},
+  {q:'f(x) = −(x − 2)² + 9. What is the range?',correct:'y ≤ 9',opts:['y ≥ 9','y ≤ 9','All real numbers','y ≥ −9'],fb:'Vertex at (2, 9), opens downward (a = −1). Maximum output is 9.'},
+  {q:'A function models the height of a ball: h(t) = −16t² + 64t. What is a reasonable domain?',correct:'t ≥ 0',opts:['All real numbers','t ≥ 0','0 ≤ t ≤ 4','t > 0'],fb:'In context, time can\'t be negative. The ball hits the ground at t = 4, so 0 ≤ t ≤ 4 is the most precise domain (but t ≥ 0 is the contextual minimum).'},
+  {q:'f(x) = |x|. What is the range?',correct:'y ≥ 0',opts:['All real numbers','y ≥ 0','y > 0','y ≥ 1'],fb:'Absolute value is always non-negative. |x| ≥ 0 for all x. Range is y ≥ 0.'},
+];
+var drAns={};
+function ansDR(i,oi){if(drAns[i]!==undefined)return;drAns[i]=DR_QS[i].opts[oi];renderDR();}
+function renderDR(){
+  document.getElementById('drExercise').innerHTML='<h3>🎯 Domain & Range</h3><div class="exercise-sub">Select the correct domain or range for each function.</div>'+DR_QS.map(function(q,i){var ans=drAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="ex-options">'+q.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===q.correct)cls+=' ex-correct';else if(o===ans&&o!==q.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansDR('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+  showScore('drScore',drAns,DR_QS);
+}
+renderDR();
+
+// ============ EXERCISE 3: TRANSFORMATION IDENTIFIER ============
+var TFS=[
   {orig:'f(x)',transformed:'f(x) + 5',correct:'Shift UP 5',opts:['Shift UP 5','Shift RIGHT 5','Shift DOWN 5','Vertical stretch by 5']},
   {orig:'f(x)',transformed:'f(x − 4)',correct:'Shift RIGHT 4',opts:['Shift LEFT 4','Shift RIGHT 4','Shift DOWN 4','Shift UP 4']},
   {orig:'f(x)',transformed:'−f(x)',correct:'Reflect over x-axis',opts:['Reflect over y-axis','Reflect over x-axis','Shift DOWN 1','Vertical compress']},
@@ -396,98 +349,72 @@ const TFS=[
   {orig:'f(x) = x²',transformed:'g(x) = (x − 1)² + 6',correct:'Shift RIGHT 1, UP 6',opts:['Shift LEFT 1, UP 6','Shift RIGHT 1, UP 6','Shift RIGHT 1, DOWN 6','Shift LEFT 1, DOWN 6']},
   {orig:'f(x) = x²',transformed:'g(x) = ½x²',correct:'Vertical compression (flatter)',opts:['Vertical stretch (steeper)','Vertical compression (flatter)','Horizontal stretch','Shift DOWN ½']},
 ];
-let tfAns={};
+var tfAns={};
+function ansTF(i,oi){if(tfAns[i]!==undefined)return;tfAns[i]=TFS[i].opts[oi];renderTFs();}
 function renderTFs(){
-  document.getElementById('tfExercise').innerHTML=`<h3>🔄 Name That Transformation</h3><div class="exercise-sub">How does the transformed function differ from the original?</div>`+
-    TFS.map((t,i)=>{
-      const ans=tfAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Problem ${i+1}</div>
-        <div class="ex-prompt">Original: <code>${t.orig}</code> → Transformed: <code>${t.transformed}</code></div>
-        <div class="ex-options">${t.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===t.correct)cls+=' ex-correct';else if(o===ans&&o!==t.correct)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="tfAns[${i}]='${o.replace(/'/g,"\\'")}';renderTFs()">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===t.correct?'✓ Correct!':'✗ Incorrect. The answer is: '+t.correct+'.'):''} ${has&&i===1?'Remember: f(x − h) shifts RIGHT, not left!':''} ${has&&i===3?'Two transformations combined: the +2 inside shifts LEFT, the −3 outside shifts DOWN.':''}</div></div>`;
-    }).join('');
-  showScore('tfScore',tfAns,TFS,(i,v)=>v===TFS[i].correct);
+  document.getElementById('tfExercise').innerHTML='<h3>🔄 Name That Transformation</h3><div class="exercise-sub">How does the transformed function differ from the original?</div>'+TFS.map(function(t,i){var ans=tfAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">Original: <code>'+t.orig+'</code> → Transformed: <code>'+t.transformed+'</code></div><div class="ex-options">'+t.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===t.correct)cls+=' ex-correct';else if(o===ans&&o!==t.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansTF('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===t.correct?'✓ Correct!':'✗ Incorrect. The answer is: '+t.correct+'.')+(has&&i===1?' Remember: f(x − h) shifts RIGHT, not left!':'')+(has&&i===3?' Two transformations combined: +2 inside shifts LEFT, −3 outside shifts DOWN.':''):'')+'</div></div>';}).join('');
+  showScore('tfScore',tfAns,TFS);
 }
 renderTFs();
 
-// ============ COMPOSITION WORKSHOP ============
-const COMPS=[
+// ============ EXERCISE 4: COMPOSITION WORKSHOP ============
+var COMPS=[
   {setup:'f(x) = 2x + 1, g(x) = x − 3',prompt:'Find f(g(5)).',answer:5,solution:'g(5) = 5 − 3 = 2. Then f(2) = 2(2) + 1 = 5.'},
   {setup:'f(x) = x², g(x) = x + 4',prompt:'Find f(g(1)).',answer:25,solution:'g(1) = 1 + 4 = 5. Then f(5) = 5² = 25.'},
   {setup:'f(x) = x², g(x) = x + 4',prompt:'Find g(f(1)).',answer:5,solution:'f(1) = 1² = 1. Then g(1) = 1 + 4 = 5. Note: g(f(1)) ≠ f(g(1))!'},
-  {setup:'f(x) = 3x, g(x) = x² − 1',prompt:'Find f(g(3)).',answer:24,solution:'g(3) = 3² − 1 = 8. Then f(8) = 3(8) = 24.'},
+  {setup:'f(x) = 3x, g(x) = x² − 1',prompt:'Find f(g(3)).',answer:24,solution:'g(3) = 9 − 1 = 8. Then f(8) = 3(8) = 24.'},
   {setup:'f(x) = x + 7, g(x) = 2x',prompt:'Find g(f(−4)).',answer:6,solution:'f(−4) = −4 + 7 = 3. Then g(3) = 2(3) = 6.'},
-  {setup:'f(x) = |x|, g(x) = x − 10',prompt:'Find f(g(3)).',answer:7,solution:'g(3) = 3 − 10 = −7. Then f(−7) = |−7| = 7.'},
+  {setup:'f(x) = |x|, g(x) = x − 10',prompt:'Find f(g(3)).',answer:7,solution:'g(3) = 3 − 10 = −7. Then f(−7) = |−7| = 7. Absolute value makes it positive!'},
+  {setup:'f(x) = x² − 1, g(x) = |x − 5|',prompt:'Find f(g(2)).',answer:8,solution:'g(2) = |2 − 5| = |−3| = 3. Then f(3) = 9 − 1 = 8. Nested with absolute value!'},
+  {setup:'f(x) = 2x + 1, g(x) = f(x)',prompt:'Find f(f(3)). (Composing f with itself!)',answer:15,solution:'f(3) = 2(3) + 1 = 7. Then f(7) = 2(7) + 1 = 15. Self-composition!'},
 ];
-let compAns={};
+var compAns={};
 function renderComps(){
-  document.getElementById('compExercise').innerHTML=`<h3>🔗 Composition Practice</h3><div class="exercise-sub">Work inside-out: evaluate the inner function first.</div>`+
-    COMPS.map((c,i)=>{
-      const ans=compAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Problem ${i+1}</div>
-        <div style="font-size:.85rem;color:var(--adv);margin-bottom:6px">${c.setup}</div>
-        <div class="ex-prompt">${c.prompt}</div>
-        <div class="ex-input-row">
-          <input class="ex-input${has?(ans?' inp-correct':' inp-wrong'):''}" id="cInp${i}" placeholder="?" ${has?'disabled':''} onkeydown="if(event.key==='Enter')checkComp(${i})">
-          <button class="ex-check-btn" onclick="checkComp(${i})" ${has?'disabled':''}>Check</button>
-        </div>
-        <div class="ex-fb${has?' show':''}" style="${has?(ans?'color:var(--correct)':'color:var(--wrong)'):''}">${has?(ans?'✓ Correct! ':'✗ Incorrect. ')+c.solution:''}</div></div>`;
-    }).join('');
-  const t=COMPS.length,a=Object.keys(compAns).length,c=Object.values(compAns).filter(v=>v).length;
-  document.getElementById('compScore').innerHTML=a===t?`<strong style="color:${c>=5?'var(--correct)':c>=3?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('compExercise').innerHTML='<h3>🔗 Composition Practice</h3><div class="exercise-sub">Work inside-out: evaluate the inner function first. Includes absolute value and self-composition.</div>'+COMPS.map(function(c,i){var ans=compAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div style="font-size:.85rem;color:var(--adv);margin-bottom:6px">'+c.setup+'</div><div class="ex-prompt">'+c.prompt+'</div><div class="ex-input-row"><input class="ex-input'+(has?(ans?' inp-correct':' inp-wrong'):'')+'" id="cInp'+i+'" placeholder="?" '+(has?'disabled':'')+' onkeydown="if(event.key===\'Enter\')checkComp('+i+')"><button class="ex-check-btn" onclick="checkComp('+i+')" '+(has?'disabled':'')+'>Check</button></div><div class="ex-fb'+(has?' show':'')+'" style="'+(has?(ans?'color:var(--correct)':'color:var(--wrong)'):'')+'">'+( has?(ans?'✓ Correct! ':'✗ Incorrect. ')+c.solution:'')+'</div></div>';}).join('');
+  var t=COMPS.length,a=Object.keys(compAns).length,c=0;Object.values(compAns).forEach(function(v){if(v)c++;});
+  document.getElementById('compScore').innerHTML=a===t?'<strong style="color:'+(c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
 }
-function checkComp(i){
-  const v=parseFloat(document.getElementById('cInp'+i).value);
-  compAns[i]=Math.abs(v-COMPS[i].answer)<0.01;
-  renderComps();
-}
+function checkComp(i){var v=parseFloat(document.getElementById('cInp'+i).value);compAns[i]=Math.abs(v-COMPS[i].answer)<0.01;renderComps();}
 renderComps();
 
-// ============ SAT PRACTICE ============
-const SAT_QS=[
-  {tier:'Tier 1',q:'If f(x) = 4x − 9, what is the value of f(3)?',
-   choices:['3','12','−9','21'],correct:0,
-   fb:'f(3) = 4(3) − 9 = 12 − 9 = 3.'},
-  {tier:'Tier 1',q:'The graph of g(x) = x² is shifted 5 units to the right. Which equation represents the new graph?',
-   choices:['g(x) = x² + 5','g(x) = (x + 5)²','g(x) = (x − 5)²','g(x) = x² − 5'],correct:2,
-   fb:'Shifting right h units: f(x − h). So x² shifted right 5 = (x − 5)². Remember: horizontal shifts work backward!'},
-  {tier:'Tier 1',q:'If f(x) = x + 2 and g(x) = 3x, what is g(f(4))?',
-   choices:['14','18','10','6'],correct:1,
-   fb:'Work inside-out: f(4) = 4 + 2 = 6. Then g(6) = 3(6) = 18.'},
-  {tier:'Tier 2',q:'The function f(x) = −2(x + 3)² + 8 has a vertex at:',
-   choices:['(3, 8)','(−3, 8)','(−3, −8)','(3, −8)'],correct:1,
-   fb:'Vertex form f(x) = a(x − h)² + k. Here f(x) = −2(x − (−3))² + 8, so h = −3, k = 8. Vertex: (−3, 8).'},
-  {tier:'Tier 2',q:'If f(x) = x² − 4 and the domain of f is restricted to x ≥ 0, what is the range of f?',
-   choices:['y ≥ −4','y ≥ 0','y ≥ 4','All real numbers'],correct:0,
-   fb:'When x = 0, f(0) = −4 (the minimum). As x increases, f(x) increases. So range is y ≥ −4.'},
-  {tier:'Tier 2',q:'The graph of y = f(x) is reflected over the x-axis and then shifted up 3 units. The resulting graph is:',
-   choices:['y = −f(x) + 3','y = f(−x) + 3','y = −f(x + 3)','y = f(−x + 3)'],correct:0,
-   fb:'Reflect over x-axis: −f(x). Then shift up 3: −f(x) + 3. Apply transformations in order.'},
-  {tier:'Tier 3',q:'The system y = x² − 2x + 3 and y = x + k has exactly one solution. What is the value of k?',
-   choices:['k = 1','k = −1','k = 3','k = −3'],correct:0,
-   fb:'Set equal: x² − 2x + 3 = x + k → x² − 3x + (3 − k) = 0. One solution means discriminant = 0: 9 − 4(3 − k) = 0 → 9 − 12 + 4k = 0 → 4k = 3 → k = 3/4. Wait, let me recalculate: (-3)² - 4(1)(3-k) = 9 - 12 + 4k = -3 + 4k = 0, so k = 3/4. Hmm, that\'s not in the choices. Let me recheck with k=1: disc = 9 - 4(3-1) = 9 - 8 = 1 > 0 (two solutions). With k=3: disc = 9 - 4(0) = 9 > 0. Actually, for the system y = x² and y = x + k, set equal: x² - x - k = 0, disc = 1 + 4k = 0, k = -1/4. The answer is k = 1 based on the original system.'},
-  {tier:'Tier 3',q:'If f(x) = 2x + 1 and g(x) = x² − 3, for which value of x does f(g(x)) = g(f(x))?',
-   choices:['x = 0','x = 1','x = −1','x = 2'],correct:2,
-   fb:'f(g(x)) = 2(x²−3)+1 = 2x²−5. g(f(x)) = (2x+1)²−3 = 4x²+4x−2. Set equal: 2x²−5 = 4x²+4x−2 → 0 = 2x²+4x+3. Hmm, disc = 16−24 < 0. Let me try x = −1: f(g(−1)) = f(−2) = −3. g(f(−1)) = g(−1) = −2. Those aren\'t equal either. Try x = 1: f(g(1)) = f(−2) = −3. g(f(1)) = g(3) = 6. Not equal. x = 0: f(g(0)) = f(−3) = −5. g(f(0)) = g(1) = −2. Not equal. x = 2: f(g(2)) = f(1) = 3. g(f(2)) = g(5) = 22. The correct answer where they\'re closest is x = −1.'},
+// ============ EXERCISE 5: FUNCTION BEHAVIOR CLASSIFIER ============
+var BEH_QS=[
+  {q:'f(x) = 3x + 5. As x increases, f(x)…',correct:'Always increases (positive slope)',opts:['Always increases (positive slope)','Always decreases','Increases then decreases','Stays constant'],fb:'Linear with positive slope (m = 3). Always increasing.'},
+  {q:'f(x) = −x² + 4. On the interval x > 0, f(x)…',correct:'Decreases',opts:['Increases','Decreases','Stays constant','Increases then decreases'],fb:'This is a downward parabola with vertex at (0, 4). For x > 0, we\'re on the right side of the vertex → decreasing.'},
+  {q:'f(x) = 2ˣ. As x → −∞, f(x) approaches…',correct:'0 (but never reaches it)',opts:['−∞','0 (but never reaches it)','1','2'],fb:'Exponential growth: as x gets very negative, 2ˣ gets tiny (0.5, 0.25, 0.125…) → approaches 0. The x-axis is a horizontal asymptote.'},
+  {q:'f(x) = 1/x. The graph has…',correct:'A vertical asymptote at x = 0',opts:['No asymptotes','A horizontal asymptote at y = 1','A vertical asymptote at x = 0','A hole at x = 0'],fb:'Can\'t divide by 0, so x = 0 is a vertical asymptote. The graph approaches but never touches the y-axis.'},
+  {q:'f(x) = |x − 3|. The minimum value of f(x) is…',correct:'0, occurring at x = 3',opts:['3, occurring at x = 0','0, occurring at x = 3','−3, occurring at x = 0','No minimum'],fb:'|x − 3| ≥ 0 always. It equals 0 when x = 3. The vertex of the V-shape is at (3, 0).'},
+  {q:'f(x) = x³. The end behavior is…',correct:'As x → −∞, f → −∞; as x → +∞, f → +∞',opts:['Both ends go up','Both ends go down','As x → −∞, f → −∞; as x → +∞, f → +∞','As x → −∞, f → +∞; as x → +∞, f → −∞'],fb:'Odd degree, positive leading coefficient → left goes down, right goes up.'},
 ];
-let satAns={};
+var behAns={};
+function ansBeh(i,oi){if(behAns[i]!==undefined)return;behAns[i]=BEH_QS[i].opts[oi];renderBeh();}
+function renderBeh(){
+  document.getElementById('behaviorEx').innerHTML='<h3>📊 How Does It Behave?</h3><div class="exercise-sub">Classify each function\'s behavior without graphing.</div>'+BEH_QS.map(function(q,i){var ans=behAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="ex-options">'+q.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===q.correct)cls+=' ex-correct';else if(o===ans&&o!==q.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansBeh('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+  showScore('behaviorScore',behAns,BEH_QS);
+}
+renderBeh();
+
+// ============ SAT PRACTICE ============
+var SAT_QS=[
+  {tier:'Tier 1',q:'If f(x) = 4x − 9, what is the value of f(3)?',choices:['3','12','−9','21'],correct:0,fb:'f(3) = 4(3) − 9 = 12 − 9 = 3.'},
+  {tier:'Tier 1',q:'The graph of g(x) = x² is shifted 5 units to the right. Which equation represents the new graph?',choices:['g(x) = x² + 5','g(x) = (x + 5)²','g(x) = (x − 5)²','g(x) = x² − 5'],correct:2,fb:'Shifting right h units: f(x − h). So (x − 5)². Horizontal shifts work backward!'},
+  {tier:'Tier 1',q:'If f(x) = x + 2 and g(x) = 3x, what is g(f(4))?',choices:['14','18','10','6'],correct:1,fb:'f(4) = 4 + 2 = 6. Then g(6) = 3(6) = 18.'},
+  {tier:'Tier 2',q:'The function f(x) = −2(x + 3)² + 8 has a vertex at:',choices:['(3, 8)','(−3, 8)','(−3, −8)','(3, −8)'],correct:1,fb:'f(x) = −2(x − (−3))² + 8. Vertex: (−3, 8).'},
+  {tier:'Tier 2',q:'If f(x) = x² − 4 and the domain is restricted to x ≥ 0, what is the range?',choices:['y ≥ −4','y ≥ 0','y ≥ 4','All real numbers'],correct:0,fb:'When x = 0, f(0) = −4 (minimum). As x increases, f(x) increases. Range: y ≥ −4.'},
+  {tier:'Tier 2',q:'y = f(x) is reflected over the x-axis and shifted up 3. The result is:',choices:['y = −f(x) + 3','y = f(−x) + 3','y = −f(x + 3)','y = f(−x + 3)'],correct:0,fb:'Reflect over x-axis: −f(x). Then shift up 3: −f(x) + 3.'},
+  {tier:'Tier 2',q:'f(x) = √(2x − 6). What is the domain?',choices:['x ≥ 0','x ≥ 3','x ≥ 6','All real numbers'],correct:1,fb:'Need 2x − 6 ≥ 0 → 2x ≥ 6 → x ≥ 3.'},
+  {tier:'Tier 3',q:'The system y = x² + 2 and y = 4x − 1 has how many real solutions?',choices:['0','1','2','Infinitely many'],correct:2,fb:'Set equal: x² + 2 = 4x − 1 → x² − 4x + 3 = 0 → (x−1)(x−3) = 0. Two solutions: x = 1 and x = 3.'},
+  {tier:'Tier 3',q:'If f(x) = 2x − 1, what is f(f(f(1)))?',choices:['1','3','5','9'],correct:2,fb:'f(1) = 1. f(f(1)) = f(1) = 1. Wait: f(1) = 2(1) − 1 = 1. f(f(1)) = f(1) = 1. f(f(f(1))) = f(1) = 1. Hmm, x = 1 is a fixed point! Actually the answer is 1. Let me recalculate: f(1) = 2(1) − 1 = 1. So f(f(f(1))) = 1.'},
+  {tier:'Tier 3',q:'The graph of y = f(x) passes through (2, 5). After the transformation y = 3f(x − 1) + 2, what point must be on the new graph?',choices:['(3, 17)','(1, 17)','(3, 15)','(2, 17)'],correct:0,fb:'x − 1 = 2 → x = 3. y = 3·f(2) + 2 = 3(5) + 2 = 17. The point (3, 17) is on the new graph.'},
+];
+// Fix Q9: change to avoid the fixed point
+SAT_QS[8]={tier:'Tier 3',q:'If f(x) = 2x + 3, what is f(f(2))?',choices:['7','17','37','14'],correct:1,fb:'f(2) = 2(2) + 3 = 7. Then f(7) = 2(7) + 3 = 17.'};
+
+var satAns={};
 function renderSAT(){
-  document.getElementById('satQuestions').innerHTML=SAT_QS.map((q,i)=>{
-    const ans=satAns[i];const has=ans!==undefined;
-    return `<div class="sat-q"><div class="ex-num">${q.tier} · Question ${i+1}</div>
-      <div class="ex-prompt">${q.q}</div>
-      <div class="sat-choices">${q.choices.map((ch,ci)=>{
-        let cls='sat-choice';
-        if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}
-        return `<div class="${cls}" onclick="satAns[${i}]=${ci};renderSAT()"><div class="sc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
-      }).join('')}</div>
-      <div class="sat-fb${has?' show':''}${has?(ans===q.correct?' sfb-correct':' sfb-wrong'):''}">${has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
-  }).join('');
-  const t=SAT_QS.length,a=Object.keys(satAns).length,c=Object.entries(satAns).filter(([i,v])=>v===SAT_QS[i].correct).length;
-  document.getElementById('satScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('satQuestions').innerHTML=SAT_QS.map(function(q,i){var ans=satAns[i];var has=ans!==undefined;return '<div class="sat-q"><div class="ex-num">'+q.tier+' · Question '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="sat-choices">'+q.choices.map(function(ch,ci){var cls='sat-choice';if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}return '<div class="'+cls+'" onclick="satAns['+i+']='+ci+';renderSAT()"><div class="sc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="sat-fb'+(has?' show':'')+(has?(ans===q.correct?' sfb-correct':' sfb-wrong'):'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+  var t=SAT_QS.length,a=Object.keys(satAns).length,c=0;Object.entries(satAns).forEach(function(p){if(parseInt(p[1])===SAT_QS[parseInt(p[0])].correct)c++;});
+  document.getElementById('satScore').innerHTML=a===t?'<strong style="color:'+(c>=7?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
 }
 renderSAT();
 </script>

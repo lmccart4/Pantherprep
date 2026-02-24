@@ -10,6 +10,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--strat));width:0%;transition:width .3s ease}
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
@@ -88,7 +90,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .sat-choice:hover:not(.sc-dis){border-color:var(--strat);background:var(--strat-bg)}
 .sat-choice.sc-correct{border-color:var(--correct);background:var(--correct-bg)}
 .sat-choice.sc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.sat-choice.sc-dis{pointer-events:none;opacity:.6}
+.sat-choice.sc-dis{pointer-events:none;opacity:.6}.sat-choice.sc-dis.sc-correct{opacity:1}
 .sc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
 .sat-choice.sc-correct .sc-letter{background:var(--correct);color:#fff}
 .sat-choice.sc-wrong .sc-letter{background:var(--wrong);color:#fff}
@@ -102,10 +104,15 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .mod-nav a:hover{text-decoration:underline}
 
 @media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.gi-grid{grid-template-columns:1fr}.ex-options{flex-direction:column}.time-bar{font-size:.65rem}}
+.trap-card{background:var(--paper);border:1px solid var(--border);border-left:3px solid var(--wrong);border-radius:10px;padding:14px;margin-bottom:10px}
+.trap-title{font-weight:700;color:var(--wrong);font-size:.9rem;margin-bottom:4px}
+.trap-body{font-size:.85rem;color:#ccc;line-height:1.5}
+.trap-fix{font-size:.82rem;color:var(--correct);margin-top:6px;font-weight:600}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div class="container">
 <a class="back-link" href="index.html">← Back to Math Course</a>
 
@@ -131,6 +138,32 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     <div class="dt-step"><div class="dt-num" style="background:var(--algebra)">3</div><div class="dt-body" style="background:rgba(52,211,153,.1)">Answer choices are specific numbers?<br><span class="dt-yes">YES → Use Backsolve (PITA).</span> <span class="dt-no">NO → Step 4</span></div></div>
     <div class="dt-step"><div class="dt-num" style="background:var(--des)">4</div><div class="dt-body" style="background:rgba(6,182,212,.1)">Involves a function, graph, or system?<br><span class="dt-yes">YES → Use Desmos.</span> <span class="dt-no">NO → Step 5</span></div></div>
     <div class="dt-step"><div class="dt-num" style="background:var(--psda)">5</div><div class="dt-body" style="background:var(--psda-bg)">Can I eliminate clearly wrong answers?<br><span class="dt-yes">YES → Ballpark + POE, then guess.</span> <span class="dt-no">Flag and move on.</span></div></div>
+  </div>
+</div>
+
+<!-- ADAPTIVE MODULE STRATEGY -->
+<div class="section">
+  <div class="section-label">Digital SAT Structure</div>
+  <h2>Understanding Adaptive Modules</h2>
+  <div class="callout-orange callout"><strong>Critical:</strong> The Digital SAT has TWO math modules. Your performance on Module 1 determines whether you get an Easy or Hard Module 2. This routing decision is the single biggest factor in your score ceiling.</div>
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">How Routing Works</div><div class="topic-arrow">▶</div></div>
+    <div class="topic-body">
+      <p><strong>Module 1</strong> (22 questions, 35 min): Mix of easy, medium, and hard questions. Everyone gets the same module.</p>
+      <p><strong>Routing:</strong> Score well on Module 1 → Hard Module 2. Score poorly → Easy Module 2.</p>
+      <p><strong>Module 2</strong> (22 questions, 35 min): Either the hard path (higher score ceiling) or the easy path (lower ceiling).</p>
+      <p><strong>Score ceiling on Easy Module 2:</strong> Approximately 560-630. Even if you ace Easy Module 2, your math score is capped.</p>
+      <p><strong>Strategic implication:</strong> Module 1 accuracy matters MORE than Module 2 speed. Take your time, avoid careless errors, and secure the hard path.</p>
+    </div>
+  </div>
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">What If You Get Easy Module 2?</div><div class="topic-arrow">▶</div></div>
+    <div class="topic-body">
+      <p><strong>Don't panic.</strong> You can still score in the 560-630 range by answering everything correctly.</p>
+      <p><strong>Use the extra time:</strong> Easy Module 2 questions are more straightforward. Double-check every answer.</p>
+      <p><strong>Focus on grid-ins:</strong> These are where most points are lost on easy modules. Re-read what the question asks.</p>
+      <p><strong>For next time:</strong> Focus Module 1 practice on accuracy over speed. Flag and return strategy is crucial.</p>
+    </div>
   </div>
 </div>
 
@@ -242,7 +275,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- INTERACTIVE: DECISION TREE TRAINER -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 1</div>
   <h2>5-Second Decision Tree Trainer</h2>
   <p>For each question, choose the BEST strategy. Speed matters — don't overthink!</p>
   <div class="exercise" id="dtExercise"></div>
@@ -251,7 +284,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- INTERACTIVE: PLUG IN WORKSHOP -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 2</div>
   <h2>Plug In Workshop</h2>
   <p>Solve these using Plug In. Variables in answer choices = your cue!</p>
   <div class="exercise" style="border-color:var(--adv)" id="piExercise"></div>
@@ -260,7 +293,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- INTERACTIVE: BACKSOLVE WORKSHOP -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 3</div>
   <h2>Backsolve Workshop</h2>
   <p>Solve these by plugging answer choices back in. Number answers = your cue!</p>
   <div class="exercise" style="border-color:var(--algebra)" id="bsExercise"></div>
@@ -269,7 +302,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- INTERACTIVE: BALLPARK ELIMINATOR -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 4</div>
   <h2>Ballpark Eliminator</h2>
   <p>Without solving, eliminate the clearly wrong answer(s). Which choice is obviously wrong?</p>
   <div class="exercise" style="border-color:var(--psda)" id="bpExercise"></div>
@@ -278,18 +311,76 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- INTERACTIVE: GRID-IN TRAP DETECTOR -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 5</div>
   <h2>Grid-In Trap Detector</h2>
   <p>Each scenario describes a student's grid-in answer. Is it correct, or did they fall for a trap?</p>
   <div class="exercise" style="border-color:var(--wrong)" id="giExercise"></div>
   <div id="giScore" class="ex-score"></div>
 </div>
 
+<!-- NEW: PREVENTABLE MISTAKES DIAGNOSTIC -->
+
+<!-- TOP MISREADING TRAPS -->
+<div class="section">
+  <div class="section-label">Common Traps</div>
+  <h2>The Top 8 Preventable Mistakes</h2>
+  <p>These mistakes have nothing to do with math ability — they're about careful reading and attention. Fixing them alone can be worth 3–5 questions per test.</p>
+</div>
+
+<div class="trap-card">
+  <div class="trap-title">Trap 1: Solving for the Wrong Variable</div>
+  <div class="trap-body">The question asks for <code>6x − 14</code>, not x. You solve for x = 9 and pick 9. The answer was 40.</div>
+  <div class="trap-fix">✓ Fix: Underline exactly what the question asks for BEFORE solving.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 2: Intermediate vs. Final Answer</div>
+  <div class="trap-body">"A shirt is 20% off, then taxed 8%. What is the total cost?" You find the discount ($32) and pick that — but the question asks for the final price after tax ($34.56).</div>
+  <div class="trap-fix">✓ Fix: Make sure your answer addresses the FINAL part of the question.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 3: "At Least" vs. "More Than"</div>
+  <div class="trap-body">"At least 5" means ≥ 5 (includes 5). "More than 5" means > 5 (does NOT include 5). Mixing these up changes the answer.</div>
+  <div class="trap-fix">✓ Fix: "At least" = ≥. "More than" = >. "No more than" = ≤. "Fewer than" = <.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 4: Negation Words</div>
+  <div class="trap-body">"Which is NOT a solution?" or "Which CANNOT be true?" Your brain skips the NOT and you pick a valid answer. Wrong.</div>
+  <div class="trap-fix">✓ Fix: Circle negative words (NOT, CANNOT, EXCEPT, LEAST) when you see them.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 5: Axis Scale / Units</div>
+  <div class="trap-body">A graph's y-axis is labeled "in thousands." You read a point as y = 45 instead of y = 45,000. Or x-axis is months but the question asks about years.</div>
+  <div class="trap-fix">✓ Fix: Always read axis labels AND the scale before reading any data.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 6: Positive vs. Negative in Context</div>
+  <div class="trap-body">You solve correctly and get x = −3, but enter 3 in the grid-in. Or the question says "what is the DECREASE" and you give a negative value instead of the positive magnitude.</div>
+  <div class="trap-fix">✓ Fix: For grid-ins, double-check the sign. For "increase/decrease" questions, give positive values.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 7: Wrong Denominator for Percent Change</div>
+  <div class="trap-body">Price goes from $50 to $60. You calculate 10/60 = 16.7% instead of 10/50 = 20%. The denominator is always the ORIGINAL value.</div>
+  <div class="trap-fix">✓ Fix: % change = (new − old) / OLD × 100. Denominator = starting value.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 8: f(x) Value vs. x Value</div>
+  <div class="trap-body">"For what value of x is f(x) at its minimum?" You correctly find the minimum is −1, but the x-value is 2. You enter −1. Wrong.</div>
+  <div class="trap-fix">✓ Fix: "Value of x" means the input. "Value of f(x)" means the output. Read which one.</div>
+</div>
+
+<div class="section">
+  <div class="section-label">Interactive Exercise 6</div>
+  <h2>Preventable Mistakes Diagnostic</h2>
+  <p>Research shows >35% of SAT math errors are preventable misreads, not knowledge gaps. Catch the trap in each scenario.</p>
+  <div class="exercise" style="border-color:var(--accent)" id="pmExercise"></div>
+  <div id="pmScore" class="ex-score"></div>
+</div>
+
 <!-- SAT PRACTICE -->
 <div class="section">
   <div class="section-label">SAT-Style Practice</div>
   <h2>Strategy-Focused Practice</h2>
-  <p>Each question has a recommended strategy. Try using it instead of brute-force algebra.</p>
+  <p>10 questions with recommended strategies. Try using it instead of brute-force algebra.</p>
   <div id="satQuestions"></div>
   <div id="satScore" class="ex-score"></div>
 </div>
@@ -306,6 +397,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <li>Time budget: First pass ~25 min, Review ~8 min, LOTD ~2 min. Check pace at Q11.</li>
       <li>Grid-ins: Always re-read what the question asks for. The #1 trap is answering x when they asked for 2x.</li>
       <li>LOTD: Pick one letter (e.g., B) and use it for ALL remaining guesses. Never leave blanks.</li>
+      <li>Module 1 accuracy is MORE important than Module 2 — it determines your routing and score ceiling.</li>
+      <li>Over 35% of errors are preventable misreads. Always re-read what the question asks before answering.</li>
     </ol>
   </div>
 </div>
@@ -317,199 +410,134 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <script>
-// ============ HELPER ============
-function mkQuiz(id,scoreId,items,title,sub,getAns,setAns){
-  document.getElementById(id).innerHTML=`<h3>${title}</h3><div class="exercise-sub">${sub}</div>`+
-    items.map((item,i)=>{
-      const ans=getAns(i);const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">${item.label||('Question '+(i+1))}</div>
-        <div class="ex-prompt">${item.q}</div>
-        <div class="ex-options">${item.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===item.correct)cls+=' ex-correct';else if(o===ans&&o!==item.correct)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="${setAns}(${i},this.textContent)">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===item.correct?'✓ Correct! ':'✗ Incorrect. ')+item.fb:''}</div></div>`;
-    }).join('');
-  const t=items.length,a=Object.keys(typeof getAns==='function'?items.reduce((acc,_,i)=>{const v=getAns(i);if(v!==undefined)acc[i]=v;return acc},{}):{}).length;
-  // score done separately
-}
+// ============ PROGRESS BAR ============
+window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;var pct=h>0?(window.scrollY/h)*100:0;document.getElementById('progressFill').style.width=pct+'%';});
 
-// ============ DECISION TREE TRAINER ============
-const DT=[
-  {q:'If a is a positive integer, which expression equals (a² − 4)/(a − 2)?',correct:'Plug In',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Variables in answer choices (implied) → Plug In. Try a = 3: (9−4)/(3−2) = 5. Check: a+2 = 5. ✓'},
-  {q:'What is the value of x if 5x − 3 = 2x + 9? Choices: A) 2 B) 3 C) 4 D) 5',correct:'Backsolve',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Number answers → Backsolve. Try C) x=4: 5(4)−3=17, 2(4)+9=17. ✓'},
-  {q:'At what point do y = x² − 1 and y = 2x + 1 intersect?',correct:'Desmos',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'System with a quadratic → Graph both in Desmos and click intersections.'},
-  {q:'What is 7 × 13?',correct:'Solve Directly',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Simple arithmetic = solve directly. 91. No tools needed.'},
-  {q:'A car travels at 55 mph. Approximately how far does it go in 3.75 hours? Choices: A) 105 B) 165 C) 206 D) 412',correct:'Ballpark + POE',opts:['Solve Directly','Plug In','Ballpark + POE','Desmos'],fb:'Estimate: ~55 × 4 = 220. Closest is C) 206. Exact: 55 × 3.75 = 206.25.'},
-  {q:'Which graph represents y = −(x + 2)² + 3?',correct:'Desmos',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Graph it in Desmos and match the picture. Vertex at (−2, 3), opens down.'},
-  {q:'For all x, which is equivalent to 2(3x − 1) + 4(x + 5)? Choices have variables.',correct:'Plug In',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Variables in answer choices → Plug In. Try x = 2: 2(5) + 4(7) = 38. Test each choice.'},
-  {q:'A rectangle has area 48 and length 3 more than width. What is the width? Choices: A) 3 B) 4 C) 5 D) 6',correct:'Backsolve',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Number answers → Backsolve. Try C) w=5, l=8, area=40. Too small. Try D) w=6, l=9, area=54. Too big. Hmm, none work perfectly. But process works.'},
-  {q:'If f(x) = 3x + 2, what is f(f(1))?',correct:'Solve Directly',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'You can see the path: f(1) = 5, then f(5) = 17. Direct solve is fastest.'},
-  {q:'A line of best fit for 10 data points — find the slope.',correct:'Desmos',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Regression with 10 points → Desmos table + y₁ ~ mx₁ + b. Only option.'},
+// ============ HELPERS ============
+function showScore(id,ans,items,key){var t=items.length,a=Object.keys(ans).length,c=0;Object.entries(ans).forEach(function(p){var i=parseInt(p[0]),v=p[1];if(v===items[i][key||'correct'])c++;});document.getElementById(id).innerHTML=a===t?'<strong style="color:'+(c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';}
+
+// ============ EX 1: DECISION TREE ============
+var DT=[
+  {q:'If a is positive, which equals (a²−4)/(a−2)?',correct:'Plug In',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Variables in choices → Plug In. a=3: 5/(1)=5. a+2=5 ✓'},
+  {q:'5x−3=2x+9. Choices: 2, 3, 4, 5.',correct:'Backsolve',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Number answers → Backsolve. x=4: 17=17 ✓'},
+  {q:'Where do y=x²−1 and y=2x+1 intersect?',correct:'Desmos',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Quadratic system → Graph both in Desmos.'},
+  {q:'What is 7 × 13?',correct:'Solve Directly',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Simple arithmetic = direct. 91.'},
+  {q:'Car at 55mph for 3.75 hours. Distance? A)105 B)165 C)206 D)412',correct:'Ballpark + POE',opts:['Solve Directly','Plug In','Ballpark + POE','Desmos'],fb:'~55×4=220. Closest: C)206.'},
+  {q:'Which graph is y=−(x+2)²+3?',correct:'Desmos',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Graph it and match the picture.'},
+  {q:'For all x, 2(3x−1)+4(x+5)=? Choices have variables.',correct:'Plug In',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Variables in choices → Plug In.'},
+  {q:'Rectangle area=48, length=width+3. Width? A)3 B)4 C)5 D)6',correct:'Backsolve',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Number answers → Backsolve.'},
+  {q:'f(x)=3x+2. Find f(f(1)).',correct:'Solve Directly',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'f(1)=5, f(5)=17. Direct.'},
+  {q:'Best-fit line for 10 data points.',correct:'Desmos',opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Regression → Desmos only.'},
 ];
-let dtAns={};
+var dtAns={};
+function ansDT(i,oi){if(dtAns[i]!==undefined)return;dtAns[i]=DT[i].opts[oi];renderDT();}
 function renderDT(){
-  document.getElementById('dtExercise').innerHTML=`<h3>🌳 Decision Tree Trainer</h3><div class="exercise-sub">Pick the fastest strategy for each question.</div>`+
-    DT.map((d,i)=>{
-      const ans=dtAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Question ${i+1}</div>
-        <div class="ex-prompt">${d.q}</div>
-        <div class="ex-options">${d.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===d.correct)cls+=' ex-correct';else if(o===ans&&o!==d.correct)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="dtAns[${i}]='${o.replace(/'/g,"\\'")}';renderDT()">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===d.correct?'✓ Correct! ':'✗ Incorrect. ')+d.fb:''}</div></div>`;
-    }).join('');
-  const t=DT.length,a=Object.keys(dtAns).length,c=Object.entries(dtAns).filter(([i,v])=>v===DT[i].correct).length;
-  document.getElementById('dtScore').innerHTML=a===t?`<strong style="color:${c>=8?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('dtExercise').innerHTML='<h3>🌳 Decision Tree Trainer</h3><div class="exercise-sub">Pick the fastest strategy.</div>'+DT.map(function(d,i){var ans=dtAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Question '+(i+1)+'</div><div class="ex-prompt">'+d.q+'</div><div class="ex-options">'+d.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===d.correct)cls+=' ex-correct';else if(o===ans&&o!==d.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansDT('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===d.correct?'✓ Correct! ':'✗ Incorrect. ')+d.fb:'')+'</div></div>';}).join('');
+  showScore('dtScore',dtAns,DT);
 }
 renderDT();
 
-// ============ PLUG IN WORKSHOP ============
-const PI=[
-  {q:'If n is a positive integer, which is equivalent to <code>(n² + n) / n</code>?',opts:['n + 1','n²','n − 1','2n'],correct:'n + 1',fb:'Plug In n = 3: (9+3)/3 = 4. Check: n+1 = 4 ✓, n² = 9 ✗, n−1 = 2 ✗, 2n = 6 ✗.'},
-  {q:'A store reduces all prices by p percent. If an item originally costs d dollars, what is the sale price?',opts:['d − pd','d(1 − p/100)','d − p','dp/100'],correct:'d(1 − p/100)',fb:'Plug In d = 100, p = 20: sale price = $80. Check: d(1−p/100) = 100(0.8) = 80 ✓.'},
-  {q:'If x > 0, which expression equals <code>√(4x²)</code>?',opts:['2x','4x','2x²','4x²'],correct:'2x',fb:'Plug In x = 3: √(4·9) = √36 = 6. Check: 2x = 6 ✓, 4x = 12 ✗.'},
-  {q:'Which is equivalent to <code>(a + b)² − (a − b)²</code>?',opts:['4ab','2a²','2b²','0'],correct:'4ab',fb:'Plug In a = 2, b = 3: (5)² − (−1)² = 25 − 1 = 24. Check: 4ab = 4(2)(3) = 24 ✓.'},
+// ============ EX 2: PLUG IN ============
+var PI=[
+  {q:'If n is positive, which equals <code>(n²+n)/n</code>?',correct:'n + 1',opts:['n + 1','n²','n − 1','2n'],fb:'n=3: 12/3=4. n+1=4 ✓'},
+  {q:'Store reduces by p%. Item costs d dollars. Sale price?',correct:'d(1 − p/100)',opts:['d − pd','d(1 − p/100)','d − p','dp/100'],fb:'d=100,p=20: $80. d(1−20/100)=80 ✓'},
+  {q:'If x>0, <code>√(4x²)</code> = ?',correct:'2x',opts:['2x','4x','2x²','4x²'],fb:'x=3: √36=6. 2x=6 ✓'},
+  {q:'<code>(a+b)²−(a−b)²</code> = ?',correct:'4ab',opts:['4ab','2a²','2b²','0'],fb:'a=2,b=3: 25−1=24. 4ab=24 ✓'},
 ];
-let piAns={};
+var piAns={};
+function ansPI(i,oi){if(piAns[i]!==undefined)return;piAns[i]=PI[i].opts[oi];renderPI();}
 function renderPI(){
-  document.getElementById('piExercise').innerHTML=`<h3>🔌 Plug In Workshop</h3><div class="exercise-sub">Variables in the choices = Plug In time!</div>`+
-    PI.map((p,i)=>{
-      const ans=piAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Problem ${i+1}</div>
-        <div class="ex-prompt">${p.q}</div>
-        <div class="ex-options">${p.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===p.correct)cls+=' ex-correct';else if(o===ans&&o!==p.correct)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="piAns[${i}]='${o.replace(/'/g,"\\'")}';renderPI()">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===p.correct?'✓ Correct! ':'✗ Incorrect. ')+p.fb:''}</div></div>`;
-    }).join('');
-  const t=PI.length,a=Object.keys(piAns).length,c=Object.entries(piAns).filter(([i,v])=>v===PI[i].correct).length;
-  document.getElementById('piScore').innerHTML=a===t?`<strong style="color:${c>=3?'var(--correct)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('piExercise').innerHTML='<h3>🔌 Plug In Workshop</h3><div class="exercise-sub">Variables in choices = Plug In!</div>'+PI.map(function(p,i){var ans=piAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">'+p.q+'</div><div class="ex-options">'+p.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===p.correct)cls+=' ex-correct';else if(o===ans&&o!==p.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansPI('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===p.correct?'✓ Correct! ':'✗ Incorrect. ')+p.fb:'')+'</div></div>';}).join('');
+  showScore('piScore',piAns,PI);
 }
 renderPI();
 
-// ============ BACKSOLVE WORKSHOP ============
-const BS=[
-  {q:'If 2x + 5 = 17, what is x?',opts:['4','5','6','7'],correct:'6',fb:'Try 6: 2(6) + 5 = 17 ✓. Found it!'},
-  {q:'A number doubled and increased by 3 equals 19. What is the number?',opts:['6','7','8','9'],correct:'8',fb:'Try 8: 2(8) + 3 = 19 ✓.'},
-  {q:'If x² − 5x + 6 = 0, which is a solution?',opts:['1','2','4','6'],correct:'2',fb:'Try 2: 4 − 10 + 6 = 0 ✓. (The other solution is 3, not in the choices.)'},
-  {q:'Three consecutive integers sum to 42. What is the smallest?',opts:['12','13','14','15'],correct:'13',fb:'Try 13: 13 + 14 + 15 = 42 ✓.'},
+// ============ EX 3: BACKSOLVE ============
+var BS=[
+  {q:'2x+5=17. x=?',correct:'6',opts:['4','5','6','7'],fb:'6: 12+5=17 ✓'},
+  {q:'Number doubled plus 3 = 19.',correct:'8',opts:['6','7','8','9'],fb:'8: 16+3=19 ✓'},
+  {q:'x²−5x+6=0. Solution?',correct:'2',opts:['1','2','4','6'],fb:'2: 4−10+6=0 ✓'},
+  {q:'Three consecutive integers sum to 42. Smallest?',correct:'13',opts:['12','13','14','15'],fb:'13+14+15=42 ✓'},
 ];
-let bsAns={};
+var bsAns={};
+function ansBS(i,oi){if(bsAns[i]!==undefined)return;bsAns[i]=BS[i].opts[oi];renderBS();}
 function renderBS(){
-  document.getElementById('bsExercise').innerHTML=`<h3>🔄 Backsolve Workshop</h3><div class="exercise-sub">Number answers = plug them back in!</div>`+
-    BS.map((b,i)=>{
-      const ans=bsAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Problem ${i+1}</div>
-        <div class="ex-prompt">${b.q}</div>
-        <div class="ex-options">${b.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===b.correct)cls+=' ex-correct';else if(o===ans&&o!==b.correct)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="bsAns[${i}]='${o}';renderBS()">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===b.correct?'✓ Correct! ':'✗ Incorrect. ')+b.fb:''}</div></div>`;
-    }).join('');
-  const t=BS.length,a=Object.keys(bsAns).length,c=Object.entries(bsAns).filter(([i,v])=>v===BS[i].correct).length;
-  document.getElementById('bsScore').innerHTML=a===t?`<strong style="color:${c>=3?'var(--correct)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('bsExercise').innerHTML='<h3>🔄 Backsolve Workshop</h3><div class="exercise-sub">Number answers = plug them back in!</div>'+BS.map(function(b,i){var ans=bsAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">'+b.q+'</div><div class="ex-options">'+b.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===b.correct)cls+=' ex-correct';else if(o===ans&&o!==b.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansBS('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===b.correct?'✓ Correct! ':'✗ Incorrect. ')+b.fb:'')+'</div></div>';}).join('');
+  showScore('bsScore',bsAns,BS);
 }
 renderBS();
 
-// ============ BALLPARK ELIMINATOR ============
-const BP=[
-  {q:'What is 18% of 412?',wrong:'156.8',opts:['4.12','74.16','156.8','7,416'],fb:'Estimate: ~20% of 400 = 80. 156.8 and 7,416 are way off. 74.16 is correct (18% × 412 = 74.16). 4.12 is ~1%.'},
-  {q:'A right triangle has legs 5 and 12. What is the hypotenuse?',wrong:'7',opts:['7','13','17','60'],fb:'Hypotenuse must be > longest leg (12) but < sum of legs (17). Only 13 fits. (And it\'s the 5-12-13 triple!)'},
-  {q:'A population triples every decade starting at 200. After 3 decades?',wrong:'600',opts:['600','2,700','5,400','18,000'],fb:'Triples 3 times: 200 → 600 → 1,800 → 5,400. 600 is only one tripling. 18,000 is too many.'},
-  {q:'If a square has area 50, what is the side length?',wrong:'25',opts:['5','7.07','12.5','25'],fb:'√50 ≈ 7.07. Side can\'t be 25 (that would give area 625). Can\'t be 12.5 (area 156).'},
-  {q:'A car goes 300 miles on 12 gallons. Miles per gallon?',wrong:'3,600',opts:['3,600','25','0.04','250'],fb:'300 ÷ 12 = 25 mpg. 3,600 is miles × gallons (wrong operation). 0.04 is gallons/mile (inverted).'},
-  {q:'30% discount on a $89 item. Sale price?',wrong:'$26.70',opts:['$26.70','$59.30','$62.30','$116.70'],fb:'30% off $89 → pay 70% → ~$62. $26.70 is 30% of 89 (the discount, not the price). $116.70 is a 30% increase.'},
+// ============ EX 4: BALLPARK ============
+var BP=[
+  {q:'What is 18% of 412?',wrong:'156.8',opts:['4.12','74.16','156.8','7,416'],fb:'~20% of 400=80. 74.16 correct. 156.8 is ~38%.'},
+  {q:'Right triangle legs 5 and 12. Hypotenuse?',wrong:'7',opts:['7','13','17','60'],fb:'Must be >12 but <17. Only 13 fits.'},
+  {q:'Population triples every decade from 200. After 3 decades?',wrong:'600',opts:['600','2,700','5,400','18,000'],fb:'200→600→1800→5400. 600 is one tripling.'},
+  {q:'Square area 50. Side length?',wrong:'25',opts:['5','7.07','12.5','25'],fb:'√50≈7.07. 25 gives area 625.'},
+  {q:'300 miles on 12 gallons. MPG?',wrong:'3,600',opts:['3,600','25','0.04','250'],fb:'300÷12=25. 3600 is miles×gallons.'},
+  {q:'30% off $89. Sale price?',wrong:'$26.70',opts:['$26.70','$59.30','$62.30','$116.70'],fb:'Pay 70%≈$62. $26.70 is the discount amount.'},
 ];
-let bpAns={};
+var bpAns={};
+function ansBP(i,oi){if(bpAns[i]!==undefined)return;bpAns[i]=BP[i].opts[oi];renderBP();}
 function renderBP(){
-  document.getElementById('bpExercise').innerHTML=`<h3>📏 Ballpark Eliminator</h3><div class="exercise-sub">Which answer is OBVIOUSLY wrong? Click the one to eliminate.</div>`+
-    BP.map((b,i)=>{
-      const ans=bpAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Scenario ${i+1}</div>
-        <div class="ex-prompt">${b.q}</div>
-        <div class="ex-options">${b.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===b.wrong)cls+=' ex-correct';else if(o===ans&&o!==b.wrong)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="bpAns[${i}]='${o.replace(/'/g,"\\'")}';renderBP()">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===b.wrong?'✓ Correct — that\'s the one to eliminate! ':'✗ That answer is actually plausible. ')+b.fb:''}</div></div>`;
-    }).join('');
-  const t=BP.length,a=Object.keys(bpAns).length,c=Object.entries(bpAns).filter(([i,v])=>v===BP[i].wrong).length;
-  document.getElementById('bpScore').innerHTML=a===t?`<strong style="color:${c>=5?'var(--correct)':c>=3?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('bpExercise').innerHTML='<h3>📏 Ballpark Eliminator</h3><div class="exercise-sub">Click the OBVIOUSLY wrong answer.</div>'+BP.map(function(b,i){var ans=bpAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Scenario '+(i+1)+'</div><div class="ex-prompt">'+b.q+'</div><div class="ex-options">'+b.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===b.wrong)cls+=' ex-correct';else if(o===ans&&o!==b.wrong)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansBP('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===b.wrong?'✓ Correct — eliminated! ':'✗ That\'s plausible. ')+b.fb:'')+'</div></div>';}).join('');
+  showScore('bpScore',bpAns,BP,'wrong');
 }
 renderBP();
 
-// ============ GRID-IN TRAP DETECTOR ============
-const GI=[
-  {q:'Question: "Find the value of 2x if 3x = 15." Student entered: 5',correct:'Trap!',opts:['Correct','Trap!'],fb:'x = 5, but the question asked for 2x = 10. The student answered x instead of 2x. Always re-read!'},
-  {q:'Question: "What is 3/7 as a decimal?" Student entered: 0.428',correct:'Correct',opts:['Correct','Trap!'],fb:'3/7 = 0.42857... Truncated to 0.428 is accepted. Could also enter 3/7 directly.'},
-  {q:'Question: "How many solutions does x² + 4 = 0 have?" Student entered: 2',correct:'Trap!',opts:['Correct','Trap!'],fb:'x² = −4 has NO real solutions. The student might have confused it with x² − 4 = 0. Answer: 0.'},
-  {q:'Question: "What is the y-intercept?" Student entered: (0, 5)',correct:'Trap!',opts:['Correct','Trap!'],fb:'Grid-in only accepts numbers, not coordinate pairs. The answer should be just 5.'},
-  {q:'Question: "Solve |x − 3| = 7." Student entered: 10',correct:'Correct',opts:['Correct','Trap!'],fb:'x − 3 = 7 → x = 10, or x − 3 = −7 → x = −4. Both are valid. Since grid-in accepts any correct value, 10 works.'},
-  {q:'Question: "Find the positive difference between the roots of x² − 5x + 6 = 0." Student entered: 3',correct:'Trap!',opts:['Correct','Trap!'],fb:'Roots are 2 and 3. Positive difference = |3 − 2| = 1, not 3. The student entered a root, not the difference.'},
+// ============ EX 5: GRID-IN TRAPS ============
+var GI=[
+  {q:'"Find 2x if 3x=15." Student entered: 5',correct:'Trap!',opts:['Correct','Trap!'],fb:'x=5, but question asks 2x=10. #1 trap!'},
+  {q:'"3/7 as decimal?" Student entered: 0.428',correct:'Correct',opts:['Correct','Trap!'],fb:'3/7≈0.42857. Truncated is fine.'},
+  {q:'"How many solutions: x²+4=0?" Student: 2',correct:'Trap!',opts:['Correct','Trap!'],fb:'x²=−4 has NO real solutions. Answer: 0.'},
+  {q:'"Y-intercept?" Student: (0, 5)',correct:'Trap!',opts:['Correct','Trap!'],fb:'Grid-in accepts numbers only, not coordinates. Enter 5.'},
+  {q:'"Solve |x−3|=7." Student: 10',correct:'Correct',opts:['Correct','Trap!'],fb:'x=10 or x=−4. Either accepted.'},
+  {q:'"Positive difference of roots: x²−5x+6=0." Student: 3',correct:'Trap!',opts:['Correct','Trap!'],fb:'Roots 2 and 3. Difference=|3−2|=1, not 3.'},
 ];
-let giAns={};
+var giAns={};
+function ansGI(i,oi){if(giAns[i]!==undefined)return;giAns[i]=GI[i].opts[oi];renderGI();}
 function renderGI(){
-  document.getElementById('giExercise').innerHTML=`<h3>⚠️ Grid-In Trap Detector</h3><div class="exercise-sub">Did the student answer correctly, or fall for a trap?</div>`+
-    GI.map((g,i)=>{
-      const ans=giAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Scenario ${i+1}</div>
-        <div class="ex-prompt">${g.q}</div>
-        <div class="ex-options">${g.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===g.correct)cls+=' ex-correct';else if(o===ans&&o!==g.correct)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="giAns[${i}]='${o}';renderGI()">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===g.correct?'✓ Correct! ':'✗ Nope! ')+g.fb:''}</div></div>`;
-    }).join('');
-  const t=GI.length,a=Object.keys(giAns).length,c=Object.entries(giAns).filter(([i,v])=>v===GI[i].correct).length;
-  document.getElementById('giScore').innerHTML=a===t?`<strong style="color:${c>=5?'var(--correct)':c>=3?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('giExercise').innerHTML='<h3>⚠️ Grid-In Trap Detector</h3><div class="exercise-sub">Correct or trap?</div>'+GI.map(function(g,i){var ans=giAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Scenario '+(i+1)+'</div><div class="ex-prompt">'+g.q+'</div><div class="ex-options">'+g.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===g.correct)cls+=' ex-correct';else if(o===ans&&o!==g.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansGI('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===g.correct?'✓ Correct! ':'✗ Nope! ')+g.fb:'')+'</div></div>';}).join('');
+  showScore('giScore',giAns,GI);
 }
 renderGI();
 
-// ============ SAT PRACTICE ============
-const SAT_QS=[
-  {tier:'Plug In',q:'If k is a positive integer, which expression is equivalent to <code>(k³ − k) / k</code>?',
-   choices:['k² − 1','k² − k','k − 1','k³ − 1'],correct:0,
-   fb:'<strong>Plug In k = 2:</strong> (8−2)/2 = 3. Check: k²−1 = 3 ✓. Or simplify: k(k²−1)/k = k²−1.'},
-  {tier:'Backsolve',q:'If 4x − 3 = 2x + 7, what is x?',
-   choices:['2','3','4','5'],correct:3,
-   fb:'<strong>Backsolve D) x = 5:</strong> 4(5)−3 = 17. 2(5)+7 = 17. ✓ Equal!'},
-  {tier:'Ballpark',q:'A circle has radius 8. What is its area?',
-   choices:['25.13','50.27','200.96','804.25'],correct:2,
-   fb:'<strong>Ballpark:</strong> πr² ≈ 3.14 × 64 ≈ 200. Only C is close. Exact: 64π ≈ 201.06.'},
-  {tier:'Desmos',q:'For what value of x does 2ˣ = 10?',
-   choices:['3','3.32','5','10'],correct:1,
-   fb:'<strong>Desmos:</strong> Graph y = 2^x and y = 10. Click intersection → x ≈ 3.32. Algebra: x = log₂(10) ≈ 3.32.'},
-  {tier:'Plug In',q:'A worker earns d dollars per hour and works h hours per week. Which expression represents the worker\'s monthly (4-week) earnings?',
-   choices:['4dh','dh/4','d + 4h','4d + h'],correct:0,
-   fb:'<strong>Plug In d = 10, h = 20:</strong> Weekly = $200, Monthly = $800. Check: 4dh = 4(10)(20) = 800 ✓.'},
-  {tier:'Backsolve',q:'The sum of two consecutive even integers is 54. What is the smaller integer?',
-   choices:['24','26','28','30'],correct:1,
-   fb:'<strong>Backsolve B) 26:</strong> 26 + 28 = 54 ✓.'},
-  {tier:'Desmos',q:'How many times does y = sin(x) cross y = 0.5 between x = 0 and x = 2π?',
-   choices:['0','1','2','4'],correct:2,
-   fb:'<strong>Desmos:</strong> Graph y = sin(x) and y = 0.5 (switch to radians!). Two intersection points visible in [0, 2π].'},
-  {tier:'Ballpark+POE',q:'A store sells 847 items at $12.99 each. Total revenue is closest to:',
-   choices:['$1,100','$8,500','$11,000','$110,000'],correct:2,
-   fb:'<strong>Ballpark:</strong> ~850 × $13 ≈ $11,050. Only C is close. D is 10× too big. A is way too small.'},
+// ============ EX 6: PREVENTABLE MISTAKES ============
+var PM=[
+  {q:'"If 3x−7=20, what is the value of 6x−14?" Student solved for x, got x=9, entered 9.',correct:'Misread — asked for 6x−14',opts:['Correct answer','Misread — asked for 6x−14'],fb:'6x−14 = 2(3x−7) = 2(20) = 40. No need to solve for x! The question asked for 6x−14, not x.'},
+  {q:'Graph shows y-axis in thousands. Student reads a point as y=45 instead of y=45,000.',correct:'Axis scale misread',opts:['Correct reading','Axis scale misread'],fb:'Always check axis labels and units. "In thousands" means multiply the value you read by 1,000.'},
+  {q:'"At least 5 students" — student interpreted as "more than 5" (≥6).',correct:'At least = ≥, not >',opts:['Same meaning','At least = ≥, not >'],fb:'"At least 5" means 5 or more (≥5). "More than 5" means >5. This one-word difference changes the answer.'},
+  {q:'Question says "which CANNOT be true." Student picked an answer that CAN be true.',correct:'Missed the negation',opts:['Correct approach','Missed the negation'],fb:'Circle/underline "CANNOT" or "NOT" or "EXCEPT" when you see them. These negation words flip the entire question.'},
+  {q:'Price decreases from $80 to $60. Student calculates percent change using 60 as denominator.',correct:'Wrong denominator for % change',opts:['Correct calculation','Wrong denominator for % change'],fb:'Percent change = (new−old)/OLD. Denominator is always the ORIGINAL value: (60−80)/80 = −25%.'},
+  {q:'Question asks for x+y. Student solved for x correctly (x=3) and entered 3.',correct:'Answered x, not x+y',opts:['Complete answer','Answered x, not x+y'],fb:'The most common SAT trap: answering an intermediate step instead of what was actually asked. Always re-read the question.'},
+  {q:'"f(x)=x²−4x+3. For what value of x is f(x) at its minimum?" Student entered f(2)=−1.',correct:'Asked for x, gave f(x)',opts:['Correct — gave the minimum','Asked for x, gave f(x)'],fb:'Question asks for the x-VALUE where minimum occurs (x=2), not the minimum VALUE itself (−1). Read carefully!'},
+  {q:'Temperature drops 3°F per hour for 5 hours from 68°F. Student gets 83°F.',correct:'Added instead of subtracted',opts:['Correct calculation','Added instead of subtracted'],fb:'"Drops" = subtract. 68 − 15 = 53°F. Getting 83°F means you added. Watch for direction words: drops, decreases, loses.'},
 ];
-let satAns={};
+var pmAns={};
+function ansPM(i,oi){if(pmAns[i]!==undefined)return;pmAns[i]=PM[i].opts[oi];renderPM();}
+function renderPM(){
+  document.getElementById('pmExercise').innerHTML='<h3>🔍 Catch the Mistake</h3><div class="exercise-sub">Over 35% of SAT errors are preventable misreads. What went wrong?</div>'+PM.map(function(q,i){var ans=pmAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Trap '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="ex-options">'+q.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===q.correct)cls+=' ex-correct';else if(o===ans&&o!==q.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansPM('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+  showScore('pmScore',pmAns,PM);
+}
+renderPM();
+
+// ============ SAT PRACTICE ============
+var SAT_QS=[
+  {tier:'Plug In',q:'If k is positive, <code>(k³−k)/k</code> equals?',choices:['k²−1','k²−k','k−1','k³−1'],correct:0,fb:'k=2: 6/2=3. k²−1=3 ✓'},
+  {tier:'Backsolve',q:'4x−3=2x+7. x=?',choices:['2','3','4','5'],correct:3,fb:'x=5: 17=17 ✓'},
+  {tier:'Ballpark',q:'Circle radius 8. Area?',choices:['25.13','50.27','200.96','804.25'],correct:2,fb:'π×64≈201. Only C.'},
+  {tier:'Desmos',q:'2ˣ=10. x≈?',choices:['3','3.32','5','10'],correct:1,fb:'Graph y=2^x and y=10. Intersection ≈ 3.32.'},
+  {tier:'Plug In',q:'Worker earns d $/hr, works h hrs/wk. Monthly (4 weeks)?',choices:['4dh','dh/4','d+4h','4d+h'],correct:0,fb:'d=10,h=20: monthly=$800. 4dh=800 ✓'},
+  {tier:'Backsolve',q:'Two consecutive even integers sum to 54. Smaller?',choices:['24','26','28','30'],correct:1,fb:'26+28=54 ✓'},
+  {tier:'Desmos',q:'sin(x)=0.5 crossings in [0,2π]?',choices:['0','1','2','4'],correct:2,fb:'Graph both. Two intersections.'},
+  {tier:'Ballpark',q:'847 items × $12.99. Revenue closest to:',choices:['$1,100','$8,500','$11,000','$110,000'],correct:2,fb:'~850×$13≈$11,050. Only C.'},
+  {tier:'Prevent',q:'If 2x+1=9, what is 4x+2?',choices:['4','8','16','18'],correct:3,fb:'Notice: 4x+2 = 2(2x+1) = 2(9) = 18. Don\'t solve for x first!'},
+  {tier:'Prevent',q:'Price goes from $50 to $60. Percent increase?',choices:['10%','16.7%','20%','83.3%'],correct:2,fb:'(60−50)/50×100 = 20%. Trap: 10/60=16.7% uses wrong denominator.'},
+];
+var satAns={};
 function renderSAT(){
-  document.getElementById('satQuestions').innerHTML=SAT_QS.map((q,i)=>{
-    const ans=satAns[i];const has=ans!==undefined;
-    return `<div class="sat-q"><div class="ex-num" style="color:var(--strat)">${q.tier} · Question ${i+1}</div>
-      <div class="ex-prompt">${q.q}</div>
-      <div class="sat-choices">${q.choices.map((ch,ci)=>{
-        let cls='sat-choice';if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}
-        return `<div class="${cls}" onclick="satAns[${i}]=${ci};renderSAT()"><div class="sc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
-      }).join('')}</div>
-      <div class="sat-fb${has?' show':''}${has?(ans===q.correct?' sfb-correct':' sfb-wrong'):''}">${has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
-  }).join('');
-  const t=SAT_QS.length,a=Object.keys(satAns).length,c=Object.entries(satAns).filter(([i,v])=>v===SAT_QS[i].correct).length;
-  document.getElementById('satScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('satQuestions').innerHTML=SAT_QS.map(function(q,i){var ans=satAns[i];var has=ans!==undefined;return '<div class="sat-q"><div class="ex-num" style="color:var(--strat)">'+q.tier+' · Question '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="sat-choices">'+q.choices.map(function(ch,ci){var cls='sat-choice';if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}return '<div class="'+cls+'" onclick="satAns['+i+']='+ci+';renderSAT()"><div class="sc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="sat-fb'+(has?' show':'')+(has?(ans===q.correct?' sfb-correct':' sfb-wrong'):'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+  var t=SAT_QS.length,a=Object.keys(satAns).length,c=0;Object.entries(satAns).forEach(function(p){if(parseInt(p[1])===SAT_QS[parseInt(p[0])].correct)c++;});
+  document.getElementById('satScore').innerHTML=a===t?'<strong style="color:'+(c>=7?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
 }
 renderSAT();
 </script>

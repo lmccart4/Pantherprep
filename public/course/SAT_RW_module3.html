@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3: Modifiers, Parallelism & Structure — PantherPrep SAT R&W</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e2e8f0;font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+input[type="range"]{width:100%}
+button{font-family:inherit}
+a{color:#10b981;text-decoration:none}
+a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0a0a0f}
+::-webkit-scrollbar-thumb{background:#1e293b;border-radius:3px}
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const{useState,useEffect,useCallback,useRef}=React;
+const e=React.createElement;
+
+// ══════════════════════════════════════════
+// DESIGN TOKENS
+// ══════════════════════════════════════════
+const T={
+  dark:'#0a0a0f',card:'#13131f',border:'#1e293b',
+  text:'#e2e8f0',sub:'#94a3b8',muted:'#64748b',dim:'#475569',
+  accent:'#10b981',accentDark:'#059669',
+  amber:'#f59e0b',blue:'#3b82f6',purple:'#a855f7',
+  red:'#ef4444',pink:'#ec4899',
+  correct:'#10b981',correctBg:'rgba(16,185,129,.1)',
+  wrong:'#ef4444',wrongBg:'rgba(239,68,68,.1)',
+};
+
+// ══════════════════════════════════════════
+// SHARED STYLES
+// ══════════════════════════════════════════
+const btn=(bg,color,extra)=>({
+  padding:'12px 28px',borderRadius:10,border:'none',background:bg,
+  color,fontWeight:700,fontSize:15,cursor:'pointer',transition:'transform .12s,filter .12s',...extra
+});
+const cardStyle=(extra)=>({
+  background:T.card,border:`1px solid ${T.border}`,borderRadius:16,padding:'22px 24px',...extra
+});
+const passageStyle={
+  background:T.dark,border:`1px solid ${T.border}`,borderRadius:10,
+  padding:'14px 16px',fontSize:15,color:'#cbd5e1',lineHeight:1.8,
+  marginBottom:14,fontFamily:'Georgia,serif'
+};
+const labelTag=(color)=>({
+  display:'inline-block',fontSize:11,fontWeight:700,letterSpacing:1.5,
+  textTransform:'uppercase',padding:'3px 10px',borderRadius:6,
+  background:`${color}22`,color
+});
+
+// ══════════════════════════════════════════
+// RETRIEVAL WARM-UP DATA (Modules 1 & 2 review)
+// ══════════════════════════════════════════
+const WARMUP=[
+  // Module 1: Boundaries
+  {passage:'The archaeologist carefully documented each artifact _______ she also photographed the surrounding soil layers for context.',
+   stem:'Which choice conforms to the conventions of Standard English?',
+   choices:['found,','found;','found','found:'],correct:1,type:'boundaries',
+   explain:'Two independent clauses. A semicolon correctly joins them. A comma (A) creates a comma splice. No punctuation (C) creates a run-on. A colon (D) would need the second clause to explain the first.'},
+  {passage:'The new regulations require all food manufacturers to list potential allergens on their _______ failure to comply can result in fines of up to $50,000.',
+   stem:'Which choice conforms to the conventions of Standard English?',
+   choices:['labels, failure','labels; failure','labels failure','labels. Failure'],correct:1,type:'boundaries',
+   explain:'Two ICs need a boundary. Semicolon (B) or period (D) both work, but (D) creates a fragment-style break that misses the logical connection. (A) is a comma splice. (C) is a run-on.'},
+  {passage:'Dr. Okafor _______ a leading researcher in marine biology, has published over forty peer-reviewed studies on coral reef ecosystems.',
+   stem:'Which choice conforms to the conventions of Standard English?',
+   choices:['—a leading researcher in marine biology—',', a leading researcher in marine biology,','a leading researcher in marine biology','(a leading researcher in marine biology)'],correct:1,type:'boundaries',
+   explain:'The appositive "a leading researcher in marine biology" renames Dr. Okafor and must be set off. Commas (B) are the standard punctuation. Dashes (A) also work but the question asks for standard conventions.'},
+  {passage:'The committee will review applications from students who have maintained a GPA of 3.5 or _______ and who have completed at least 20 hours of community service.',
+   stem:'Which choice conforms to the conventions of Standard English?',
+   choices:['higher,','higher;','higher','higher—'],correct:2,type:'boundaries',
+   explain:'"Who have maintained…or higher" and "who have completed…" are parallel elements in a restrictive clause joined by "and." No punctuation needed before "and" connecting two "who" clauses.'},
+  // Module 2: Agreement
+  {passage:'Neither the director nor the actors _______ willing to compromise on the final scene of the production.',
+   stem:'Which choice conforms to the conventions of Standard English?',
+   choices:['was','were','is','has been'],correct:1,type:'agreement',
+   explain:'With "neither…nor," the verb agrees with the nearer subject: "actors" (plural) → "were." Present tense options (C, D) don\'t match the past-tense context.'},
+  {passage:'The collection of rare manuscripts, along with several first-edition _______ been donated to the university library.',
+   stem:'Which choice conforms to the conventions of Standard English?',
+   choices:['novels, have','novels, has','novels have','novels has'],correct:1,type:'agreement',
+   explain:'"Collection" (singular) is the subject. "Along with…novels" is a parenthetical — it doesn\'t change the subject number. Singular subject → "has." Comma after "novels" closes the parenthetical.'},
+  {passage:'Every student in the advanced placement courses _______ required to complete a research project before graduation.',
+   stem:'Which choice conforms to the conventions of Standard English?',
+   choices:['are','were','is','have been'],correct:2,type:'agreement',
+   explain:'"Every student" is singular. "Is" matches. "Are" (A) and "have been" (D) are plural. "Were" (B) shifts tense.'},
+  {passage:'The data from the climate study _______ that rising ocean temperatures are accelerating the rate of polar ice melt.',
+   stem:'Which choice conforms to the conventions of Standard English?',
+   choices:['suggest','suggests','are suggesting','have suggested'],correct:1,type:'agreement',
+   explain:'"Data" in formal/academic writing can be treated as singular (the dataset). "Suggests" matches this singular usage. In SAT conventions, the context of a study reporting findings supports singular.'}
+];
+
+// ══════════════════════════════════════════
+// LESSON DATA (original, preserved)
+// ══════════════════════════════════════════
+const LESSONS=[
+  {id:"intro",title:"The Structure Rules",subtitle:"Making sentences clear, balanced, and logical",
+    body:['This module covers the remaining "Form, Structure & Sense" question types: modifiers, parallelism, and sentence structure. Together with boundaries (Module 1) and agreement (Module 2), these complete the Standard English Conventions domain.',
+      "These questions test whether sentences are CLEAR (modifiers point to the right thing), BALANCED (parallel elements match in form), and LOGICAL (comparisons compare equivalent things).",
+      "The good news: these rules are mechanical. Once you learn the patterns, they become automatic."],
+    visual:"stats"},
+  {id:"dangling",title:"Dangling Modifiers",subtitle:"The SAT's sneakiest grammar trap",
+    body:["A dangling modifier is an introductory phrase that doesn't logically modify the subject that follows it.",
+      'WRONG: "Walking through the museum, the paintings caught her attention."',
+      'This says the PAINTINGS were walking through the museum. The introductory phrase "Walking through the museum" must be followed by whoever is walking.',
+      'RIGHT: "Walking through the museum, she noticed the paintings."',
+      "THE RULE: When a sentence begins with a modifying phrase (especially one starting with a verb form like -ing, -ed, To + verb), the subject immediately after the comma MUST be the person or thing performing that action.",
+      "This is one of the most frequently tested grammar concepts on the SAT. The test loves to place the wrong noun right after the comma."],
+    visual:"dangling-demo"},
+  {id:"misplaced",title:"Misplaced Modifiers",subtitle:"Modifiers should be next to what they modify",
+    body:["A misplaced modifier is in the wrong position, making the sentence confusing or unintentionally funny.",
+      'CONFUSING: "The researcher presented findings to the committee that were groundbreaking."',
+      'Was the committee groundbreaking, or were the findings? The modifier "that were groundbreaking" is next to "committee" but should modify "findings."',
+      'CLEAR: "The researcher presented groundbreaking findings to the committee."',
+      "RULE: Place modifiers as close as possible to the word they describe. On the SAT, look for relative clauses (that/which/who) and make sure they're adjacent to the correct noun."],
+    visual:null},
+  {id:"only-almost",title:"Tricky Modifiers: Only, Nearly, Almost, Just",subtitle:"Position changes meaning",
+    body:['Words like "only," "nearly," "almost," and "just" change the meaning of a sentence based on their position:',
+      '"She only EATS vegetables." = She eats them (doesn\'t grow, cook, or sell them).\n"She eats ONLY vegetables." = She eats nothing but vegetables.',
+      '"The study ALMOST cost $2 million." = It didn\'t quite cost that much.\n"The study cost ALMOST $2 million." = Same meaning, but more natural.\n"ALMOST the entire study cost $2 million." = Nearly all of it cost that.',
+      'On the SAT, the correct answer places these modifiers immediately before the word they\'re meant to limit. When in doubt, ask: "What specifically is being limited or modified?"'],
+    visual:null},
+  {id:"parallel-intro",title:"Parallel Structure: The Balance Rule",subtitle:"Matching forms in lists and pairs",
+    body:["When items appear in a list or are joined by a conjunction, they must all share the same grammatical form.",
+      'WRONG: "The program focuses on teaching critical thinking, to develop leadership skills, and communication."\n\nThis mixes three forms: gerund (teaching), infinitive (to develop), and plain noun (communication).',
+      'RIGHT: "The program focuses on teaching critical thinking, developing leadership skills, and improving communication."\n\nNow all three are gerunds. Balanced. Clean.',
+      'RULE: In any list connected by "and," "or," or "but," every item must match. Noun with noun, verb with verb, phrase with phrase, clause with clause.'],
+    visual:"parallel-demo"},
+  {id:"parallel-pairs",title:"Parallel Pairs & Correlatives",subtitle:"Not only...but also, either...or, both...and",
+    body:["Correlative conjunctions come in pairs, and what follows each half must be parallel:",
+      'WRONG: "The discovery not only challenged existing theories but also was inspiring new research."\nRIGHT: "The discovery not only challenged existing theories but also inspired new research."',
+      'Both sides must match: "challenged" pairs with "inspired" (both past tense verbs).',
+      "Common correlative pairs:\n  • not only...but also\n  • either...or\n  • neither...nor\n  • both...and\n  • whether...or\n  • as...as\n  • more/less...than",
+      "STRATEGY: Find the word right after the first half of the pair. Then check that the word right after the second half matches it in form."],
+    visual:"correlative-check"},
+  {id:"comparisons",title:"Faulty Comparisons",subtitle:"Compare apples to apples",
+    body:["Comparisons must be between logically equivalent things.",
+      'WRONG: "The population of Tokyo is larger than London."\nThis compares a POPULATION to a CITY. You can\'t compare those.',
+      'RIGHT: "The population of Tokyo is larger than that of London."\nOR: "The population of Tokyo is larger than London\'s."\n"That of" and the possessive form both fix the comparison to be population-to-population.',
+      'WRONG: "Like a marathon runner, the stamina of a cyclist must be carefully developed."\nThis compares a RUNNER to STAMINA. Not equivalent.',
+      'RIGHT: "Like a marathon runner, a cyclist must carefully develop stamina."\nNow it\'s runner compared to cyclist. Person to person.',
+      "The SAT tests this by making the illogical comparison sound natural. Always check: am I comparing the same TYPE of thing on both sides?"],
+    visual:null},
+  {id:"appositives",title:"Appositives & Noun Phrases",subtitle:"Renaming elements must match",
+    body:["An appositive is a noun phrase that renames or identifies the noun right next to it.",
+      '"Dr. Okafor, A LEADING NEUROSCIENTIST, published her findings."',
+      'The appositive "a leading neuroscientist" renames "Dr. Okafor." It must be set off by commas (or dashes) and must logically describe the adjacent noun.',
+      'WRONG: "A leading neuroscientist, the findings of Dr. Okafor challenged existing theories."',
+      'This says "the findings" are "a leading neuroscientist." The appositive must be next to the noun it renames.',
+      'RIGHT: "A leading neuroscientist, Dr. Okafor published findings that challenged existing theories."',
+      "This pattern is closely related to dangling modifiers — the SAT often disguises appositive errors as modifier questions."],
+    visual:null},
+  {id:"possessives",title:"Possessive vs. Plural Confusion",subtitle:"Apostrophes matter",
+    body:["The SAT tests whether you know when a word needs an apostrophe (possessive) vs. when it's just a plural.",
+      'PLURAL (no apostrophe): "The researchers published their studies." — More than one researcher, more than one study.',
+      'POSSESSIVE (apostrophe): "The researcher\'s study was published." — The study belonging to the researcher.',
+      'PLURAL POSSESSIVE: "The researchers\' studies were published." — Studies belonging to multiple researchers.',
+      'ITS vs. IT\'S:\n  • "its" = possessive ("The dog wagged its tail.")\n  • "it\'s" = it is / it has ("It\'s been raining.")\n\nThis is counter-intuitive because we normally use apostrophes for possession, but possessive pronouns (its, his, her, their, whose) never take apostrophes.'],
+    visual:"apostrophe-quiz"},
+  {id:"decision",title:"The Structure Decision Framework",subtitle:"How to approach every structure question",
+    body:["STEP 1: Check for an introductory phrase. If the sentence starts with a phrase before a comma, make sure the subject right after the comma is the one doing the action in that phrase. If not, it's a dangling modifier.",
+      "STEP 2: Check for lists. If you see items connected by and/or/but, make sure every item is in the same grammatical form (all nouns, all gerunds, all clauses, etc.).",
+      'STEP 3: Check correlative pairs. If you see "not only," look for "but also." Make sure what follows each half matches in form.',
+      'STEP 4: Check comparisons. If you see "than," "as...as," or "like," make sure both sides compare the same type of thing.',
+      "STEP 5: Check appositives. If a noun phrase in commas/dashes sits next to a noun, make sure it logically renames that noun.",
+      "STEP 6: Check possessives. If you see an apostrophe (or its absence), confirm whether possession or plurality is intended."],
+    visual:"framework"}
+];
+
+// ══════════════════════════════════════════
+// MODIFIER MATCHUP DATA (original)
+// ══════════════════════════════════════════
+const MODIFIER_ITEMS=[
+  {prompt:"Running late for the interview,",options:["Sarah's anxiety grew with every red light.","the taxi seemed impossibly slow to Sarah.","Sarah urged the taxi driver to hurry.","the roads were congested with morning traffic."],correct:2,explain:"Who is running late? Sarah. She must be the subject right after the comma. Only C puts Sarah as the subject doing the running."},
+  {prompt:"Discovered in a remote cave in 2019,",options:["researchers were amazed by the ancient fossils.","the ancient fossils challenged existing theories about early migration.","it was determined that the fossils were millions of years old.","the cave's significance became immediately apparent to the research team."],correct:1,explain:'What was discovered? The fossils. The fossils must be the subject after the comma. Researchers weren\'t discovered, and neither was "it" or "the cave\'s significance."'},
+  {prompt:"To understand the full impact of climate change,",options:["long-term data collection is essential for scientists.","the data must be collected over decades.","scientists must collect data over decades.","decades of data have been considered necessary."],correct:2,explain:'Who needs to understand? Scientists. They must be the subject. Data doesn\'t "understand" climate change.'},
+  {prompt:"Written in the 17th century,",options:["scholars continue to debate the authorship of the manuscript.","the manuscript's authorship remains a subject of debate.","the manuscript continues to generate scholarly debate.","debate about the manuscript has persisted for centuries."],correct:2,explain:"What was written? The manuscript. It must be the subject. Scholars, the manuscript's authorship, and debate were not written."},
+  {prompt:"Having analyzed data from over 10,000 patients,",options:["the study's conclusions were presented at the conference.","new treatment guidelines were developed by the research team.","the research team proposed new treatment guidelines.","significant patterns emerged from the clinical trials."],correct:2,explain:"Who analyzed data? The research team. They must be the subject. Conclusions, guidelines, and patterns didn't analyze anything."},
+  {prompt:"Praised for its innovative design,",options:["the architect received numerous awards for the building.","the building attracted visitors from around the world.","critics noted the building's unique blend of materials.","awards were presented to the architect for the building's design."],correct:1,explain:"What was praised? The building. It must be the subject. The architect was not praised for innovative design (the building was); critics and awards weren't praised either."},
+  {prompt:"Exhausted after the 12-hour surgery,",options:["the patient's family was informed of the successful outcome.","the hospital's break room provided a welcome retreat.","Dr. Patel collapsed into a chair in the break room.","relief was felt throughout the surgical team."],correct:2,explain:"Who was exhausted? Dr. Patel (the surgeon). She must be the subject. The family, break room, and relief weren't exhausted from surgery."},
+  {prompt:"Originally published as a series of newspaper columns,",options:["readers were surprised when the essays were collected into a bestselling book.","the essays were later collected into a bestselling book.","a bestselling book emerged from the collection of essays.","publication as a book brought the essays to a wider audience."],correct:1,explain:"What was originally published as columns? The essays. They must be the subject."}
+];
+
+// ══════════════════════════════════════════
+// PARALLEL STRUCTURE DATA (original)
+// ══════════════════════════════════════════
+const PARALLEL_ITEMS=[
+  {broken:"The new policy aims to reduce emissions, promoting renewable energy, and the creation of green jobs.",options:["reducing emissions, promoting renewable energy, and creating green jobs.","to reduce emissions, to promote renewable energy, and to create green jobs.","a reduction in emissions, promoting renewable energy, and creating green jobs.","reducing emissions, the promotion of renewable energy, and green job creation."],correct:1,explain:'"Aims to" sets up an infinitive series. All three must be infinitives: to reduce, to promote, to create. Option A (gerunds) would also work if the lead-in were different, but "aims to" requires infinitives.'},
+  {broken:"The study was notable for its rigorous methodology, innovative approach, and because it included participants from 30 countries.",options:["its rigorous methodology, innovative approach, and international scope.","its rigorous methodology, innovative approach, and it included international participants.","having rigorous methodology, an innovative approach, and because it was international.","its rigorous methodology, its innovative approach, and its inclusion of participants from 30 countries."],correct:3,explain:'"Notable for" sets up a noun phrase series. All items need the same form. D uses "its + noun" three times. A also works as a simpler noun series.'},
+  {broken:"The athlete not only broke the world record but also she was winning the gold medal.",options:["not only broke the world record but also won the gold medal.","not only breaking the world record but also won the gold medal.","not only broke the world record but she also won the gold medal.","was not only breaking the record but also she won the gold."],correct:0,explain:'"Not only...but also" requires matching forms. "Broke" pairs with "won" — both simple past. The subject goes BEFORE "not only," not between the halves.'},
+  {broken:"The architect designed buildings that were both aesthetically pleasing and which had structural innovation.",options:["both aesthetically pleasing and structurally innovative.","both aesthetically pleasing and they were structurally innovative.","that were both aesthetically pleasing and which had structural innovation.","both for aesthetic pleasure and structural innovation."],correct:0,explain:'"Both...and" needs matching forms. A: adjective phrase + adjective phrase. Clean and parallel.'},
+  {broken:"The manager asked employees to arrive on time, that they complete their reports, and maintaining a professional demeanor.",options:["to arrive on time, complete their reports, and maintain a professional demeanor.","arriving on time, completing their reports, and maintaining a professional demeanor.","to arrive on time, to complete their reports, and to maintain a professional demeanor.","that they arrive on time, that they complete reports, and that they maintain demeanor."],correct:0,explain:'"Asked employees to" sets up infinitives. After the first "to," the remaining items can share it: to arrive, [to] complete, [to] maintain. C is also correct (repeating "to"), but A is more concise.'},
+  {broken:"The research compared the effects of meditation with exercising regularly.",options:["the effects of meditation with those of regular exercise.","the effects of meditation with exercising regularly.","meditation's effects with regular exercise effects.","how meditation affects people with how exercise does."],correct:0,explain:'Faulty comparison: comparing "effects" to "exercising" (a noun to a gerund). A fixes it: effects compared to effects ("those of" = effects of). Apples to apples.'}
+];
+
+// ══════════════════════════════════════════
+// STRUCTURE SPOTTER DATA (original)
+// ══════════════════════════════════════════
+const SPOTTER_ITEMS=[
+  {sentence:"Concerned about the rising costs, the budget was revised by the committee.",error:"dangling",fix:"Concerned about the rising costs, the committee revised the budget.",explain:'Who was concerned? The committee. But "the budget" follows the comma. Fix: make "the committee" the subject.'},
+  {sentence:"The recipe calls for chopping onions, diced tomatoes, and to mince garlic.",error:"parallel",fix:"The recipe calls for chopping onions, dicing tomatoes, and mincing garlic.",explain:"Three items in a list with mixed forms: gerund, past participle, infinitive. Fix: all gerunds."},
+  {sentence:"The salary of a software engineer in San Francisco is higher than New York.",error:"comparison",fix:"The salary of a software engineer in San Francisco is higher than that in New York.",explain:'Compares salary to a city. Fix with "that in" to compare salary to salary.'},
+  {sentence:"A renowned physicist, the lecture by Dr. Chen was fascinating.",error:"dangling",fix:"A renowned physicist, Dr. Chen delivered a fascinating lecture.",explain:'"A renowned physicist" is an appositive — it must be next to the person it describes (Dr. Chen), not "the lecture."'},
+  {sentence:"The company aims to increase revenue, reduce costs, and their customer service should be improved.",error:"parallel",fix:"The company aims to increase revenue, reduce costs, and improve customer service.",explain:'"Aims to" sets up infinitives. The third item breaks form with a full clause. Fix: infinitive "improve."'},
+  {sentence:"Unlike a traditional classroom, online learning platforms offer flexible scheduling.",error:"comparison",fix:"Unlike a traditional classroom, an online learning platform offers flexible scheduling.",explain:"Compares a classroom (singular place) to platforms (plural things). Fix: compare classroom to platform, or classrooms to platforms."},
+  {sentence:"The dog wagged it's tail when the owner returned.",error:"possessive",fix:"The dog wagged its tail when the owner returned.",explain:'"It\'s" = "it is." The possessive form is "its" (no apostrophe). Possessive pronouns never take apostrophes.'},
+  {sentence:"Hoping to finish the project by Friday, the deadline was extended by the manager.",error:"dangling",fix:"Hoping to finish the project by Friday, the manager extended the deadline.",explain:'Who was hoping? The manager. But "the deadline" follows the comma. Fix: make "the manager" the subject.'}
+];
+
+// ══════════════════════════════════════════
+// PRACTICE QUIZ DATA (original 10 questions)
+// ══════════════════════════════════════════
+const QUIZ=[
+  {id:1,diff:"easy",passage:"Determined to finish the marathon despite the pain, ______ pushed through the final three miles.",stem:"Which choice conforms to Standard English?",choices:["the runner's determination","the runner","running was difficult, but she","her legs aching, the runner"],answer:1,explain:'"Determined to finish" is a participial phrase. The subject after the comma must be the one who is determined = the runner.',errType:'dangling'},
+  {id:2,diff:"easy",passage:"The new curriculum emphasizes reading comprehension, critical thinking, and ______ .",stem:"Which choice maintains parallel structure?",choices:["to write effectively","students must write effectively","effective writing","that students write effectively"],answer:2,explain:'The list contains noun phrases: "reading comprehension" and "critical thinking." The third item must be a noun phrase too: "effective writing."',errType:'parallel'},
+  {id:3,diff:"medium",passage:"The researchers found that children who read for pleasure scored higher on standardized tests than ______ .",stem:"Which choice produces a logical comparison?",choices:["television watching","children who primarily watched television","children's television watching habits","those that watched television"],answer:1,explain:'Comparing children to children. A compares children to "television watching" (faulty). D uses "those that" which is awkward for people. B: children to children.',errType:'comparison'},
+  {id:4,diff:"medium",passage:"The documentary explores the artist's early influences, ______ , and lasting impact on contemporary art.",stem:"Which choice maintains parallel structure?",choices:["her technique evolved over time","the evolution of her technique","how her technique evolved","she evolved her technique"],answer:1,explain:'The list: "early influences" (noun phrase), [blank], "lasting impact" (noun phrase). B "the evolution of her technique" matches as a noun phrase.',errType:'parallel'},
+  {id:5,diff:"medium",passage:"Funded by a grant from the National Science Foundation, ______ spanned three continents and involved over 200 researchers.",stem:"Which choice conforms to Standard English?",choices:["it was determined that the study","the study's scope was impressive because it","the ambitious five-year study","researchers conducted a study that"],answer:2,explain:'What was funded? The study. The study must be the subject. A has "it" (not funded), B has "scope" (not funded), D has "researchers" (they received the funding but the phrase modifies the study itself).',errType:'dangling'},
+  {id:6,diff:"medium",passage:"The company's new policy requires employees not only to complete mandatory training ______ .",stem:"Which choice conforms to Standard English?",choices:["but also passing a certification exam","but also to pass a certification exam","but they must also pass a certification exam","and also they pass a certification exam"],answer:1,explain:'"Not only to complete...but also to pass." Infinitive pairs with infinitive. The correlative structure demands matching forms.',errType:'parallel'},
+  {id:7,diff:"hard",passage:"Unlike the delicate brushwork of the Impressionists, ______ favored bold geometric shapes and sharp lines.",stem:"Which choice produces a logical comparison?",choices:["the Cubists' paintings","Cubist art","the Cubists","paintings by the Cubists"],answer:2,explain:'"Unlike the brushwork" begins a comparison. But the subject must be who "favored" (a person/group, not a painting). "The Cubists" favored bold shapes. We\'re comparing approaches: the Impressionists\' approach vs. the Cubists\' approach, with the Cubists as agents.',errType:'comparison'},
+  {id:8,diff:"hard",passage:"Published anonymously in 1818, ______ surprised both readers and critics with its sophisticated exploration of ambition and moral responsibility.",stem:"Which choice conforms to Standard English?",choices:["Mary Shelley's Frankenstein","it was Mary Shelley who wrote Frankenstein, which","the novel Frankenstein by Mary Shelley","Frankenstein, written by Mary Shelley,"],answer:0,explain:'What was published? The novel. "Mary Shelley\'s Frankenstein" is the novel (possessive identifies the author). It functions as the subject that "surprised." C breaks sentence flow. D creates a fragment issue with the extra clause.',errType:'dangling'},
+  {id:9,diff:"hard",passage:"The orchestra's conductor is known for ______ innovative interpretations of classical works, ability to inspire musicians, and willingness to take artistic risks.",stem:"Which choice maintains parallel structure with the rest of the list?",choices:["her","the","she has","having"],answer:0,explain:'The three items need matching possessive structure: "her innovative interpretations," "[her] ability," "[her] willingness." The possessive pronoun "her" carries through the list implicitly.',errType:'parallel'},
+  {id:10,diff:"hard",passage:"Researchers observed that the drug reduced inflammation as effectively in older patients as ______ .",stem:"Which choice produces a logical comparison?",choices:["younger patients","in younger patients","it had in younger patients","treating younger patients"],answer:1,explain:'"As effectively in older patients as in younger patients." The comparison needs the same preposition: "in" older patients / "in" younger patients. A drops the preposition. C adds unnecessary verb. D shifts to a gerund.',errType:'comparison'}
+];
+
+// ══════════════════════════════════════════
+// CHALLENGE MODE DATA (new — hard structure Qs)
+// ══════════════════════════════════════════
+const CHALLENGE=[
+  {diff:"hard",passage:"Renowned for their intricate beadwork and vibrant textiles, ______ have attracted scholars from institutions worldwide seeking to study the cultural significance of the patterns.",
+   stem:"Which choice conforms to Standard English?",
+   choices:["the artisans of the Maasai community","Maasai community artisans' work","the crafts produced by Maasai artisans","it is the Maasai artisans who"],
+   answer:0,errType:'dangling',
+   explain:'"Renowned for their beadwork" — who is renowned? The artisans. They must be the subject. (B) puts "work" as subject. (C) puts "crafts" as subject. (D) "it" can\'t be renowned.',
+   traps:['—','Wrong Subject (work)','Wrong Subject (crafts)','Wrong Subject (it)']},
+  {diff:"hard",passage:"The museum's new exhibit not only showcases artifacts from ancient Mesopotamia ______ provides interactive digital reconstructions of the cities where they were originally used.",
+   stem:"Which choice conforms to Standard English?",
+   choices:["but also it","but also","and it also","but it also"],
+   answer:1,errType:'parallel',
+   explain:'"Not only showcases...but also provides." The subject "exhibit" carries through both halves. Inserting "it" (A, C, D) breaks the parallel structure by adding a redundant pronoun. Clean correlative: not only [verb] but also [verb].',
+   traps:['—','Redundant Pronoun','Wrong Conjunction','Redundant Pronoun']},
+  {diff:"hard",passage:"The processing speed of the new quantum computer is significantly faster than ______ .",
+   stem:"Which choice produces a logical comparison?",
+   choices:["traditional supercomputers","traditional supercomputers' speed","that of traditional supercomputers","the speed of traditional supercomputer"],
+   answer:2,errType:'comparison',
+   explain:'Comparing "processing speed" to what? Must compare speed to speed. (A) compares speed to computers (faulty). (B) apostrophe placement is awkward. (C) "that of" = the processing speed of. (D) singular "supercomputer" doesn\'t match plural context.',
+   traps:['—','Speed vs. Computers','—','Singular/Plural Mismatch']},
+  {diff:"hard",passage:"A pioneer in computational linguistics, ______ developed algorithms that could parse natural language with unprecedented accuracy and that revolutionized the field of machine translation.",
+   stem:"Which choice conforms to Standard English?",
+   choices:["the algorithms of Dr. Yamamoto","Dr. Yamamoto's career was defined by having","it was Dr. Yamamoto who","Dr. Yamamoto"],
+   answer:3,errType:'dangling',
+   explain:'"A pioneer" is an appositive — it must rename the person. (D) "Dr. Yamamoto" is the pioneer and the subject who "developed." (A) "algorithms" aren\'t a pioneer. (B) "career" isn\'t a pioneer. (C) "it" can\'t be a pioneer.',
+   traps:['—','Wrong Subject (algorithms)','Wrong Subject (career)','Structural Disruption']},
+  {diff:"hard",passage:"The grant proposal emphasized the project's potential to advance theoretical understanding, ______ , and attract partnerships with leading technology firms.",
+   stem:"Which choice maintains parallel structure?",
+   choices:["practical applications would be generated","the generation of practical applications","generate practical applications","generating practical applications while"],
+   answer:2,errType:'parallel',
+   explain:'The list follows "potential to": to advance, [to] _____, [to] attract. All infinitives (sharing "to"). (C) "generate" matches. (A) full clause breaks form. (B) noun phrase doesn\'t match infinitive. (D) gerund + "while" breaks form.',
+   traps:['—','Clause ≠ Infinitive','Noun ≠ Infinitive','Gerund ≠ Infinitive']},
+  {diff:"hard",passage:"Like the novels of Toni Morrison, which often explore the intersection of personal identity and collective history, ______ frequently examines how individuals navigate cultural displacement.",
+   stem:"Which choice produces a logical comparison?",
+   choices:["Jhumpa Lahiri's fiction","the stories written by Jhumpa Lahiri","Jhumpa Lahiri","Jhumpa Lahiri has fiction that"],
+   answer:0,errType:'comparison',
+   explain:'"Like the novels of Toni Morrison" — comparing novels to what? Must compare novels to novels. (A) "Jhumpa Lahiri\'s fiction" = fiction compared to novels (equivalent creative works). (B) "stories written by" is wordy but could work, except "examines" needs a singular subject matching "fiction." (C) compares a person to novels. (D) structural mess.',
+   traps:['—','Awkward Structure','Person vs. Novels','Structural Mess']}
+];
+
+// ══════════════════════════════════════════
+// GENERIC QUIZ QUESTION COMPONENT
+// ══════════════════════════════════════════
+function QuizQ({q,index,selected,confirmed,onSelect,onConfirm,tagLabel,tagColor,showTrapTags,children}){
+  const letters='ABCD';
+  return e('div',{style:{...cardStyle(),marginBottom:16}},
+    tagLabel&&e('div',{style:{...labelTag(tagColor||T.accent),marginBottom:10}},tagLabel),
+    e('div',{style:passageStyle},q.passage),
+    e('div',{style:{fontSize:14,color:T.text,fontWeight:600,marginBottom:14}},q.stem),
+    e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
+      q.choices.map((c,ci)=>{
+        const isSel=selected===ci;
+        const isCorr=ci===(q.answer!==undefined?q.answer:q.correct);
+        let bg=T.card,bdr=`2px solid ${T.border}`,tc='#cbd5e1';
+        if(confirmed&&isCorr){bg=T.correctBg;bdr=`2px solid ${T.correct}`;tc=T.correct;}
+        else if(confirmed&&isSel&&!isCorr){bg=T.wrongBg;bdr=`2px solid ${T.wrong}`;tc=T.wrong;}
+        else if(isSel&&!confirmed){bg=`${T.amber}15`;bdr=`2px solid ${T.amber}`;tc=T.amber;}
+        const trapTag=confirmed&&showTrapTags&&q.traps&&q.traps[ci]&&q.traps[ci]!=='—'?
+          e('span',{style:{...labelTag(isCorr?T.correct:T.wrong),marginRight:8,fontSize:10}},q.traps[ci]):null;
+        return e('button',{key:ci,onClick:()=>{if(!confirmed)onSelect(ci);},disabled:confirmed,
+          style:{display:'flex',alignItems:'flex-start',gap:10,padding:'12px 14px',borderRadius:10,
+            background:bg,border:bdr,cursor:confirmed?'default':'pointer',textAlign:'left',width:'100%',transition:'all .15s'}},
+          e('span',{style:{minWidth:24,height:24,borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',
+            fontWeight:800,fontSize:12,flexShrink:0,
+            background:confirmed&&isCorr?T.correct:confirmed&&isSel&&!isCorr?T.wrong:isSel?T.amber:T.border,
+            color:isSel||confirmed?T.dark:T.muted}},letters[ci]),
+          e('span',{style:{color:tc,fontSize:14,lineHeight:1.6,fontFamily:'Georgia,serif'}},trapTag,c)
+        );
+      })
+    ),
+    !confirmed&&e('div',{style:{marginTop:12,display:'flex',justifyContent:'flex-end'}},
+      e('button',{onClick:onConfirm,disabled:selected===null,
+        style:btn(selected===null?T.border:T.accent,selected===null?T.dim:T.dark,{fontSize:14,padding:'10px 22px'})},'Confirm Answer')
+    ),
+    confirmed&&e('div',{style:{marginTop:12,padding:14,background:T.border,borderRadius:10,borderLeft:`4px solid ${T.blue}`,fontSize:14,color:T.sub,lineHeight:1.7}},
+      e('div',{style:{color:T.blue,fontWeight:700,fontSize:13,marginBottom:6}},'Explanation'),
+      q.explain
+    ),
+    children
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: WELCOME
+// ══════════════════════════════════════════
+function Welcome({onNext}){
+  const[show,setShow]=useState(false);
+  useEffect(()=>{setTimeout(()=>setShow(true),100);},[]);
+  const activities=[
+    {icon:'🔄',title:'Retrieval Warm-Up',desc:'8 review Qs from Modules 1–2'},
+    {icon:'📖',title:'Learn the Rules',desc:'Modifiers, parallelism, comparisons'},
+    {icon:'🎯',title:'Modifier Matchup',desc:'Pick the correct subject for each phrase'},
+    {icon:'🔍',title:'Structure Spotter',desc:'Find & classify errors in sentences'},
+    {icon:'📝',title:'Timed Practice Quiz',desc:'10 SAT-style questions with timer'},
+    {icon:'⭐',title:'Challenge Mode',desc:'6 hard questions with Trap Autopsy'}
+  ];
+  return e('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',
+    minHeight:'100vh',padding:'0 24px',transition:'all .7s',opacity:show?1:0,transform:show?'translateY(0)':'translateY(16px)'}},
+    e('div',{style:{background:`${T.accent}22`,border:`1px solid ${T.accent}44`,borderRadius:12,padding:'6px 18px',
+      fontSize:13,letterSpacing:1.5,textTransform:'uppercase',color:T.accent,marginBottom:12,fontWeight:600}},'Unit 1 • Module 3'),
+    e('h1',{style:{fontSize:'clamp(1.8rem,5vw,3rem)',fontWeight:800,color:T.accent,lineHeight:1.1,textAlign:'center',marginBottom:16}},
+      'Modifiers, Parallelism & Structure'),
+    e('p',{style:{color:T.sub,fontSize:16,maxWidth:520,textAlign:'center',lineHeight:1.6,marginBottom:40}},
+      'Dangling modifiers, broken parallelism, and faulty comparisons — the SAT\'s favorite "sounds right but isn\'t" traps. Learn to spot them instantly.'),
+    e('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:14,maxWidth:720,width:'100%',marginBottom:48}},
+      activities.map((a,i)=>e('div',{key:i,style:{...cardStyle({padding:'20px 16px',textAlign:'center'})}},
+        e('div',{style:{fontSize:28,marginBottom:6}},a.icon),
+        e('div',{style:{color:T.text,fontWeight:700,fontSize:14,marginBottom:4}},a.title),
+        e('div',{style:{color:T.muted,fontSize:12,lineHeight:1.5}},a.desc)
+      ))
+    ),
+    e('button',{onClick:onNext,style:btn(`linear-gradient(135deg,${T.accent},${T.accentDark})`,T.dark),
+      onMouseOver:ev=>ev.currentTarget.style.transform='scale(1.04)',
+      onMouseOut:ev=>ev.currentTarget.style.transform='scale(1)'},'Start Module →'),
+    e('div',{style:{color:T.dim,fontSize:13,marginTop:24}},'~60 minutes • Standard English Conventions')
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: RETRIEVAL WARM-UP
+// ══════════════════════════════════════════
+function RetrievalWarmUp({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[sel,setSel]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[results,setResults]=useState([]);
+  const q=WARMUP[idx];
+  const total=WARMUP.length;
+  const typeLabel=q.type==='boundaries'?'Boundaries (Review)':'Agreement (Review)';
+  const typeColor=q.type==='boundaries'?T.blue:T.purple;
+
+  function handleConfirm(){
+    if(sel===null)return;
+    setConf(true);
+    setResults(p=>[...p,{correct:sel===q.correct,type:q.type}]);
+  }
+  function next(){
+    if(idx<total-1){setIdx(idx+1);setSel(null);setConf(false);}
+    else{const score=results.filter(r=>r.correct).length+(sel===q.correct?1:0);onComplete(score,total);}
+  }
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}},
+      e('div',{style:{color:T.accent,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase'}},'🔄 Retrieval Warm-Up'),
+      e('span',{style:{color:T.muted,fontSize:13}},`${idx+1} of ${total}`)
+    ),
+    e('p',{style:{color:T.sub,fontSize:14,marginBottom:16,lineHeight:1.6}},'Interleaved review — 4 Boundaries + 4 Agreement questions from Modules 1–2. Keeping prior skills sharp.'),
+    e('div',{style:{height:4,background:T.border,borderRadius:2,marginBottom:24,overflow:'hidden'}},
+      e('div',{style:{height:'100%',width:`${((idx+(conf?1:0))/total)*100}%`,background:`linear-gradient(90deg,${T.accent},${T.accentDark})`,borderRadius:2,transition:'width .4s'}})
+    ),
+    e(QuizQ,{q:{...q,answer:q.correct},index:idx,selected:sel,confirmed:conf,onSelect:setSel,onConfirm:handleConfirm,tagLabel:typeLabel,tagColor:typeColor}),
+    conf&&e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:8}},
+      e('button',{onClick:next,style:btn(T.accent,T.dark,{fontSize:14,padding:'10px 22px'})},idx<total-1?'Next →':'Continue to Lessons →')
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: LESSON VIEWER (with all original interactives)
+// ══════════════════════════════════════════
+function LessonViewer({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const lesson=LESSONS[idx];
+  const total=LESSONS.length;
+
+  function DanglingDemo(){
+    const[step,setStep]=useState(0);
+    const stages=[
+      {modifier:"Walking through the museum,",subject:"the paintings",rest:"caught her attention.",ok:false,label:"Who is walking? The paintings? ❌"},
+      {modifier:"Walking through the museum,",subject:"she",rest:"noticed the paintings.",ok:true,label:"Who is walking? She! ✅"}
+    ];
+    const s=stages[step];
+    return e('div',{style:{padding:'16px 20px'}},
+      e('div',{style:{color:T.amber,fontSize:12,fontWeight:700,marginBottom:10,textTransform:'uppercase',letterSpacing:1}},'Interactive: Dangling Modifier'),
+      e('div',{style:{...cardStyle({padding:20,marginBottom:12,fontFamily:'Georgia,serif',fontSize:17,lineHeight:1.8})}},
+        e('span',{style:{color:T.purple}},s.modifier,' '),
+        e('span',{style:{color:s.ok?T.accent:T.red,fontWeight:800,textDecoration:s.ok?'none':'wavy underline',textDecorationColor:T.red,textUnderlineOffset:4}},s.subject,' '),
+        e('span',{style:{color:T.text}},s.rest)),
+      e('div',{style:{color:s.ok?T.accent:T.red,fontSize:13,fontWeight:600,marginBottom:12}},s.label),
+      e('div',{style:{display:'flex',gap:8}},
+        stages.map((_,i)=>e('button',{key:i,onClick:()=>setStep(i),
+          style:{padding:'6px 14px',borderRadius:6,border:`1px solid ${i===step?T.accent:T.border}`,
+            background:i===step?`${T.accent}22`:'transparent',color:i===step?T.accent:T.muted,
+            fontSize:12,fontWeight:600,cursor:'pointer'}},i===0?'Wrong':'Fixed')))
+    );
+  }
+
+  function ParallelDemo(){
+    const[fixed,setFixed]=useState(false);
+    return e('div',{style:{padding:'16px 20px'}},
+      e('div',{style:{color:T.amber,fontSize:12,fontWeight:700,marginBottom:10,textTransform:'uppercase',letterSpacing:1}},'Interactive: Parallelism'),
+      e('div',{style:{...cardStyle({padding:20,marginBottom:12,fontFamily:'Georgia,serif',fontSize:15,lineHeight:2})}},
+        'The program focuses on ',
+        !fixed?e(React.Fragment,null,
+          e('span',{style:{color:T.accent,fontWeight:700,padding:'2px 6px',borderRadius:4,background:`${T.accent}15`}},'teaching'),
+          ' critical thinking, ',
+          e('span',{style:{color:T.red,fontWeight:700,padding:'2px 6px',borderRadius:4,background:`${T.red}15`}},'to develop'),
+          ' leadership skills, and ',
+          e('span',{style:{color:T.purple,fontWeight:700,padding:'2px 6px',borderRadius:4,background:`${T.purple}15`}},'communication'),
+          '.'
+        ):e(React.Fragment,null,
+          e('span',{style:{color:T.accent,fontWeight:700,padding:'2px 6px',borderRadius:4,background:`${T.accent}15`}},'teaching'),
+          ' critical thinking, ',
+          e('span',{style:{color:T.accent,fontWeight:700,padding:'2px 6px',borderRadius:4,background:`${T.accent}15`}},'developing'),
+          ' leadership skills, and ',
+          e('span',{style:{color:T.accent,fontWeight:700,padding:'2px 6px',borderRadius:4,background:`${T.accent}15`}},'improving'),
+          ' communication.'
+        )
+      ),
+      e('div',{style:{display:'flex',gap:8,alignItems:'center'}},
+        e('button',{onClick:()=>setFixed(!fixed),
+          style:{padding:'6px 14px',borderRadius:6,border:`1px solid ${T.accent}`,background:fixed?`${T.accent}22`:'transparent',
+            color:T.accent,fontSize:12,fontWeight:600,cursor:'pointer'}},fixed?'Show Broken':'Fix It'),
+        e('span',{style:{color:T.muted,fontSize:12}},fixed?'All gerunds — balanced! ✅':'Gerund, infinitive, noun — mismatched! ❌'))
+    );
+  }
+
+  function CorrelativeCheck(){
+    const items=[
+      {text:"not only challenged theories | but also inspired research",ok:true,why:"Verb + verb ✅"},
+      {text:"not only challenged theories | but also was inspiring research",ok:false,why:"Past tense vs. past progressive ❌"},
+      {text:"either accept the offer | or reject it outright",ok:true,why:"Verb + verb ✅"},
+      {text:"both innovative in design | and it was durable",ok:false,why:"Adjective phrase vs. clause ❌"}
+    ];
+    const[revealed,setRevealed]=useState({});
+    return e('div',{style:{padding:'12px 20px'}},
+      e('div',{style:{color:T.amber,fontSize:12,fontWeight:700,marginBottom:10,textTransform:'uppercase',letterSpacing:1}},'Quick Check: Are these parallel?'),
+      items.map((item,i)=>e('div',{key:i,onClick:()=>setRevealed(p=>({...p,[i]:true})),
+        style:{marginBottom:8,...cardStyle({padding:12,cursor:'pointer'})}},
+        e('div',{style:{color:T.text,fontSize:13,fontFamily:'Georgia,serif'}},
+          item.text.split('|').map((part,pi)=>e('span',{key:pi},
+            pi>0&&e('span',{style:{color:T.amber,fontWeight:800}},' | '),part))),
+        revealed[i]?e('div',{style:{color:item.ok?T.accent:T.red,fontSize:12,fontWeight:600,marginTop:4}},item.why):
+          e('div',{style:{color:T.muted,fontSize:11,marginTop:4}},'Tap to check')))
+    );
+  }
+
+  function ApostropheQuiz(){
+    const items=[
+      {text:"The ______ findings were published last month.",a:"researchers'",b:"researchers",correct:"a",why:"Possessive: findings belonging to the researchers"},
+      {text:"______ been raining all morning.",a:"Its",b:"It's",correct:"b",why:'"It\'s" = "It has" — contraction, not possession'},
+      {text:"The dog chased ______ tail in circles.",a:"its",b:"it's",correct:"a",why:"Possessive pronoun: the tail belonging to the dog. No apostrophe."},
+      {text:"The three ______ voted unanimously.",a:"committee's",b:"committees",correct:"b",why:"Plural: more than one committee. No possession indicated."}
+    ];
+    const[answers,setAnswers]=useState({});
+    return e('div',{style:{padding:'12px 20px'}},
+      e('div',{style:{color:T.amber,fontSize:12,fontWeight:700,marginBottom:10,textTransform:'uppercase',letterSpacing:1}},'Quick Check: Apostrophe or not?'),
+      items.map((item,i)=>{
+        const ans=answers[i];const isRight=ans===item.correct;
+        return e('div',{key:i,style:{marginBottom:10,padding:'8px 12px',borderRadius:8,background:ans?(isRight?`${T.accent}11`:`${T.red}11`):'transparent'}},
+          e('div',{style:{color:T.text,fontSize:13,marginBottom:6}},item.text),
+          e('div',{style:{display:'flex',gap:6}},
+            e('button',{onClick:()=>setAnswers(p=>({...p,[i]:'a'})),disabled:!!ans,
+              style:{padding:'4px 12px',borderRadius:6,border:`1px solid ${ans==='a'?(isRight?T.accent:T.red):T.border}`,
+                background:'transparent',color:ans==='a'?(isRight?T.accent:T.red):T.muted,fontSize:13,fontWeight:700,cursor:ans?'default':'pointer'}},item.a),
+            e('button',{onClick:()=>setAnswers(p=>({...p,[i]:'b'})),disabled:!!ans,
+              style:{padding:'4px 12px',borderRadius:6,border:`1px solid ${ans==='b'?(isRight?T.accent:T.red):T.border}`,
+                background:'transparent',color:ans==='b'?(isRight?T.accent:T.red):T.muted,fontSize:13,fontWeight:700,cursor:ans?'default':'pointer'}},item.b)
+          ),
+          ans&&e('div',{style:{color:isRight?T.accent:T.red,fontSize:11,marginTop:4}},isRight?'Correct! ':'Incorrect. ',item.why)
+        );
+      })
+    );
+  }
+
+  function FrameworkVisual(){
+    return e('div',{style:{padding:'12px 20px'}},
+      [{n:'1',label:'Introductory phrase?',detail:'Subject after comma must do the action',color:T.purple},
+       {n:'2',label:'List with and/or?',detail:'All items same form: noun/verb/gerund/etc.',color:T.accent},
+       {n:'3',label:'Correlative pair?',detail:'Match forms after each half',color:T.amber},
+       {n:'4',label:'Comparison with than/like/as?',detail:'Same type of thing on both sides',color:T.blue},
+       {n:'5',label:'Appositive in commas?',detail:'Must rename the adjacent noun',color:T.red},
+       {n:'6',label:'Apostrophe present?',detail:'Possession vs. plurality vs. contraction',color:T.pink}
+      ].map((s,i)=>e('div',{key:i,style:{display:'flex',alignItems:'center',gap:12,marginBottom:8,padding:'8px 12px',
+        background:`${s.color}08`,borderLeft:`3px solid ${s.color}`,borderRadius:'0 8px 8px 0'}},
+        e('div',{style:{width:28,height:28,borderRadius:14,background:`${s.color}22`,color:s.color,
+          fontWeight:900,fontSize:14,display:'flex',alignItems:'center',justifyContent:'center'}},s.n),
+        e('div',null,
+          e('div',{style:{color:T.text,fontWeight:700,fontSize:13}},s.label),
+          e('div',{style:{color:T.muted,fontSize:11}},s.detail))
+      ))
+    );
+  }
+
+  function StatsVisual(){
+    return e('div',{style:{display:'flex',justifyContent:'center',gap:16,flexWrap:'wrap',padding:16}},
+      [{n:'3',label:'error types',sub:'Modifiers, parallelism, comparison'},
+       {n:'2-4',label:'Qs per test',sub:'Within Form/Structure/Sense'},
+       {n:'#1',label:'trap',sub:'Dangling modifiers'}
+      ].map((s,i)=>e('div',{key:i,style:{background:`${T.accent}11`,border:`1px solid ${T.accent}33`,borderRadius:14,padding:'16px 24px',textAlign:'center',minWidth:140}},
+        e('div',{style:{color:T.accent,fontWeight:900,fontSize:28}},s.n),
+        e('div',{style:{color:T.text,fontSize:13,fontWeight:600}},s.label),
+        e('div',{style:{color:T.muted,fontSize:11}},s.sub)))
+    );
+  }
+
+  const renderVisual=()=>{
+    if(lesson.visual==='stats')return e(StatsVisual);
+    if(lesson.visual==='dangling-demo')return e(DanglingDemo);
+    if(lesson.visual==='parallel-demo')return e(ParallelDemo);
+    if(lesson.visual==='correlative-check')return e(CorrelativeCheck);
+    if(lesson.visual==='apostrophe-quiz')return e(ApostropheQuiz);
+    if(lesson.visual==='framework')return e(FrameworkVisual);
+    return null;
+  };
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'48px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'center',gap:6,marginBottom:32}},
+      LESSONS.map((_,i)=>e('div',{key:i,onClick:()=>setIdx(i),
+        style:{width:i===idx?24:8,height:8,borderRadius:4,cursor:'pointer',transition:'all .3s',
+          background:i===idx?T.accent:i<idx?`${T.accent}66`:T.border}}))),
+    e('div',{style:{...cardStyle({overflow:'hidden',marginBottom:32})}},
+      e('div',{style:{padding:0}},
+        e('div',{style:{color:T.accent,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginBottom:4}},lesson.subtitle),
+        e('h2',{style:{color:T.text,fontSize:'clamp(1.2rem,3vw,1.6rem)',fontWeight:800,marginBottom:16,lineHeight:1.2}},lesson.title),
+        lesson.body.map((p,i)=>e('p',{key:i,style:{color:T.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:'pre-line'}},p))
+      ),
+      lesson.visual&&e('div',{style:{padding:'8px 0 4px'}},renderVisual())
+    ),
+    e('div',{style:{display:'flex',justifyContent:'space-between'}},
+      e('button',{onClick:()=>setIdx(Math.max(0,idx-1)),disabled:idx===0,
+        style:{...btn('transparent',idx===0?'#334155':T.sub),border:`1px solid ${T.border}`,padding:'10px 20px',fontSize:14}},'← Back'),
+      idx<total-1?e('button',{onClick:()=>setIdx(idx+1),style:btn(T.accent,T.dark,{fontSize:14,padding:'10px 20px'})},'Next →'):
+      e('button',{onClick:onComplete,style:btn(`linear-gradient(135deg,${T.accent},${T.accentDark})`,T.dark,{fontSize:14,padding:'10px 24px'})},'Start Modifier Matchup →'))
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: MODIFIER MATCHUP (original logic, preserved)
+// ══════════════════════════════════════════
+function ModifierMatchup({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[sel,setSel]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[score,setScore]=useState(0);
+  const[done,setDone]=useState(false);
+  const item=MODIFIER_ITEMS[idx];
+
+  function confirm(){if(sel===null)return;setConf(true);if(sel===item.correct)setScore(s=>s+1);}
+  function next(){if(idx<MODIFIER_ITEMS.length-1){setIdx(idx+1);setSel(null);setConf(false);}else setDone(true);}
+
+  if(done){
+    return e('div',{style:{maxWidth:600,margin:'0 auto',padding:'80px 20px',textAlign:'center'}},
+      e('div',{style:{fontSize:48,marginBottom:16}},'🎯'),
+      e('h2',{style:{color:T.text,fontSize:28,fontWeight:800,marginBottom:8}},'Matchup Complete'),
+      e('div',{style:{color:T.accent,fontSize:48,fontWeight:900}},score,'/',MODIFIER_ITEMS.length),
+      e('p',{style:{color:T.sub,fontSize:15,marginTop:8,marginBottom:32}},'correct modifier matches'),
+      e('button',{onClick:()=>onComplete(score,MODIFIER_ITEMS.length),style:btn(`linear-gradient(135deg,${T.accent},${T.accentDark})`,T.dark)},'Continue to Structure Spotter →'));
+  }
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'space-between',marginBottom:24}},
+      e('div',{style:{color:T.purple,fontSize:13,fontWeight:700}},'🎯 Modifier Matchup'),
+      e('div',{style:{color:T.muted,fontSize:13}},idx+1,' of ',MODIFIER_ITEMS.length,' • Score: ',score)),
+    e('div',{style:{...cardStyle({padding:28,marginBottom:20})}},
+      e('div',{style:{color:T.muted,fontSize:12,fontWeight:600,marginBottom:12,textTransform:'uppercase',letterSpacing:1}},'Which subject correctly follows this modifier?'),
+      e('div',{style:{color:T.purple,fontSize:20,fontWeight:700,fontFamily:'Georgia,serif',lineHeight:1.6}},'"',item.prompt,'"')),
+    e('div',{style:{display:'flex',flexDirection:'column',gap:10,marginBottom:24}},
+      item.options.map((opt,oi)=>{
+        const letters='ABCD';const isSel=sel===oi;const isCorr=oi===item.correct;
+        let bg=T.card,bdr=`1px solid ${T.border}`,tc='#cbd5e1';
+        if(conf&&isCorr){bg=`${T.accent}18`;bdr=`2px solid ${T.accent}`;tc=T.accent;}
+        else if(conf&&isSel&&!isCorr){bg=`${T.red}18`;bdr=`2px solid ${T.red}`;tc=T.red;}
+        else if(isSel&&!conf){bg=`${T.amber}15`;bdr=`2px solid ${T.amber}`;tc=T.amber;}
+        return e('button',{key:oi,onClick:()=>{if(!conf)setSel(oi);},disabled:conf,
+          style:{display:'flex',alignItems:'center',gap:12,padding:'14px 18px',borderRadius:12,
+            background:bg,border:bdr,cursor:conf?'default':'pointer',textAlign:'left',width:'100%'}},
+          e('span',{style:{minWidth:28,height:28,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',
+            fontWeight:800,fontSize:13,
+            background:conf&&isCorr?T.accent:conf&&isSel&&!isCorr?T.red:isSel?T.amber:T.border,
+            color:isSel||conf?T.dark:T.muted}},letters[oi]),
+          e('span',{style:{color:tc,fontSize:14,fontFamily:'Georgia,serif'}},opt));
+      })),
+    conf&&e('div',{style:{background:T.border,borderRadius:12,padding:16,marginBottom:20,borderLeft:`4px solid ${T.blue}`}},
+      e('div',{style:{color:T.blue,fontWeight:700,fontSize:13,marginBottom:6}},'Explanation'),
+      e('div',{style:{color:T.sub,fontSize:13,lineHeight:1.6}},item.explain)),
+    e('div',{style:{display:'flex',justifyContent:'flex-end'}},
+      !conf?e('button',{onClick:confirm,disabled:sel===null,style:btn(sel===null?T.border:T.accent,sel===null?T.dim:T.dark,{fontSize:14,padding:'10px 24px'})},'Check'):
+      e('button',{onClick:next,style:btn(T.accent,T.dark,{fontSize:14,padding:'10px 24px'})},idx<MODIFIER_ITEMS.length-1?'Next →':'See Results →'))
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: STRUCTURE SPOTTER (original logic)
+// ══════════════════════════════════════════
+function StructureSpotter({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[selectedType,setSelectedType]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[score,setScore]=useState(0);
+  const[done,setDone]=useState(false);
+  const item=SPOTTER_ITEMS[idx];
+  const types=['dangling','parallel','comparison','possessive'];
+  const typeLabels={dangling:'Dangling Modifier',parallel:'Broken Parallelism',comparison:'Faulty Comparison',possessive:'Apostrophe Error'};
+  const typeColors={dangling:T.purple,parallel:T.accent,comparison:T.blue,possessive:T.pink};
+
+  function confirm(){if(selectedType===null)return;setConf(true);if(selectedType===item.error)setScore(s=>s+1);}
+  function next(){if(idx<SPOTTER_ITEMS.length-1){setIdx(idx+1);setSelectedType(null);setConf(false);}else setDone(true);}
+
+  if(done){
+    return e('div',{style:{maxWidth:600,margin:'0 auto',padding:'80px 20px',textAlign:'center'}},
+      e('div',{style:{fontSize:48,marginBottom:16}},'🔍'),
+      e('h2',{style:{color:T.text,fontSize:28,fontWeight:800,marginBottom:8}},'Spotter Complete'),
+      e('div',{style:{color:T.accent,fontSize:48,fontWeight:900}},score,'/',SPOTTER_ITEMS.length),
+      e('p',{style:{color:T.sub,fontSize:15,marginTop:8,marginBottom:32}},'errors correctly identified'),
+      e('button',{onClick:()=>onComplete(score,SPOTTER_ITEMS.length),style:btn(`linear-gradient(135deg,${T.accent},${T.accentDark})`,T.dark)},'Continue to Timed Practice →'));
+  }
+  const isRight=conf&&selectedType===item.error;
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'space-between',marginBottom:24}},
+      e('div',{style:{color:T.blue,fontSize:13,fontWeight:700}},'🔍 Structure Spotter'),
+      e('div',{style:{color:T.muted,fontSize:13}},idx+1,' of ',SPOTTER_ITEMS.length,' • Score: ',score)),
+    e('div',{style:{...cardStyle({padding:28,marginBottom:20})}},
+      e('div',{style:{color:T.muted,fontSize:12,fontWeight:600,marginBottom:12,textTransform:'uppercase',letterSpacing:1}},'What type of error does this sentence contain?'),
+      e('div',{style:{color:T.text,fontSize:17,fontFamily:'Georgia,serif',lineHeight:1.8}},item.sentence)),
+    e('div',{style:{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:24}},
+      types.map(t=>{
+        const isSel=selectedType===t;const isCorr=conf&&t===item.error;const isWrong=conf&&isSel&&t!==item.error;
+        return e('button',{key:t,onClick:()=>{if(!conf)setSelectedType(t);},disabled:conf,
+          style:{padding:'14px 16px',borderRadius:12,textAlign:'center',cursor:conf?'default':'pointer',fontWeight:700,fontSize:13,
+            background:isCorr?`${T.accent}22`:isWrong?`${T.red}22`:isSel?`${typeColors[t]}15`:T.card,
+            border:isCorr?`2px solid ${T.accent}`:isWrong?`2px solid ${T.red}`:isSel?`2px solid ${typeColors[t]}`:`1px solid ${T.border}`,
+            color:isCorr?T.accent:isWrong?T.red:isSel?typeColors[t]:T.text}},typeLabels[t]);
+      })),
+    conf&&e('div',{style:{background:isRight?`${T.accent}11`:`${T.red}11`,border:`1px solid ${isRight?T.accent:T.red}44`,borderRadius:12,padding:16,marginBottom:20}},
+      e('div',{style:{color:isRight?T.accent:T.red,fontWeight:700,fontSize:14,marginBottom:6}},isRight?'Correct!':'Not quite — it\'s a '+typeLabels[item.error]+'.'),
+      e('div',{style:{color:T.sub,fontSize:13,lineHeight:1.6,marginBottom:10}},item.explain),
+      e('div',{style:{background:`${T.accent}11`,borderRadius:8,padding:12}},
+        e('div',{style:{color:T.accent,fontSize:12,fontWeight:600,marginBottom:4}},'Corrected:'),
+        e('div',{style:{color:T.text,fontSize:14,fontFamily:'Georgia,serif'}},item.fix))),
+    e('div',{style:{display:'flex',justifyContent:'flex-end'}},
+      !conf?e('button',{onClick:confirm,disabled:selectedType===null,style:btn(selectedType===null?T.border:T.accent,selectedType===null?T.dim:T.dark,{fontSize:14,padding:'10px 24px'})},'Check'):
+      e('button',{onClick:next,style:btn(T.accent,T.dark,{fontSize:14,padding:'10px 24px'})},idx<SPOTTER_ITEMS.length-1?'Next →':'See Results →'))
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: TIMED PRACTICE QUIZ
+// ══════════════════════════════════════════
+function TimedPractice({onComplete}){
+  const[started,setStarted]=useState(false);
+  const[idx,setIdx]=useState(0);
+  const[sel,setSel]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[answers,setAnswers]=useState([]);
+  const[timeLeft,setTimeLeft]=useState(10*75);
+  const timerRef=useRef(null);
+  const q=QUIZ[idx];
+  const total=QUIZ.length;
+
+  useEffect(()=>{
+    if(started&&!timerRef.current){
+      timerRef.current=setInterval(()=>{
+        setTimeLeft(t=>{if(t<=1){clearInterval(timerRef.current);return 0;}return t-1;});
+      },1000);
+    }
+    return()=>{if(timerRef.current)clearInterval(timerRef.current);};
+  },[started]);
+
+  useEffect(()=>{if(timeLeft===0&&started)finish();},[timeLeft]);
+
+  function handleConfirm(){
+    if(sel===null)return;
+    setConf(true);
+    setAnswers(p=>[...p,{selected:sel,correct:sel===q.answer,diff:q.diff,errType:q.errType}]);
+  }
+  function next(){if(idx<total-1){setIdx(idx+1);setSel(null);setConf(false);}else finish();}
+  function finish(){
+    if(timerRef.current)clearInterval(timerRef.current);
+    onComplete(answers);
+  }
+
+  const m=Math.floor(timeLeft/60),s=timeLeft%60;
+  const pct=(timeLeft/(10*75))*100;
+  const diffColor=q?{easy:T.accent,medium:T.amber,hard:T.red}[q.diff]:T.accent;
+
+  if(!started){
+    return e('div',{style:{maxWidth:600,margin:'0 auto',padding:'80px 20px',textAlign:'center'}},
+      e('div',{style:{fontSize:48,marginBottom:16}},'📝'),
+      e('h2',{style:{color:T.text,fontSize:28,fontWeight:800,marginBottom:8}},'Timed Practice Quiz'),
+      e('p',{style:{color:T.sub,fontSize:15,marginBottom:8}},'10 SAT-style questions covering modifiers, parallelism & comparisons'),
+      e('p',{style:{color:T.muted,fontSize:14,marginBottom:32}},'75 seconds per question • 12:30 total'),
+      e('button',{onClick:()=>setStarted(true),style:btn(`linear-gradient(135deg,${T.accent},${T.accentDark})`,T.dark)},'Start Timed Practice →'));
+  }
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}},
+      e('div',{style:{display:'flex',alignItems:'center',gap:10}},
+        e('div',{style:{color:T.accent,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase'}},'📝 Practice Quiz'),
+        e('span',{style:{...labelTag(diffColor),fontSize:10}},q.diff)),
+      e('div',{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,color:pct<20?T.red:T.muted}},`${m}:${s<10?'0':''}${s}`)
+    ),
+    e('div',{style:{height:4,background:T.border,borderRadius:2,marginBottom:8,overflow:'hidden'}},
+      e('div',{style:{height:'100%',width:`${pct}%`,background:pct<20?T.red:`linear-gradient(90deg,${T.accent},${T.accentDark})`,borderRadius:2,transition:'width .1s linear'}})),
+    e('div',{style:{display:'flex',gap:4,marginBottom:16,flexWrap:'wrap'}},
+      Array.from({length:total}).map((_,i)=>{
+        let bg=T.border,c=T.muted,bdr=T.border;
+        if(answers[i]){bg=answers[i].correct?T.correctBg:T.wrongBg;c=answers[i].correct?T.correct:T.wrong;bdr=c;}
+        if(i===idx&&!conf)bdr=T.accent;
+        return e('div',{key:i,style:{width:26,height:26,borderRadius:'50%',border:`2px solid ${bdr}`,display:'flex',
+          alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,
+          fontFamily:"'JetBrains Mono',monospace",background:bg,color:c}},i+1);
+      })),
+    e('div',{style:{color:T.text,fontWeight:800,fontSize:15,marginBottom:16}},'Question ',idx+1,' of ',total),
+    e(QuizQ,{q:{...q,correct:q.answer},index:idx,selected:sel,confirmed:conf,onSelect:setSel,onConfirm:handleConfirm,
+      tagLabel:`Standard English Conventions`,tagColor:T.accent}),
+    conf&&e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:8}},
+      e('button',{onClick:next,style:btn(T.accent,T.dark,{fontSize:14,padding:'10px 22px'})},idx<total-1?'Next →':'See Results →'))
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: ERROR LOG + RESULTS
+// ══════════════════════════════════════════
+function ErrorLog({answers,onContinue}){
+  const[classifications,setClassifications]=useState({});
+  const errors=answers.map((a,i)=>({...a,idx:i})).filter(a=>!a.correct);
+  const total=answers.length;
+  const correct=answers.filter(a=>a.correct).length;
+  const pct=Math.round((correct/total)*100);
+  const byType={};
+  answers.forEach(a=>{if(!byType[a.errType])byType[a.errType]={c:0,t:0};byType[a.errType].t++;if(a.correct)byType[a.errType].c++;});
+  const typeLabels={dangling:'Dangling Modifier',parallel:'Parallelism',comparison:'Comparison',possessive:'Apostrophe'};
+  const typeColors2={dangling:T.purple,parallel:T.accent,comparison:T.blue,possessive:T.pink};
+  const allClassified=errors.every((_,i)=>classifications[i]);
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{color:T.accent,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase',marginBottom:16}},'📊 Results & Error Classification'),
+    e('div',{style:{...cardStyle({padding:24,textAlign:'center',marginBottom:20,border:`2px solid ${T.accent}`})}},
+      e('div',{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:48,fontWeight:900,
+        color:pct>=80?T.correct:pct>=60?T.accent:T.wrong}},`${correct}/${total}`),
+      e('div',{style:{color:T.muted,fontSize:14,marginBottom:16}},`${pct}% correct`),
+      Object.keys(byType).length>0&&e('div',{style:{display:'grid',gridTemplateColumns:`repeat(${Math.min(Object.keys(byType).length,4)},1fr)`,gap:10}},
+        Object.entries(byType).map(([type,d])=>{
+          const dp=d.t>0?Math.round((d.c/d.t)*100):0;
+          return e('div',{key:type,style:{background:T.dark,borderRadius:10,padding:12,textAlign:'center'}},
+            e('div',{style:{fontSize:10,color:typeColors2[type]||T.accent,textTransform:'uppercase',letterSpacing:1,marginBottom:4}},typeLabels[type]||type),
+            e('div',{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:20,fontWeight:700,
+              color:dp>=75?T.correct:dp>=50?T.accent:T.wrong}},`${d.c}/${d.t}`),
+            e('div',{style:{height:4,background:T.border,borderRadius:2,marginTop:6,overflow:'hidden'}},
+              e('div',{style:{height:'100%',width:`${dp}%`,background:typeColors2[type]||T.accent,borderRadius:2}}))
+          );
+        })
+      )
+    ),
+    errors.length>0?e('div',null,
+      e('h3',{style:{color:T.text,fontSize:'1.2rem',fontWeight:800,marginBottom:8}},'Classify Your Mistakes'),
+      e('p',{style:{color:T.sub,fontSize:14,marginBottom:16,lineHeight:1.6}},'For each error, identify the root cause. Knowing WHY you missed is more valuable than your score.'),
+      errors.map((err,i)=>e('div',{key:i,style:{...cardStyle({marginBottom:12,borderLeft:`3px solid ${T.wrong}`})}},
+        e('div',{style:{fontSize:13,color:T.wrong,fontWeight:600,marginBottom:8}},`Q${err.idx+1} — ${typeLabels[err.errType]||err.errType} (${err.diff})`),
+        e('div',{style:{display:'flex',gap:8,flexWrap:'wrap'}},
+          ['Rule Gap','Trap Answer','Misread / Rushed'].map(cat=>
+            e('button',{key:cat,onClick:()=>setClassifications(p=>({...p,[i]:cat})),
+              style:{padding:'8px 14px',borderRadius:8,fontSize:13,fontWeight:600,cursor:'pointer',
+                background:classifications[i]===cat?`${T.accent}22`:'transparent',
+                border:`1px solid ${classifications[i]===cat?T.accent:T.border}`,
+                color:classifications[i]===cat?T.accent:T.muted}},cat))
+        ),
+        classifications[i]&&e('div',{style:{marginTop:8,fontSize:12,color:T.dim}},
+          classifications[i]==='Rule Gap'?'→ Revisit the lesson for this rule type. The decision framework (Step 1–6) maps directly to these errors.':
+          classifications[i]==='Trap Answer'?'→ You knew the rule but fell for a distractor. Slow down and check: does the subject actually do the action?':
+          '→ Pacing issue. Read the full sentence before looking at choices.')
+      )),
+      allClassified&&e('div',{style:{...cardStyle({background:T.correctBg,border:`1px solid ${T.correct}44`,marginTop:16})}},
+        e('div',{style:{fontSize:14,color:T.correct,fontWeight:700,marginBottom:6}},'Error Pattern Summary'),
+        e('div',{style:{fontSize:13,color:T.sub,lineHeight:1.6}},
+          (()=>{const counts={};Object.values(classifications).forEach(c=>{counts[c]=(counts[c]||0)+1;});
+            const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+            if(!top)return'';
+            return`Your most common error type: ${top[0]} (${top[1]}×). ${
+              top[0]==='Rule Gap'?'Revisit the specific lessons — modifier rules and parallel structure patterns are mechanical and learnable.':
+              top[0]==='Trap Answer'?'Good news — you know the rules. Focus on the decision framework to systematically check each error type.':
+              'Try the prediction method: identify the error type BEFORE looking at choices.'}`;
+          })()
+        ))
+    ):e('div',{style:{...cardStyle({background:T.correctBg,border:`1px solid ${T.correct}44`,textAlign:'center'})}},
+      e('div',{style:{fontSize:32,marginBottom:8}},'🎯'),
+      e('div',{style:{color:T.correct,fontSize:16,fontWeight:700}},'Perfect score! Every rule applied correctly.')),
+    e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:20}},
+      e('button',{onClick:onContinue,style:btn(`linear-gradient(135deg,${T.purple},#7c3aed)`,'#fff',{fontSize:14,padding:'10px 24px'})},'Continue to Challenge Mode →'))
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: CHALLENGE MODE
+// ══════════════════════════════════════════
+function ChallengeMode({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[sel,setSel]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[score,setScore]=useState(0);
+  const q=CHALLENGE[idx];
+  const total=CHALLENGE.length;
+
+  function handleConfirm(){if(sel===null)return;setConf(true);if(sel===q.answer)setScore(s=>s+1);}
+  function next(){if(idx<total-1){setIdx(idx+1);setSel(null);setConf(false);}
+    else onComplete(score+(sel===q.answer?1:0),total);}
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{background:`${T.purple}11`,border:`2px solid ${T.purple}44`,borderRadius:16,padding:24}},
+      e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}},
+        e('div',{style:labelTag(T.purple)},'⭐ Challenge Mode'),
+        e('span',{style:{color:T.muted,fontSize:13}},`${idx+1} of ${total}`)),
+      idx===0&&e('p',{style:{color:T.sub,fontSize:14,marginBottom:16,lineHeight:1.6}},
+        'The hardest structure questions layer multiple error types in a single sentence, or use sophisticated syntax that makes the correct answer feel wrong. After each question, the "Trap Autopsy" shows what each wrong answer gets wrong.'),
+      e(QuizQ,{q:{...q,correct:q.answer},index:idx,selected:sel,confirmed:conf,onSelect:setSel,onConfirm:handleConfirm,
+        tagLabel:`Challenge ${idx+1} — ${q.errType==='dangling'?'Modifier':q.errType==='parallel'?'Parallelism':'Comparison'}`,
+        tagColor:T.purple,showTrapTags:true}),
+      conf&&e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:8}},
+        e('button',{onClick:next,style:btn(T.purple,'#fff',{fontSize:14,padding:'10px 22px'})},idx<total-1?'Next →':'See Final Summary →'))
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: MODULE COMPLETE
+// ══════════════════════════════════════════
+function ModuleComplete({warmupScore,warmupTotal,matchupScore,matchupTotal,spotterScore,spotterTotal,quizAnswers,challengeScore,challengeTotal}){
+  const quizCorrect=quizAnswers.filter(a=>a.correct).length;
+  const quizPct=Math.round((quizCorrect/quizAnswers.length)*100);
+
+  const takeaways=[
+    'After any introductory phrase, the subject immediately after the comma MUST be the person or thing performing that action. This is the #1 tested grammar concept.',
+    'In any list connected by and/or/but, every item must match in grammatical form. Noun with noun, verb with verb, phrase with phrase.',
+    'Correlative pairs (not only...but also, either...or, both...and) require matching forms after each half.',
+    'Comparisons must be between logically equivalent things. "The population of Tokyo is larger than London" compares a population to a city — use "that of" or possessives to fix.',
+    'Appositives must rename the adjacent noun. If "a renowned physicist" sits next to "the lecture," the sentence says the lecture is a physicist.',
+    'Possessive pronouns (its, his, her, their, whose) never take apostrophes. "It\'s" always means "it is" or "it has."'
+  ];
+  const homework=[
+    {title:'Modifier Scan',desc:'Read 3 paragraphs from any source. Circle every introductory phrase and check: does the subject after the comma match the action?'},
+    {title:'Parallelism Audit',desc:'Find 3 sentences with lists in your textbook or an article. Check if every item is in the same grammatical form. Fix any that aren\'t.'},
+    {title:'Comparison Check',desc:'Look for 2 sentences using "than," "like," or "as...as." Verify both sides compare the same type of thing.'},
+    {title:'Preview Module 4',desc:'Next up: the Conventions Boss Battle — a timed challenge combining boundaries, agreement, and structure. Review any weak areas before then.'}
+  ];
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{textAlign:'center',marginBottom:32}},
+      e('div',{style:{fontSize:56,marginBottom:12}},'🎉'),
+      e('h1',{style:{fontSize:'clamp(1.8rem,4vw,2.8rem)',fontWeight:800,color:T.accent,marginBottom:8}},'Module 3 Complete'),
+      e('p',{style:{color:T.sub,fontSize:15}},'Modifiers, Parallelism & Structure — mastered.')),
+    e('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(120px,1fr))',gap:10,marginBottom:28}},
+      [{label:'Warm-Up',score:`${warmupScore}/${warmupTotal}`,color:T.blue},
+       {label:'Matchup',score:`${matchupScore}/${matchupTotal}`,color:T.purple},
+       {label:'Spotter',score:`${spotterScore}/${spotterTotal}`,color:T.blue},
+       {label:'Quiz',score:`${quizCorrect}/${quizAnswers.length}`,color:T.accent},
+       {label:'Challenge',score:`${challengeScore}/${challengeTotal}`,color:T.purple}
+      ].map((s,i)=>e('div',{key:i,style:{...cardStyle({textAlign:'center',padding:14})}},
+        e('div',{style:{fontSize:10,color:s.color,textTransform:'uppercase',letterSpacing:1,marginBottom:4}},s.label),
+        e('div',{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:22,fontWeight:900,color:T.text}},s.score)
+      ))),
+    e('div',{style:{...cardStyle({marginBottom:20,borderLeft:`3px solid ${T.accent}`})}},
+      e('h3',{style:{color:T.text,fontSize:'1.2rem',fontWeight:800,marginBottom:12}},'Key Takeaways'),
+      takeaways.map((t,i)=>e('div',{key:i,style:{display:'flex',gap:10,marginBottom:i<takeaways.length-1?12:0}},
+        e('span',{style:{color:T.accent,fontWeight:700,fontSize:14,flexShrink:0}},`${i+1}.`),
+        e('span',{style:{color:T.sub,fontSize:14,lineHeight:1.7}},t)))),
+    e('div',{style:{...cardStyle({marginBottom:20,borderLeft:`3px solid ${T.amber}`})}},
+      e('h3',{style:{color:T.text,fontSize:'1.2rem',fontWeight:800,marginBottom:12}},'Homework'),
+      homework.map((h,i)=>e('div',{key:i,style:{marginBottom:i<homework.length-1?14:0}},
+        e('div',{style:{color:T.text,fontWeight:700,fontSize:14,marginBottom:2}},`${i+1}. ${h.title}`),
+        e('div',{style:{color:T.sub,fontSize:14,lineHeight:1.6}},h.desc)))),
+    e('div',{style:{display:'flex',justifyContent:'space-between',paddingTop:20,borderTop:`1px solid ${T.border}`}},
+      e('a',{href:'module-2.html',style:{color:T.accent,fontSize:14}},'← Module 2: Agreement'),
+      e('a',{href:'module-4.html',style:{color:T.accent,fontSize:14}},'Module 4: Boss Battle →'))
+  );
+}
+
+// ══════════════════════════════════════════
+// APP: State Machine
+// ══════════════════════════════════════════
+function App(){
+  const[screen,setScreen]=useState('welcome');
+  const[fade,setFade]=useState(true);
+  const[warmupScore,setWarmupScore]=useState(0);
+  const[warmupTotal,setWarmupTotal]=useState(8);
+  const[matchupScore,setMatchupScore]=useState(0);
+  const[matchupTotal,setMatchupTotal]=useState(8);
+  const[spotterScore,setSpotterScore]=useState(0);
+  const[spotterTotal,setSpotterTotal]=useState(8);
+  const[quizAnswers,setQuizAnswers]=useState([]);
+  const[challengeScore,setChallengeScore]=useState(0);
+  const[challengeTotal,setChallengeTotal]=useState(6);
+
+  const go=useCallback((to)=>{
+    setFade(false);
+    setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},300);
+  },[]);
+
+  return e('div',{style:{minHeight:'100vh',background:T.dark,color:T.text,fontFamily:"'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}},
+    // Grid background
+    e('div',{style:{position:'fixed',inset:0,pointerEvents:'none',opacity:.03,
+      backgroundImage:'linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)',
+      backgroundSize:'40px 40px'}}),
+    e('div',{style:{position:'relative',zIndex:1,transition:'opacity .3s,transform .3s',
+      opacity:fade?1:0,transform:fade?'translateY(0)':'translateY(8px)'}},
+
+      screen==='welcome'&&e(Welcome,{onNext:()=>go('warmup')}),
+
+      screen==='warmup'&&e(RetrievalWarmUp,{onComplete:(score,total)=>{
+        setWarmupScore(score);setWarmupTotal(total);go('lesson');}}),
+
+      screen==='lesson'&&e(LessonViewer,{onComplete:()=>go('modifier')}),
+
+      screen==='modifier'&&e(ModifierMatchup,{onComplete:(score,total)=>{
+        setMatchupScore(score);setMatchupTotal(total);go('spotter');}}),
+
+      screen==='spotter'&&e(StructureSpotter,{onComplete:(score,total)=>{
+        setSpotterScore(score);setSpotterTotal(total);go('quiz');}}),
+
+      screen==='quiz'&&e(TimedPractice,{onComplete:(ans)=>{setQuizAnswers(ans);go('errorlog');}}),
+
+      screen==='errorlog'&&e(ErrorLog,{answers:quizAnswers,onContinue:()=>go('challenge')}),
+
+      screen==='challenge'&&e(ChallengeMode,{onComplete:(score,total)=>{
+        setChallengeScore(score);setChallengeTotal(total);go('complete');}}),
+
+      screen==='complete'&&e(ModuleComplete,{warmupScore,warmupTotal,matchupScore,matchupTotal,
+        spotterScore,spotterTotal,quizAnswers,challengeScore,challengeTotal})
+    )
+  );
+}
+
+const{createRoot}=ReactDOM;
+createRoot(document.getElementById('root')).render(e(App));
+</script>
+</body>
+</html>

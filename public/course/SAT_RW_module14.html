@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 14: Test Strategy & Pacing — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback, useRef } = React;
+const PURPLE = "#a855f7";
+const ACCENT = "#10b981";
+const BLUE = "#3b82f6";
+const AMBER = "#f59e0b";
+const RED = "#ef4444";
+const CYAN = "#06b6d4";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px",
+  borderRadius: 10,
+  border: "none",
+  background: bg,
+  color,
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: "pointer",
+  transition: "transform .12s",
+  ...extra
+});
+const NAV = { prev: { label: "Module 13: Expression", file: "SAT RW module13.html" }, next: { label: "Module 15: Boss Battle", file: "SAT RW module15.html" } };
+const HOMEWORK = [
+  { icon: "\u23F1\uFE0F", task: "Complete a 10-question timed set in 12 minutes", detail: "Use any SAT practice questions. Strict timer: flag and move at 90 seconds.", color: AMBER },
+  { icon: "\uD83D\uDCDD", task: "Categorize your last 10 mistakes", detail: "For each: content error, careless error, time pressure, or elimination failure?", color: RED },
+  { icon: "\uD83C\uDFAF", task: "Practice the 'read question first' technique on 5 passages", detail: "Read the stem before the passage. Note how this changes your reading focus.", color: BLUE },
+  { icon: "\uD83E\uDDE0", task: "Memorize the 71-second budget", detail: "27 questions / 32 minutes = 71 seconds average. Bank time from easy Qs for hard ones.", color: PURPLE }
+];
+function NavLinks() {
+  return React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12, marginTop: 32, paddingTop: 24, borderTop: "1px solid " + BORDER } },
+    NAV.prev && React.createElement("a", { href: NAV.prev.file, style: { ...btn("transparent", SUB), border: "1px solid " + BORDER, textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, "\u2190 " + NAV.prev.label),
+    NAV.next && React.createElement("a", { href: NAV.next.file, style: { ...btn("linear-gradient(135deg," + AMBER + "," + RED + ")", TEXT), textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, NAV.next.label + " \u2192")
+  );
+}
+function Homework() {
+  return React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 24, maxWidth: 520, width: "100%", marginBottom: 32, textAlign: "left" } },
+    React.createElement("div", { style: { color: AMBER, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "\uD83D\uDCDD Homework & Action Items"),
+    HOMEWORK.map(function(h, i) {
+      return React.createElement("div", { key: i, style: { display: "flex", gap: 10, marginBottom: 10, padding: "8px 12px", background: h.color + "08", borderLeft: "3px solid " + h.color, borderRadius: "0 8px 8px 0" } },
+        React.createElement("span", { style: { color: h.color, fontSize: 13 } }, h.icon),
+        React.createElement("div", null,
+          React.createElement("div", { style: { color: TEXT, fontWeight: 600, fontSize: 13 } }, h.task),
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, marginTop: 2 } }, h.detail)
+        )
+      );
+    })
+  );
+}
+const WARMUP_ITEMS = [
+  {
+    id: "w1", priorModule: "M13", type: "transition",
+    passage: "The city\u2019s new public transit system has reduced average commute times by 25% since its launch last year. ______, ridership has exceeded projections by 40%, suggesting strong public demand for reliable mass transit options.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["By contrast", "Furthermore", "Despite this", "For instance"],
+    answer: 1,
+    explain: "Both sentences present positive outcomes (shorter commutes + high ridership). Addition relationship. \u2018Furthermore\u2019 adds a second supporting point."
+  },
+  {
+    id: "w2", priorModule: "M11", type: "weaken",
+    passage: "A school district implemented a later start time for high schools (shifting from 7:30 AM to 8:45 AM) and found that average student GPAs increased by 0.3 points over the following year. The district concluded that later start times improve academic performance.",
+    stem: "Which finding would most weaken the district\u2019s conclusion?",
+    choices: ["Some students preferred the earlier start time", "The district simultaneously implemented a new tutoring program, reduced class sizes, and updated its curriculum during the same year", "Other school districts have also considered later start times", "Sleep is important for cognitive function"],
+    answer: 1,
+    explain: "Confounding variables: three other changes happened simultaneously. The GPA increase could be from tutoring, smaller classes, or new curriculum \u2014 not the start time."
+  },
+  {
+    id: "w3", priorModule: "M13", type: "synthesis",
+    passage: "Notes: The Great Pacific Garbage Patch covers an area roughly twice the size of Texas. Most of the debris consists of microplastics less than 5mm in diameter. Marine animals ingest microplastics, which enter the food chain. A 2023 study found microplastics in 90% of sampled commercial fish.",
+    stem: "A writer wants to emphasize the threat to human health through the food chain. Which choice most effectively accomplishes this goal?",
+    choices: [
+      "The Great Pacific Garbage Patch is a massive concentration of ocean debris approximately twice the size of Texas.",
+      "A 2023 study revealing microplastics in 90% of commercial fish demonstrates that ocean pollution directly threatens human health, as marine animals ingest microplastics that travel through the food chain to our dinner plates.",
+      "Ocean currents concentrate floating debris into the Great Pacific Garbage Patch.",
+      "Most debris in the Great Pacific Garbage Patch consists of microplastics less than 5mm in diameter."
+    ],
+    answer: 1,
+    explain: "Goal: HUMAN HEALTH through FOOD CHAIN. B connects: fish ingest microplastics \u2192 food chain \u2192 90% of commercial fish \u2192 human consumption."
+  },
+  {
+    id: "w4", priorModule: "M5", type: "vocabulary",
+    passage: "Despite the committee\u2019s unanimous recommendation, the CEO remained ______: she acknowledged the proposal\u2019s merits but insisted on reviewing additional data before committing to any course of action.",
+    stem: "Which choice completes the text with the most logical and precise word?",
+    choices: ["enthusiastic", "dismissive", "noncommittal", "hostile"],
+    answer: 2,
+    explain: "\u2018Acknowledged merits BUT insisted on more data before committing\u2019 = willing to consider but not yet decided. \u2018Noncommittal\u2019 means not expressing a definite opinion or course of action."
+  }
+];
+function Warmup({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+  const item = WARMUP_ITEMS[idx];
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s) { return s + 1; });
+  }
+  function next() {
+    if (idx < WARMUP_ITEMS.length - 1) { setIdx(idx + 1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+  if (done) return React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "80px 20px", textAlign: "center" } },
+    React.createElement("div", { style: { fontSize: 48, marginBottom: 16 } }, "\uD83E\uDDE0"),
+    React.createElement("h2", { style: { color: TEXT, fontSize: 24, fontWeight: 800, marginBottom: 8 } }, "Warm-up Complete"),
+    React.createElement("div", { style: { color: AMBER, fontSize: 48, fontWeight: 900 } }, score, "/", WARMUP_ITEMS.length),
+    React.createElement("p", { style: { color: SUB, fontSize: 14, marginTop: 8, marginBottom: 32 } }, score === WARMUP_ITEMS.length ? "Perfect! Your prior knowledge is solid." : score >= 3 ? "Good recall! Let\u2019s build on that foundation." : "Time to refresh \u2014 today\u2019s lesson will help."),
+    React.createElement("button", { onClick: onComplete, style: btn("linear-gradient(135deg," + AMBER + "," + RED + ")", DARK) }, "Continue to Lesson \u2192")
+  );
+  return React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } },
+    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } },
+      React.createElement("div", { style: { color: AMBER, fontSize: 13, fontWeight: 700 } }, "\uD83E\uDDE0 Retrieval Warm-up"),
+      React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+        React.createElement("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 600, background: AMBER + "22", color: AMBER } }, "from " + item.priorModule),
+        React.createElement("span", { style: { color: MUTED, fontSize: 13 } }, idx + 1, "/", WARMUP_ITEMS.length)
+      )
+    ),
+    React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 20, overflow: "hidden" } },
+      React.createElement("div", { style: { height: "100%", width: ((idx + (confirmed ? 1 : 0)) / WARMUP_ITEMS.length * 100) + "%", background: "linear-gradient(90deg," + AMBER + "," + RED + ")", borderRadius: 2, transition: "width .4s" } })
+    ),
+    React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 24, marginBottom: 16 } },
+      React.createElement("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, item.passage)
+    ),
+    React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, item.stem),
+    React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } },
+      item.choices.map(function(c, ci) {
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = CARD, bdr = "1px solid " + BORDER, tc = "#cbd5e1";
+        if (confirmed && isCorr) { bg = ACCENT + "18"; bdr = "2px solid " + ACCENT; tc = ACCENT; }
+        else if (confirmed && isSel && !isCorr) { bg = RED + "18"; bdr = "2px solid " + RED; tc = RED; }
+        else if (isSel && !confirmed) { bg = AMBER + "15"; bdr = "2px solid " + AMBER; tc = AMBER; }
+        return React.createElement("button", { key: ci, onClick: function() { if (!confirmed) setSelected(ci); }, disabled: confirmed, style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" } },
+          React.createElement("span", { style: { minWidth: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, flexShrink: 0, marginTop: 1, background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? AMBER : BORDER, color: isSel || confirmed ? DARK : MUTED } }, letter),
+          React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+        );
+      })
+    ),
+    confirmed && React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: "4px solid " + AMBER } },
+      React.createElement("div", { style: { color: AMBER, fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "Explanation"),
+      React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 } }, item.explain)
+    ),
+    React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } },
+      !confirmed ? React.createElement("button", { onClick: confirm, disabled: selected === null, style: btn(selected === null ? BORDER : AMBER, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Confirm") :
+      React.createElement("button", { onClick: next, style: btn(AMBER, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < WARMUP_ITEMS.length - 1 ? "Next \u2192" : "See Results \u2192")
+    )
+  );
+}
+const LESSONS = [
+  {
+    id: "format",
+    title: "The Digital SAT Format",
+    subtitle: "Know the battlefield",
+    body: [
+      "The digital SAT Reading & Writing section consists of TWO modules, each 32 minutes with 27 questions. That's 64 minutes and 54 questions total.",
+      "KEY FEATURE: The second module is ADAPTIVE. If you perform well on Module 1, you get a harder (but higher-scoring) Module 2. If you struggle on Module 1, you get an easier Module 2 with a lower scoring ceiling.",
+      "IMPLICATION: Module 1 performance matters enormously. Getting 20+ correct in Module 1 virtually guarantees you'll see the harder Module 2, which is necessary for scores above ~650. This means: do NOT rush through Module 1. Accuracy in Module 1 is worth more than speed.",
+      "Each question appears one at a time on screen. You can flag questions and return to them WITHIN the same module, but you cannot go back to Module 1 once you've started Module 2."
+    ],
+    visual: "format-visual"
+  },
+  {
+    id: "pacing",
+    title: "Pacing: The 71-Second Budget",
+    subtitle: "How to spend your time",
+    body: [
+      "32 minutes / 27 questions = approximately 71 seconds per question. But NOT every question deserves 71 seconds.",
+      "FAST QUESTIONS (30-45 seconds): Conventions (grammar), simple vocabulary, straightforward transitions. You either know it or you don't — don't overthink.\n\nMEDIUM QUESTIONS (60-90 seconds): Central idea, detail, most evidence questions. Read carefully but efficiently.\n\nSLOW QUESTIONS (90-120 seconds): Inference, strengthen/weaken, data interpretation, synthesis. These reward careful analysis.",
+      "TIME BANKING: By spending 30 seconds on easy questions, you bank time for hard ones. If you save 30 seconds each on 10 easy questions, that's 5 extra minutes for the 5 hardest questions.",
+      "DANGER ZONE: If you have fewer than 10 minutes left and more than 8 questions remaining, you're behind. Start making faster decisions and don't leave anything blank."
+    ],
+    visual: "pacing-chart"
+  },
+  {
+    id: "triage",
+    title: "Question Triage",
+    subtitle: "Easy → Medium → Hard",
+    body: [
+      "On the digital SAT, questions within each module are roughly ordered by type (conventions first, then vocabulary, then reading comprehension) but NOT strictly by difficulty. This means easy and hard questions can appear throughout.",
+      "TRIAGE STRATEGY:\n• If you immediately know the answer → answer and move on (30 seconds).\n• If you need to think → work it, but set a mental 90-second limit.\n• If you're stuck after 90 seconds → flag it, make your best guess, and come back if time permits.",
+      "WHY FLAG AND MOVE: Spending 3 minutes on one hard question means 3 minutes stolen from 2-3 easier questions you haven't reached yet. The SAT gives the same points for every correct answer — a hard question is worth exactly the same as an easy one.",
+      "GOLDEN RULE: Never leave a question blank. There is no penalty for wrong answers on the digital SAT. Always guess, even if you're completely unsure."
+    ],
+    visual: null
+  },
+  {
+    id: "elimination",
+    title: "Process of Elimination",
+    subtitle: "Your most powerful tool",
+    body: [
+      "You don't need to find the RIGHT answer — you need to eliminate the WRONG ones. On a 4-choice question, eliminating even 1 wrong answer increases your odds from 25% to 33%. Eliminating 2 gives you 50%.",
+      'ELIMINATION TRIGGERS — the answer is probably wrong if it:\n• Contains absolute language ("always," "never," "all," "none") when the passage uses qualified language\n• Introduces information not found in the passage\n• Is too broad or too narrow for the question asked\n• Contradicts any specific detail in the passage\n• Uses the right words from the passage but in the wrong relationship',
+      `THE "ALMOST RIGHT" TRAP: The most dangerous wrong answer isn't the obviously wrong one — it's the one that's 90% right with one subtle flaw. This is why you must check EVERY part of each answer against the passage.`,
+      "STRATEGY: On hard questions, don't try to identify the right answer first. Instead, find reasons to eliminate wrong answers. The last one standing is correct."
+    ],
+    visual: "elimination-visual"
+  },
+  {
+    id: "reading-speed",
+    title: "Efficient Reading",
+    subtitle: "Speed without sacrificing comprehension",
+    body: [
+      "Digital SAT passages are SHORT — typically 75-150 words. You don't need speed-reading techniques. What you need is ACTIVE reading: reading with purpose.",
+      "BEFORE READING THE PASSAGE: Glance at the question first. Knowing what you're looking for helps you read more efficiently. If the question asks about the author's main argument, you can focus on the thesis. If it asks about a specific detail, you can scan for it.",
+      `WHILE READING: Note the passage's main point, any shifts or contrasts ("however," "but," "although"), and the author's tone. These three things answer 80% of reading questions.`,
+      "AFTER READING: Before looking at choices, try to answer the question in your own words. Then find the choice that matches. This prevents you from being influenced by attractive-but-wrong answers."
+    ],
+    visual: null
+  },
+  {
+    id: "type-strategy",
+    title: "Question-Type Strategies",
+    subtitle: "Quick reference by category",
+    body: [
+      "CONVENTIONS (M1-4): Look for the grammatical principle being tested. Subject-verb agreement? Comma usage? Identify the rule, apply it, move on. Don't overthink — these are usually fast.",
+      "VOCABULARY (M5-6): Read the full sentence for context clues. Eliminate choices that are wrong TONE even if they're close in meaning. Check for secondary meanings of familiar words.",
+      "CRAFT & STRUCTURE (M7-8): For purpose questions, ask what the author is DOING, not what they're saying. For cross-text, summarize each text before comparing.",
+      "INFORMATION & IDEAS (M9-12): The answer is always in the passage. For inference, choose the smallest logical leap. For evidence, SUPPORTS ≠ RELATES. For data, read labels first.",
+      "EXPRESSION & SYNTHESIS (M13): For synthesis, read the GOAL first. For transitions, identify the relationship before looking at choices."
+    ],
+    visual: "strategy-grid"
+  },
+  {
+    id: "mental-game",
+    title: "The Mental Game",
+    subtitle: "Confidence, stress, and recovery",
+    body: [
+      "BEFORE THE TEST: Get 8+ hours of sleep the two nights before (not just the night before). Eat a protein-rich breakfast. Arrive early. The goal is zero surprises.",
+      "DURING THE TEST: If you encounter a question that stumps you, don't panic. Flag it, make a guess, and move on. One hard question doesn't affect your overall score if you handle the rest well.",
+      "THE CONFIDENCE TRAP: Don't spend extra time on questions you're confident about just to double-check. Your first instinct on grammar and vocabulary questions is usually right. Move on and bank that time.",
+      "RECOVERY AFTER MODULE 1: You get a 10-minute break between modules. Use it. Stand up, stretch, drink water, eat a snack. Don't think about Module 1 — you can't change it. Reset mentally for Module 2.",
+      "IF YOU'RE RUNNING OUT OF TIME: Answer every remaining question. Guess on any flagged questions you can't reach. Never leave blanks."
+    ],
+    visual: null
+  },
+  {
+    id: "score-strategy",
+    title: "Score Optimization",
+    subtitle: "Maximizing your score strategically",
+    body: [
+      "THE ADAPTIVE SCORING INSIGHT: On the digital SAT, the difficulty of Module 2 determines your score ceiling. To reach 700+, you need to trigger the hard Module 2 by performing well on Module 1.",
+      "TARGET ACCURACY BY SCORE GOAL:\n• 500-550: Get conventions and easy vocabulary right (~15-18 correct per module)\n• 550-600: Add detail and central idea questions (~18-21 correct)\n• 600-650: Add evidence and inference (~21-23 correct)\n• 650-700: Add synthesis and strengthen/weaken (~23-25 correct)\n• 700+: Near-perfect on Module 1, strong on hard Module 2",
+      "ERROR ANALYSIS: After practice tests, categorize your mistakes:\n• Didn't know the rule/concept → Study the content (review module lessons)\n• Knew the concept but made a careless error → Slow down on that question type\n• Ran out of time → Improve pacing (speed up on easy, flag hard ones earlier)\n• Down to two choices and picked wrong → Practice elimination and re-reading",
+      "THE 80/20 RULE: 80% of score improvement comes from 20% of the skills. For most students, that 20% is: conventions rules, vocabulary context clues, main idea identification, and transitions."
+    ],
+    visual: "score-targets"
+  }
+];
+const DRILL_ITEMS = [
+  {
+    id: 1,
+    type: "conventions",
+    diff: "easy",
+    timelimit: 40,
+    passage: "The committee of scientists, along with several government officials, ______ scheduled to present findings at next month's conference.",
+    stem: "Which choice completes the text correctly?",
+    choices: ["are", "is", "were being", "have been"],
+    answer: 1,
+    explain: `Subject is "committee" (singular), and "along with" is a parenthetical — it doesn't change the subject number. Singular subject → "is." A fast conventions question: identify the rule, apply, move on.`
+  },
+  {
+    id: 2,
+    type: "vocabulary",
+    diff: "easy",
+    timelimit: 45,
+    passage: "Though the film received mixed reviews from critics, audiences found it deeply ______: many reported leaving the theater in tears and continuing to think about the story for days afterward.",
+    stem: "Which choice completes the text with the most logical word?",
+    choices: ["conventional", "affecting", "perplexing", "ostentatious"],
+    answer: 1,
+    explain: '"Tears" and "continuing to think" = emotionally moving. "Affecting" means emotionally moving or touching. "Conventional" = ordinary, "perplexing" = confusing, "ostentatious" = showy.'
+  },
+  {
+    id: 3,
+    type: "central",
+    diff: "medium",
+    timelimit: 75,
+    passage: "Urban ecologist Dr. Tanaka has found that cities with extensive green roof programs — where vegetation is grown on building rooftops — experience measurably lower ambient temperatures than comparable cities without such programs. In Phoenix, Arizona, neighborhoods with green roof coverage exceeding 30% recorded summer temperatures averaging 3.2 degrees Fahrenheit lower than nearby neighborhoods without green roofs, reducing both energy consumption for cooling and heat-related hospital visits.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["Dr. Tanaka studies urban ecology in Phoenix, Arizona", "Green roof programs can meaningfully reduce urban temperatures and their associated health and energy costs", "All cities should require green roofs on commercial buildings", "Phoenix, Arizona, has the hottest summers of any American city"],
+    answer: 1,
+    explain: "The passage presents evidence that green roofs lower temperatures AND reduce energy/health costs. B captures both findings. A is too narrow. C overgeneralizes. D isn't stated."
+  },
+  {
+    id: 4,
+    type: "transition",
+    diff: "medium",
+    timelimit: 50,
+    passage: "The new vaccine showed 94% efficacy in clinical trials, making it one of the most effective vaccines ever developed. ______, distribution challenges in rural areas meant that many of the communities most vulnerable to the disease were the last to receive it.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["Furthermore", "As a result", "Despite this success", "Similarly"],
+    answer: 2,
+    explain: 'Sentence 1: great success (94% efficacy). Sentence 2: but distribution problems hurt vulnerable communities. Contrast between the success and the limitation. "Despite this success" acknowledges the positive then pivots to the problem.'
+  },
+  {
+    id: 5,
+    type: "synthesis",
+    diff: "medium",
+    timelimit: 80,
+    notes: ["Greenland's ice sheet contains enough water to raise global sea levels by approximately 7.4 meters.", "Ice loss from Greenland has accelerated sixfold since the 1990s.", "Current models predict Greenland could lose 10-30% of its ice by 2100.", "Greenland's ice loss contributes to approximately 25% of current global sea level rise.", "Some glaciologists argue that models underestimate ice loss because they don't fully account for feedback loops."],
+    goal: "emphasize the urgency and scale of the threat posed by Greenland's ice loss",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "Greenland's ice sheet, which contains enough water to raise sea levels by 7.4 meters, is melting — and current models may underestimate the threat.",
+      "With ice loss accelerating sixfold since the 1990s and already contributing 25% of global sea level rise, Greenland's ice sheet — which holds enough water to raise oceans by 7.4 meters — represents one of the most urgent threats in climate science, particularly as some scientists warn that current models may underestimate the danger.",
+      "Greenland's ice sheet could lose 10-30% of its ice by 2100, according to current models.",
+      "Greenland is located in the Arctic and its ice sheet is one of the largest in the world."
+    ],
+    answer: 1,
+    explain: "Goal: URGENCY and SCALE. B uses the most alarming notes (sixfold acceleration, 25% of sea level rise, 7.4m total potential, models may underestimate) in a structure that builds urgency. A uses some but not as comprehensively. C is just a projection. D introduces info not in notes."
+  },
+  {
+    id: 6,
+    type: "evidence",
+    diff: "hard",
+    timelimit: 90,
+    passage: `Behavioral economist Dr. Levy argues that "loss aversion" — people's tendency to feel losses roughly twice as strongly as equivalent gains — explains why consumers resist switching service providers even when better options are available.`,
+    claim: "Dr. Levy argues that the psychological pain of giving up a current service outweighs the potential benefit of switching to a better one.",
+    stem: "Which finding would most effectively support this claim?",
+    choices: ["Many consumers report satisfaction with their current service providers", "In experiments, subjects demanded an average of $200 in savings before they would switch from their current phone plan to an objectively superior one costing $100 less — requiring twice the actual benefit before the perceived loss of the familiar plan felt justified", "Service providers frequently offer discounts to attract new customers", "Dr. Levy has published extensively on consumer psychology"],
+    answer: 1,
+    explain: 'The claim is about loss aversion in switching. B provides a direct demonstration: people require $200 in savings (2x the actual $100 benefit) before switching — exactly matching the "twice as strongly" loss aversion ratio. Specific, quantitative, and directly on-claim.'
+  },
+  {
+    id: 7,
+    type: "weaken",
+    diff: "hard",
+    timelimit: 100,
+    passage: "A widely cited study found that students who handwrite notes retain information better than those who type notes on laptops. The researchers concluded that the physical act of handwriting engages deeper cognitive processing.",
+    stem: "Which finding, if true, would most weaken this conclusion?",
+    choices: ["Handwriting is slower than typing", "When laptop users were instructed to summarize rather than transcribe lectures verbatim, the retention difference between handwriting and typing disappeared — suggesting that the advantage was due to the summarization strategy forced by handwriting's slower speed, not the physical act itself", "Some students prefer typing to handwriting", "The study was conducted at a single university"],
+    answer: 1,
+    explain: "The conclusion claims the PHYSICAL ACT of handwriting is key. B shows that when typists also summarize (instead of transcribing), the advantage vanishes. This means the benefit came from summarization (which handwriting's slowness forces), not from the physical act itself."
+  },
+  {
+    id: 8,
+    type: "inference",
+    diff: "hard",
+    timelimit: 90,
+    passage: "When the Dutch East India Company established its trading post in Nagasaki in 1641, Japan's Tokugawa shogunate confined all European contact to a tiny artificial island called Dejima, measuring just 120 by 75 meters. For over two hundred years, this postage-stamp-sized outpost served as Japan's sole window to Western science, medicine, and technology — with Japanese scholars, known as rangaku practitioners, painstakingly translating Dutch texts on anatomy, astronomy, and chemistry.",
+    stem: "Which inference is best supported by the text?",
+    choices: ["The Dutch East India Company controlled all trade between Asia and Europe", "Despite extreme restrictions on foreign contact, the Tokugawa shogunate recognized enough value in Western knowledge to maintain a carefully controlled channel for intellectual exchange", "Japan had no scientific tradition before European contact", "Dejima was the largest trading post in Asia"],
+    answer: 1,
+    explain: "Japan severely restricted contact (tiny island, one country) BUT maintained it for 200+ years and scholars translated texts. If Western knowledge had no value, they would have closed Dejima entirely. B captures this: restriction + maintenance = controlled value recognition."
+  }
+];
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${AMBER}22`, border: `1px solid ${AMBER}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: AMBER, marginBottom: 12, fontWeight: 600 } }, "Unit 4 · Module 14"), /* @__PURE__ */ React.createElement("h1", { style: { fontSize: "clamp(1.7rem,4.5vw,2.8rem)", fontWeight: 800, background: `linear-gradient(135deg,${AMBER},${RED})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 } }, "Test Strategy & Pacing"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 40 } }, "Turn knowledge into a high score. Master the digital SAT format, time management, question triage, and strategic decision-making."), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 16, maxWidth: 750, width: "100%", marginBottom: 48 } }, [
+    { icon: "📖", title: "Learn Strategy", desc: "Format, pacing, triage, elimination" },
+    { icon: "⏱️", title: "Timed Drill", desc: "8 questions with live countdown" },
+    { icon: "📊", title: "Performance Analysis", desc: "Speed & accuracy breakdown" }
+  ].map((c, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 32, marginBottom: 8 } }, c.icon), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 4 } }, c.title), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13, lineHeight: 1.5 } }, c.desc)))), /* @__PURE__ */ React.createElement("button", { onClick: onNext, style: btn(`linear-gradient(135deg,${AMBER},${RED})`, DARK), onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.04)", onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)" }, "Start Learning →"), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 13, marginTop: 24 } }, "~45 minutes · Strategy & Meta-Skills"));
+}
+function LessonViewer({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const lesson = LESSONS[idx];
+  const total = LESSONS.length;
+  function renderVisual() {
+    if (lesson.visual === "format-visual") return /* @__PURE__ */ React.createElement(FormatVisual, null);
+    if (lesson.visual === "pacing-chart") return /* @__PURE__ */ React.createElement(PacingChart, null);
+    if (lesson.visual === "elimination-visual") return /* @__PURE__ */ React.createElement(EliminationVisual, null);
+    if (lesson.visual === "strategy-grid") return /* @__PURE__ */ React.createElement(StrategyGrid, null);
+    if (lesson.visual === "score-targets") return /* @__PURE__ */ React.createElement(ScoreTargets, null);
+    return null;
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 6, marginBottom: 32 } }, LESSONS.map((_, i) => /* @__PURE__ */ React.createElement("div", { key: i, onClick: () => setIdx(i), style: { width: i === idx ? 24 : 8, height: 8, borderRadius: 4, background: i === idx ? AMBER : i < idx ? `${AMBER}66` : BORDER, cursor: "pointer", transition: "all .3s" } }))), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "28px 28px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 12, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 } }, lesson.subtitle), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: "clamp(1.2rem,3vw,1.6rem)", fontWeight: 800, marginBottom: 16, lineHeight: 1.2 } }, lesson.title), lesson.body.map((p, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { color: SUB, fontSize: 14, lineHeight: 1.75, marginBottom: 14, whiteSpace: "pre-line" } }, p))), lesson.visual && /* @__PURE__ */ React.createElement("div", { style: { padding: "8px 4px 20px" } }, renderVisual())), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setIdx(Math.max(0, idx - 1)), disabled: idx === 0, style: { ...btn("transparent", idx === 0 ? "#334155" : SUB), border: `1px solid ${BORDER}`, padding: "10px 20px", fontSize: 14 } }, "← Back"), idx < total - 1 ? /* @__PURE__ */ React.createElement("button", { onClick: () => setIdx(idx + 1), style: btn(AMBER, DARK, { fontSize: 14, padding: "10px 20px" }) }, "Next →") : /* @__PURE__ */ React.createElement("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${AMBER},${RED})`, DARK, { fontSize: 14, padding: "10px 24px" }) }, "Start Timed Drill →")));
+}
+function FormatVisual() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Digital SAT R&W Structure"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 12, flexWrap: "wrap" } }, [
+    { label: "Module 1", time: "32 min", qs: "27 Qs", note: "Standard difficulty", color: BLUE },
+    { label: "10-min Break", time: "", qs: "", note: "Reset & refuel", color: MUTED },
+    { label: "Module 2", time: "32 min", qs: "27 Qs", note: "ADAPTIVE difficulty", color: PURPLE }
+  ].map((m, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { flex: 1, minWidth: 100, background: `${m.color}08`, border: `1px solid ${m.color}33`, borderRadius: 10, padding: 12, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { color: m.color, fontWeight: 800, fontSize: 13 } }, m.label), m.time && /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 18, fontWeight: 900, marginTop: 4 } }, m.time), m.qs && /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 12 } }, m.qs), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 10, marginTop: 4 } }, m.note)))), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 10, padding: "8px 12px", background: `${RED}08`, borderLeft: `3px solid ${RED}`, borderRadius: "0 8px 8px 0" } }, /* @__PURE__ */ React.createElement("span", { style: { color: RED, fontWeight: 700, fontSize: 11 } }, "KEY: "), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 11 } }, "Module 1 accuracy determines Module 2 difficulty. Strong Module 1 = harder Module 2 = higher score ceiling.")));
+}
+function PacingChart() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Time allocation by question type"), [
+    { label: "Fast (30-45s)", types: "Conventions, simple vocab, transitions", color: ACCENT, pct: 30 },
+    { label: "Medium (60-90s)", types: "Central idea, detail, evidence", color: AMBER, pct: 55 },
+    { label: "Slow (90-120s)", types: "Inference, strengthen/weaken, data, synthesis", color: RED, pct: 75 }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { marginBottom: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 3 } }, /* @__PURE__ */ React.createElement("span", { style: { color: s.color, fontWeight: 700, fontSize: 12 } }, s.label), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 10 } }, s.types)), /* @__PURE__ */ React.createElement("div", { style: { height: 8, background: BORDER, borderRadius: 4, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${s.pct}%`, background: s.color, borderRadius: 4 } })))), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 8, padding: "6px 10px", background: `${BLUE}08`, borderRadius: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { color: BLUE, fontWeight: 700, fontSize: 11 } }, "TIME BANK: "), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 11 } }, "Save 30s on 10 easy Qs = 5 extra minutes for the 5 hardest Qs")));
+}
+function EliminationVisual() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Elimination odds"), [
+    { eliminated: 0, odds: "25%", color: "#475569" },
+    { eliminated: 1, odds: "33%", color: RED },
+    { eliminated: 2, odds: "50%", color: AMBER },
+    { eliminated: 3, odds: "100%", color: ACCENT }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6 } }, /* @__PURE__ */ React.createElement("div", { style: { minWidth: 100, display: "flex", gap: 4 } }, [0, 1, 2, 3].map((j) => /* @__PURE__ */ React.createElement("div", { key: j, style: {
+    width: 18,
+    height: 18,
+    borderRadius: 4,
+    background: j < s.eliminated ? `${RED}33` : j === s.eliminated && s.eliminated < 4 ? `${ACCENT}33` : BORDER,
+    border: `1px solid ${j < s.eliminated ? RED : j === s.eliminated && s.eliminated < 4 ? ACCENT : BORDER}`,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 8,
+    color: j < s.eliminated ? RED : MUTED
+  } }, j < s.eliminated ? "X" : String.fromCharCode(65 + j)))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, height: 6, background: BORDER, borderRadius: 3, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: s.odds, background: s.color, borderRadius: 3 } })), /* @__PURE__ */ React.createElement("span", { style: { color: s.color, fontWeight: 800, fontSize: 13, minWidth: 40 } }, s.odds))));
+}
+function StrategyGrid() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, [
+    { cat: "Conventions", tip: "Identify the rule, apply, move on", speed: "Fast", color: ACCENT },
+    { cat: "Vocabulary", tip: "Tone → context clues → eliminate → secondary meanings", speed: "Fast", color: BLUE },
+    { cat: "Structure", tip: "What is the author DOING?", speed: "Med", color: AMBER },
+    { cat: "Info & Ideas", tip: "Answer is always in the passage", speed: "Med-Slow", color: PURPLE },
+    { cat: "Expression", tip: "Read the GOAL first", speed: "Med", color: CYAN }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 4, padding: "6px 10px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 6px 6px 0" } }, /* @__PURE__ */ React.createElement("span", { style: { color: s.color, fontWeight: 700, fontSize: 11, minWidth: 80 } }, s.cat), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 11, flex: 1 } }, s.tip), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 10, fontWeight: 600 } }, s.speed))));
+}
+function ScoreTargets() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Target accuracy by score goal"), [
+    { score: "500-550", correct: "~15-18/27", focus: "Conventions + easy vocab", color: "#475569" },
+    { score: "550-600", correct: "~18-21/27", focus: "+ detail & central idea", color: BLUE },
+    { score: "600-650", correct: "~21-23/27", focus: "+ evidence & inference", color: AMBER },
+    { score: "650-700", correct: "~23-25/27", focus: "+ synthesis & reasoning", color: PURPLE },
+    { score: "700+", correct: "25-27/27", focus: "Near-perfect M1 + strong hard M2", color: RED }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 4, padding: "6px 10px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 6px 6px 0" } }, /* @__PURE__ */ React.createElement("span", { style: { color: s.color, fontWeight: 800, fontSize: 12, minWidth: 55 } }, s.score), /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontWeight: 600, fontSize: 11, minWidth: 75 } }, s.correct), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 11 } }, s.focus))));
+}
+function TimedDrill({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [results, setResults] = useState([]);
+  const [done, setDone] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(DRILL_ITEMS[0].timelimit);
+  const [elapsed, setElapsed] = useState(0);
+  const timerRef = useRef(null);
+  const startRef = useRef(Date.now());
+  const item = DRILL_ITEMS[idx];
+  useEffect(() => {
+    if (confirmed || done) return;
+    setTimeLeft(item.timelimit);
+    startRef.current = Date.now();
+    timerRef.current = setInterval(() => {
+      const e = Math.floor((Date.now() - startRef.current) / 1e3);
+      setElapsed(e);
+      setTimeLeft(Math.max(0, item.timelimit - e));
+    }, 250);
+    return () => clearInterval(timerRef.current);
+  }, [idx, confirmed, done]);
+  function handleConfirm() {
+    if (selected === null) return;
+    clearInterval(timerRef.current);
+    const timeTaken = Math.floor((Date.now() - startRef.current) / 1e3);
+    const correct = selected === item.answer;
+    const withinTime = timeTaken <= item.timelimit;
+    setConfirmed(true);
+    setResults((r) => [...r, { id: item.id, correct, timeTaken, timelimit: item.timelimit, withinTime, type: item.type, diff: item.diff }]);
+  }
+  function handleTimeout() {
+    clearInterval(timerRef.current);
+    const timeTaken = item.timelimit;
+    setConfirmed(true);
+    setResults((r) => [...r, { id: item.id, correct: false, timeTaken, timelimit: item.timelimit, withinTime: false, type: item.type, diff: item.diff, timeout: true }]);
+  }
+  useEffect(() => {
+    if (!confirmed && timeLeft <= 0 && !done) handleTimeout();
+  }, [timeLeft, confirmed, done]);
+  function handleNext() {
+    if (idx < DRILL_ITEMS.length - 1) {
+      setIdx(idx + 1);
+      setSelected(null);
+      setConfirmed(false);
+    } else {
+      setDone(true);
+    }
+  }
+  if (done) {
+    const correct = results.filter((r) => r.correct).length;
+    const total = results.length;
+    const avgTime = Math.round(results.reduce((a, r) => a + r.timeTaken, 0) / total);
+    const onPace = results.filter((r) => r.withinTime).length;
+    return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 48, marginBottom: 12 } }, "⏱️"), /* @__PURE__ */ React.createElement("h2", { style: { color: AMBER, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, "Timed Drill Complete")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(130px,1fr))", gap: 12, marginBottom: 32 } }, [
+      { label: "Accuracy", value: `${correct}/${total}`, color: correct >= 6 ? ACCENT : correct >= 4 ? AMBER : RED },
+      { label: "Avg Time", value: `${avgTime}s`, color: avgTime <= 70 ? ACCENT : avgTime <= 90 ? AMBER : RED },
+      { label: "On Pace", value: `${onPace}/${total}`, color: onPace >= 6 ? ACCENT : onPace >= 4 ? AMBER : RED }
+    ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: s.color, fontWeight: 900, fontSize: 24, marginTop: 4 } }, s.value)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6, marginBottom: 32 } }, results.map((r, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("div", { style: {
+      width: 28,
+      height: 28,
+      borderRadius: 7,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: 800,
+      fontSize: 12,
+      background: r.correct ? `${ACCENT}22` : `${RED}22`,
+      color: r.correct ? ACCENT : RED
+    } }, i + 1), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontSize: 12, fontWeight: 600 } }, r.type), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 11 } }, " · ", r.diff)), /* @__PURE__ */ React.createElement("div", { style: { color: r.withinTime ? ACCENT : RED, fontSize: 12, fontWeight: 600 } }, r.timeTaken, "s / ", r.timelimit, "s"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 14 } }, r.timeout ? "⏰" : r.correct ? "✅" : "❌")))), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 } }, "Pacing Analysis"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.7 } }, onPace >= 7 ? "Excellent pacing! You're managing time well across question types. This skill will serve you on test day — you're leaving time for hard questions without rushing easy ones." : onPace >= 5 ? "Good pacing on most questions. Review the ones where you went over time — were they genuinely hard, or did you spend too long deliberating between two choices? On test day, flag and move on after 90 seconds." : "Pacing needs work. Practice the triage strategy: if you're not making progress after 60 seconds, flag it, guess, and move on. Remember: every question is worth the same points, so don't let hard questions steal time from easy ones.")), React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 20, marginBottom: 32 } },
+  React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "Performance by Type"),
+  (function() {
+    var types = {};
+    results.forEach(function(r) {
+      if (!types[r.type]) types[r.type] = { correct: 0, total: 0, totalTime: 0 };
+      types[r.type].total++;
+      types[r.type].totalTime += r.timeTaken;
+      if (r.correct) types[r.type].correct++;
+    });
+    var typeColors = { strengthen: ACCENT, weaken: RED, completion: PURPLE, synthesis: CYAN, conventions: AMBER, vocabulary: BLUE, evidence: BLUE, inference: PURPLE, transition: CYAN, expression: AMBER };
+    return Object.keys(types).map(function(t, i) {
+      var d = types[t];
+      var pct = Math.round(d.correct / d.total * 100);
+      var avgT = Math.round(d.totalTime / d.total);
+      var c = typeColors[t] || AMBER;
+      return React.createElement("div", { key: i, style: { marginBottom: 10 } },
+        React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 4 } },
+          React.createElement("span", { style: { color: c, fontWeight: 700, fontSize: 13, textTransform: "capitalize" } }, t),
+          React.createElement("span", { style: { color: MUTED, fontSize: 12 } }, d.correct, "/", d.total, " \u00b7 avg ", avgT, "s")
+        ),
+        React.createElement("div", { style: { height: 6, background: BORDER, borderRadius: 3, overflow: "hidden" } },
+          React.createElement("div", { style: { height: "100%", width: pct + "%", background: pct >= 75 ? ACCENT : pct >= 50 ? AMBER : RED, borderRadius: 3 } })
+        )
+      );
+    });
+  })()
+), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => onComplete(correct, total), style: btn(`linear-gradient(135deg,${AMBER},${RED})`, DARK) }, "See Final Results →")));
+  }
+  const pctTime = timeLeft / item.timelimit;
+  const timerColor = pctTime > 0.5 ? ACCENT : pctTime > 0.2 ? AMBER : RED;
+  const questionText = item.stem;
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 13, fontWeight: 700 } }, "⏱️ Timed Drill"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 600, background: `${BLUE}22`, color: BLUE } }, item.type), /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 700,
+    background: item.diff === "easy" ? `${ACCENT}22` : item.diff === "medium" ? `${AMBER}22` : `${RED}22`,
+    color: item.diff === "easy" ? ACCENT : item.diff === "medium" ? AMBER : RED
+  } }, item.diff), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 13 } }, idx + 1, "/", DRILL_ITEMS.length))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, height: 8, background: BORDER, borderRadius: 4, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${pctTime * 100}%`, background: timerColor, borderRadius: 4, transition: "width .25s linear" } })), /* @__PURE__ */ React.createElement("span", { style: { color: timerColor, fontWeight: 900, fontSize: 16, minWidth: 35, textAlign: "right", fontFamily: "monospace" } }, timeLeft, "s")), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 16 } }, item.passage && /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, item.passage), item.notes && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: { color: PURPLE, fontSize: 12, fontWeight: 700, marginBottom: 8 } }, "NOTES"), item.notes.map((n, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", gap: 8, marginBottom: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { color: PURPLE, fontSize: 13, fontWeight: 700 } }, "•"), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, n))), item.goal && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12, padding: "10px 14px", borderRadius: 10, background: `${AMBER}11`, border: `1px solid ${AMBER}33` } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 11, fontWeight: 700, marginBottom: 4 } }, "GOAL"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13 } }, "The writer wants to ", /* @__PURE__ */ React.createElement("strong", null, item.goal), "."))), item.claim && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12, padding: "10px 14px", borderRadius: 10, background: `${AMBER}11`, border: `1px solid ${AMBER}33` } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 11, fontWeight: 700, marginBottom: 4 } }, "CLAIM"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13 } }, item.claim))), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, questionText), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } }, item.choices.map((c, ci) => {
+    const letter = "ABCD"[ci];
+    const isSel = selected === ci;
+    const isCorr = ci === item.answer;
+    let bg = CARD, bdr = `1px solid ${BORDER}`, tc = "#cbd5e1";
+    if (confirmed && isCorr) {
+      bg = `${ACCENT}18`;
+      bdr = `2px solid ${ACCENT}`;
+      tc = ACCENT;
+    } else if (confirmed && isSel && !isCorr) {
+      bg = `${RED}18`;
+      bdr = `2px solid ${RED}`;
+      tc = RED;
+    } else if (isSel && !confirmed) {
+      bg = `${AMBER}15`;
+      bdr = `2px solid ${AMBER}`;
+      tc = AMBER;
+    }
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: ci,
+        onClick: () => {
+          if (!confirmed) setSelected(ci);
+        },
+        disabled: confirmed,
+        style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: {
+        minWidth: 28,
+        height: 28,
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 800,
+        fontSize: 13,
+        flexShrink: 0,
+        marginTop: 1,
+        background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? AMBER : BORDER,
+        color: isSel || confirmed ? DARK : MUTED
+      } }, letter),
+      /* @__PURE__ */ React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+    );
+  })), confirmed && /* @__PURE__ */ React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: `4px solid ${AMBER}` } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "Explanation"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 } }, item.explain)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } }, !confirmed ? /* @__PURE__ */ React.createElement("button", { onClick: handleConfirm, disabled: selected === null, style: btn(selected === null ? BORDER : AMBER, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Lock In ⏱️") : /* @__PURE__ */ React.createElement("button", { onClick: handleNext, style: btn(AMBER, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < DRILL_ITEMS.length - 1 ? "Next →" : "See Results →")));
+}
+var CHALLENGE_ITEMS = [
+  { id: "c1", type: "strengthen", passage: "Economists studying the gig economy found that workers on platform-based jobs (ride-sharing, food delivery) earn an average hourly wage that appears competitive with traditional employment. However, after accounting for vehicle depreciation, fuel, insurance, self-employment taxes, and unpaid waiting time between jobs, researchers hypothesized that effective hourly compensation drops below minimum wage for the majority of gig workers.", stem: "Which finding would most strengthen this hypothesis?", choices: ["Some gig workers enjoy flexible scheduling", "A comprehensive analysis of 40,000 ride-share drivers' tax returns revealed that 74% earned less than their state's minimum wage after deducting IRS-standard vehicle costs and self-employment taxes, with median effective pay of $6.20 per hour including idle time", "Gig economy companies have grown rapidly in recent years", "Traditional employment offers benefits like health insurance"], answer: 1, explain: "The hypothesis claims that after costs, most gig workers earn below minimum wage. B provides comprehensive data (40,000 tax returns) showing exactly this: 74% below minimum wage, with a specific effective rate ($6.20/hr). The scale and specificity make this the strongest support." },
+  { id: "c2", type: "weaken", passage: "A popular theory in education suggests that matching instruction to students' preferred 'learning styles' (visual, auditory, kinesthetic) improves academic outcomes. Many schools have invested heavily in learning-style assessments and differentiated instruction based on these categorizations.", stem: "Which finding would most weaken this theory?", choices: ["Students have different preferences for how they receive information", "A meta-analysis of 29 controlled experiments found no significant difference in learning outcomes when instruction matched students' self-reported learning styles versus when it deliberately mismatched them \u2014 but did find that certain teaching methods were universally more effective regardless of student preference", "Some teachers find it difficult to differentiate instruction", "Learning style assessments are commercially available"], answer: 1, explain: "The theory predicts that matching styles to instruction improves outcomes. B directly refutes this: controlled experiments show NO benefit to matching, and universal methods work better. This eliminates both the match benefit and the premise that styles matter for instruction." },
+  { id: "c3", type: "transition", sentence1: "The archaeological site at G\u00f6bekli Tepe, dating to approximately 9600 BCE, contains massive carved stone pillars arranged in circles \u2014 structures that required coordinated effort from hundreds of workers.", sentence2: "_________, the discovery forced archaeologists to reconsider their assumption that monumental architecture only emerged after the development of agriculture and settled communities.", stem: "Which choice completes the text with the most logical transition?", choices: ["For example", "Nevertheless", "Because the site predates any known farming community by at least a millennium", "Similarly"], answer: 2, explain: "Sentence 2 explains WHY the discovery was paradigm-shifting. C provides the critical missing link: the site predates farming by 1,000+ years, which is what forced the reconsideration. 'Because' introduces the causal reason. A/D don't fit logically. B implies contrast but this is cause-effect." },
+  { id: "c4", type: "inference", passage: "When neuroscientist Paul MacLean proposed his 'triune brain' model in the 1960s \u2014 suggesting the human brain consists of three evolutionary layers (reptilian, limbic, neocortex) stacked atop one another \u2014 it offered an elegant explanation for why emotions sometimes override rational thought. The model remains widely taught in psychology courses and popular science books. However, modern neuroimaging studies have shown that brain regions MacLean assigned to different evolutionary 'layers' are in fact densely interconnected, with the 'reptilian' brainstem participating in complex cognitive tasks and the 'rational' neocortex deeply involved in emotional processing.", stem: "Which inference is best supported by the text?", choices: ["Paul MacLean was not a qualified neuroscientist", "The triune brain model, while intuitively appealing, oversimplifies brain organization by suggesting a strict functional hierarchy that modern neuroscience has shown does not exist", "Emotions are always more powerful than rational thought", "Brain imaging technology is unreliable"], answer: 1, explain: "The passage says the model was 'elegant' (intuitive) but modern evidence shows regions are 'densely interconnected' across supposed layers. B captures both: the model oversimplifies by suggesting strict hierarchy that doesn't exist. A attacks the person (unsupported). C/D are unsupported." },
+  { id: "c5", type: "synthesis", passage: "Notes on the decline of the American chestnut:\\n- Before 1900, an estimated 4 billion American chestnut trees dominated Eastern forests\\n- A fungal blight accidentally imported on Japanese chestnut nursery stock was first detected in New York in 1904\\n- By 1950, the blight had killed an estimated 3.5 billion trees\\n- The American Chestnut Foundation has developed blight-resistant hybrids using backcross breeding with Chinese chestnuts, achieving trees that are 15/16 American chestnut with Chinese blight resistance", stem: "A conservation writer wants to frame the American chestnut story as one of catastrophic loss followed by scientific hope. Which choice most effectively achieves this goal?", choices: ["The American chestnut was once a common tree in Eastern forests, but a fungal blight killed many of them.", "The American Chestnut Foundation has been working to develop blight-resistant trees through breeding programs.", "The near-total destruction of 3.5 billion American chestnuts by an imported fungus ranks among the worst ecological disasters in North American history, yet decades of painstaking backcross breeding have now produced trees that carry the chestnut's genetic heritage with a borrowed resistance \u2014 offering the possibility that a species once given up for dead may reclaim its place in Eastern forests.", "Japanese chestnut nursery stock accidentally carried a fungal blight to New York in 1904."], answer: 2, explain: "The goal requires BOTH catastrophic loss AND scientific hope. C delivers both with scale (3.5 billion, 'worst ecological disasters') and hope ('borrowed resistance,' 'reclaim its place'). The contrast structure perfectly matches the requested framing. A is too mild. B/D cover only one half." },
+  { id: "c6", type: "vocabulary", passage: "The diplomat's proposal was deliberately _________ \u2014 broad enough to satisfy both factions without committing either side to specific concessions, a strategic vagueness that kept negotiations alive when precision would have ended them.", stem: "Which choice best completes the text?", choices: ["meticulous", "ambiguous", "provocative", "redundant"], answer: 1, explain: "'Broad enough to satisfy both factions without committing' and 'strategic vagueness' both signal deliberate imprecision. 'Ambiguous' means open to multiple interpretations, which perfectly matches intentional vagueness used diplomatically. 'Meticulous' means precise (opposite). 'Provocative' means inflammatory. 'Redundant' means repetitive." }
+];
+function ChallengeMode({ onComplete }) {
+  var timePerQ = 50;
+  var items = CHALLENGE_ITEMS;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var _s6 = useState(timePerQ), timeLeft = _s6[0], setTimeLeft = _s6[1];
+  var timerRef = useRef(null);
+  var startRef = useRef(Date.now());
+  var timingsRef = useRef([]);
+  var item = items[idx];
+  useEffect(function() {
+    if (confirmed || done) return;
+    setTimeLeft(timePerQ);
+    startRef.current = Date.now();
+    timerRef.current = setInterval(function() {
+      var e = Math.floor((Date.now() - startRef.current) / 1000);
+      setTimeLeft(Math.max(0, timePerQ - e));
+    }, 250);
+    return function() { clearInterval(timerRef.current); };
+  }, [idx, confirmed, done]);
+  function handleConfirm() {
+    if (selected === null) return;
+    clearInterval(timerRef.current);
+    var elapsed = Math.floor((Date.now() - startRef.current) / 1000);
+    timingsRef.current.push(elapsed);
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s) { return s + 1; });
+  }
+  function handleNext() {
+    if (idx < items.length - 1) { setIdx(idx + 1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+  if (done) {
+    var total = items.length;
+    var avgTime = timingsRef.current.length > 0 ? Math.round(timingsRef.current.reduce(function(a, b) { return a + b; }, 0) / timingsRef.current.length) : 0;
+    var accPct = Math.round(score / total * 100);
+    var medal = accPct >= 83 && avgTime <= 50 ? "gold" : accPct >= 67 && avgTime <= 65 ? "silver" : accPct >= 50 ? "bronze" : "none";
+    var medalEmoji = medal === "gold" ? "\uD83E\uDD47" : medal === "silver" ? "\uD83E\uDD48" : medal === "bronze" ? "\uD83E\uDD49" : "\uD83D\uDD04";
+    var medalLabel = medal === "gold" ? "Gold \u2014 Speed Demon!" : medal === "silver" ? "Silver \u2014 Strong Work!" : medal === "bronze" ? "Bronze \u2014 Solid Effort" : "Keep Practicing!";
+    var medalColor = medal === "gold" ? "#fbbf24" : medal === "silver" ? "#94a3b8" : medal === "bronze" ? "#d97706" : MUTED;
+    return React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "60px 20px", textAlign: "center" } },
+      React.createElement("div", { style: { fontSize: 64, marginBottom: 12 } }, medalEmoji),
+      React.createElement("h2", { style: { color: medalColor, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, medalLabel),
+      React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 32, maxWidth: 400, margin: "0 auto 32px" } },
+        React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 14 } },
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, "Accuracy"),
+          React.createElement("div", { style: { color: accPct >= 83 ? ACCENT : accPct >= 50 ? AMBER : RED, fontWeight: 900, fontSize: 22, marginTop: 4 } }, score, "/", total)
+        ),
+        React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 14 } },
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, "Avg Time"),
+          React.createElement("div", { style: { color: avgTime <= 50 ? ACCENT : avgTime <= 65 ? AMBER : RED, fontWeight: 900, fontSize: 22, marginTop: 4 } }, avgTime, "s")
+        ),
+        React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 14 } },
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, "Medal"),
+          React.createElement("div", { style: { fontSize: 28, marginTop: 4 } }, medalEmoji)
+        )
+      ),
+      React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 16, marginBottom: 32, maxWidth: 400, margin: "0 auto 32px" } },
+        React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 13, marginBottom: 8 } }, "Challenge Requirements"),
+        React.createElement("div", { style: { display: "flex", justifyContent: "space-around" } },
+          React.createElement("div", null,
+            React.createElement("div", { style: { color: accPct >= 83 ? ACCENT : RED, fontSize: 13 } }, accPct >= 83 ? "\u2705" : "\u274C", " 83%+ accuracy"),
+            React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, "You: ", accPct, "%")
+          ),
+          React.createElement("div", null,
+            React.createElement("div", { style: { color: avgTime <= 50 ? ACCENT : RED, fontSize: 13 } }, avgTime <= 50 ? "\u2705" : "\u274C", " \u226450s avg time"),
+            React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, "You: ", avgTime, "s")
+          )
+        )
+      ),
+      React.createElement("div", { style: { display: "flex", gap: 12, justifyContent: "center" } },
+        React.createElement("button", { onClick: function() { setIdx(0); setSelected(null); setConfirmed(false); setScore(0); setDone(false); timingsRef.current = []; }, style: btn(BORDER, TEXT, { fontSize: 14, padding: "10px 24px" }) }, "Retry Challenge"),
+        React.createElement("button", { onClick: function() { onComplete(medal); }, style: btn("linear-gradient(135deg," + AMBER + "," + RED + ")", DARK, { fontSize: 14, padding: "10px 24px" }) }, "Back to Results")
+      )
+    );
+  }
+  var pctTime = timeLeft / timePerQ;
+  var timerColor = pctTime > 0.5 ? ACCENT : pctTime > 0.2 ? AMBER : RED;
+  var questionText = item.stem;
+  return React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } },
+    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } },
+      React.createElement("div", { style: { color: "#fbbf24", fontSize: 13, fontWeight: 700 } }, "\uD83C\uDFC6 Challenge Mode"),
+      React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+        React.createElement("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 600, background: item.type === "strengthen" ? ACCENT + "22" : item.type === "weaken" ? RED + "22" : item.type === "transition" ? CYAN + "22" : item.type === "inference" ? PURPLE + "22" : item.type === "synthesis" ? PURPLE + "22" : AMBER + "22", color: item.type === "strengthen" ? ACCENT : item.type === "weaken" ? RED : item.type === "transition" ? CYAN : item.type === "inference" ? PURPLE : item.type === "synthesis" ? PURPLE : AMBER } }, item.type),
+        React.createElement("span", { style: { color: MUTED, fontSize: 13 } }, idx + 1, "/", items.length)
+      )
+    ),
+    React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 12, overflow: "hidden" } },
+      React.createElement("div", { style: { height: "100%", width: ((idx + (confirmed ? 1 : 0)) / items.length * 100) + "%", background: "linear-gradient(90deg,#fbbf24," + RED + ")", borderRadius: 2, transition: "width .4s" } })
+    ),
+    React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 12 } },
+      React.createElement("div", { style: { flex: 1, height: 6, background: BORDER, borderRadius: 3, overflow: "hidden" } },
+        React.createElement("div", { style: { height: "100%", width: (pctTime * 100) + "%", background: timerColor, borderRadius: 3, transition: "width .25s linear" } })
+      ),
+      React.createElement("span", { style: { color: timerColor, fontWeight: 900, fontSize: 14, minWidth: 30, textAlign: "right", fontFamily: "monospace" } }, timeLeft, "s")
+    ),
+    React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 12, flexWrap: "wrap" } },
+      items.map(function(_, i) { return React.createElement("div", { key: i, style: { width: 10, height: 10, borderRadius: 5, background: i < idx ? ACCENT : BORDER, border: i === idx ? "2px solid #fbbf24" : "none", boxSizing: "border-box" } }); })
+    ),
+    React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 24, marginBottom: 16 } },
+      item.sentence1 ? React.createElement(React.Fragment, null,
+        React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif", marginBottom: 12 } }, item.sentence1),
+        React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, item.sentence2)
+      ) : null,
+      item.passage ? React.createElement("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif", whiteSpace: "pre-line" } }, item.passage) : null,
+      item.notes ? React.createElement(React.Fragment, null,
+        React.createElement("div", { style: { color: PURPLE, fontSize: 12, fontWeight: 700, marginBottom: 8 } }, "NOTES"),
+        item.notes.map(function(n, i) { return React.createElement("div", { key: i, style: { display: "flex", gap: 8, marginBottom: 6 } }, React.createElement("span", { style: { color: PURPLE, fontSize: 13, fontWeight: 700 } }, "\u2022"), React.createElement("span", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, n)); })
+      ) : null,
+      item.claim ? React.createElement("div", { style: { marginTop: 12, padding: "10px 14px", borderRadius: 10, background: AMBER + "11", border: "1px solid " + AMBER + "33" } }, React.createElement("div", { style: { color: AMBER, fontSize: 11, fontWeight: 700, marginBottom: 4 } }, "CLAIM"), React.createElement("div", { style: { color: TEXT, fontSize: 13 } }, item.claim)) : null
+    ),
+    React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, questionText),
+    React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } },
+      item.choices.map(function(c, ci) {
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = CARD, bdr = "1px solid " + BORDER, tc = "#cbd5e1";
+        if (confirmed && isCorr) { bg = ACCENT + "18"; bdr = "2px solid " + ACCENT; tc = ACCENT; }
+        else if (confirmed && isSel && !isCorr) { bg = RED + "18"; bdr = "2px solid " + RED; tc = RED; }
+        else if (isSel && !confirmed) { bg = "#fbbf2415"; bdr = "2px solid #fbbf24"; tc = "#fbbf24"; }
+        return React.createElement("button", { key: ci, onClick: function() { if (!confirmed) setSelected(ci); }, disabled: confirmed, style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" } },
+          React.createElement("span", { style: { minWidth: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, flexShrink: 0, marginTop: 1, background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? "#fbbf24" : BORDER, color: isSel || confirmed ? DARK : MUTED } }, letter),
+          React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+        );
+      })
+    ),
+    confirmed && React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: "4px solid #fbbf24" } },
+      React.createElement("div", { style: { color: "#fbbf24", fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "Explanation"),
+      React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 } }, item.explain)
+    ),
+    React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } },
+      !confirmed ? React.createElement("button", { onClick: handleConfirm, disabled: selected === null, style: btn(selected === null ? BORDER : "#fbbf24", selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Lock In \u23F1\uFE0F") :
+      React.createElement("button", { onClick: handleNext, style: btn("#fbbf24", DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < items.length - 1 ? "Next \u2192" : "See Results \u2192")
+    )
+  );
+}
+function ModuleComplete({ drillScore, drillTotal, onChallenge, challengeResult }) {
+  const pct = Math.round(drillScore / drillTotal * 100);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 64, marginBottom: 16 } }, "🎉"), /* @__PURE__ */ React.createElement("h1", { style: { color: AMBER, fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 800, marginBottom: 8 } }, "Module 14 Complete"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 16, marginBottom: 32, maxWidth: 480 } }, "You've learned the strategic meta-skills that turn knowledge into a high score."), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 32, marginBottom: 32, minWidth: 280 } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 56, fontWeight: 900 } }, drillScore, "/", drillTotal), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 14, marginTop: 4 } }, "Timed Drill Accuracy (", pct, "%)")), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, maxWidth: 480, marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 } }, "Strategy Checklist"), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "left" } }, [
+    "Module 1 accuracy is critical for triggering hard Module 2",
+    "Budget ~71 seconds per question — bank time from easy Qs",
+    "Flag and move after 90 seconds on hard questions",
+    "Eliminate wrong answers before selecting right ones",
+    "Never leave a question blank — no penalty for guessing",
+    "Read the question before the passage for efficiency",
+    "Categorize mistakes: content, careless, time, or elimination"
+  ].map((tip, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", gap: 8, marginBottom: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { color: ACCENT, fontSize: 13 } }, "✓"), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 13, lineHeight: 1.5 } }, tip))))),
+  challengeResult && React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 16, maxWidth: 480, marginBottom: 16 } },
+    React.createElement("div", { style: { fontSize: 28, marginBottom: 4 } }, challengeResult === "gold" ? "\uD83E\uDD47" : challengeResult === "silver" ? "\uD83E\uDD48" : challengeResult === "bronze" ? "\uD83E\uDD49" : "\uD83D\uDD04"),
+    React.createElement("div", { style: { color: challengeResult === "gold" ? "#fbbf24" : challengeResult === "silver" ? "#94a3b8" : challengeResult === "bronze" ? "#d97706" : MUTED, fontWeight: 700, fontSize: 14 } }, challengeResult === "gold" ? "Challenge Gold!" : challengeResult === "silver" ? "Challenge Silver" : challengeResult === "bronze" ? "Challenge Bronze" : "Challenge attempted")
+  ),
+  React.createElement("button", { onClick: onChallenge, style: btn("linear-gradient(135deg,#fbbf24," + RED + ")", DARK, { fontSize: 14, padding: "10px 24px", marginBottom: 24 }) }, challengeResult ? "Retry Challenge Mode \uD83C\uDFC6" : "Challenge Mode \uD83C\uDFC6"),
+  React.createElement(Homework, null), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13 } }, "Next up: Module 15 — Expression & Strategy Boss Battle ⚔️"), React.createElement(NavLinks, null));
+}
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [drillScore, setDrillScore] = useState(0);
+  const [drillTotal, setDrillTotal] = useState(8);
+  const [challengeResult, setChallengeResult] = useState(null);
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    inset: 0,
+    pointerEvents: "none",
+    opacity: 0.03,
+    backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",
+    backgroundSize: "40px 40px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } }, screen === "welcome" && /* @__PURE__ */ React.createElement(Welcome, { onNext: () => go("warmup") }), screen === "warmup" && React.createElement(Warmup, { onComplete: () => go("lesson") }), screen === "lesson" && /* @__PURE__ */ React.createElement(LessonViewer, { onComplete: () => go("drill") }), screen === "drill" && /* @__PURE__ */ React.createElement(TimedDrill, { onComplete: (s, t) => {
+    setDrillScore(s);
+    setDrillTotal(t);
+    go("complete");
+  } }), screen === "challenge" && React.createElement(ChallengeMode, { onComplete: function(medal) { setChallengeResult(medal); go("complete"); } }), screen === "complete" && /* @__PURE__ */ React.createElement(ModuleComplete, { drillScore, drillTotal, onChallenge: function() { go("challenge"); }, challengeResult })));
+}
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>

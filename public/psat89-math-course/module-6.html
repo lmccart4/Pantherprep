@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6: Desmos Mastery — PSAT 8/9 Math — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#0891b2 0%,#0891b2 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--math));width:0%;transition:width .3s ease}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(8,145,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}.callout strong{color:var(--accent)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
+.callout-gold{background:rgba(8,145,178,.08);border-color:rgba(8,145,178,.3)}.callout-gold strong{color:var(--accent)}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.topic-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
+.topic-badge{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
+.topic-info{flex:1}.topic-title{font-weight:700;font-size:.95rem}.topic-sub{font-size:.82rem;color:var(--muted);margin-top:2px}
+.topic-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem}.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 20px 18px;font-size:.9rem;color:#ccc;line-height:1.7}.topic.open .topic-body{display:block}
+.topic-body h4{font-size:.95rem;color:var(--ink);margin:14px 0 6px;font-weight:700}
+.topic-body ul{padding-left:18px;margin-bottom:10px}.topic-body li{margin-bottom:6px}
+.formula-box{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:1.8}
+.formula-box .fn{color:var(--accent);font-weight:700}.formula-box .fl{color:var(--math);font-weight:700}
+.exercise{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:22px;margin-bottom:16px}
+.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
+.exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+.ex-item{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.ex-prompt{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
+.ex-prompt code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+.ex-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ex-input{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;width:100px;text-align:center}.ex-input:focus{border-color:var(--accent);outline:none}
+.ex-btn{padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600}.ex-btn:hover{filter:brightness(1.15)}
+.ex-fb{font-size:.82rem;padding:8px 10px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}.ex-fb.show{display:block}.ex-fb.correct{background:var(--correct-bg);color:var(--correct)}.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong)}
+.tier{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:rgba(167,139,250,.15);color:var(--advanced)}
+.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.classify-opt:hover:not(.cl-dis){border-color:var(--accent);background:rgba(8,145,178,.08)}
+.classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);opacity:1}
+.classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.classify-opt.cl-dis{pointer-events:none;opacity:.6}.classify-opt.cl-correct{opacity:1}
+.mc-choices{display:flex;flex-direction:column;gap:6px}
+.mc-choice{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.mc-choice:hover:not(.mc-dis){border-color:var(--accent);background:rgba(8,145,178,.05)}
+.mc-letter{font-weight:700;color:var(--muted);min-width:20px}
+.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg);opacity:1}
+.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}.mc-choice.mc-correct{opacity:1}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:10px;padding:10px;background:var(--paper);border-radius:8px;display:none;border-left:3px solid var(--correct)}.mc-fb.show{display:block}
+.score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
+.mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
+.mod-nav a{color:var(--accent);text-decoration:none}.mod-nav a:hover{text-decoration:underline}
+/* Two-way table */
+.tw-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+.tw-table th,.tw-table td{padding:8px 10px;border:1px solid var(--border);text-align:center}
+.tw-table th{background:var(--surface);font-weight:700;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.tw-table td{color:#ccc}
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{gap:4px}}
+
+
+
+
+
+
+
+
+
+
+.fm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:12px 0}
+.fm-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.fm-name{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
+.fm-eq{font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:700;color:var(--math)}
+.tri-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:12px 0}
+.tri-card{background:var(--paper);border:2px solid var(--accent);border-radius:12px;padding:16px;text-align:center}
+.tri-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.tri-ratio{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.tri-sides{font-size:.82rem;color:var(--muted);line-height:1.5}
+.triples-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.triple{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;color:var(--math)}
+
+.skill-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+.skill-table th,.skill-table td{padding:10px 12px;border:1px solid var(--border);text-align:left}
+.skill-table th{background:var(--surface);font-weight:700;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.skill-table td{color:#ccc;vertical-align:top}
+.skill-num{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;align-items:center;justify-content:center;margin-right:8px}
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:12px 0}
+.sc-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.sc-key{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:4px}
+.sc-desc{font-size:.78rem;color:var(--muted)}
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.do-card,.dont-card{background:var(--surface);border-radius:12px;padding:16px;font-size:.88rem}
+.do-card{border:2px solid var(--correct)}.dont-card{border:2px solid var(--wrong)}
+.do-card h4{color:var(--correct);margin-bottom:8px}.dont-card h4{color:var(--wrong);margin-bottom:8px}
+.do-card li,.dont-card li{margin-bottom:4px;color:#ccc}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:10px}
+.step-num{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.85rem;font-weight:700;align-items:center;justify-content:center;margin-right:10px;flex-shrink:0}
+.step-header{display:flex;align-items:center;margin-bottom:8px;font-weight:700;font-size:.95rem}
+.step-body{font-size:.88rem;color:#ccc;line-height:1.6;padding-left:38px}
+.step-body code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+@media(max-width:600px){.do-dont{grid-template-columns:1fr}.sc-grid{grid-template-columns:repeat(2,1fr)}}
+</style></head>
+<body>
+<div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to PSAT 8/9 Math Course</a>
+<div class="mod-header">
+  <div class="mod-badge" style="background:var(--accent)">Module 6</div>
+  <h1>Desmos Mastery — Your Built-In Graphing Calculator</h1>
+  <p class="subtitle">Every student gets the same Desmos calculator on every SAT Suite test. Learning it well is like getting a free cheat code.</p>
+  <div class="mod-meta"><span>⏱ ~45 min</span><span>📋 First Steps + 10 skills + 3 exercises</span><span>🛠 Phase 3: Strategize</span></div>
+</div>
+
+<div class="callout"><strong>Why Desmos Matters:</strong> Desmos can solve 60–70% of PSAT 8/9 math questions faster than algebra. It graphs equations instantly, finds intersections with a click, and handles statistics, regressions, and inequalities. The students who master Desmos consistently score higher — not because they're better at math, but because they're faster.</div>
+
+<!-- FIRST STEPS TUTORIAL -->
+<div class="section">
+  <div class="section-label">Getting Started</div>
+  <h2>Desmos First Steps</h2>
+  <p>If you've never used a graphing calculator before, start here. These basics take 5 minutes to learn and will unlock everything else.</p>
+</div>
+
+<div class="step-card">
+  <div class="step-header"><div class="step-num">1</div>Opening Desmos</div>
+  <div class="step-body">On the PSAT, there's a calculator icon at the top of every math question. Click it to open Desmos. It appears in a panel you can resize or pop out. You also have a simpler scientific calculator mode — but 95% of the time, you want the <strong>graphing</strong> calculator.</div>
+</div>
+<div class="step-card">
+  <div class="step-header"><div class="step-num">2</div>Typing an Equation</div>
+  <div class="step-body">Click the first empty line on the left panel and type. For example, type <code>y = 2x + 3</code> and the line appears instantly on the graph. Type a second equation on line 2 to see both. Desmos auto-formats as you type — fractions, exponents, and symbols appear properly.</div>
+</div>
+<div class="step-card">
+  <div class="step-header"><div class="step-num">3</div>Finding Intersections</div>
+  <div class="step-body">When two graphs cross, a <strong>gray dot</strong> appears at the intersection. Click it to see the exact (x, y) coordinates. This is how you solve systems of equations — graph both lines and click where they meet.</div>
+</div>
+<div class="step-card">
+  <div class="step-header"><div class="step-num">4</div>Zooming & Panning</div>
+  <div class="step-body">Use the + and − buttons or scroll wheel to zoom. Click and drag to pan. If you can't see the intersection, zoom out. If points are too close together, zoom in. You can also click the wrench icon (⚙) to set exact axis ranges.</div>
+</div>
+<div class="step-card">
+  <div class="step-header"><div class="step-num">5</div>Key Symbols</div>
+  <div class="step-body">Type <code>^</code> for exponents: <code>x^2</code> → x². Type <code>/</code> for fractions: <code>3/4</code> → ¾. Type <code>sqrt</code> for square root. Type <code>pi</code> for π. Type <code>|</code> (Shift + backslash) for absolute value. These shortcuts are essential for speed.</div>
+</div>
+
+<div class="callout-blue callout"><strong>Practice Now:</strong> Go to <a href="https://www.desmos.com/calculator" target="_blank" style="color:var(--math)">desmos.com/calculator</a> and try typing <code>y = x^2 - 4</code>. Then type <code>y = x</code> on line 2. Click the intersection points. You just solved x² − 4 = x using Desmos!</div>
+
+<!-- 10 ESSENTIAL SKILLS -->
+<div class="section">
+  <div class="section-label">Core Skills</div>
+  <h2>The 10 Essential Desmos Skills</h2>
+  <p>Master these 10 skills and you can Desmos-solve the majority of PSAT 8/9 math questions.</p>
+</div>
+
+<table class="skill-table">
+  <tr><th>Skill</th><th>How To Do It</th><th>PSAT 8/9 Application</th></tr>
+  <tr><td><span class="skill-num">1</span>Graph a function</td><td>Type: <code>y = x² − 4</code></td><td>Visualize shape, find intercepts & vertex</td></tr>
+  <tr><td><span class="skill-num">2</span>Find intersections</td><td>Graph two equations; click the gray dot</td><td>Solve systems, find where f(x) = g(x)</td></tr>
+  <tr><td><span class="skill-num">3</span>Use sliders</td><td>Type a letter like <code>a</code>; Desmos creates a slider</td><td>Find unknown constants by sliding until conditions match</td></tr>
+  <tr><td><span class="skill-num">4</span>Enter a table</td><td>Click <strong>+</strong> → Table; enter x, y values</td><td>Check if points satisfy an equation, set up data for regression</td></tr>
+  <tr><td><span class="skill-num">5</span>Run a regression</td><td>After table: type <code>y₁ ~ mx₁ + b</code></td><td>Find line of best fit from data</td></tr>
+  <tr><td><span class="skill-num">6</span>Graph inequalities</td><td>Type: <code>y > 2x + 1</code></td><td>Visualize solution regions, check if a point satisfies the inequality</td></tr>
+  <tr><td><span class="skill-num">7</span>Calculate statistics</td><td>Type: <code>mean(1,2,3,4,5)</code></td><td>Quick mean, median calculations</td></tr>
+  <tr><td><span class="skill-num">8</span>Use percent</td><td>Type: <code>20% of 350</code> or <code>0.20 * 350</code></td><td>Percentage problems, percent increase/decrease</td></tr>
+  <tr><td><span class="skill-num">9</span>Graph circles</td><td>Type: <code>(x−2)²+(y+3)²=25</code></td><td>Verify center, radius; find where circle meets a line</td></tr>
+  <tr><td><span class="skill-num">10</span>Use keyboard shortcuts</td><td><code>^</code> <code>_</code> <code>~</code> <code>|</code> <code>sqrt</code> <code>pi</code></td><td>Speed up every single entry — saves 2–3 sec each</td></tr>
+</table>
+
+<!-- KEYBOARD SHORTCUTS -->
+<div class="section">
+  <div class="section-label">Reference</div>
+  <h2>Keyboard Shortcuts</h2>
+  <p>Memorize these before test day. They save 2–3 seconds per entry — that adds up over 44 questions.</p>
+</div>
+
+<div class="sc-grid">
+  <div class="sc-card"><div class="sc-key">^</div><div class="sc-desc">Exponents: x^2 → x²</div></div>
+  <div class="sc-card"><div class="sc-key">_</div><div class="sc-desc">Subscripts: y_1 → y₁</div></div>
+  <div class="sc-card"><div class="sc-key">~</div><div class="sc-desc">Regression: y₁~mx₁+b</div></div>
+  <div class="sc-card"><div class="sc-key">Shift+\</div><div class="sc-desc">Absolute value: |x−3|</div></div>
+  <div class="sc-card"><div class="sc-key">sqrt</div><div class="sc-desc">Square root: sqrt(x)</div></div>
+  <div class="sc-card"><div class="sc-key">pi</div><div class="sc-desc">π constant: 3.14159…</div></div>
+  <div class="sc-card"><div class="sc-key">/</div><div class="sc-desc">Fractions: 3/7 → ³⁄₇</div></div>
+  <div class="sc-card"><div class="sc-key">⚙</div><div class="sc-desc">Wrench icon: set axis range</div></div>
+</div>
+
+<!-- SCIENTIFIC vs GRAPHING -->
+<div class="section">
+  <div class="section-label">Calculator Modes</div>
+  <h2>Graphing vs. Scientific Mode</h2>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--accent)">⚙</div>
+    <div class="topic-info"><div class="topic-title">When to Use Each Mode</div><div class="topic-sub">Graphing for visuals, scientific for quick calculations</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <ul>
+      <li><strong>Graphing mode (default):</strong> Use 95% of the time. Graphs equations, finds intersections, runs regressions, handles tables. This is your power tool.</li>
+      <li><strong>Scientific mode:</strong> Switch to this for pure arithmetic. Cleaner interface for calculations that don't need graphs — like unit conversions or complex fractions.</li>
+      <li><strong>CAS ban:</strong> Computer Algebra Systems (like TI-Nspire CAS) are NOT allowed on the PSAT. The Desmos calculator provided does NOT have CAS — it won't simplify algebraic expressions or factor for you. It can only evaluate numerically and graph.</li>
+    </ul>
+    <div class="callout"><strong>Practical tip:</strong> Even for arithmetic, the graphing calculator works fine — just type the expression on a blank line and Desmos evaluates it. No need to switch modes unless the interface feels cluttered.</div>
+  </div>
+</div>
+
+<!-- WHEN TO USE DESMOS -->
+<div class="section">
+  <div class="section-label">Calculator Discipline</div>
+  <h2>When to Use Desmos — and When NOT To</h2>
+</div>
+
+<div class="do-dont">
+  <div class="do-card">
+    <h4>✅ USE Desmos</h4>
+    <ul style="padding-left:16px">
+      <li>Systems of equations (graph & click)</li>
+      <li>Quadratic vertex, zeros, graph shape</li>
+      <li>Finding where f(x) = g(x)</li>
+      <li>Data tables & regression (line of best fit)</li>
+      <li>Inequality solution regions</li>
+      <li>Circle equations (verify center, radius)</li>
+      <li>Unknown constants with sliders</li>
+      <li>Verifying your algebraic answer</li>
+      <li>Quick mean/median calculations</li>
+    </ul>
+  </div>
+  <div class="dont-card">
+    <h4>❌ DON'T Use Desmos</h4>
+    <ul style="padding-left:16px">
+      <li>Simple arithmetic you can do mentally</li>
+      <li>Single-step calculations</li>
+      <li>Questions testing setup, not solving</li>
+      <li>When you see the answer immediately</li>
+      <li>Unit conversions</li>
+      <li>Probability from tables</li>
+      <li>If setup takes > 15 seconds</li>
+      <li>Study design / conceptual questions</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout"><strong>The 5-Second Rule:</strong> If you can't figure out how to set up the problem in Desmos within 5 seconds, switch to algebra. Desmos is a tool, not a crutch. Use it when it's faster; skip it when it's not.</div>
+
+<!-- WORKED EXAMPLES -->
+<div class="section">
+  <div class="section-label">Worked Examples</div>
+  <h2>Desmos in Action — 5 Common PSAT Scenarios</h2>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--algebra)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 1: Solve a System of Equations</div><div class="topic-sub">y = 2x + 1 and y = −x + 7</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Type <code>y = 2x + 1</code> on line 1.</p>
+    <p><strong>Step 2:</strong> Type <code>y = −x + 7</code> on line 2.</p>
+    <p><strong>Step 3:</strong> Click the gray intersection dot → (2, 5).</p>
+    <p><strong>Answer:</strong> x = 2, y = 5. Done in under 10 seconds.</p>
+    <p style="color:var(--muted);font-size:.85rem"><em>Algebraically, this would take 30+ seconds with substitution or elimination.</em></p>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--advanced)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 2: Find the Vertex of a Quadratic</div><div class="topic-sub">f(x) = x² − 6x + 5</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Type <code>y = x^2 − 6x + 5</code></p>
+    <p><strong>Step 2:</strong> Click the bottom of the parabola → Desmos shows (3, −4).</p>
+    <p><strong>Answer:</strong> Vertex at (3, −4). You also see zeros at x = 1 and x = 5 (click those dots too).</p>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--psda)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 3: Find a Line of Best Fit</div><div class="topic-sub">Data: (1,3), (2,5), (3,8), (4,11), (5,14)</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Click <strong>+</strong> → Table. Enter x values: 1,2,3,4,5 and y values: 3,5,8,11,14.</p>
+    <p><strong>Step 2:</strong> On a new line, type <code>y₁ ~ mx₁ + b</code> (use _ for subscript, ~ for regression).</p>
+    <p><strong>Step 3:</strong> Desmos shows: m ≈ 2.8, b ≈ 0.2. So the line is approximately y = 2.8x + 0.2.</p>
+    <p style="color:var(--muted);font-size:.85rem"><em>You can also try <code>y₁ ~ ax₁² + bx₁ + c</code> for a quadratic fit if the data curves.</em></p>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--geo)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 4: Use a Slider to Find an Unknown</div><div class="topic-sub">The line y = ax + 3 passes through (4, 11). Find a.</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Type <code>y = ax + 3</code>. Desmos creates a slider for a.</p>
+    <p><strong>Step 2:</strong> Plot the point <code>(4, 11)</code> on another line.</p>
+    <p><strong>Step 3:</strong> Slide a until the line passes through the point. Or just compute: 11 = 4a + 3 → a = 2.</p>
+    <p style="color:var(--muted);font-size:.85rem"><em>Sliders are especially powerful when the algebra is messy — slide until the graph looks right.</em></p>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--accent)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 5: Quick Statistics</div><div class="topic-sub">Find the mean of 12, 15, 18, 22, 33</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Type <code>mean(12,15,18,22,33)</code> on any line.</p>
+    <p><strong>Result:</strong> Desmos shows 20. Instant.</p>
+    <p>Also works: <code>median(12,15,18,22,33)</code> → 18. And: <code>total(12,15,18,22,33)</code> → 100.</p>
+  </div>
+</div>
+
+<!-- EXERCISES -->
+<div class="section"><div class="section-label">Interactive Exercise 1</div><h2>Which Desmos Skill?</h2><p>For each problem, pick which Desmos skill would solve it fastest.</p><div class="exercise" style="border-color:var(--accent)" id="skillEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 2</div><h2>Desmos or Algebra? — Speed Decision Drill</h2><p>For each problem, decide: would Desmos be faster, or should you just do the algebra?</p><div class="exercise" style="border-color:var(--accent)" id="speedEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 3</div><h2>Keyboard Shortcut Quiz</h2><p>Match each action to the correct Desmos shortcut.</p><div class="exercise" style="border-color:var(--accent)" id="shortcutEx"></div></div>
+
+<!-- HOMEWORK -->
+<div class="section">
+  <div class="section-label">Homework</div>
+  <h2>Desmos Practice Protocol</h2>
+  <p>Do these before your next practice test:</p>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Go to <a href="https://www.desmos.com/calculator" style="color:var(--accent)" target="_blank">desmos.com/calculator</a></li>
+      <li>Graph <code>y = x² − 4x + 3</code>. Click the vertex and both x-intercepts. Write down all three coordinates.</li>
+      <li>On line 2, graph <code>y = x + 1</code>. Find both intersection points with the parabola.</li>
+      <li>Create a table with 5 data points. Run a linear regression with <code>y₁ ~ mx₁ + b</code>.</li>
+      <li>Graph the inequality <code>y &lt; 2x − 3</code>. Notice the shading.</li>
+      <li>Type <code>mean(10,20,30,40,50,200)</code> and <code>median(10,20,30,40,50,200)</code>. Notice how the outlier affects the mean but not the median.</li>
+      <li>Time yourself: How fast can you enter <code>y = (2/3)x^2 − (5/4)x + sqrt(7)</code>? Aim for under 8 seconds.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- PSAT PRACTICE -->
+<div class="section"><div class="section-label">PSAT 8/9 Practice</div><h2>Desmos-Solvable Practice</h2><p>All 10 of these can be solved with Desmos. Try each one with and without Desmos to feel the speed difference.</p><div id="psatPractice"></div></div>
+
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Desmos can solve 60–70% of PSAT 8/9 questions faster than algebra.</li>
+      <li>Start with the basics: type an equation, find intersections, zoom in/out.</li>
+      <li>10 essential skills: graph, intersect, slider, table, regression, inequalities, stats, %, circles, shortcuts.</li>
+      <li>The 5-Second Rule: if you can't set it up in Desmos quickly, switch to algebra.</li>
+      <li>Memorize keyboard shortcuts: <code>^</code> (exponent), <code>_</code> (subscript), <code>~</code> (regression), <code>sqrt</code>, <code>pi</code>.</li>
+      <li>Desmos is NOT CAS — it can't factor or simplify. It graphs and evaluates numerically.</li>
+      <li>Systems: graph both and click the intersection. Fastest method for 90% of system problems.</li>
+      <li>Always verify your algebraic answer by graphing — it catches careless errors.</li>
+      <li>Practice at <a href="https://www.desmos.com/calculator" style="color:var(--accent)" target="_blank">desmos.com/calculator</a> before test day.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-5.html">← Module 5: Geometry</a>
+  <a href="module-7.html">Module 7: Strategy & Time →</a>
+</div>
+</div>
+<script>
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';});
+
+// ============ EXERCISE 1: WHICH DESMOS SKILL? ============
+const SKL=[
+  {q:'Find where <code>y = 3x − 2</code> and <code>y = −x + 6</code> cross.',c:'Graph & find intersection',opts:['Graph & find intersection','Use a slider','Run a regression','Calculate statistics']},
+  {q:'A quadratic <code>f(x) = x² − 8x + 12</code>. What are the zeros?',c:'Graph a function',opts:['Graph a function','Enter a table','Graph inequalities','Use percent']},
+  {q:'The line <code>y = kx + 5</code> passes through (3, 14). Find k.',c:'Use a slider',opts:['Graph & find intersection','Use a slider','Run a regression','Calculate statistics']},
+  {q:'Given data points (1,4), (2,7), (3,11), (4,14). Find the best-fit line.',c:'Run a regression',opts:['Graph a function','Use a slider','Run a regression','Graph inequalities']},
+  {q:'Which region satisfies <code>y ≤ x + 3</code> and <code>y > −2x + 8</code>?',c:'Graph inequalities',opts:['Graph & find intersection','Use a slider','Graph inequalities','Graph circles']},
+  {q:'Find the mean of 15, 22, 18, 31, 24, 19.',c:'Calculate statistics',opts:['Run a regression','Calculate statistics','Enter a table','Use percent']},
+  {q:'What is 15% of 280?',c:'Use percent',opts:['Calculate statistics','Use percent','Graph a function','Use a slider']},
+  {q:'The circle <code>(x+3)² + (y−1)² = 49</code> intersects <code>y = 4</code> at what points?',c:'Graph circles',opts:['Graph & find intersection','Run a regression','Graph circles','Graph inequalities']},
+];
+var sklA={};
+function renderSkl(){
+  var tot=SKL.length,cor=Object.entries(sklA).filter(function(e){return e[1]===SKL[e[0]].c;}).length;
+  document.getElementById('skillEx').innerHTML='<h3>🎯 Match the Skill</h3><div class="exercise-sub">Which Desmos skill solves each problem fastest?</div>'+
+    SKL.map(function(q,i){var a=sklA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+q.opts.map(function(o){var c='classify-opt';if(h){c+=' cl-dis';if(o===q.c)c+=' cl-correct';else if(o===a)c+=' cl-wrong';}return '<div class="'+c+'" onclick="aSkl('+i+','+q.opts.indexOf(o)+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(h?' show':'')+(h?(a===q.c?' correct':' wrong'):'')+'">'+((h)?((a===q.c?'✓ Correct!':'✗ Best skill: '+q.c+'.')):'')+'</div></div>';
+    }).join('');
+}
+function aSkl(i,idx){if(sklA[i]!==undefined)return;sklA[i]=SKL[i].opts[idx];renderSkl();}
+renderSkl();
+
+// ============ EXERCISE 2: DESMOS OR ALGEBRA? ============
+const SPD=[
+  {q:'Solve: <code>x + 5 = 12</code>',c:'Algebra',fb:'One-step — just subtract 5 mentally. x = 7. Desmos is overkill.'},
+  {q:'Solve the system: <code>3x − 2y = 7</code> and <code>5x + y = 19</code>',c:'Desmos',fb:'Graph both and click the intersection. Faster than elimination with these coefficients.'},
+  {q:'What is 8 × 7?',c:'Algebra',fb:'56. You don\'t need a calculator for basic multiplication.'},
+  {q:'Find the vertex of <code>y = 2x² − 12x + 22</code>',c:'Desmos',fb:'Graph it and click the vertex point. Instant. Algebra would require −b/2a then substitution.'},
+  {q:'A study finds a correlation between exercise and grades. Can we conclude exercise causes better grades?',c:'Algebra',fb:'Conceptual question — Desmos can\'t help. Answer: No, correlation ≠ causation.'},
+  {q:'Find x: <code>|2x − 6| = 10</code>',c:'Desmos',fb:'Graph y = |2x − 6| and y = 10, click both intersections. Avoids the two-case algebra.'},
+  {q:'If f(x) = x² + 3x − 10, what is f(−2)?',c:'Algebra',fb:'Just plug in: 4 − 6 − 10 = −12. Quick mental math. Desmos works but isn\'t faster.'},
+  {q:'Where do <code>y = x² − 1</code> and <code>y = 2x + 2</code> intersect?',c:'Desmos',fb:'Graph both, click dots. The algebraic method (x² − 2x − 3 = 0 → factor) works too, but Desmos is faster.'},
+  {q:'In a two-way table, what is P(Math | 9th grade)?',c:'Algebra',fb:'Read from the table: count in both / count in row. Desmos can\'t read tables for you.'},
+  {q:'Solve: <code>2(x+3) = 4x − 8</code>',c:'Algebra',fb:'Distribute, combine: 2x + 6 = 4x − 8 → 14 = 2x → x = 7. Quick enough algebraically.'},
+];
+var spdA={};
+function renderSpd(){
+  var tot=SPD.length,cor=Object.entries(spdA).filter(function(e){return e[1]===SPD[e[0]].c;}).length;
+  document.getElementById('speedEx').innerHTML='<h3>⚡ Desmos or Algebra?</h3><div class="exercise-sub">Which approach is faster for each?</div>'+
+    SPD.map(function(q,i){var a=spdA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+['Desmos','Algebra'].map(function(o){var c='classify-opt';if(h){c+=' cl-dis';if(o===q.c)c+=' cl-correct';else if(o===a)c+=' cl-wrong';}return '<div class="'+c+'" onclick="aSpd('+i+',\''+o+'\')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(h?' show':'')+(h?(a===q.c?' correct':' wrong'):'')+'">'+((h)?((a===q.c?'✓ ':'✗ ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aSpd(i,v){if(spdA[i]!==undefined)return;spdA[i]=v;renderSpd();}
+renderSpd();
+
+// ============ EXERCISE 3: KEYBOARD SHORTCUTS ============
+const SHC=[
+  {q:'How do you type an exponent like x²?',c:'^',opts:['^','_','~','sqrt']},
+  {q:'How do you type a subscript like y₁?',c:'_',opts:['^','_','~','/']},
+  {q:'How do you start a regression?',c:'~',opts:['^','_','~','|']},
+  {q:'How do you type a square root?',c:'sqrt',opts:['root','sqrt','sq','√']},
+  {q:'How do you type an absolute value like |x|?',c:'Shift + pipe',opts:['||','Shift + pipe','abs()','[]']},
+  {q:'How do you type pi (the number)?',c:'pi',opts:['pi','3.14','pie','math']},
+  {q:'How do you type a fraction like 3/7?',c:'/',opts:['-','bkslash','/',':']},
+];
+var shcA={};
+function renderShc(){
+  var tot=SHC.length,cor=Object.entries(shcA).filter(function(e){return e[1]===SHC[e[0]].c;}).length;
+  document.getElementById('shortcutEx').innerHTML='<h3>⌨️ Shortcut Quiz</h3><div class="exercise-sub">Pick the right key or command.</div>'+
+    SHC.map(function(q,i){var a=shcA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+q.opts.map(function(o,oi){var c='classify-opt';if(h){c+=' cl-dis';if(o===q.c)c+=' cl-correct';else if(o===a)c+=' cl-wrong';}return '<div class="'+c+'" onclick="aShc('+i+','+oi+')"><code>'+o+'</code></div>';}).join('')+'</div><div class="ex-fb'+(h?' show':'')+(h?(a===q.c?' correct':' wrong'):'')+'">'+(h?(a===q.c?'\u2713 Correct!':'\u2717 The right shortcut is: '+q.c):'')+'</div></div>';
+    }).join('');
+}
+function aShc(i,idx){if(shcA[i]!==undefined)return;shcA[i]=SHC[i].opts[idx];renderShc();}
+renderShc();
+
+// ============ PSAT 8/9 PRACTICE (ALL DESMOS-SOLVABLE) ============
+const PST=[
+  {t:1,q:'What is the solution to the system <code>y = x + 3</code> and <code>y = −2x + 9</code>?',ch:['(2, 5)','(3, 6)','(1, 4)','(4, 1)'],c:0,fb:'Graph both, click intersection → (2, 5). Check: 2+3=5 ✓, −2(2)+9=5 ✓.'},
+  {t:1,q:'What is the y-intercept of <code>y = 3x − 7</code>?',ch:['3','−7','7','−3'],c:1,fb:'Graph it. The line crosses the y-axis at (0, −7). Or: plug in x=0 → y = −7.'},
+  {t:1,q:'What is the mean of 10, 14, 18, 22, 26?',ch:['14','18','20','22'],c:1,fb:'Type mean(10,14,18,22,26) → 18. Or: sum = 90, 90/5 = 18.'},
+  {t:2,q:'The quadratic <code>y = x² − 4x − 5</code> has zeros at:',ch:['x = 1 and x = 5','x = −1 and x = 5','x = −1 and x = −5','x = 1 and x = −5'],c:1,fb:'Graph it. The parabola crosses x-axis at (−1, 0) and (5, 0).'},
+  {t:2,q:'What is the vertex of <code>y = −x² + 6x − 5</code>?',ch:['(3, 4)','(−3, 4)','(3, −4)','(6, −5)'],c:0,fb:'Graph and click the peak → (3, 4). Maximum because a < 0.'},
+  {t:2,q:'The line <code>y = mx + 2</code> passes through (4, 10). What is m?',ch:['2','3','4','8'],c:0,fb:'Slider: set y = mx + 2, slide m until it passes through (4,10). Or: 10 = 4m + 2 → m = 2.'},
+  {t:2,q:'Which value of x satisfies <code>|2x − 8| = 6</code>? Select all.',ch:['x = 1','x = 7','x = 1 and x = 7','x = −1 and x = 7'],c:2,fb:'Graph y = |2x−8| and y = 6. Intersections at x = 1 and x = 7.'},
+  {t:2,q:'The inequality <code>y > −x + 5</code> is satisfied by which point?',ch:['(0, 3)','(0, 5)','(2, 5)','(1, 2)'],c:2,fb:'Graph y > −x + 5. Shading is above the line. (2,5): 5 > −2+5 = 3 ✓.'},
+  {t:3,q:'For what value of k does the system <code>y = 2x + k</code> and <code>y = 2x − 3</code> have no solution?',ch:['k = −3','k = 3','Any k ≠ −3','k = 0'],c:2,fb:'Same slope (2) → parallel. No solution unless same line. Any k ≠ −3 → parallel (no solution).'},
+  {t:3,q:'Data: (1,2), (2,5), (3,7), (4,10), (5,13). The regression line y₁~mx₁+b gives approximately:',ch:['y = 2.7x − 0.7','y = 3x − 1','y = 2x + 1','y = 2.5x + 0.5'],c:0,fb:'Enter table, run regression. m ≈ 2.7, b ≈ −0.7. Close to but not exactly y = 3x − 1.'},
+];
+var pstA={};
+function renderPST(){
+  document.getElementById('psatPractice').innerHTML=PST.map(function(q,i){var a=pstA[i],h=a!==undefined;
+    return '<div class="ex-item" style="border-color:'+(q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)')+'"><div style="margin-bottom:6px"><span class="tier tier-'+q.t+'">'+(q.t===1?'Easy':q.t===2?'Medium':'Hard')+'</span></div><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){var c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return '<div class="'+c+'" onclick="aPST('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(h?' show':'')+'">'+(h?((a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb):'')+'</div></div>';
+  }).join('');
+}
+function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;renderPST();}
+renderPST();
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

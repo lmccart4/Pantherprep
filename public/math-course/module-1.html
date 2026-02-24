@@ -10,6 +10,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--math));width:0%;transition:width .3s ease}
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
@@ -28,106 +30,39 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .callout strong{color:var(--accent)}
 .callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
 .callout-blue strong{color:var(--math)}
-
-/* TEST STRUCTURE TABLE */
 .struct-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px}
 .struct-table th,.struct-table td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
 .struct-table th{background:var(--surface);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
 .struct-table td{color:#ccc}
 .struct-table code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82rem}
-
-/* DOMAIN BREAKDOWN */
 .domain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
 .domain-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .2s;cursor:pointer}
 .domain-card:hover{transform:translateY(-2px)}
-.domain-card.flipped .dc-front{display:none}
-.domain-card.flipped .dc-back{display:block}
+.domain-card.flipped .dc-front{display:none}.domain-card.flipped .dc-back{display:block}
 .dc-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .dc-pct{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
-.dc-name{font-weight:700;font-size:.95rem}
-.dc-qs{font-size:.82rem;color:var(--muted)}
+.dc-name{font-weight:700;font-size:.95rem}.dc-qs{font-size:.82rem;color:var(--muted)}
 .dc-topics{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:4px}
 .dc-back{display:none;font-size:.85rem;color:#ccc;line-height:1.6}
 .dc-flip{font-size:.68rem;color:var(--muted);text-align:right;margin-top:6px}
-
-/* STRATEGY TOOLKIT */
 .strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
 .strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
 .strat-card:hover{border-color:var(--math);transform:translateY(-2px)}
-.strat-card.flipped .sf-front{display:none}
-.strat-card.flipped .sf-back{display:block}
-.sf-icon{font-size:1.5rem;margin-bottom:4px}
-.sf-title{font-weight:700;font-size:.95rem;margin-bottom:2px}
+.strat-card.flipped .sf-front{display:none}.strat-card.flipped .sf-back{display:block}
+.sf-icon{font-size:1.5rem;margin-bottom:4px}.sf-title{font-weight:700;font-size:.95rem;margin-bottom:2px}
 .sf-hint{font-size:.78rem;color:var(--muted);font-style:italic}
 .sf-flip{font-size:.68rem;color:var(--muted);text-align:right;margin-top:4px}
 .sf-back{display:none;font-size:.83rem;color:#ccc;line-height:1.5}
-
-/* CHECKLIST */
-.checklist{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
-.checklist h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:12px}
-.cl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;cursor:pointer;transition:opacity .2s}
-.cl-item:last-child{border-bottom:none}
-.cl-item.done{opacity:.5;text-decoration:line-through}
-.cl-check{flex-shrink:0;width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .15s}
-.cl-item.done .cl-check{background:var(--correct);border-color:var(--correct);color:#fff}
-.cl-progress{font-size:.82rem;color:var(--muted);margin-top:8px;text-align:right}
-
-/* PROTOCOL STEPS */
-.protocol{background:var(--surface);border:2px solid var(--accent);border-radius:14px;overflow:hidden;margin-bottom:16px}
-.protocol-title{background:var(--accent);padding:12px 20px;font-weight:700;font-size:.95rem}
-.protocol-step{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;align-items:flex-start}
-.protocol-step:last-child{border-bottom:none}
-.step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent-light);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--accent);font-family:'JetBrains Mono',monospace}
-
-/* ERROR CLASSIFICATION */
-.ec-box{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
-.ec-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px}
-.ec-scenario{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
-.ec-options{display:flex;flex-wrap:wrap;gap:6px}
-.ec-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
-.ec-opt:hover:not(.ec-dis){border-color:var(--accent);background:var(--accent-light)}
-.ec-opt.ec-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
-.ec-opt.ec-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
-.ec-opt.ec-dis{pointer-events:none;opacity:.6}
-.ec-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.4}
-.ec-fb.show{display:block}
-
-/* ERROR ANALYSIS WORKSHEET */
-.worksheet{background:var(--surface);border:2px solid var(--advanced);border-radius:14px;padding:22px;margin-bottom:16px}
-.ws-entry{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
-.ws-row{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;margin-bottom:6px}
-.ws-label{font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-.ws-input{padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem}
-.ws-input:focus{border-color:var(--math);outline:none}
-.ws-select{padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem;cursor:pointer}
-.ws-select:focus{border-color:var(--math);outline:none}
-.ws-textarea{width:100%;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem;resize:vertical;min-height:40px}
-.ws-textarea:focus{border-color:var(--math);outline:none}
-.ws-actions{display:flex;gap:8px;margin-top:12px}
-
-/* ADAPTIVE VISUAL */
-.adaptive{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
-.adaptive-flow{display:flex;flex-direction:column;align-items:center;gap:8px}
-.adaptive-box{padding:12px 20px;border-radius:10px;text-align:center;font-size:.88rem;font-weight:600;min-width:200px}
-.adaptive-arrow{color:var(--muted);font-size:1.2rem}
-.adaptive-split{display:flex;gap:16px;width:100%}
-.adaptive-branch{flex:1;text-align:center}
-
-.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
-.btn:hover{background:#a00d24}
-.btn-sm{padding:8px 16px;font-size:.82rem}
-.btn-blue{background:var(--math)}.btn-blue:hover{background:#4b8fda}
-.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
-.btn-outline:hover{background:var(--accent-light)}
-
-/* NAV */
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
-
-/* MINI DIAGNOSTIC */
-.diag-q{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;transition:all .3s}
-.diag-q.answered{opacity:.85}
+.sim-container{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
+.sim-slider-row{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.sim-slider{flex:1;-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--wrong) 0%,var(--psda) 50%,var(--correct) 100%);outline:none}
+.sim-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--ink);border:3px solid var(--math);cursor:pointer}
+.sim-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--ink);border:3px solid var(--math);cursor:pointer}
+.sim-val{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;min-width:60px;text-align:center}
+.sim-result{text-align:center;padding:16px;border-radius:10px;transition:all .3s}
+.sim-meter{height:12px;border-radius:6px;background:var(--border);margin:10px 0;overflow:hidden}
+.sim-meter-fill{height:100%;border-radius:6px;transition:width .4s ease,background .4s ease}
+.diag-q{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px}
 .diag-domain{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;display:inline-block;padding:2px 8px;border-radius:4px}
 .diag-stem{font-size:.93rem;margin-bottom:12px;color:#ddd;line-height:1.7}
 .diag-stem code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
@@ -138,16 +73,13 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .diag-choice.dc-correct{border-color:var(--correct);background:var(--correct-bg)}
 .diag-choice.dc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
 .diag-choice.dc-dis{pointer-events:none;opacity:.7}
-.diag-choice.dc-correct .letter{color:var(--correct)}
-.diag-choice.dc-wrong .letter{color:var(--wrong)}
+.diag-choice.dc-correct .letter{color:var(--correct)}.diag-choice.dc-wrong .letter{color:var(--wrong)}
 .diag-explain{margin-top:10px;padding:12px;background:var(--paper);border-radius:8px;font-size:.85rem;color:var(--muted);line-height:1.6;display:none;border-left:3px solid var(--correct)}
 .diag-explain.show{display:block}
 .diag-conf{display:flex;gap:6px;margin-top:8px;margin-bottom:4px}
 .diag-conf-btn{padding:4px 12px;border-radius:6px;border:1px solid var(--border);background:var(--paper);color:var(--muted);cursor:pointer;font-size:.75rem;transition:all .15s}
 .diag-conf-btn:hover{border-color:var(--math)}
 .diag-conf-btn.active{border-color:var(--math);background:var(--math-bg);color:var(--math)}
-
-/* RESULTS DASHBOARD */
 .results{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
 .results-score{text-align:center;margin-bottom:16px}
 .results-big{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:700}
@@ -158,27 +90,70 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .results-domain-score{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700}
 .results-domain-bar{height:6px;border-radius:3px;background:var(--border);margin-top:6px;overflow:hidden}
 .results-domain-fill{height:100%;border-radius:3px;transition:width .6s ease}
-
+.proj-container{background:var(--surface);border:2px solid var(--psda);border-radius:14px;padding:22px;margin-bottom:16px}
+.proj-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.proj-field label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.proj-field input,.proj-field select{width:100%;padding:10px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.1rem;text-align:center}
+.proj-field input:focus,.proj-field select:focus{border-color:var(--psda);outline:none}
+.proj-result{text-align:center;padding:16px;border-radius:10px;background:var(--paper)}
+.proj-big{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700}
+.checklist{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;cursor:pointer;transition:opacity .2s}
+.cl-item:last-child{border-bottom:none}.cl-item.done{opacity:.5;text-decoration:line-through}
+.cl-check{flex-shrink:0;width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .15s}
+.cl-item.done .cl-check{background:var(--correct);border-color:var(--correct);color:#fff}
+.cl-progress{font-size:.82rem;color:var(--muted);margin-top:8px;text-align:right}
+.protocol{background:var(--surface);border:2px solid var(--accent);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.protocol-title{background:var(--accent);padding:12px 20px;font-weight:700;font-size:.95rem}
+.protocol-step{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;align-items:flex-start}
+.protocol-step:last-child{border-bottom:none}
+.step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent-light);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--accent);font-family:'JetBrains Mono',monospace}
+.ec-box{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
+.ec-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px}
+.ec-scenario{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
+.ec-options{display:flex;flex-wrap:wrap;gap:6px}
+.ec-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.ec-opt:hover:not(.ec-dis){border-color:var(--accent);background:var(--accent-light)}
+.ec-opt.ec-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.ec-opt.ec-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.ec-opt.ec-dis{pointer-events:none;opacity:.6}
+.ec-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.4}.ec-fb.show{display:block}
+.worksheet{background:var(--surface);border:2px solid var(--advanced);border-radius:14px;padding:22px;margin-bottom:16px}
+.ws-entry{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
+.ws-row{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;margin-bottom:6px}
+.ws-label{font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.ws-input,.ws-select{padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem}
+.ws-input:focus,.ws-select:focus{border-color:var(--math);outline:none}
+.ws-textarea{width:100%;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem;resize:vertical;min-height:40px}
+.ws-textarea:focus{border-color:var(--math);outline:none}
+.ws-actions{display:flex;gap:8px;margin-top:12px}
+.adaptive{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.adaptive-flow{display:flex;flex-direction:column;align-items:center;gap:8px}
+.adaptive-box{padding:12px 20px;border-radius:10px;text-align:center;font-size:.88rem;font-weight:600;min-width:200px}
+.adaptive-arrow{color:var(--muted);font-size:1.2rem}
+.adaptive-split{display:flex;gap:16px;width:100%}.adaptive-branch{flex:1;text-align:center}
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#a00d24}.btn-sm{padding:8px 16px;font-size:.82rem}
+.btn-blue{background:var(--math)}.btn-blue:hover{background:#4b8fda}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}.btn-outline:hover{background:var(--accent-light)}
+.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.mod-nav a:hover{text-decoration:underline}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .4s ease forwards}
-
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.domain-grid{grid-template-columns:1fr}.strat-grid{grid-template-columns:1fr}.adaptive-split{flex-direction:column}.ec-options{flex-direction:column}.results-domains{grid-template-columns:1fr}.diag-conf{flex-wrap:wrap}}
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.domain-grid{grid-template-columns:1fr}.strat-grid{grid-template-columns:1fr}.adaptive-split{flex-direction:column}.ec-options{flex-direction:column}.proj-inputs{grid-template-columns:1fr}.results-domains{grid-template-columns:1fr}.diag-conf{flex-wrap:wrap}}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div class="container">
 <a class="back-link" href="index.html">← Back to Math Course</a>
-
 <div class="mod-header">
   <div class="mod-badge">Module 1</div>
   <h1>Diagnostic & Orientation</h1>
   <p class="subtitle">Establish your baseline, learn the test structure, and build your personalized study plan.</p>
-  <div class="mod-meta">
-    <span>⏱ 90 min + test time</span>
-    <span>📋 3 sessions</span>
-    <span>🔍 Phase 1: Diagnose</span>
-  </div>
+  <div class="mod-meta"><span>⏱ ~90 min + test time</span><span>📋 3 sessions</span><span>🔍 Phase 1: Diagnose</span></div>
 </div>
 
 <!-- SAT MATH STRUCTURE -->
@@ -189,47 +164,54 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     <tr><th>Feature</th><th>Details</th></tr>
     <tr><td><strong>Total Questions</strong></td><td><code>44</code> (22 per module)</td></tr>
     <tr><td><strong>Total Time</strong></td><td><code>70 minutes</code> (35 per module)</td></tr>
+    <tr><td><strong>Time per Question</strong></td><td>~<code>95 seconds</code> average</td></tr>
     <tr><td><strong>Adaptive Format</strong></td><td>Module 2 difficulty adjusts based on Module 1 performance</td></tr>
-    <tr><td><strong>Question Types</strong></td><td>Multiple choice (~75%) and student-produced response / grid-in (~25%)</td></tr>
-    <tr><td><strong>Calculator</strong></td><td>Built-in Desmos graphing calculator on ALL questions</td></tr>
+    <tr><td><strong>Question Types</strong></td><td>~75% multiple choice (4 options) &amp; ~25% student-produced response</td></tr>
+    <tr><td><strong>Calculator</strong></td><td>Built-in <strong>Desmos</strong> with graphing/scientific toggle on ALL questions</td></tr>
     <tr><td><strong>Scoring</strong></td><td><code>200–800</code> Math section score (no penalty for wrong answers)</td></tr>
-    <tr><td><strong>Question Order</strong></td><td>Within each module: easiest → hardest</td></tr>
     <tr><td><strong>Reference Sheet</strong></td><td>Area/volume formulas, special right triangles, circle properties</td></tr>
   </table>
+  <div class="callout"><strong>⚠️ Calculator Update (2025):</strong> CAS (Computer Algebra System) calculators are now <strong>banned</strong> on the SAT. You may only use the built-in Desmos or an approved non-CAS calculator. Desmos now offers a <strong>scientific/graphing toggle</strong> — you can switch modes during the test.</div>
   <div class="callout-blue callout"><strong>No wrong-answer penalty</strong> means you should <strong>answer every single question</strong> — even if you have to guess. A random guess gives you a 25% chance on multiple choice. Never leave anything blank.</div>
 </div>
-
-<!-- WHY SAT MATTERS -->
-<div class="section">
-  <div class="section-label">Context</div>
-  <h2>Why Your SAT Score Matters</h2>
-  <p>After years of test-optional policies, the trend has reversed. Most selective colleges now require or strongly recommend SAT scores for admission.</p>
-  <div class="card" style="border-left:3px solid var(--correct)">
-    <div style="font-size:.93rem;color:#ccc;line-height:1.7"><strong style="color:var(--ink)">Superscoring:</strong> Most top-25 schools <strong>superscore</strong> the SAT, meaning they take your highest Math score and highest Reading &amp; Writing score across all sittings. Every point you gain on any test date counts toward your best composite.</div>
-  </div>
-  <div class="card" style="border-left:3px solid var(--psda)">
-    <div style="font-size:.93rem;color:#ccc;line-height:1.7"><strong style="color:var(--psda)">College Readiness Benchmark:</strong> The College Board sets <strong>530</strong> as the Math college-readiness benchmark. Scoring above this signals readiness for credit-bearing college math courses. Aim well above it — competitive applicants typically need 700+.</div>
-  </div>
 
 <!-- ADAPTIVE MODULE VISUAL -->
 <div class="section">
   <div class="section-label">How It Works</div>
   <h2>The Adaptive Module System</h2>
+  <p>The SAT uses <strong>multistage adaptive testing (MST)</strong>. You can't skip ahead to Module 2 or go back to Module 1. Your Module 1 performance determines which version of Module 2 you receive — and this has <em>massive</em> implications for your score ceiling.</p>
   <div class="adaptive">
     <div class="adaptive-flow">
       <div class="adaptive-box" style="background:var(--math-bg);border:2px solid var(--math)">Module 1: Mixed difficulty<br><span style="font-size:.78rem;color:var(--muted)">22 questions · 35 minutes · Easy → Hard</span></div>
-      <div class="adaptive-arrow">↓ Your performance determines...</div>
+      <div class="adaptive-arrow">↓ Your performance determines…</div>
       <div class="adaptive-split">
-        <div class="adaptive-branch">
-          <div class="adaptive-box" style="background:var(--correct-bg);border:2px solid var(--correct)">Module 2: <strong>Harder</strong><br><span style="font-size:.78rem;color:var(--muted)">Unlocks scores up to 800</span></div>
-        </div>
-        <div class="adaptive-branch">
-          <div class="adaptive-box" style="background:var(--wrong-bg);border:2px solid var(--wrong)">Module 2: <strong>Easier</strong><br><span style="font-size:.78rem;color:var(--muted)">Score ceiling limited</span></div>
-        </div>
+        <div class="adaptive-branch"><div class="adaptive-box" style="background:var(--correct-bg);border:2px solid var(--correct)">Module 2: <strong>Harder</strong><br><span style="font-size:.78rem;color:var(--muted)">Unlocks scores up to 800</span></div></div>
+        <div class="adaptive-branch"><div class="adaptive-box" style="background:var(--wrong-bg);border:2px solid var(--wrong)">Module 2: <strong>Easier</strong><br><span style="font-size:.78rem;color:var(--muted)">Score ceiling ~560–630</span></div></div>
       </div>
     </div>
   </div>
-  <div class="callout"><strong>Strategic Implication:</strong> Performing well on Module 1 is critical — it unlocks your ability to reach top scores. Get the first 10 questions right (the easiest ones) and you're much more likely to reach the harder Module 2.</div>
+  <div class="callout"><strong>The Module 1 Imperative:</strong> Getting routed to the easier Module 2 <em>caps your maximum possible score</em> at roughly 560–630 — even if you ace every question in Module 2. Accuracy on the first 22 questions matters more than speed. The routing threshold is estimated at ~15 correct out of 22.</div>
+</div>
+
+<!-- ROUTING SIMULATOR -->
+<div class="section">
+  <div class="section-label">Interactive: Try It</div>
+  <h2>Routing Simulator</h2>
+  <p>Slide to see how your Module 1 performance affects your scoring potential. Notice how the score ceiling changes dramatically around the routing threshold.</p>
+  <div class="sim-container">
+    <div style="text-align:center;font-size:.82rem;color:var(--muted);margin-bottom:8px">Module 1 Correct Answers</div>
+    <div class="sim-slider-row">
+      <span style="font-size:.78rem;color:var(--muted)">0</span>
+      <input type="range" class="sim-slider" id="simSlider" min="0" max="22" value="15" oninput="updateSim()">
+      <span style="font-size:.78rem;color:var(--muted)">22</span>
+      <div class="sim-val" id="simVal">15</div>
+    </div>
+    <div class="sim-result" id="simResult"></div>
+    <div style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:4px"><span>Score Floor</span><span id="simRange">—</span><span>Score Ceiling</span></div>
+      <div class="sim-meter"><div class="sim-meter-fill" id="simMeter"></div></div>
+    </div>
+  </div>
 </div>
 
 <!-- FOUR DOMAINS -->
@@ -238,10 +220,10 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <h2>The Four Content Domains</h2>
   <p>Click each domain card to see the specific topics covered.</p>
   <div class="domain-grid" id="domainGrid"></div>
-  <div class="callout-blue callout"><strong>Key Insight:</strong> Algebra and Advanced Math together account for roughly 64% of the test. Mastering these two domains is the single highest-impact investment of your study time.</div>
+  <div class="callout-blue callout"><strong>Key Insight:</strong> Algebra and Advanced Math together account for roughly <strong>70%</strong> of the test. Mastering these two domains is the single highest-impact investment of your study time.</div>
 </div>
 
-<!-- STRATEGY TOOLKIT INTRO -->
+<!-- STRATEGY TOOLKIT -->
 <div class="section">
   <div class="section-label">Preview</div>
   <h2>The SAT Math Strategy Toolkit</h2>
@@ -249,40 +231,42 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="strat-grid" id="stratGrid"></div>
 </div>
 
-<!-- MINI DIAGNOSTIC ASSESSMENT -->
+<!-- WHY SAT MATTERS -->
 <div class="section">
-  <div class="section-label">Session 2: Diagnostic</div>
-  <h2>Mini Diagnostic Assessment</h2>
-  <p>Answer these 20 questions spanning all four domains. For each question, first rate your confidence, then select your answer. This helps identify both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
-  <div id="diagQuestions"></div>
-  <div style="text-align:center;margin-top:16px">
-    <button class="btn btn-blue" id="diagSubmit" onclick="scoreDiag()" style="display:none">Score My Diagnostic →</button>
+  <div class="section-label">Context</div>
+  <h2>Why Your SAT Score Matters More Than Ever</h2>
+  <p>After years of test-optional policies, the trend has reversed. As of the 2025–26 admissions cycle, <strong>Harvard, Yale, Dartmouth, Brown, MIT, Caltech, Stanford, Georgetown, Cornell, and Penn</strong> all require or strongly encourage SAT scores.</p>
+  <div class="card" style="border-left:3px solid var(--correct)">
+    <div style="font-size:.93rem;color:#ccc;line-height:1.7"><strong style="color:var(--ink)">The good news:</strong> Most top-25 schools <strong>superscore</strong> the SAT, meaning they take your highest Math score and highest Reading &amp; Writing score across all sittings. Every point you gain on any test date counts toward your best composite.</div>
   </div>
-  <div id="diagResults" style="display:none"></div>
+  <div class="card" style="border-left:3px solid var(--psda)">
+    <div style="font-size:.93rem;color:#ccc;line-height:1.7"><strong style="color:var(--psda)">By the numbers (2025):</strong> Mean SAT Math score was 508 out of 800. Only 34% of test-takers met the college-readiness benchmark of 530. Just 9% scored 700+. There's enormous room for improvement with targeted prep.</div>
+  </div>
 </div>
 
-<!-- ERROR CLASSIFICATION EXERCISE -->
+<!-- MINI DIAGNOSTIC -->
 <div class="section">
-  <div class="section-label">Session 2: Interactive Exercise</div>
-  <h2>Error Classification Practice</h2>
-  <p>Before analyzing your own mistakes, practice classifying these common SAT math errors. Correctly identifying your error type is the key to knowing what to study.</p>
-  <div class="ec-box" id="ecBox"></div>
-  <div id="ecScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
+  <div class="section-label">Session 1: Quick Assessment</div>
+  <h2>Mini Diagnostic Assessment</h2>
+  <p>Before taking a full practice test, answer these 15 questions spanning all four domains. For each question, <strong>first rate your confidence</strong>, then select your answer. This reveals both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
+  <div id="diagQuestions"></div>
+  <div style="text-align:center;margin-top:16px"><button class="btn btn-blue" id="diagSubmit" onclick="scoreDiag()" style="display:none">Score My Diagnostic →</button></div>
+  <div id="diagResults" style="display:none"></div>
 </div>
 
 <!-- BASELINE PROTOCOL -->
 <div class="section">
-  <div class="section-label">Session 3: Full Baseline</div>
+  <div class="section-label">Session 2</div>
   <h2>Baseline Assessment Protocol</h2>
-  <p>After the mini diagnostic, take a full-length SAT Math section using the Bluebook app. This establishes your true baseline score.</p>
+  <p>After the mini diagnostic, take a full-length SAT Math section. Use an official College Board practice test (Tests 4–10 are current; Tests 1–3 have been retired).</p>
   <div class="protocol">
-    <div class="protocol-title">Full Baseline Protocol</div>
-    <div class="protocol-step"><div class="step-num">1</div><div>Open the <a href="https://bluebook.collegeboard.org/" target="_blank" style="color:var(--math)">Bluebook app</a> and select a full Math section (44 questions, 70 minutes). Use an official College Board practice test.</div></div>
-    <div class="protocol-step"><div class="step-num">2</div><div><strong>Use the built-in Desmos calculator</strong> during the baseline — this establishes your current comfort level with the tool.</div></div>
-    <div class="protocol-step"><div class="step-num">3</div><div>Simulate test conditions: no phone, no notes, timed modules, quiet environment. No pausing between modules.</div></div>
-    <div class="protocol-step"><div class="step-num">4</div><div>After completion, <strong>mark every question you were unsure about</strong>, even if you got it correct. "Lucky correct" answers mask skill gaps.</div></div>
-    <div class="protocol-step"><div class="step-num">5</div><div>Review your score report. Note which domain(s) had the most errors.</div></div>
-    <div class="protocol-step"><div class="step-num">6</div><div>Complete the Error Analysis Worksheet below for every missed <strong>and</strong> uncertain question.</div></div>
+    <div class="protocol-title">Baseline Test Protocol</div>
+    <div class="protocol-step"><div class="step-num">1</div><div>Open the <a href="https://bluebook.collegeboard.org/" target="_blank" style="color:var(--math)">Bluebook app</a> and select a full Math section (44 questions, 70 minutes). Use Practice Test 4, 5, or 6 — save Tests 7–10 for later.</div></div>
+    <div class="protocol-step"><div class="step-num">2</div><div><strong>Use the built-in Desmos calculator</strong> during the baseline. This establishes your current comfort level with the tool.</div></div>
+    <div class="protocol-step"><div class="step-num">3</div><div>Simulate test conditions: no phone, no notes, timed modules, no pausing between modules.</div></div>
+    <div class="protocol-step"><div class="step-num">4</div><div>After completion, <strong>self-score BEFORE</strong> the instructor reviews results. Self-scoring develops metacognitive awareness.</div></div>
+    <div class="protocol-step"><div class="step-num">5</div><div>Mark every question you were <strong>unsure about</strong>, even if you got it correct. "Lucky correct" answers mask skill gaps.</div></div>
+    <div class="protocol-step"><div class="step-num">6</div><div>Complete the Error Analysis Worksheet below for every missed AND uncertain question.</div></div>
   </div>
 </div>
 
@@ -293,44 +277,64 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="checklist" id="preChecklist"></div>
 </div>
 
+<!-- ERROR CLASSIFICATION -->
+<div class="section">
+  <div class="section-label">Session 2: Interactive Exercise</div>
+  <h2>Error Classification Practice</h2>
+  <p>Before analyzing your own test, practice classifying these sample math errors. Correctly identifying your error type is the key to knowing what to study.</p>
+  <div class="ec-box" id="ecBox"></div>
+  <div id="ecScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
+</div>
+
 <!-- ERROR ANALYSIS WORKSHEET -->
 <div class="section">
-  <div class="section-label">Session 3: Interactive Tool</div>
+  <div class="section-label">Session 2: Interactive Tool</div>
   <h2>Error Analysis Worksheet</h2>
-  <p>For every missed or uncertain question on your baseline test, fill in one entry. Data saves in your browser.</p>
+  <p>For every missed or uncertain question on your baseline test, fill in one entry below. Data saves in your browser.</p>
   <div class="worksheet" id="worksheet">
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px">📊 SAT Math Error Analysis</h3>
-    <div style="font-size:.85rem;color:var(--muted);margin-bottom:14px">Complete one entry per missed/uncertain question</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px">📊 Math Error Analysis</h3>
+    <div style="font-size:.85rem;color:var(--muted);margin-bottom:14px">Complete one entry per missed/uncertain question.</div>
     <div id="wsEntries"></div>
-    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+    <div class="ws-actions">
       <button class="btn btn-blue btn-sm" onclick="addEntry()">+ Add Entry</button>
       <button class="btn btn-sm btn-outline" onclick="exportWS()">📋 Export to Clipboard</button>
-      <button class="btn btn-sm" style="background:var(--wrong)" onclick="if(confirm('Clear all entries?')){localStorage.removeItem(WS_KEY);renderWS();}">Reset</button>
+      <button class="btn btn-sm" style="background:var(--wrong)" onclick="if(confirm('Clear all entries?')){localStorage.removeItem('pp_m1_math_ws');renderWS();}">Reset</button>
     </div>
   </div>
 </div>
 
-<!-- SCORE & STUDY PLAN -->
+<!-- SCORE PROJECTOR -->
 <div class="section">
   <div class="section-label">Session 3: Results</div>
+  <h2>SAT Score Projector</h2>
+  <p>Enter your raw scores and routing path to estimate your scaled SAT Math score. This shows how Module 2 routing dramatically affects your score ceiling.</p>
+  <div class="proj-container">
+    <div class="proj-inputs">
+      <div class="proj-field"><label>Module 1 Raw</label><input type="number" id="projM1" min="0" max="22" placeholder="/22" oninput="updateProj()"></div>
+      <div class="proj-field"><label>Module 2 Raw</label><input type="number" id="projM2" min="0" max="22" placeholder="/22" oninput="updateProj()"></div>
+      <div class="proj-field"><label>Module 2 Path</label><select id="projPath" onchange="updateProj()" style="font-size:.88rem"><option value="">Select…</option><option value="hard">Harder (high ceiling)</option><option value="easy">Easier (capped)</option></select></div>
+    </div>
+    <div class="proj-result" id="projResult"><div style="color:var(--muted);font-size:.9rem">Enter your scores and routing path</div></div>
+  </div>
+</div>
+
+<!-- BASELINE SCORE & STUDY PLAN -->
+<div class="section">
+  <div class="section-label">Session 3: Study Plan</div>
   <h2>Baseline Score & Study Plan</h2>
   <div class="card" style="border:2px solid var(--math)">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-      <div>
-        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Module 1 Raw Score</div>
-        <input type="number" id="m1Score" placeholder="/22" min="0" max="22" style="width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.2rem;text-align:center" oninput="updateScores()">
-      </div>
-      <div>
-        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Module 2 Raw Score</div>
-        <input type="number" id="m2Score" placeholder="/22" min="0" max="22" style="width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.2rem;text-align:center" oninput="updateScores()">
-      </div>
+      <div><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Module 1 Raw Score</div>
+        <input type="number" id="m1Score" placeholder="/22" min="0" max="22" style="width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.2rem;text-align:center" oninput="updateScores()"></div>
+      <div><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Module 2 Raw Score</div>
+        <input type="number" id="m2Score" placeholder="/22" min="0" max="22" style="width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.2rem;text-align:center" oninput="updateScores()"></div>
     </div>
     <div id="scoreResult" style="text-align:center;font-size:.9rem;color:var(--muted);margin-bottom:16px">Enter both scores to see your total and recommended pathway.</div>
     <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;margin-top:16px">Top 3 Priority Areas</div>
     <div style="display:flex;flex-direction:column;gap:6px">
-      <input type="text" placeholder="e.g., Quadratic equations — vertex form" style="padding:8px 10px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem" id="pri1">
-      <input type="text" placeholder="e.g., Systems of equations — elimination method" style="padding:8px 10px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem" id="pri2">
-      <input type="text" placeholder="e.g., Desmos — not comfortable with regressions" style="padding:8px 10px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem" id="pri3">
+      <input type="text" placeholder="e.g., Quadratic equations — vertex form" style="padding:8px 10px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem">
+      <input type="text" placeholder="e.g., Systems of equations — elimination method" style="padding:8px 10px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem">
+      <input type="text" placeholder="e.g., Desmos — not comfortable with regressions" style="padding:8px 10px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem">
     </div>
   </div>
 </div>
@@ -341,14 +345,14 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <h2>Key Takeaways</h2>
   <div class="card card-accent">
     <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>The Digital SAT Math section has <strong>44 questions in 70 minutes</strong>, split into two adaptive modules of 22 questions each.</li>
-      <li>Module 1 performance determines whether you get the harder (ceiling 800) or easier (ceiling ~600) Module 2.</li>
+      <li>The Digital SAT Math section has 44 questions in 70 minutes, split into two adaptive modules.</li>
+      <li>Module 1 performance determines whether you get the harder (ceiling 800) or easier (ceiling ~560–630) Module 2.</li>
       <li>Algebra + Advanced Math = ~70% of the test. These are your highest-impact study areas.</li>
-      <li>SAT Math scores range from <strong>200–800</strong>. The college-readiness benchmark is 530; competitive applicants target 700+.</li>
       <li>Desmos is available on EVERY question — learning to use it strategically is a huge advantage (Module 7).</li>
-      <li>There's <strong>no penalty for wrong answers</strong> — never leave a question blank.</li>
+      <li>CAS calculators are banned. You can toggle between Desmos graphing and scientific modes.</li>
       <li>Six core strategies (Plug In, Backsolve, Ballpark, Desmos, POE, POOD) apply across all content areas.</li>
       <li>Error analysis is the foundation of improvement. Know your error type → know what to study.</li>
+      <li>Most selective colleges now require SAT scores and superscore across sittings — every point counts.</li>
     </ol>
   </div>
 </div>
@@ -358,11 +362,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="section-label">Before Next Session</div>
   <h2>Homework</h2>
   <div class="card card-accent" style="font-size:.93rem;color:#ccc">
-    <p><strong style="color:var(--ink)">1. Complete Your Baseline Test</strong> — Full 44 questions, 70 minutes, official Bluebook practice test under test conditions.</p>
+    <p><strong style="color:var(--ink)">1. Complete Your Baseline Test</strong> — Full 44 questions, 70 minutes, official Bluebook practice test (Test 4, 5, or 6) under test conditions.</p>
     <p><strong style="color:var(--ink)">2. Self-Score & Mark Uncertain Questions</strong> — Score yourself before reviewing. Flag every question you weren't sure about.</p>
     <p><strong style="color:var(--ink)">3. Complete the Error Analysis Worksheet</strong> — One entry for every missed AND uncertain question.</p>
-    <p><strong style="color:var(--ink)">4. Identify Your Top 3 Priority Areas</strong> — Based on the error analysis, what are the three domains/topics where you're losing the most points?</p>
-    <p style="margin:0"><strong style="color:var(--ink)">5. Explore Desmos</strong> — Go to <a href="https://desmos.com/calculator" target="_blank" style="color:var(--math)">desmos.com/calculator</a> and spend 15 minutes graphing equations, making tables, and finding intersection points.</p>
+    <p><strong style="color:var(--ink)">4. Use the Score Projector</strong> — Enter your raw scores and routing path to estimate your scaled score.</p>
+    <p><strong style="color:var(--ink)">5. Identify Your Top 3 Priority Areas</strong> — Based on the error analysis, what are the three domains/topics where you're losing the most points?</p>
+    <p style="margin:0"><strong style="color:var(--ink)">6. Explore Desmos</strong> — Go to <a href="https://desmos.com/calculator" target="_blank" style="color:var(--math)">desmos.com/calculator</a> and spend 15 minutes graphing equations, making tables, and finding intersection points.</p>
   </div>
 </div>
 
@@ -373,435 +378,244 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <script>
-// ============ DOMAIN CARDS ============
-const DOMAINS=[
-  {name:'Algebra',pct:'~32%',qs:'13–15 questions',color:'var(--algebra)',
-   topics:'Linear equations in one variable · Linear equations in two variables · Systems of linear equations · Linear inequalities',
-   back:'The single largest content area. Mastering linear equations and systems alone can be worth 60–80 points. You\'ll cover this in Module 2.'},
-  {name:'Advanced Math',pct:'~32%',qs:'13–15 questions',color:'var(--advanced)',
-   topics:'Quadratic equations · Polynomials · Exponentials & radicals · Rational expressions · Functions & transformations',
-   back:'Equal in weight to Algebra. Quadratics are the most tested topic — know all three forms. Covered in Modules 3–4.'},
-  {name:'Problem-Solving & Data',pct:'~15%',qs:'5–7 questions',color:'var(--psda)',
-   topics:'Ratios, rates, proportions · Percentages · Statistics (mean, median) · Scatterplots & data · Probability · Study design',
-   back:'Highest proportion of word problems. Tests mathematical reasoning more than computation. Covered in Module 5.'},
-  {name:'Geometry & Trig',pct:'~15%',qs:'5–7 questions',color:'var(--geotrig)',
-   topics:'Lines, angles, triangles · Circles & their equations · Area, perimeter, volume · SOH-CAH-TOA · Radians · Special right triangles',
-   back:'Fewest questions but formulas are provided on the reference sheet. Memorize for speed. Covered in Module 6.'},
-];
+// ============ PROGRESS BAR ============
+window.addEventListener('scroll',function(){
+  var h=document.documentElement.scrollHeight-window.innerHeight;
+  var pct=h>0?(window.scrollY/h)*100:0;
+  document.getElementById('progressFill').style.width=pct+'%';
+});
 
-function renderDomains(){
-  document.getElementById('domainGrid').innerHTML=DOMAINS.map((d,i)=>`
-    <div class="domain-card" onclick="this.classList.toggle('flipped')">
-      <div class="dc-front">
-        <div class="dc-header"><div class="dc-pct" style="color:${d.color}">${d.pct}</div><div><div class="dc-name">${d.name}</div><div class="dc-qs">${d.qs}</div></div></div>
-        <div class="dc-topics">${d.topics}</div>
-        <div class="dc-flip">tap for details</div>
-      </div>
-      <div class="dc-back">${d.back}</div>
-    </div>
-  `).join('');
+// ============ ROUTING SIMULATOR ============
+function updateSim(){
+  var v=parseInt(document.getElementById('simSlider').value);
+  document.getElementById('simVal').textContent=v;
+  var pct=v/22;var route,color,floor,ceil,bg;
+  if(v>=15){route='Harder Module 2';color='var(--correct)';floor=Math.max(400,200+v*18);ceil=Math.min(200+v*15+(22-v)*5+380,800);bg='var(--correct-bg)';}
+  else if(v>=12){route='Borderline — Could go either way';color='var(--psda)';floor=Math.max(350,200+v*14);ceil=Math.min(200+v*20+200,700);bg='rgba(251,191,36,.1)';}
+  else{route='Easier Module 2';color='var(--wrong)';floor=200;ceil=Math.min(400+v*20,630);bg='var(--wrong-bg)';}
+  document.getElementById('simResult').innerHTML='<div style="font-size:1rem;font-weight:700;color:'+color+';margin-bottom:4px">'+v+'/22 correct → '+route+'</div><div style="font-size:.85rem;color:var(--muted)">Estimated score range: '+floor+'–'+ceil+'</div>';
+  document.getElementById('simResult').style.background=bg;
+  var meterPct=((ceil-200)/600)*100;var fill=document.getElementById('simMeter');
+  fill.style.width=meterPct+'%';fill.style.background=pct>=.68?'var(--correct)':pct>=.55?'var(--psda)':'var(--wrong)';
+  document.getElementById('simRange').textContent=floor+'–'+ceil;
 }
-renderDomains();
+updateSim();
+
+// ============ DOMAIN CARDS ============
+var DOMAINS=[
+  {name:'Algebra',pct:'~35%',qs:'13–15 questions',color:'var(--algebra)',topics:'Linear equations in one variable · Linear equations in two variables · Systems of linear equations · Linear inequalities',back:'The single largest content area. Mastering linear equations and systems alone can be worth 60–80 points. Covered in Module 2.'},
+  {name:'Advanced Math',pct:'~35%',qs:'13–15 questions',color:'var(--advanced)',topics:'Quadratic equations · Polynomials · Exponentials & radicals · Rational expressions · Functions & transformations',back:'Equal in weight to Algebra. Quadratics are the most tested topic — know all three forms. Covered in Modules 3–4.'},
+  {name:'Problem-Solving & Data',pct:'~15%',qs:'5–7 questions',color:'var(--psda)',topics:'Ratios, rates, proportions · Percentages · Statistics (mean, median) · Scatterplots & data · Probability · Study design',back:'Highest proportion of word problems. Tests mathematical reasoning more than computation. Covered in Module 5.'},
+  {name:'Geometry & Trig',pct:'~15%',qs:'5–7 questions',color:'var(--geotrig)',topics:'Lines, angles, triangles · Circles & equations · Area, perimeter, volume · SOH-CAH-TOA · Radians · Special right triangles',back:'Fewest questions but formulas are provided on the reference sheet. Memorize for speed. Covered in Module 6.'}
+];
+document.getElementById('domainGrid').innerHTML=DOMAINS.map(function(d){return '<div class="domain-card" onclick="this.classList.toggle(\'flipped\')"><div class="dc-front"><div class="dc-header"><div class="dc-pct" style="color:'+d.color+'">'+d.pct+'</div><div><div class="dc-name">'+d.name+'</div><div class="dc-qs">'+d.qs+'</div></div></div><div class="dc-topics">'+d.topics+'</div><div class="dc-flip">tap for details →</div></div><div class="dc-back">'+d.back+'<div class="dc-flip">← tap to flip back</div></div></div>';}).join('');
 
 // ============ STRATEGY CARDS ============
-const STRATS=[
-  {icon:'🔌',title:'Plug In (PIYON)',hint:'Variables in answer choices? Choose numbers.',
-   back:'When you see variables in the answer choices, pick easy numbers (2, 3, 5, 10, 100), solve to get a target answer, then test each choice with your numbers. Avoid 0 and 1.'},
-  {icon:'🔄',title:'Backsolve (PITA)',hint:'Number answers? Plug them back in.',
-   back:'When answer choices are specific numbers, start with B or C (middle value) and plug it into the problem. If too big, try smaller; if too small, try larger. Eliminates multiple choices at once.'},
-  {icon:'📏',title:'Ballpark',hint:'Estimate first, eliminate the impossible.',
-   back:'Before calculating, estimate the answer to eliminate clearly wrong choices. 15% of 820 ≈ 120 — any choice far from that is gone. Especially powerful on geometry questions.'},
-  {icon:'📊',title:'Desmos',hint:'Your built-in graphing superpower.',
-   back:'~1/3 of SAT math questions can be solved or verified with Desmos. Graph equations, find intersections, use sliders, run regressions on data tables. Master the keyboard shortcuts.'},
-  {icon:'❌',title:'POE for Math',hint:'Wrong answers reveal themselves.',
-   back:'If the question asks for a positive value, eliminate negatives. If context requires small numbers, eliminate large ones. POE turns a 25% guess into 33% or 50%.'},
-  {icon:'⏱️',title:'POOD + LOTD',hint:'Your order, your pace, your backup letter.',
-   back:'Answer confident questions first, flag uncertain ones. On second pass, attempt flagged questions. Use Letter of the Day (always the same letter, e.g., B) for remaining guesses. Never leave blanks.'},
+var STRATS=[
+  {icon:'🔌',title:'Plug In (PIYON)',hint:'Variables in answer choices? Choose numbers.',back:'When you see variables in the answer choices, pick easy numbers (2, 3, 5, 10, 100), solve to get a target answer, then test each choice with your numbers. Avoid 0 and 1.'},
+  {icon:'🔄',title:'Backsolve (PITA)',hint:'Number answers? Plug them back in.',back:'When answer choices are specific numbers, start with B or C (middle value) and plug it into the problem. If too big, try smaller; if too small, try larger.'},
+  {icon:'📏',title:'Ballpark',hint:'Estimate first, eliminate the impossible.',back:'Before calculating, estimate the answer to eliminate clearly wrong choices. 15% of 820 ≈ 120 — any choice far from that is gone. Especially powerful on geometry.'},
+  {icon:'📊',title:'Desmos',hint:'Your built-in graphing superpower.',back:'~40% of SAT math questions can be solved or verified with Desmos. Graph equations, find intersections, use sliders, run regressions (now with one-click Autoregression!). Module 7 covers this.'},
+  {icon:'❌',title:'POE for Math',hint:'Wrong answers reveal themselves.',back:'If the question asks for a positive value, eliminate negatives. If context requires small numbers, eliminate large ones. POE turns a 25% guess into 33% or 50%.'},
+  {icon:'⏱️',title:'POOD + LOTD',hint:'Your order, your pace, your backup letter.',back:'Answer confident questions first, flag uncertain ones. On second pass, attempt flagged questions. Use Letter of the Day (always the same letter) for remaining guesses. Never leave blanks.'}
 ];
+document.getElementById('stratGrid').innerHTML=STRATS.map(function(s){return '<div class="strat-card" onclick="this.classList.toggle(\'flipped\')"><div class="sf-front"><div class="sf-icon">'+s.icon+'</div><div class="sf-title">'+s.title+'</div><div class="sf-hint">'+s.hint+'</div><div class="sf-flip">tap to flip</div></div><div class="sf-back">'+s.back+'</div></div>';}).join('');
 
-function renderStrats(){
-  document.getElementById('stratGrid').innerHTML=STRATS.map((s,i)=>`
-    <div class="strat-card" onclick="this.classList.toggle('flipped')">
-      <div class="sf-front">
-        <div class="sf-icon">${s.icon}</div>
-        <div class="sf-title">${s.title}</div>
-        <div class="sf-hint">${s.hint}</div>
-        <div class="sf-flip">tap to flip</div>
-      </div>
-      <div class="sf-back">${s.back}</div>
-    </div>
-  `).join('');
-}
-renderStrats();
-
-// ============ MINI DIAGNOSTIC (20 questions, 5 per domain) ============
-const DIAG_QS=[
-  // ALGEBRA (5 questions)
-  {domain:'Algebra',color:'var(--algebra)',stem:'If <code>3(2x − 5) = 4x + 7</code>, what is the value of <code>x</code>?',
-   choices:['8','9','11','22/6'],correct:2,
-   explain:'Distribute: 6x − 15 = 4x + 7. Subtract 4x: 2x = 22. x = 11.'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'A gym charges a $50 registration fee plus $25 per month. Which equation represents the total cost <code>C</code> after <code>m</code> months?',
-   choices:['C = 50m + 25','C = 25m + 50','C = 75m','C = 25(m + 50)'],correct:1,
-   explain:'Fixed fee ($50) is the constant, $25/month is the rate. C = 25m + 50.'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'The system <code>2x + 3y = 12</code> and <code>4x + 6y = 24</code> has how many solutions?',
-   choices:['Zero','Exactly one','Exactly two','Infinitely many'],correct:3,
-   explain:'Second equation is 2× the first. Same line → infinitely many solutions.'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'The line through (−1, 4) and (3, 12) has slope:',
-   choices:['2','4','1/2','−2'],correct:0,
-   explain:'m = (12−4)/(3−(−1)) = 8/4 = 2.'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'If <code>|2x − 5| = 9</code>, what is the sum of all solutions?',
-   choices:['5','7','9','12'],correct:0,
-   explain:'2x−5=9 → x=7. 2x−5=−9 → x=−2. Sum = 7+(−2) = 5.'},
-  // ADVANCED MATH (5 questions)
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'What are the solutions to <code>x² − 5x + 6 = 0</code>?',
-   choices:['x = 2 and x = 3','x = −2 and x = −3','x = 1 and x = 6','x = −1 and x = −6'],correct:0,
-   explain:'Factor: (x−2)(x−3) = 0. x = 2 or x = 3.'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'If <code>f(x) = 2x² − 3</code>, what is <code>f(−4)</code>?',
-   choices:['29','−35','5','−11'],correct:0,
-   explain:'f(−4) = 2(16) − 3 = 29. Remember: (−4)² = 16 (positive!).'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'Which expression is equivalent to <code>(3x²)(4x³)</code>?',
-   choices:['7x⁵','12x⁵','12x⁶','7x⁶'],correct:1,
-   explain:'Multiply coefficients: 12. Add exponents: x⁵. Answer: 12x⁵.'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'The vertex of <code>y = x² − 8x + 12</code> is at:',
-   choices:['(4, −4)','(−4, 4)','(4, 12)','(8, 12)'],correct:0,
-   explain:'x = −b/2a = 8/2 = 4. y = 16−32+12 = −4. Vertex (4,−4).'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'A population starts at 500 and triples every 4 years. Which models this?',
-   choices:['500(3)^(t/4)','500(3)^(4t)','500 + 3t','1500t'],correct:0,
-   explain:'Triples every 4 years → base 3, exponent t/4.'},
-  // PROBLEM-SOLVING & DATA (5 questions)
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A shirt costs $40 and is 30% off. Sale price?',
-   choices:['$10','$12','$28','$30'],correct:2,
-   explain:'30% of 40 = 12. Sale: 40−12 = $28. Or: 40×0.70 = $28.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'The mean of 5 numbers is 12. If 30 is added, the new mean is:',
-   choices:['14','15','17','21'],correct:1,
-   explain:'Sum = 60. New sum = 90. 90/6 = 15.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A random sample of 200 from a university of 10,000 finds 35% prefer online classes. Best conclusion?',
-   choices:['Exactly 3,500 students prefer online','About 35% of this university likely prefers online','35% of all college students prefer online','The survey is too small'],correct:1,
-   explain:'Random sample supports inference about THIS university only.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A scatterplot shows strong negative linear association. The correlation <code>r</code> is closest to:',
-   choices:['−0.92','−0.15','0.85','0.45'],correct:0,
-   explain:'Strong negative → r close to −1. −0.92.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A price increases 20% then decreases 20%. Compared to original?',
-   choices:['Same','4% less','2% less','4% more'],correct:1,
-   explain:'100 → 120 → 96. Net: 4% less. Successive percents trap!'},
-  // GEOMETRY & TRIG (5 questions)
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A right triangle has legs 5 and 12. Hypotenuse?',
-   choices:['13','15','17','√119'],correct:0,
-   explain:'5² + 12² = 169 = 13². Classic 5-12-13 triple.'},
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A circle has area 36π. Its circumference?',
-   choices:['6π','12π','18π','36π'],correct:1,
-   explain:'r²=36 → r=6. C=2πr=12π.'},
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'In a right triangle, sin(θ) = 3/5. What is cos(θ)?',
-   choices:['3/5','4/5','3/4','5/3'],correct:1,
-   explain:'Opp=3, hyp=5. Adj=4 (3-4-5). cos=adj/hyp=4/5.'},
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'The circle <code>(x−3)² + (y+1)² = 25</code> has center:',
-   choices:['(3, −1)','(−3, 1)','(3, 1)','(−3, −1)'],correct:0,
-   explain:'(x−h)²+(y−k)²=r². h=3, k=−1. Center (3,−1).'},
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A cone has radius 3 and height 8. Volume?',
-   choices:['24π','72π','8π','192π'],correct:0,
-   explain:'V=⅓πr²h = ⅓π(9)(8) = 24π.'},
+// ============ MINI DIAGNOSTIC ============
+var DIAG_QS=[
+  {domain:'Algebra',color:'var(--algebra)',stem:'If <code>3(2x − 5) = 4x + 7</code>, what is the value of <code>x</code>?',choices:['8','9','11','22'],correct:2,explain:'Distribute: 6x − 15 = 4x + 7. Subtract 4x: 2x − 15 = 7. Add 15: 2x = 22. Divide: x = 11.'},
+  {domain:'Algebra',color:'var(--algebra)',stem:'A gym charges a $50 registration fee plus $25 per month. Which equation represents the total cost <code>C</code> after <code>m</code> months?',choices:['C = 50m + 25','C = 25m + 50','C = 75m','C = 25(m + 50)'],correct:1,explain:'The fixed fee ($50) is the constant, and $25/month is the rate. C = 25m + 50.'},
+  {domain:'Algebra',color:'var(--algebra)',stem:'The system <code>2x + 3y = 12</code> and <code>4x + 6y = 24</code> has how many solutions?',choices:['Zero','Exactly one','Exactly two','Infinitely many'],correct:3,explain:'The second equation is exactly 2× the first. Same line → infinitely many solutions.'},
+  {domain:'Algebra',color:'var(--algebra)',stem:'If <code>−3x + 7 > 22</code>, which describes the solution?',choices:['x > −5','x < −5','x > 5','x < 5'],correct:1,explain:'Subtract 7: −3x > 15. Divide by −3 and FLIP the sign: x < −5.'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'What are the solutions to <code>x² − 5x + 6 = 0</code>?',choices:['x = 2 and x = 3','x = −2 and x = −3','x = 1 and x = 6','x = −1 and x = −6'],correct:0,explain:'Factor: (x − 2)(x − 3) = 0. So x = 2 or x = 3.'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'If <code>f(x) = 2x² − 3</code>, what is <code>f(−4)</code>?',choices:['29','−35','5','−11'],correct:0,explain:'f(−4) = 2(−4)² − 3 = 2(16) − 3 = 32 − 3 = 29. Remember: (−4)² = 16 (positive!).'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'Which expression is equivalent to <code>(3x²)(4x³)</code>?',choices:['7x⁵','12x⁵','12x⁶','7x⁶'],correct:1,explain:'Multiply coefficients: 3 × 4 = 12. Add exponents: x² · x³ = x⁵. Answer: 12x⁵.'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'The graph of <code>y = (x − 3)² + 2</code> has its vertex at which point?',choices:['(3, 2)','(−3, 2)','(3, −2)','(−3, −2)'],correct:0,explain:'Vertex form y = a(x − h)² + k gives vertex (h, k). Here h = 3, k = 2. Watch the sign!'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A shirt originally costs $40 and is marked 30% off. What is the sale price?',choices:['$10','$12','$28','$30'],correct:2,explain:'30% of $40 = $12 discount. Sale price = $40 − $12 = $28. Or: $40 × 0.70 = $28.'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'The mean of 5 numbers is 12. If a sixth number, 30, is added, what is the new mean?',choices:['14','15','17','21'],correct:1,explain:'Sum of 5 numbers = 60. New sum = 90. New mean = 90 ÷ 6 = 15.'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A researcher surveys 200 people at a shopping mall about spending habits. What is the biggest threat to validity?',choices:['Sample too small','Mall shoppers may not represent the general population','Should be done online','200 is too many'],correct:1,explain:'This is sampling bias. Mall shoppers likely differ from the general population — it is a convenience sample.'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A right triangle has legs of length 5 and 12. What is the hypotenuse?',choices:['13','17','√119','15'],correct:0,explain:'5² + 12² = 25 + 144 = 169 = 13². Classic 5-12-13 right triangle.'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A circle has equation <code>(x − 2)² + (y + 3)² = 49</code>. What is its radius?',choices:['49','24.5','7','√49'],correct:2,explain:'r² = 49, so r = 7. Common trap: choosing 49 (that is r², not r).'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'In a 30-60-90 triangle, the side opposite 30° is 5. What is the hypotenuse?',choices:['5√2','5√3','10','10√3'],correct:2,explain:'Sides ratio x : x√3 : 2x. Opposite 30° is x = 5, hypotenuse = 2x = 10.'},
+  {domain:'Algebra',color:'var(--algebra)',stem:'The question asks: "What is the value of <code>2x + 1</code>?" You find <code>x = 4</code>. What should your answer be?',choices:['4','8','9','Cannot be determined'],correct:2,explain:'The question asks for 2x + 1, NOT x. So: 2(4) + 1 = 9. This is the #1 most common SAT trap!'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'A bacteria population triples every 4 hours starting at 200. Which models this?',choices:['200(3)^(t/4)','200(3)^(4t)','200 + 3t','600t'],correct:0,explain:'Triples every 4 hours: base 3, exponent t/4. P(t) = 200(3)^(t/4).'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A scatterplot shows strong negative linear association. The correlation r is closest to:',choices:['-0.92','-0.15','0.85','0.45'],correct:0,explain:'Strong negative association means r close to -1. -0.92.'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A price increases 20% then decreases 20%. Compared to the original price, the final price is:',choices:['The same','4% less','2% less','4% more'],correct:1,explain:'$100 -> $120 -> $96. Net: 4% less. This is the successive percents trap!'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'The circle <code>(x - 3)\u00b2 + (y + 1)\u00b2 = 25</code> has its center at:',choices:['(3, -1)','(-3, 1)','(3, 1)','(-3, -1)'],correct:0,explain:'(x-h)\u00b2 + (y-k)\u00b2 = r\u00b2. h=3, k=-1. Center (3,-1). Watch the sign on (y+1)!'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'In a right triangle, sin(\u03b8) = 5/13. What is cos(\u03b8)?',choices:['5/12','12/13','5/13','13/12'],correct:1,explain:'Opp=5, hyp=13. Adjacent=12 (5-12-13 triple). cos = adj/hyp = 12/13.'},
 ];
-
-let diagAnswers=new Array(DIAG_QS.length).fill(null);
-let diagConf=new Array(DIAG_QS.length).fill(null);
-let diagScored=false;
+var diagAnswers=[];var diagConf=[];var diagScored=false;
+for(var di=0;di<DIAG_QS.length;di++){diagAnswers.push(null);diagConf.push(null);}
 
 function renderDiag(){
-  const el=document.getElementById('diagQuestions');
-  el.innerHTML=DIAG_QS.map((q,i)=>{
-    const answered=diagAnswers[i]!==null;
-    const isCorrect=answered&&diagAnswers[i]===q.correct;
-    return `<div class="diag-q ${diagScored&&answered?'answered':''}">
-      <div class="diag-domain" style="background:${q.color}22;color:${q.color}">${q.domain}</div>
-      <div class="diag-stem">${q.stem}</div>
-      ${!diagScored?`<div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">How confident are you?</div>
-      <div class="diag-conf">${['Guessing','Unsure','Confident'].map((c,ci)=>
-        `<div class="diag-conf-btn ${diagConf[i]===ci?'active':''}" onclick="setConf(${i},${ci})">${c}</div>`).join('')}
-      </div>`:''}
-      <div class="diag-choices">${q.choices.map((c,ci)=>{
-        let cls='diag-choice';
-        if(diagScored){
-          if(ci===q.correct)cls+=' dc-correct';
-          else if(diagAnswers[i]===ci)cls+=' dc-wrong';
-          cls+=' dc-dis';
-        }else if(diagAnswers[i]===ci){
-          cls+=' dc-correct';
-        }
-        const letter=String.fromCharCode(65+ci);
-        return `<div class="${cls}" onclick="ansDiag(${i},${ci})"><span class="letter">${letter})</span>${c}</div>`;
-      }).join('')}</div>
-      <div class="diag-explain ${diagScored?'show':''}">${diagScored?
-        `${isCorrect?'✅ Correct!':'❌ Incorrect.'} ${q.explain}`:''}
-      </div>
-    </div>`;
+  document.getElementById('diagQuestions').innerHTML=DIAG_QS.map(function(q,i){
+    var isCorrect=diagAnswers[i]===q.correct;
+    var html='<div class="diag-q"><div class="diag-domain" style="background:'+q.color+'20;color:'+q.color+'">'+q.domain+'</div><div class="diag-stem">'+q.stem+'</div>';
+    if(!diagScored){html+='<div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">How confident are you?</div><div class="diag-conf">';
+      ['Guessing','Somewhat sure','Very confident'].forEach(function(c,ci){html+='<div class="diag-conf-btn '+(diagConf[i]===ci?'active':'')+'" onclick="setConf('+i+','+ci+')">'+c+'</div>';});
+      html+='</div>';}
+    html+='<div class="diag-choices">';
+    q.choices.forEach(function(c,ci){var cls='diag-choice';
+      if(diagScored){if(ci===q.correct)cls+=' dc-correct';else if(diagAnswers[i]===ci)cls+=' dc-wrong';cls+=' dc-dis';}
+      else if(diagAnswers[i]===ci)cls+=' dc-correct';
+      html+='<div class="'+cls+'" onclick="ansDiag('+i+','+ci+')"><span class="letter">'+String.fromCharCode(65+ci)+')</span>'+c+'</div>';});
+    html+='</div><div class="diag-explain '+(diagScored?'show':'')+'">'+(diagScored?(isCorrect?'✅ Correct! ':'❌ Incorrect. ')+q.explain:'')+'</div></div>';
+    return html;
   }).join('');
-  const allAnswered=diagAnswers.every(a=>a!==null);
+  var allAnswered=diagAnswers.every(function(a){return a!==null;});
   document.getElementById('diagSubmit').style.display=allAnswered&&!diagScored?'inline-block':'none';
 }
-
-function setConf(i,v){if(diagScored)return;diagConf[i]=v;renderDiag();}
-function ansDiag(i,v){if(diagScored)return;diagAnswers[i]=v;renderDiag();}
+function setConf(i,v){if(!diagScored){diagConf[i]=v;renderDiag();}}
+function ansDiag(i,v){if(!diagScored){diagAnswers[i]=v;renderDiag();}}
 
 function scoreDiag(){
-  diagScored=true;
-  renderDiag();
-  let total=0;const domScores={};const domTotals={};const miscal=[];
-  DIAG_QS.forEach((q,i)=>{
-    const correct=diagAnswers[i]===q.correct;
-    if(correct)total++;
-    if(!domScores[q.domain])domScores[q.domain]=0;
-    if(!domTotals[q.domain])domTotals[q.domain]=0;
-    domTotals[q.domain]++;
-    if(correct)domScores[q.domain]++;
+  diagScored=true;renderDiag();
+  var total=0,domScores={},domTotals={},miscal=[];
+  DIAG_QS.forEach(function(q,i){
+    var correct=diagAnswers[i]===q.correct;if(correct)total++;
+    if(!domScores[q.domain])domScores[q.domain]=0;if(!domTotals[q.domain])domTotals[q.domain]=0;
+    domTotals[q.domain]++;if(correct)domScores[q.domain]++;
     if(diagConf[i]===2&&!correct)miscal.push({q:i+1,type:'Overconfident',domain:q.domain});
     if(diagConf[i]===0&&correct)miscal.push({q:i+1,type:'Underconfident',domain:q.domain});
   });
-
-  const colors={Algebra:'var(--algebra)','Advanced Math':'var(--advanced)','Problem-Solving & Data':'var(--psda)','Geometry & Trig':'var(--geotrig)'};
-  const pct=Math.round((total/DIAG_QS.length)*100);
-  const scoreColor=pct>=80?'var(--correct)':pct>=60?'var(--psda)':'var(--wrong)';
-
+  var colors={Algebra:'var(--algebra)','Advanced Math':'var(--advanced)','Problem-Solving & Data':'var(--psda)','Geometry & Trig':'var(--geotrig)'};
+  var pct=Math.round((total/DIAG_QS.length)*100);
+  var scoreColor=pct>=80?'var(--correct)':pct>=60?'var(--psda)':'var(--wrong)';
+  var html='<div class="results fade-in"><div class="results-score"><div class="results-big" style="color:'+scoreColor+'">'+total+'/'+DIAG_QS.length+'</div><div class="results-sub">'+pct+'% correct — Mini Diagnostic</div></div><div class="results-domains">';
+  Object.keys(domScores).forEach(function(d){var s=domScores[d],t=domTotals[d],p=Math.round((s/t)*100);var c=p>=80?'var(--correct)':p>=50?'var(--psda)':'var(--wrong)';
+    html+='<div class="results-domain"><div class="results-domain-name" style="color:'+colors[d]+'">'+d+'</div><div class="results-domain-score" style="color:'+c+'">'+s+'/'+t+'</div><div class="results-domain-bar"><div class="results-domain-fill" style="width:'+p+'%;background:'+c+'"></div></div></div>';});
+  html+='</div>';
+  if(miscal.length>0){html+='<div style="margin-top:12px"><div style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">⚠️ Calibration Flags</div>';
+    miscal.forEach(function(m){html+='<div style="font-size:.85rem;color:#ccc;padding:4px 0">Q'+m.q+': <span style="color:'+(m.type==='Overconfident'?'var(--wrong)':'var(--math)')+'">'+m.type+'</span> ('+m.domain+')</div>';});
+    html+='<div style="font-size:.82rem;color:var(--muted);margin-top:8px;font-style:italic">Overconfident = sure but wrong. Underconfident = guessed but right.</div></div>';}
+  html+='<div style="margin-top:16px;font-size:.9rem;color:#ccc"><strong style="color:var(--ink)">This is just a preview.</strong> Take the full Bluebook baseline test (Session 2) for an accurate score.</div></div>';
   document.getElementById('diagResults').style.display='block';
-  document.getElementById('diagResults').innerHTML=`
-    <div class="results fade-in">
-      <div class="results-score">
-        <div class="results-big" style="color:${scoreColor}">${total}/${DIAG_QS.length}</div>
-        <div class="results-sub">${pct}% correct</div>
-      </div>
-      <div class="results-domains">${Object.keys(domScores).map(d=>{
-        const s=domScores[d],t=domTotals[d],p=Math.round((s/t)*100);
-        const c=p>=80?'var(--correct)':p>=50?'var(--psda)':'var(--wrong)';
-        return `<div class="results-domain">
-          <div class="results-domain-name" style="color:${colors[d]}">${d}</div>
-          <div class="results-domain-score" style="color:${c}">${s}/${t}</div>
-          <div class="results-domain-bar"><div class="results-domain-fill" style="width:${p}%;background:${c}"></div></div>
-        </div>`;}).join('')}
-      </div>
-      ${miscal.length>0?`<div style="margin-top:12px">
-        <div style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">⚠️ Calibration Flags</div>
-        ${miscal.map(m=>`<div style="font-size:.85rem;color:#ccc;padding:4px 0">Q${m.q}: <span style="color:${m.type==='Overconfident'?'var(--wrong)':'var(--math)'}">${m.type}</span> (${m.domain})</div>`).join('')}
-        <div style="font-size:.82rem;color:var(--muted);margin-top:8px;font-style:italic">Overconfident = you felt sure but got it wrong (watch for these!). Underconfident = you guessed but were right (you may know more than you think).</div>
-      </div>`:''}
-      <div style="margin-top:16px;font-size:.9rem;color:#ccc">
-        <strong style="color:var(--ink)">Next step:</strong> Use these results to focus your study. See your personalized plan below.
-      </div>
-      <div id="studyPlan"></div>
-    </div>`;
-  buildStudyPlan(domScores,domTotals);
+  document.getElementById('diagResults').innerHTML=html;
   document.getElementById('diagResults').scrollIntoView({behavior:'smooth',block:'start'});
+  buildStudyPlan(domScores,domTotals);
 }
-
 function buildStudyPlan(domScores,domTotals){
-  const mods={'Algebra':'Module 2','Advanced Math':'Modules 3–4','Problem-Solving & Data':'Module 5','Geometry & Trig':'Module 6'};
-  const weak=[];const strong=[];
-  Object.keys(domTotals).forEach(d=>{
-    const pct=domTotals[d]>0?domScores[d]/domTotals[d]:1;
-    if(pct<0.6)weak.push({d,m:mods[d],pct:Math.round(pct*100)});
-    else if(pct>=0.8)strong.push({d,pct:Math.round(pct*100)});
+  var mods={'Algebra':'Module 2','Advanced Math':'Module 3','Problem-Solving & Data':'Module 4','Geometry & Trig':'Module 5'};
+  var weak=[],strong=[];
+  Object.keys(domTotals).forEach(function(d){
+    var pct=domTotals[d]>0?domScores[d]/domTotals[d]:1;
+    if(pct<0.6)weak.push({d:d,m:mods[d],pct:Math.round(pct*100)});
+    else if(pct>=0.8)strong.push({d:d,pct:Math.round(pct*100)});
   });
-  let h='<div style="margin-top:16px;padding:16px;background:var(--surface);border-radius:12px;border:2px solid var(--accent)">';
-  h+='<div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:8px">🎯 Your Study Plan</div>';
-  if(weak.length>0){
-    h+='<div style="margin-bottom:8px"><strong style="color:var(--wrong)">Priority Review:</strong></div>';
-    weak.forEach(w=>{h+='<div style="padding:4px 0;font-size:.88rem;color:#ccc">• <strong>'+w.d+'</strong> ('+w.pct+'%) → Focus on <strong>'+w.m+'</strong></div>';});
-  }
-  if(strong.length>0){
-    h+='<div style="margin:8px 0"><strong style="color:var(--correct)">Strong Areas:</strong></div>';
-    strong.forEach(s=>{h+='<div style="padding:4px 0;font-size:.88rem;color:#ccc">• '+s.d+' ('+s.pct+'%) — review briefly</div>';});
-  }
-  if(weak.length===0&&strong.length===0)h+='<div style="font-size:.88rem;color:#ccc">All domains 60–80%. Work through all modules with equal attention.</div>';
+  var h='<div style="margin-top:16px;padding:16px;background:var(--surface);border-radius:12px;border:2px solid var(--accent)">';
+  h+='<div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:8px">Your Study Plan</div>';
+  if(weak.length>0){h+='<div style="margin-bottom:8px"><strong style="color:var(--wrong)">Priority Review:</strong></div>';weak.forEach(function(w){h+='<div style="padding:4px 0;font-size:.88rem;color:#ccc">• <strong>'+w.d+'</strong> ('+w.pct+'%) — Focus on <strong>'+w.m+'</strong></div>';});}
+  if(strong.length>0){h+='<div style="margin:8px 0"><strong style="color:var(--correct)">Strong Areas:</strong></div>';strong.forEach(function(s){h+='<div style="padding:4px 0;font-size:.88rem;color:#ccc">• '+s.d+' ('+s.pct+'%) — review briefly</div>';});}
+  if(weak.length===0&&strong.length===0)h+='<div style="font-size:.88rem;color:#ccc">All domains around 60-80%. Work through all modules with equal attention.</div>';
   h+='<div style="margin-top:10px;font-size:.85rem;color:var(--muted)"><em>For a full baseline, take the Bluebook practice test (44 questions) described below.</em></div>';
   h+='</div>';
-  document.getElementById('studyPlan').innerHTML=h;
+  var target=document.getElementById('studyPlanTarget');
+  if(target)target.innerHTML=h;
+  else{document.getElementById('diagResults').insertAdjacentHTML('beforeend',h);}
 }
 renderDiag();
 
 // ============ CHECKLIST ============
-const CL_ITEMS=[
-  'Bluebook app downloaded, updated, and logged in',
-  'Quiet testing environment — no distractions, door closed',
-  'Timer ready (Bluebook manages timing, but keep a clock visible)',
-  'Scratch paper and pencil available',
-  'Phone silenced and out of reach',
-  'Water and snack for break between modules',
-  'Desmos practice: spent at least 5 minutes exploring the calculator',
-  'Understand the plan: complete test → self-score → error analysis worksheet',
-];
+var CL_ITEMS=['Bluebook app downloaded, updated, and logged in','Quiet testing environment — no distractions, door closed','Timer ready (Bluebook manages timing, but keep a clock visible)','Scratch paper and pencil available','Phone silenced and out of reach','Water and snack for break between modules','Desmos practice: spent at least 5 minutes exploring the calculator','Understand the plan: complete test → self-score → error analysis worksheet'];
 function renderChecklist(){
-  const saved=JSON.parse(localStorage.getItem('pp_mm1_cl')||'{}');
-  const done=Object.values(saved).filter(v=>v).length;
-  document.getElementById('preChecklist').innerHTML=`<h3>✅ Pre-Test Setup</h3>`+
-    CL_ITEMS.map((item,i)=>`<div class="cl-item${saved[i]?' done':''}" onclick="toggleCL(${i})">
-      <div class="cl-check">${saved[i]?'✓':''}</div><div>${item}</div></div>`).join('')+
-    `<div class="cl-progress">${done}/${CL_ITEMS.length} completed</div>`;
+  var saved=JSON.parse(localStorage.getItem('pp_mm1_cl')||'{}');var done=Object.values(saved).filter(function(v){return v;}).length;
+  document.getElementById('preChecklist').innerHTML='<h3 style="font-family:\'Cormorant Garamond\',serif;font-size:1.2rem;margin-bottom:12px">✅ Pre-Test Setup</h3>'+CL_ITEMS.map(function(item,i){return '<div class="cl-item'+(saved[i]?' done':'')+'" onclick="toggleCL('+i+')"><div class="cl-check">'+(saved[i]?'✓':'')+'</div><div>'+item+'</div></div>';}).join('')+'<div class="cl-progress">'+done+'/'+CL_ITEMS.length+' completed</div>';
 }
-function toggleCL(i){const s=JSON.parse(localStorage.getItem('pp_mm1_cl')||'{}');s[i]=!s[i];localStorage.setItem('pp_mm1_cl',JSON.stringify(s));renderChecklist();}
+function toggleCL(i){var s=JSON.parse(localStorage.getItem('pp_mm1_cl')||'{}');s[i]=!s[i];localStorage.setItem('pp_mm1_cl',JSON.stringify(s));renderChecklist();}
 renderChecklist();
 
 // ============ ERROR CLASSIFICATION ============
-const EC_ITEMS=[
-  {scenario:'You missed a question asking for the slope of a line perpendicular to y = 3x + 2. You chose 3 instead of −1/3 because you forgot that perpendicular slopes are negative reciprocals.',
-   correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
-   fb:'You didn\'t know (or forgot) the perpendicular slope rule. That\'s a content gap — review Module 2, Topic 2B.'},
-  {scenario:'On a system of equations question, you correctly set up the algebra but accidentally wrote 3 × 4 = 9 instead of 12. Your setup was right but the arithmetic was wrong.',
-   correct:'Careless Error',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
-   fb:'You knew the math but made a simple arithmetic mistake. Write more carefully and double-check calculations.'},
-  {scenario:'You had 3 questions left with only 1 minute remaining. You guessed randomly on all three and got them wrong.',
-   correct:'Time Pressure',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
-   fb:'Running out of time. Practice pacing: first pass in ~25 min, second pass ~8 min, final check ~2 min.'},
-  {scenario:'A question asked for the value of 2x, not x. You correctly solved for x = 5 but entered 5 as your answer instead of 10.',
-   correct:'Misread/Trap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
-   fb:'Classic SAT trap! Always re-read what the question is asking for BEFORE selecting your answer. Circle what they want.'},
-  {scenario:'You spent 4 minutes doing algebra on a question with variables in the answer choices. Plugging in numbers would have taken 45 seconds.',
-   correct:'Strategy Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
-   fb:'You knew the content but used the wrong approach. When you see variables in answer choices, Plug In is almost always faster.'},
-  {scenario:'A question asked how many solutions a system of equations has. You tried to solve the full system instead of recognizing that the equations were multiples of each other (infinite solutions).',
-   correct:'Strategy Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
-   fb:'Recognizing patterns (like identical lines) is a strategy skill. You could solve it, but there\'s a faster way.'},
-  {scenario:'You missed a quadratic question because you don\'t know how to complete the square to convert from standard form to vertex form.',
-   correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
-   fb:'You don\'t know the technique yet. This is a content gap — you\'ll learn it in Module 3, Topic 3A.'},
-  {scenario:'On a percentage question asking for "percent increase," you calculated the new value correctly but forgot to subtract the original and divide. You selected the new value as your answer.',
-   correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],
-   fb:'Not knowing the percent change formula (new−old)/old × 100 is a content gap. You\'ll cover this in Module 5.'},
+var EC_ITEMS=[
+  {scenario:'You missed a question asking for the slope of a line perpendicular to y = 3x + 2. You chose 3 instead of −1/3 because you forgot that perpendicular slopes are negative reciprocals.',correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'You didn\'t know the perpendicular slope rule. That\'s a content gap — review Module 2.'},
+  {scenario:'On a system of equations question, you correctly set up the algebra but accidentally wrote 3 × 4 = 9 instead of 12.',correct:'Careless Error',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'You knew the math but made a simple arithmetic mistake. Double-check calculations.'},
+  {scenario:'You had 3 questions left with only 1 minute remaining. You guessed randomly on all three.',correct:'Time Pressure',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'Running out of time. Practice pacing: ~25 min first pass, ~8 min second pass, ~2 min final check.'},
+  {scenario:'A question asked for the value of 2x, not x. You correctly solved for x = 5 but entered 5 instead of 10.',correct:'Misread/Trap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'Classic SAT trap! Always re-read what the question asks for BEFORE selecting your answer.'},
+  {scenario:'You spent 4 minutes doing algebra on a question with variables in the answer choices. Plugging in would have taken 45 seconds.',correct:'Strategy Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'You knew the content but used the wrong approach. Variables in answers → Plug In is faster.'},
+  {scenario:'A question asked how many solutions a system has. You tried to solve the full system instead of recognizing the equations were multiples of each other.',correct:'Strategy Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'Recognizing patterns (like identical lines) is a strategy skill. Faster way exists.'},
+  {scenario:'You missed a quadratic question because you don\'t know how to complete the square.',correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'You don\'t know the technique yet — content gap. You\'ll learn it in Module 3.'},
+  {scenario:'On a "percent increase" question, you calculated the new value but forgot to subtract the original and divide.',correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'Not knowing percent change formula (new−old)/old × 100 is a content gap. Module 5.'},
+  {scenario:'You stared at a systems problem for 2 minutes trying elimination. Graphing both in Desmos would have taken 10 seconds.',correct:'Strategy Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'You knew the math but chose an inefficient method. Build the "Desmos or Algebra?" habit (Module 7).'},
+  {scenario:'A graph had the y-axis going from 50 to 100 (not from 0). You estimated a value as "about half" and picked 50 instead of 75.',correct:'Misread/Trap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'Misreading graph axes is a top SAT trap. Always check axis labels and whether they start at zero.'}
 ];
-
-let ecAns={};
+var ecAns={};
 function renderEC(){
-  document.getElementById('ecBox').innerHTML=EC_ITEMS.map((e,i)=>{
-    const ans=ecAns[i];const has=ans!==undefined;
-    return `<div class="ec-item">
-      <div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px">Scenario ${i+1}</div>
-      <div class="ec-scenario">${e.scenario}</div>
-      <div class="ec-options">${e.options.map(o=>{
-        let cls='ec-opt';
-        if(has){cls+=' ec-dis';if(o===e.correct)cls+=' ec-correct';else if(o===ans&&o!==e.correct)cls+=' ec-wrong';}
-        return `<div class="${cls}" onclick="ansEC(${i},'${o}')">${o}</div>`;
-      }).join('')}</div>
-      <div class="ec-fb${has?' show':''}">${has?(ans===e.correct?'✓ Correct! ':'✗ Incorrect. ')+e.fb:''}</div>
-    </div>`;
+  document.getElementById('ecBox').innerHTML=EC_ITEMS.map(function(e,i){
+    var ans=ecAns[i];var has=ans!==undefined;
+    return '<div class="ec-item"><div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px">Scenario '+(i+1)+'</div><div class="ec-scenario">'+e.scenario+'</div><div class="ec-options">'+e.options.map(function(o){
+      var cls='ec-opt';if(has){cls+=' ec-dis';if(o===e.correct)cls+=' ec-correct';else if(o===ans&&o!==e.correct)cls+=' ec-wrong';}
+      return '<div class="'+cls+'" onclick="ansEC('+i+',\''+o+'\')">'+o+'</div>';}).join('')+'</div><div class="ec-fb'+(has?' show':'')+'">'+(has?(ans===e.correct?'✓ Correct! ':'✗ Incorrect. ')+e.fb:'')+'</div></div>';
   }).join('');
-  const t=EC_ITEMS.length,a=Object.keys(ecAns).length,c=Object.entries(ecAns).filter(([i,v])=>v===EC_ITEMS[i].correct).length;
-  document.getElementById('ecScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--express, var(--psda))':'var(--wrong)'}">${c}/${t} correct</strong> — ${c>=6?'Excellent! You\'re ready to classify your own errors.':c>=4?'Good — review the ones you missed.':'Review the 5 error types before analyzing your test.'}`:`${a}/${t} completed`;
+  var t=EC_ITEMS.length,a=Object.keys(ecAns).length,c=0;
+  Object.entries(ecAns).forEach(function(pair){if(pair[1]===EC_ITEMS[parseInt(pair[0])].correct)c++;});
+  document.getElementById('ecScore').innerHTML=a===t?'<strong style="color:'+(c>=8?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong> — '+(c>=8?'Excellent! Ready to classify your own errors.':c>=5?'Good — review the ones you missed.':'Review the 5 error types before analyzing your test.'):(a>0?a+'/'+t+' completed':'');
 }
 function ansEC(i,v){if(ecAns[i]!==undefined)return;ecAns[i]=v;renderEC();}
 renderEC();
 
 // ============ ERROR ANALYSIS WORKSHEET ============
-const WS_KEY='pp_m1_math_ws';
+var WS_KEY='pp_m1_math_ws';
 function loadWS(){return JSON.parse(localStorage.getItem(WS_KEY)||'[]');}
 function saveWS(d){localStorage.setItem(WS_KEY,JSON.stringify(d));}
-
-function addEntry(){
-  const d=loadWS();
-  d.push({qnum:'',domain:'',topic:'',errorType:'',shouldHave:'',desmos:''});
-  saveWS(d);
-  renderWS();
-}
-
-function updateEntry(idx,field,val){
-  const d=loadWS();
-  if(d[idx])d[idx][field]=val;
-  saveWS(d);
-}
-
-function removeEntry(idx){
-  const d=loadWS();
-  d.splice(idx,1);
-  saveWS(d);
-  renderWS();
-}
-
+function addEntry(){var d=loadWS();d.push({qnum:'',domain:'',topic:'',errorType:'',shouldHave:'',desmos:'',luckyCorrect:''});saveWS(d);renderWS();}
+function updateEntry(idx,field,val){var d=loadWS();if(d[idx])d[idx][field]=val;saveWS(d);}
+function removeEntry(idx){var d=loadWS();d.splice(idx,1);saveWS(d);renderWS();}
 function renderWS(){
-  const d=loadWS();
-  if(d.length===0){addEntry();return;}
-  document.getElementById('wsEntries').innerHTML=d.map((e,i)=>`
-    <div class="ws-entry">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div style="font-weight:700;font-size:.88rem;color:var(--math)">Question ${i+1}</div>
-        <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.82rem" onclick="removeEntry(${i})">✕ Remove</button>
-      </div>
-      <div class="ws-row">
-        <div class="ws-label">Q #</div>
-        <input class="ws-input" type="number" min="1" max="44" placeholder="1–44" value="${e.qnum}" onchange="updateEntry(${i},'qnum',this.value)" style="width:80px">
-      </div>
-      <div class="ws-row">
-        <div class="ws-label">Domain</div>
-        <select class="ws-select" onchange="updateEntry(${i},'domain',this.value)">
-          <option value="">Select domain...</option>
-          <option${e.domain==='Algebra'?' selected':''}>Algebra</option>
-          <option${e.domain==='Advanced Math'?' selected':''}>Advanced Math</option>
-          <option${e.domain==='Problem-Solving & Data'?' selected':''}>Problem-Solving & Data</option>
-          <option${e.domain==='Geometry & Trig'?' selected':''}>Geometry & Trig</option>
-        </select>
-      </div>
-      <div class="ws-row">
-        <div class="ws-label">Topic</div>
-        <input class="ws-input" placeholder="e.g., Quadratic vertex form" value="${e.topic||''}" onchange="updateEntry(${i},'topic',this.value)" style="width:100%">
-      </div>
-      <div class="ws-row">
-        <div class="ws-label">Error Type</div>
-        <select class="ws-select" onchange="updateEntry(${i},'errorType',this.value)">
-          <option value="">Select type...</option>
-          <option${e.errorType==='Content Gap'?' selected':''}>Content Gap</option>
-          <option${e.errorType==='Careless Error'?' selected':''}>Careless Error</option>
-          <option${e.errorType==='Time Pressure'?' selected':''}>Time Pressure</option>
-          <option${e.errorType==='Misread/Trap'?' selected':''}>Misread/Trap</option>
-          <option${e.errorType==='Strategy Gap'?' selected':''}>Strategy Gap</option>
-        </select>
-      </div>
-      <div class="ws-row" style="grid-template-columns:1fr">
-        <div class="ws-label">What I should have done</div>
-      </div>
-      <textarea class="ws-textarea" placeholder="Write the correct approach in your own words..." onchange="updateEntry(${i},'shouldHave',this.value)">${e.shouldHave||''}</textarea>
-      <div class="ws-row" style="margin-top:6px">
-        <div class="ws-label">Desmos?</div>
-        <select class="ws-select" onchange="updateEntry(${i},'desmos',this.value)">
-          <option value="">Could Desmos have helped?</option>
-          <option${e.desmos==='Yes'?' selected':''}>Yes</option>
-          <option${e.desmos==='No'?' selected':''}>No</option>
-          <option${e.desmos==='I used it but incorrectly'?' selected':''}>I used it but incorrectly</option>
-        </select>
-      </div>
-    </div>
-  `).join('');
+  var d=loadWS();if(d.length===0){addEntry();return;}
+  document.getElementById('wsEntries').innerHTML=d.map(function(e,i){return '<div class="ws-entry"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-weight:700;font-size:.88rem;color:var(--math)">Question '+(i+1)+'</div><button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.82rem" onclick="removeEntry('+i+')">✕ Remove</button></div><div class="ws-row"><div class="ws-label">Q #</div><input class="ws-input" type="number" min="1" max="44" placeholder="1–44" value="'+e.qnum+'" onchange="updateEntry('+i+',\'qnum\',this.value)" style="width:80px"></div><div class="ws-row"><div class="ws-label">Domain</div><select class="ws-select" onchange="updateEntry('+i+',\'domain\',this.value)"><option value="">Select…</option><option'+(e.domain==='Algebra'?' selected':'')+'>Algebra</option><option'+(e.domain==='Advanced Math'?' selected':'')+'>Advanced Math</option><option'+(e.domain==='Problem-Solving & Data'?' selected':'')+'>Problem-Solving & Data</option><option'+(e.domain==='Geometry & Trig'?' selected':'')+'>Geometry & Trig</option></select></div><div class="ws-row"><div class="ws-label">Topic</div><input class="ws-input" placeholder="e.g., Quadratic vertex form" value="'+(e.topic||'')+'" onchange="updateEntry('+i+',\'topic\',this.value)" style="width:100%"></div><div class="ws-row"><div class="ws-label">Error Type</div><select class="ws-select" onchange="updateEntry('+i+',\'errorType\',this.value)"><option value="">Select…</option><option'+(e.errorType==='Content Gap'?' selected':'')+'>Content Gap</option><option'+(e.errorType==='Careless Error'?' selected':'')+'>Careless Error</option><option'+(e.errorType==='Time Pressure'?' selected':'')+'>Time Pressure</option><option'+(e.errorType==='Misread/Trap'?' selected':'')+'>Misread/Trap</option><option'+(e.errorType==='Strategy Gap'?' selected':'')+'>Strategy Gap</option></select></div><div class="ws-row"><div class="ws-label">Status</div><select class="ws-select" onchange="updateEntry('+i+',\'luckyCorrect\',this.value)"><option value="">Missed or uncertain?</option><option'+(e.luckyCorrect==='Missed'?' selected':'')+'>Missed — got it wrong</option><option'+(e.luckyCorrect==='Lucky Correct'?' selected':'')+'>Lucky Correct — right but unsure</option></select></div><div class="ws-row" style="grid-template-columns:1fr"><div class="ws-label">What I should have done</div></div><textarea class="ws-textarea" placeholder="Write the correct approach…" onchange="updateEntry('+i+',\'shouldHave\',this.value)">'+(e.shouldHave||'')+'</textarea><div class="ws-row" style="margin-top:6px"><div class="ws-label">Desmos?</div><select class="ws-select" onchange="updateEntry('+i+',\'desmos\',this.value)"><option value="">Could Desmos have helped?</option><option'+(e.desmos==='Yes'?' selected':'')+'>Yes</option><option'+(e.desmos==='No'?' selected':'')+'>No</option><option'+(e.desmos==='I used it but incorrectly'?' selected':'')+'>I used it but incorrectly</option></select></div></div>';}).join('');
 }
-
 function exportWS(){
-  const d=loadWS();
-  let txt='SAT MATH ERROR ANALYSIS — PantherPrep\n';
-  txt+='════════════════════════════════════════════\n\n';
-  const counts={};const domCounts={};
-  d.forEach((e,i)=>{
-    txt+=`Q${e.qnum||'?'} | ${e.domain||'—'} | ${e.topic||'—'} | ${e.errorType||'—'} | Desmos: ${e.desmos||'—'}\n`;
-    txt+=`  → ${e.shouldHave||'—'}\n\n`;
-    if(e.errorType)counts[e.errorType]=(counts[e.errorType]||0)+1;
-    if(e.domain)domCounts[e.domain]=(domCounts[e.domain]||0)+1;
-  });
-  txt+='ERROR TYPE SUMMARY:\n';
-  Object.entries(counts).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
-  txt+='\nDOMAIN SUMMARY:\n';
-  Object.entries(domCounts).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
-  navigator.clipboard.writeText(txt).then(()=>alert('Worksheet copied to clipboard!')).catch(()=>{
-    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Copied!');
-  });
+  var d=loadWS();var txt='SAT MATH ERROR ANALYSIS — PantherPrep\n════════════════════════════════════\n\n';
+  var counts={},domCounts={},luckyCount=0;
+  d.forEach(function(e){txt+='Q'+(e.qnum||'?')+' | '+(e.domain||'—')+' | '+(e.topic||'—')+' | '+(e.errorType||'—')+' | '+(e.luckyCorrect||'—')+' | Desmos: '+(e.desmos||'—')+'\n  → '+(e.shouldHave||'—')+'\n\n';
+    if(e.errorType)counts[e.errorType]=(counts[e.errorType]||0)+1;if(e.domain)domCounts[e.domain]=(domCounts[e.domain]||0)+1;if(e.luckyCorrect==='Lucky Correct')luckyCount++;});
+  txt+='ERROR TYPE SUMMARY:\n';Object.keys(counts).forEach(function(k){txt+='  '+k+': '+counts[k]+'\n';});
+  txt+='\nDOMAIN SUMMARY:\n';Object.keys(domCounts).forEach(function(k){txt+='  '+k+': '+domCounts[k]+'\n';});
+  if(luckyCount>0)txt+='\n⚠️ LUCKY CORRECT: '+luckyCount+' questions (hidden gaps)\n';
+  navigator.clipboard.writeText(txt).then(function(){alert('Copied!');}).catch(function(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Copied!');});
 }
 renderWS();
 
-// ============ SCORES ============
+// ============ SCORE PROJECTOR ============
+function updateProj(){
+  var m1=parseInt(document.getElementById('projM1').value),m2=parseInt(document.getElementById('projM2').value),path=document.getElementById('projPath').value;
+  var el=document.getElementById('projResult');
+  if(isNaN(m1)||isNaN(m2)||!path){el.innerHTML='<div style="color:var(--muted);font-size:.9rem">Enter your scores and routing path</div>';return;}
+  var raw=m1+m2,low,high,color;
+  if(path==='hard'){
+    if(raw>=40){low=740;high=800;}else if(raw>=35){low=650;high=750;}else if(raw>=30){low=570;high=660;}else if(raw>=25){low=500;high=580;}else if(raw>=20){low=440;high=510;}else{low=Math.max(200,raw*18);high=Math.min(460,raw*22);}
+    color=raw>=35?'var(--correct)':raw>=25?'var(--psda)':'var(--wrong)';
+  }else{
+    var ceiling=630;
+    if(raw>=40){low=580;high=ceiling;}else if(raw>=35){low=520;high=600;}else if(raw>=30){low=460;high=560;}else if(raw>=25){low=400;high=500;}else{low=Math.max(200,raw*15);high=Math.min(430,raw*18);}
+    color='var(--psda)';
+  }
+  var mid=Math.round((low+high)/2);
+  el.innerHTML='<div class="proj-big" style="color:'+color+'">'+low+'–'+high+'</div><div style="font-size:.82rem;color:var(--muted);margin-top:4px">Estimated scaled score range (midpoint: ~'+mid+')</div><div style="font-size:.85rem;color:#ccc;margin-top:10px">'+raw+'/44 raw · '+(path==='hard'?'Harder':'Easier')+' Module 2</div>'+(path==='easy'?'<div style="margin-top:8px;font-size:.82rem;color:var(--wrong)">⚠️ Score capped at ~630 on easier path. Focus on Module 1 accuracy to reach the harder path.</div>':'')+(path==='hard'&&raw>=35?'<div style="margin-top:8px;font-size:.82rem;color:var(--correct)">🎯 Strong position! Eliminate careless errors to push toward 750+.</div>':'');
+}
+
+// ============ BASELINE SCORES ============
 function updateScores(){
-  const m1=parseInt(document.getElementById('m1Score').value);
-  const m2=parseInt(document.getElementById('m2Score').value);
-  const el=document.getElementById('scoreResult');
-  if(isNaN(m1)||isNaN(m2)){el.textContent='Enter both scores to see your total and recommended pathway.';return;}
-  const total=m1+m2;
-  let path='',color='';
-  if(total<18){path='Developing (below 400) — Focus on Modules 1, 2, 5A–B, 6A, 7. Priority: linear equations, basic ratios, Desmos basics.';color='var(--wrong)';}
-  else if(total<28){path='Approaching (400–530) — Complete all modules with extra time on your weakest domain.';color='var(--psda)';}
-  else if(total<36){path='Proficient (530–650) — Focus on Modules 3, 4, 7, 8, 9. Priority: quadratics, functions, Desmos power moves.';color='var(--math)';}
-  else{path='Advanced (650+) — Focus on Modules 3D, 4C, 5D, 6D, 8, 9. Priority: rational expressions, nonlinear systems, trig.';color='var(--correct)';}
-  el.innerHTML=`<div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:${color}">${total}/44</div>
-    <div style="margin-top:6px;font-size:.88rem;color:#ccc">${path}</div>`;
+  var m1=parseInt(document.getElementById('m1Score').value),m2=parseInt(document.getElementById('m2Score').value);
+  var el=document.getElementById('scoreResult');
+  if(isNaN(m1)||isNaN(m2)){el.textContent='Enter both scores to see your estimated scaled score.';return;}
+  var total=m1+m2;
+  var scaled=Math.round(200+((total/44)*600));
+  var capped=Math.min(Math.max(scaled,200),800);
+  var lvl,color,advice;
+  if(capped>=650){lvl='Advanced';color='var(--correct)';advice='Focus on Modules 3\u20134 (hard Advanced Math), 7 (Desmos mastery), and 8 (strategy optimization).';}
+  else if(capped>=530){lvl='Proficient';color='var(--math)';advice='Solid foundation! Focus on your weakest domain and Modules 3, 4, 7, 8 to push higher.';}
+  else if(capped>=400){lvl='Approaching';color='var(--psda)';advice='Complete all modules with extra time on your weakest domain. Every raw point \u2248 14 scaled points.';}
+  else{lvl='Developing';color='var(--wrong)';advice='Start with Modules 2, 5, 6. Priority: linear equations, basic ratios, Desmos basics.';}
+  var benchPct=((530-200)/600)*100;
+  var scorePct=((capped-200)/600)*100;
+  el.innerHTML='<div style="font-family:JetBrains Mono,monospace;font-size:2rem;font-weight:700;color:'+color+'">'+capped+'</div>'+
+    '<div style="font-size:.82rem;color:var(--muted)">'+total+'/44 raw \u00b7 '+lvl+'</div>'+
+    '<div style="height:8px;border-radius:4px;background:var(--border);margin:12px 0;position:relative">'+
+      '<div style="height:100%;border-radius:4px;background:'+color+';width:'+scorePct+'%;transition:width .4s"></div>'+
+      '<div style="position:absolute;left:'+benchPct+'%;top:-6px;width:2px;height:20px;background:var(--correct);border-radius:1px" title="530 Benchmark"></div>'+
+    '</div>'+
+    '<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:12px"><span>200</span><span style="color:var(--correct)">530 benchmark \u2191</span><span>800</span></div>'+
+    '<div style="font-size:.88rem;color:#ccc;line-height:1.6">'+advice+'</div>';
 }
 </script>
 <script src="/translate.js"></script></body>

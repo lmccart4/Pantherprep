@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 15: Expression & Strategy Boss Battle — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback } = React;
+const PURPLE = "#a855f7";
+const ACCENT = "#10b981";
+const BLUE = "#3b82f6";
+const AMBER = "#f59e0b";
+const RED = "#ef4444";
+const CYAN = "#06b6d4";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px",
+  borderRadius: 10,
+  border: "none",
+  background: bg,
+  color,
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: "pointer",
+  transition: "transform .12s",
+  ...extra
+});
+const NAV = { prev: { label: "Module 14: Strategy", file: "SAT RW module14.html" }, next: { label: "Module 16: Practice Test 1", file: "SAT RW module16.html" } };
+const HOMEWORK = [
+  { icon: "\uD83D\uDCCB", task: "Practice 5 synthesis questions focusing on goal-reading", detail: "Read the GOAL first every time. Circle exactly which notes match the goal.", color: PURPLE },
+  { icon: "\uD83D\uDD17", task: "Complete a 10-question transition speed drill", detail: "Target: under 30 seconds per transition question. Cover, identify, match.", color: CYAN },
+  { icon: "\u270D\uFE0F", task: "Review Module 13-14 for your weakest expression skill", detail: "Check your boss battle results and revisit the relevant lesson.", color: AMBER },
+  { icon: "\uD83C\uDFAF", task: "Redo the battle if you scored below 70%", detail: "Wait 2-3 days and retry. Spaced practice beats massed practice.", color: RED }
+];
+function NavLinks() {
+  return React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12, marginTop: 32, paddingTop: 24, borderTop: "1px solid " + BORDER } },
+    NAV.prev && React.createElement("a", { href: NAV.prev.file, style: { ...btn("transparent", SUB), border: "1px solid " + BORDER, textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, "\u2190 " + NAV.prev.label),
+    NAV.next && React.createElement("a", { href: NAV.next.file, style: { ...btn("linear-gradient(135deg," + PURPLE + "," + ACCENT + ")", TEXT), textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, NAV.next.label + " \u2192")
+  );
+}
+function Homework() {
+  return React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 24, maxWidth: 520, width: "100%", marginBottom: 32, textAlign: "left" } },
+    React.createElement("div", { style: { color: AMBER, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "\uD83D\uDCDD Homework & Action Items"),
+    HOMEWORK.map(function(h, i) {
+      return React.createElement("div", { key: i, style: { display: "flex", gap: 10, marginBottom: 10, padding: "8px 12px", background: h.color + "08", borderLeft: "3px solid " + h.color, borderRadius: "0 8px 8px 0" } },
+        React.createElement("span", { style: { color: h.color, fontSize: 13 } }, h.icon),
+        React.createElement("div", null,
+          React.createElement("div", { style: { color: TEXT, fontWeight: 600, fontSize: 13 } }, h.task),
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, marginTop: 2 } }, h.detail)
+        )
+      );
+    })
+  );
+}
+const SKILL_META = {
+  synthesis: { label: "Synthesis", color: PURPLE, icon: "📋" },
+  transition: { label: "Transition", color: CYAN, icon: "🔗" },
+  expression: { label: "Expression", color: AMBER, icon: "✍️" },
+  concision: { label: "Concision", color: ACCENT, icon: "✂️" },
+  strategy: { label: "Strategy", color: RED, icon: "🎯" }
+};
+const BATTLE_QUESTIONS = [
+  // ═══ PHASE 1: WARM-UP (8 Qs) ═══
+  {
+    id: 1,
+    phase: 1,
+    skill: "transition",
+    diff: "easy",
+    s1: "The museum's renovation expanded gallery space by 40% and added climate-controlled storage for its most fragile artifacts.",
+    s2: "______, the museum can now display works that were previously kept in permanent storage due to environmental sensitivity.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["Nevertheless", "As a result", "In contrast", "For instance"],
+    answer: 1,
+    explain: 'Renovation improved climate control (cause) → can now display fragile works (effect). "As a result" correctly signals cause-effect.'
+  },
+  {
+    id: 2,
+    phase: 1,
+    skill: "synthesis",
+    diff: "easy",
+    notes: ["The golden poison frog (Phyllobates terribilis) is native to Colombia's Pacific coast.", "A single frog produces enough toxin to kill 10 adult humans.", "Indigenous Choco people use the frogs' toxin on blowdart tips for hunting.", "Scientists are studying the toxin as a potential painkiller 200 times more potent than morphine.", "The species is endangered due to habitat destruction from illegal gold mining."],
+    goal: "highlight the frog's potential medical value",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "The golden poison frog, native to Colombia, produces enough toxin to kill 10 adult humans.",
+      "Scientists studying the golden poison frog have discovered that its toxin may serve as the basis for a painkiller 200 times more potent than morphine, potentially transforming pain management.",
+      "The Choco people of Colombia have long used poison frog toxin on their blowdart tips for hunting.",
+      "Illegal gold mining in Colombia is destroying the habitat of the golden poison frog."
+    ],
+    answer: 1,
+    explain: "Goal: MEDICAL value. B uses the painkiller note (200x morphine) and connects it to medical impact. A focuses on lethality, C on indigenous use, D on habitat destruction."
+  },
+  {
+    id: 3,
+    phase: 1,
+    skill: "expression",
+    diff: "easy",
+    passage: "The new bridge was built to connect the two neighborhoods.",
+    goal: "emphasize the bridge's impact on community connection",
+    stem: "Which revision most effectively accomplishes this goal?",
+    choices: [
+      "A bridge was constructed between the neighborhoods.",
+      "The new pedestrian bridge, featuring wide walkways and community gathering spaces at each end, has transformed what was once a 45-minute detour into a five-minute walk, reuniting neighborhoods that had been effectively separated for decades.",
+      "The bridge connects two neighborhoods that are near each other.",
+      "The new bridge, which cost $14 million, was completed on schedule."
+    ],
+    answer: 1,
+    explain: 'Goal: COMMUNITY CONNECTION impact. B provides specific connection details (pedestrian, gathering spaces, 45min→5min, "reuniting"). A is bland. C adds no impact. D focuses on cost/timeline.'
+  },
+  {
+    id: 4,
+    phase: 1,
+    skill: "transition",
+    diff: "easy",
+    s1: "The restaurant's menu features locally sourced ingredients and seasonal dishes that change monthly.",
+    s2: "______, its current autumn menu includes butternut squash ravioli made with squash from a farm less than ten miles away and a pear tart featuring fruit from the restaurant's own orchard.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["However", "For example", "Therefore", "In contrast"],
+    answer: 1,
+    explain: 'Sentence 1: general claim (local, seasonal). Sentence 2: specific dishes illustrating the claim. "For example" introduces specific instances of a general pattern.'
+  },
+  {
+    id: 5,
+    phase: 1,
+    skill: "concision",
+    diff: "medium",
+    stem: "Which choice expresses the idea most concisely without losing essential information?",
+    choices: [
+      "Due to the fact that there was a significant increase in the total number of applications received by the admissions office, the university made the decision to extend the deadline for the submission of applications.",
+      "Because applications increased significantly, the university extended its deadline.",
+      "The university, having received a number of applications that was significantly higher than the number they had anticipated receiving, decided that they would extend the deadline by which applications must be submitted.",
+      "In light of the circumstances surrounding the unprecedented volume of applications that were submitted to the admissions office, university administrators came to the collective determination that an extension of the deadline would be warranted."
+    ],
+    answer: 1,
+    explain: "All four choices convey the same information: applications increased → deadline extended. B does it in 10 words. A uses 29, C uses 32, D uses 36. B preserves all essential information with maximum concision."
+  },
+  {
+    id: 6,
+    phase: 1,
+    skill: "synthesis",
+    diff: "medium",
+    notes: ["Architect Tadao Ando is known for his minimalist concrete structures.", "Ando is self-taught and never attended architecture school.", "His Church of the Light (1989) in Osaka uses a cross-shaped opening in the wall to project natural light into the interior.", "Ando won the Pritzker Architecture Prize in 1995.", "Critics initially dismissed his work as too austere, but his designs are now considered masterpieces of light and space."],
+    goal: "illustrate how Ando's unconventional background informed his distinctive approach to architecture",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "Tadao Ando won the prestigious Pritzker Architecture Prize in 1995 for his minimalist concrete structures.",
+      "Self-taught and unbounded by formal architectural training, Tadao Ando developed a radically minimalist style — exemplified by his Church of the Light, where a simple cross-shaped opening transforms bare concrete into a space suffused with spiritual luminosity.",
+      "Tadao Ando's Church of the Light, built in 1989 in Osaka, features a cross-shaped opening that allows natural light into the interior.",
+      "Critics initially dismissed Ando's work as too austere, though his buildings are now considered masterpieces."
+    ],
+    answer: 1,
+    explain: "Goal: unconventional BACKGROUND → distinctive APPROACH. B connects self-taught status to the minimalist result, using Church of the Light as the example. A doesn't mention background. C describes the building without connecting to background. D discusses reception, not approach."
+  },
+  {
+    id: 7,
+    phase: 1,
+    skill: "expression",
+    diff: "medium",
+    passage: "The study found that the policy had some effects.",
+    goal: "convey the unexpected nature and magnitude of the policy's impact",
+    stem: "Which revision most effectively accomplishes this goal?",
+    choices: [
+      "The study showed that the policy had an impact on the situation.",
+      "The study's results regarding the policy were interesting and noteworthy.",
+      "Against every projection, the policy produced a 340% increase in small business formation — an outcome so dramatic that the researchers initially suspected a data error before confirming the finding.",
+      "The policy, which was implemented two years ago, had results that were somewhat larger than anticipated."
+    ],
+    answer: 2,
+    explain: `Goal: UNEXPECTED + MAGNITUDE. C delivers both: "Against every projection" (unexpected), "340% increase" (magnitude), and "initially suspected a data error" (so unexpected they didn't believe it). A, B, D are vague or understated.`
+  },
+  {
+    id: 8,
+    phase: 1,
+    skill: "transition",
+    diff: "medium",
+    s1: "The company invested $50 million in developing a fully autonomous delivery drone capable of navigating urban environments.",
+    s2: "______, regulatory agencies have not yet approved commercial drone delivery in most metropolitan areas, leaving the technology without a legal framework for deployment.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["Moreover", "As a result", "To date, however", "Similarly"],
+    answer: 2,
+    explain: `Sentence 1: company invested heavily in drone tech. Sentence 2: regulations don't yet permit deployment. The technology exists but can't be used — a contrast between investment/capability and regulatory reality. "To date, however" signals a current limitation countering the positive investment.`
+  },
+  // ═══ PHASE 2: ESCALATION (8 Qs) ═══
+  {
+    id: 9,
+    phase: 2,
+    skill: "synthesis",
+    diff: "medium",
+    notes: ["The Great Pacific Garbage Patch covers approximately 1.6 million square kilometers.", "80% of the debris originates from land-based sources, primarily in Asia.", "The patch is mostly composed of microplastics too small to see with the naked eye, not large visible debris.", "Ocean currents concentrate floating plastic in five major gyres worldwide.", "The Ocean Cleanup project has removed over 200,000 kilograms of plastic from the patch since 2021."],
+    goal: "correct a common misconception about the garbage patch while acknowledging cleanup efforts",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "The Great Pacific Garbage Patch is an enormous area of ocean debris covering 1.6 million square kilometers, with most debris originating from Asia.",
+      "Contrary to popular imagery of a visible floating island of trash, the Great Pacific Garbage Patch is primarily composed of microplastics invisible to the naked eye — a reality that makes cleanup efforts like the Ocean Cleanup project, which has already removed over 200,000 kilograms since 2021, both more challenging and more impressive.",
+      "The Ocean Cleanup project has been working to remove plastic from the Great Pacific Garbage Patch since 2021.",
+      "There are five major garbage patches in the world's oceans, concentrated by ocean current gyres."
+    ],
+    answer: 1,
+    explain: 'Goal: CORRECT MISCONCEPTION + ACKNOWLEDGE CLEANUP. B does both: corrects the "visible island" misconception (actually microplastics) and acknowledges cleanup (200,000 kg removed). A misses the misconception. C misses the misconception. D is about gyres.'
+  },
+  {
+    id: 10,
+    phase: 2,
+    skill: "concision",
+    diff: "medium",
+    stem: "Which choice expresses the idea most concisely without losing essential information?",
+    choices: [
+      "The archaeological team, working at the site during the summer excavation season, made the discovery of a previously unknown burial chamber that had not been found or documented by any earlier expeditions to the same location.",
+      "The team discovered an unknown burial chamber at the site.",
+      "During their summer excavation, the archaeological team made what was perhaps the most significant discovery of the entire season when they located and identified a burial chamber that had remained completely hidden from and undiscovered by all previous researchers.",
+      "It was during the summer that the team of archaeologists was engaged in excavation work at the site and happened upon a burial chamber, one which had apparently never been discovered previously."
+    ],
+    answer: 1,
+    explain: `Core info: team found an unknown burial chamber. B conveys this in 10 words. The other choices add "summer," "season," "previous expeditions" — details that don't change the essential meaning. If the question asked to preserve the timing detail, A might work, but B is the most concise.`
+  },
+  {
+    id: 11,
+    phase: 2,
+    skill: "expression",
+    diff: "hard",
+    passage: "The author discusses the history of jazz music.",
+    goal: "establish the author's authority and the scope of the analysis",
+    stem: "Which revision most effectively accomplishes this goal?",
+    choices: [
+      "In this book about jazz, the author talks about its history.",
+      "Drawing on three decades of archival research, interviews with over 200 musicians, and analysis of more than 5,000 recordings, musicologist Dr. Elaine Patterson traces jazz from its roots in New Orleans funeral marches through bebop, cool jazz, and fusion to its contemporary reinvention in hip-hop sampling.",
+      "Jazz has a long and interesting history that many people enjoy learning about.",
+      "The author, who has written about music before, provides information about jazz history."
+    ],
+    answer: 1,
+    explain: "Goal: AUTHORITY + SCOPE. B establishes authority (three decades, 200 interviews, 5,000 recordings, musicologist title) and scope (New Orleans → bebop → cool → fusion → hip-hop). A, C, D are vague and establish neither."
+  },
+  {
+    id: 12,
+    phase: 2,
+    skill: "transition",
+    diff: "hard",
+    s1: "The novelist's depiction of small-town life in the American South has been praised for its vivid sense of place, atmospheric detail, and authentic dialogue.",
+    s2: "______, the same qualities that make her regional portraits so compelling have limited her readership, as some reviewers have dismissed her work as mere 'local color' rather than literature of universal significance.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["Furthermore", "Paradoxically", "As a result", "For instance"],
+    answer: 1,
+    explain: 'Sentence 1: praised for regional qualities. Sentence 2: those same qualities limited her readership. The strengths ARE the weaknesses — a paradox. "Paradoxically" captures this self-contradicting dynamic where the same traits produce opposite outcomes.'
+  },
+  {
+    id: 13,
+    phase: 2,
+    skill: "synthesis",
+    diff: "hard",
+    notes: ["CRISPR gene editing technology was adapted from a natural bacterial immune system.", "CRISPR can precisely modify DNA sequences in living organisms.", "In 2023, the FDA approved the first CRISPR-based therapy for sickle cell disease.", "Ethical concerns include the possibility of heritable 'germline' editing that would affect future generations.", "The cost of CRISPR therapies currently ranges from $1-2 million per patient.", "More than 40 clinical trials using CRISPR are currently underway for various diseases."],
+    goal: "present CRISPR's medical promise while acknowledging ethical and practical barriers",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "CRISPR gene editing, adapted from bacterial immune systems, can precisely modify DNA in living organisms and has already led to 40 clinical trials.",
+      "The FDA's 2023 approval of a CRISPR therapy for sickle cell disease marks the beginning of a medical revolution, with over 40 clinical trials now underway — yet the technology faces significant barriers, including per-patient costs of $1-2 million and unresolved ethical questions about heritable genetic modifications that could affect future generations.",
+      "CRISPR technology raises ethical concerns because germline editing could affect future generations in ways that cannot be predicted.",
+      "CRISPR gene editing was adapted from a natural bacterial immune system and can modify DNA sequences precisely."
+    ],
+    answer: 1,
+    explain: "Goal: PROMISE + BARRIERS. B delivers both: promise (FDA approval, 40 trials, medical revolution) and barriers (cost $1-2M, heritable editing ethics). A is promise-only. C is barriers-only. D is technical description."
+  },
+  {
+    id: 14,
+    phase: 2,
+    skill: "strategy",
+    diff: "hard",
+    passage: "A student encounters the following question on the SAT with 12 minutes remaining and 6 questions left:\n\nThe passage discusses the implications of a recent archaeological discovery. The student has read the passage carefully but is torn between choices B and C, both of which seem plausible. The student has already spent 90 seconds on this question.",
+    stem: "What is the best strategic approach?",
+    choices: [
+      "Spend another 2-3 minutes re-reading the passage to be absolutely certain",
+      "Choose B because it was the first instinct, mark the question, and move on to ensure time for the remaining 5 questions",
+      "Skip the question entirely and leave it blank",
+      "Read all four choices two more times to be thorough"
+    ],
+    answer: 1,
+    explain: "12 minutes / 6 questions = 2 minutes each. Already spent 90 seconds. First instinct is usually reliable on the SAT. Mark it (in case you have time to return), choose the stronger option, and move on. A wastes too much time. C is never correct (no penalty for guessing). D is inefficient."
+  },
+  {
+    id: 15,
+    phase: 2,
+    skill: "expression",
+    diff: "hard",
+    passage: "The building is very old and has historical importance.",
+    goal: "evoke the building's historical gravitas through specific sensory detail",
+    stem: "Which revision most effectively accomplishes this goal?",
+    choices: [
+      "The building, which was constructed many years ago, is considered historically significant by many scholars.",
+      "It is a very old building that matters to people who study history.",
+      "The Federal-style courthouse, its red brick darkened by two centuries of New England winters, still bears the iron ring where citizens once tethered their horses — a silent witness to every era from the Revolution to the present.",
+      "The historic building has stood for over 200 years and is an important part of the city's heritage."
+    ],
+    answer: 2,
+    explain: 'Goal: GRAVITAS through SENSORY DETAIL. C provides architectural style (Federal), visual detail (darkened brick), time depth (two centuries), specific physical artifact (iron horse ring), and metaphor ("silent witness"). Sensory, specific, and evocative.'
+  },
+  {
+    id: 16,
+    phase: 2,
+    skill: "transition",
+    diff: "hard",
+    s1: "The theory of continental drift, first proposed by Alfred Wegener in 1912, was ridiculed by the geological establishment for half a century because Wegener could not explain the mechanism by which continents moved.",
+    s2: "______, the discovery of seafloor spreading in the 1960s provided the missing mechanism — tectonic plates driven by convective currents in the mantle — and Wegener's once-dismissed theory became the foundation of modern geology.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["Similarly", "Furthermore", "It was not until", "Nevertheless"],
+    answer: 2,
+    explain: 'Sentence 1: theory ridiculed for 50 years (long failure). Sentence 2: 1960s discovery finally vindicated it. The transition needs to signal a temporal turning point after a long wait. "It was not until" captures the delayed vindication perfectly — something happened ONLY after decades.'
+  },
+  // ═══ PHASE 3: FINAL STAND (9 Qs) ═══
+  {
+    id: 17,
+    phase: 3,
+    skill: "synthesis",
+    diff: "hard",
+    notes: ["The Rosetta Stone was discovered by French soldiers in Egypt in 1799.", "The stone contains the same decree written in three scripts: hieroglyphic, demotic, and ancient Greek.", "Jean-Francois Champollion deciphered Egyptian hieroglyphics in 1822 using the stone.", "Before Champollion's breakthrough, hieroglyphics had been undecipherable for over 1,400 years.", "The Rosetta Stone is currently housed in the British Museum; Egypt has repeatedly requested its return."],
+    goal: "argue for the Rosetta Stone's significance as a key to understanding an entire civilization",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "The Rosetta Stone, discovered in Egypt in 1799, is currently displayed in the British Museum despite Egypt's requests for its return.",
+      "By providing the same text in hieroglyphic, demotic, and ancient Greek, the Rosetta Stone gave Jean-Francois Champollion the key to deciphering Egyptian hieroglyphics in 1822 — unlocking a writing system that had been impenetrable for over 1,400 years and opening the entirety of ancient Egyptian civilization to modern scholarship.",
+      "The Rosetta Stone contains writing in three different scripts: hieroglyphic, demotic, and ancient Greek.",
+      "Jean-Francois Champollion was a French scholar who deciphered Egyptian hieroglyphics."
+    ],
+    answer: 1,
+    explain: "Goal: SIGNIFICANCE as KEY to CIVILIZATION. B connects the stone's three scripts to Champollion's decipherment to the unlocking of 1,400 years of impenetrable writing — showing how one object opened an entire civilization. A is about location/politics. C is description. D is biography."
+  },
+  {
+    id: 18,
+    phase: 3,
+    skill: "concision",
+    diff: "hard",
+    stem: "Which choice expresses the idea most concisely without losing essential information?",
+    choices: [
+      "The researchers came to the conclusion that, based on the totality of the evidence that they had gathered and analyzed over the course of their multi-year investigation, the phenomenon they had been studying could not be adequately explained by any of the existing theoretical frameworks that were currently available.",
+      "After years of study, the researchers concluded that no existing theory adequately explains the phenomenon.",
+      "It was the researchers' belief, following their extensive and thorough investigation spanning multiple years, that the theoretical models presently available in the field were insufficient and inadequate for the purpose of providing a satisfactory explanation of the phenomenon under investigation.",
+      "The researchers, who had spent several years conducting their research study, arrived at the determination that the phenomenon they were investigating was not able to be explained by theories that currently existed in the relevant academic literature."
+    ],
+    answer: 1,
+    explain: "Core meaning: researchers concluded existing theories don't explain the phenomenon. B says this in 16 words. A uses 43 words, C uses 46, D uses 39. All convey identical information — B is maximally concise."
+  },
+  {
+    id: 19,
+    phase: 3,
+    skill: "transition",
+    diff: "hard",
+    s1: "The city's ambitious plan to convert all public buses to electric power by 2028 has been widely praised by environmental advocates as a model for urban sustainability.",
+    s2: "______, the city has secured only 30% of the estimated $800 million needed to purchase the electric fleet, and the sole manufacturer capable of producing buses at the required scale has a three-year order backlog.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["In addition", "The reality, however, is that", "As a consequence", "Similarly"],
+    answer: 1,
+    explain: 'Sentence 1: ambitious, praised plan (ideal). Sentence 2: funding gap + manufacturing bottleneck (reality). This is aspiration vs. reality — a contrast between the praised vision and the practical obstacles. "The reality, however, is that" perfectly signals the shift from ideal to actual.'
+  },
+  {
+    id: 20,
+    phase: 3,
+    skill: "expression",
+    diff: "hard",
+    passage: "The scientist made a discovery about the ocean.",
+    goal: "convey the discovery's paradigm-shifting implications for the field",
+    stem: "Which revision most effectively accomplishes this goal?",
+    choices: [
+      "A marine biologist discovered something new about the ocean.",
+      "Dr. Yamamoto's discovery of a vast microbial ecosystem thriving beneath the ocean floor — in rock formations previously assumed to be sterile — has upended a foundational assumption of marine biology and expanded the known boundaries of life on Earth.",
+      "The ocean contains many things that scientists are still discovering.",
+      "Dr. Yamamoto found microbes living under the ocean floor, which was an interesting finding."
+    ],
+    answer: 1,
+    explain: 'Goal: PARADIGM-SHIFTING implications. B provides specificity (sub-floor microbial ecosystem, Dr. Yamamoto), the shift ("upended a foundational assumption"), and the significance ("expanded the known boundaries of life on Earth"). A, C, D are vague and convey no paradigm shift.'
+  },
+  {
+    id: 21,
+    phase: 3,
+    skill: "synthesis",
+    diff: "hard",
+    notes: ["Iceland generates nearly 100% of its electricity from renewable sources (geothermal and hydroelectric).", "Iceland's unique geology — sitting atop the Mid-Atlantic Ridge — provides abundant geothermal energy.", "Iceland exports its renewable energy expertise to developing nations.", "Despite renewable electricity, Iceland's transportation sector still relies heavily on imported fossil fuels.", "Iceland aims to achieve full carbon neutrality by 2040."],
+    goal: "present a nuanced assessment of Iceland's renewable energy achievements and remaining challenges",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "Iceland generates nearly all its electricity from geothermal and hydroelectric sources, taking advantage of its unique geology atop the Mid-Atlantic Ridge.",
+      "Although Iceland generates nearly 100% of its electricity from renewable sources — a feat enabled by its geothermal-rich geology — the nation's transportation sector remains dependent on imported fossil fuels, illustrating that even the world's leader in renewable electricity faces significant hurdles in achieving its 2040 carbon neutrality goal.",
+      "Iceland exports its renewable energy expertise to other countries and aims to be carbon neutral by 2040.",
+      "Iceland's position on the Mid-Atlantic Ridge gives it access to abundant geothermal energy."
+    ],
+    answer: 1,
+    explain: "Goal: NUANCED — achievements AND challenges. B delivers both: near-100% renewable electricity (achievement) + transportation fossil fuel dependency (challenge) + 2040 goal framing the gap. A is achievements only. C is two facts. D is geology only."
+  },
+  {
+    id: 22,
+    phase: 3,
+    skill: "strategy",
+    diff: "hard",
+    passage: "A student is about to begin Module 2 of the SAT R&W section. She scored well on Module 1, so she's receiving the harder version of Module 2. She notices that the reading passages seem significantly more complex and the questions more challenging than in Module 1.",
+    stem: "What is the most effective strategic mindset for this student?",
+    choices: [
+      "Panic — the harder questions mean she'll probably score poorly",
+      "Recognize that receiving the hard module is a positive sign of strong Module 1 performance, maintain confidence, and apply the same strategies — knowing that on the harder module, each correct answer is worth more toward the final score",
+      "Rush through the questions as quickly as possible to avoid running out of time",
+      "Skip all the hard-looking questions and only answer easy ones"
+    ],
+    answer: 1,
+    explain: "Getting the hard Module 2 is GOOD — it means strong M1 performance and a higher scoring ceiling. Each correct answer on the hard module contributes more to the final score. The right approach: stay confident, apply strategies, don't rush. A leads to anxiety errors. C sacrifices accuracy. D wastes high-value questions."
+  },
+  {
+    id: 23,
+    phase: 3,
+    skill: "transition",
+    diff: "hard",
+    s1: "The philosopher Hannah Arendt argued that evil is most dangerous not when it is dramatic and extraordinary but when it becomes routine — when ordinary people participate in harmful systems without critical reflection.",
+    s2: "______, Arendt coined the phrase 'the banality of evil' to describe how Adolf Eichmann, a key architect of the Holocaust, appeared at his trial not as a monster but as a disturbingly ordinary bureaucrat who had simply followed orders without questioning their moral implications.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["However", "In contrast", "To illustrate this concept", "Furthermore"],
+    answer: 2,
+    explain: `Sentence 1: Arendt's abstract principle (evil becomes routine). Sentence 2: specific example (Eichmann as ordinary bureaucrat). The second sentence ILLUSTRATES the first with a concrete case. "To illustrate this concept" signals the move from abstract to specific.`
+  },
+  {
+    id: 24,
+    phase: 3,
+    skill: "synthesis",
+    diff: "hard",
+    notes: ["Beethoven composed some of his greatest works, including the Ninth Symphony, while almost entirely deaf.", "Beethoven used conversation books where visitors wrote questions and he responded verbally.", "He reportedly sawed the legs off his piano to feel vibrations through the floor while composing.", "Modern audiological analysis suggests Beethoven's deafness was caused by otosclerosis, a bone disease of the inner ear.", "The Ninth Symphony's choral finale, 'Ode to Joy,' has become a universal symbol of human unity."],
+    goal: "emphasize the extraordinary nature of Beethoven's late creative achievement given his disability",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "Beethoven's deafness was likely caused by otosclerosis, a bone disease of the inner ear, according to modern audiological analysis.",
+      "Composing almost entirely without the sense most essential to his art, Beethoven resorted to extraordinary measures — sawing the legs off his piano to feel vibrations through the floor — and produced works of such transcendent power that his Ninth Symphony's finale became a universal symbol of human unity.",
+      "Beethoven used conversation books to communicate with visitors because he could not hear their questions.",
+      "The Ninth Symphony, composed late in Beethoven's life, features a famous choral finale known as 'Ode to Joy.'"
+    ],
+    answer: 1,
+    explain: "Goal: EXTRAORDINARY achievement GIVEN disability. B connects deafness (composing without hearing) → adaptation (sawing piano legs, feeling vibrations) → result (transcendent works, universal symbol). The progression from limitation through resourcefulness to greatness captures the extraordinary nature."
+  },
+  {
+    id: 25,
+    phase: 3,
+    skill: "expression",
+    diff: "hard",
+    passage: "Climate change is a problem that affects many places.",
+    goal: "convey the immediacy and human cost of climate change through a specific, grounded example",
+    stem: "Which revision most effectively accomplishes this goal?",
+    choices: [
+      "Climate change is a serious global issue that impacts communities around the world in various ways.",
+      "Many scientists believe that climate change will have significant effects on the planet in the coming decades.",
+      "In Dhaka, Bangladesh, where monsoon flooding now submerges entire neighborhoods for weeks each year, a grandmother named Fatima has rebuilt her family's home four times since 2015 — each time a few feet higher, each time wondering if this will be the year the water doesn't recede.",
+      "Rising sea levels and extreme weather events threaten coastal communities on every continent."
+    ],
+    answer: 2,
+    explain: 'Goal: IMMEDIACY + HUMAN COST through SPECIFIC example. C provides a real place (Dhaka), a real person (Fatima), concrete details (rebuilt 4 times, higher each time), and emotional resonance ("wondering if this will be the year"). This is the most grounded, immediate, human version of the abstract concept.'
+  }
+];
+const PHASES = [
+  { name: "Phase 1: Warm-Up", subtitle: "The Phantom begins to take shape...", hp: 8, color: PURPLE, icon: "🛡️" },
+  { name: "Phase 2: Escalation", subtitle: "The Phantom weaves its rhetoric!", hp: 8, color: AMBER, icon: "⚔️" },
+  { name: "Phase 3: Final Stand", subtitle: "The Phantom unleashes a storm of words!", hp: 9, color: RED, icon: "🔥" }
+];
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${PURPLE}22`, border: `1px solid ${PURPLE}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: PURPLE, marginBottom: 12, fontWeight: 600 } }, "Unit 4 · Module 15"), /* @__PURE__ */ React.createElement("h1", { style: { fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 900, background: `linear-gradient(135deg,${PURPLE},${RED},${AMBER})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 } }, "Expression & Strategy Boss Battle"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 32 } }, "The Rhetoric Phantom guards the gate to the final practice tests. Defeat it with synthesis, transitions, expression, and strategy."), /* @__PURE__ */ React.createElement("div", { style: { background: `linear-gradient(135deg,${CARD},#1a1a2e)`, border: `1px solid ${PURPLE}33`, borderRadius: 20, padding: 32, marginBottom: 32, maxWidth: 500, width: "100%", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 64, marginBottom: 12 } }, "🌀"), /* @__PURE__ */ React.createElement("div", { style: { color: PURPLE, fontWeight: 900, fontSize: 22, marginBottom: 4 } }, "The Rhetoric Phantom"), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13, marginBottom: 20 } }, "Level 15 Boss · 25 HP"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" } }, Object.values(SKILL_META).map((s, i) => /* @__PURE__ */ React.createElement("span", { key: i, style: { background: `${s.color}15`, color: s.color, padding: "3px 8px", borderRadius: 6, fontSize: 10, fontWeight: 600 } }, s.icon, " ", s.label)))), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: onNext,
+      style: { ...btn(`linear-gradient(135deg,${PURPLE},${RED})`, TEXT), fontSize: 17, padding: "16px 40px" },
+      onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.04)",
+      onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)"
+    },
+    "Begin Battle ⚔️"
+  ));
+}
+function BattleArena({ onComplete }) {
+  const [qIdx, setQIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [combo, setCombo] = useState(0);
+  const [maxCombo, setMaxCombo] = useState(0);
+  const [bossHP, setBossHP] = useState(25);
+  const [playerHP, setPlayerHP] = useState(25);
+  const [shake, setShake] = useState(false);
+  const [flashG, setFlashG] = useState(false);
+  const [flashR, setFlashR] = useState(false);
+  const [startTime] = useState(Date.now());
+  const [qStart, setQStart] = useState(Date.now());
+  const q = BATTLE_QUESTIONS[qIdx];
+  const total = BATTLE_QUESTIONS.length;
+  const phase = PHASES[q.phase - 1];
+  const skill = SKILL_META[q.skill];
+  function handleConfirm() {
+    if (selected === null) return;
+    const correct = selected === q.answer;
+    const ms = Date.now() - qStart;
+    setConfirmed(true);
+    setAnswers((p) => [...p, { qid: q.id, correct, skill: q.skill, ms, phase: q.phase, diff: q.diff }]);
+    if (correct) {
+      const nc = combo + 1;
+      setCombo(nc);
+      if (nc > maxCombo) setMaxCombo(nc);
+      setBossHP((hp) => Math.max(0, hp - 1));
+      setFlashG(true);
+      setTimeout(() => setFlashG(false), 400);
+    } else {
+      setCombo(0);
+      setPlayerHP((hp) => Math.max(0, hp - 1));
+      setShake(true);
+      setFlashR(true);
+      setTimeout(() => {
+        setShake(false);
+        setFlashR(false);
+      }, 400);
+    }
+  }
+  function handleNext() {
+    if (qIdx < total - 1) {
+      setQIdx(qIdx + 1);
+      setSelected(null);
+      setConfirmed(false);
+      setQStart(Date.now());
+    } else {
+      onComplete({ answers, bossHP, playerHP, combo: maxCombo, totalTime: Date.now() - startTime });
+    }
+  }
+  const HealthBar = ({ current, max, color, label, reverse }) => /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: reverse ? "flex-end" : "flex-start", alignItems: "center", gap: 6, marginBottom: 4 } }, /* @__PURE__ */ React.createElement("span", { style: { color, fontWeight: 700, fontSize: 12 } }, label), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 11 } }, current, "/", max)), /* @__PURE__ */ React.createElement("div", { style: { height: 10, background: BORDER, borderRadius: 5, overflow: "hidden", direction: reverse ? "rtl" : "ltr" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${current / max * 100}%`, background: color, borderRadius: 5, transition: "width .5s" } })));
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "24px 20px", minHeight: "100vh", animation: shake ? "shake .3s" : "none" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `linear-gradient(135deg,${CARD},#1a1a2e)`, border: `1px solid ${phase.color}33`, borderRadius: 16, padding: 16, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: phase.color, fontSize: 12, fontWeight: 700, letterSpacing: 1 } }, phase.icon, " ", phase.name), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6 } }, combo > 0 && /* @__PURE__ */ React.createElement("span", { style: { background: `${AMBER}22`, color: AMBER, padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 800, animation: "pulse 1s infinite" } }, combo, "x COMBO"), /* @__PURE__ */ React.createElement("span", { style: { color: skill.color, fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 6, background: `${skill.color}15` } }, skill.icon, " ", skill.label))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 16, alignItems: "center" } }, /* @__PURE__ */ React.createElement(HealthBar, { current: playerHP, max: 25, color: ACCENT, label: "YOU" }), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 16, fontWeight: 900 } }, "VS"), /* @__PURE__ */ React.createElement(HealthBar, { current: bossHP, max: 25, color: RED, label: "BOSS", reverse: true }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 800, fontSize: 15 } }, "Q", qIdx + 1, " of ", total), /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 700,
+    background: q.diff === "easy" ? `${ACCENT}22` : q.diff === "medium" ? `${AMBER}22` : `${RED}22`,
+    color: q.diff === "easy" ? ACCENT : q.diff === "medium" ? AMBER : RED
+  } }, q.diff)), /* @__PURE__ */ React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 20, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${(qIdx + (confirmed ? 1 : 0)) / total * 100}%`, background: `linear-gradient(90deg,${PURPLE},${AMBER},${RED})`, borderRadius: 2, transition: "width .4s" } })), /* @__PURE__ */ React.createElement("div", { style: {
+    background: CARD,
+    border: `1px solid ${BORDER}`,
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 16,
+    boxShadow: flashG ? `0 0 20px ${ACCENT}33` : flashR ? `0 0 20px ${RED}33` : "none",
+    transition: "box-shadow .3s"
+  } }, q.passage && /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, q.passage), q.s1 && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif", marginBottom: 12 } }, q.s1), /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, q.s2)), q.notes && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: { color: PURPLE, fontSize: 12, fontWeight: 700, marginBottom: 8 } }, "NOTES"), q.notes.map((n, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", gap: 8, marginBottom: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { color: PURPLE, fontSize: 13, fontWeight: 700 } }, "•"), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, n)))), q.goal && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12, padding: "10px 14px", borderRadius: 10, background: `${AMBER}11`, border: `1px solid ${AMBER}33` } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 11, fontWeight: 700, marginBottom: 4 } }, "GOAL"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13 } }, "The writer wants to ", /* @__PURE__ */ React.createElement("strong", null, q.goal), "."))), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, q.stem), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } }, q.choices.map((c, ci) => {
+    const letter = "ABCD"[ci];
+    const isSel = selected === ci;
+    const isCorr = ci === q.answer;
+    let bg = CARD, bdr = `1px solid ${BORDER}`, tc = "#cbd5e1";
+    if (confirmed && isCorr) {
+      bg = `${ACCENT}18`;
+      bdr = `2px solid ${ACCENT}`;
+      tc = ACCENT;
+    } else if (confirmed && isSel && !isCorr) {
+      bg = `${RED}18`;
+      bdr = `2px solid ${RED}`;
+      tc = RED;
+    } else if (isSel && !confirmed) {
+      bg = `${phase.color}15`;
+      bdr = `2px solid ${phase.color}`;
+      tc = phase.color;
+    }
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: ci,
+        onClick: () => {
+          if (!confirmed) setSelected(ci);
+        },
+        disabled: confirmed,
+        style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: {
+        minWidth: 28,
+        height: 28,
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 800,
+        fontSize: 13,
+        flexShrink: 0,
+        marginTop: 1,
+        background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? phase.color : BORDER,
+        color: isSel || confirmed ? DARK : MUTED
+      } }, letter),
+      /* @__PURE__ */ React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+    );
+  })), confirmed && /* @__PURE__ */ React.createElement("div", { style: { background: selected === q.answer ? `${ACCENT}11` : `${RED}11`, border: `1px solid ${selected === q.answer ? ACCENT : RED}44`, borderRadius: 12, padding: 16, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 18 } }, selected === q.answer ? "✅" : "❌"), /* @__PURE__ */ React.createElement("span", { style: { color: selected === q.answer ? ACCENT : RED, fontWeight: 800, fontSize: 15 } }, selected === q.answer ? combo >= 3 ? "COMBO HIT! " + combo + "x" : "Correct!" : "Miss!")), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, q.explain)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } }, !confirmed ? /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: handleConfirm,
+      disabled: selected === null,
+      style: btn(selected === null ? BORDER : phase.color, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" })
+    },
+    "Attack ⚔️"
+  ) : /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: handleNext,
+      style: btn(`linear-gradient(135deg,${phase.color},${DARK})`, TEXT, { fontSize: 14, padding: "10px 24px" })
+    },
+    qIdx < total - 1 ? "Next →" : "Final Results →"
+  )), /* @__PURE__ */ React.createElement("style", null, `
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 50%{transform:translateX(6px)} 75%{transform:translateX(-4px)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+      `));
+}
+function Results({ data }) {
+  const [show, setShow] = useState(false);
+  const [tab, setTab] = useState("overview");
+  useEffect(() => {
+    setTimeout(() => setShow(true), 200);
+  }, []);
+  const { answers, bossHP, playerHP, combo, totalTime } = data;
+  const correct = answers.filter((a) => a.correct).length;
+  const total = answers.length;
+  const pct = Math.round(correct / total * 100);
+  const defeated = bossHP <= 0;
+  const mins = Math.floor(totalTime / 6e4);
+  const skillBreakdown = {};
+  Object.keys(SKILL_META).forEach((s) => {
+    const qs = answers.filter((a) => a.skill === s);
+    if (qs.length > 0) skillBreakdown[s] = { total: qs.length, correct: qs.filter((a) => a.correct).length };
+  });
+  const baseXP = correct * 100;
+  const comboXP = combo * 50;
+  const speedBonus = pct >= 80 && totalTime < 20 * 60 * 1e3 ? 500 : pct >= 60 && totalTime < 25 * 60 * 1e3 ? 250 : 0;
+  const perfectBonus = pct === 100 ? 1e3 : 0;
+  const totalXP = baseXP + comboXP + speedBonus + perfectBonus;
+  return /* @__PURE__ */ React.createElement("div", { style: { transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)", maxWidth: 800, margin: "0 auto", padding: "40px 20px 80px" } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 40 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 72, marginBottom: 8 } }, defeated ? "🏆" : "🛡️"), /* @__PURE__ */ React.createElement("h1", { style: {
+    fontSize: "clamp(2rem,5vw,3rem)",
+    fontWeight: 900,
+    background: defeated ? `linear-gradient(135deg,${PURPLE},${ACCENT})` : `linear-gradient(135deg,${RED},${AMBER})`,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    marginBottom: 8
+  } }, defeated ? "VICTORY!" : "Defeated..."), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 16 } }, defeated ? "The Rhetoric Phantom has been vanquished!" : "The Phantom survives with " + bossHP + " HP. Sharpen your expression and try again!")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(120px,1fr))", gap: 12, marginBottom: 32 } }, [
+    { label: "Score", value: `${correct}/${total}`, sub: `${pct}%`, color: pct >= 80 ? ACCENT : pct >= 60 ? AMBER : RED },
+    { label: "Max Combo", value: `${combo}x`, sub: combo >= 5 ? "Unstoppable!" : combo >= 3 ? "Nice streak!" : "Keep trying", color: AMBER },
+    { label: "Time", value: `${mins}m`, sub: "total", color: BLUE },
+    { label: "XP Earned", value: totalXP.toLocaleString(), sub: "total points", color: PURPLE }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: s.color, fontWeight: 900, fontSize: 22 } }, s.value), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 11, marginTop: 2 } }, s.sub)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 24, background: CARD, borderRadius: 10, padding: 4 } }, [["overview", "Skill Breakdown"], ["detail", "Question Log"], ["next", "What's Next"]].map(([k, l]) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: k,
+      onClick: () => setTab(k),
+      style: {
+        flex: 1,
+        padding: "10px 12px",
+        borderRadius: 8,
+        border: "none",
+        fontWeight: 600,
+        fontSize: 13,
+        cursor: "pointer",
+        background: tab === k ? BORDER : "transparent",
+        color: tab === k ? TEXT : MUTED
+      }
+    },
+    l
+  ))), tab === "overview" && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 12 } }, Object.entries(skillBreakdown).map(([s, d]) => {
+    const meta = SKILL_META[s];
+    const sp = Math.round(d.correct / d.total * 100);
+    return /* @__PURE__ */ React.createElement("div", { key: s, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 16 } }, meta.icon), /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontWeight: 700, fontSize: 14 } }, meta.label)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { color: meta.color, fontWeight: 800, fontSize: 18 } }, sp, "%"), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 12 } }, "(", d.correct, "/", d.total, ")"))), /* @__PURE__ */ React.createElement("div", { style: { height: 8, background: BORDER, borderRadius: 4, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${sp}%`, background: meta.color, borderRadius: 4, transition: "width 1s" } })));
+  })), tab === "detail" && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6 } }, answers.map((a, i) => {
+    const bq = BATTLE_QUESTIONS.find((q) => q.id === a.qid);
+    const meta = SKILL_META[a.skill];
+    return /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("div", { style: {
+      width: 28,
+      height: 28,
+      borderRadius: 7,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: 800,
+      fontSize: 12,
+      background: a.correct ? `${ACCENT}22` : `${RED}22`,
+      color: a.correct ? ACCENT : RED
+    } }, i + 1), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 12, fontWeight: 600 } }, meta.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, "Phase ", a.phase, " · ", a.diff)), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 11 } }, Math.round(a.ms / 1e3), "s"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 14 } }, a.correct ? "✅" : "❌"));
+  })), tab === "next" && /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { background: `linear-gradient(135deg,${ACCENT}11,${CARD})`, border: `1px solid ${ACCENT}33`, borderRadius: 16, padding: 24, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontWeight: 800, fontSize: 16, marginBottom: 8 } }, defeated ? "🌟 Unit 4 Complete!" : "💪 Keep Practicing"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 14, lineHeight: 1.7 } }, defeated ? "You've mastered all four skill units! Conventions, Craft & Structure, Information & Ideas, and Expression & Strategy are all in your toolkit. The final modules are full-length practice tests and a comprehensive review." : "Focus on your weakest skills. Synthesis questions are the highest-value targets — they appear 4-5 times per test. Transitions are quick wins if you know the relationship categories.")), (() => {
+    const weakest = Object.entries(skillBreakdown).sort((a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total)[0];
+    if (!weakest) return null;
+    const [sk, d] = weakest;
+    const meta = SKILL_META[sk];
+    const wPct = Math.round(d.correct / d.total * 100);
+    if (wPct >= 80) return null;
+    const tips = {
+      synthesis: "Review Module 13: Read the GOAL first, identify relevant notes, then match to the best answer.",
+      transition: "Review Module 13: Cover the word, read both sentences, identify the relationship (addition, contrast, cause/effect, example).",
+      expression: "Review Module 13: Match the revision to the EXACT stated objective. Look for specificity and precision.",
+      concision: "Review Module 13: Choose the shortest version that preserves all essential information.",
+      strategy: "Review Module 14: Flag and move after 90 seconds, never leave blanks, bank time from easy questions."
+    };
+    return /* @__PURE__ */ React.createElement("div", { style: { background: `${meta.color}11`, border: `1px solid ${meta.color}33`, borderRadius: 14, padding: 20, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: meta.color, fontWeight: 700, fontSize: 14, marginBottom: 6 } }, meta.icon, " Weakest Skill: ", meta.label, " (", wPct, "%)"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, tips[sk]));
+  })(), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "Course Progress"), [
+    { n: "1-4", label: "Conventions", note: "Complete!", color: ACCENT, done: true },
+    { n: "5-8", label: "Craft & Structure", note: "Complete!", color: AMBER, done: true },
+    { n: "9-12", label: "Information & Ideas", note: "Complete!", color: BLUE, done: true },
+    { n: "13-15", label: "Expression & Strategy", note: defeated ? "Complete!" : "In progress...", color: PURPLE, done: defeated },
+    { n: "16-17", label: "Full Practice Tests", note: "Coming next", color: CYAN, done: false },
+    { n: "18", label: "Final Review & Diagnostics", note: "Course finale", color: RED, done: false }
+  ].map((m, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: i < 5 ? `1px solid ${BORDER}` : "none" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 24, height: 24, borderRadius: 12, background: m.done ? `${m.color}22` : BORDER, border: `2px solid ${m.done ? m.color : BORDER}`, display: "flex", alignItems: "center", justifyContent: "center" } }, m.done && /* @__PURE__ */ React.createElement("span", { style: { color: m.color, fontSize: 12 } }, "✓")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: m.done ? TEXT : MUTED, fontSize: 13, fontWeight: 600 } }, "M", m.n, ": ", m.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, m.note))))), React.createElement(Homework, null), React.createElement(NavLinks, null)));
+}
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [battleData, setBattleData] = useState(null);
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    inset: 0,
+    pointerEvents: "none",
+    opacity: 0.03,
+    backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",
+    backgroundSize: "40px 40px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } }, screen === "welcome" && /* @__PURE__ */ React.createElement(Welcome, { onNext: () => go("battle") }), screen === "battle" && /* @__PURE__ */ React.createElement(BattleArena, { onComplete: (d) => {
+    setBattleData(d);
+    go("results");
+  } }), screen === "results" && battleData && /* @__PURE__ */ React.createElement(Results, { data: battleData })));
+}
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>

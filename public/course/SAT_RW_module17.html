@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 17: Full Practice Test 2 — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+table { border-collapse: collapse; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback, useRef } = React;
+const BLUE = "#3b82f6";
+const ACCENT = "#10b981";
+const AMBER = "#f59e0b";
+const PURPLE = "#a855f7";
+const RED = "#ef4444";
+const CYAN = "#06b6d4";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px",
+  borderRadius: 10,
+  border: "none",
+  background: bg,
+  color,
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: "pointer",
+  transition: "transform .12s",
+  ...extra
+});
+const NAV = { prev: { label: "Module 16: Practice Test 1", file: "SAT RW module16.html" }, next: { label: "Module 18: Course Finale", file: "SAT RW module18.html" } };
+const HOMEWORK = [
+  { icon: "\uD83D\uDCCA", task: "Compare your Test 1 and Test 2 results by question type", detail: "Which types improved? Which stayed weak? This tells you exactly where to focus.", color: BLUE },
+  { icon: "\uD83D\uDCDD", task: "Write a one-page error pattern summary", detail: "Your most common mistake types across both tests. This is your pre-test-day cheat sheet.", color: RED },
+  { icon: "\uD83D\uDCD6", task: "Revisit the 2 modules covering your weakest areas", detail: "Redo the lessons (not just quizzes) for maximum retention.", color: PURPLE },
+  { icon: "\uD83C\uDFAF", task: "Take Module 18 within the next 2 days", detail: "While your practice test insights are fresh, do the final diagnostic.", color: ACCENT }
+];
+function NavLinks() {
+  return React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12, marginTop: 32, paddingTop: 24, borderTop: "1px solid " + BORDER } },
+    NAV.prev && React.createElement("a", { href: NAV.prev.file, style: { ...btn("transparent", SUB), border: "1px solid " + BORDER, textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, "\u2190 " + NAV.prev.label),
+    NAV.next && React.createElement("a", { href: NAV.next.file, style: { ...btn("linear-gradient(135deg," + CYAN + "," + BLUE + ")", TEXT), textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, NAV.next.label + " \u2192")
+  );
+}
+function Homework() {
+  return React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 24, maxWidth: 520, width: "100%", marginBottom: 32, textAlign: "left" } },
+    React.createElement("div", { style: { color: AMBER, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "\uD83D\uDCDD Homework & Action Items"),
+    HOMEWORK.map(function(h, i) {
+      return React.createElement("div", { key: i, style: { display: "flex", gap: 10, marginBottom: 10, padding: "8px 12px", background: h.color + "08", borderLeft: "3px solid " + h.color, borderRadius: "0 8px 8px 0" } },
+        React.createElement("span", { style: { color: h.color, fontSize: 13 } }, h.icon),
+        React.createElement("div", null,
+          React.createElement("div", { style: { color: TEXT, fontWeight: 600, fontSize: 13 } }, h.task),
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, marginTop: 2 } }, h.detail)
+        )
+      );
+    })
+  );
+}
+const TYPE_META = {
+  conventions: { label: "Conventions", color: ACCENT },
+  vocabulary: { label: "Vocabulary", color: BLUE },
+  precision: { label: "Precision", color: PURPLE },
+  purpose: { label: "Purpose", color: AMBER },
+  function: { label: "Function", color: CYAN },
+  crosstext: { label: "Cross-Text", color: RED },
+  central: { label: "Central Idea", color: BLUE },
+  detail: { label: "Detail", color: CYAN },
+  inference: { label: "Inference", color: PURPLE },
+  evidence: { label: "Evidence", color: ACCENT },
+  data: { label: "Data", color: AMBER },
+  strengthen: { label: "Strengthen", color: "#22c55e" },
+  weaken: { label: "Weaken", color: RED },
+  completion: { label: "Completion", color: "#8b5cf6" },
+  synthesis: { label: "Synthesis", color: PURPLE },
+  transition: { label: "Transition", color: CYAN },
+  expression: { label: "Expression", color: AMBER }
+};
+const QUESTIONS = [
+  // BLOCK 1: CONVENTIONS (Q1-5)
+  {
+    id: 1,
+    type: "conventions",
+    passage: "The collection of rare manuscripts, which the library acquired through a series of estate sales over the past decade, ______ now available to researchers for the first time through a new digital archive.",
+    stem: "Which choice completes the text so that it conforms to the conventions of Standard English?",
+    choices: ["are", "is", "were", "have been"],
+    answer: 1,
+    explain: 'Subject is "collection" (singular), not "manuscripts." The "which" clause is parenthetical. Singular subject + present tense = "is."'
+  },
+  {
+    id: 2,
+    type: "conventions",
+    passage: "The geologists discovered that the cave system extended much farther than previously ______ with passages stretching nearly twelve miles beneath the limestone plateau.",
+    stem: "Which choice completes the text so that it conforms to the conventions of Standard English?",
+    choices: ["estimated,", "estimated;", "estimated:", "estimated"],
+    answer: 0,
+    explain: '"The geologists discovered that the cave system extended much farther than previously estimated" is a complete main clause. What follows ("with passages stretching...") is a participial phrase modifying the main clause. A comma correctly separates the clause from the modifying phrase.'
+  },
+  {
+    id: 3,
+    type: "conventions",
+    passage: "When the orchestra performs Beethoven's Ninth ______ typically lasts over seventy minutes, making it one of the longest works in the standard symphonic repertoire.",
+    stem: "Which choice completes the text so that it conforms to the conventions of Standard English?",
+    choices: ["Symphony, the performance", "Symphony; the performance", "Symphony the performance", "Symphony. The performance,"],
+    answer: 0,
+    explain: `"When the orchestra performs Beethoven's Ninth Symphony" is a dependent clause and needs a comma before the main clause "the performance typically lasts..." A correctly uses a comma after the introductory dependent clause.`
+  },
+  {
+    id: 4,
+    type: "conventions",
+    passage: "Each of the proposed amendments to the city charter ______ been reviewed by the legal department and approved by a majority of the committee members before being submitted to voters.",
+    stem: "Which choice completes the text so that it conforms to the conventions of Standard English?",
+    choices: ["have", "has", "were", "are"],
+    answer: 1,
+    explain: '"Each" is always singular. "Each of the proposed amendments" = each one. Singular subject + present perfect = "has been reviewed."'
+  },
+  {
+    id: 5,
+    type: "conventions",
+    passage: "The documentary filmmaker, known for her immersive style of ______ spent three years living among the nomadic reindeer herders of northern Siberia before beginning to shoot a single frame of footage.",
+    stem: "Which choice completes the text so that it conforms to the conventions of Standard English?",
+    choices: ["storytelling", "storytelling,", "storytelling;", "storytelling:"],
+    answer: 1,
+    explain: '"Known for her immersive style of storytelling" is a nonrestrictive appositive phrase modifying "filmmaker." It needs a comma to close the phrase and return to the main verb "spent." B correctly closes the parenthetical.'
+  },
+  // BLOCK 2: VOCABULARY (Q6-9)
+  {
+    id: 6,
+    type: "vocabulary",
+    passage: "The CEO's announcement that the company would lay off 2,000 workers was met with ______ by the remaining employees, who feared they might be next and grew reluctant to voice concerns or propose changes that might draw attention.",
+    stem: "Which choice completes the text with the most logical and precise word?",
+    choices: ["jubilation", "trepidation", "indifference", "amusement"],
+    answer: 1,
+    explain: `Feared being next + reluctant to draw attention = fear/anxiety. "Trepidation" means fear or anxiety about something that may happen. "Jubilation" is joy, "indifference" is not caring, "amusement" doesn't fit the stakes.`
+  },
+  {
+    id: 7,
+    type: "precision",
+    passage: "Although the two studies examined the same phenomenon, their conclusions were strikingly ______: the first claimed the effect was significant and robust, while the second found it to be negligible and inconsistent.",
+    stem: "Which choice completes the text with the most logical and precise word?",
+    choices: ["similar", "divergent", "ambiguous", "redundant"],
+    answer: 1,
+    explain: '"Significant and robust" vs. "negligible and inconsistent" = opposite conclusions. "Divergent" means going in different directions. "Similar" is the opposite. "Ambiguous" means unclear (both studies are clear, just different). "Redundant" means unnecessary.'
+  },
+  {
+    id: 8,
+    type: "vocabulary",
+    passage: "The diplomat was praised for her ______ approach to the negotiations: rather than demanding immediate concessions, she built trust through small agreements, gradually creating the conditions for a comprehensive deal.",
+    stem: "Which choice completes the text with the most logical and precise word?",
+    choices: ["aggressive", "incremental", "haphazard", "dogmatic"],
+    answer: 1,
+    explain: '"Small agreements, gradually" = step-by-step. "Incremental" means happening in small, gradual stages. "Aggressive" contradicts the patience. "Haphazard" means random. "Dogmatic" means rigidly ideological.'
+  },
+  {
+    id: 9,
+    type: "vocabulary",
+    passage: "Critics praised the novelist's ability to create characters who feel ______ — not idealized heroes or villains but flawed, contradictory individuals whose motivations resist easy categorization.",
+    stem: "Which choice completes the text with the most logical and precise word?",
+    choices: ["exotic", "authentic", "simplistic", "monotonous"],
+    answer: 1,
+    explain: '"Not idealized" + "flawed, contradictory" + "resist easy categorization" = real, true-to-life. "Authentic" means genuine, true to reality. "Exotic" means unusual, "simplistic" contradicts complexity, "monotonous" means boring.'
+  },
+  // BLOCK 3: CRAFT & STRUCTURE (Q10-13)
+  {
+    id: 10,
+    type: "purpose",
+    passage: "For decades, art historians dismissed the paintings of Artemisia Gentileschi as derivative of her father Orazio's work, attributing her most powerful canvases to him or to unnamed male collaborators. It was not until feminist scholars in the 1970s undertook a systematic reexamination of her oeuvre — matching brushwork analysis, pigment composition, and archival records of commissions — that Gentileschi emerged as one of the most technically accomplished painters of the Italian Baroque, whose innovations in depicting dramatic intensity and female agency had no precedent in the work of her father or contemporaries.",
+    stem: "Which choice best describes the main purpose of the text?",
+    choices: ["To argue that Orazio Gentileschi was a lesser artist than his daughter", "To describe how scholarly reexamination overturned decades of misattribution and revealed Artemisia Gentileschi's originality", "To explain techniques used in Italian Baroque painting", "To criticize feminist scholarship in art history"],
+    answer: 1,
+    explain: "The passage moves from: dismissed/misattributed → reexamination with evidence → revealed as original and innovative. The purpose is how scholarly reexamination corrected a historical error."
+  },
+  {
+    id: 11,
+    type: "function",
+    passage: "The widespread belief that goldfish have a three-second memory is entirely false. Studies have consistently demonstrated that goldfish can remember information for months. In one experiment, researchers trained goldfish to push a lever for food; the fish remembered the correct lever five months later. This finding is part of a broader body of research showing that many animals commonly assumed to lack cognitive abilities possess far more sophisticated mental capacities than popular culture suggests.",
+    stem: "Which choice best describes the function of the third sentence in the overall structure of the text?",
+    choices: ["It introduces a new topic unrelated to goldfish memory", "It provides a specific experimental example that supports the claim made in the second sentence", "It contradicts the findings described in the second sentence", "It transitions to a discussion of human memory"],
+    answer: 1,
+    explain: "Sentence 2: goldfish remember for months (general claim). Sentence 3: experiment with lever, remembered 5 months later (specific example). The third sentence provides concrete experimental evidence supporting the general claim."
+  },
+  {
+    id: 12,
+    type: "crosstext",
+    passage: "Text 1:\nEconomist Dr. Petrov argues that universal basic income (UBI) would reduce poverty without discouraging work. He cites a Finnish pilot program in which 2,000 unemployed citizens received monthly payments; participants were no less likely to seek employment than a control group, and reported significantly lower stress and higher well-being.\n\nText 2:\nEconomist Dr. Tanaka cautions against generalizing from small pilot programs to national policy. She notes that the Finnish study's 2,000 participants knew the program was temporary and that being observed might have influenced their behavior. A permanent, universal program, Tanaka argues, could produce very different labor market effects than a short-term experiment with a small, self-aware sample.",
+    stem: "Based on the texts, how would Dr. Tanaka most likely respond to Dr. Petrov's use of the Finnish study?",
+    choices: ["By agreeing that the Finnish study conclusively proves UBI works", "By arguing that UBI would definitely discourage work", "By contending that the study's small scale, temporary nature, and observation effects limit its applicability to permanent national policy", "By suggesting that Finland's economy is too different from other countries for the study to be relevant"],
+    answer: 2,
+    explain: "Tanaka's objections are specific: small sample, temporary program, observation effects. She doesn't reject UBI entirely — she questions whether THIS evidence can justify NATIONAL policy. C captures her methodological concerns."
+  },
+  {
+    id: 13,
+    type: "purpose",
+    passage: "The octopus, despite being an invertebrate with no backbone and a lifespan rarely exceeding two years, demonstrates problem-solving abilities that rival those of some primates. In laboratory settings, octopuses have unscrewed jars from the inside to escape, navigated complex mazes using spatial memory, and even used coconut shells as portable shelters — a behavior that meets the scientific definition of tool use. These cognitive feats challenge the long-held assumption that complex intelligence requires a vertebrate brain.",
+    stem: "Which choice best describes the main purpose of the text?",
+    choices: ["To compare octopuses to primates in detail", "To present evidence that octopus intelligence challenges assumptions about the biological requirements for complex cognition", "To describe the daily behavior of octopuses in the wild", "To argue that invertebrates are smarter than vertebrates"],
+    answer: 1,
+    explain: 'The passage presents specific cognitive feats (jars, mazes, tools) and concludes they "challenge the long-held assumption." The purpose is to use octopus evidence to question what biology intelligence requires.'
+  },
+  // BLOCK 4: INFORMATION & IDEAS (Q14-20)
+  {
+    id: 14,
+    type: "central",
+    passage: "Scientists have long known that trees in forests communicate through underground fungal networks, nicknamed the 'Wood Wide Web,' sharing nutrients and chemical warning signals. New research reveals a more complex picture: these networks are not purely cooperative. Dominant trees can monopolize network resources, and fungi sometimes act as parasites rather than mutualists, extracting more carbon from trees than they return in nutrients. The emerging view is that forest networks, like human economies, involve a dynamic mix of cooperation, competition, and exploitation.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["Forest fungal networks are purely cooperative systems that benefit all trees equally", "Underground fungal networks in forests involve not just cooperation but also competition and exploitation, resembling complex economic systems", "Fungi are parasites that harm trees through underground networks", "Scientists do not understand how trees communicate"],
+    answer: 1,
+    explain: "The passage moves from the cooperative view → complication (not purely cooperative, also competition/exploitation) → conclusion (dynamic mix like economies). B captures the full complexity."
+  },
+  {
+    id: 15,
+    type: "detail",
+    passage: "The Treaty of Tordesillas, signed in 1494 between Spain and Portugal, divided the newly discovered lands of the Americas along a meridian 370 leagues west of the Cape Verde Islands. Lands east of the line would belong to Portugal; lands west to Spain. This arbitrary division, ratified by Pope Alexander VI, is the reason Brazil — which juts eastward into the Atlantic — became a Portuguese-speaking nation while virtually every other country in South and Central America speaks Spanish.",
+    stem: "According to the passage, what explains why Brazil speaks Portuguese while most of South America speaks Spanish?",
+    choices: ["Brazil was colonized before the rest of South America", "The Treaty of Tordesillas placed Brazil east of the dividing line, assigning it to Portugal's sphere while the rest of the Americas fell under Spain's", "Portuguese explorers were more skilled navigators than Spanish explorers", "The Pope declared that Brazil should speak Portuguese"],
+    answer: 1,
+    explain: "The passage explicitly states: the meridian line placed lands east (Brazil juts east) under Portugal and lands west under Spain. B matches this detail directly."
+  },
+  {
+    id: 16,
+    type: "inference",
+    passage: "In 2019, the Japanese art collective teamLab opened a permanent museum in Tokyo consisting entirely of digital art installations — no physical artworks, no frames, no traditional gallery spaces. Within its first year, the museum attracted 2.3 million visitors, making it the single most visited institution dedicated to a single artist or collective in the world. Notably, the museum's visitor demographics skewed dramatically younger than those of traditional art museums, with 68% of visitors under 35.",
+    stem: "Which inference is best supported by the text?",
+    choices: ["Digital art is objectively superior to traditional art", "Traditional art museums may need to reconsider their approach if they wish to engage younger audiences, as the teamLab museum's success suggests that immersive, technology-driven experiences appeal to demographics that conventional galleries are not reaching", "Physical art museums will close within the next decade", "All art should be digital"],
+    answer: 1,
+    explain: "Most visited + 68% under 35 + dramatically different from traditional museum demographics = digital/immersive experiences attract young audiences that traditional galleries miss. B draws this inference without overgeneralizing."
+  },
+  {
+    id: 17,
+    type: "data",
+    passage: "A research team studied the relationship between urban green space and mental health outcomes across 30 cities.",
+    table: [
+      ["Green space coverage", "Depression rate", "Anxiety rate", "Self-reported well-being"],
+      ["Under 10%", "14.2%", "18.7%", "5.8/10"],
+      ["10-20%", "11.8%", "15.3%", "6.4/10"],
+      ["20-35%", "9.1%", "12.4%", "7.1/10"],
+      ["Over 35%", "8.9%", "11.8%", "7.3/10"]
+    ],
+    tableNote: "Depression and anxiety rates from clinical diagnoses. Well-being from standardized surveys (10-point scale).",
+    stem: "Which claim is best supported by the data in the table?",
+    choices: ["Green space has no effect on mental health outcomes", "Increasing green space is associated with improved mental health outcomes, though the benefits appear to diminish at higher coverage levels — the largest improvements occur when increasing from under 10% to 20-35%", "Cities with green space over 35% have no mental health issues", "The data proves that green space causes improved mental health"],
+    answer: 1,
+    explain: "Depression drops sharply from 14.2→11.8→9.1 (big drops) then barely changes 9.1→8.9. Same pattern for anxiety and well-being. B correctly identifies: consistent association, diminishing returns at high levels, biggest gains in the lower-to-middle range."
+  },
+  {
+    id: 18,
+    type: "evidence",
+    passage: "Psychologist Dr. Okafor argues that the concept of 'grit' — persistence and passion for long-term goals — is overstated as a predictor of success. She contends that structural advantages such as wealth, social connections, and educational access play a far larger role than individual character traits.",
+    claim: "Dr. Okafor argues that grit's importance is overstated because structural factors are more predictive of success.",
+    stem: "Which finding would most effectively support this claim?",
+    choices: ["Many successful people describe themselves as hardworking and persistent", "A longitudinal study found that students' socioeconomic status predicted college completion rates five times more strongly than their grit scores, and that among students with equal grit levels, those from wealthy families were three times more likely to graduate than those from low-income families", "Grit can be measured using validated psychological scales", "Dr. Okafor has studied success factors for over fifteen years"],
+    answer: 1,
+    explain: "The claim: structure > grit. B provides direct comparative evidence: SES predicted success 5x more than grit, and equal grit + different wealth = 3x different outcomes. This shows grit alone doesn't overcome structural barriers."
+  },
+  {
+    id: 19,
+    type: "weaken",
+    passage: "A study found that residents of walkable neighborhoods weigh an average of 8 pounds less than residents of car-dependent suburbs. The researchers concluded that neighborhood walkability directly promotes healthier body weight through increased physical activity.",
+    stem: "Which finding, if true, would most weaken this conclusion?",
+    choices: ["Walkable neighborhoods often have better access to public transit", "Residents of walkable neighborhoods also had significantly higher incomes and education levels, and were more likely to have chosen their neighborhood specifically because of existing health-conscious lifestyles — suggesting self-selection rather than neighborhood influence", "Walking is a beneficial form of exercise", "The study included over 10,000 participants"],
+    answer: 1,
+    explain: "The conclusion claims walkability CAUSES lower weight. B reveals self-selection: health-conscious people CHOOSE walkable neighborhoods. The weight difference may reflect pre-existing health behaviors and socioeconomic advantages, not the neighborhood's influence on behavior."
+  },
+  {
+    id: 20,
+    type: "completion",
+    passage: "Archaeologists studying the ancient Indus Valley civilization have been unable to decipher its writing system, known as the Indus script. Unlike Egyptian hieroglyphics, which were decoded using the Rosetta Stone's parallel Greek text, the Indus script has no known bilingual inscription. The longest known Indus text contains only 26 characters, and the average inscription is just five characters long. Many scholars now believe that the Indus script ______",
+    stem: "Which choice most logically completes the text?",
+    choices: ["was used only for decorative purposes and contained no linguistic meaning", "may never be fully deciphered without the discovery of a longer text or a bilingual inscription that provides an external reference point for interpretation", "encoded a language identical to modern Hindi", "was understood by all ancient civilizations in the region"],
+    answer: 1,
+    explain: `No bilingual key + extremely short texts = insufficient data for decipherment. B is the logical conclusion: we need either longer texts or a bilingual key (like the Rosetta Stone was for hieroglyphics). A overstates ("no linguistic meaning" is unproven). C and D aren't supported.`
+  },
+  // BLOCK 5: EXPRESSION & SYNTHESIS (Q21-27)
+  {
+    id: 21,
+    type: "transition",
+    s1: "The new antibiotic proved remarkably effective in laboratory conditions, eliminating 99.8% of the targeted bacteria in controlled experiments.",
+    s2: "______, when tested in actual patients, the drug's effectiveness dropped to 62%, likely because the complex environment of the human body provides bacteria with defenses and hiding places that laboratory cultures cannot replicate.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["Furthermore", "Similarly", "In clinical trials, however", "As expected"],
+    answer: 2,
+    explain: 'Lab: 99.8% effective. Patients: 62% effective. This is a contrast between controlled conditions and real-world results. "In clinical trials, however" signals both the context shift (lab→trials) and the contradiction.'
+  },
+  {
+    id: 22,
+    type: "synthesis",
+    notes: ["Marie Curie was the first person to win Nobel Prizes in two different scientific disciplines (Physics 1903, Chemistry 1911).", "Curie's research on radioactivity was conducted in a converted shed with no proper ventilation or safety equipment.", "She carried test tubes of radioactive isotopes in her pockets and stored them in her desk drawer.", "Curie died in 1934 of aplastic anemia, almost certainly caused by prolonged radiation exposure.", "Her personal notebooks from the 1890s remain so radioactive that they are stored in lead-lined boxes and researchers must wear protective clothing to consult them."],
+    goal: "illustrate the personal cost of Curie's scientific achievements",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "Marie Curie won Nobel Prizes in both Physics and Chemistry, the first person to receive the honor in two different scientific disciplines.",
+      "Marie Curie's pioneering research on radioactivity, conducted without safety precautions in a converted shed, ultimately killed her — her death from radiation-induced anemia in 1934 a direct consequence of the work that made her the only person to win Nobel Prizes in two different sciences, a cost made tangible by the fact that her notebooks remain too radioactive to handle without protective equipment nearly a century later.",
+      "Curie's notebooks from the 1890s are stored in lead-lined boxes because they are still highly radioactive.",
+      "Marie Curie worked in a converted shed without proper safety equipment during her early research career."
+    ],
+    answer: 1,
+    explain: "Goal: PERSONAL COST of ACHIEVEMENTS. B connects achievements (Nobel Prizes) to cost (no safety, death from radiation, notebooks still radioactive). The progression from triumph to sacrifice to lasting physical evidence of the danger illustrates the cost powerfully."
+  },
+  {
+    id: 23,
+    type: "transition",
+    s1: "The endangered California condor population dropped to just 22 individuals in 1987, prompting a controversial decision to capture all remaining wild birds for a captive breeding program.",
+    s2: "______, the population has rebounded to over 500 birds, with more than 300 now flying free — making the condor recovery one of the most successful captive breeding programs in conservation history.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["Nevertheless", "In the decades since", "In contrast", "For example"],
+    answer: 1,
+    explain: 'Sentence 1: 1987, only 22 birds, captured for breeding. Sentence 2: population now 500+, 300 free. This is a temporal progression showing recovery over time. "In the decades since" captures the time elapsed and the consequent improvement.'
+  },
+  {
+    id: 24,
+    type: "expression",
+    passage: "The artist uses color in her paintings.",
+    goal: "convey the visceral, emotional impact of the artist's use of color",
+    stem: "Which revision most effectively accomplishes this goal?",
+    choices: [
+      "The artist is known for including many colors in her work.",
+      "The artist's canvases assault the viewer with color — cadmium reds that pulse like open wounds, ultramarine blues so deep they seem to pull the eye inward, and acid yellows that vibrate against their backgrounds with an almost audible hum.",
+      "Many art critics have noted that the artist uses color effectively in her paintings.",
+      "The artist frequently uses red, blue, and yellow in her paintings."
+    ],
+    answer: 1,
+    explain: 'Goal: VISCERAL, EMOTIONAL impact. B uses sensory language ("assault," "pulse like open wounds," "pull the eye inward," "almost audible hum") and specific pigment names (cadmium red, ultramarine, acid yellow). This is writing that makes you FEEL the color.'
+  },
+  {
+    id: 25,
+    type: "synthesis",
+    notes: ["The Library of Congress is the largest library in the world, with over 170 million items.", "The library adds approximately 12,000 items to its collection every working day.", "Items include books, recordings, photographs, maps, sheet music, and digital files.", "The library's web archive contains over 800 billion web pages preserved from the early internet era.", "A complete physical tour of the library's shelves would cover approximately 838 miles."],
+    goal: "convey the almost incomprehensible scale of the library's holdings",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "The Library of Congress is the world's largest library, containing over 170 million items including books, recordings, and photographs.",
+      "The Library of Congress adds about 12,000 items per day to its collection of various materials.",
+      "With over 170 million items spanning 838 miles of shelves, a collection growing by 12,000 items every working day, and a web archive preserving 800 billion pages from the early internet, the Library of Congress operates at a scale that defies ordinary comprehension.",
+      "The Library of Congress contains many different types of items including books, recordings, photographs, maps, and digital files."
+    ],
+    answer: 2,
+    explain: 'Goal: INCOMPREHENSIBLE SCALE. C stacks the most staggering numbers: 170 million items, 838 miles of shelves, 12,000 per day, 800 billion web pages — and explicitly names the effect ("defies ordinary comprehension"). A uses one number. B uses one. D lists types without conveying scale.'
+  },
+  {
+    id: 26,
+    type: "transition",
+    s1: "The city's decision to replace a six-lane highway with a tree-lined boulevard and public park was initially condemned by commuters and business owners who predicted catastrophic traffic congestion and economic decline.",
+    s2: "______, traffic studies two years later showed that 35% of the highway's former users had switched to public transit, cycling, or remote work, and property values along the new boulevard had increased by 22%, attracting restaurants and shops that generated more tax revenue than the businesses displaced by construction.",
+    stem: "Which transition most logically connects these sentences?",
+    choices: ["As feared", "Predictably", "Contrary to those predictions", "In addition"],
+    answer: 2,
+    explain: 'Sentence 1: predicted catastrophe (traffic, economic decline). Sentence 2: reality — traffic adapted, property values up, more revenue. The outcome contradicted the predictions. "Contrary to those predictions" directly signals this reversal.'
+  },
+  {
+    id: 27,
+    type: "synthesis",
+    notes: ["The James Webb Space Telescope can observe infrared light from galaxies formed 13.5 billion years ago.", "Some of these ancient galaxies appear far larger and more structured than current models of early universe evolution predicted.", "Existing models assumed that galaxies needed billions of years to grow to such sizes.", "The observations have prompted some cosmologists to reconsider fundamental assumptions about the rate of galaxy formation.", "Other scientists caution that the discrepancy may reflect measurement limitations rather than flaws in current models."],
+    goal: "present a scientific discovery alongside the debate it has generated",
+    stem: "Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+    choices: [
+      "The James Webb Space Telescope can observe galaxies that formed 13.5 billion years ago using infrared light.",
+      "The Webb telescope's observation of unexpectedly large, structured galaxies in the early universe — galaxies that existing models say should not yet have existed — has sparked a scientific debate: while some cosmologists argue the discovery requires rethinking fundamental assumptions about galaxy formation, others caution that the apparent discrepancy may stem from measurement limitations rather than theoretical flaws.",
+      "Some scientists believe that current models of galaxy formation may be wrong.",
+      "The James Webb Space Telescope has made many important observations since its launch."
+    ],
+    answer: 1,
+    explain: "Goal: DISCOVERY + DEBATE. B presents the discovery (unexpectedly large early galaxies contradicting models) and BOTH sides of the debate (rethink assumptions vs. measurement limitations). A is just capability. C is one side. D is vague."
+  }
+];
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${BLUE}22`, border: `1px solid ${BLUE}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: BLUE, marginBottom: 12, fontWeight: 600 } }, "Unit 5 · Module 17"), /* @__PURE__ */ React.createElement("h1", { style: { fontSize: "clamp(1.7rem,4.5vw,3rem)", fontWeight: 800, background: `linear-gradient(135deg,${BLUE},${PURPLE})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 } }, "Full Practice Test 2"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 32 } }, "A second complete 27-question module with entirely new content. Track your improvement from Practice Test 1."), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 28, maxWidth: 500, width: "100%", marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 } }, [
+    { label: "Questions", value: "27", icon: "📝" },
+    { label: "Time", value: "32 min", icon: "⏱️" },
+    { label: "Content", value: "All New", icon: "🆕" },
+    { label: "Purpose", value: "Track Growth", icon: "📈" }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: `${BLUE}08`, borderRadius: 12, padding: 14, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 20, marginBottom: 4 } }, s.icon), /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontWeight: 900, fontSize: 18 } }, s.value), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, s.label)))), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6, textAlign: "center" } }, "Same format as Practice Test 1. Compare your results to identify growth areas and persistent challenges.")), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: onNext,
+      style: { ...btn(`linear-gradient(135deg,${BLUE},${PURPLE})`, TEXT), fontSize: 17, padding: "16px 40px" },
+      onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.04)",
+      onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)"
+    },
+    "Begin Test ⏱️"
+  ));
+}
+function TestArena({ onComplete }) {
+  const total = QUESTIONS.length;
+  const [answers, setAnswers] = useState(Array(total).fill(null));
+  const [flagged, setFlagged] = useState(Array(total).fill(false));
+  const [currentQ, setCurrentQ] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(32 * 60);
+  const [finished, setFinished] = useState(false);
+  const [showNav, setShowNav] = useState(false);
+  const timerRef = useRef(null);
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setTimeLeft((t) => {
+        if (t <= 1) {
+          clearInterval(timerRef.current);
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1e3);
+    return () => clearInterval(timerRef.current);
+  }, []);
+  useEffect(() => {
+    if (timeLeft <= 0 && !finished) handleSubmit();
+  }, [timeLeft, finished]);
+  function handleSubmit() {
+    clearInterval(timerRef.current);
+    setFinished(true);
+    const results = QUESTIONS.map((q2, i) => ({
+      id: q2.id,
+      type: q2.type,
+      correct: answers[i] === q2.answer,
+      answered: answers[i] !== null,
+      selected: answers[i],
+      flagged: flagged[i]
+    }));
+    onComplete(results, 32 * 60 - timeLeft);
+  }
+  function toggleFlag() {
+    setFlagged((f) => {
+      const n = [...f];
+      n[currentQ] = !n[currentQ];
+      return n;
+    });
+  }
+  const q = QUESTIONS[currentQ];
+  const mins = Math.floor(timeLeft / 60);
+  const secs = timeLeft % 60;
+  const timerColor = timeLeft > 600 ? ACCENT : timeLeft > 300 ? AMBER : RED;
+  const hasTable = !!q.table;
+  if (finished) return null;
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "16px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, position: "sticky", top: 0, background: DARK, zIndex: 10, padding: "8px 0", borderBottom: `1px solid ${BORDER}` } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 12 } }, /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontWeight: 800, fontSize: 14 } }, "Q", currentQ + 1, "/", total), /* @__PURE__ */ React.createElement("button", { onClick: toggleFlag, style: { background: flagged[currentQ] ? `${AMBER}22` : "transparent", border: `1px solid ${flagged[currentQ] ? AMBER : BORDER}`, borderRadius: 6, padding: "4px 10px", cursor: "pointer", color: flagged[currentQ] ? AMBER : MUTED, fontSize: 12, fontWeight: 600 } }, flagged[currentQ] ? "🚩 Flagged" : "🏳️ Flag"), /* @__PURE__ */ React.createElement("button", { onClick: () => setShowNav(!showNav), style: { background: showNav ? `${BLUE}22` : "transparent", border: `1px solid ${showNav ? BLUE : BORDER}`, borderRadius: 6, padding: "4px 10px", cursor: "pointer", color: showNav ? BLUE : MUTED, fontSize: 12, fontWeight: 600 } }, "📋 Nav")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { color: timerColor, fontWeight: 900, fontSize: 18, fontFamily: "monospace" } }, String(mins).padStart(2, "0"), ":", String(secs).padStart(2, "0")), /* @__PURE__ */ React.createElement("button", { onClick: handleSubmit, style: { background: `${RED}22`, border: `1px solid ${RED}44`, borderRadius: 6, padding: "4px 12px", cursor: "pointer", color: RED, fontSize: 12, fontWeight: 700 } }, "Submit"))), showNav && /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 12, padding: 12, marginBottom: 16, display: "flex", flexWrap: "wrap", gap: 4 } }, QUESTIONS.map((_, i) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: i,
+      onClick: () => {
+        setCurrentQ(i);
+        setShowNav(false);
+      },
+      style: {
+        width: 32,
+        height: 32,
+        borderRadius: 6,
+        border: "none",
+        cursor: "pointer",
+        fontWeight: 700,
+        fontSize: 11,
+        background: i === currentQ ? BLUE : answers[i] !== null ? flagged[i] ? `${AMBER}33` : `${ACCENT}22` : flagged[i] ? `${AMBER}22` : BORDER,
+        color: i === currentQ ? TEXT : answers[i] !== null ? ACCENT : flagged[i] ? AMBER : MUTED
+      }
+    },
+    i + 1
+  )), /* @__PURE__ */ React.createElement("div", { style: { width: "100%", display: "flex", gap: 12, marginTop: 8, color: MUTED, fontSize: 10 } }, /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("span", { style: { display: "inline-block", width: 8, height: 8, borderRadius: 2, background: `${ACCENT}22`, marginRight: 4 } }), "Answered"), /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("span", { style: { display: "inline-block", width: 8, height: 8, borderRadius: 2, background: `${AMBER}22`, marginRight: 4 } }), "Flagged"), /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("span", { style: { display: "inline-block", width: 8, height: 8, borderRadius: 2, background: BORDER, marginRight: 4 } }), "Unanswered"))), /* @__PURE__ */ React.createElement("div", { style: { height: 3, background: BORDER, borderRadius: 2, marginBottom: 16, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${answers.filter((a) => a !== null).length / total * 100}%`, background: `linear-gradient(90deg,${BLUE},${PURPLE})`, borderRadius: 2, transition: "width .4s" } })), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 12 } }, TYPE_META[q.type] && /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, padding: "3px 10px", borderRadius: 5, fontWeight: 600, background: `${TYPE_META[q.type].color}18`, color: TYPE_META[q.type].color } }, TYPE_META[q.type].label)), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 16 } }, q.passage && /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, q.passage), q.s1 && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif", marginBottom: 12 } }, q.s1), /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, q.s2)), q.notes && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: { color: PURPLE, fontSize: 12, fontWeight: 700, marginBottom: 8 } }, "NOTES"), q.notes.map((n, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", gap: 8, marginBottom: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { color: PURPLE, fontSize: 13, fontWeight: 700 } }, "•"), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, n)))), q.claim && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12, padding: "10px 14px", borderRadius: 10, background: `${AMBER}11`, border: `1px solid ${AMBER}33` } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 11, fontWeight: 700, marginBottom: 4 } }, "CLAIM"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13 } }, q.claim)), q.goal && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12, padding: "10px 14px", borderRadius: 10, background: `${AMBER}11`, border: `1px solid ${AMBER}33` } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 11, fontWeight: 700, marginBottom: 4 } }, "GOAL"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13 } }, "The writer wants to ", /* @__PURE__ */ React.createElement("strong", null, q.goal), ".")), hasTable && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12, overflowX: "auto" } }, /* @__PURE__ */ React.createElement("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 12 } }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", null, q.table[0].map((h, i) => /* @__PURE__ */ React.createElement("th", { key: i, style: { padding: "7px 10px", borderBottom: `2px solid ${BLUE}`, color: BLUE, fontWeight: 700, textAlign: "left", whiteSpace: "nowrap" } }, h)))), /* @__PURE__ */ React.createElement("tbody", null, q.table.slice(1).map((row, ri) => /* @__PURE__ */ React.createElement("tr", { key: ri }, row.map((cell, ci) => /* @__PURE__ */ React.createElement("td", { key: ci, style: { padding: "7px 10px", borderBottom: `1px solid ${BORDER}`, color: ci === 0 ? TEXT : SUB, whiteSpace: "nowrap" } }, cell)))))), q.tableNote && /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 10, marginTop: 6, fontStyle: "italic" } }, q.tableNote))), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, q.stem), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } }, q.choices.map((c, ci) => {
+    const letter = "ABCD"[ci];
+    const isSel = answers[currentQ] === ci;
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: ci,
+        onClick: () => setAnswers((a) => {
+          const n = [...a];
+          n[currentQ] = ci;
+          return n;
+        }),
+        style: {
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 12,
+          padding: "14px 18px",
+          borderRadius: 12,
+          background: isSel ? `${BLUE}15` : CARD,
+          border: isSel ? `2px solid ${BLUE}` : `1px solid ${BORDER}`,
+          cursor: "pointer",
+          textAlign: "left",
+          width: "100%"
+        }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: {
+        minWidth: 28,
+        height: 28,
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 800,
+        fontSize: 13,
+        flexShrink: 0,
+        marginTop: 1,
+        background: isSel ? BLUE : BORDER,
+        color: isSel ? DARK : MUTED
+      } }, letter),
+      /* @__PURE__ */ React.createElement("span", { style: { color: isSel ? BLUE : "#cbd5e1", fontSize: 14, lineHeight: 1.5 } }, c)
+    );
+  })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setCurrentQ(Math.max(0, currentQ - 1)),
+      disabled: currentQ === 0,
+      style: { ...btn("transparent", currentQ === 0 ? "#334155" : SUB), border: `1px solid ${BORDER}`, padding: "10px 20px", fontSize: 14 }
+    },
+    "← Prev"
+  ), currentQ < total - 1 ? /* @__PURE__ */ React.createElement("button", { onClick: () => setCurrentQ(currentQ + 1), style: btn(BLUE, TEXT, { fontSize: 14, padding: "10px 20px" }) }, "Next →") : /* @__PURE__ */ React.createElement("button", { onClick: handleSubmit, style: btn(`linear-gradient(135deg,${BLUE},${PURPLE})`, TEXT, { fontSize: 14, padding: "10px 20px" }) }, "Submit Test →")));
+}
+function Results({ results, elapsedSeconds }) {
+  const [show, setShow] = useState(false);
+  const [tab, setTab] = useState("overview");
+  useEffect(() => {
+    setTimeout(() => setShow(true), 200);
+  }, []);
+  const correct = results.filter((r) => r.correct).length;
+  const answered = results.filter((r) => r.answered).length;
+  const total = results.length;
+  const pct = Math.round(correct / total * 100);
+  const mins = Math.floor(elapsedSeconds / 60);
+  const secs = elapsedSeconds % 60;
+  const typeBreakdown = {};
+  results.forEach((r) => {
+    if (!typeBreakdown[r.type]) typeBreakdown[r.type] = { total: 0, correct: 0 };
+    typeBreakdown[r.type].total++;
+    if (r.correct) typeBreakdown[r.type].correct++;
+  });
+  const rawPct = correct / total;
+  const estLow = Math.round(200 + rawPct * 550);
+  const estHigh = Math.min(800, estLow + 40);
+  return /* @__PURE__ */ React.createElement("div", { style: { transition: "all .7s", opacity: show ? 1 : 0, maxWidth: 800, margin: "0 auto", padding: "40px 20px 80px" } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 56, marginBottom: 12 } }, "📊"), /* @__PURE__ */ React.createElement("h1", { style: { color: BLUE, fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 900, marginBottom: 8 } }, "Practice Test 2 Results"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 16 } }, "Completed in ", mins, "m ", secs, "s")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(130px,1fr))", gap: 12, marginBottom: 32 } }, [
+    { label: "Raw Score", value: `${correct}/${total}`, sub: `${pct}%`, color: pct >= 80 ? ACCENT : pct >= 60 ? AMBER : RED },
+    { label: "Answered", value: `${answered}/${total}`, sub: answered < total ? `${total - answered} blank!` : "✓ All answered", color: answered === total ? ACCENT : RED },
+    { label: "Est. Score", value: `${estLow}-${estHigh}`, sub: "R&W section", color: BLUE },
+    { label: "Time Used", value: `${mins}m`, sub: `of 32m`, color: mins <= 32 ? ACCENT : RED }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: s.color, fontWeight: 900, fontSize: 22, marginTop: 4 } }, s.value), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 11, marginTop: 2 } }, s.sub)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 24, background: CARD, borderRadius: 10, padding: 4 } }, [["overview", "By Question Type"], ["detail", "Question Log"], ["analysis", "Growth Analysis"]].map(([k, l]) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: k,
+      onClick: () => setTab(k),
+      style: {
+        flex: 1,
+        padding: "10px 12px",
+        borderRadius: 8,
+        border: "none",
+        fontWeight: 600,
+        fontSize: 13,
+        cursor: "pointer",
+        background: tab === k ? BORDER : "transparent",
+        color: tab === k ? TEXT : MUTED
+      }
+    },
+    l
+  ))), tab === "overview" && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10 } }, Object.entries(typeBreakdown).sort((a, b) => b[1].total - a[1].total).map(([t, d]) => {
+    const meta = TYPE_META[t];
+    const sp = Math.round(d.correct / d.total * 100);
+    return /* @__PURE__ */ React.createElement("div", { key: t, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 12, padding: 14, display: "flex", alignItems: "center", gap: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { minWidth: 100 } }, /* @__PURE__ */ React.createElement("div", { style: { color: meta?.color || TEXT, fontWeight: 700, fontSize: 13 } }, meta?.label || t)), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, height: 8, background: BORDER, borderRadius: 4, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${sp}%`, background: meta?.color || BLUE, borderRadius: 4 } })), /* @__PURE__ */ React.createElement("div", { style: { minWidth: 65, textAlign: "right" } }, /* @__PURE__ */ React.createElement("span", { style: { color: meta?.color || TEXT, fontWeight: 800, fontSize: 14 } }, d.correct, "/", d.total)));
+  })), tab === "detail" && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6 } }, results.map((r, i) => {
+    const meta = TYPE_META[r.type];
+    return /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("div", { style: {
+      width: 28,
+      height: 28,
+      borderRadius: 7,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: 800,
+      fontSize: 12,
+      background: r.correct ? `${ACCENT}22` : r.answered ? `${RED}22` : `${MUTED}22`,
+      color: r.correct ? ACCENT : r.answered ? RED : MUTED
+    } }, i + 1), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement("span", { style: { color: meta?.color || TEXT, fontSize: 12, fontWeight: 600 } }, meta?.label || r.type)), r.flagged && /* @__PURE__ */ React.createElement("span", { style: { fontSize: 12 } }, "🚩"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 14 } }, r.correct ? "✅" : r.answered ? "❌" : "⬜"));
+  })), tab === "analysis" && /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 16, marginBottom: 12 } }, "Growth Analysis"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.7 } }, pct >= 85 ? "Outstanding! You're performing at a level consistent with 700+ scores. Your command of all question types is strong. Module 18 will provide your final diagnostic and personalized study plan." : pct >= 70 ? "Strong improvement! Compare your results to Practice Test 1 — look at which question types improved and which remain challenging. Targeted review of your weakest 2-3 types will yield the fastest gains." : pct >= 55 ? "Solid performance. Focus on the question types where you scored below 50% — these represent the highest-leverage improvement opportunities. Each type you master adds 1-2 questions per test to your score." : "Use this as a diagnostic. Identify your 3 weakest question types and review the corresponding module lessons. Consistent, targeted practice will improve your score significantly.")), (() => {
+    const weakTypes = Object.entries(typeBreakdown).filter(([, d]) => d.correct / d.total < 0.5 && d.total >= 1).sort((a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total);
+    if (weakTypes.length === 0) return /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontSize: 14, fontWeight: 600, textAlign: "center", padding: 20 } }, "No major weak areas detected!");
+    return /* @__PURE__ */ React.createElement("div", { style: { background: `${RED}08`, border: `1px solid ${RED}33`, borderRadius: 14, padding: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: RED, fontWeight: 700, fontSize: 14, marginBottom: 10 } }, "Priority Review Areas"), weakTypes.map(([t, d]) => {
+      const meta = TYPE_META[t];
+      const tips = {
+        conventions: "Modules 1-4: Identify the grammar rule, apply it, move on.",
+        vocabulary: "Module 5: Context clues, eliminate wrong tone, secondary meanings.",
+        precision: "Module 6: Check scope, intensity, and domain fit.",
+        purpose: "Module 7: Ask what the author is DOING, not saying.",
+        function: "Module 7: What JOB does the sentence serve in the passage?",
+        crosstext: "Module 8: Summarize each text independently before comparing.",
+        central: "Module 9: Summarize in one sentence before looking at choices.",
+        detail: "Module 9: Go back to the passage. Find the exact sentence.",
+        inference: "Module 9: Smallest logical leap from evidence.",
+        evidence: "Module 10: SUPPORTS, not just RELATES. Most specific match.",
+        data: "Module 10: Labels first, trends second, then match to claim.",
+        strengthen: "Module 11: Confirm assumptions or eliminate alternatives.",
+        weaken: "Module 11: Alternative explanations or attack assumptions.",
+        completion: "Module 11: Most moderate, well-supported conclusion.",
+        synthesis: "Module 13: GOAL first, then relevant notes.",
+        transition: "Module 13: Cover the word, identify the relationship.",
+        expression: "Module 13: Match the revision to the EXACT stated objective."
+      };
+      return /* @__PURE__ */ React.createElement("div", { key: t, style: { marginBottom: 8, padding: "8px 12px", background: `${meta?.color || RED}08`, borderLeft: `3px solid ${meta?.color || RED}`, borderRadius: "0 8px 8px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { color: meta?.color || RED, fontWeight: 700, fontSize: 12 } }, meta?.label || t, " (", d.correct, "/", d.total, ")"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 11, marginTop: 2 } }, tips[t] || ""));
+    }));
+  })()), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginTop: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13 } }, "Final Module: Module 18 — Course Finale & Diagnostics"), React.createElement(Homework, null), React.createElement(NavLinks, null)));
+}
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [testResults, setTestResults] = useState(null);
+  const [testTime, setTestTime] = useState(0);
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    inset: 0,
+    pointerEvents: "none",
+    opacity: 0.03,
+    backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",
+    backgroundSize: "40px 40px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } }, screen === "welcome" && /* @__PURE__ */ React.createElement(Welcome, { onNext: () => go("test") }), screen === "test" && /* @__PURE__ */ React.createElement(TestArena, { onComplete: (r, t) => {
+    setTestResults(r);
+    setTestTime(t);
+    go("results");
+  } }), screen === "results" && testResults && /* @__PURE__ */ React.createElement(Results, { results: testResults, elapsedSeconds: testTime })));
+}
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>

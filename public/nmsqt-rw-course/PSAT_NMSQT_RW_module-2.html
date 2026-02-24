@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 2: The Grammar Playbook, Part I — PSAT/NMSQT Reading & Writing — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#121212;color:#f0f0f0;font-family:'Source Sans 3',sans-serif}
+button{font-family:inherit}
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const{useState,useEffect,useCallback,useRef}=React;const e=React.createElement;
+const C={paper:'#121212',surface:'#1a1a1a',border:'#2a2a2a',ink:'#f0f0f0',muted:'#999',sub:'#ccc',accent:'#0891b2',conv:'#fbbf24',convBg:'rgba(251,191,36,.1)',craft:'#60a5fa',info:'#34d399',expr:'#f472b6',correct:'#22c55e',correctBg:'rgba(34,197,94,.12)',wrong:'#ef4444',wrongBg:'rgba(239,68,68,.12)',nm:'#a78bfa',nmBg:'rgba(167,139,250,.1)'};
+const F={serif:"'Cormorant Garamond',serif",mono:"'JetBrains Mono',monospace"};
+const btn=(bg,c,x)=>({padding:'10px 24px',borderRadius:8,border:'none',background:bg,color:c,fontWeight:600,fontSize:'.9rem',cursor:'pointer',transition:'all .15s',fontFamily:'inherit',...x});
+const crd=(x)=>({background:C.surface,border:'1px solid '+C.border,borderRadius:12,padding:'18px 20px',marginBottom:12,...x});
+const psg={background:C.paper,border:'1px solid '+C.border,borderRadius:8,padding:'12px 14px',fontSize:'.88rem',color:'#ddd',lineHeight:1.75,marginBottom:12,borderLeft:'3px solid '+C.muted,fontFamily:F.serif};
+const dbg=(d)=>{const m={easy:{b:C.correctBg,c:C.correct},medium:{b:C.convBg,c:C.conv},hard:{b:C.wrongBg,c:C.wrong}};const s=m[d]||m.medium;return{display:'inline-block',fontSize:'.65rem',fontWeight:700,letterSpacing:1,textTransform:'uppercase',padding:'2px 8px',borderRadius:4,background:s.b,color:s.c}};
+const WARMUP=[
+{passage:'Marine biologists studying coral reefs have found that certain species of parrotfish play a crucial role in reef health. By feeding on algae that would otherwise _______ coral, parrotfish help maintain the delicate balance of reef ecosystems.',stem:'Which choice completes the text with the most logical and precise word?',choices:['illuminate','smother','decorate','approach'],correct:1,domain:'Craft & Structure',type:'Words in Context',explain:'"Smother" means to suffocate \u2014 precisely what unchecked algae does to coral.'},
+{passage:'The James Webb Space Telescope, launched in December 2021, has provided astronomers with unprecedented views of the early _______ its infrared instruments can detect light from galaxies that formed just 300 million years after the Big Bang.',stem:'Which choice completes the text so that it conforms to the conventions of Standard English?',choices:['universe, its','universe. Its','universe its','universe; and its'],correct:1,domain:'Conventions',type:'Boundaries',explain:'Two ICs need proper separation. Period works. (A) comma splice. (C) run-on.'},
+{passage:'Traditional beekeeping relies on stationary hives that draw from nearby flower sources. _______ migratory beekeeping involves transporting hives across hundreds of miles to follow seasonal blooms.',stem:'Which choice completes the text with the most logical transition?',choices:['Similarly,','In contrast,','Therefore,','For instance,'],correct:1,domain:'Expression of Ideas',type:'Transitions',explain:'"Stationary" vs. "transporting" \u2014 opposite approaches. "In contrast" signals opposition.'},
+{passage:'The museum\u2019s new collection of Renaissance paintings, donated by several private collectors from across Europe, _______ a significant expansion of the institution\u2019s holdings in Italian art.',stem:'Which choice completes the text so that it conforms to the conventions of Standard English?',choices:['represent','represents','have been representing','were representing'],correct:1,domain:'Conventions',type:'Agreement',explain:'Subject is "collection" (singular). Phrases between commas are distractors. \u2192 "represents."'},
+{passage:'Archaeologist Sarah Parcak has pioneered the use of satellite imagery to locate ancient sites buried beneath modern landscapes. Her work demonstrates that even the most thoroughly studied regions may still harbor significant undiscovered structures.',stem:'Which choice best states the main idea of the text?',choices:['Infrared technology is superior to traditional methods.','Egypt contains more pyramids than previously believed.','Satellite-based archaeology can reveal hidden sites even in well-studied areas.','Parcak is the most important archaeologist of the 21st century.'],correct:2,domain:'Information & Ideas',type:'Central Ideas',explain:'Choice C captures the main idea. A too extreme, B too narrow, D unsupported.'}
+];
+
+const SEMI_TESTS=[{left:'The concert was sold out',right:'thousands of fans waited outside',ok:true,reason:'Both sides are independent clauses \u2713'},{left:'Although the rain continued',right:'the match went ahead as planned',ok:false,reason:'Left side is dependent (starts with "although") \u2717'},{left:'The chef prepared three dishes',right:'a risotto, a steak, and a souffl\u00e9',ok:false,reason:'Right side is a list/phrase, not an IC \u2717 (Use a colon)'}];
+const COLON_TESTS=[{left:'The study reached a clear conclusion',right:'the drug was ineffective',ok:true,reason:'Left is independent; right explains the conclusion \u2713'},{left:'The team needed',right:'more funding, better equipment, and additional staff',ok:false,reason:'"The team needed" is NOT a complete sentence \u2717'},{left:'Three factors contributed to the decline',right:'pollution, overfishing, and climate change',ok:true,reason:'Left is independent; right lists the three factors \u2713'}];
+const CLAUSE_ITEMS=[{text:'The researchers published their findings.',ic:true},{text:'Although the data was inconclusive.',ic:false},{text:'Running through the forest at dawn.',ic:false},{text:'She discovered a new species.',ic:true},{text:'Because the funding was cut.',ic:false},{text:'The committee voted unanimously.',ic:true}];
+
+const LESSONS=[
+{id:'clauses',title:'Independent vs. Dependent Clauses',sub:'The building blocks of every Boundaries question',body:['Every Boundaries question comes down to one skill: can you tell whether a group of words is an independent clause or not?','An INDEPENDENT CLAUSE (IC) has a subject + verb and expresses a complete thought.\n\u2713 "The researchers published their findings."','A DEPENDENT CLAUSE (DC) has a subject + verb but starts with a subordinator (because, although, when, while, if, since, that, which, who\u2026).\n\u2717 "Because the researchers published their findings"','A PHRASE lacks a subject-verb pair entirely.\n\u2717 "After the publication of the findings"'],visual:'clause-check'},
+{id:'joins',title:'The Four Legal Joins',sub:'The only ways to connect independent clauses',body:['When you have two ICs, there are exactly four legal ways to join them:','1. PERIOD: IC. IC\n2. SEMICOLON: IC; IC\n3. COMMA + FANBOYS: IC, and IC\n4. COLON: IC: explanation/list','FANBOYS = For, And, Nor, But, Or, Yet, So. "However," "therefore," "moreover" are NOT FANBOYS.','The Three Illegal Moves:\n\u274c Comma splice: IC, IC\n\u274c Run-on: IC IC\n\u274c Comma + non-FANBOYS: IC, however, IC'],visual:'joins-test'},
+{id:'semicolon',title:'Semicolon Deep Dive',sub:'Both sides must be independent',body:['A semicolon joins two closely related independent clauses.','Its the "soft period."\n\u2713 "The experiment failed; the team started over."','KEY RULE: Both sides must be ICs.','If either side is dependent or a phrase, a semicolon is WRONG.\n\u2717 "Although the experiment failed; the team started over."'],visual:'semi-test'},
+{id:'colon',title:'Colon Deep Dive',sub:'The left side must be independent',body:['A colon introduces an explanation, example, or list.','The part BEFORE the colon must be an independent clause.\n\u2713 "The experiment revealed one finding: the treatment was ineffective."','What comes after can be a clause, phrase, or list.','Watch out: "The team needed: funding, equipment, and volunteers." is WRONG. "The team needed" is not a complete sentence.'],visual:'colon-test'},
+{id:'dash',title:'The Em-Dash',sub:'The flexible boundary tool',body:['An em-dash can replace a comma, colon, or parentheses. It adds emphasis or dramatic pause.','Set off an interruption: "The lead researcher \u2014 who had been skeptical \u2014 agreed to publish."','Introduce an explanation: "The team reached a conclusion \u2014 the treatment was ineffective."','CRITICAL: Dashes come in pairs for mid-sentence elements. Opening dash MUST have a closing dash.'],visual:null},
+{id:'decision',title:'The Boundary Decision Framework',sub:'How to approach every question',body:['Step 1: Read the full sentence. Identify clause boundaries.','Step 2: Count ICs. IC + IC? IC + DC? IC + phrase?','Step 3: If IC + IC \u2192 which of the four legal joins does each answer choice use?','Step 4: Eliminate illegal joins.','Step 5: Among remaining choices, pick the best logical relationship.'],visual:'decision-tree'}
+];
+
+const COURTROOM=[
+{sentence:'The comet was visible for three nights, astronomers from around the world gathered to observe it.',verdict:'guilty',crime:'Comma Splice',fix:'The comet was visible for three nights; astronomers from around the world gathered to observe it.',explain:'Two ICs joined by only a comma.'},
+{sentence:'Although the museum had recently renovated its west wing, attendance figures remained disappointingly low.',verdict:'innocent',crime:null,fix:null,explain:'"Although...wing" is a DC, so the comma correctly attaches it to the IC.'},
+{sentence:'The city council approved the new budget; however, several members expressed reservations about the timeline.',verdict:'innocent',crime:null,fix:null,explain:'Semicolon correctly joins two ICs. "However" needs a semicolon, not just a comma.'},
+{sentence:'The novelist spent years researching the historical period she wanted her characters to feel authentic.',verdict:'guilty',crime:'Run-On',fix:'The novelist spent years researching the historical period; she wanted her characters to feel authentic.',explain:'Two ICs with no punctuation between them.'},
+{sentence:'Having studied the effects of sleep deprivation on cognitive performance for over a decade.',verdict:'guilty',crime:'Fragment',fix:'Having studied the effects of sleep deprivation for over a decade, Dr. Reyes published her findings.',explain:'Participial phrase with no independent clause.'},
+{sentence:'The orchestra performed Beethoven\u2019s Fifth Symphony, and the audience responded with a standing ovation.',verdict:'innocent',crime:null,fix:null,explain:'Comma + "and" (FANBOYS) correctly joins two ICs.'},
+{sentence:'The archaeological dig revealed artifacts from three distinct periods: Bronze Age tools, Roman pottery, and Medieval coins.',verdict:'innocent',crime:null,fix:null,explain:'Colon correctly introduces a list. Left side is an IC.'},
+{sentence:'Dr. Okafor\u2019s research challenged decades of assumptions, it demonstrated that the prevailing theory was fundamentally flawed.',verdict:'guilty',crime:'Comma Splice',fix:'Dr. Okafor\u2019s research challenged decades of assumptions: it demonstrated that the prevailing theory was fundamentally flawed.',explain:'Two ICs joined by only a comma.'},
+{sentence:'The medication showed promise in early trials, but the side effects \u2014 which ranged from mild headaches to severe nausea \u2014 concerned the review board.',verdict:'innocent',crime:null,fix:null,explain:'Comma + "but" joins two ICs. Em-dashes correctly pair around the aside.'},
+{sentence:'While the northern regions experienced record rainfall this season.',verdict:'guilty',crime:'Fragment',fix:'While the northern regions experienced record rainfall this season, the southern plains remained in drought.',explain:'"While" makes this a DC. It cannot stand alone.'}
+];
+
+const BUILDER=[
+{parts:['The researchers published their findings','the scientific community responded with skepticism'],opts:[', ','; ',': ','. '],correct:[1,3],best:1,explain:'Both sides are ICs. Semicolon or period work. Comma = splice. Colon doesn\u2019t fit.'},
+{parts:['The study identified one critical flaw','the sample size was far too small'],opts:[', ','; ',': ',' \u2014 '],correct:[2,3],best:2,explain:'Second clause explains the "flaw." Colon ideal. Em-dash also works.'},
+{parts:['The coral reef had been deteriorating for decades','conservation efforts finally began to show results'],opts:[', but ','; ',', ','. '],correct:[0,1,3],best:0,explain:'Contrast relationship. "Comma + but" perfect. Comma alone = splice.'},
+{parts:['Although the evidence was compelling','the jury remained unconvinced'],opts:[', ','; ',': ','. '],correct:[0],best:0,explain:'"Although..." is DEPENDENT. Only a comma works.'},
+{parts:['The company announced three major initiatives','expanding into Asian markets, launching a sustainability program, and restructuring'],opts:[', ','; ',': ',' \u2014 '],correct:[2,3],best:2,explain:'List specifying "three initiatives." Colon standard.'},
+{parts:['The ancient manuscript \u2014 which had been presumed lost for centuries','was discovered in a private collection'],opts:[' \u2014 ',', ','; ',': '],correct:[0],best:0,explain:'Opening dash needs closing dash. Dashes must match!'},
+{parts:['The senator voted against the bill','citing concerns about its potential impact on small businesses'],opts:[', ','; ',': ','. '],correct:[0],best:0,explain:'"Citing concerns..." is a participial phrase. Only a comma works.'}
+];
+
+const PRACTICE=[
+{passage:'Mycologist Paul Stamets has argued that fungi networks beneath forest floors function as a kind of natural internet, allowing trees to share nutrients and chemical _______ recent experiments have largely supported this theory.',choices:['signals, recent','signals. Recent','signals recent','signals, and, recent'],correct:1,rule:'Period between ICs',diff:'easy',explain:'Two ICs. Period separates them. (A) splice. (C) run-on.'},
+{passage:'The renovation of the city\u2019s oldest theater took three years longer than _______ the final result was widely praised as a masterful blend of preservation and modernization.',choices:['expected, the','expected; the','expected the','expected and, the'],correct:1,rule:'Semicolon between ICs',diff:'easy',explain:'Two ICs. Semicolon joins them. (A) splice. (C) run-on.'},
+{passage:'In the 1960s, marine biologist Rachel Carson warned that widespread pesticide use was devastating bird populations. Her book Silent Spring sparked a national _______ leading directly to the creation of the Environmental Protection Agency.',choices:['debate, leading','debate. Leading','debate; leading','debate leading'],correct:0,rule:'Comma + participial phrase',diff:'medium',explain:'"Leading..." is a participial phrase. Comma attaches it. (B) fragment.'},
+{passage:'The archaeological site in southern Turkey, known as G\u00f6bekli Tepe, predates Stonehenge by approximately 6,000 _______ its discovery in the 1990s forced historians to fundamentally reconsider the timeline of human civilization.',choices:['years, its','years; its','years its','years, and, its'],correct:1,rule:'Semicolon between ICs',diff:'easy',explain:'Two ICs. (A) splice. (C) run-on.'},
+{passage:'Although the new solar panel design was significantly more efficient than previous _______ the high manufacturing costs prevented it from being adopted widely.',choices:['models. The','models; the','models, the','models the'],correct:2,rule:'Comma after DC',diff:'medium',explain:'"Although..." is a DC. Comma separates from IC.'},
+{passage:'The musicians rehearsed for six hours every day in preparation for the _______ they understood that only flawless execution could earn them a spot at the international competition.',choices:['performance, they','performance; they','performance they','performance, and, they'],correct:1,rule:'Semicolon between ICs',diff:'easy',explain:'Two ICs. Semicolon correct. (A) splice.'},
+{passage:'Dr. Amara Singh developed a groundbreaking technique for detecting early-stage cancer using a simple blood _______ her method can identify tumors months before they would appear on traditional imaging scans.',choices:['test, her','test: her','test, however, her','test her'],correct:1,rule:'Colon \u2014 elaboration',diff:'hard',explain:'Second IC explains what\u2019s "groundbreaking." Colon signals elaboration.'},
+{passage:'The documentary filmmaker spent two years living among the indigenous _______ during that time, she gained their trust and was granted unprecedented access to sacred ceremonies.',choices:['community, during','community; during','community during','community. During, that'],correct:1,rule:'Semicolon between ICs',diff:'medium',explain:'Two ICs. Semicolon separates them. (A) splice.'},
+{passage:'The quantum computer solved in four minutes a problem that would have taken a classical computer 10,000 _______ skeptics noted that the comparison involved a problem specifically designed to favor quantum approaches.',choices:['years, skeptics','years; skeptics','years skeptics','years, but, skeptics'],correct:1,rule:'Semicolon between ICs',diff:'medium',explain:'Two contrasting ICs. Semicolon works. (A) splice.'},
+{passage:'The poet\u2019s early work reflected the optimism of the postwar _______ her later poems, written during a period of personal loss, adopted a markedly darker tone.',choices:['era, her','era; her','era her','era, and her'],correct:1,rule:'Semicolon between ICs',diff:'medium',explain:'Two contrasting ICs. Semicolon correct. (A) splice.'},
+{passage:'Because the river had been contaminated by decades of industrial _______ the local government allocated $50 million to a comprehensive cleanup effort.',choices:['waste; the','waste. The','waste, the','waste the'],correct:2,rule:'Comma after DC',diff:'medium',explain:'"Because..." is a DC. Comma separates from IC.'},
+{passage:'The architect envisioned a building that would generate more energy than it _______ solar panels on the roof, geothermal heating, and a rainwater collection system would all contribute to the structure\u2019s net-positive energy footprint.',choices:['consumed: solar','consumed, solar','consumed solar','consumed; solar'],correct:0,rule:'Colon \u2014 list/elaboration',diff:'hard',explain:'List fulfills the "promise" of the first IC. Colon signals elaboration.'}
+];
+
+const CHALLENGE=[
+{passage:'The historian\u2019s controversial thesis \u2014 that the empire\u2019s collapse was caused not by external invasion but by internal economic _______ challenged decades of established scholarship.',choices:['mismanagement \u2014','mismanagement,','mismanagement \u2014,','mismanagement;'],correct:0,diff:'hard',rule:'Paired dashes',explain:'Opening dash needs closing dash. (B) comma can\u2019t close a dash.'},
+{passage:'The composer\u2019s final symphony was unlike anything she had written _______ where her earlier works had been restrained and classical, this piece was wild and improvisational.',choices:['before, where','before; where','before: where','before. Where,'],correct:2,diff:'hard',rule:'Colon introduces elaboration',explain:'Colon explains HOW it was "unlike anything." (A) splice.'},
+{passage:'Three factors contributed to the vaccine\u2019s rapid _______ unprecedented government funding, a global network of volunteer trial participants, and years of prior research.',choices:['development: unprecedented','development; unprecedented','development, unprecedented','development unprecedented'],correct:0,diff:'hard',rule:'Colon introduces list',explain:'First IC promises "three factors." Colon delivers.'},
+{passage:'The playwright\u2019s dialogue sounds naturalistic \u2014 characters interrupt each other, trail off mid-sentence, and repeat _______ however, every seeming imperfection is meticulously scripted.',choices:['themselves, however,','themselves; however,','themselves \u2014 however,','themselves. However'],correct:1,diff:'hard',rule:'Semicolon + conjunctive adverb',explain:'"However" needs semicolon before, comma after. (A) splice.'},
+{passage:'The chemist identified a compound that could dissolve microplastics without harming marine _______ a discovery that, if scalable, could transform ocean cleanup efforts worldwide.',choices:['life: a','life; a','life, a','life \u2014 a'],correct:3,diff:'hard',rule:'Dash for dramatic appositive',explain:'Appositive phrase (not IC). Dash adds emphasis.'},
+{passage:'Although quantum computing promises to revolutionize fields from cryptography to drug _______ the technology remains decades away from practical, everyday applications.',choices:['discovery; the','discovery, the','discovery. The','discovery: the'],correct:1,diff:'medium',rule:'Comma after DC',explain:'"Although..." is DC. Comma separates from IC.'},
+{passage:'The building\u2019s architect employed a controversial _______ rather than hiding the steel support beams behind decorative facades, she left them exposed.',choices:['strategy: rather','strategy; rather','strategy, rather','strategy. Rather'],correct:0,diff:'hard',rule:'Colon introduces explanation',explain:'Colon explains what the "strategy" was.'},
+{passage:'The study\u2019s participants were divided into three groups: those who exercised daily, those who exercised weekly, and those who did not exercise at _______ the researchers then tracked their cognitive performance over six months.',choices:['all, the','all; the','all. The','all: the'],correct:1,diff:'hard',rule:'Semicolon between ICs (after list)',explain:'Two ICs. (A) splice. (D) second colon confusing.'}
+];
+
+// ========= SHARED COMPONENTS =========
+function Dots({total,current,answers,check,color}){color=color||C.conv;return e('div',{style:{display:'flex',gap:4,flexWrap:'wrap',marginBottom:12}},Array.from({length:total},function(_,i){var bg='transparent',bc=C.border,tc=C.muted;if(answers&&answers[i]!==undefined){var c=check(i);bg=c?C.correctBg:C.wrongBg;bc=c?C.correct:C.wrong;tc=c?C.correct:C.wrong;}var cur=i===current;return e('div',{key:i,style:{width:28,height:28,borderRadius:'50%',border:'2px solid '+(cur?color:bc),background:bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'.7rem',fontWeight:700,fontFamily:F.mono,color:tc,boxShadow:cur?'0 0 0 3px '+color+'33':'none',transition:'all .2s'}},i+1);}));}
+
+function TimerBar(props){var m=Math.floor(props.timeLeft/60),s=props.timeLeft%60;var pct=(props.timeLeft/props.total)*100;var warn=pct<20;return e('div',{style:{marginBottom:12}},e('div',{style:{fontFamily:F.mono,fontSize:'.82rem',color:C.muted,textAlign:'right',marginBottom:4}},m+':'+String(s).padStart(2,'0')),e('div',{style:{height:6,borderRadius:3,background:C.border,overflow:'hidden'}},e('div',{style:{height:'100%',borderRadius:3,width:pct+'%',background:warn?C.wrong:(props.color||C.conv),transition:'width .1s linear'}})));}
+
+function QQ(props){var q=props.q,idx=props.idx,total=props.total,answered=props.answered,userAns=props.userAns,onAns=props.onAns,color=props.color||C.conv,label=props.label;
+return e('div',{style:crd({opacity:answered?.85:1})},
+e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}},
+e('span',{style:{fontSize:'.72rem',color:color,fontWeight:700}},label||'Question '+(idx+1)+' of '+total),
+q.diff&&e('span',{style:dbg(q.diff)},q.diff)),
+q.domain&&e('div',{style:{fontSize:'.68rem',fontWeight:700,letterSpacing:1.5,textTransform:'uppercase',marginBottom:6,display:'inline-block',padding:'2px 8px',borderRadius:4,background:color+'20',color:color}},q.domain+(q.type?' \u2014 '+q.type:'')),
+e('div',{style:psg},q.passage),
+e('div',{style:{fontSize:'.93rem',marginBottom:12,color:'#ddd',lineHeight:1.7}},q.stem||'Which choice completes the text so that it conforms to the conventions of Standard English?'),
+e('div',{style:{display:'flex',flexDirection:'column',gap:6}},q.choices.map(function(ch,ci){
+var bg=C.paper,bc=C.border,tc='#ccc';
+if(answered){if(ci===q.correct){bg=C.correctBg;bc=C.correct;tc=C.correct;}else if(userAns===ci){bg=C.wrongBg;bc=C.wrong;tc=C.wrong;}}
+return e('button',{key:ci,onClick:function(){if(!answered)onAns(ci);},disabled:answered,style:{display:'flex',alignItems:'flex-start',gap:10,padding:'10px 14px',background:bg,border:'2px solid '+bc,borderRadius:8,cursor:answered?'default':'pointer',fontSize:'.88rem',textAlign:'left',width:'100%',transition:'all .15s'}},
+e('span',{style:{fontWeight:700,color:answered?(ci===q.correct?C.correct:userAns===ci?C.wrong:C.muted):C.muted,minWidth:20,flexShrink:0}},'ABCD'[ci]),
+e('span',{style:{color:tc}},ch));})),
+answered&&e('div',{style:{marginTop:10,padding:12,background:C.paper,borderRadius:8,fontSize:'.85rem',color:C.muted,lineHeight:1.6,borderLeft:'3px solid '+C.correct}},
+q.explain,
+q.rule&&e('div',{style:{marginTop:6,padding:'8px 12px',background:C.convBg,borderRadius:6,fontSize:'.82rem',color:C.conv,fontWeight:600}},'Rule: '+q.rule)));}
+
+function InlineTester(props){var items=props.items,mark=props.mark,label=props.label;
+var s=useState({});var rev=s[0],setRev=s[1];
+return e('div',{style:{marginTop:10,borderTop:'1px solid '+C.border,paddingTop:10}},
+e('div',{style:{fontSize:'.72rem',fontWeight:700,textTransform:'uppercase',letterSpacing:1,color:C.conv,marginBottom:8}},label),
+items.map(function(t,i){return e('div',{key:i,onClick:function(){setRev(function(p){var n={};for(var k in p)n[k]=p[k];n[i]=true;return n;});},
+style:{background:C.paper,border:'1px solid '+C.border,borderRadius:8,padding:'10px 12px',marginBottom:6,cursor:'pointer'}},
+e('div',{style:{fontSize:'.85rem',color:'#ddd',fontFamily:F.serif,lineHeight:1.6}},t.left,' ',e('span',{style:{color:C.conv,fontWeight:900,fontSize:'1.1rem'}},mark),' ',t.right),
+rev[i]?e('div',{style:{fontSize:'.78rem',fontWeight:600,marginTop:6,padding:'4px 8px',borderRadius:4,background:t.ok?'rgba(34,197,94,.12)':'rgba(239,68,68,.12)',color:t.ok?C.correct:C.wrong}},t.reason)
+:e('div',{style:{fontSize:'.72rem',color:C.muted,marginTop:4}},'Tap to check'));}));}
+
+function ClauseChecker(){var s=useState({});var a=s[0],setA=s[1];
+return e('div',{style:{padding:'12px 0'}},
+e('div',{style:{fontSize:'.72rem',fontWeight:700,textTransform:'uppercase',letterSpacing:1,color:C.conv,marginBottom:8}},'\u26a1 Quick Check: Independent or Dependent?'),
+CLAUSE_ITEMS.map(function(item,i){var done=a[i]!==undefined;var ok=done&&a[i]===item.ic;
+return e('div',{key:i,style:{display:'flex',alignItems:'center',gap:8,marginBottom:6,padding:'6px 10px',background:done?(ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'):'transparent',borderRadius:6}},
+e('span',{style:{flex:1,fontSize:'.85rem',color:'#ddd',fontFamily:F.serif}},item.text),
+e('button',{onClick:function(){if(!done)setA(function(p){var n={};for(var k in p)n[k]=p[k];n[i]=true;return n;});},disabled:done,
+style:{padding:'3px 8px',borderRadius:5,border:'1px solid '+(done&&a[i]===true?(ok?C.correct:C.wrong):C.border),background:'transparent',color:done&&a[i]===true?(ok?C.correct:C.wrong):C.muted,fontSize:'.72rem',fontWeight:600,cursor:done?'default':'pointer'}},'Independent'),
+e('button',{onClick:function(){if(!done)setA(function(p){var n={};for(var k in p)n[k]=p[k];n[i]=false;return n;});},disabled:done,
+style:{padding:'3px 8px',borderRadius:5,border:'1px solid '+(done&&a[i]===false?(ok?C.correct:C.wrong):C.border),background:'transparent',color:done&&a[i]===false?(ok?C.correct:C.wrong):C.muted,fontSize:'.72rem',fontWeight:600,cursor:done?'default':'pointer'}},'Dependent'),
+done&&e('span',{style:{fontSize:'.9rem'}},ok?'\u2705':'\u274c'));}));}
+
+function DecisionTree(){return e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
+[{q:'Are there two independent clauses?',y:'Need a boundary \u2192',n:'Comma or nothing may work'},
+{q:'Does the second part explain/list the first?',y:'\u2192 COLON or EM-DASH',n:'\u2193'},
+{q:'Contrast or specific logical link?',y:'\u2192 COMMA + FANBOYS',n:'\u2192 SEMICOLON or PERIOD'}
+].map(function(s,i){return e('div',{key:i,style:crd({padding:14})},
+e('div',{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:6}},s.q),
+e('div',{style:{display:'flex',gap:12}},
+e('div',{style:{color:C.correct,fontSize:12}},'YES: '+s.y),
+e('div',{style:{color:C.muted,fontSize:12}},'NO: '+s.n)));}));}
+
+function FloatingDT(props){var s=useState(false);var open=s[0],setOpen=s[1];
+if(!props.show)return null;
+return e('div',null,
+e('button',{onClick:function(){setOpen(!open);},style:{position:'fixed',bottom:20,right:20,zIndex:50,background:C.conv,color:'#000',border:'none',borderRadius:'50%',width:48,height:48,fontSize:'1.3rem',cursor:'pointer',boxShadow:'0 4px 16px rgba(0,0,0,.4)',display:'flex',alignItems:'center',justifyContent:'center'}},'\ud83c\udf33'),
+open&&e('div',{style:{position:'fixed',bottom:80,right:20,zIndex:50,background:C.surface,border:'2px solid '+C.conv,borderRadius:14,padding:16,maxWidth:360,width:'90vw',boxShadow:'0 8px 32px rgba(0,0,0,.6)',fontSize:'.85rem',color:C.sub,lineHeight:1.7}},
+e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}},
+e('strong',{style:{color:C.conv,fontSize:'.82rem',textTransform:'uppercase',letterSpacing:1}},'Decision Tree'),
+e('span',{onClick:function(){setOpen(false);},style:{cursor:'pointer',color:C.muted,fontSize:'1.1rem'}},'\u2715')),
+e('strong',{style:{color:C.conv}},'1.'),' Find clause boundaries.',e('br'),
+e('strong',{style:{color:C.conv}},'2.'),' Count ICs.',e('br'),
+e('strong',{style:{color:C.conv}},'3.'),' If IC+IC \u2192 which legal join?',e('br'),
+e('strong',{style:{color:C.conv}},'4.'),' Eliminate illegal joins.',e('br'),
+e('strong',{style:{color:C.conv}},'5.'),' Pick best logical relationship.'));}
+
+// ========= SCREENS =========
+function Welcome(props){var s=useState(false);var show=s[0],setShow=s[1];
+useEffect(function(){setTimeout(function(){setShow(true);},100);},[]);
+var cards=[{i:'\ud83d\udd04',t:'Warm-Up',d:'Module 1 review'},{i:'\ud83d\udcd6',t:'Learn Rules',d:'Clauses & 4 legal joins'},{i:'\u2696\ufe0f',t:'Courtroom',d:'Judge sentences'},{i:'\ud83d\udd27',t:'Builder',d:'Choose punctuation'},{i:'\ud83d\udcdd',t:'Practice',d:'12 timed questions'},{i:'\u2b50',t:'Challenge',d:'National Merit level'}];
+return e('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100vh',padding:'0 24px',transition:'all .7s',opacity:show?1:0,transform:show?'translateY(0)':'translateY(16px)'}},
+e('div',{style:{background:C.convBg,border:'1px solid rgba(251,191,36,.4)',borderRadius:12,padding:'6px 18px',fontSize:13,letterSpacing:1.5,textTransform:'uppercase',color:C.conv,marginBottom:12,fontWeight:600}},'Phase 1 \u2022 Module 2'),
+e('h1',{style:{fontSize:'clamp(2rem,5vw,3rem)',fontWeight:700,fontFamily:F.serif,color:C.conv,lineHeight:1.1,textAlign:'center',marginBottom:8}},'The Grammar Playbook, Part I'),
+e('p',{style:{color:C.sub,fontSize:16,maxWidth:560,textAlign:'center',lineHeight:1.6,marginBottom:8}},'Sentence Boundaries \u2014 Fragments, Run-Ons, Comma Splices, and the Four Legal Joins'),
+e('p',{style:{color:C.muted,fontSize:14,maxWidth:480,textAlign:'center',lineHeight:1.6,marginBottom:40}},'Master the punctuation rules that separate 700+ scorers from everyone else.'),
+e('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))',gap:12,maxWidth:700,width:'100%',marginBottom:48}},cards.map(function(c,i){return e('div',{key:i,style:crd({textAlign:'center',padding:16})},e('div',{style:{fontSize:28,marginBottom:4}},c.i),e('div',{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:2}},c.t),e('div',{style:{color:C.muted,fontSize:12}},c.d));})),
+e('button',{onClick:props.onNext,style:btn('linear-gradient(135deg,'+C.conv+',#d97706)','#000',{fontSize:15,padding:'12px 28px'})},'Start Module 2 \u2192'),
+e('div',{style:{color:C.muted,fontSize:13,marginTop:24}},'~65 minutes \u2022 7 sessions'));}
+
+function WarmupScreen(props){var s=useState({});var ans=s[0],setAns=s[1];
+var domC={'Craft & Structure':C.craft,'Conventions':C.conv,'Expression of Ideas':C.expr,'Information & Ideas':C.info};
+var n=WARMUP.length;var done=Object.keys(ans).length===n;
+var sc=0;for(var k in ans)if(ans[k]===WARMUP[k].correct)sc++;
+return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'48px 20px',minHeight:'100vh'}},
+e('div',{style:{color:C.conv,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginBottom:4}},'Session 1 \u2014 Retrieval Warm-Up'),
+e('h2',{style:{fontFamily:F.serif,fontSize:'clamp(1.2rem,3vw,1.6rem)',fontWeight:700,marginBottom:8}},'Quick Review from Module 1'),
+e('p',{style:{color:C.sub,fontSize:14,lineHeight:1.7,marginBottom:24}},'Activate what you already know. 5 questions from Module 1.'),
+WARMUP.map(function(q,i){return e(QQ,{key:i,q:q,idx:i,total:n,answered:ans[i]!==undefined,userAns:ans[i],onAns:function(v){setAns(function(p){var n2={};for(var k2 in p)n2[k2]=p[k2];n2[i]=v;return n2;});},color:domC[q.domain]||C.conv,label:q.domain+' \u2014 '+q.type});}),
+done&&e('div',{style:{textAlign:'center',padding:'16px 0'}},
+e('div',{style:{fontFamily:F.mono,fontSize:'2rem',fontWeight:700,color:sc>=4?C.correct:sc>=3?C.conv:C.wrong}},sc+'/'+n),
+e('div',{style:{fontSize:'.88rem',color:C.muted,marginBottom:16}},sc===5?'Perfect recall!':sc>=3?'Solid foundation.':'Review explanations above.'),
+e('button',{onClick:props.onComplete,style:btn('linear-gradient(135deg,'+C.conv+',#d97706)','#000')},'Continue to Lessons \u2192')));}
+
+function LessonScreen(props){var s=useState(0);var idx=s[0],setIdx=s[1];
+var L=LESSONS[idx];var n=LESSONS.length;
+function vis(){
+if(L.visual==='clause-check')return e(ClauseChecker);
+if(L.visual==='semi-test')return e(InlineTester,{items:SEMI_TESTS,mark:';',label:'Can you use a semicolon here?'});
+if(L.visual==='colon-test')return e(InlineTester,{items:COLON_TESTS,mark:':',label:'Is the left side independent?'});
+if(L.visual==='joins-test')return e('div',null,e(InlineTester,{items:SEMI_TESTS,mark:';',label:'Semicolon test'}),e(InlineTester,{items:COLON_TESTS,mark:':',label:'Colon test'}));
+if(L.visual==='decision-tree')return e(DecisionTree);
+return null;}
+return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'48px 20px',minHeight:'100vh'}},
+e('div',{style:{display:'flex',justifyContent:'center',gap:6,marginBottom:32}},LESSONS.map(function(_,i){return e('div',{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.conv:i<idx?C.conv+'66':C.border,cursor:'pointer',transition:'all .3s'}});})),
+e('div',{style:crd({borderRadius:20,overflow:'hidden',padding:0,marginBottom:32})},
+e('div',{style:{padding:'28px 28px 0'}},
+e('div',{style:{color:C.conv,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginBottom:4}},L.sub),
+e('h2',{style:{color:C.ink,fontSize:'clamp(1.2rem,3vw,1.6rem)',fontWeight:700,fontFamily:F.serif,marginBottom:16,lineHeight:1.2}},L.title),
+L.body.map(function(p,i){return e('p',{key:i,style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:'pre-line'}},p);})),
+L.visual&&e('div',{style:{padding:'8px 20px 20px'}},vis())),
+e('div',{style:{display:'flex',justifyContent:'space-between'}},
+e('button',{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn('transparent',idx===0?'#334155':C.sub),{border:'1px solid '+C.border,padding:'10px 20px',fontSize:14})},'\u2190 Back'),
+idx<n-1?e('button',{onClick:function(){setIdx(idx+1);},style:btn(C.conv,'#000',{fontSize:14,padding:'10px 20px'})},'Next \u2192')
+:e('button',{onClick:props.onComplete,style:btn('linear-gradient(135deg,'+C.conv+',#d97706)','#000',{fontSize:14,padding:'10px 24px'})},'Start Courtroom \u2192')));}
+
+function CourtroomScreen(props){
+var s1=useState(0),idx=s1[0],setIdx=s1[1];
+var s2=useState(null),v=s2[0],setV=s2[1];
+var s3=useState(0),sc=s3[0],setSc=s3[1];
+var s4=useState(false),done=s4[0],setDone=s4[1];
+var c=COURTROOM[idx],n=COURTROOM.length;
+function judge(x){setV(x);if(x===c.verdict)setSc(function(s){return s+1;});}
+function next(){if(idx<n-1){setIdx(function(i){return i+1;});setV(null);}else setDone(true);}
+if(done)return e('div',{style:{maxWidth:600,margin:'0 auto',padding:'80px 20px',textAlign:'center'}},
+e('div',{style:{fontSize:48,marginBottom:16}},'\u2696\ufe0f'),
+e('h2',{style:{color:C.ink,fontSize:28,fontWeight:700,fontFamily:F.serif,marginBottom:8}},'Court Adjourned'),
+e('div',{style:{color:C.conv,fontSize:48,fontWeight:900,fontFamily:F.mono}},sc+'/'+n),
+e('p',{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},sc>=8?'Excellent instincts!':sc>=6?'Good eye!':'Keep practicing!'),
+e('button',{onClick:props.onComplete,style:btn('linear-gradient(135deg,'+C.conv+',#d97706)','#000')},'Continue to Builder \u2192'));
+var ok=v&&v===c.verdict;
+return e('div',{style:{maxWidth:650,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}},
+e('div',{style:{color:C.conv,fontSize:13,fontWeight:700}},'\u2696\ufe0f Comma Splice Courtroom'),
+e('div',{style:{color:C.muted,fontSize:13}},'Case '+(idx+1)+' of '+n+' \u2022 Score: '+sc)),
+e('div',{style:crd({borderRadius:20,padding:28})},
+e('div',{style:{color:C.muted,fontSize:12,fontWeight:600,marginBottom:12,textTransform:'uppercase',letterSpacing:1}},'The Accused Sentence'),
+e('div',{style:Object.assign({},psg,{fontSize:'.95rem',fontFamily:F.serif,lineHeight:1.8})},c.sentence)),
+!v&&e('div',{style:{display:'flex',gap:16,justifyContent:'center',marginBottom:24}},
+e('button',{onClick:function(){judge('guilty');},style:Object.assign({},btn(C.wrongBg,C.wrong),{border:'2px solid '+C.wrong+'44',flex:1,maxWidth:200,textAlign:'center'})},'\ud83d\udd28 Guilty'),
+e('button',{onClick:function(){judge('innocent');},style:Object.assign({},btn(C.correctBg,C.correct),{border:'2px solid '+C.correct+'44',flex:1,maxWidth:200,textAlign:'center'})},'\u2705 Innocent')),
+v&&e('div',null,
+e('div',{style:{background:ok?C.correct+'11':C.wrong+'11',border:'1px solid '+(ok?C.correct:C.wrong)+'44',borderRadius:16,padding:20,marginBottom:24}},
+e('div',{style:{color:ok?C.correct:C.wrong,fontWeight:800,fontSize:16,marginBottom:8}},ok?'Correct!':'Incorrect \u2014 '+c.verdict+(c.crime?' ('+c.crime+')':'')),
+e('p',{style:{color:C.sub,fontSize:14,lineHeight:1.6}},c.explain),
+c.fix&&e('div',{style:{background:C.correct+'11',borderRadius:8,padding:12,marginTop:8}},
+e('div',{style:{color:C.correct,fontSize:12,fontWeight:600,marginBottom:4}},'Corrected:'),
+e('div',{style:{color:C.ink,fontSize:14,fontFamily:F.serif}},c.fix))),
+e('div',{style:{textAlign:'center'}},e('button',{onClick:next,style:btn(C.conv,'#000',{fontSize:14,padding:'10px 20px'})},idx<n-1?'Next Case \u2192':'See Results \u2192'))));}
+
+function BuilderScreen(props){
+var s1=useState(0),idx=s1[0],setIdx=s1[1];
+var s2=useState(null),sel=s2[0],setSel=s2[1];
+var s3=useState(false),conf=s3[0],setConf=s3[1];
+var s4=useState(0),sc=s4[0],setSc=s4[1];
+var s5=useState(false),done=s5[0],setDone=s5[1];
+var it=BUILDER[idx],n=BUILDER.length;
+function confirm(){if(sel===null)return;setConf(true);if(it.correct.includes(sel))setSc(function(s){return s+1;});}
+function next(){if(idx<n-1){setIdx(function(i){return i+1;});setSel(null);setConf(false);}else setDone(true);}
+if(done)return e('div',{style:{maxWidth:600,margin:'0 auto',padding:'80px 20px',textAlign:'center'}},
+e('div',{style:{fontSize:48,marginBottom:16}},'\ud83d\udd27'),
+e('h2',{style:{color:C.ink,fontSize:28,fontWeight:700,fontFamily:F.serif,marginBottom:8}},'Builder Complete'),
+e('div',{style:{color:C.conv,fontSize:48,fontWeight:900,fontFamily:F.mono}},sc+'/'+n),
+e('p',{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},sc>=6?'Excellent precision!':sc>=4?'Good instincts!':'Keep practicing!'),
+e('button',{onClick:props.onComplete,style:btn('linear-gradient(135deg,'+C.conv+',#d97706)','#000')},'Continue to Practice \u2192'));
+var ok=conf&&it.correct.includes(sel),best=conf&&sel===it.best;
+return e('div',{style:{maxWidth:650,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+e('div',{style:{display:'flex',justifyContent:'space-between',marginBottom:24}},
+e('div',{style:{color:C.conv,fontSize:13,fontWeight:700}},'\ud83d\udd27 Boundary Builder'),
+e('div',{style:{color:C.muted,fontSize:13}},(idx+1)+' of '+n+' \u2022 Score: '+sc)),
+e('div',{style:crd({borderRadius:20,padding:28})},
+e('div',{style:{color:C.muted,fontSize:12,fontWeight:600,marginBottom:16,textTransform:'uppercase',letterSpacing:1}},'Choose the punctuation for the gap'),
+e('div',{style:{color:C.ink,fontSize:17,fontFamily:F.serif,lineHeight:1.8,textAlign:'center',padding:'12px 0'}},
+it.parts[0],
+e('span',{style:{display:'inline-block',minWidth:40,borderBottom:'3px solid '+C.conv,margin:'0 4px',textAlign:'center',color:conf?(ok?C.correct:C.wrong):C.conv,fontWeight:800,fontSize:20}},conf||sel!==null?it.opts[sel]:'___'),
+it.parts[1])),
+e('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:24}},it.opts.map(function(opt,oi){
+var bg=C.surface,bc=C.border,tc=C.ink;
+if(conf){if(oi===it.best){bg=C.correct+'22';bc=C.correct;tc=C.correct;}else if(it.correct.includes(oi)){bg=C.correct+'11';bc=C.correct+'66';tc=C.correct;}else if(oi===sel){bg=C.wrongBg;bc=C.wrong;tc=C.wrong;}}
+else if(oi===sel){bg=C.convBg;bc=C.conv;tc=C.conv;}
+return e('button',{key:oi,onClick:function(){if(!conf)setSel(oi);},disabled:conf,style:{padding:'14px 8px',borderRadius:12,background:bg,border:'2px solid '+bc,color:tc,fontWeight:800,fontSize:20,cursor:conf?'default':'pointer',textAlign:'center',fontFamily:F.serif}},opt.trim()||'(nothing)');})),
+conf&&e('div',{style:{background:ok?C.correct+'11':C.wrong+'11',border:'1px solid '+(ok?C.correct:C.wrong)+'44',borderRadius:12,padding:16,marginBottom:20}},
+e('div',{style:{color:ok?C.correct:C.wrong,fontWeight:700,fontSize:14,marginBottom:6}},best?'Best answer!':ok?'Correct! (Better option exists)':'Not quite.'),
+e('div',{style:{color:C.sub,fontSize:13,lineHeight:1.6}},it.explain)),
+e('div',{style:{display:'flex',justifyContent:'flex-end'}},
+!conf?e('button',{onClick:confirm,disabled:sel===null,style:btn(sel===null?C.border:C.conv,sel===null?'#475569':'#000',{fontSize:14,padding:'10px 24px'})},'Check')
+:e('button',{onClick:next,style:btn(C.conv,'#000',{fontSize:14,padding:'10px 24px'})},idx<n-1?'Next \u2192':'See Results \u2192')));}
+
+function TimedPractice(props){
+var s1=useState(0),idx=s1[0],setIdx=s1[1];
+var s2=useState({}),ans=s2[0],setAns=s2[1];
+var s3=useState(18*60),tl=s3[0],setTl=s3[1];
+var s4=useState(false),started=s4[0],setStarted=s4[1];
+var s5=useState(false),scored=s5[0],setScored=s5[1];
+var tmr=useRef(null);var n=PRACTICE.length;
+useEffect(function(){if(started&&!scored){tmr.current=setInterval(function(){setTl(function(t){if(t<=1){clearInterval(tmr.current);return 0;}return t-1;});},1000);return function(){clearInterval(tmr.current);};};},[started,scored]);
+useEffect(function(){if(tl===0&&started&&!scored)doScore();},[tl]);
+function doScore(){if(tmr.current)clearInterval(tmr.current);setScored(true);}
+if(!started)return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'80px 20px',textAlign:'center'}},
+e('div',{style:{color:C.conv,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginBottom:8}},'Session 4 \u2014 Timed Practice'),
+e('h2',{style:{fontFamily:F.serif,fontSize:'clamp(1.4rem,3vw,2rem)',fontWeight:700,marginBottom:12}},'Boundaries Practice Set'),
+e('p',{style:{color:C.sub,fontSize:15,marginBottom:32,maxWidth:500,margin:'0 auto 32px'}},'12 PSAT-format questions with difficulty labels. 90 seconds per question (18 min total).'),
+e('button',{onClick:function(){setStarted(true);},style:btn('linear-gradient(135deg,'+C.conv+',#d97706)','#000',{fontSize:15,padding:'12px 28px'})},'Start Timed Practice \u2192'));
+if(scored){
+var sc=0;for(var k in ans)if(ans[k]===PRACTICE[k].correct)sc++;
+var pct=Math.round((sc/n)*100);
+var errs=[];PRACTICE.forEach(function(q,i){if(ans[i]!==q.correct)errs.push({rule:q.rule,diff:q.diff});});
+var rc={},dc={easy:0,medium:0,hard:0};errs.forEach(function(x){rc[x.rule]=(rc[x.rule]||0)+1;dc[x.diff]++;});
+var sorted=Object.entries(rc).sort(function(a,b){return b[1]-a[1];});
+return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'48px 20px'}},
+e('div',{style:crd({borderRadius:20,border:'2px solid '+C.conv,padding:32,textAlign:'center',marginBottom:24})},
+e('div',{style:{fontFamily:F.mono,fontSize:'3rem',fontWeight:700,color:pct>=75?C.correct:pct>=50?C.conv:C.wrong}},sc+'/'+n),
+e('div',{style:{fontSize:'.88rem',color:C.muted}},pct+'% correct'),
+e('div',{style:{fontSize:'.88rem',color:C.sub,marginTop:12}},sc>=10?'Excellent!':sc>=7?'Good foundation.':'Keep practicing!')),
+errs.length>0&&e('div',{style:crd({borderRadius:16,border:'2px solid '+C.accent,padding:22})},
+e('h3',{style:{fontFamily:F.serif,fontSize:'1.2rem',marginBottom:12}},'\ud83d\udcca Error Pattern Analysis'),
+e('div',{style:{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap'}},
+dc.easy>0&&e('span',{style:dbg('easy')},dc.easy+' easy'),
+dc.medium>0&&e('span',{style:dbg('medium')},dc.medium+' medium'),
+dc.hard>0&&e('span',{style:dbg('hard')},dc.hard+' hard')),
+sorted.map(function(pair,i){return e('div',{key:i,style:{background:C.paper,borderRadius:8,padding:12,marginBottom:8,border:'1px solid '+C.border}},
+e('span',{style:{display:'inline-block',padding:'2px 8px',borderRadius:4,fontSize:'.72rem',fontWeight:700,background:C.wrongBg,color:C.wrong,marginRight:6}},pair[1]+'\u00d7'),
+e('strong',null,pair[0]));}),
+e('div',{style:{fontSize:'.88rem',color:C.sub,marginTop:12}},
+e('strong',null,'Most common: '),sorted[0][0])),
+e('div',{style:{textAlign:'center',marginTop:24}},
+e('button',{onClick:function(){props.onComplete(sc,n);},style:btn('linear-gradient(135deg,'+C.conv+',#d97706)','#000')},'Continue to Challenge \u2192')));}
+var q=PRACTICE[idx];var adone=ans[idx]!==undefined;
+return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'32px 20px',minHeight:'100vh'}},
+e(TimerBar,{timeLeft:tl,total:18*60}),
+e(Dots,{total:n,current:idx,answers:ans,check:function(i){return ans[i]===PRACTICE[i].correct;}}),
+e(QQ,{q:q,idx:idx,total:n,answered:adone,userAns:ans[idx],onAns:function(v){setAns(function(p){var n2={};for(var k2 in p)n2[k2]=p[k2];n2[idx]=v;return n2;});},label:'Conventions \u2014 Boundaries'}),
+adone&&e('div',{style:{textAlign:'center',marginTop:12}},
+idx<n-1?e('button',{onClick:function(){setIdx(function(i){return i+1;});},style:btn(C.conv,'#000',{fontSize:14})},'Next Question \u2192')
+:e('button',{onClick:doScore,style:btn(C.conv,'#000',{fontSize:14})},'See Results \u2192')));}
+
+function ChallengeScreen(props){
+var s1=useState(0),idx=s1[0],setIdx=s1[1];
+var s2=useState({}),ans=s2[0],setAns=s2[1];
+var s3=useState(8*60),tl=s3[0],setTl=s3[1];
+var s4=useState(false),started=s4[0],setStarted=s4[1];
+var s5=useState(false),scored=s5[0],setScored=s5[1];
+var tmr=useRef(null);var n=CHALLENGE.length;
+useEffect(function(){if(started&&!scored){tmr.current=setInterval(function(){setTl(function(t){if(t<=1){clearInterval(tmr.current);return 0;}return t-1;});},1000);return function(){clearInterval(tmr.current);};};},[started,scored]);
+useEffect(function(){if(tl===0&&started&&!scored)doScore();},[tl]);
+function doScore(){if(tmr.current)clearInterval(tmr.current);setScored(true);}
+if(!started)return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'80px 20px',textAlign:'center'}},
+e('div',{style:{display:'inline-block',background:C.nm,color:'#fff',fontSize:10,fontWeight:700,letterSpacing:2,textTransform:'uppercase',padding:'4px 12px',borderRadius:12,marginBottom:12}},'\u2b50 Challenge Mode'),
+e('h2',{style:{fontFamily:F.serif,fontSize:'clamp(1.4rem,3vw,2rem)',fontWeight:700,marginBottom:12}},'National Merit Extension'),
+e('p',{style:{color:C.sub,fontSize:15,marginBottom:32,maxWidth:500,margin:'0 auto 32px'}},'Colon & Dash Precision \u2014 8 questions, 8 minutes. These separate 700+ from 650.'),
+e('button',{onClick:function(){setStarted(true);},style:btn(C.nm,'#fff',{fontSize:15,padding:'12px 28px'})},'Start Challenge Sprint \u2192'));
+if(scored){
+var sc=0;for(var k in ans)if(ans[k]===CHALLENGE[k].correct)sc++;
+var errs=[];CHALLENGE.forEach(function(q,i){if(ans[i]!==q.correct)errs.push(q);});
+var rc={};errs.forEach(function(x){rc[x.rule]=(rc[x.rule]||0)+1;});
+var sorted=Object.entries(rc).sort(function(a,b){return b[1]-a[1];});
+return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'48px 20px'}},
+e('div',{style:crd({borderRadius:20,border:'2px solid '+C.nm,padding:32,textAlign:'center',marginBottom:24})},
+e('div',{style:{fontFamily:F.mono,fontSize:'3rem',fontWeight:700,color:C.nm}},sc+'/'+n),
+e('div',{style:{fontSize:'.88rem',color:C.muted}},'Challenge Score'),
+e('div',{style:{fontSize:'.88rem',color:C.sub,marginTop:12}},sc>=7?'Outstanding! National Merit level.':sc>=5?'Strong. Review colon vs semicolon.':'Review the rule cards and retry.')),
+errs.length>0&&e('div',{style:crd({borderRadius:16,border:'1px solid '+C.nm,padding:22})},
+e('div',{style:{fontSize:'.85rem',color:C.nm,fontWeight:700,marginBottom:8}},'Error Patterns:'),
+sorted.map(function(pair,i){return e('div',{key:i,style:{background:C.paper,borderRadius:8,padding:12,marginBottom:8,border:'1px solid '+C.border}},
+e('span',{style:{display:'inline-block',padding:'2px 8px',borderRadius:4,fontSize:'.72rem',fontWeight:700,background:C.nmBg,color:C.nm,marginRight:6}},pair[1]+'\u00d7'),
+e('strong',null,pair[0]));})),
+e('div',{style:{textAlign:'center',marginTop:24}},
+e('button',{onClick:function(){props.onComplete(sc,n);},style:btn(C.nm,'#fff')},'Finish Module \u2192')));}
+var q=CHALLENGE[idx];var adone=ans[idx]!==undefined;
+return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'32px 20px',minHeight:'100vh'}},
+e(TimerBar,{timeLeft:tl,total:8*60,color:C.nm}),
+e(Dots,{total:n,current:idx,answers:ans,check:function(i){return ans[i]===CHALLENGE[i].correct;},color:C.nm}),
+e(QQ,{q:q,idx:idx,total:n,answered:adone,userAns:ans[idx],onAns:function(v){setAns(function(p){var n2={};for(var k2 in p)n2[k2]=p[k2];n2[idx]=v;return n2;});},color:C.nm,label:'Challenge '+(idx+1)+' of '+n}),
+adone&&e('div',{style:{textAlign:'center',marginTop:12}},
+idx<n-1?e('button',{onClick:function(){setIdx(function(i){return i+1;});},style:btn(C.nm,'#fff',{fontSize:14})},'Next Challenge \u2192')
+:e('button',{onClick:doScore,style:btn(C.nm,'#fff',{fontSize:14})},'See Results \u2192')));}
+
+function CompleteScreen(props){
+var pPct=Math.round(props.pScore/props.pTotal*100);
+return e('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100vh',padding:'0 24px',textAlign:'center'}},
+e('div',{style:{fontSize:64,marginBottom:16}},'\ud83c\udf89'),
+e('h1',{style:{color:C.conv,fontSize:'clamp(1.8rem,4vw,2.8rem)',fontWeight:700,fontFamily:F.serif,marginBottom:8}},'Module 2 Complete'),
+e('p',{style:{color:C.sub,fontSize:16,marginBottom:32,maxWidth:480}},'You\u2019ve mastered sentence boundaries \u2014 the most testable grammar concept on the PSAT.'),
+e('div',{style:{display:'flex',gap:16,marginBottom:32,flexWrap:'wrap',justifyContent:'center'}},
+e('div',{style:crd({borderRadius:20,padding:24,minWidth:200,textAlign:'center'})},
+e('div',{style:{color:C.conv,fontSize:42,fontWeight:900,fontFamily:F.mono}},props.pScore+'/'+props.pTotal),
+e('div',{style:{color:C.muted,fontSize:13,marginTop:4}},'Practice ('+pPct+'%)')),
+props.cScore!==null&&e('div',{style:crd({borderRadius:20,padding:24,minWidth:200,textAlign:'center'})},
+e('div',{style:{color:C.nm,fontSize:42,fontWeight:900,fontFamily:F.mono}},props.cScore+'/'+props.cTotal),
+e('div',{style:{color:C.muted,fontSize:13,marginTop:4}},'Challenge'))),
+e('div',{style:crd({borderRadius:16,padding:20,maxWidth:520,textAlign:'left',marginBottom:32})},
+e('div',{style:{color:C.ink,fontWeight:700,fontSize:15,marginBottom:8}},'\ud83d\udccb Homework'),
+e('div',{style:{color:C.sub,fontSize:13,lineHeight:1.8}},
+e('strong',{style:{color:C.ink}},'1. FANBOYS Test'),' \u2014 Find 5 sentences with commas. Check: FANBOYS? ICs on both sides?',e('br'),
+e('strong',{style:{color:C.ink}},'2. Comma Splice Hunt'),' \u2014 Write 3 splices, fix each with a different legal join.',e('br'),
+e('strong',{style:{color:C.ink}},'3. Error Log Review'),' \u2014 Which rules tripped you up? Write each in your own words.',e('br'),
+e('strong',{style:{color:C.ink}},'4. Preview Module 3'),' \u2014 Identify subject + main verb of 5 long sentences.')),
+e('div',{style:{color:C.muted,fontSize:13}},'Next up: Module 3 \u2014 Agreement, Tense, Modifiers, Parallelism'));}
+
+// ========= APP =========
+function App(){
+var s1=useState('welcome'),screen=s1[0],setScreen=s1[1];
+var s2=useState(true),fade=s2[0],setFade=s2[1];
+var s3=useState(0),pS=s3[0],setPS=s3[1];
+var s4=useState(12),pT=s4[0],setPT=s4[1];
+var s5=useState(null),cS=s5[0],setCS=s5[1];
+var s6=useState(8),cT=s6[0],setCT=s6[1];
+var go=useCallback(function(to){setFade(false);setTimeout(function(){setScreen(to);window.scrollTo(0,0);setFade(true);},350);},[]);
+var showDT=screen==='practice'||screen==='challenge';
+return e('div',{style:{minHeight:'100vh',background:C.paper,color:C.ink,fontFamily:"'Source Sans 3',sans-serif"}},
+e('div',{style:{height:4,background:'linear-gradient(90deg,'+C.craft+' 0%,'+C.craft+' 28%,'+C.info+' 28%,'+C.info+' 54%,'+C.conv+' 54%,'+C.conv+' 80%,'+C.expr+' 80%)',position:'fixed',top:0,left:0,right:0,zIndex:100}}),
+e(FloatingDT,{show:showDT}),
+e('div',{style:{position:'relative',zIndex:1,transition:'opacity .35s,transform .35s',opacity:fade?1:0,transform:fade?'translateY(0)':'translateY(8px)'}},
+screen==='welcome'&&e(Welcome,{onNext:function(){go('warmup');}}),
+screen==='warmup'&&e(WarmupScreen,{onComplete:function(){go('lesson');}}),
+screen==='lesson'&&e(LessonScreen,{onComplete:function(){go('courtroom');}}),
+screen==='courtroom'&&e(CourtroomScreen,{onComplete:function(){go('builder');}}),
+screen==='builder'&&e(BuilderScreen,{onComplete:function(){go('practice');}}),
+screen==='practice'&&e(TimedPractice,{onComplete:function(s,t){setPS(s);setPT(t);go('challenge');}}),
+screen==='challenge'&&e(ChallengeScreen,{onComplete:function(s,t){setCS(s);setCT(t);go('complete');}}),
+screen==='complete'&&e(CompleteScreen,{pScore:pS,pTotal:pT,cScore:cS,cTotal:cT})));}
+
+var createRoot=ReactDOM.createRoot;
+createRoot(document.getElementById('root')).render(e(App));
+</script></body></html>

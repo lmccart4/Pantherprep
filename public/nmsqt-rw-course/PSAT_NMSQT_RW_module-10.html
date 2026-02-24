@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 10: War Games I — PSAT/NMSQT R&W — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #f0f0f0; --paper: #121212; --accent: #0891b2; --accent-light: rgba(8,145,178,.12);
+  --border: #2a2a2a; --muted: #999; --surface: #1a1a1a;
+  --craft: #60a5fa; --craft-bg: rgba(96,165,250,.1);
+  --info: #34d399; --info-bg: rgba(52,211,153,.1);
+  --conv: #fbbf24; --conv-bg: rgba(251,191,36,.1);
+  --expr: #f472b6; --expr-bg: rgba(244,114,182,.1);
+  --correct: #22c55e; --correct-bg: rgba(34,197,94,.12);
+  --wrong: #ef4444; --wrong-bg: rgba(239,68,68,.12);
+  --nm: #a78bfa; --nm-bg: rgba(167,139,250,.1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Source Sans 3', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.65; }
+button { font-family: inherit; }
+.top-stripe { height: 4px; background: linear-gradient(90deg, var(--craft) 0%, var(--craft) 28%, var(--info) 28%, var(--info) 54%, var(--conv) 54%, var(--conv) 80%, var(--expr) 80%); position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+.progress-bar { position: fixed; top: 4px; left: 0; right: 0; height: 3px; background: var(--border); z-index: 99; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--craft), var(--info), var(--conv), var(--expr)); width: 0%; transition: width .3s ease; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback, useRef, useMemo } = React;
+const e = React.createElement;
+
+// ═══ DESIGN TOKENS ═══
+const C = {
+  ink: "#f0f0f0", paper: "#121212", accent: "#0891b2", accentLight: "rgba(8,145,178,.12)",
+  border: "#2a2a2a", muted: "#999", surface: "#1a1a1a",
+  craft: "#60a5fa", craftBg: "rgba(96,165,250,.1)",
+  info: "#34d399", infoBg: "rgba(52,211,153,.1)",
+  conv: "#fbbf24", convBg: "rgba(251,191,36,.1)",
+  expr: "#f472b6", exprBg: "rgba(244,114,182,.1)",
+  correct: "#22c55e", correctBg: "rgba(34,197,94,.12)",
+  wrong: "#ef4444", wrongBg: "rgba(239,68,68,.12)",
+  nm: "#a78bfa", nmBg: "rgba(167,139,250,.1)"
+};
+
+const DOMAIN_COLORS = {
+  "Craft & Structure": { color: C.craft, bg: C.craftBg },
+  "Information & Ideas": { color: C.info, bg: C.infoBg },
+  "Conventions": { color: C.conv, bg: C.convBg },
+  "Expression of Ideas": { color: C.expr, bg: C.exprBg }
+};
+
+const SUBTYPE_META = {
+  "WIC":                  { label: "Words in Context", icon: "📚", domain: "Craft & Structure" },
+  "WIC (Secondary Meaning)": { label: "WIC (Secondary)", icon: "🔮", domain: "Craft & Structure" },
+  "Structure":            { label: "Structure / Purpose", icon: "🔬", domain: "Craft & Structure" },
+  "Structure (Literary)": { label: "Structure (Literary)", icon: "🔬", domain: "Craft & Structure" },
+  "Cross-Text":           { label: "Cross-Text", icon: "🔗", domain: "Craft & Structure" },
+  "Cross-Text (Adversarial)": { label: "Cross-Text (Adversarial)", icon: "⚔️", domain: "Craft & Structure" },
+  "Central Idea":         { label: "Central Idea", icon: "💡", domain: "Information & Ideas" },
+  "Inference":            { label: "Inference", icon: "🧩", domain: "Information & Ideas" },
+  "Textual Evidence":     { label: "Textual Evidence", icon: "📖", domain: "Information & Ideas" },
+  "Quantitative Evidence": { label: "Quantitative Evidence", icon: "📊", domain: "Information & Ideas" },
+  "Subject-Verb Agreement": { label: "Subject-Verb Agreement", icon: "✏️", domain: "Conventions" },
+  "Modifiers":            { label: "Modifiers", icon: "✏️", domain: "Conventions" },
+  "Punctuation":          { label: "Punctuation", icon: "✏️", domain: "Conventions" },
+  "Parallelism":          { label: "Parallelism", icon: "✏️", domain: "Conventions" },
+  "Transitions":          { label: "Transitions", icon: "🔀", domain: "Expression of Ideas" },
+  "Synthesis":            { label: "Synthesis", icon: "🧬", domain: "Expression of Ideas" },
+  "Synthesis (Dual Goal)": { label: "Synthesis (Dual Goal)", icon: "🧬", domain: "Expression of Ideas" }
+};
+
+// ═══ QUESTION DATA (27 questions) ═══
+const SIM = [
+  // CRAFT & STRUCTURE: WIC (1-4)
+  { passage: "The ambassador's remarks were carefully _______ to avoid offending either party while still conveying the urgency of the situation.", stem: "Which word best completes the text?", choices: ["calibrated","exaggerated","obscured","improvised"], correct: 0, domain: "Craft & Structure", subtype: "WIC", explain: '"Carefully" + "avoid offending" + "convey urgency" = precisely adjusted. "Calibrated" = carefully adjusted for a specific purpose.' },
+  { passage: "The once-_______ neighborhood had undergone a dramatic transformation, with luxury condominiums replacing the abandoned warehouses that had stood empty for decades.", stem: "Which word best completes the text?", choices: ["affluent","desolate","vibrant","prestigious"], correct: 1, domain: "Craft & Structure", subtype: "WIC", explain: '"Abandoned warehouses, empty for decades" → the neighborhood WAS empty/bleak. "Desolate" = deserted, empty.' },
+  { passage: "Although the CEO projected confidence during the press conference, insiders described the company's financial situation as _______, with quarterly losses accelerating and key investors withdrawing support.", stem: "Which word best completes the text?", choices: ["promising","stable","precarious","transparent"], correct: 2, domain: "Craft & Structure", subtype: "WIC", explain: '"Losses accelerating, investors withdrawing" = dangerously unstable. "Precarious" = not securely held, dangerous.' },
+  { passage: "The biologist's hypothesis was _______ by the discovery of a fossil that exhibited characteristics of both reptiles and mammals, exactly as her evolutionary model had predicted.", stem: "Which word best completes the text?", choices: ["refuted","vindicated","complicated","overlooked"], correct: 1, domain: "Craft & Structure", subtype: "WIC", explain: 'Fossil matched predictions exactly = proved correct. "Vindicated" = shown to be right.' },
+  // CRAFT & STRUCTURE: Structure/Purpose (5-7)
+  { passage: 'The essay opens by describing the widespread belief that Thomas Edison invented the light bulb single-handedly. <u>It then details the contributions of at least a dozen other inventors whose work Edison built upon, including Humphry Davy\'s arc lamp and Warren de la Rue\'s vacuum tube experiments.</u> The essay concludes that innovation is almost always collaborative.', stem: "Which choice best describes the function of the underlined sentence?", choices: ["It supports the popular narrative about Edison.", "It provides evidence that complicates the opening claim, supporting the essay's argument for collaborative innovation.", "It introduces a counterargument to the essay's thesis.", "It summarizes the essay's conclusion."], correct: 1, domain: "Craft & Structure", subtype: "Structure", explain: "The underlined sentence shows OTHER inventors' contributions, which undermines the \"single-handed\" belief and supports the collaborative thesis." },
+  { passage: 'A review of a new restaurant begins: "The dining room\'s minimalist décor — exposed concrete, unfinished wood, a single orchid per table — suggests a kitchen confident enough to let the food speak for itself."', stem: "Which choice best describes what the reviewer accomplishes in this sentence?", choices: ["Criticizes the restaurant for being under-decorated.", "Uses the physical setting as evidence for a claim about the kitchen's philosophy.", "Provides a factual description without any evaluative judgment.", "Compares the restaurant unfavorably to competitors."], correct: 1, domain: "Craft & Structure", subtype: "Structure (Literary)", explain: "The reviewer reads the décor as a SIGNAL of kitchen confidence — the setting becomes evidence for a claim about philosophy." },
+  { passage: "The passage presents two competing explanations for the extinction of the woolly mammoth: climate change reducing habitat and overhunting by humans. It describes evidence for both but ultimately argues that the two factors were synergistic — each alone was insufficient, but together they were devastating.", stem: "Which choice best describes the overall structure?", choices: ["It presents a problem and argues no solution exists.", "It presents two alternatives, then argues they worked together rather than independently.", "It describes a chronological sequence of events.", "It compares the woolly mammoth to modern endangered species."], correct: 1, domain: "Craft & Structure", subtype: "Structure", explain: "Two explanations presented → argued to be synergistic (combined effect). Not either/or but both." },
+  // CRAFT & STRUCTURE: Cross-Text (8-9)
+  { passage: '<strong>Text 1:</strong> Sociologist Brennan argues that remote work fundamentally undermines workplace culture by eliminating the informal interactions — hallway conversations, lunch discussions, spontaneous collaborations — that build trust and shared identity.<br><br><strong>Text 2:</strong> Sociologist Okafor counters that Brennan\'s definition of "workplace culture" is outdated, rooted in mid-20th-century office norms. Okafor argues that remote workers build equally strong cultures through digital channels, shared documentation, and asynchronous communication — they simply do so differently.', stem: "Based on the texts, what is the core of the disagreement?", choices: ['Whether remote work exists.', 'Whether informal interactions can occur digitally.', 'Whether "workplace culture" should be defined by in-person norms or can take new forms.', 'Whether remote workers are productive.'], correct: 2, domain: "Craft & Structure", subtype: "Cross-Text", explain: 'Brennan defines culture by physical interactions. Okafor says culture can form differently. The dispute is about the DEFINITION of workplace culture.' },
+  { passage: "<strong>Text 1:</strong> Historian Nakamura argues that the atomic bombings of Hiroshima and Nagasaki were militarily unnecessary because Japan was already seeking surrender through diplomatic channels.<br><br><strong>Text 2:</strong> Historian Chen acknowledges the diplomatic overtures but argues they were conditional — Japan's military leadership insisted on terms (retaining territory, no occupation) that the Allies could not accept, making the diplomatic path insufficient to end the war quickly.", stem: "How does Chen respond to Nakamura?", choices: ["By completely agreeing with Nakamura's assessment.", "By accepting that diplomatic activity existed but arguing its terms were unacceptable, making it insufficient.", "By arguing that Japan never sought any form of surrender.", "By focusing on events after the bombings."], correct: 1, domain: "Craft & Structure", subtype: "Cross-Text", explain: "Chen agrees diplomacy existed (partial acceptance) but qualifies: the terms were unacceptable, so diplomacy alone wouldn't have ended the war. Classic qualification." },
+  // INFORMATION & IDEAS: Central Ideas/Inferences (10-13)
+  { passage: "When the Brazilian government began requiring ethanol blending in gasoline in the 1970s, critics predicted economic disaster. Instead, the policy created a domestic biofuel industry that now employs 800,000 workers and has reduced the country's dependence on imported oil by over 40%. The success, however, came at an environmental cost: sugarcane plantations expanded into sensitive ecosystems, and some researchers estimate that ethanol production has contributed to 15% of Brazil's recent deforestation.", stem: "Which choice best states the main idea of the text?", choices: ["Brazil's ethanol policy was an unqualified success.", "Critics were correct to predict economic disaster from ethanol blending.", "Brazil's ethanol policy achieved significant economic benefits but caused serious environmental damage.", "Sugarcane plantations are the primary cause of deforestation in Brazil."], correct: 2, domain: "Information & Ideas", subtype: "Central Idea", explain: "The passage presents BOTH economic success (800K jobs, reduced oil dependence) AND environmental cost (deforestation). The main idea balances both." },
+  { passage: "A study of 5,000 chess players found that those who began playing before age 7 achieved grandmaster status at significantly higher rates than those who started after age 12. However, the researchers noted that early starters also reported spending twice as many hours practicing weekly. The study could not determine whether the advantage stemmed from early cognitive development or simply from accumulated practice time.", stem: "Based on the text, which inference is best supported?", choices: ["Starting chess before age 7 causes superior cognitive development.", "The age-related advantage may reflect practice hours rather than a developmental window.", "Chess should be taught in preschools to maximize grandmaster potential.", "Players who start after age 12 cannot achieve grandmaster status."], correct: 1, domain: "Information & Ideas", subtype: "Inference", explain: 'The passage says the advantage MIGHT be practice hours, not age. (B) captures this uncertainty. (A) claims causation the study couldn\'t establish.' },
+  { passage: "Archaeological evidence from Çatalhöyük, a 9,000-year-old settlement in modern Turkey, challenges assumptions about early agricultural societies. Unlike later civilizations, Çatalhöyük shows no evidence of a ruling class: houses are uniform in size, burials contain similar grave goods regardless of location, and there are no public buildings or monuments that would indicate centralized authority.", stem: "Which choice best states the central idea?", choices: ["Çatalhöyük was the first city in human history.", "Early agricultural societies were always egalitarian.", "Evidence from Çatalhöyük suggests that early agricultural life did not necessarily produce social hierarchies.", "Turkish archaeological sites are more important than those in other regions."], correct: 2, domain: "Information & Ideas", subtype: "Central Idea", explain: '"Challenges assumptions" + uniform houses + similar burials + no authority buildings = agricultural society without hierarchy. (C) captures this precisely with "not necessarily."' },
+  { passage: "Researchers studying decision-making found that people presented with three options consistently avoided the extremes and chose the middle option, regardless of the options' actual merits. When a $50, $100, and $200 product were offered, most chose the $100 option. But when the same $100 product was presented alongside $30 and $100 alternatives, it became the \"extreme\" and was avoided in favor of the $30 option.", stem: "Which inference is best supported by the text?", choices: ["The $100 product was always the best value.", "Consumer preferences are influenced more by the relative positioning of options than by the options' inherent qualities.", "Companies should always offer three products.", "The $30 product was the highest quality option."], correct: 1, domain: "Information & Ideas", subtype: "Inference", explain: "The SAME $100 product was chosen or avoided depending on what it was placed next to. This proves positioning matters more than inherent quality." },
+  // INFORMATION & IDEAS: Evidence (14-17)
+  { passage: "Linguist Dr. Patel argues that endangered languages contain irreplaceable knowledge about local ecosystems that is lost when the language dies.", stem: "Which finding would most directly support Patel's claim?", choices: ["The number of endangered languages has doubled since 1950.", "The Tuyuca language of the Amazon has 52 distinct terms for types of rainfall that correspond to specific ecological conditions Western science has no vocabulary for.", "Most endangered languages are spoken by fewer than 1,000 people.", "Language preservation programs have been implemented in 30 countries."], correct: 1, domain: "Information & Ideas", subtype: "Textual Evidence", explain: "The claim is about IRREPLACEABLE ecosystem knowledge. (B) shows specific ecological terms with no Western equivalent — proving knowledge loss." },
+  { table: '<table style="width:100%;border-collapse:collapse;font-size:13px;font-family:\'JetBrains Mono\',monospace"><tr style="background:var(--surface)"><th style="padding:8px 10px;border:1px solid var(--border);text-align:center;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">City</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Park Area (km²)</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Trees/km²</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Avg Temp (°C)</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Air Quality Index</th></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">Singapore</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">47</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">8,200</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">27.5</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">52</td></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">Tokyo</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">32</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">5,100</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">16.3</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">45</td></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">London</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">38</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">3,800</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">11.9</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">58</td></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">Phoenix</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">15</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">950</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">24.2</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">78</td></tr></table>', passage: "Urban planners compiled data on green infrastructure and environmental indicators.", stem: "Which choice supports the claim that higher tree density is associated with better air quality?", choices: ["Singapore has the largest park area at 47 km².", "Tokyo has the best air quality index (45) and the second-highest tree density (5,100/km²), while Phoenix has the worst air quality (78) and the lowest tree density (950/km²).", "London's average temperature is 11.9°C, the lowest among the four cities.", "Singapore has the highest tree density and the highest average temperature."], correct: 1, domain: "Information & Ideas", subtype: "Quantitative Evidence", explain: "The claim links tree density to air quality. (B) compares high-tree/good-AQI (Tokyo) with low-tree/bad-AQI (Phoenix). (D) mentions tree density but pairs it with temperature, not air quality." },
+  { passage: "Economist Dr. Torres argues that automation will disproportionately impact workers without college degrees.", stem: "Which finding would most directly support Torres's claim?", choices: ["Automation has increased manufacturing productivity by 30%.", "A Bureau of Labor Statistics analysis found that 85% of jobs at high risk of automation require no formal education beyond high school.", "College enrollment has declined by 15% over the past decade.", "Several technology companies have eliminated degree requirements for software engineering positions."], correct: 1, domain: "Information & Ideas", subtype: "Textual Evidence", explain: "The claim is about DISPROPORTIONATE impact on non-college workers. (B) shows 85% of high-risk jobs need no degree — directly supporting the disproportion." },
+  { table: '<table style="width:100%;border-collapse:collapse;font-size:13px;font-family:\'JetBrains Mono\',monospace"><tr style="background:var(--surface)"><th style="padding:8px 10px;border:1px solid var(--border);text-align:center;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Source</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Cost ($/MWh)</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">CO₂ (g/kWh)</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Land Use (km²/GW)</th></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">Solar</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">36</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">41</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">20</td></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">Wind</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">30</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">11</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">72</td></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">Nuclear</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">69</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">12</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">1.3</td></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">Natural Gas</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">44</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">490</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">0.4</td></tr></table>', passage: "Energy analysts compiled data on electricity generation methods.", stem: "Which choice supports the claim that nuclear power offers the best combination of low emissions and minimal land use?", choices: ["Solar energy has the lowest cost at $36/MWh.", "Wind produces only 11 g/kWh of CO₂, the lowest among all four sources.", "Nuclear emits just 12 g CO₂/kWh — comparable to wind — while requiring only 1.3 km²/GW, far less land than solar (20) or wind (72).", "Natural gas has the smallest land footprint at 0.4 km²/GW."], correct: 2, domain: "Information & Ideas", subtype: "Quantitative Evidence", explain: 'Claim: nuclear = best LOW EMISSIONS + LOW LAND USE combo. (C) shows both: emissions comparable to wind AND tiny land use. (D) mentions gas land use but gas has terrible emissions.' },
+  // CONVENTIONS (18-22)
+  { passage: "The museum's collection of Renaissance paintings, which includes works by Botticelli, Raphael, and Titian, _______ one of the most comprehensive in the Western Hemisphere.", stem: "Which choice conforms to Standard English?", choices: ["are considered","is considered","were considering","have been considering"], correct: 1, domain: "Conventions", subtype: "Subject-Verb Agreement", explain: 'Subject is "collection" (singular). The "which" clause is nonessential. "Is considered."' },
+  { passage: "Having published her first novel at the age of nineteen, the young _______ attracted comparisons to the Brontë sisters from literary critics.", stem: "Which choice conforms to Standard English?", choices: ["author, she","author","author; she","author. She"], correct: 1, domain: "Conventions", subtype: "Modifiers", explain: '"Having published" is a participial phrase that must be followed directly by the subject it modifies: "the young author."' },
+  { passage: "The research team analyzed soil samples from three continents, _______ their findings suggested that microplastic contamination was far more widespread than previous studies had indicated.", stem: "Which choice conforms to Standard English?", choices: ["continents, their","continents; their","continents their","continents, and, their"], correct: 1, domain: "Conventions", subtype: "Punctuation", explain: 'Two ICs: "The team analyzed…" and "their findings suggested…" Semicolon correctly joins them. (A) = comma splice.' },
+  { passage: "The report concluded that the city's water infrastructure, much of which was installed in the 1940s, _______ for decades and now requires a complete overhaul.", stem: "Which choice conforms to Standard English?", choices: ["has been deteriorating","have been deteriorating","was deteriorated","are deteriorating"], correct: 0, domain: "Conventions", subtype: "Subject-Verb Agreement", explain: 'Subject is "infrastructure" (singular). The "which" clause is nonessential. "Has been deteriorating" = present perfect progressive.' },
+  { passage: "The filmmaker wanted to capture the raw energy of street protests without _______ the participants' safety or compromising the documentary's journalistic integrity.", stem: "Which choice conforms to Standard English?", choices: ["endangering","to endanger","having endangered","she endangered"], correct: 0, domain: "Conventions", subtype: "Parallelism", explain: '"Without" + gerund. Parallel to "compromising" later in the sentence. "Endangering."' },
+  // EXPRESSION OF IDEAS: Transitions (23-25)
+  { passage: "The painting's vivid reds and oranges immediately draw the viewer's eye to the foreground. _______ the muted blues and grays of the background create a sense of depth and distance.", stem: "Which transition best completes the text?", choices: ["Similarly,","Meanwhile,","Therefore,","For example,"], correct: 1, domain: "Expression of Ideas", subtype: "Transitions", explain: 'Two simultaneous visual effects: foreground draws eye, background creates depth. "Meanwhile" = at the same time.' },
+  { passage: "The orchestra's performance of Beethoven's Fifth was technically flawless. _______ critics felt it lacked the emotional intensity that distinguishes a good performance from a great one.", stem: "Which transition best completes the text?", choices: ["Moreover,","For instance,","Nevertheless,","Accordingly,"], correct: 2, domain: "Expression of Ideas", subtype: "Transitions", explain: 'Technically flawless (positive) → lacked emotion (negative despite the positive). "Nevertheless" = despite that.' },
+  { passage: "The city banned single-use plastic bags in 2020. _______ a follow-up study found that overall plastic waste in landfills had actually increased by 12%, driven by a surge in thicker \"reusable\" bags that consumers discarded after one use.", stem: "Which transition best completes the text?", choices: ["As a result,","For instance,","Surprisingly,","In addition,"], correct: 2, domain: "Expression of Ideas", subtype: "Transitions", explain: 'Ban expected to reduce waste → waste actually increased. Unexpected outcome. "Surprisingly" signals the contradiction between expectation and result.' },
+  // EXPRESSION OF IDEAS: Synthesis (26-27)
+  { notes: '<ul style="padding-left:20px;list-style:disc"><li>The platypus is one of only five species of egg-laying mammals (monotremes).</li><li>Male platypuses have venomous spurs on their hind legs — one of the few venomous mammals.</li><li>The platypus uses electroreception to detect prey underwater by sensing electrical signals from muscle contractions.</li><li>The platypus genome contains genes from birds, reptiles, and mammals.</li><li>Indigenous Australians have cultural stories about the platypus dating back thousands of years.</li></ul>', stem: "Which choice effectively presents the platypus as an animal that defies biological classification?", choices: ["The platypus has been featured in Indigenous Australian cultural stories for thousands of years.", "Male platypuses possess venomous spurs, making them one of the few venomous mammals in the world.", "The platypus defies easy classification: it lays eggs like a reptile, produces venom like a snake, detects prey through electroreception like a shark, and has a genome containing genes from birds, reptiles, and mammals.", "The platypus is one of only five species of monotremes, or egg-laying mammals."], correct: 2, domain: "Expression of Ideas", subtype: "Synthesis", explain: 'Goal: defies classification. (C) lists traits from multiple animal classes (reptile, snake, shark) + mixed genome — directly supporting the "defies classification" framing.' },
+  { notes: '<ul style="padding-left:20px;list-style:disc"><li>The Svalbard Global Seed Vault, opened in 2008, stores over 1.1 million seed samples from around the world.</li><li>It is located inside a mountain on a remote Norwegian island, 1,300 km from the North Pole.</li><li>The vault\'s permafrost location keeps seeds frozen even without electricity.</li><li>In 2015, seeds were withdrawn for the first time — to replace collections destroyed by the Syrian civil war.</li><li>The vault currently holds seeds from 6,000 plant species.</li></ul>', stem: "Which choice introduces the seed vault by emphasizing both its purpose and its real-world use?", choices: ["The Svalbard Global Seed Vault is located inside a mountain on a remote Norwegian island, 1,300 km from the North Pole.", "Opened in 2008, the vault stores over 1.1 million seed samples representing 6,000 plant species.", "The Svalbard Global Seed Vault — a repository of over 1.1 million seed samples frozen inside an Arctic mountain — proved its value in 2015, when seeds were withdrawn for the first time to replace collections destroyed by Syria's civil war.", "The vault's permafrost location ensures seeds remain frozen even during power outages."], correct: 2, domain: "Expression of Ideas", subtype: "Synthesis", explain: 'Goal: purpose + real-world use. (C) introduces purpose (repository of seeds) AND real-world use (2015 Syria withdrawal). (A) is location. (B) is stats. (D) is engineering detail.' }
+];
+
+// ═══ CHALLENGE QUESTIONS ═══
+const CHALLENGE = [
+  { passage: 'The word "sanction" can mean either "to approve" or "to penalize." In diplomatic contexts, this ambiguity can create significant confusion. When the United Nations announced it would sanction the regime, commentators initially _______ whether the organization intended to legitimize or punish the government.', stem: "Which word best completes the text?", choices: ["confirmed","debated","ignored","resolved"], correct: 1, domain: "Craft & Structure", subtype: "WIC (Secondary Meaning)", explain: 'Ambiguity about meaning → people questioned which sense was intended. "Debated" captures the uncertainty.' },
+  { passage: 'The playwright\'s most acclaimed work is structured as a series of monologues delivered by characters who never appear on stage together. <u>The audience must piece together the relationships from contradictions and overlaps in the characters\' accounts.</u> Critics have described the experience as "detective work disguised as theater."', stem: "Which choice best describes the function of the underlined sentence?", choices: ["It introduces the characters' motivations.", "It describes the active role the structural choice assigns to the audience.", "It summarizes the critics' response to the play.", "It provides background on the playwright's career."], correct: 1, domain: "Craft & Structure", subtype: "Structure (Literary)", explain: "The underlined sentence shows what the STRUCTURE requires of the audience — it's about the audience's role, which is a consequence of the structural choice." },
+  { passage: '<strong>Text 1:</strong> Neuroscientist Park argues that adolescent risk-taking is primarily driven by an imbalance between a mature limbic system (which drives reward-seeking) and an immature prefrontal cortex (which controls impulse regulation).<br><br><strong>Text 2:</strong> Neuroscientist Alvarez agrees the brain regions Park identifies are relevant but argues that framing adolescence as a "deficit" in prefrontal control is misleading. Alvarez contends that heightened risk-taking is an adaptive feature that promotes exploration and social learning during a critical developmental window.', stem: "What is the fundamental nature of the disagreement?", choices: ["Whether the prefrontal cortex develops during adolescence.", "Whether adolescent risk-taking is a developmental flaw or an adaptive feature.", "Whether the limbic system is involved in risk-taking.", "Whether adolescence is a real developmental stage."], correct: 1, domain: "Craft & Structure", subtype: "Cross-Text (Adversarial)", explain: "Both agree on the brain regions. They disagree on INTERPRETATION: Park sees a deficit/imbalance, Alvarez sees an adaptive feature. Same facts, different framing." },
+  { table: '<table style="width:100%;border-collapse:collapse;font-size:13px;font-family:\'JetBrains Mono\',monospace"><tr style="background:var(--surface)"><th style="padding:8px 10px;border:1px solid var(--border);text-align:center;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Country</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Healthcare %GDP</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Life Expect.</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Infant Mortality</th><th style="padding:8px 10px;border:1px solid var(--border);text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Uninsured %</th></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">US</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">17.8%</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">77.0</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">5.4</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">8.6%</td></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">Germany</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">12.8%</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">81.3</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">3.1</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">0.1%</td></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">Japan</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">11.1%</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">84.6</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">1.8</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">0%</td></tr><tr><td style="padding:8px 10px;border:1px solid var(--border);color:#ccc;font-family:\'Source Sans 3\',sans-serif">UK</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">12.4%</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">81.0</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">3.7</td><td style="padding:8px 10px;border:1px solid var(--border);text-align:right;color:#ccc">0%</td></tr></table>', passage: "Health policy researchers compared healthcare systems.", stem: "Which choice supports the claim that higher healthcare spending does not necessarily produce better health outcomes?", choices: ["Japan has the lowest infant mortality rate at 1.8 per 1,000 births.", "All four countries spend more than 10% of GDP on healthcare.", "The US spends the most on healthcare (17.8% of GDP) yet has the lowest life expectancy (77.0), the highest infant mortality (5.4), and the highest uninsured rate (8.6%) among all four countries.", "Germany and the UK have similar life expectancies (81.3 and 81.0) despite different spending levels."], correct: 2, domain: "Information & Ideas", subtype: "Quantitative Evidence", explain: "(C) shows the US spends the MOST but performs the WORST on every metric — directly disproving a spending→outcomes link." },
+  { notes: '<ul style="padding-left:20px;list-style:disc"><li>Mycelium (fungal root networks) can decompose plastic in weeks — a process that normally takes centuries.</li><li>Researchers at Yale discovered a fungus (Pestalotiopsis microspora) that can survive on polyurethane alone.</li><li>Mycelium-based packaging is already used by companies like IKEA as a sustainable alternative to Styrofoam.</li><li>Growing mycelium packaging requires 12% of the energy needed to produce equivalent Styrofoam.</li><li>The global mycelium market is projected to reach $4.2 billion by 2030.</li></ul>', stem: "Which choice effectively presents mycelium technology as having both environmental and commercial promise?", choices: ["Yale researchers discovered a fungus that can decompose polyurethane plastic.", "Mycelium technology offers a compelling dual promise: its ability to decompose plastic in weeks and produce packaging at just 12% of Styrofoam's energy cost has already attracted companies like IKEA, helping fuel a market projected to reach $4.2 billion by 2030.", "The global mycelium market is expected to be worth $4.2 billion by 2030.", "Growing mycelium packaging uses only 12% of the energy required for Styrofoam production."], correct: 1, domain: "Expression of Ideas", subtype: "Synthesis (Dual Goal)", explain: 'Goal: environmental + commercial promise. (B) includes decomposition + energy savings (environmental) AND IKEA adoption + market projection (commercial).' },
+  { passage: "The mathematician's proof was elegant in its _______ — rather than building an elaborate argument across dozens of pages, she resolved the conjecture in just three lines by revealing a hidden symmetry that previous researchers had overlooked.", stem: "Which word best completes the text?", choices: ["complexity","brevity","obscurity","verbosity"], correct: 1, domain: "Craft & Structure", subtype: "WIC", explain: '"Three lines" vs. "dozens of pages" = short/concise. "Brevity" = concise expression.' }
+];
+
+const ERROR_CATS = ["Content Gap", "Trap Answer", "Misread", "Time Pressure"];
+
+// ═══ SHARED STYLES ═══
+const btn = (bg, color, extra) => ({
+  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+  padding: "12px 28px", borderRadius: 10, border: "none", background: bg, color,
+  fontWeight: 700, fontSize: 15, cursor: "pointer", transition: "all .15s", fontFamily: "inherit", ...extra
+});
+const card = (extra) => ({
+  background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "18px 20px", ...extra
+});
+const sectionLabel = { fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: C.accent, marginBottom: 6 };
+const heading = { fontFamily: "'Cormorant Garamond', serif", fontWeight: 700, marginBottom: 12 };
+
+// ═══ SCROLL PROGRESS ═══
+function useScrollProgress() {
+  useEffect(() => {
+    const handler = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const fill = document.getElementById("progressFill");
+      if (fill && h > 0) fill.style.width = Math.min((window.scrollY / h) * 100, 100) + "%";
+    };
+    window.addEventListener("scroll", handler);
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+}
+
+// ═══ WELCOME / STRATEGY BRIEFING SCREEN ═══
+function Welcome({ onStart }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => { setTimeout(() => setShow(true), 100); }, []);
+  useScrollProgress();
+
+  return e("div", { style: { maxWidth: 800, margin: "0 auto", padding: "20px 20px 60px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } },
+    // Header
+    e("div", { style: { padding: "40px 0 30px", borderBottom: `1px solid ${C.border}`, marginBottom: 32 } },
+      e("div", { style: { display: "inline-block", background: "linear-gradient(90deg, var(--craft), var(--info), var(--conv), var(--expr))", color: "#fff", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: "5px 14px", borderRadius: 16, marginBottom: 14 } }, "MODULE 10"),
+      e("h1", { style: { ...heading, fontSize: "clamp(1.8rem,4vw,2.6rem)", marginBottom: 6 } }, "War Games I"),
+      e("p", { style: { color: C.muted, fontSize: "1rem" } }, "Full Mixed Practice with Strategy Integration"),
+      e("div", { style: { display: "flex", gap: 20, marginTop: 14, fontSize: 13, color: C.muted } },
+        e("span", null, "⏱ ~60 min"), e("span", null, "📋 27 questions"), e("span", null, "🎯 All Domains"))
+    ),
+    // Strategy Briefing
+    e("div", { style: { marginBottom: 36 } },
+      e("div", { style: sectionLabel }, "STRATEGY BRIEFING (5 MIN)"),
+      e("h2", { style: { ...heading, fontSize: "1.6rem" } }, "The Two-Pass Method"),
+      e("div", { style: { ...card(), fontSize: 14, color: "#ccc", lineHeight: 1.9, borderLeft: `3px solid ${C.accent}` } },
+        e("div", null, e("strong", { style: { color: C.accent } }, "Pass 1 — Quick Wins (20 min): "), "Answer every question you're confident about. Flag anything that takes more than 90 seconds."),
+        e("div", { style: { marginTop: 8 } }, e("strong", { style: { color: C.accent } }, "Pass 2 — Flagged Items (12 min): "), "Return to flagged questions with fresh eyes. The context from other passages sometimes helps."),
+        e("div", { style: { marginTop: 8 } }, e("strong", { style: { color: C.accent } }, "Never leave blanks. "), "No penalty for guessing on the Digital PSAT.")
+      ),
+      e("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, margin: "16px 0" } },
+        ...[
+          { color: C.craft, label: "Fast (~60s)", types: "WIC, Conventions, Transitions" },
+          { color: C.info, label: "Moderate (~80s)", types: "Central Ideas, Inferences, Structure" },
+          { color: C.conv, label: "Slow (~90s)", types: "Evidence (Quantitative), Cross-Text" },
+          { color: C.expr, label: "Variable (~70–90s)", types: "Rhetorical Synthesis" }
+        ].map((t, i) => e("div", { key: i, style: card({ fontSize: 13 }) }, e("strong", { style: { color: t.color } }, t.label), e("br"), t.types))
+      ),
+      e("div", { style: { background: C.infoBg, border: "1px solid rgba(52,211,153,.3)", borderRadius: 10, padding: "14px 18px", fontSize: 14 } },
+        e("strong", { style: { color: C.info } }, "Domain order on the real test: "), "Craft & Structure → Information & Ideas → Standard English Conventions → Expression of Ideas. This module follows that order."
+      )
+    ),
+    // Begin button
+    e("div", { style: { textAlign: "center", paddingTop: 8 } },
+      e("button", {
+        onClick: onStart,
+        style: btn(`linear-gradient(135deg, ${C.accent}, ${C.craft})`, "#fff", { fontSize: 17, padding: "16px 40px", letterSpacing: .5 }),
+        onMouseOver: ev => ev.currentTarget.style.transform = "scale(1.04)",
+        onMouseOut: ev => ev.currentTarget.style.transform = "scale(1)"
+      }, "Begin Simulated Module (32:00) →")
+    )
+  );
+}
+
+// ═══ QUESTION CARD COMPONENT ═══
+function QuestionCard({ q, idx, answer, onAnswer, showNumber, total }) {
+  const dc = DOMAIN_COLORS[q.domain] || { color: C.accent, bg: C.accentLight };
+  const hasTable = !!q.table;
+  const hasNotes = !!q.notes;
+  const hasPassage = !!q.passage;
+  const isAnswered = answer !== undefined;
+  const isCrossText = hasPassage && q.passage.includes("Text 1:");
+
+  let text1 = null, text2 = null;
+  if (isCrossText) {
+    const parts = q.passage.split(/Text 2:|<strong>Text 2:<\/strong>/);
+    text1 = parts[0].replace(/Text 1:|<strong>Text 1:<\/strong>/g, "").replace(/<br\s*\/?>/g, "").trim();
+    text2 = parts[1] ? parts[1].replace(/<br\s*\/?>/g, "").trim() : "";
+  }
+
+  return e("div", { style: { ...card(), marginBottom: 12, opacity: isAnswered ? .9 : 1 } },
+    // Domain badge
+    e("div", { style: { display: "inline-block", fontSize: 10, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", padding: "2px 8px", borderRadius: 4, background: `${dc.color}20`, color: dc.color, marginBottom: 8 } },
+      (showNumber ? `Q${idx + 1}/${total} · ` : "") + q.subtype
+    ),
+    // Table
+    hasTable && e("div", { style: { background: C.paper, border: `1px solid ${C.border}`, borderRadius: 8, padding: "12px 14px", marginBottom: 12, overflowX: "auto" }, dangerouslySetInnerHTML: { __html: q.table } }),
+    // Notes
+    hasNotes && e("div", { style: { background: C.paper, border: `1px solid ${C.border}`, borderRadius: 10, padding: 14, marginBottom: 12, fontSize: 14, color: "#ddd", lineHeight: 1.8 }, dangerouslySetInnerHTML: { __html: q.notes } }),
+    // Passage
+    hasPassage && !isCrossText && e("div", { style: { background: C.paper, border: `1px solid ${C.border}`, borderRadius: 8, padding: "12px 14px", fontSize: 14, color: "#ddd", lineHeight: 1.75, marginBottom: 12, borderLeft: `3px solid ${C.muted}` }, dangerouslySetInnerHTML: { __html: q.passage } }),
+    // Cross-text
+    isCrossText && e("div", { style: { marginBottom: 12 } },
+      e("div", { style: { background: C.paper, border: `1px solid ${C.border}`, borderRadius: 8, padding: "12px 14px", marginBottom: 8 } },
+        e("div", { style: { color: C.craft, fontSize: 11, fontWeight: 700, marginBottom: 6 } }, "TEXT 1"),
+        e("div", { style: { fontSize: 14, color: "#ddd", lineHeight: 1.75 }, dangerouslySetInnerHTML: { __html: text1 } })
+      ),
+      e("div", { style: { background: C.paper, border: `1px solid ${C.border}`, borderRadius: 8, padding: "12px 14px" } },
+        e("div", { style: { color: C.info, fontSize: 11, fontWeight: 700, marginBottom: 6 } }, "TEXT 2"),
+        e("div", { style: { fontSize: 14, color: "#ddd", lineHeight: 1.75 }, dangerouslySetInnerHTML: { __html: text2 } })
+      )
+    ),
+    // Stem
+    e("div", { style: { fontSize: 15, marginBottom: 12, color: "#ddd", lineHeight: 1.7 } }, q.stem),
+    // Choices
+    e("div", { style: { display: "flex", flexDirection: "column", gap: 6 } },
+      q.choices.map((ch, ci) => {
+        const letter = "ABCD"[ci];
+        let cls = {};
+        if (isAnswered && ci === q.correct) cls = { borderColor: C.correct, background: C.correctBg };
+        else if (isAnswered && answer === ci) cls = { borderColor: C.wrong, background: C.wrongBg };
+        return e("button", {
+          key: ci,
+          onClick: () => { if (!isAnswered) onAnswer(ci); },
+          disabled: isAnswered,
+          style: {
+            display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 14px",
+            background: C.paper, border: `2px solid ${C.border}`, borderRadius: 8,
+            cursor: isAnswered ? "default" : "pointer", fontSize: 14, textAlign: "left", width: "100%",
+            transition: "all .15s", color: "#ddd",
+            ...(isAnswered ? cls : {}),
+            ...(!isAnswered ? {} : { pointerEvents: "none", opacity: isAnswered && ci !== q.correct && ci !== answer ? .5 : 1 })
+          }
+        },
+          e("span", { style: { fontWeight: 700, color: isAnswered && ci === q.correct ? C.correct : isAnswered && ci === answer ? C.wrong : C.muted, minWidth: 20, flexShrink: 0 } }, letter),
+          e("span", null, ch)
+        );
+      })
+    ),
+    // Explanation
+    isAnswered && e("div", { style: { marginTop: 10, padding: 12, background: C.paper, borderRadius: 8, fontSize: 13, color: C.muted, lineHeight: 1.6, borderLeft: `3px solid ${C.correct}` } }, q.explain)
+  );
+}
+
+// ═══ SIMULATION SCREEN ═══
+function Simulation({ onComplete }) {
+  const [cur, setCur] = useState(0);
+  const [answers, setAnswers] = useState(new Array(SIM.length).fill(undefined));
+  const [flags, setFlags] = useState(new Array(SIM.length).fill(false));
+  const [timeLeft, setTimeLeft] = useState(32 * 60);
+  const [startTime] = useState(Date.now());
+  const timerRef = useRef(null);
+  useScrollProgress();
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setTimeLeft(t => {
+        if (t <= 1) { clearInterval(timerRef.current); return 0; }
+        return t - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, []);
+
+  const mins = Math.floor(timeLeft / 60);
+  const secs = timeLeft % 60;
+  const timerPct = (timeLeft / (32 * 60)) * 100;
+  const answered = answers.filter(a => a !== undefined).length;
+
+  function handleAnswer(ci) {
+    const next = [...answers];
+    next[cur] = ci;
+    setAnswers(next);
+  }
+
+  function toggleFlag() {
+    const next = [...flags];
+    next[cur] = !next[cur];
+    setFlags(next);
+  }
+
+  function jumpTo(i) {
+    setCur(i);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function finish() {
+    clearInterval(timerRef.current);
+    const elapsed = Date.now() - startTime;
+    onComplete({ answers, flags, elapsed });
+  }
+
+  const q = SIM[cur];
+  const dc = DOMAIN_COLORS[q.domain];
+
+  return e("div", { style: { maxWidth: 800, margin: "0 auto", padding: "20px 20px 60px" } },
+    // Timer
+    e("div", { style: { position: "sticky", top: 7, zIndex: 50, background: C.paper, paddingBottom: 12, paddingTop: 4 } },
+      e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 } },
+        e("div", { style: { fontFamily: "'JetBrains Mono', monospace", fontSize: 16, color: timeLeft < 120 ? C.wrong : C.muted } }, mins + ":" + (secs < 10 ? "0" : "") + secs),
+        e("div", { style: { fontSize: 13, color: C.muted } }, answered + "/" + SIM.length + " answered")
+      ),
+      e("div", { style: { height: 6, borderRadius: 3, background: C.border, overflow: "hidden", marginBottom: 10 } },
+        e("div", { style: { height: "100%", borderRadius: 3, width: timerPct + "%", background: timerPct < 15 ? C.wrong : "linear-gradient(90deg, var(--craft), var(--info), var(--conv), var(--expr))", transition: "width .15s linear" } })
+      ),
+      // Score dots
+      e("div", { style: { display: "flex", gap: 4, flexWrap: "wrap" } },
+        SIM.map((_, i) => {
+          const a = answers[i];
+          const isCorrect = a !== undefined && a === SIM[i].correct;
+          const isWrong = a !== undefined && a !== SIM[i].correct;
+          const isCurrent = i === cur;
+          const isFlagged = flags[i];
+          return e("div", {
+            key: i, onClick: () => jumpTo(i),
+            style: {
+              width: 26, height: 26, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 10, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", cursor: "pointer", transition: "all .15s",
+              border: `2px solid ${isCorrect ? C.correct : isWrong ? C.wrong : isCurrent ? C.accent : C.border}`,
+              background: isCorrect ? C.correctBg : isWrong ? C.wrongBg : "transparent",
+              color: isCorrect ? C.correct : isWrong ? C.wrong : isCurrent ? C.accent : C.muted,
+              boxShadow: isCurrent ? `0 0 0 3px ${C.accentLight}` : isFlagged ? `0 0 0 2px ${C.conv}` : "none"
+            }
+          }, i + 1);
+        })
+      )
+    ),
+    // Question area
+    e("div", { style: { marginTop: 16 } },
+      e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 } },
+        e("div", { style: { fontSize: 13, color: C.muted } }, "Q" + (cur + 1) + "/" + SIM.length + " · " + q.domain + " — " + q.subtype),
+        e("button", {
+          onClick: toggleFlag,
+          style: {
+            padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: "pointer",
+            border: `1px solid ${C.conv}`, color: C.conv,
+            background: flags[cur] ? C.convBg : "transparent", fontFamily: "inherit"
+          }
+        }, flags[cur] ? "🚩 Flagged" : "🏳 Flag")
+      ),
+      e(QuestionCard, { q, idx: cur, answer: answers[cur], onAnswer: handleAnswer, showNumber: true, total: SIM.length }),
+      // Navigation
+      answers[cur] !== undefined && e("div", { style: { display: "flex", justifyContent: "center", gap: 8, marginTop: 12 } },
+        cur > 0 && e("button", { onClick: () => jumpTo(cur - 1), style: btn("transparent", C.accent, { border: `2px solid ${C.accent}`, padding: "8px 16px", fontSize: 13 }) }, "← Prev"),
+        cur < SIM.length - 1 && e("button", { onClick: () => jumpTo(cur + 1), style: btn(C.accent, "#fff", { padding: "8px 16px", fontSize: 13 }) }, "Next →"),
+        cur === SIM.length - 1 && e("button", { onClick: finish, style: btn(C.correct, "#fff", { padding: "8px 16px", fontSize: 13 }) }, "Finish & Score →")
+      )
+    )
+  );
+}
+
+// ═══ RESULTS SCREEN ═══
+function Results({ simData, onChallenge }) {
+  const [show, setShow] = useState(false);
+  const [tab, setTab] = useState("overview");
+  const [errCats, setErrCats] = useState({});
+  useEffect(() => { setTimeout(() => setShow(true), 200); }, []);
+  useScrollProgress();
+
+  const { answers } = simData;
+  const correct = answers.reduce((a, v, i) => v === SIM[i].correct ? a + 1 : a, 0);
+  const total = SIM.length;
+  const pct = Math.round(correct / total * 100);
+
+  // Domain breakdown
+  const byDomain = {};
+  SIM.forEach((q, i) => {
+    if (!byDomain[q.domain]) byDomain[q.domain] = { correct: 0, total: 0 };
+    byDomain[q.domain].total++;
+    if (answers[i] === q.correct) byDomain[q.domain].correct++;
+  });
+
+  // Subtype breakdown
+  const bySubtype = {};
+  SIM.forEach((q, i) => {
+    if (!bySubtype[q.subtype]) bySubtype[q.subtype] = { correct: 0, total: 0 };
+    bySubtype[q.subtype].total++;
+    if (answers[i] === q.correct) bySubtype[q.subtype].correct++;
+  });
+
+  // Errors
+  const errors = [];
+  SIM.forEach((q, i) => { if (answers[i] !== q.correct) errors.push(i); });
+
+  function setErrorCat(qi, cat) {
+    setErrCats(prev => ({ ...prev, [qi]: cat }));
+  }
+
+  // Error pattern summary
+  const catCounts = {};
+  Object.values(errCats).forEach(c => { catCounts[c] = (catCounts[c] || 0) + 1; });
+  const catSorted = Object.entries(catCounts).sort((a, b) => b[1] - a[1]);
+
+  // Weakest subtypes
+  const weakestSubtypes = Object.entries(bySubtype)
+    .filter(([_, d]) => d.total > 0 && d.correct / d.total < 1)
+    .sort((a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total)
+    .slice(0, 3);
+
+  return e("div", { style: { maxWidth: 800, margin: "0 auto", padding: "20px 20px 80px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } },
+    // Score header
+    e("div", { style: { ...card(), border: `2px solid ${C.accent}`, borderRadius: 14, padding: 22, marginBottom: 16, textAlign: "center" } },
+      e("div", { style: { fontFamily: "'JetBrains Mono', monospace", fontSize: "3rem", fontWeight: 700, color: pct >= 80 ? C.correct : pct >= 60 ? C.accent : C.wrong } }, correct + "/" + total),
+      e("div", { style: { fontSize: 14, color: C.muted } }, pct + "% · Full Module Simulation")
+    ),
+    // Domain summary grid
+    e("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 24 } },
+      Object.entries(byDomain).map(([name, d]) => {
+        const dp = d.total > 0 ? Math.round(d.correct / d.total * 100) : 0;
+        const dc = DOMAIN_COLORS[name];
+        return e("div", { key: name, style: { ...card(), textAlign: "center", padding: 12 } },
+          e("div", { style: { fontSize: 10, color: dc.color, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4, fontWeight: 700 } }, name),
+          e("div", { style: { fontFamily: "'JetBrains Mono', monospace", fontSize: "1.2rem", fontWeight: 700, color: dp >= 75 ? C.correct : dp >= 50 ? dc.color : C.wrong } }, d.correct + "/" + d.total)
+        );
+      })
+    ),
+
+    // Tabs
+    e("div", { style: { display: "flex", gap: 4, marginBottom: 20, background: C.surface, borderRadius: 10, padding: 4 } },
+      [["overview", "Skill Breakdown"], ["errors", "Error Analysis"], ["log", "Question Log"], ["next", "What's Next"]].map(([k, l]) =>
+        e("button", {
+          key: k, onClick: () => setTab(k),
+          style: { flex: 1, padding: "10px 8px", borderRadius: 8, border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer", fontFamily: "inherit", background: tab === k ? C.border : "transparent", color: tab === k ? C.ink : C.muted }
+        }, l)
+      )
+    ),
+
+    // TAB: Skill Breakdown
+    tab === "overview" && e("div", { style: { display: "flex", flexDirection: "column", gap: 10 } },
+      Object.entries(bySubtype).map(([st, d]) => {
+        const meta = SUBTYPE_META[st] || { label: st, icon: "📝", domain: "Other" };
+        const dc = DOMAIN_COLORS[meta.domain] || { color: C.accent };
+        const sp = d.total > 0 ? Math.round(d.correct / d.total * 100) : 0;
+        return e("div", { key: st, style: card() },
+          e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } },
+            e("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+              e("span", { style: { fontSize: 16 } }, meta.icon),
+              e("span", { style: { color: C.ink, fontWeight: 700, fontSize: 14 } }, meta.label)
+            ),
+            e("div", { style: { display: "flex", alignItems: "center", gap: 6 } },
+              e("span", { style: { color: dc.color, fontWeight: 800, fontSize: 18 } }, sp + "%"),
+              e("span", { style: { color: C.muted, fontSize: 12 } }, "(" + d.correct + "/" + d.total + ")")
+            )
+          ),
+          e("div", { style: { height: 8, background: C.border, borderRadius: 4, overflow: "hidden" } },
+            e("div", { style: { height: "100%", width: sp + "%", background: dc.color, borderRadius: 4, transition: "width 1s" } })
+          )
+        );
+      }),
+      // Weakest skills callout
+      weakestSubtypes.length > 0 && e("div", { style: { background: `${C.wrong}11`, border: `1px solid ${C.wrong}33`, borderRadius: 14, padding: 20, marginTop: 8 } },
+        e("div", { style: { color: C.wrong, fontWeight: 700, fontSize: 14, marginBottom: 8 } }, "🎯 Priority Review Areas"),
+        weakestSubtypes.map(([st, d]) => {
+          const sp = Math.round(d.correct / d.total * 100);
+          return e("div", { key: st, style: { color: "#ccc", fontSize: 13, marginBottom: 4, lineHeight: 1.5 } },
+            e("strong", { style: { color: C.ink } }, st), " — " + sp + "% (" + d.correct + "/" + d.total + ")"
+          );
+        })
+      )
+    ),
+
+    // TAB: Error Analysis
+    tab === "errors" && e("div", null,
+      errors.length === 0 ?
+        e("div", { style: { color: C.correct, fontSize: "1.1rem", fontWeight: 700, textAlign: "center", padding: 24 } }, "🎯 Perfect score! No errors to analyze.") :
+        e("div", null,
+          e("div", { style: { ...card(), borderLeft: `3px solid ${C.accent}`, marginBottom: 16 } },
+            e("p", { style: { fontSize: 14, color: "#ccc", lineHeight: 1.7 } },
+              "For each missed question, classify ", e("strong", { style: { color: C.ink } }, "WHY"), " you missed it. This is where real improvement happens. Your top error pattern is your highest-leverage study target."
+            )
+          ),
+          e("div", { style: { fontSize: 14, color: C.accent, fontWeight: 700, marginBottom: 12 } }, errors.length + " missed question" + (errors.length > 1 ? "s" : "") + " — classify each:"),
+          errors.map(qi => {
+            const q = SIM[qi];
+            const dc = DOMAIN_COLORS[q.domain];
+            return e("div", { key: qi, style: { ...card(), marginBottom: 8 } },
+              e("div", { style: { fontSize: 12, color: C.muted, marginBottom: 4 } }, "Q" + (qi + 1) + ": " + q.subtype + " (" + q.domain + ")"),
+              e("div", { style: { fontSize: 13, color: "#ddd", marginBottom: 8 } }, q.stem.substring(0, 80) + "…"),
+              e("div", { style: { display: "flex", flexWrap: "wrap", gap: 4 } },
+                ERROR_CATS.map(cat =>
+                  e("button", {
+                    key: cat,
+                    onClick: () => setErrorCat(qi, cat),
+                    style: {
+                      display: "inline-block", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 700,
+                      cursor: "pointer", border: `2px solid ${errCats[qi] === cat ? C.accent : C.border}`,
+                      background: errCats[qi] === cat ? C.accentLight : "transparent",
+                      color: errCats[qi] === cat ? C.accent : C.muted, fontFamily: "inherit", transition: "all .15s"
+                    }
+                  }, cat)
+                )
+              )
+            );
+          }),
+          // Error pattern summary
+          catSorted.length > 0 && e("div", { style: { ...card(), marginTop: 16, borderLeft: `3px solid ${C.accent}` } },
+            e("div", { style: { fontSize: 14, color: C.accent, fontWeight: 700, marginBottom: 8 } }, "Error Pattern Summary"),
+            catSorted.map(([cat, count]) =>
+              e("div", { key: cat, style: { fontSize: 14, color: "#ccc" } }, cat + ": ", e("strong", null, count))
+            ),
+            e("div", { style: { marginTop: 8, fontSize: 14, color: C.info, fontWeight: 600 } },
+              "Top pattern: ", e("strong", null, catSorted[0][0]), " — this is your highest-leverage study target."
+            )
+          )
+        )
+    ),
+
+    // TAB: Question Log
+    tab === "log" && e("div", { style: { display: "flex", flexDirection: "column", gap: 6 } },
+      SIM.map((q, i) => {
+        const isCorrect = answers[i] === q.correct;
+        const meta = SUBTYPE_META[q.subtype] || { icon: "📝", label: q.subtype };
+        return e("div", { key: i, style: { ...card({ padding: "10px 14px", display: "flex", alignItems: "center", gap: 10 }) } },
+          e("div", { style: { width: 28, height: 28, borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 12, background: isCorrect ? C.correctBg : C.wrongBg, color: isCorrect ? C.correct : C.wrong } }, i + 1),
+          e("div", { style: { flex: 1, minWidth: 0 } },
+            e("div", { style: { color: C.ink, fontSize: 12, fontWeight: 600 } }, meta.label),
+            e("div", { style: { color: C.muted, fontSize: 11 } }, q.domain)
+          ),
+          e("span", { style: { fontSize: 14 } }, isCorrect ? "✅" : "❌")
+        );
+      })
+    ),
+
+    // TAB: What's Next
+    tab === "next" && e("div", null,
+      // Key takeaways
+      e("div", { style: { ...card(), borderLeft: `3px solid ${C.accent}`, marginBottom: 16 } },
+        e("div", { style: { color: C.accent, fontWeight: 700, fontSize: 15, marginBottom: 10 } }, "Key Takeaways"),
+        e("ol", { style: { paddingLeft: 18, fontSize: 14, color: "#ccc", lineHeight: 2 } },
+          e("li", null, "The ", e("strong", null, "two-pass method"), " maximizes points: lock in easy wins first, then tackle flagged items."),
+          e("li", null, e("strong", null, "Error categorization"), " matters more than raw score. Know WHY you miss questions."),
+          e("li", null, "Four error types: ", e("strong", null, "content gap"), " (didn't know the rule), ", e("strong", null, "trap answer"), " (fell for distractor), ", e("strong", null, "misread"), " (skimmed too fast), ", e("strong", null, "time pressure"), " (rushed at end)."),
+          e("li", null, "Your ", e("strong", null, "top 2 error patterns"), " are your highest-leverage study targets."),
+          e("li", null, "Conventions and WIC should be your fastest domains. Budget extra time for Evidence and Synthesis.")
+        )
+      ),
+      // Homework
+      e("div", { style: { ...card(), borderLeft: `3px solid ${C.info}`, marginBottom: 16 } },
+        e("div", { style: { color: C.info, fontWeight: 700, fontSize: 15, marginBottom: 10 } }, "📝 Homework"),
+        e("div", { style: { fontSize: 14, color: "#ccc", lineHeight: 1.9 } },
+          e("p", { style: { marginBottom: 8 } }, e("strong", { style: { color: C.ink } }, "1. Error Journal"), " — Write your top 2 error patterns and a specific strategy to address each."),
+          e("p", { style: { marginBottom: 8 } }, e("strong", { style: { color: C.ink } }, "2. Timed Domain Drill"), " — Practice your weakest domain for 15 minutes under time pressure."),
+          e("p", { style: { marginBottom: 8 } }, e("strong", { style: { color: C.ink } }, "3. Flag Practice"), " — On any practice set, force yourself to flag 3–5 questions and return to them."),
+          e("p", null, e("strong", { style: { color: C.ink } }, "4. Preview Module 11"), " — War Games II: full adaptive simulation (Module 1 → Module 2).")
+        )
+      ),
+      // Challenge unlock
+      correct >= 22 ?
+        e("div", { style: { background: C.nmBg, border: `2px solid rgba(167,139,250,.4)`, borderRadius: 14, padding: 22 } },
+          e("div", { style: { display: "inline-block", background: C.nm, color: "#fff", fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: "4px 12px", borderRadius: 12, marginBottom: 12 } }, "⭐ UNLOCKED"),
+          e("div", { style: { ...heading, fontSize: "1.3rem" } }, "Challenge Mode Available"),
+          e("p", { style: { fontSize: 14, color: "#ccc", marginBottom: 16 } }, "Module 2 \"hard\" difficulty: more complex passages, nuanced distractors, secondary-meaning vocabulary."),
+          e("button", { onClick: onChallenge, style: btn(C.nm, "#fff", { fontSize: 15 }) }, "Enter Challenge Mode →")
+        ) :
+        e("div", { style: { background: C.nmBg, border: `2px solid rgba(167,139,250,.4)`, borderRadius: 14, padding: 22, textAlign: "center" } },
+          e("div", { style: { color: C.nm, fontWeight: 700, fontSize: 14 } }, "🔒 Challenge Mode"),
+          e("p", { style: { fontSize: 13, color: C.muted, marginTop: 6 } }, "Score 22+ on the simulated module to unlock. You scored " + correct + "/" + total + ".")
+        )
+    )
+  );
+}
+
+// ═══ CHALLENGE MODE SCREEN ═══
+function ChallengeMode() {
+  const [answers, setAnswers] = useState(new Array(CHALLENGE.length).fill(undefined));
+  const [show, setShow] = useState(false);
+  useEffect(() => { setTimeout(() => setShow(true), 100); }, []);
+  useScrollProgress();
+
+  const answered = answers.filter(a => a !== undefined).length;
+  const correct = answers.reduce((a, v, i) => v !== undefined && v === CHALLENGE[i].correct ? a + 1 : a, 0);
+
+  return e("div", { style: { maxWidth: 800, margin: "0 auto", padding: "20px 20px 60px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } },
+    e("div", { style: { padding: "40px 0 30px", borderBottom: `1px solid ${C.border}`, marginBottom: 32 } },
+      e("div", { style: { display: "inline-block", background: C.nm, color: "#fff", fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: "4px 12px", borderRadius: 12, marginBottom: 14 } }, "⭐ CHALLENGE MODE"),
+      e("h1", { style: { ...heading, fontSize: "clamp(1.6rem,3.5vw,2.2rem)", marginBottom: 6 } }, "Hard Module Simulation"),
+      e("p", { style: { color: C.muted, fontSize: 14 } }, "Module 2 \"hard\" difficulty: more complex passages, nuanced distractors, secondary-meaning vocabulary.")
+    ),
+    CHALLENGE.map((q, i) =>
+      e("div", { key: i },
+        e(QuestionCard, {
+          q, idx: i, answer: answers[i],
+          onAnswer: (ci) => { const next = [...answers]; next[i] = ci; setAnswers(next); },
+          showNumber: true, total: CHALLENGE.length
+        })
+      )
+    ),
+    answered === CHALLENGE.length && e("div", { style: { ...card(), border: `2px solid ${C.nm}`, textAlign: "center", padding: 24, marginTop: 16 } },
+      e("div", { style: { fontFamily: "'JetBrains Mono', monospace", fontSize: "2.5rem", fontWeight: 700, color: correct >= 5 ? C.correct : correct >= 3 ? C.nm : C.wrong } }, correct + "/" + CHALLENGE.length),
+      e("div", { style: { fontSize: 14, color: C.muted, marginTop: 6 } },
+        correct >= 5 ? "Outstanding! You're operating at Module 2 Hard difficulty." :
+        correct >= 3 ? "Solid. The harder passages require closer reading — secondary meanings and adversarial cross-texts are the key differentiators." :
+        "Focus on re-reading stems carefully. Hard-mode distractors are more nuanced."
+      )
+    )
+  );
+}
+
+// ═══ APP ROOT ═══
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [simData, setSimData] = useState(null);
+
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+
+  return e("div", { style: { minHeight: "100vh", background: C.paper, color: C.ink, fontFamily: "'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" } },
+    e("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s, transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } },
+      screen === "welcome" && e(Welcome, { onStart: () => go("sim") }),
+      screen === "sim" && e(Simulation, { onComplete: (data) => { setSimData(data); go("results"); } }),
+      screen === "results" && simData && e(Results, { simData, onChallenge: () => go("challenge") }),
+      screen === "challenge" && e(ChallengeMode)
+    )
+  );
+}
+
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>

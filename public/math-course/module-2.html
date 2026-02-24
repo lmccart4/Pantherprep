@@ -10,6 +10,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--algebra));width:0%;transition:width .3s ease}
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
@@ -31,29 +33,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
 .callout-blue strong{color:var(--math)}
 code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
-
-/* EXPANDABLE TOPICS */
 .topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:14px;overflow:hidden}
 .topic-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background .15s}
 .topic-header:hover{background:rgba(255,255,255,.03)}
 .topic-badge{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;flex-shrink:0}
-.topic-info{flex:1}
-.topic-title{font-weight:700;font-size:.98rem}
-.topic-sub{font-size:.82rem;color:var(--muted)}
+.topic-info{flex:1}.topic-title{font-weight:700;font-size:.98rem}.topic-sub{font-size:.82rem;color:var(--muted)}
 .topic-arrow{color:var(--muted);transition:transform .2s;font-size:1rem}
 .topic.open .topic-arrow{transform:rotate(90deg)}
 .topic-body{display:none;padding:0 20px 20px;font-size:.9rem;color:#ccc;line-height:1.7}
 .topic.open .topic-body{display:block}
 .topic-body h4{color:var(--ink);margin:14px 0 6px;font-size:.95rem}
-.topic-body ul{padding-left:20px;margin-bottom:10px}
-.topic-body li{margin-bottom:4px}
-
-/* FORMULA BOX */
+.topic-body ul{padding-left:20px;margin-bottom:10px}.topic-body li{margin-bottom:4px}
 .formula-box{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:.88rem;line-height:1.8}
-.formula-box .fl{color:var(--math)}
-.formula-box .fn{color:var(--algebra)}
-
-/* INTERACTIVE EXERCISES */
+.formula-box .fl{color:var(--math)}.formula-box .fn{color:var(--algebra)}
 .exercise{background:var(--surface);border:2px solid var(--algebra);border-radius:14px;padding:22px;margin-bottom:16px}
 .exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
 .exercise-sub{font-size:.85rem;color:var(--muted);margin-bottom:14px}
@@ -65,79 +57,72 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
 .ex-btn{padding:7px 16px;background:var(--algebra);color:#000;border:none;border-radius:6px;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:opacity .15s}
 .ex-btn:hover{opacity:.85}
 .ex-fb{margin-top:8px;font-size:.82rem;line-height:1.4;display:none}
-.ex-fb.show{display:block}
-.ex-fb.correct{color:var(--correct)}
-.ex-fb.wrong{color:var(--wrong)}
-
-/* MULTIPLE CHOICE */
+.ex-fb.show{display:block}.ex-fb.correct{color:var(--correct)}.ex-fb.wrong{color:var(--wrong)}
 .mc-choices{display:flex;flex-direction:column;gap:7px;margin-top:8px}
 .mc-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:.88rem;transition:all .15s}
 .mc-choice:hover:not(.mc-dis){border-color:var(--accent);background:var(--accent-light)}
 .mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg)}
 .mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.mc-choice.mc-dis{pointer-events:none;opacity:.7}
-.mc-choice.mc-dis.mc-correct{opacity:1}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}.mc-choice.mc-dis.mc-correct{opacity:1}
 .mc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
 .mc-choice.mc-correct .mc-letter{background:var(--correct);color:#fff}
 .mc-choice.mc-wrong .mc-letter{background:var(--wrong);color:#fff}
-.mc-fb{margin-top:8px;font-size:.82rem;line-height:1.4;display:none;color:var(--muted)}
-.mc-fb.show{display:block}
-
-/* FORM CONVERTER */
-.converter{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin:10px 0}
-.conv-box{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
-.conv-box label{font-size:.78rem;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
-.conv-arrow{color:var(--muted);font-size:1.5rem}
-
-/* CLASSIFICATION EXERCISE */
+.mc-fb{margin-top:8px;font-size:.82rem;line-height:1.4;display:none;color:var(--muted)}.mc-fb.show{display:block}
 .classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
 .classify-opt:hover:not(.cl-dis){border-color:var(--algebra);background:var(--algebra-bg)}
 .classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
 .classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .classify-opt.cl-dis{pointer-events:none;opacity:.6}
-
-/* SCORE TRACKER */
 .score-bar{display:flex;align-items:center;gap:10px;padding:10px 0}
 .score-bar-label{font-size:.82rem;color:var(--muted)}
 .score-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
 .score-bar-fill{height:100%;background:var(--algebra);border-radius:4px;transition:width .3s}
 .score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;min-width:40px;text-align:right}
-
-/* TIER BADGES */
 .tier{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:6px}
 .tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}
 .tier-2{background:rgba(96,165,250,.15);color:var(--math)}
 .tier-3{background:rgba(167,139,250,.15);color:var(--purple)}
-
+/* TRAP SPOTTER */
+.trap-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
+.trap-q{font-size:.93rem;margin-bottom:10px;color:#ddd;line-height:1.6}
+.trap-opts{display:flex;flex-wrap:wrap;gap:6px}
+.trap-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.trap-opt:hover:not(.t-dis){border-color:var(--accent);background:var(--accent-light)}
+.trap-opt.t-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.trap-opt.t-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.trap-opt.t-dis{pointer-events:none;opacity:.7}
+.trap-fb{font-size:.82rem;margin-top:8px;display:none;line-height:1.4;color:var(--muted)}.trap-fb.show{display:block}
+/* WORD PROBLEM TRANSLATOR */
+.wpt-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.wpt-row:last-child{border-bottom:none}
+.wpt-phrase{font-size:.9rem;color:#ddd;min-width:180px;flex:1}
+.wpt-arrow{color:var(--muted);font-size:.9rem}
+.wpt-select{padding:6px 12px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:.9rem;cursor:pointer;min-width:80px}
+.wpt-select:focus{border-color:var(--algebra);outline:none}
+.wpt-select.wpt-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.wpt-select.wpt-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
 .btn:hover{background:#a00d24}
-
-/* NAV */
 .mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
 .mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
 .mod-nav a:hover{text-decoration:underline}
-
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.converter{grid-template-columns:1fr}.conv-arrow{transform:rotate(90deg)}.ex-input-row{flex-direction:column;align-items:stretch}}
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{flex-direction:column}.ex-input-row{flex-direction:column;align-items:stretch}.wpt-row{flex-direction:column;align-items:flex-start;gap:6px}.trap-opts{flex-direction:column}}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div class="container">
 <a class="back-link" href="index.html">← Back to Math Course</a>
-
 <div class="mod-header">
   <div class="mod-badge">Module 2</div>
   <h1>Algebra — Linear Equations & Systems</h1>
-  <p class="subtitle">The single highest-impact domain on the SAT. Master this and you've conquered ~32% of the test.</p>
-  <div class="mod-meta">
-    <span>⏱ 2–3 sessions</span>
-    <span>📋 4 topics</span>
-    <span>🔨 Phase 2: Build</span>
-  </div>
+  <p class="subtitle">The single highest-impact domain on the SAT. Master this and you've conquered ~35% of the test.</p>
+  <div class="mod-meta"><span>⏱ 2–3 sessions</span><span>📋 4 topics</span><span>🔨 Phase 2: Build</span></div>
 </div>
 
-<div class="callout-green callout"><strong>High-Impact Domain:</strong> Algebra accounts for 13–15 questions (~32% of the test). Mastering linear equations and systems alone can be worth 60–80 points on your score.</div>
+<div class="callout-green callout"><strong>High-Impact Domain:</strong> Algebra accounts for 13–15 questions (~35% of the test). Mastering linear equations and systems alone can be worth 60–80 points on your score.</div>
 
 <!-- TOPIC 2A -->
 <div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
@@ -155,15 +140,14 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
       <li><strong>Absolute value:</strong> |ax + b| = c produces TWO cases: ax + b = c AND ax + b = −c</li>
       <li><strong>Interpreting in context:</strong> In C = 50 + 0.15m, the 50 is the flat fee and 0.15 is the per-mile rate</li>
     </ul>
-
     <div class="formula-box">
       <div><span class="fn">Solve:</span> Combine like terms → isolate variable → check</div>
       <div><span class="fn">No solution:</span> Variables cancel, leaves false statement (e.g., 0 = 5)</div>
       <div><span class="fn">Infinite solutions:</span> Variables cancel, leaves true statement (e.g., 0 = 0)</div>
       <div><span class="fn">Absolute value:</span> |expression| = k → two equations</div>
     </div>
-
-    <div class="callout-blue callout"><strong>SAT Trap:</strong> Questions about "number of solutions" are common. When you simplify and the variables disappear, check: is the remaining statement true or false?</div>
+    <div class="callout"><strong>SAT Trap #1:</strong> The question asks for the value of <em>3x + 2</em>, not x. Always re-read exactly what's being asked <strong>before</strong> you start solving. Circle it.</div>
+    <div class="callout-blue callout"><strong>SAT Trap #2:</strong> Questions about "number of solutions" are common. When you simplify and the variables disappear, check: is the remaining statement true or false?</div>
   </div>
 </div>
 
@@ -184,7 +168,6 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
       <div><span class="fl">Standard Form:</span> Ax + By = C</div>
       <div style="color:var(--muted);font-size:.82rem">Useful for finding intercepts (set x=0 or y=0) and systems</div>
     </div>
-
     <h4>Slope</h4>
     <ul>
       <li><strong>Formula:</strong> m = (y₂ − y₁) / (x₂ − x₁)</li>
@@ -193,13 +176,11 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
       <li><strong>Zero slope:</strong> horizontal line</li>
       <li><strong>Undefined slope:</strong> vertical line</li>
     </ul>
-
     <h4>Special Relationships</h4>
     <ul>
       <li><strong>Parallel lines:</strong> Same slope, different y-intercepts (m₁ = m₂)</li>
       <li><strong>Perpendicular lines:</strong> Slopes are negative reciprocals (m₁ × m₂ = −1)</li>
     </ul>
-
     <div class="callout-blue callout"><strong>Desmos Power Move:</strong> Graph any linear equation instantly. Click intersection points for exact coordinates. Type two equations and Desmos shows where they cross.</div>
   </div>
 </div>
@@ -214,26 +195,22 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
   <div class="topic-body">
     <h4>Two Methods</h4>
     <ul>
-      <li><strong>Substitution:</strong> Solve one equation for a variable, plug into the other. Best when one variable is already isolated (e.g., y = 3x + 1).</li>
+      <li><strong>Substitution:</strong> Solve one equation for a variable, plug into the other. Best when one variable is already isolated.</li>
       <li><strong>Elimination:</strong> Add or subtract equations to cancel a variable. Best when coefficients are easy to align.</li>
     </ul>
-
     <h4>Number of Solutions</h4>
     <div class="formula-box">
       <div><span class="fn">One solution:</span> Lines intersect at one point (different slopes)</div>
       <div><span class="fn">No solution:</span> Lines are parallel (same slope, different intercepts)</div>
       <div><span class="fn">Infinite solutions:</span> Lines are the same (equations are multiples of each other)</div>
     </div>
-
     <h4>Context Problems</h4>
     <ul>
       <li><strong>Mixture problems:</strong> Two equations — one for quantity, one for value</li>
       <li><strong>Cost comparison:</strong> Set two cost expressions equal to find break-even</li>
       <li><strong>Rate problems:</strong> distance = rate × time for each part</li>
     </ul>
-
     <div class="callout-blue callout"><strong>Desmos Power Move:</strong> Graph both equations and click the intersection point. This is the fastest method for many systems — especially on the SAT where speed matters.</div>
-
     <div class="callout"><strong>Quick Check for Number of Solutions:</strong> If you can multiply one entire equation by a constant and get the other equation, there are infinite solutions. If you can make the left sides identical but the right sides differ, there's no solution.</div>
   </div>
 </div>
@@ -248,20 +225,17 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
   <div class="topic-body">
     <h4>Key Rule</h4>
     <div class="callout"><strong>When you multiply or divide by a NEGATIVE number, FLIP the inequality sign.</strong> This is the #1 most-tested inequality rule on the SAT.</div>
-
     <h4>Graphing</h4>
     <ul>
       <li><strong>Number line:</strong> Open circle for &lt; or &gt; (not included), closed circle for ≤ or ≥ (included)</li>
       <li><strong>Coordinate plane:</strong> Dashed line for &lt; or &gt;, solid line for ≤ or ≥. Shade the solution side.</li>
       <li><strong>Systems of inequalities:</strong> The solution is the overlapping shaded region of ALL inequalities.</li>
     </ul>
-
     <h4>Compound Inequalities</h4>
     <ul>
       <li><strong>"and"</strong> = intersection (both true) — narrower solution</li>
       <li><strong>"or"</strong> = union (either true) — wider solution</li>
     </ul>
-
     <div class="callout-blue callout"><strong>Desmos Power Move:</strong> Type any inequality directly (like y &gt; 2x + 1) and Desmos automatically shades the solution region. For systems, enter multiple inequalities — the overlap is your answer.</div>
   </div>
 </div>
@@ -298,11 +272,27 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
   <div class="exercise" id="ineqEx"></div>
 </div>
 
+<!-- EXERCISE 5: TRAP SPOTTER -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 5</div>
+  <h2>Trap Spotter</h2>
+  <p>Each problem below contains a common SAT trap. Before solving, identify what the trap is. Learning to <em>see</em> traps before they catch you is one of the highest-value skills you can develop — over 35% of SAT math errors are preventable misreads and traps.</p>
+  <div class="exercise" style="border-color:var(--accent)" id="trapEx"></div>
+</div>
+
+<!-- EXERCISE 6: WORD PROBLEM TRANSLATOR -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 6</div>
+  <h2>Word Problem Translator</h2>
+  <p>Match each English phrase to its mathematical symbol. This skill is essential for converting SAT word problems into equations you can solve.</p>
+  <div class="exercise" style="border-color:var(--psda)" id="wptEx"></div>
+</div>
+
 <!-- SAT-STYLE PRACTICE -->
 <div class="section">
   <div class="section-label">SAT-Style Practice</div>
   <h2>Practice Questions</h2>
-  <p>8 questions at three difficulty tiers. Every question comes with a full explanation.</p>
+  <p>10 questions at three difficulty tiers. Every question comes with a full worked explanation.</p>
   <div id="satPractice"></div>
 </div>
 
@@ -312,12 +302,13 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
   <h2>Key Takeaways</h2>
   <div class="card card-accent">
     <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>Algebra is ~32% of the test — the single largest domain. Time here pays off the most.</li>
+      <li>Algebra is ~35% of the test — the single largest domain. Time here pays off the most.</li>
       <li>Know all three forms of linear equations: slope-intercept (y = mx + b), point-slope (y − y₁ = m(x − x₁)), standard (Ax + By = C).</li>
       <li>Parallel lines = same slope. Perpendicular lines = negative reciprocal slopes.</li>
       <li>Systems: substitution when a variable is isolated, elimination when coefficients align, Desmos for speed.</li>
       <li>When variables cancel in a system: true statement = infinite solutions, false statement = no solution.</li>
       <li>Inequalities: FLIP the sign when multiplying/dividing by a negative.</li>
+      <li><strong>Always re-read what the question is actually asking for</strong> before choosing your answer — the #1 algebra trap on the SAT.</li>
       <li>Desmos graphs inequalities with shading automatically — use it for systems of inequalities.</li>
     </ol>
   </div>
@@ -330,45 +321,26 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
 </div>
 
 <script>
+// ============ PROGRESS BAR ============
+window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;var pct=h>0?(window.scrollY/h)*100:0;document.getElementById('progressFill').style.width=pct+'%';});
+
 // ============ EXERCISE 1: EQUATION SOLVER ============
-const SOLVER_QS=[
+var SOLVER_QS=[
   {prompt:'Solve for x: <code>3x + 7 = 22</code>',answer:5,solution:'3x + 7 = 22 → 3x = 15 → x = 5',tier:1},
   {prompt:'Solve for x: <code>2(x − 4) = 3x + 6</code>',answer:-14,solution:'2x − 8 = 3x + 6 → −8 − 6 = 3x − 2x → x = −14',tier:1},
   {prompt:'Solve for x: <code>5x − 3 = 2x + 12</code>',answer:5,solution:'5x − 2x = 12 + 3 → 3x = 15 → x = 5',tier:1},
   {prompt:'Solve for x: <code>(2/3)x + 4 = 10</code>',answer:9,solution:'(2/3)x = 6 → x = 6 × (3/2) → x = 9',tier:2},
   {prompt:'Solve for x: <code>4(x + 1) − 2(x − 3) = 20</code>',answer:5,solution:'4x + 4 − 2x + 6 = 20 → 2x + 10 = 20 → 2x = 10 → x = 5',tier:2},
-  {prompt:'A phone plan charges $30 per month plus $0.10 per text. If the total cost is $52.50, how many texts were sent?',answer:225,solution:'30 + 0.10t = 52.50 → 0.10t = 22.50 → t = 225',tier:2},
+  {prompt:'A phone plan charges $30/month plus $0.10 per text. If the total cost is $52.50, how many texts were sent?',answer:225,solution:'30 + 0.10t = 52.50 → 0.10t = 22.50 → t = 225',tier:2},
 ];
-
 function renderSolver(){
-  const el=document.getElementById('solverEx');
-  el.innerHTML=`<h3>🧮 Solve for x</h3><div class="exercise-sub">Type the value of x (or the answer). Use negative sign for negatives.</div>`+
-    SOLVER_QS.map((q,i)=>`<div class="ex-item">
-      <div style="margin-bottom:4px"><span class="tier tier-${q.tier}">Tier ${q.tier}</span></div>
-      <div class="ex-prompt">${q.prompt}</div>
-      <div class="ex-input-row">
-        <span style="font-size:.85rem;color:var(--muted)">x =</span>
-        <input class="ex-input" type="number" step="any" id="sol${i}" placeholder="?">
-        <button class="ex-btn" onclick="checkSolver(${i})">Check</button>
-      </div>
-      <div class="ex-fb" id="solFb${i}"></div>
-    </div>`).join('');
+  document.getElementById('solverEx').innerHTML='<h3>🧮 Solve for x</h3><div class="exercise-sub">Type the value of x (or the answer). Use negative sign for negatives.</div>'+SOLVER_QS.map(function(q,i){return '<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-'+q.tier+'">Tier '+q.tier+'</span></div><div class="ex-prompt">'+q.prompt+'</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">x =</span><input class="ex-input" type="number" step="any" id="sol'+i+'" placeholder="?"><button class="ex-btn" onclick="checkSolver('+i+')">Check</button></div><div class="ex-fb" id="solFb'+i+'"></div></div>';}).join('');
 }
-function checkSolver(i){
-  const val=parseFloat(document.getElementById('sol'+i).value);
-  const fb=document.getElementById('solFb'+i);
-  const q=SOLVER_QS[i];
-  if(isNaN(val)){fb.className='ex-fb show wrong';fb.textContent='Enter a number.';return;}
-  if(Math.abs(val-q.answer)<0.01){
-    fb.className='ex-fb show correct';fb.textContent='✓ Correct! '+q.solution;
-  }else{
-    fb.className='ex-fb show wrong';fb.textContent='✗ Not quite. '+q.solution;
-  }
-}
+function checkSolver(i){var val=parseFloat(document.getElementById('sol'+i).value);var fb=document.getElementById('solFb'+i);var q=SOLVER_QS[i];if(isNaN(val)){fb.className='ex-fb show wrong';fb.textContent='Enter a number.';return;}if(Math.abs(val-q.answer)<0.01){fb.className='ex-fb show correct';fb.textContent='✓ Correct! '+q.solution;}else{fb.className='ex-fb show wrong';fb.textContent='✗ Not quite. '+q.solution;}}
 renderSolver();
 
 // ============ EXERCISE 2: FORM IDENTIFICATION ============
-const FORM_QS=[
+var FORM_QS=[
   {eq:'y = 3x − 7',correct:'Slope-Intercept',fb:'y = mx + b format. m = 3, b = −7.'},
   {eq:'y − 5 = 2(x − 1)',correct:'Point-Slope',fb:'y − y₁ = m(x − x₁) format. Point (1, 5), slope 2.'},
   {eq:'4x + 3y = 24',correct:'Standard',fb:'Ax + By = C format. A = 4, B = 3, C = 24.'},
@@ -376,150 +348,100 @@ const FORM_QS=[
   {eq:'y − 3 = −4(x + 2)',correct:'Point-Slope',fb:'y − y₁ = m(x − x₁) format. Point (−2, 3), slope −4.'},
   {eq:'7x − 2y = 14',correct:'Standard',fb:'Ax + By = C format. A = 7, B = −2, C = 14.'},
 ];
-const FORMS=['Slope-Intercept','Point-Slope','Standard'];
-let formAns={};
-function renderForms(){
-  const el=document.getElementById('formEx');
-  const total=FORM_QS.length;const answered=Object.keys(formAns).length;
-  const correct=Object.entries(formAns).filter(([i,v])=>v===FORM_QS[i].correct).length;
-  el.innerHTML=`<h3>📐 Name That Form</h3><div class="exercise-sub">Click the correct form for each equation.</div>`+
-    FORM_QS.map((q,i)=>{
-      const a=formAns[i];const has=a!==undefined;
-      return `<div class="ex-item">
-        <div class="ex-prompt" style="font-family:'JetBrains Mono',monospace;color:var(--math)">${q.eq}</div>
-        <div class="classify-opts">${FORMS.map(f=>{
-          let cls='classify-opt';
-          if(has){cls+=' cl-dis';if(f===q.correct)cls+=' cl-correct';else if(f===a&&f!==q.correct)cls+=' cl-wrong';}
-          return `<div class="${cls}" onclick="ansForm(${i},'${f}')">${f}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div>
-      </div>`;
-    }).join('')+
-    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+var FORMS=['Slope-Intercept','Point-Slope','Standard'];var formAns={};
+function renderForms(){var total=FORM_QS.length;var correct=0;Object.entries(formAns).forEach(function(p){if(p[1]===FORM_QS[parseInt(p[0])].correct)correct++;});
+  document.getElementById('formEx').innerHTML='<h3>📐 Name That Form</h3><div class="exercise-sub">Click the correct form for each equation.</div>'+FORM_QS.map(function(q,i){var a=formAns[i];var has=a!==undefined;return '<div class="ex-item"><div class="ex-prompt" style="font-family:\'JetBrains Mono\',monospace;color:var(--math)">'+q.eq+'</div><div class="classify-opts">'+FORMS.map(function(f){var cls='classify-opt';if(has){cls+=' cl-dis';if(f===q.correct)cls+=' cl-correct';else if(f===a&&f!==q.correct)cls+=' cl-wrong';}return '<div class="'+cls+'" onclick="ansForm('+i+',\''+f+'\')">'+f+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+(has?(a===q.correct?' correct':' wrong'):'')+'">'+(has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('')+'<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(total?correct/total*100:0)+'%"></div></div><div class="score-bar-val">'+correct+'/'+total+'</div></div>';
 }
 function ansForm(i,v){if(formAns[i]!==undefined)return;formAns[i]=v;renderForms();}
 renderForms();
 
 // ============ EXERCISE 3: SYSTEM CLASSIFIER ============
-const SYS_QS=[
-  {eq1:'y = 2x + 3',eq2:'y = 2x − 1',correct:'No Solution',fb:'Same slope (2) but different y-intercepts → parallel lines → no solution.'},
+var SYS_QS=[
+  {eq1:'y = 2x + 3',eq2:'y = 2x − 1',correct:'No Solution',fb:'Same slope (2) but different y-intercepts → parallel → no solution.'},
   {eq1:'y = 3x + 1',eq2:'y = −x + 5',correct:'One Solution',fb:'Different slopes (3 and −1) → lines intersect at one point.'},
-  {eq1:'2x + 4y = 8',eq2:'x + 2y = 4',correct:'Infinite Solutions',fb:'Second equation × 2 = first equation. They\'re the same line.'},
-  {eq1:'y = −2x + 6',eq2:'4x + 2y = 12',correct:'Infinite Solutions',fb:'Substitute: 4x + 2(−2x + 6) = 4x − 4x + 12 = 12 ✓ Always true → infinite.'},
-  {eq1:'3x + y = 7',eq2:'6x + 2y = 10',correct:'No Solution',fb:'Second equation ÷ 2 = 3x + y = 5. But first says 3x + y = 7. Same left side, different right → no solution.'},
-  {eq1:'y = x − 2',eq2:'y = −3x + 6',correct:'One Solution',fb:'Different slopes (1 and −3) → one intersection point. (Solve: x − 2 = −3x + 6 → x = 2, y = 0.)'},
+  {eq1:'2x + 4y = 8',eq2:'x + 2y = 4',correct:'Infinite Solutions',fb:'Second equation × 2 = first equation. Same line.'},
+  {eq1:'y = −2x + 6',eq2:'4x + 2y = 12',correct:'Infinite Solutions',fb:'Substitute: 4x + 2(−2x + 6) = 12 → 12 = 12 ✓ Always true → infinite.'},
+  {eq1:'3x + y = 7',eq2:'6x + 2y = 10',correct:'No Solution',fb:'Second ÷ 2 = 3x + y = 5. But first says 3x + y = 7. Same left, different right → no solution.'},
+  {eq1:'y = x − 2',eq2:'y = −3x + 6',correct:'One Solution',fb:'Different slopes (1 and −3) → one intersection. Solve: x − 2 = −3x + 6 → x = 2, y = 0.'},
 ];
-const SYS_OPTS=['One Solution','No Solution','Infinite Solutions'];
-let sysAns={};
-function renderSystems(){
-  const el=document.getElementById('systemEx');
-  const total=SYS_QS.length;const answered=Object.keys(sysAns).length;
-  const correct=Object.entries(sysAns).filter(([i,v])=>v===SYS_QS[i].correct).length;
-  el.innerHTML=`<h3>🔗 Classify the System</h3><div class="exercise-sub">How many solutions does each system have?</div>`+
-    SYS_QS.map((q,i)=>{
-      const a=sysAns[i];const has=a!==undefined;
-      return `<div class="ex-item">
-        <div class="ex-prompt"><span style="font-family:'JetBrains Mono',monospace;color:var(--math)">${q.eq1}</span><br><span style="font-family:'JetBrains Mono',monospace;color:var(--math)">${q.eq2}</span></div>
-        <div class="classify-opts">${SYS_OPTS.map(o=>{
-          let cls='classify-opt';
-          if(has){cls+=' cl-dis';if(o===q.correct)cls+=' cl-correct';else if(o===a&&o!==q.correct)cls+=' cl-wrong';}
-          return `<div class="${cls}" onclick="ansSys(${i},'${o}')">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div>
-      </div>`;
-    }).join('')+
-    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+var SYS_OPTS=['One Solution','No Solution','Infinite Solutions'];var sysAns={};
+function renderSystems(){var total=SYS_QS.length;var correct=0;Object.entries(sysAns).forEach(function(p){if(p[1]===SYS_QS[parseInt(p[0])].correct)correct++;});
+  document.getElementById('systemEx').innerHTML='<h3>🔗 Classify the System</h3><div class="exercise-sub">How many solutions does each system have?</div>'+SYS_QS.map(function(q,i){var a=sysAns[i];var has=a!==undefined;return '<div class="ex-item"><div class="ex-prompt"><span style="font-family:\'JetBrains Mono\',monospace;color:var(--math)">'+q.eq1+'</span><br><span style="font-family:\'JetBrains Mono\',monospace;color:var(--math)">'+q.eq2+'</span></div><div class="classify-opts">'+SYS_OPTS.map(function(o){var cls='classify-opt';if(has){cls+=' cl-dis';if(o===q.correct)cls+=' cl-correct';else if(o===a&&o!==q.correct)cls+=' cl-wrong';}return '<div class="'+cls+'" onclick="ansSys('+i+',\''+o+'\')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+(has?(a===q.correct?' correct':' wrong'):'')+'">'+(has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('')+'<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(total?correct/total*100:0)+'%"></div></div><div class="score-bar-val">'+correct+'/'+total+'</div></div>';
 }
 function ansSys(i,v){if(sysAns[i]!==undefined)return;sysAns[i]=v;renderSystems();}
 renderSystems();
 
 // ============ EXERCISE 4: INEQUALITY CHALLENGE ============
-const INEQ_QS=[
+var INEQ_QS=[
   {prompt:'Solve: <code>x + 5 &gt; 12</code>',answer:'x > 7',accept:['x>7','x > 7'],solution:'x + 5 > 12 → x > 7. No sign flip needed.',tier:1},
-  {prompt:'Solve: <code>3x − 9 ≤ 6</code>',answer:'x ≤ 5',accept:['x<=5','x ≤ 5','x≤5','x <= 5'],solution:'3x ≤ 15 → x ≤ 5. Dividing by positive 3, no flip.',tier:1},
-  {prompt:'Solve: <code>−2x &gt; 10</code>',answer:'x < −5',accept:['x<-5','x < -5','x<−5','x < −5'],solution:'Divide by −2, FLIP the sign → x < −5.',tier:2},
-  {prompt:'Solve: <code>−4x + 8 ≤ 20</code>',answer:'x ≥ −3',accept:['x>=-3','x ≥ -3','x≥-3','x >= -3','x≥−3','x ≥ −3'],solution:'−4x ≤ 12 → divide by −4, FLIP → x ≥ −3.',tier:2},
-  {prompt:'Solve: <code>5 − 3x &lt; 2x + 25</code>',answer:'x > −4',accept:['x>-4','x > -4','x>−4','x > −4'],solution:'5 − 3x < 2x + 25 → −5x < 20 → x > −4 (flipped!).',tier:2},
+  {prompt:'Solve: <code>3x − 9 ≤ 6</code>',answer:'x ≤ 5',accept:['x<=5','x≤5','x <= 5','x ≤ 5'],solution:'3x ≤ 15 → x ≤ 5. Dividing by positive 3, no flip.',tier:1},
+  {prompt:'Solve: <code>−2x &gt; 10</code>',answer:'x < −5',accept:['x<-5','x < -5'],solution:'Divide by −2, FLIP the sign → x < −5.',tier:2},
+  {prompt:'Solve: <code>−4x + 8 ≤ 20</code>',answer:'x ≥ −3',accept:['x>=-3','x >= -3'],solution:'−4x ≤ 12 → divide by −4, FLIP → x ≥ −3.',tier:2},
+  {prompt:'Solve: <code>5 − 3x &lt; 2x + 25</code>',answer:'x > −4',accept:['x>-4','x > -4'],solution:'5 − 3x < 2x + 25 → −5x < 20 → x > −4 (flipped!).',tier:2},
 ];
-
 function renderIneq(){
-  const el=document.getElementById('ineqEx');
-  el.innerHTML=`<h3>⚖️ Inequality Solver</h3><div class="exercise-sub">Type the solution (e.g., "x > 7" or "x <= 5"). Use > < >= <= symbols.</div>`+
-    INEQ_QS.map((q,i)=>`<div class="ex-item">
-      <div style="margin-bottom:4px"><span class="tier tier-${q.tier}">Tier ${q.tier}</span></div>
-      <div class="ex-prompt">${q.prompt}</div>
-      <div class="ex-input-row">
-        <input class="ex-input" type="text" id="ineq${i}" placeholder="x > ?" style="width:140px">
-        <button class="ex-btn" onclick="checkIneq(${i})">Check</button>
-      </div>
-      <div class="ex-fb" id="ineqFb${i}"></div>
-    </div>`).join('');
+  document.getElementById('ineqEx').innerHTML='<h3>⚖️ Inequality Solver</h3><div class="exercise-sub">Type the solution (e.g., "x > 7" or "x <= 5"). Use > < >= <= symbols.</div>'+INEQ_QS.map(function(q,i){return '<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-'+q.tier+'">Tier '+q.tier+'</span></div><div class="ex-prompt">'+q.prompt+'</div><div class="ex-input-row"><input class="ex-input" type="text" id="ineq'+i+'" placeholder="x > ?" style="width:140px"><button class="ex-btn" onclick="checkIneq('+i+')">Check</button></div><div class="ex-fb" id="ineqFb'+i+'"></div></div>';}).join('');
 }
-function checkIneq(i){
-  const val=document.getElementById('ineq'+i).value.trim().replace(/\s+/g,' ');
-  const fb=document.getElementById('ineqFb'+i);
-  const q=INEQ_QS[i];
-  if(!val){fb.className='ex-fb show wrong';fb.textContent='Enter your answer.';return;}
-  const norm=val.replace(/\s/g,'').replace(/≤/g,'<=').replace(/≥/g,'>=');
-  const accepts=q.accept.map(a=>a.replace(/\s/g,'').replace(/≤/g,'<=').replace(/≥/g,'>='));
-  if(accepts.includes(norm)){
-    fb.className='ex-fb show correct';fb.textContent='✓ Correct! '+q.solution;
-  }else{
-    fb.className='ex-fb show wrong';fb.textContent='✗ The answer is '+q.answer+'. '+q.solution;
-  }
-}
+function checkIneq(i){var val=document.getElementById('ineq'+i).value.trim();var fb=document.getElementById('ineqFb'+i);var q=INEQ_QS[i];if(!val){fb.className='ex-fb show wrong';fb.textContent='Enter your answer.';return;}var norm=val.replace(/\s/g,'').replace(/≤/g,'<=').replace(/≥/g,'>=');var found=false;q.accept.forEach(function(a){if(a.replace(/\s/g,'').replace(/≤/g,'<=').replace(/≥/g,'>=')==norm)found=true;});if(found){fb.className='ex-fb show correct';fb.textContent='✓ Correct! '+q.solution;}else{fb.className='ex-fb show wrong';fb.textContent='✗ The answer is '+q.answer+'. '+q.solution;}}
 renderIneq();
 
-// ============ SAT-STYLE PRACTICE ============
-const SAT_QS=[
-  // TIER 1
-  {tier:1,topic:'2A',q:'If 4x − 8 = 2x + 6, what is the value of x?',
-   choices:['1','5','7','14'],correct:2,
-   fb:'4x − 8 = 2x + 6 → 2x = 14 → x = 7.'},
-  {tier:1,topic:'2B',q:'What is the slope of the line y = −3x + 12?',
-   choices:['12','−3','3','−12'],correct:1,
-   fb:'In y = mx + b, the slope is m. Here m = −3.'},
-  {tier:1,topic:'2D',q:'Which of the following represents all values of x such that 3x − 5 > 7?',
-   choices:['x > 4','x > 2','x < 4','x > 12'],correct:0,
-   fb:'3x − 5 > 7 → 3x > 12 → x > 4.'},
-  // TIER 2
-  {tier:2,topic:'2B',q:'A line passes through (2, 5) and has a slope of −3. What is the y-intercept of this line?',
-   choices:['−1','1','11','−11'],correct:2,
-   fb:'Using point-slope: y − 5 = −3(x − 2) → y = −3x + 6 + 5 → y = −3x + 11. The y-intercept is 11.'},
-  {tier:2,topic:'2C',q:'If 2x + y = 10 and x − y = 2, what is the value of x?',
-   choices:['2','3','4','6'],correct:2,
-   fb:'Add the equations: 3x = 12 → x = 4. (Elimination method — y cancels.)'},
-  {tier:2,topic:'2A',q:'A gym membership costs a $75 initiation fee plus $40 per month. Which equation gives the total cost C after m months?',
-   choices:['C = 75m + 40','C = 40m + 75','C = 115m','C = 40m − 75'],correct:1,
-   fb:'"$40 per month" → 40m (variable cost). "$75 initiation fee" → +75 (fixed cost). C = 40m + 75.'},
-  // TIER 3
-  {tier:3,topic:'2C',q:'The system 3x + ky = 12 and 9x + 15y = 36 has infinitely many solutions. What is the value of k?',
-   choices:['3','5','9','15'],correct:1,
-   fb:'For infinite solutions, the second equation must be a multiple of the first. 9x = 3(3x) ✓, 36 = 3(12) ✓, so 15y = 3(ky) → k = 5.'},
-  {tier:3,topic:'2B',q:'Line m has the equation y = (2/5)x − 3. Line n is perpendicular to line m and passes through (4, 1). What is the x-intercept of line n?',
-   choices:['2/5','14/5','−3/5','14/5'],correct:1,
-   fb:'Perpendicular slope = −5/2. Line n: y − 1 = −(5/2)(x − 4) → y = −(5/2)x + 11. Set y = 0: (5/2)x = 11 → x = 22/5 = 4.4. Hmm — let me recheck. Actually x-intercept: 0 = −(5/2)x + 11 → x = 22/5. But wait, answer choices... The perpendicular slope of 2/5 is −5/2. y − 1 = −5/2(x − 4) → y = −5/2 x + 10 + 1 = −5/2 x + 11. Set y=0: 5/2 x = 11, x = 22/5. The answer is 22/5.'},
+// ============ EXERCISE 5: TRAP SPOTTER ============
+var TRAP_QS=[
+  {q:'If <code>2x + 8 = 20</code>, what is the value of <code>x + 4</code>?',opts:['Asks for x + 4, not x','Needs to flip the sign','Uses wrong operation','No trap here'],correct:0,fb:'The trap: you might solve for x (getting 6) and choose 6. But the question asks for x + 4 = 10. Shortcut: divide the whole equation by 2 → x + 4 = 10.'},
+  {q:'Solve: <code>−3x &gt; 12</code>',opts:['Asks for expression, not x','Need to flip the inequality sign','Need to distribute first','Standard solving'],correct:1,fb:'Dividing by −3 requires flipping the inequality sign. Answer: x < −4, not x > −4.'},
+  {q:'A store sells shirts for $15 each and pants for $25 each. A customer buys 8 items total for $160. How many shirts did they buy?',opts:['Only one equation needed','Need two equations (trap: using only one)','Asks for pants not shirts','Price and quantity are swapped'],correct:1,fb:'You need two equations: s + p = 8 (quantity) AND 15s + 25p = 160 (cost). Using only one equation is the trap.'},
+  {q:'The line <code>y = 3x − 7</code> passes through (2, k). What is k?',opts:['Asks for slope not k','Need point-slope form','Just plug in x = 2','Need to solve for x first'],correct:2,fb:'No real trap — just plug in x = 2: k = 3(2) − 7 = −1. The trap is overthinking it by trying point-slope.'},
+  {q:'Lines m and n are parallel. Line m has slope 4. Line n passes through (1, 3) and (3, k). What is k?',opts:['Perpendicular, not parallel','Use slope formula with the parallel slope','Need standard form','Slope is undefined'],correct:1,fb:'Parallel → same slope of 4. Use slope formula: (k − 3)/(3 − 1) = 4 → k − 3 = 8 → k = 11. Trap: confusing parallel (same slope) with perpendicular.'},
+  {q:'If <code>3(x − 2) = 3x − 6</code>, what is x?',opts:['x = 0','x = 2','No solution','Infinitely many solutions — identity, not an equation to solve'],correct:3,fb:'Distributing: 3x − 6 = 3x − 6. This is always true (identity). The trap: thinking there must be one specific answer.'},
+  {q:'A taxi charges $3.50 plus $2.25 per mile. Which represents the cost for m miles: <code>C = 3.50m + 2.25</code> or <code>C = 2.25m + 3.50</code>?',opts:['First one — $3.50 is per mile','Second one — $3.50 is the flat fee','They are the same','Need more information'],correct:1,fb:'$3.50 is the flat fee (constant), $2.25 is per mile (rate). C = 2.25m + 3.50. Trap: swapping which number is the rate vs. the constant.'},
+  {q:'The question asks for <code>2x − 3y</code>. You solve the system and find x = 5 and y = 2. What is your answer?',opts:['5','2','4','The answer is 2(5) − 3(2) = 4'],correct:3,fb:'The question asks for the expression 2x − 3y, not x or y. Answer: 2(5) − 3(2) = 10 − 6 = 4. Biggest SAT trap: answering with x or y when they ask for an expression.'},
 ];
-// Fix Q8 to make answers match
-SAT_QS[7]={tier:3,topic:'2B',q:'Line m has the equation y = (2/5)x − 3. Line n is perpendicular to line m and passes through (4, 1). What is the equation of line n in slope-intercept form?',
-  choices:['y = (2/5)x − 3/5','y = −(5/2)x + 11','y = (5/2)x − 9','y = −(2/5)x + 11/5'],correct:1,
-  fb:'Perpendicular slope = negative reciprocal of 2/5 = −5/2. Using point (4, 1): y − 1 = −(5/2)(x − 4) → y = −(5/2)x + 10 + 1 → y = −(5/2)x + 11.'};
+var trapAns={};
+function renderTraps(){var total=TRAP_QS.length;var correct=0;Object.entries(trapAns).forEach(function(p){if(p[1]===TRAP_QS[parseInt(p[0])].correct)correct++;});
+  document.getElementById('trapEx').innerHTML='<h3>🎯 Spot the Trap</h3><div class="exercise-sub">Identify the key insight or trap in each problem before solving.</div>'+TRAP_QS.map(function(q,i){var a=trapAns[i];var has=a!==undefined;return '<div class="trap-item"><div class="trap-q">'+q.q+'</div><div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">What\'s the key thing to watch out for?</div><div class="trap-opts">'+q.opts.map(function(o,oi){var cls='trap-opt';if(has){cls+=' t-dis';if(oi===q.correct)cls+=' t-correct';else if(oi===a)cls+=' t-wrong';}return '<div class="'+cls+'" onclick="ansTrap('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="trap-fb '+(has?'show':'')+'">'+(has?q.fb:'')+'</div></div>';}).join('')+'<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(total?correct/total*100:0)+'%"></div></div><div class="score-bar-val">'+correct+'/'+total+'</div></div>';
+}
+function ansTrap(i,v){if(trapAns[i]!==undefined)return;trapAns[i]=v;renderTraps();}
+renderTraps();
 
-let satAns={};
+// ============ EXERCISE 6: WORD PROBLEM TRANSLATOR ============
+var WPT_QS=[
+  {phrase:'"is"',correct:'=',opts:['=','+','×','÷']},
+  {phrase:'"more than" / "increased by"',correct:'+',opts:['=','+','−','×']},
+  {phrase:'"less than" / "decreased by"',correct:'−',opts:['+','−','×','÷']},
+  {phrase:'"per" / "each" / "every"',correct:'×',opts:['+','−','×','÷']},
+  {phrase:'"of" (as in "30% of")',correct:'×',opts:['=','+','×','÷']},
+  {phrase:'"total" / "sum"',correct:'+',opts:['=','+','−','×']},
+  {phrase:'"difference"',correct:'−',opts:['+','−','×','÷']},
+  {phrase:'"quotient" / "ratio"',correct:'÷',opts:['+','−','×','÷']},
+  {phrase:'"twice" / "double"',correct:'×2',opts:['×2','+2','²','2x']},
+  {phrase:'"half of"',correct:'÷2',opts:['÷2','−2','½+','×½']},
+];
+var wptAns={};
+function renderWPT(){var total=WPT_QS.length;var correct=0;Object.entries(wptAns).forEach(function(p){if(p[1]===WPT_QS[parseInt(p[0])].correct)correct++;});
+  document.getElementById('wptEx').innerHTML='<h3>🔤 → 🔢 Translate</h3><div class="exercise-sub">Select the correct mathematical operation for each English phrase.</div>'+WPT_QS.map(function(q,i){var a=wptAns[i];var has=a!==undefined;var ok=a===q.correct;return '<div class="wpt-row"><div class="wpt-phrase">'+q.phrase+'</div><div class="wpt-arrow">→</div><select class="wpt-select '+(has?(ok?'wpt-correct':'wpt-wrong'):'')+'" onchange="ansWPT('+i+',this.value)" '+(has?'disabled':'')+'><option value="">?</option>'+q.opts.map(function(o){return '<option value="'+o+'" '+(a===o?'selected':'')+'>'+o+'</option>';}).join('')+'</select>'+(has&&!ok?'<span style="font-size:.78rem;color:var(--correct);margin-left:8px">'+q.correct+'</span>':'')+'</div>';}).join('')+'<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(total?correct/total*100:0)+'%"></div></div><div class="score-bar-val">'+correct+'/'+total+'</div></div>';
+}
+function ansWPT(i,v){if(wptAns[i]!==undefined||!v)return;wptAns[i]=v;renderWPT();}
+renderWPT();
+
+// ============ SAT-STYLE PRACTICE ============
+var SAT_QS=[
+  {tier:1,topic:'2A',q:'If 4x − 8 = 2x + 6, what is the value of x?',choices:['1','5','7','14'],correct:2,fb:'4x − 8 = 2x + 6 → 2x = 14 → x = 7.'},
+  {tier:1,topic:'2B',q:'What is the slope of the line y = −3x + 12?',choices:['12','−3','3','−12'],correct:1,fb:'In y = mx + b, the slope is m. Here m = −3.'},
+  {tier:1,topic:'2D',q:'Which represents all values of x such that 3x − 5 > 7?',choices:['x > 4','x > 2','x < 4','x > 12'],correct:0,fb:'3x − 5 > 7 → 3x > 12 → x > 4.'},
+  {tier:2,topic:'2B',q:'A line passes through (2, 5) and has slope −3. What is the y-intercept?',choices:['−1','1','11','−11'],correct:2,fb:'y − 5 = −3(x − 2) → y = −3x + 6 + 5 → y = −3x + 11. Y-intercept = 11.'},
+  {tier:2,topic:'2C',q:'If 2x + y = 10 and x − y = 2, what is the value of x?',choices:['2','3','4','6'],correct:2,fb:'Add the equations: 3x = 12 → x = 4.'},
+  {tier:2,topic:'2A',q:'A gym costs $75 initiation plus $40/month. Which gives total cost C after m months?',choices:['C = 75m + 40','C = 40m + 75','C = 115m','C = 40m − 75'],correct:1,fb:'$40/month → 40m. $75 initiation → +75. C = 40m + 75.'},
+  {tier:3,topic:'2C',q:'The system 3x + ky = 12 and 9x + 15y = 36 has infinitely many solutions. What is k?',choices:['3','5','9','15'],correct:1,fb:'For infinite solutions, equations must be proportional. 9x = 3(3x), 36 = 3(12), so 15y = 3(ky) → k = 5.'},
+  {tier:3,topic:'2B',q:'Line m has equation y = (2/5)x − 3. Line n is perpendicular to m and passes through (4, 1). What is the equation of line n?',choices:['y = (2/5)x − 3/5','y = −(5/2)x + 11','y = (5/2)x − 9','y = −(2/5)x + 11/5'],correct:1,fb:'Perpendicular slope = −5/2. Using (4,1): y − 1 = −(5/2)(x − 4) → y = −(5/2)x + 10 + 1 → y = −(5/2)x + 11.'},
+  {tier:3,topic:'2A',q:'For what value of a does 3(2x − a) = 6x − 12 have infinitely many solutions?',choices:['2','4','6','12'],correct:1,fb:'Distribute: 6x − 3a = 6x − 12. For identity: −3a = −12 → a = 4. Any x works.'},
+  {tier:3,topic:'2C',q:'At a bakery, 3 muffins and 2 cookies cost $11.50. 1 muffin and 4 cookies cost $10.50. What is the cost of one cookie?',choices:['$1.75','$2.00','$2.25','$2.50'],correct:0,fb:'System: 3m + 2c = 11.50 and m + 4c = 10.50. From second: m = 10.50 − 4c. Substitute: 3(10.50 − 4c) + 2c = 11.50 → 31.50 − 12c + 2c = 11.50 → −10c = −20 → c = 2.00. Wait: check: m = 10.50 − 8 = 2.50. Check: 3(2.50) + 2(2.00) = 7.50 + 4 = 11.50 ✓. Cookie = $2.00.'},
+];
+// Fix Q10 answer
+SAT_QS[9].correct=1;
+
+var satAns={};
 function renderSAT(){
-  document.getElementById('satPractice').innerHTML=SAT_QS.map((q,i)=>{
-    const a=satAns[i];const has=a!==undefined;
-    return `<div class="ex-item" style="border-color:${q.tier===1?'var(--algebra)':q.tier===2?'var(--math)':'var(--purple)'}">
-      <div style="margin-bottom:6px"><span class="tier tier-${q.tier}">Tier ${q.tier}</span><span style="font-size:.78rem;color:var(--muted)">Topic ${q.topic}</span></div>
-      <div class="ex-prompt">${q.q}</div>
-      <div class="mc-choices">${q.choices.map((ch,ci)=>{
-        let cls='mc-choice';
-        if(has){cls+=' mc-dis';if(ci===q.correct)cls+=' mc-correct';else if(ci===a&&ci!==q.correct)cls+=' mc-wrong';}
-        return `<div class="${cls}" onclick="ansSAT(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
-      }).join('')}</div>
-      <div class="mc-fb${has?' show':''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div>
-    </div>`;
-  }).join('');
+  document.getElementById('satPractice').innerHTML=SAT_QS.map(function(q,i){var a=satAns[i];var has=a!==undefined;return '<div class="ex-item" style="border-color:'+(q.tier===1?'var(--algebra)':q.tier===2?'var(--math)':'var(--purple)')+'"><div style="margin-bottom:6px"><span class="tier tier-'+q.tier+'">Tier '+q.tier+'</span><span style="font-size:.78rem;color:var(--muted)">Topic '+q.topic+'</span></div><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.choices.map(function(ch,ci){var cls='mc-choice';if(has){cls+=' mc-dis';if(ci===q.correct)cls+=' mc-correct';else if(ci===a&&ci!==q.correct)cls+=' mc-wrong';}return '<div class="'+cls+'" onclick="ansSAT('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(has?' show':'')+'">'+(has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
 }
 function ansSAT(i,ci){if(satAns[i]!==undefined)return;satAns[i]=ci;renderSAT();}
 renderSAT();

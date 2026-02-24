@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 2: Words in Context — PSAT 8/9 R&W — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var useState = React.useState;
+var useEffect = React.useEffect;
+var useCallback = React.useCallback;
+var useRef = React.useRef;
+
+/* ── design tokens ── */
+var C = {
+  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
+  sub:"#999", muted:"#666", accent:"#f472b6",
+  mod:"#f472b6", modBg:"rgba(244,114,182,.12)",
+  craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
+  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+};
+var btn = function(bg, color, extra) {
+  return Object.assign({
+    padding:"12px 28px", borderRadius:10, border:"none", background:bg,
+    color:color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s"
+  }, extra || {});
+};
+var NAV = {
+  prev:{ label:"Module 1: Welcome & Diagnostic", file:"PSAT_89_RW_module-1.html" },
+  next:{ label:"Module 3: Text Structure & Cross-Text", file:"PSAT_89_RW_module-3.html" }
+};
+
+/* ── LESSONS ── */
+var LESSONS = [
+  {
+    id:"2a", title:"How Words-in-Context Questions Work",
+    subtitle:"Topic 2A \u2014 Question anatomy, the \u201cPredict Before You Peek\u201d method, and common traps",
+    body:[
+      "Every Words in Context question follows the same pattern: a short passage (25\u2013100 words) with one word or phrase replaced by a blank. Four answer choices offer vocabulary words. Your job is to find the one that fits the meaning AND tone of the passage.",
+      "Step 1: Read the full passage carefully \u2014 don\u2019t skip to the blank.\nStep 2: Cover the answer choices. Predict your own word for the blank.\nStep 3: Uncover the choices. Match your prediction to the closest option.\nStep 4: Plug your choice back in. Does it fit the meaning AND the tone?",
+      "Why \u201cPredict Before You Peek\u201d works: If you look at the answer choices first, trap answers can hijack your thinking. A word that sounds smart or looks familiar can pull you away from the actual meaning of the passage. Predicting first keeps you anchored to the text.",
+      "Common Traps:\n\u2022 The \u201csounds right\u201d trap: A word that feels familiar but doesn\u2019t match the specific meaning.\n\u2022 The \u201cclose but not precise\u201d trap: Two choices may be similar, but one is more precise.\n\u2022 The secondary meaning trap: Common words used in uncommon ways. \u201cArrest\u201d can mean \u201cstop\u201d (not just \u201cdetain\u201d).\n\u2022 The tone mismatch trap: The right meaning but wrong register."
+    ],
+    visual:"predict-method"
+  },
+  {
+    id:"2b", title:"Context Clue Types",
+    subtitle:"Topic 2B \u2014 Definition, contrast, example, cause/effect, and inference clues",
+    body:[
+      "Passages always contain clues that point to the answer. Learning to spot these clue types makes you faster and more accurate.",
+      "Definition/Restatement: The passage directly defines the word. Signal: \u201cor,\u201d \u201cthat is,\u201d dashes, commas.\nContrast/Antonym: The passage gives the opposite. Signal: \u201cbut,\u201d \u201chowever,\u201d \u201cunlike,\u201d \u201crather than.\u201d\nExample: Specific instances illustrate the word. Signal: \u201csuch as,\u201d \u201cfor instance,\u201d \u201cincluding.\u201d\nCause/Effect: The result or reason reveals the meaning. Signal: \u201cbecause,\u201d \u201csince,\u201d \u201ctherefore.\u201d\nInference: No direct signal \u2014 you infer from the overall passage meaning and tone.",
+      "Each clue type gives you a different angle into the word\u2019s meaning. On test day, quickly identifying the clue type tells you exactly where to look in the passage for your answer."
+    ],
+    visual:"clue-types"
+  },
+  {
+    id:"2c", title:"Tier 2 Academic Vocabulary",
+    subtitle:"Topic 2C \u2014 The high-utility words that appear across subjects and on the test",
+    body:[
+      "What Are Tier 2 Words?\n\u2022 Tier 1: Basic everyday words (run, happy, big) \u2014 you already know these.\n\u2022 Tier 2: Academic words used across subjects (analyze, significant, undermine, advocate) \u2014 these are what the PSAT tests.\n\u2022 Tier 3: Domain-specific technical words (photosynthesis, isosceles) \u2014 rarely tested in vocabulary questions.",
+      "Research shows you need 12\u201314 encounters with a word in varied contexts before you truly own it. That\u2019s why simply memorizing definitions doesn\u2019t work \u2014 you need to see words in action.",
+      "Strategy: Keep a vocabulary journal. For each new word, write: the word, its definition, the sentence you found it in, and your own example sentence. Review weekly.",
+      "High-Frequency PSAT Vocabulary Clusters:\n\u2022 Support/Strengthen: bolster, corroborate, substantiate, reinforce, validate, buttress\n\u2022 Weaken/Challenge: undermine, refute, contradict, discredit, subvert, erode\n\u2022 Careful/Cautious: prudent, circumspect, judicious, measured, deliberate, tentative\n\u2022 Enthusiastic/Positive: fervent, ardent, zealous, exuberant, unreserved, wholehearted\n\u2022 Complex/Nuanced: multifaceted, intricate, nuanced, elaborate, sophisticated\n\u2022 Clear/Direct: explicit, unambiguous, forthright, candid, transparent, overt"
+    ],
+    visual:"vocab-clusters"
+  },
+  {
+    id:"2d", title:"Word Parts: Roots, Prefixes & Suffixes",
+    subtitle:"Topic 2D \u2014 Decode unfamiliar words by breaking them into known pieces",
+    body:[
+      "When you encounter an unfamiliar word, you can often figure out its meaning by analyzing its parts. This is your backup strategy when context clues alone aren\u2019t enough.",
+      "Key Prefixes:\n\u2022 un-, in-, im-, dis- = not, opposite (unprecedented, ineffective, impractical, disregard)\n\u2022 re- = again, back (reconsider, reaffirm, revitalize)\n\u2022 pre- = before (predominant, preclude, preeminent)\n\u2022 mis- = wrongly (misconception, misattribute, misconstrue)\n\u2022 over- = excessive (overstate, oversimplify, overestimate)\n\u2022 under- = beneath, too little (undermine, underestimate, underrepresented)",
+      "Key Roots:\n\u2022 cred = believe (credible, incredible, discredit)\n\u2022 dict = say, speak (contradict, predict, dictate)\n\u2022 spec/spect = look, see (perspective, retrospect, spectacle)\n\u2022 vert/vers = turn (controversial, divert, reverse)\n\u2022 voc/vok = call, voice (advocate, provoke, evocative)\n\u2022 bene/mal = good/bad (benevolent, malicious, malfunction)",
+      "Combining clues: Use context clues AND word parts together. If the context suggests something negative and the word starts with \u201cmis-\u201d or \u201cdis-,\u201d you can be doubly confident in your interpretation."
+    ],
+    visual:"morph-table"
+  }
+];
+
+/* ── PREREQ DATA ── */
+var PREREQ = [
+  {word:"substantial",opts:["small","large/significant","quick","colorful"],c:1,fb:"\"Substantial\" means large in size, value, or importance. Think: \"sub-STANT-ial\" relates to having substance."},
+  {word:"preliminary",opts:["final","unrelated","introductory/early","confusing"],c:2,fb:"\"Preliminary\" means coming before the main event. Think: \"pre-\" = before. Preliminary results come before final ones."},
+  {word:"advocate",opts:["avoid","publicly support","secretly oppose","investigate"],c:1,fb:"\"Advocate\" means to publicly support or recommend. An advocate is someone who speaks up for a cause."},
+  {word:"diminish",opts:["increase","destroy","make smaller/less","brighten"],c:2,fb:"\"Diminish\" means to make or become less. Think: \"mini\" is inside the word \u2014 something getting smaller."},
+  {word:"ambiguous",opts:["clear","having multiple meanings","beautiful","temporary"],c:1,fb:"\"Ambiguous\" means open to more than one interpretation. \"Ambi-\" means both/two ways."},
+  {word:"undermine",opts:["dig tunnels","strengthen","weaken gradually","discover"],c:2,fb:"\"Undermine\" means to weaken or damage gradually. Think: mining UNDER a foundation makes it collapse."}
+];
+
+/* ── EXERCISE 1: CONTEXT CLUE SPOTTER ── */
+var CLUE = [
+  {passage:"The researcher\u2019s methodology was innovative \u2014 that is, it introduced techniques never before used in the field.",clue:"Definition/Restatement",opts:["Definition/Restatement","Contrast","Example","Cause/Effect"],fb:"The phrase \"that is\" directly restates the meaning: introduced techniques never before used = innovative."},
+  {passage:"Unlike her reserved older sister, Maya was outgoing and eager to meet new people at every social event.",clue:"Contrast",opts:["Definition/Restatement","Contrast","Example","Tone/Mood"],fb:"\"Unlike\" signals contrast. Maya is outgoing, so \"reserved\" means the opposite: quiet, holding back."},
+  {passage:"The garden featured several indigenous plants, including wild bergamot, purple coneflower, and black-eyed Susans, all native to the Midwest.",clue:"Example",opts:["Definition/Restatement","Contrast","Example","Cause/Effect"],fb:"\"Including\" introduces examples of specific native plants, revealing that \"indigenous\" means native to the region."},
+  {passage:"Because the evidence was so compelling, even the most skeptical committee members voted to approve the proposal.",clue:"Cause/Effect",opts:["Definition/Restatement","Contrast","Example","Cause/Effect"],fb:"\"Because...even the most skeptical\" \u2014 the evidence caused doubters to agree. Cause/effect reveals \"compelling\" = powerfully convincing."},
+  {passage:"The diplomat\u2019s speech struck a conciliatory tone, expressing willingness to compromise and find common ground after months of tense negotiations.",clue:"Definition/Restatement",opts:["Definition/Restatement","Contrast","Example","Tone/Mood"],fb:"The phrase \"expressing willingness to compromise and find common ground\" directly defines what \"conciliatory\" means."},
+  {passage:"The once-thriving downtown had become desolate, with boarded-up storefronts and empty sidewalks stretching for blocks.",clue:"Tone/Mood",opts:["Definition/Restatement","Contrast","Example","Tone/Mood"],fb:"The imagery (boarded-up, empty) creates a mood of abandonment, revealing that \"desolate\" means deserted and gloomy."}
+];
+
+/* ── EXERCISE 2: PREDICT BEFORE YOU PEEK ── */
+var PRED = [
+  {passage:"The architect\u2019s design was praised for its ________, combining clean lines with unexpected curves in a way that felt both modern and timeless.",
+   choices:["elegance","affordability","simplicity","enormity"],correct:0,
+   fb:"The passage describes \"clean lines with unexpected curves\" that feel \"modern and timeless\" \u2014 this describes grace and beauty in design. \"Elegance\" captures this perfectly. \"Simplicity\" is close but misses the \"unexpected curves\" element."},
+  {passage:"Despite the company\u2019s attempts to ________ the scandal, leaked emails revealed the full extent of executive misconduct.",
+   choices:["publicize","conceal","investigate","exaggerate"],correct:1,
+   fb:"\"Despite\" signals contrast: the company tried to do X, BUT emails revealed the truth. So X = hide/cover up. \"Conceal\" matches. Your prediction might have been \"hide,\" \"cover up,\" or \"suppress.\""},
+  {passage:"The documentary offered a ________ look at factory farming, presenting interviews with workers, environmental scientists, and industry executives to show multiple perspectives.",
+   choices:["biased","comprehensive","brief","hostile"],correct:1,
+   fb:"Multiple perspectives (workers, scientists, executives) suggest a thorough, wide-ranging examination. \"Comprehensive\" fits. \"Biased\" contradicts \"multiple perspectives.\""},
+  {passage:"What began as a minor disagreement between neighbors ________ into a full-scale legal battle that lasted three years and cost both parties their savings.",
+   choices:["collapsed","escalated","resolved","fluctuated"],correct:1,
+   fb:"Growth from small (minor disagreement) to large (full-scale legal battle). \"Escalated\" means intensified/grew worse. Your prediction might have been \"grew,\" \"expanded,\" or \"spiraled.\""},
+  {passage:"The author\u2019s tone throughout the essay is notably ________, avoiding strong claims and instead presenting each argument with qualifications like \"possibly\" and \"to some extent.\"",
+   choices:["assertive","tentative","dismissive","passionate"],correct:1,
+   fb:"Qualifications like \"possibly\" and \"to some extent\" show cautious, non-committal language. \"Tentative\" means hesitant/uncertain. \"Assertive\" is the opposite."},
+  {passage:"The new policy was designed to ________ economic growth in rural communities by offering tax incentives to businesses that opened locations outside major cities.",
+   choices:["stimulate","hinder","monitor","redistribute"],correct:0,
+   fb:"Tax incentives are meant to encourage/promote growth. \"Stimulate\" means to encourage activity. \"Hinder\" is the opposite. \"Monitor\" means watch, not encourage."}
+];
+
+/* ── EXERCISE 3: ROOT DECODER ── */
+var MORPH = [
+  {word:"unprecedented",parts:"un- (not) + pre- (before) + -cedent (go)",opts:["Never happened before","Happened too quickly","Extremely important","Poorly planned"],c:0,fb:"un- (not) + pre- (before) + cedent (going) = not gone before = never happened before."},
+  {word:"misconception",parts:"mis- (wrongly) + concept (idea) + -ion (noun)",opts:["A brilliant idea","A wrong belief","A hidden plan","A new discovery"],c:1,fb:"mis- (wrongly) + conception (idea/belief) = a wrongly held belief."},
+  {word:"circumspect",parts:"circum- (around) + spect (look)",opts:["Looking backwards","Watching from above","Careful and cautious","Moving in circles"],c:2,fb:"circum- (around) + spect (look) = looking around carefully = cautious, considering all angles."},
+  {word:"benevolent",parts:"bene- (good/well) + vol (wish) + -ent (adjective)",opts:["Extremely powerful","Well-meaning and kind","Highly intelligent","Violently opposed"],c:1,fb:"bene- (good) + volent (wishing) = good-wishing = kindly, generous."},
+  {word:"incredulous",parts:"in- (not) + cred (believe) + -ulous (adjective)",opts:["Very believable","Unable to believe","Incredibly smart","Secretly doubtful"],c:1,fb:"in- (not) + credulous (believing) = not believing = disbelieving, skeptical."},
+  {word:"retrospective",parts:"retro- (back) + spect (look) + -ive (adjective)",opts:["Looking forward","Looking back on the past","Seen from far away","Repeated many times"],c:1,fb:"retro- (backward) + spective (looking) = looking backward = reviewing the past."}
+];
+
+/* ── EXERCISE 4: TONE MATCHER ── */
+var TONE = [
+  {word:"fervent",tone:"Strongly Positive",opts:["Strongly Positive","Mildly Positive","Neutral","Negative"],fb:"Fervent = intensely passionate or enthusiastic. Very strong positive energy."},
+  {word:"dismissive",tone:"Negative",opts:["Strongly Positive","Mildly Positive","Neutral","Negative"],fb:"Dismissive = treating something as unworthy of consideration. Negative."},
+  {word:"pragmatic",tone:"Neutral",opts:["Strongly Positive","Mildly Positive","Neutral","Negative"],fb:"Pragmatic = practical, realistic. Neither praise nor criticism \u2014 just a style of thinking."},
+  {word:"meticulous",tone:"Mildly Positive",opts:["Strongly Positive","Mildly Positive","Neutral","Negative"],fb:"Meticulous = very careful and precise. Slightly positive \u2014 implies thoroughness."},
+  {word:"negligible",tone:"Neutral",opts:["Strongly Positive","Mildly Positive","Neutral","Negative"],fb:"Negligible = so small as to not be worth considering. Neutral \u2014 describes size, not quality."},
+  {word:"complacent",tone:"Negative",opts:["Strongly Positive","Mildly Positive","Neutral","Negative"],fb:"Complacent = smugly satisfied without effort to improve. Negative \u2014 implies laziness."},
+  {word:"eloquent",tone:"Strongly Positive",opts:["Strongly Positive","Mildly Positive","Neutral","Negative"],fb:"Eloquent = fluent, persuasive, beautiful in speech or writing. Strong praise."},
+  {word:"ambivalent",tone:"Neutral",opts:["Strongly Positive","Mildly Positive","Neutral","Negative"],fb:"Ambivalent = having mixed feelings. Neutral \u2014 describes uncertainty, not a judgment."}
+];
+
+/* ── EXERCISE 5: TRAP SPOTTER ── */
+var TRAPS = [
+  {passage:"The author's writing style is notably ________, with sentences that stretch across half a page, dense with subordinate clauses and literary allusions.",
+   wrong:"eloquent",right:"elaborate",trap:"Sounds Right",
+   opts:["Sounds Right (wrong meaning)","Close But Not Precise","Secondary Meaning","Tone Mismatch"],c:0,
+   fb:"\"Eloquent\" means beautifully expressed, but the passage describes LENGTH and COMPLEXITY, not beauty. \"Elaborate\" (detailed, intricate) matches the description of long, dense sentences."},
+  {passage:"The committee's report was criticized for being ________, presenting only data that supported the proposed policy while ignoring contradictory evidence.",
+   wrong:"thorough",right:"selective",trap:"Close But Not Precise",
+   opts:["Sounds Right (wrong meaning)","Close But Not Precise","Secondary Meaning","Tone Mismatch"],c:1,
+   fb:"A student might think \"thorough\" because the report presents data. But the passage says it ONLY shows supporting data and IGNORES contradictions. That's not thorough \u2014 it's \"selective.\""},
+  {passage:"The discovery of a new species in the deep ocean ________ the scientific community, sparking dozens of new research expeditions.",
+   wrong:"arrested",right:"galvanized",trap:"Secondary Meaning",
+   opts:["Sounds Right (wrong meaning)","Close But Not Precise","Secondary Meaning","Tone Mismatch"],c:2,
+   fb:"\"Arrested\" can mean \"stopped\" (its secondary meaning) which is the opposite of what happened. The community was ENERGIZED. \"Galvanized\" (shocked into action) fits."},
+  {passage:"In her peer-reviewed analysis of migration patterns, Dr. Chen ________ that climate change has become the primary driver of population movement in Southeast Asia.",
+   wrong:"feels",right:"contends",trap:"Tone Mismatch",
+   opts:["Sounds Right (wrong meaning)","Close But Not Precise","Secondary Meaning","Tone Mismatch"],c:3,
+   fb:"\"Feels\" conveys the right general idea but is far too informal for a peer-reviewed scientific analysis. Academic writing uses words like \"contends,\" \"asserts,\" or \"argues.\""},
+  {passage:"The new regulation was intended to ________ harmful emissions, but critics argued it contained too many loopholes to be effective.",
+   wrong:"eliminate",right:"curtail",trap:"Close But Not Precise",
+   opts:["Sounds Right (wrong meaning)","Close But Not Precise","Secondary Meaning","Tone Mismatch"],c:1,
+   fb:"\"Eliminate\" means completely remove. But if the regulation has \"loopholes,\" it was never meant to COMPLETELY stop emissions \u2014 just reduce them. \"Curtail\" (to reduce or limit) is more precise."}
+];
+
+/* ── PRACTICE QUESTIONS ── */
+var PST = [
+  {id:0,t:1,passage:"The chef's new restaurant was an immediate success, with food critics praising the ________ flavors that combined traditional Japanese techniques with bold Latin American ingredients.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["conventional","innovative","subtle","familiar"],answer:1,
+   explain:"Combining two different culinary traditions (Japanese + Latin American) describes something NEW and creative. \"Innovative\" means introducing new ideas. \"Conventional\" and \"familiar\" are the opposite. \"Subtle\" contradicts \"bold.\""},
+  {id:1,t:1,passage:"The historical records from this period are remarkably ________, providing detailed accounts of daily life, trade agreements, and even weather patterns.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["sparse","comprehensive","biased","controversial"],answer:1,
+   explain:"\"Detailed accounts\" of multiple topics (daily life, trade, weather) = thorough and wide-ranging. \"Comprehensive\" means covering all aspects. \"Sparse\" means scarce (opposite)."},
+  {id:2,t:1,passage:"Although the two candidates held sharply different positions on economic policy, they found ________ ground on environmental issues, agreeing to support the new conservation bill.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["disputed","common","unfamiliar","contentious"],answer:1,
+   explain:"\"Although...sharply different\" sets up contrast with \"agreeing to support.\" They found SHARED agreement. \"Common ground\" = shared beliefs."},
+  {id:3,t:2,passage:"The novelist's latest work has been praised for its ________ portrayal of immigrant experiences, drawing on interviews with over two hundred families to ensure authenticity.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["fictional","nuanced","superficial","exaggerated"],answer:1,
+   explain:"200+ family interviews to \"ensure authenticity\" suggest a detailed, careful, multi-perspective portrayal. \"Nuanced\" means showing subtle distinctions and complexity."},
+  {id:4,t:2,passage:"The researcher's hypothesis, once considered ________ by the broader scientific community, has gained support as new experimental evidence has accumulated over the past decade.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["dubious","groundbreaking","established","irrelevant"],answer:0,
+   explain:"\"Once considered X...has gained support\" = it was previously viewed negatively but is now accepted. \"Dubious\" (doubtful, questionable) fits."},
+  {id:5,t:2,passage:"The city's decision to invest in public transportation was motivated by a desire to ________ traffic congestion, which had increased commute times by an average of 40% over five years.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["perpetuate","alleviate","document","exacerbate"],answer:1,
+   explain:"The city wants to FIX the congestion problem. \"Alleviate\" means to make less severe. \"Perpetuate\" and \"exacerbate\" are the opposite goal."},
+  {id:6,t:2,passage:"While some critics dismissed the painter's abstract style as chaotic, others argued that her compositions demonstrated remarkable ________, with every brushstroke serving a deliberate purpose.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["randomness","spontaneity","intentionality","simplicity"],answer:2,
+   explain:"\"Every brushstroke serving a deliberate purpose\" = nothing is accidental. \"Intentionality\" means purposeful design. \"Randomness\" matches the critics' negative view."},
+  {id:7,t:3,passage:"The anthropologist cautioned against interpreting ancient burial practices through a modern lens, arguing that such ________ analysis risks projecting contemporary values onto cultures with fundamentally different belief systems.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["anachronistic","empirical","comprehensive","indigenous"],answer:0,
+   explain:"\"Modern lens\" applied to \"ancient\" practices = time-period mismatch. \"Anachronistic\" means belonging to a different time period."},
+  {id:8,t:3,passage:"The diplomat's reputation for ________ negotiations \u2014 finding acceptable compromises even between parties with deeply entrenched positions \u2014 made her the natural choice to mediate the territorial dispute.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["contentious","protracted","adroit","perfunctory"],answer:2,
+   explain:"\"Finding acceptable compromises\" between difficult parties = skilled, clever negotiation. \"Adroit\" means clever and skillful."},
+  {id:9,t:3,passage:"The study's authors acknowledged that their findings, while suggestive, remained ________, noting that a larger sample size and longer observation period would be needed to draw definitive conclusions.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["conclusive","preliminary","redundant","comprehensive"],answer:1,
+   explain:"\"While suggestive\" + needing \"larger sample\" and \"longer observation\" for \"definitive conclusions\" = the findings are early/initial. \"Preliminary\" means early-stage, not yet final."}
+];
+
+var KEY_TAKEAWAYS = [
+  "Words in Context is ~20% of the PSAT 8/9 R&W \u2014 the single most common question type.",
+  "\"Predict Before You Peek\" is the #1 strategy: read the passage, cover choices, predict your own word, then match.",
+  "Look for five context clue types: definition, contrast, example, cause/effect, and inference.",
+  "The PSAT tests Tier 2 academic vocabulary \u2014 words used across subjects, not technical jargon.",
+  "Learn words in concept clusters (strengthen, weaken, cautious, enthusiastic) so you can quickly match answers to meaning.",
+  "Use word parts (roots, prefixes, suffixes) as a backup when context clues aren\u2019t enough.",
+  "Watch for traps: \u201csounds right\u201d but wrong meaning, close-but-not-precise, secondary meanings, tone mismatches.",
+  "You need 12\u201314 encounters with a word before you own it. Keep a vocabulary journal and review weekly."
+];
+
+/* ========== COMPONENTS ========== */
+
+/* ── Welcome ── */
+function Welcome(props) {
+  var onNext = props.onNext;
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  return React.createElement("div", { style:{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"100vh", padding:"0 24px", transition:"all .7s", opacity:show?1:0, transform:show?"translateY(0)":"translateY(16px)" } },
+    React.createElement("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"44", borderRadius:12, padding:"6px 18px", fontSize:13, letterSpacing:1.5, textTransform:"uppercase", color:C.mod, marginBottom:12, fontWeight:600 } }, "Phase 2 \u00B7 Module 2"),
+    React.createElement("h1", { style:{ fontSize:"clamp(1.7rem,4.5vw,3rem)", fontWeight:800, background:"linear-gradient(135deg,"+C.mod+","+C.rw+")", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", lineHeight:1.1, textAlign:"center", marginBottom:16, fontFamily:"'Cormorant Garamond',serif" } }, "Words in Context \u2014 Vocabulary That Wins Points"),
+    React.createElement("p", { style:{ color:C.sub, fontSize:18, maxWidth:560, textAlign:"center", lineHeight:1.6, marginBottom:12 } }, "The single most common question type on the PSAT 8/9 R&W. Master this and you\u2019ve locked in ~20% of the test."),
+    React.createElement("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"33", borderRadius:12, padding:"14px 22px", maxWidth:540, marginBottom:40, fontSize:14, color:C.sub, lineHeight:1.6, textAlign:"center" } },
+      React.createElement("strong", { style:{ color:C.mod } }, "High-Impact Skill: "),
+      "Words in Context accounts for 10\u201311 questions (~20% of the R&W section). These are often the fastest questions to answer once you know the strategy."
+    ),
+    React.createElement("div", { style:{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:16, maxWidth:700, width:"100%", marginBottom:48 } },
+      [{icon:"\uD83D\uDCD6",title:"4 Topics",desc:"Question types & strategies"},{icon:"\u2705",title:"Prereq Check",desc:"Vocabulary foundations"},{icon:"\uD83D\uDD28",title:"5 Exercises",desc:"Clues, predict, decode..."},{icon:"\uD83C\uDF1F",title:"Practice Qs",desc:"10 PSAT-format questions"}
+      ].map(function(c,i){ return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
+        React.createElement("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        React.createElement("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
+        React.createElement("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      );})
+    ),
+    React.createElement("button", { onClick:onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")", "#fff"), onMouseOver:function(e){e.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";} }, "Start Learning \u2192"),
+    React.createElement("div", { style:{ color:C.muted, fontSize:13, marginTop:24 } }, "\u23F1 ~60 min \u00B7 Information & Ideas")
+  );
+}
+
+/* ── LessonViewer ── */
+function LessonViewer(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var lesson = LESSONS[idx];
+  var total = LESSONS.length;
+
+  function renderVisual() {
+    if (lesson.visual === "predict-method") {
+      var steps = [
+        {num:"1",label:"Read",desc:"Read the full passage carefully",color:C.sec},
+        {num:"2",label:"Predict",desc:"Cover choices, predict your own word",color:C.mod},
+        {num:"3",label:"Match",desc:"Find the closest answer choice",color:C.info},
+        {num:"4",label:"Verify",desc:"Plug it back in \u2014 does it fit?",color:C.rw}
+      ];
+      return React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:8,padding:"12px 20px"}},
+        steps.map(function(s,i){
+          return React.createElement("div",{key:i,style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:12,textAlign:"center"}},
+            React.createElement("div",{style:{fontSize:"1.4rem",fontWeight:700,color:s.color,marginBottom:4}},s.num),
+            React.createElement("div",{style:{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted,marginBottom:4}},s.label),
+            React.createElement("div",{style:{fontSize:11,color:C.sub,lineHeight:1.4}},s.desc)
+          );
+        })
+      );
+    }
+    if (lesson.visual === "clue-types") {
+      var clues = [
+        {label:"Definition",signal:"\"or,\" \"that is,\" dashes",color:C.sec},
+        {label:"Contrast",signal:"\"but,\" \"however,\" \"unlike\"",color:C.wrong},
+        {label:"Example",signal:"\"such as,\" \"including\"",color:C.info},
+        {label:"Cause/Effect",signal:"\"because,\" \"since,\" \"therefore\"",color:C.expr},
+        {label:"Inference",signal:"Overall passage meaning & tone",color:C.rw}
+      ];
+      return React.createElement("div",{style:{padding:"12px 20px"}},
+        clues.map(function(cl,i){
+          return React.createElement("div",{key:i,style:{display:"flex",alignItems:"center",gap:10,marginBottom:6,padding:"8px 12px",background:cl.color+"08",borderLeft:"3px solid "+cl.color,borderRadius:"0 8px 8px 0"}},
+            React.createElement("span",{style:{color:cl.color,fontWeight:700,fontSize:12,minWidth:90}},cl.label),
+            React.createElement("span",{style:{color:C.sub,fontSize:13,fontFamily:"'JetBrains Mono',monospace"}},cl.signal)
+          );
+        })
+      );
+    }
+    if (lesson.visual === "vocab-clusters") {
+      var clusters = [
+        {label:"Support",words:"bolster, corroborate, substantiate",color:C.sec},
+        {label:"Weaken",words:"undermine, refute, contradict",color:C.wrong},
+        {label:"Cautious",words:"prudent, circumspect, judicious",color:C.info},
+        {label:"Enthusiastic",words:"fervent, ardent, zealous",color:C.mod},
+        {label:"Complex",words:"multifaceted, intricate, nuanced",color:C.rw},
+        {label:"Clear",words:"explicit, unambiguous, forthright",color:C.expr}
+      ];
+      return React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:8,padding:"12px 20px"}},
+        clusters.map(function(cl,i){
+          return React.createElement("div",{key:i,style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:12,textAlign:"center"}},
+            React.createElement("div",{style:{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:cl.color,marginBottom:4}},cl.label),
+            React.createElement("div",{style:{fontSize:11,color:C.sub,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace"}},cl.words)
+          );
+        })
+      );
+    }
+    if (lesson.visual === "morph-table") {
+      var parts = [
+        {part:"un-, in-, dis-",meaning:"not / opposite",ex:"unprecedented, ineffective",color:C.mod},
+        {part:"re-",meaning:"again / back",ex:"reconsider, reaffirm",color:C.sec},
+        {part:"pre-",meaning:"before",ex:"predominant, preclude",color:C.info},
+        {part:"mis-",meaning:"wrongly",ex:"misconception, misconstrue",color:C.wrong},
+        {part:"cred",meaning:"believe",ex:"credible, discredit",color:C.rw},
+        {part:"spec/spect",meaning:"look / see",ex:"perspective, retrospect",color:C.expr}
+      ];
+      return React.createElement("div",{style:{padding:"12px 20px"}},
+        React.createElement("div",{style:{color:C.mod,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Key Word Parts"),
+        parts.map(function(p,i){
+          return React.createElement("div",{key:i,style:{display:"flex",alignItems:"center",gap:10,marginBottom:6,padding:"8px 12px",background:p.color+"08",borderLeft:"3px solid "+p.color,borderRadius:"0 8px 8px 0"}},
+            React.createElement("span",{style:{color:p.color,fontWeight:700,fontSize:13,minWidth:90,fontFamily:"'JetBrains Mono',monospace"}},p.part),
+            React.createElement("span",{style:{color:C.sub,fontSize:12,minWidth:80}},p.meaning),
+            React.createElement("span",{style:{color:C.muted,fontSize:11,fontStyle:"italic"}},p.ex)
+          );
+        })
+      );
+    }
+    return null;
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      LESSONS.map(function(_,i){
+        return React.createElement("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+      })
+    ),
+    React.createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      React.createElement("div",{style:{padding:"28px 28px 0"}},
+        React.createElement("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        React.createElement("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:16,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},lesson.title),
+        lesson.body.map(function(p,i){
+          return React.createElement("p",{key:i,style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p);
+        })
+      ),
+      lesson.visual && React.createElement("div",{style:{padding:"8px 4px 20px"}},renderVisual())
+    ),
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between"}},
+      React.createElement("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#444":C.sub),{border:"1px solid "+C.border,padding:"10px 20px",fontSize:14})},"\u2190 Back"),
+      idx < total-1
+        ? React.createElement("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
+        : React.createElement("button",{onClick:onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Prereq Check \u2192")
+    )
+  );
+}
+
+/* ── PrereqCheckpoint ── */
+function PrereqCheckpoint(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = PREREQ.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === PREREQ[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:C.expr,fontSize:14,fontWeight:700}},"\uD83D\uDD27 Vocabulary Foundation Check"),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Select the closest meaning. If any trip you up, read the explanation \u2014 these words appear frequently on the PSAT 8/9."),
+    PREREQ.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        React.createElement("div",{style:{fontSize:14,color:"#ddd",marginBottom:10}},
+          "What does ",
+          React.createElement("strong",{style:{color:C.mod}},q.word),
+          " most nearly mean?"
+        ),
+        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          q.opts.map(function(o,oi){
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return React.createElement("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===q.c?C.correctBg:C.wrongBg,color:a===q.c?C.correct:C.wrong}},(a===q.c?"\u2713 Correct! ":"\u2717 ")+q.fb)
+      );
+    }),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      React.createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      React.createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        React.createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Start Exercises \u2192")
+    )
+  );
+}
+
+/* ── ClassifyExercise (reusable) ── */
+function ClassifyExercise(props) {
+  var title = props.title, icon = props.icon, subtitle = props.subtitle, items = props.items, options = props.options, borderColor = props.borderColor, onComplete = props.onComplete, matchField = props.matchField, renderStimulus = props.renderStimulus;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){
+    if (matchField) return answers[i] === items[i][matchField];
+    return answers[i] === items[i].c;
+  }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var correctVal = matchField ? q[matchField] : q.c;
+      var a = answers[i], h = a !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus ? renderStimulus(q,i) : React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+(borderColor||C.mod),fontStyle:"italic"}},q.passage || q.text),
+        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          (q.opts || options).map(function(o,oi){
+            var isCorrectChoice = matchField ? (o === correctVal) : (oi === correctVal);
+            var isPickedChoice = matchField ? (o === a) : (oi === a);
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (isCorrectChoice) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (isPickedChoice) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return React.createElement("button",{key:oi,onClick:function(){ pick(i, matchField ? o : oi); },style:st},o);
+          })
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===correctVal?C.correctBg:C.wrongBg,color:a===correctVal?C.correct:C.wrong}},(a===correctVal?"\u2713 ":"\u2717 ")+q.fb)
+      );
+    }),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      React.createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      React.createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        React.createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(borderColor||C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── PredictExercise (Predict Before You Peek) ── */
+function PredictExercise(props) {
+  var onComplete = props.onComplete;
+  var _s1 = useState({}), predictions = _s1[0], setPredictions = _s1[1];
+  var _s2 = useState({}), revealed = _s2[0], setRevealed = _s2[1];
+  var _s3 = useState({}), answers = _s3[0], setAnswers = _s3[1];
+  var total = PRED.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === PRED[i].correct; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function reveal(i) {
+    setRevealed(function(prev){ var n = Object.assign({}, prev); n[i] = true; return n; });
+  }
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+  function updatePrediction(i, val) {
+    setPredictions(function(prev){ var n = Object.assign({}, prev); n[i] = val; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:C.rw,fontSize:14,fontWeight:700}},"\uD83D\uDD2E Predict Before You Peek"),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Read each passage and type YOUR OWN prediction for the blank before seeing the answer. Then reveal the choices and pick the best match."),
+    PRED.map(function(q,i){
+      var isRevealed = revealed[i];
+      var a = answers[i], h = a !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.rw+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.rw,fontStyle:"italic"}},q.passage),
+        React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:10}},
+          React.createElement("span",{style:{fontSize:13,color:C.muted}},"My prediction:"),
+          React.createElement("input",{
+            type:"text",
+            placeholder:"Type your word\u2026",
+            value:predictions[i]||"",
+            disabled:isRevealed,
+            onChange:function(e){updatePrediction(i,e.target.value);},
+            style:{padding:"8px 12px",background:C.paper,border:"1px solid "+C.border,borderRadius:6,color:C.ink,fontFamily:"inherit",fontSize:14,width:180,outline:"none"}
+          }),
+          !isRevealed && React.createElement("button",{onClick:function(){reveal(i);},style:btn(C.rw,"#fff",{fontSize:13,padding:"8px 16px"})},"Reveal Choices")
+        ),
+        isRevealed && React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.choices.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.correct) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return React.createElement("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              React.createElement("span",{style:{fontWeight:700,color:h&&ci===q.correct?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              React.createElement("span",null,ch)
+            );
+          })
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub,marginTop:6}},(a===q.correct?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      React.createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      React.createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        React.createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(C.rw,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── TrapSpotterExercise ── */
+function TrapSpotterExercise(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = TRAPS.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === TRAPS[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:C.accent,fontSize:14,fontWeight:700}},"\uD83C\uDFAF Trap Spotter"),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Each question shows a passage, the tempting wrong answer, and the correct answer. Identify WHICH trap type the wrong answer represents."),
+    TRAPS.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.accent+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.accent,fontStyle:"italic"}},q.passage),
+        React.createElement("div",{style:{display:"flex",gap:12,marginBottom:10,flexWrap:"wrap"}},
+          React.createElement("div",{style:{padding:"6px 12px",borderRadius:6,background:C.wrongBg,border:"1px solid "+C.wrong,fontSize:13}},
+            React.createElement("span",{style:{color:C.wrong,fontWeight:700}},"Tempting: "),
+            React.createElement("span",{style:{color:"#ccc"}},q.wrong)
+          ),
+          React.createElement("div",{style:{padding:"6px 12px",borderRadius:6,background:C.correctBg,border:"1px solid "+C.correct,fontSize:13}},
+            React.createElement("span",{style:{color:C.correct,fontWeight:700}},"Correct: "),
+            React.createElement("span",{style:{color:"#ccc"}},q.right)
+          )
+        ),
+        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          q.opts.map(function(o,oi){
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return React.createElement("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===q.c?C.correctBg:C.wrongBg,color:a===q.c?C.correct:C.wrong}},(a===q.c?"\u2713 ":"\u2717 ")+q.fb)
+      );
+    }),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      React.createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      React.createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        React.createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(C.accent,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── QuizEngine ── */
+function QuizEngine(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var item = PST[idx];
+
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s){ return s+1; });
+  }
+  function next() {
+    if (idx < PST.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+
+  if (done) {
+    return React.createElement("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      React.createElement("div",{style:{fontSize:48,marginBottom:16}},"\uD83D\uDCDD"),
+      React.createElement("h2",{style:{color:C.ink,fontSize:28,fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Practice Complete"),
+      React.createElement("div",{style:{color:C.mod,fontSize:48,fontWeight:900}},score,"/",PST.length),
+      React.createElement("p",{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},
+        score >= 9 ? "Outstanding! You've mastered Words in Context." :
+        score >= 7 ? "Great work! A few more rounds and you'll own this topic." :
+        score >= 5 ? "Solid foundation. Review the vocabulary clusters and try again." :
+        "Keep practicing! Focus on the Predict Before You Peek strategy."
+      ),
+      React.createElement("button",{onClick:function(){onComplete(score,PST.length);},style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff")},"Continue \u2192")
+    );
+  }
+
+  var tierColors = {1:C.sec, 2:C.info, 3:C.rw};
+  var tierLabels = {1:"Easy", 2:"Medium", 3:"Hard"};
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
+      React.createElement("div",{style:{color:C.mod,fontSize:13,fontWeight:700}},"\uD83D\uDCDD PSAT Practice"),
+      React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        React.createElement("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:600,background:tierColors[item.t]+"22",color:tierColors[item.t]}},tierLabels[item.t]),
+        React.createElement("span",{style:{color:C.muted,fontSize:13}},idx+1,"/",PST.length)
+      )
+    ),
+    React.createElement("div",{style:{height:4,background:C.border,borderRadius:2,marginBottom:20,overflow:"hidden"}},
+      React.createElement("div",{style:{height:"100%",width:((idx+(confirmed?1:0))/PST.length*100)+"%",background:"linear-gradient(90deg,"+C.mod+","+C.rw+")",borderRadius:2,transition:"width .4s"}})
+    ),
+    React.createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,marginBottom:16}},
+      React.createElement("div",{style:{color:"#ddd",fontSize:15,lineHeight:1.8,fontFamily:"Georgia,serif"}},item.passage)
+    ),
+    React.createElement("div",{style:{color:C.ink,fontSize:14,fontWeight:600,marginBottom:16}},item.stem),
+    React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      item.choices.map(function(c,ci){
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = C.surface, bdr = "1px solid "+C.border, tc = "#ddd";
+        if (confirmed && isCorr) { bg = C.correct+"18"; bdr = "2px solid "+C.correct; tc = C.correct; }
+        else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
+        else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
+        return React.createElement("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+          React.createElement("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          React.createElement("span",{style:{color:tc,fontSize:14,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace"}},c)
+        );
+      })
+    ),
+    confirmed && React.createElement("div",{style:{background:C.border,borderRadius:12,padding:20,marginBottom:24,borderLeft:"4px solid "+C.mod}},
+      React.createElement("div",{style:{color:C.mod,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+      React.createElement("div",{style:{color:C.sub,fontSize:14,lineHeight:1.6}},item.explain)
+    ),
+    React.createElement("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed
+        ? React.createElement("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?C.border:C.mod,selected===null?"#555":"#fff",{fontSize:14,padding:"10px 24px"})},"Confirm")
+        : React.createElement("button",{onClick:next,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},idx<PST.length-1?"Next \u2192":"See Results \u2192")
+    )
+  );
+}
+
+/* ── NavLinks ── */
+function NavLinks() {
+  return React.createElement("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border}},
+    NAV.prev && React.createElement("a",{href:NAV.prev.file,style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"})},"\u2190 "+NAV.prev.label),
+    NAV.next && React.createElement("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"10px 20px"})},NAV.next.label+" \u2192")
+  );
+}
+
+/* ── ModuleComplete ── */
+function ModuleComplete(props) {
+  var quizScore = props.quizScore, quizTotal = props.quizTotal;
+  var pct = Math.round(quizScore/quizTotal*100);
+  return React.createElement("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{fontSize:64,marginBottom:16}},pct>=90?"\uD83C\uDFC6":pct>=70?"\uD83C\uDF1F":"\uD83D\uDCAA"),
+    React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 2 Complete!"),
+    React.createElement("div",{style:{color:C.mod,fontSize:48,fontWeight:900,marginBottom:8}},quizScore,"/",quizTotal),
+    React.createElement("p",{style:{color:C.sub,fontSize:15,marginBottom:32}},"on PSAT-format practice questions"),
+    React.createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
+      React.createElement("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+      KEY_TAKEAWAYS.map(function(t,i){
+        return React.createElement("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
+          React.createElement("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+          React.createElement("span",null,t)
+        );
+      })
+    ),
+    React.createElement(NavLinks, null)
+  );
+}
+
+/* ── Exercises Router ── */
+function Exercises(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+
+  if (step === 0) {
+    return React.createElement(ClassifyExercise, {
+      title:"Context Clue Spotter", icon:"\uD83D\uDD0D",
+      subtitle:"What type of context clue reveals the bolded word\u2019s meaning?",
+      items:CLUE, matchField:"clue", borderColor:C.mod,
+      onComplete:function(){ setStep(1); }
+    });
+  }
+  if (step === 1) {
+    return React.createElement(PredictExercise, {
+      onComplete:function(){ setStep(2); }
+    });
+  }
+  if (step === 2) {
+    return React.createElement(ClassifyExercise, {
+      title:"Root Decoder", icon:"\uD83E\uDDE9",
+      subtitle:"Use the word parts shown to figure out the meaning.",
+      items:MORPH, borderColor:C.rw,
+      renderStimulus:function(q){
+        return React.createElement("div",{style:{marginBottom:10}},
+          React.createElement("div",{style:{fontSize:"1.05rem",fontWeight:700,color:C.mod,marginBottom:4}},q.word),
+          React.createElement("div",{style:{fontSize:13,color:C.muted,fontFamily:"'JetBrains Mono',monospace"}},q.parts)
+        );
+      },
+      onComplete:function(){ setStep(3); }
+    });
+  }
+  if (step === 3) {
+    return React.createElement(ClassifyExercise, {
+      title:"Tone Matcher", icon:"\uD83C\uDFA8",
+      subtitle:"Classify each word\u2019s tone. This skill lets you instantly eliminate wrong answers that don\u2019t match the passage\u2019s tone.",
+      items:TONE, matchField:"tone", borderColor:C.expr,
+      renderStimulus:function(q){
+        return React.createElement("div",{style:{fontSize:"1rem",fontWeight:700,color:C.mod,marginBottom:8,textAlign:"center",padding:"10px 0"}},q.word);
+      },
+      onComplete:function(){ setStep(4); }
+    });
+  }
+  if (step === 4) {
+    return React.createElement(TrapSpotterExercise, {
+      onComplete:function(){ onComplete(); }
+    });
+  }
+  return null;
+}
+
+/* ── App Shell ── */
+function App() {
+  var _s = useState("welcome"), screen = _s[0], setScreen = _s[1];
+  var _s2 = useState(true), vis = _s2[0], setVis = _s2[1];
+  var _s3 = useState(0), quizScore = _s3[0], setQuizScore = _s3[1];
+  var _s4 = useState(10), quizTotal = _s4[0], setQuizTotal = _s4[1];
+
+  function go(next) {
+    setVis(false);
+    setTimeout(function(){ setScreen(next); setVis(true); window.scrollTo(0,0); }, 350);
+  }
+
+  var content = null;
+  if (screen === "welcome") content = React.createElement(Welcome,{onNext:function(){go("lesson");}});
+  else if (screen === "lesson") content = React.createElement(LessonViewer,{onComplete:function(){go("prereq");}});
+  else if (screen === "prereq") content = React.createElement(PrereqCheckpoint,{onComplete:function(){go("exercises");}});
+  else if (screen === "exercises") content = React.createElement(Exercises,{onComplete:function(){go("practice");}});
+  else if (screen === "practice") content = React.createElement(QuizEngine,{onComplete:function(s,t){setQuizScore(s);setQuizTotal(t);go("complete");}});
+  else if (screen === "complete") content = React.createElement(ModuleComplete,{quizScore:quizScore,quizTotal:quizTotal});
+
+  return React.createElement("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

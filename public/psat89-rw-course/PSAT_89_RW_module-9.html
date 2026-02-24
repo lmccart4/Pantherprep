@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 9: Rhetorical Synthesis — PSAT 8/9 R&W — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var e = React.createElement;
+var useState = React.useState, useEffect = React.useEffect, useCallback = React.useCallback, useRef = React.useRef;
+
+/* ── design tokens ── */
+var C = {
+  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
+  sub:"#999", muted:"#666", accent:"#0891b2",
+  mod:"#22d3ee", modBg:"rgba(34,211,238,.12)",
+  craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
+  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+};
+var btn = function(bg, color, extra) {
+  return Object.assign({
+    padding:"12px 28px", borderRadius:10, border:"none", background:bg,
+    color:color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s"
+  }, extra || {});
+};
+var NAV = {
+  prev:{ label:"Module 8: Transitions", file:"PSAT_89_RW_module-8.html" },
+  next:{ label:"Module 10: Full-Length Practice", file:"PSAT_89_RW_module-10.html" }
+};
+
+/* ── Goal tag colors ── */
+var GOAL_COLORS = {
+  Summarize:  { color:"#34d399", bg:"rgba(52,211,153,.15)" },
+  Compare:    { color:"#60a5fa", bg:"rgba(96,165,250,.15)" },
+  Argue:      { color:"#ef4444", bg:"rgba(239,68,68,.15)" },
+  Describe:   { color:"#fbbf24", bg:"rgba(251,191,36,.15)" },
+  Emphasize:  { color:"#c084fc", bg:"rgba(192,132,252,.15)" }
+};
+
+/* ── LESSONS ── */
+var LESSONS = [
+  {
+    id:"sample", title:"Anatomy of a Rhetorical Synthesis Question",
+    subtitle:"What It Looks Like",
+    body:[
+      "Here's the format you'll see on test day. Study each component:",
+      "Instead of a passage, you see a set of bulleted notes. Instead of \"What does the author mean?\", the question asks \"Which sentence effectively uses the notes to accomplish [specific goal]?\" Once you understand the format, these become reliable points."
+    ],
+    visual:"sample-question"
+  },
+  {
+    id:"9a", title:"The Three-Step Method for Synthesis",
+    subtitle:"Topic 9A \u2014 Goal \u2192 Select \u2192 Evaluate",
+    body:[
+      "The key insight: the GOAL in the question tells you everything. Different goals require different notes.",
+      "Step 1 \u2014 GOAL: Read the question stem. Underline the rhetorical goal. What is the student trying to do?\nStep 2 \u2014 SELECT: Which bullet points are relevant to that goal? Cross out notes that don\u2019t serve the goal.\nStep 3 \u2014 EVALUATE: Which answer choice uses the RIGHT notes AND connects them in a way that achieves the goal?",
+      "Why the Goal Matters Most:\nThe same set of notes can produce DIFFERENT correct answers depending on the goal. All four answer choices will use information from the notes \u2014 but only one uses the right information arranged to achieve the specific goal.",
+      "In the example above: The goal is \"emphasize ongoing significance.\" A and B focus on the PAST (launch, original mission). D is a chronological summary. Only C emphasizes that Voyager is STILL significant today (\"continues to transmit\")."
+    ],
+    visual:"three-step"
+  },
+  {
+    id:"9b", title:"The Five Goal Types",
+    subtitle:"Topic 9B \u2014 Summarize, Compare, Argue, Describe & Emphasize",
+    body:[
+      "Nearly every rhetorical synthesis question uses one of five goal types. Learn to recognize each one and you'll know exactly what to look for.",
+      "1. Summarize\nCue words: \"present an overview,\" \"introduce the topic,\" \"summarize the research\"\nWhat to look for: The answer that covers the MOST important points without getting lost in minor details. Broad + accurate.",
+      "2. Compare / Contrast\nCue words: \"highlight a difference,\" \"compare the two,\" \"contrast X and Y\"\nWhat to look for: The answer that mentions BOTH things being compared and shows how they differ (or are similar). Must include information about BOTH sides.",
+      "3. Argue / Persuade\nCue words: \"make an argument,\" \"support the claim that,\" \"convince the reader\"\nWhat to look for: The answer that presents a clear position AND includes the strongest supporting evidence from the notes.",
+      "4. Describe / Explain\nCue words: \"describe the process,\" \"explain how,\" \"present the findings\"\nWhat to look for: The answer that accurately conveys the relevant information clearly. Usually the most straightforward goal.",
+      "5. Emphasize\nCue words: \"emphasize the significance,\" \"highlight the impact,\" \"stress the importance\"\nWhat to look for: The answer that foregrounds the MOST impressive or impactful detail, often placing it in the emphatic position (end of sentence).",
+      "Common trap: An answer choice that uses accurate information from the notes but serves the WRONG goal. Every choice may be factually correct \u2014 the question isn\u2019t asking \"which is true?\" but \"which achieves the goal?\""
+    ],
+    visual:"five-goals"
+  }
+];
+
+/* ── EXERCISE 1: GOAL IDENTIFIER ── */
+var GOL = [
+  {stem:"The student wants to highlight a key difference between the two conservation strategies.",c:1,fb:"Keywords: \"highlight a key difference\" \u2192 Compare/Contrast. The answer must mention BOTH strategies and show how they differ."},
+  {stem:"The student wants to provide an overview of the research findings for a general audience.",c:0,fb:"Keywords: \"provide an overview\" \u2192 Summarize. The answer should cover the main points broadly without getting into minor details."},
+  {stem:"The student wants to make a compelling case for increasing public transit funding.",c:2,fb:"Keywords: \"make a compelling case\" \u2192 Argue. The answer must present a position AND include the strongest supporting evidence."},
+  {stem:"The student wants to emphasize the unexpected scale of the discovery.",c:4,fb:"Keywords: \"emphasize the unexpected scale\" \u2192 Emphasize. Look for the answer that foregrounds the most impressive detail."},
+  {stem:"The student wants to explain how the new technology works.",c:3,fb:"Keywords: \"explain how\" \u2192 Describe/Explain. The answer should clearly convey the process or mechanism."},
+  {stem:"The student wants to stress the urgency of addressing climate change in coastal cities.",c:4,fb:"Keywords: \"stress the urgency\" \u2192 Emphasize. The answer should foreground the most alarming or time-sensitive information."},
+  {stem:"The student wants to contrast the economic impacts of the two policies.",c:1,fb:"Keywords: \"contrast the economic impacts\" \u2192 Compare/Contrast. Must mention BOTH policies and their different economic effects."},
+  {stem:"The student wants to introduce the topic of vertical farming to readers unfamiliar with it.",c:0,fb:"Keywords: \"introduce the topic...unfamiliar\" \u2192 Summarize. Needs a broad, accessible overview."}
+];
+var GOPTS = ["Summarize","Compare","Argue","Describe","Emphasize"];
+
+/* ── EXERCISE 2: NOTE SELECTOR ── */
+var NTS = [
+  {title:"Notes on coral reef restoration",
+   bullets:["Coral reefs support approximately 25% of all marine species.","A team at the University of Hawaii has developed a method to grow coral fragments in underwater nurseries.","The fragments can be transplanted to damaged reefs, where they grow 40 times faster than natural coral.","The project has restored over 100 acres of reef since 2018.","Coral reefs worldwide have declined by 50% over the past 30 years due to ocean warming."],
+   goal:"emphasize the success of the restoration effort",
+   ch:["Bullets 1 and 5 (biodiversity and decline)","Bullets 1, 2, and 3 (biodiversity, method, and speed)","Bullets 2, 3, and 4 (method, speed, and acreage restored)","All five bullets"],c:2,
+   fb:"The goal is to emphasize SUCCESS. Bullet 2 (method), 3 (40x faster growth), and 4 (100 acres restored) are the success metrics. Bullet 1 (importance) and 5 (decline) provide context but don\u2019t demonstrate the restoration\u2019s success."},
+  {title:"Notes on two electric vehicle companies",
+   bullets:["Company A produces sedans priced at $35,000\u2013$50,000 with a range of 250\u2013350 miles.","Company B produces SUVs and trucks priced at $55,000\u2013$80,000 with a range of 200\u2013300 miles.","Company A sold 450,000 vehicles in 2023.","Company B sold 120,000 vehicles in 2023.","Both companies plan to open new factories in the southeastern United States."],
+   goal:"contrast the two companies\u2019 product strategies",
+   ch:["Bullets 1 and 2 (vehicle types, prices, and ranges)","Bullets 3 and 4 (sales figures)","Bullets 1, 2, and 5 (products and expansion)","All five bullets"],c:0,
+   fb:"The goal is to contrast PRODUCT STRATEGIES (what they make, pricing, features). Bullets 1 and 2 directly compare vehicle types, prices, and ranges. Bullets 3\u20134 are about sales (not strategy). Bullet 5 shows similarity, not contrast."},
+  {title:"Notes on sleep research",
+   bullets:["A 2023 study at Stanford tracked 500 adults over two years.","Participants who slept fewer than 6 hours per night had a 33% higher risk of cardiovascular disease.","Participants who slept 7\u20138 hours showed the lowest risk across all health metrics.","The study controlled for diet, exercise, and pre-existing conditions.","Dr. Sarah Chen, the lead researcher, called the findings \"a wake-up call for public health policy.\""],
+   goal:"make an argument for workplace policies that encourage adequate sleep",
+   ch:["Bullets 1 and 4 (study design and controls)","Bullets 2 and 3 (risk data)","Bullet 5 only (expert quote)","Bullets 2, 3, and 5 (risks, optimal sleep, and expert call to action)"],c:3,
+   fb:"To ARGUE for workplace policies, you need both the alarming evidence (bullets 2\u20133: health risks and optimal range) AND the call to action (bullet 5: \"wake-up call for public health policy\"). Bullet 1 is study design background, and bullet 4 is methodology \u2014 less persuasive for an argument."}
+];
+
+/* ── EXERCISE 3: FULL SYNTHESIS PRACTICE ── */
+var SYN = [
+  {title:"Notes on the James Webb Space Telescope",
+   bullets:["The James Webb Space Telescope (JWST) was launched on December 25, 2021.","It cost approximately $10 billion and took over 20 years to develop.","JWST orbits the Sun at a point 1 million miles from Earth.","Its infrared instruments can detect light from galaxies that formed 13.5 billion years ago.","Within its first year, JWST produced images that challenged existing models of early galaxy formation."],
+   goal:"emphasize the scientific impact of the JWST",
+   ch:["Launched on December 25, 2021, the James Webb Space Telescope cost approximately $10 billion and took over 20 years to develop.",
+       "The James Webb Space Telescope orbits the Sun at a point 1 million miles from Earth, far beyond the Moon\u2019s orbit.",
+       "By detecting light from galaxies that formed 13.5 billion years ago, the James Webb Space Telescope has produced images that challenged existing models of early galaxy formation within its first year of operation.",
+       "The James Webb Space Telescope, which cost $10 billion, was launched in 2021 and orbits 1 million miles from Earth."],c:2,
+   fb:"The goal is SCIENTIFIC IMPACT. C combines the telescope\u2019s capability (13.5 billion-year-old light) with its result (challenged existing models) \u2014 this IS the impact. A and D focus on cost/logistics. B focuses on location."},
+  {title:"Notes on urban beekeeping",
+   bullets:["Urban beekeeping has grown by 300% in major U.S. cities since 2015.","City bees often produce more honey per hive than rural bees due to diverse urban plant life.","New York, Chicago, and San Francisco have all legalized rooftop beekeeping.","Some ecologists warn that too many honeybees in cities may outcompete native pollinators for resources.","A 2022 study found that urban bee colonies had lower rates of certain parasitic infections than rural colonies."],
+   goal:"present a balanced view of urban beekeeping that acknowledges both benefits and concerns",
+   ch:["Urban beekeeping has grown by 300% since 2015, with cities like New York, Chicago, and San Francisco legalizing rooftop hives.",
+       "City bees produce more honey and have lower infection rates than rural bees, according to a 2022 study.",
+       "While urban beekeeping offers benefits such as higher honey production and lower parasite infection rates, ecologists warn it may harm native pollinators by increasing competition for resources.",
+       "Some ecologists are concerned that the 300% growth in urban beekeeping since 2015 may threaten native pollinator populations in major cities."],c:2,
+   fb:"The goal is BALANCED (both benefits AND concerns). Only C presents BOTH sides: benefits (honey, lower infections) and concerns (harm to native pollinators). A and B are positive only. D is negative only."},
+  {title:"Notes on the Dead Sea",
+   bullets:["The Dead Sea, located between Israel and Jordan, sits at 430 meters below sea level \u2014 the lowest point on Earth\u2019s surface.","Its salt concentration is approximately 34%, nearly 10 times saltier than the ocean.","The high salinity allows swimmers to float effortlessly on the surface.","The Dead Sea has been shrinking by approximately 1 meter per year since the 1960s due to water diversion from the Jordan River.","Tourism to the Dead Sea generates over $1 billion annually for the surrounding region."],
+   goal:"explain why the Dead Sea is a popular tourist destination",
+   ch:["The Dead Sea sits at the lowest point on Earth\u2019s surface, 430 meters below sea level, between Israel and Jordan.",
+       "With a salt concentration 10 times that of the ocean, the Dead Sea allows visitors to float effortlessly on its surface, contributing to a tourism industry worth over $1 billion annually.",
+       "The Dead Sea has been shrinking by about 1 meter per year since the 1960s because of water diversion from the Jordan River.",
+       "Located between Israel and Jordan, the Dead Sea is approximately 34% salt, making it nearly 10 times saltier than the ocean."],c:1,
+   fb:"The goal is explaining tourist POPULARITY. B connects the unique experience (floating from high salinity) to tourism revenue ($1 billion) \u2014 explaining WHY people visit and how popular it is. A is geography. C is about shrinkage. D is a fact about salinity without connecting to tourism."}
+];
+
+/* ── EXERCISE 4: SAME NOTES, DIFFERENT GOALS ── */
+var DIF_NOTES_TITLE = "Notes on the Amazon rainforest";
+var DIF_NOTES_BULLETS = [
+  "The Amazon rainforest covers approximately 5.5 million square kilometers across nine South American countries.",
+  "It contains an estimated 10% of all species on Earth, including over 40,000 plant species and 1,300 bird species.",
+  "Deforestation has destroyed roughly 17% of the Amazon since 1970, primarily for cattle ranching and soy farming.",
+  "Indigenous communities have lived in and managed the Amazon for thousands of years.",
+  "A 2023 study found that intact sections of the Amazon absorb 2 billion tons of CO\u2082 annually, making it a critical buffer against climate change."
+];
+var DIF = [
+  {goal:"summarize the key facts about the Amazon rainforest for a geography report",goalType:"Summarize",
+   ch:["Deforestation has destroyed 17% of the Amazon since 1970, threatening the 10% of Earth\u2019s species that live there.",
+       "Spanning 5.5 million square kilometers across nine countries and containing 10% of all species on Earth, the Amazon rainforest is one of the planet\u2019s most biodiverse ecosystems.",
+       "Indigenous communities have managed the Amazon for thousands of years, preserving its 40,000 plant species.",
+       "The Amazon absorbs 2 billion tons of CO\u2082 annually, making it critical in the fight against climate change."],c:1,
+   fb:"SUMMARIZE for geography: needs the broadest overview (size, location, biodiversity). B covers all three. A focuses only on threats. C focuses only on indigenous management. D focuses only on climate role."},
+  {goal:"argue for stronger protections against Amazon deforestation",goalType:"Argue",
+   ch:["The Amazon covers 5.5 million square kilometers and contains over 40,000 plant species and 1,300 bird species.",
+       "Indigenous communities have lived in the Amazon for thousands of years.",
+       "Since deforestation has already destroyed 17% of the Amazon \u2014 home to 10% of Earth\u2019s species and a carbon sink absorbing 2 billion tons of CO\u2082 annually \u2014 stronger protections are urgently needed to prevent further irreversible losses.",
+       "A 2023 study found that intact Amazon forest absorbs 2 billion tons of CO\u2082 per year."],c:2,
+   fb:"ARGUE for protections: needs evidence of what\u2019s at stake + a call to action. C combines the threat (17% destroyed), the stakes (biodiversity + climate), and an argumentative conclusion (\"urgently needed\"). A is descriptive. B and D provide facts without arguing."},
+  {goal:"emphasize the Amazon\u2019s role in combating climate change",goalType:"Emphasize",
+   ch:["The Amazon spans nine South American countries and has lost 17% of its forest cover since 1970.",
+       "With over 40,000 plant species and 1,300 bird species, the Amazon is Earth\u2019s most biodiverse ecosystem.",
+       "Indigenous communities have sustainably managed the Amazon rainforest for thousands of years.",
+       "Absorbing an estimated 2 billion tons of CO\u2082 every year, the intact Amazon rainforest serves as one of Earth\u2019s most critical buffers against climate change."],c:3,
+   fb:"EMPHASIZE climate role: foreground the CO\u2082 absorption data. D leads with the impressive number (2 billion tons) and ends with the emphatic conclusion (\"most critical buffers against climate change\"). A, B, and C don\u2019t focus on climate."}
+];
+
+/* ── PRACTICE QUESTIONS ── */
+var QUIZ = [
+  {id:0,t:1,title:"Notes on monarch butterfly migration",
+   bullets:["Monarch butterflies migrate up to 3,000 miles from Canada and the northern U.S. to central Mexico each fall.","The journey takes approximately two months and spans multiple generations of butterflies.","Monarchs navigate using a combination of the Sun\u2019s position and Earth\u2019s magnetic field.","Habitat loss and pesticide use have reduced the monarch population by an estimated 80% since the 1990s.","Conservation groups have launched milkweed planting campaigns, as milkweed is the only plant on which monarchs lay their eggs."],
+   goal:"emphasize the navigational abilities of monarch butterflies",
+   choices:["Monarch butterflies migrate up to 3,000 miles each fall, but their population has declined by 80% since the 1990s.",
+       "Conservation groups have launched milkweed planting campaigns to help monarch butterflies, whose population has declined by 80%.",
+       "Navigating by the Sun\u2019s position and Earth\u2019s magnetic field, monarch butterflies complete a 3,000-mile journey from Canada to Mexico \u2014 a feat that spans two months and multiple generations.",
+       "Monarch butterflies lay their eggs exclusively on milkweed plants and migrate from northern regions to central Mexico each fall."],answer:2,
+   explain:"EMPHASIZE navigation: C foregrounds the HOW (Sun + magnetic field) and connects it to the impressive WHAT (3,000 miles, two months, multiple generations). A buries navigation. B and D don\u2019t mention navigation at all."},
+  {id:1,t:1,title:"Notes on two ancient writing systems",
+   bullets:["Cuneiform was developed in Mesopotamia around 3400 BCE using wedge-shaped marks pressed into clay tablets.","Egyptian hieroglyphs emerged around 3200 BCE and used pictorial symbols carved into stone or painted on papyrus.","Cuneiform was used primarily for trade records, legal documents, and administrative texts.","Hieroglyphs served religious and ceremonial purposes and were often found in temples and tombs.","Both systems remained in use for over 3,000 years before being replaced."],
+   goal:"contrast the primary purposes of cuneiform and hieroglyphs",
+   choices:["Cuneiform and Egyptian hieroglyphs are two of the oldest writing systems in human history, both lasting over 3,000 years.",
+       "While cuneiform was used primarily for practical purposes like trade and legal records, Egyptian hieroglyphs served mainly religious and ceremonial functions in temples and tombs.",
+       "Cuneiform used wedge-shaped marks on clay tablets, whereas hieroglyphs used pictorial symbols on stone and papyrus.",
+       "Developed around 3400 BCE in Mesopotamia, cuneiform is one of the earliest known writing systems."],answer:1,
+   explain:"CONTRAST purposes: B mentions BOTH systems and directly contrasts their functions (practical/trade vs. religious/ceremonial). A compares longevity, not purpose. C contrasts physical form, not purpose. D only discusses cuneiform."},
+  {id:2,t:1,title:"Notes on vertical farming",
+   bullets:["Vertical farms grow crops in stacked indoor layers using LED lights and hydroponic systems.","They use approximately 95% less water than traditional outdoor farming.","Vertical farms can operate year-round regardless of climate or season.","The startup costs for a vertical farm range from $2 million to $10 million.","Leafy greens and herbs are the most commonly grown vertical farm crops."],
+   goal:"introduce the concept of vertical farming to readers unfamiliar with it",
+   choices:["Vertical farms use 95% less water than traditional farms and can grow crops year-round, though they require $2\u201310 million in startup costs.",
+       "Vertical farming \u2014 a method of growing crops in stacked indoor layers using LED lights and hydroponic systems \u2014 uses 95% less water than traditional farming and can operate year-round regardless of climate.",
+       "Leafy greens and herbs are the most commonly grown crops in vertical farms, which cost between $2 million and $10 million to establish.",
+       "Because vertical farms use 95% less water, they represent a promising solution to agricultural water scarcity."],answer:1,
+   explain:"INTRODUCE to unfamiliar readers: B defines what vertical farming IS (stacked layers, LEDs, hydroponics) before listing key advantages. A skips the definition. C leads with crops, not the concept. D assumes the reader already knows what vertical farming is."},
+  {id:3,t:2,title:"Notes on the Rosetta Stone",
+   bullets:["The Rosetta Stone was discovered by French soldiers in Egypt in 1799.","It contains the same text written in three scripts: Greek, Demotic, and hieroglyphics.","French scholar Jean-Fran\u00e7ois Champollion deciphered the hieroglyphic script in 1822 by comparing it to the known Greek text.","Before Champollion\u2019s breakthrough, Egyptian hieroglyphics had been undecipherable for over 1,400 years.","The Rosetta Stone has been housed in the British Museum since 1802."],
+   goal:"explain how the Rosetta Stone enabled the decipherment of hieroglyphics",
+   choices:["Discovered in Egypt in 1799, the Rosetta Stone has been housed in the British Museum since 1802.",
+       "The Rosetta Stone contains text written in three scripts: Greek, Demotic, and hieroglyphics.",
+       "Because the Rosetta Stone presented the same text in Greek and hieroglyphics, Champollion was able to decipher the previously unreadable hieroglyphic script in 1822 by comparing it to the known Greek translation.",
+       "Egyptian hieroglyphics were undecipherable for over 1,400 years before Jean-Fran\u00e7ois Champollion decoded them in 1822."],answer:2,
+   explain:"EXPLAIN HOW: C walks through the mechanism \u2014 same text in both scripts allowed comparison, which enabled decipherment. A is about location/history. B describes the stone but not the process. D states the result without explaining how."},
+  {id:4,t:2,title:"Notes on two renewable energy approaches",
+   bullets:["Solar panel efficiency has increased from 6% in 1960 to over 22% in 2024.","Wind turbines now generate electricity at a cost of 2\u20135 cents per kilowatt-hour, competitive with fossil fuels.","Solar energy production drops significantly on cloudy days and stops entirely at night.","Wind energy output depends on wind speed and can be unpredictable in many regions.","Battery storage technology has improved but remains expensive, costing $150\u2013$300 per kilowatt-hour."],
+   goal:"highlight a shared challenge facing both solar and wind energy",
+   choices:["Solar panel efficiency has improved dramatically, rising from 6% in 1960 to over 22% today.",
+       "Wind turbines generate electricity at 2\u20135 cents per kilowatt-hour, making wind energy cost-competitive with fossil fuels.",
+       "Both solar and wind energy face the challenge of inconsistent output \u2014 solar production drops on cloudy days and stops at night, while wind energy depends on unpredictable wind speeds \u2014 and battery storage remains expensive.",
+       "Solar energy stops entirely at night, which is a significant limitation of the technology."],answer:2,
+   explain:"HIGHLIGHT SHARED CHALLENGE: C mentions BOTH sources, identifies the shared problem (inconsistent output), gives specific examples for each, and adds the battery storage complication. A and B are positive about only one source. D only discusses solar."},
+  {id:5,t:2,title:"Notes on the history of animation",
+   bullets:["The first animated feature film, El Ap\u00f3stol, was produced in Argentina in 1917.","Walt Disney\u2019s Snow White and the Seven Dwarfs (1937) was the first full-color, full-length animated feature.","Pixar\u2019s Toy Story (1995) was the first feature film made entirely with computer-generated imagery (CGI).","Today, animated films regularly gross over $1 billion worldwide at the box office.","Hand-drawn animation has largely been replaced by CGI, though studios like Studio Ghibli in Japan continue the traditional technique."],
+   goal:"describe the technological evolution of animated filmmaking",
+   choices:["Animated films regularly gross over $1 billion worldwide, demonstrating the genre\u2019s enormous commercial success.",
+       "Studio Ghibli in Japan continues to produce hand-drawn animation, even as most studios have shifted to CGI.",
+       "From the first animated feature in 1917 to Disney\u2019s pioneering use of full color in 1937 to Pixar\u2019s introduction of CGI in 1995, animated filmmaking has undergone a series of technological transformations.",
+       "Toy Story, released in 1995, was the first feature film produced entirely with computer-generated imagery."],answer:2,
+   explain:"DESCRIBE EVOLUTION: C traces the chronological development across three milestones (1917, 1937, 1995), showing progression. A is about commercial success. B is about one studio\u2019s resistance. D covers only one milestone."},
+  {id:6,t:2,title:"Notes on urban heat islands",
+   bullets:["Urban areas can be 5\u201310\u00b0F warmer than surrounding rural areas, a phenomenon known as the urban heat island effect.","Dark surfaces like asphalt and rooftops absorb and re-emit solar heat, raising local temperatures.","Heat islands increase energy consumption for air conditioning by 15\u201320% in affected cities.","Cities like Los Angeles and Phoenix have begun painting rooftops and roads with reflective white coatings to reduce heat absorption.","A 2021 study found that urban heat disproportionately affects low-income neighborhoods, which often have fewer trees and more pavement."],
+   goal:"argue that urban heat islands are an issue of environmental justice",
+   choices:["Urban heat islands occur because dark surfaces like asphalt absorb solar heat, making cities 5\u201310\u00b0F warmer than rural areas.",
+       "Cities like Los Angeles and Phoenix have started painting surfaces with reflective coatings to combat urban heat islands.",
+       "Urban heat islands increase air conditioning costs by 15\u201320%, making them a significant energy concern for growing cities.",
+       "Because urban heat disproportionately affects low-income neighborhoods \u2014 which often have fewer trees and more pavement \u2014 addressing the heat island effect is not just an environmental issue but a matter of environmental justice."],answer:3,
+   explain:"ARGUE for environmental justice: D connects the equity data (disproportionate impact on low-income areas, fewer trees, more pavement) to an explicit justice claim. A explains the science. B describes solutions. C focuses on energy costs."},
+  {id:7,t:3,title:"Notes on octopus intelligence",
+   bullets:["Octopuses have approximately 500 million neurons, about two-thirds of which are located in their arms rather than their central brain.","In laboratory tests, octopuses have solved mazes, opened jars, and used coconut shells as portable shelters.","Unlike most intelligent species, octopuses are solitary and do not engage in social learning.","Octopuses have the largest brain-to-body ratio of any invertebrate.","Their short lifespan of 1\u20135 years means each octopus must learn everything independently, without parental guidance."],
+   goal:"highlight what makes octopus intelligence unusual compared to other intelligent animals",
+   choices:["Octopuses have approximately 500 million neurons and the largest brain-to-body ratio of any invertebrate.",
+       "In lab tests, octopuses have demonstrated impressive problem-solving abilities, including solving mazes and opening jars.",
+       "Unlike most intelligent species that rely on social learning, octopuses develop their remarkable cognitive abilities \u2014 from solving mazes to using tools \u2014 entirely independently within a lifespan of just 1\u20135 years, with most neurons distributed across their arms rather than centralized in a brain.",
+       "Octopuses are solitary creatures that do not learn from parents or peers, yet they can solve complex problems in laboratory settings."],answer:2,
+   explain:"HIGHLIGHT what\u2019s UNUSUAL: C weaves together the key contrasts with other intelligent animals (no social learning, short lifespan, decentralized neurons) alongside evidence of ability (mazes, tools). A lists facts without the comparison. B shows ability but not what\u2019s unusual. D is too brief."},
+  {id:8,t:3,title:"Notes on two approaches to language preservation",
+   bullets:["The Endangered Languages Project, run by a university consortium, documents dying languages through audio and video recordings stored in a digital archive.","The M\u0101ori Language Commission in New Zealand promotes M\u0101ori by integrating it into schools, government, and media, resulting in a 20% increase in fluent speakers since 2001.","Over 40% of the world\u2019s approximately 7,000 languages are considered endangered.","Documentation preserves a linguistic record but does not necessarily produce new speakers.","Revitalization programs require significant government funding and community participation but can restore languages to active daily use."],
+   goal:"contrast the two preservation approaches and their outcomes",
+   choices:["Over 40% of the world\u2019s 7,000 languages are endangered, prompting efforts like the Endangered Languages Project and the M\u0101ori Language Commission.",
+       "While the Endangered Languages Project preserves dying languages through digital recordings, it does not produce new speakers; by contrast, New Zealand\u2019s M\u0101ori revitalization program has increased fluent speakers by 20% by integrating the language into schools, government, and media.",
+       "The M\u0101ori Language Commission has increased fluent M\u0101ori speakers by 20% since 2001, demonstrating the effectiveness of government-led language programs.",
+       "Revitalization programs require significant government funding, whereas documentation projects primarily need academic resources and digital infrastructure."],answer:1,
+   explain:"CONTRAST approaches AND outcomes: B names both approaches, describes each method, and contrasts their results (preservation without new speakers vs. 20% increase in fluency). A lists both but doesn\u2019t contrast. C covers only M\u0101ori. D contrasts resources, not approaches/outcomes."},
+  {id:9,t:3,title:"Notes on the placebo effect",
+   bullets:["The placebo effect occurs when patients experience real symptom improvement after receiving an inactive treatment they believe is real.","In clinical trials, placebos have been shown to reduce pain, lower blood pressure, and alleviate symptoms of depression.","Brain imaging studies reveal that placebos can trigger the release of endorphins and dopamine, the same chemicals activated by real medications.","The strength of the placebo effect varies: larger pills, brand-name packaging, and more expensive-seeming treatments produce stronger effects.","Researchers debate whether the placebo effect reflects genuine physiological change or primarily shifts in patient self-reporting."],
+   goal:"make an argument that the placebo effect involves real biological changes, not just subjective perception",
+   choices:["The placebo effect occurs when patients improve after receiving inactive treatments, and it can reduce pain, lower blood pressure, and alleviate depression.",
+       "Interestingly, the placebo effect is stronger when placebos are presented in larger pills or brand-name packaging, suggesting that patient expectations play an important role.",
+       "Brain imaging studies provide compelling evidence that the placebo effect is biologically real: placebos trigger the release of endorphins and dopamine \u2014 the same neurochemicals activated by actual medications \u2014 demonstrating genuine physiological change rather than mere shifts in self-reporting.",
+       "Researchers continue to debate whether the placebo effect reflects genuine physiological change or primarily shifts in how patients report their symptoms."],answer:2,
+   explain:"ARGUE for biological reality: C uses the brain imaging evidence (endorphins, dopamine \u2014 same chemicals as real drugs) to make the case that the effect is physiologically real, directly countering the \"subjective perception\" interpretation. A is descriptive. B supports the role of expectation (the OTHER side). D presents the debate neutrally without arguing."}
+];
+
+var KEY_TAKEAWAYS = [
+  "Rhetorical synthesis = bulleted notes + a specific goal. No passage to interpret \u2014 just information to assemble.",
+  "Three-step method: Identify the GOAL \u2192 Select the relevant NOTES \u2192 Evaluate which answer achieves the goal.",
+  "The goal is everything. The same notes produce different correct answers for different goals.",
+  "Five goal types: Summarize, Compare, Argue, Describe, Emphasize.",
+  "All four answer choices use information from the notes. The question isn\u2019t \"which is true?\" but \"which achieves the goal?\"",
+  "For compare/contrast goals, the answer MUST mention both sides.",
+  "For emphasize goals, look for which answer foregrounds the most impactful detail.",
+  "Read the goal first, THEN look at the answer choices. This prevents you from getting distracted by choices that are accurate but serve the wrong purpose."
+];
+
+/* ========== COMPONENTS ========== */
+
+/* ── NotesCard helper ── */
+function NotesCard(props) {
+  var title = props.title;
+  var bullets = props.bullets;
+  return e("div", {style:{background:C.paper,border:"2px solid "+C.mod,borderRadius:12,padding:"16px 18px",marginBottom:14}},
+    e("div", {style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,color:C.mod,marginBottom:10}}, title),
+    bullets.map(function(b, i) {
+      return e("div", {key:i, style:{display:"flex",gap:8,marginBottom:8,fontSize:14,color:"#ccc",lineHeight:1.6}},
+        e("span", {style:{color:C.mod,fontWeight:700,flexShrink:0}}, "\u2022"),
+        e("span", null, b)
+      );
+    })
+  );
+}
+
+/* ── GoalTag helper ── */
+function GoalTag(props) {
+  var type = props.type;
+  var gc = GOAL_COLORS[type] || GOAL_COLORS.Summarize;
+  return e("span", {style:{display:"inline-block",padding:"3px 10px",borderRadius:6,fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:10,background:gc.bg,color:gc.color}}, "Goal: " + type);
+}
+
+/* ── Welcome ── */
+function Welcome(props) {
+  var onNext = props.onNext;
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  return e("div", {style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    e("div", {style:{background:C.modBg,border:"1px solid "+C.mod+"44",borderRadius:12,padding:"6px 18px",fontSize:13,letterSpacing:1.5,textTransform:"uppercase",color:C.mod,marginBottom:12,fontWeight:600}}, "Phase 3 \u00B7 Module 9"),
+    e("h1", {style:{fontSize:"clamp(1.7rem,4.5vw,3rem)",fontWeight:800,background:"linear-gradient(135deg,"+C.mod+","+C.rw+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1.1,textAlign:"center",marginBottom:16,fontFamily:"'Cormorant Garamond',serif"}}, "Rhetorical Synthesis"),
+    e("p", {style:{color:C.sub,fontSize:18,maxWidth:560,textAlign:"center",lineHeight:1.6,marginBottom:12}}, "The most unusual question type on the PSAT \u2014 you're given bulleted notes and asked to construct a sentence that achieves a specific goal. ~2\u20134 questions per test, and unlike anything else you'll encounter."),
+    e("div", {style:{background:C.modBg,border:"1px solid "+C.mod+"33",borderRadius:12,padding:"14px 22px",maxWidth:540,marginBottom:40,fontSize:14,color:C.sub,lineHeight:1.6,textAlign:"center"}},
+      e("strong", {style:{color:C.mod}}, "Unique Question Format: "),
+      "Rhetorical synthesis questions look different from everything else on the test. Instead of a passage, you see a set of bulleted notes. Once you understand the format, these become reliable points."
+    ),
+    e("div", {style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:16,maxWidth:700,width:"100%",marginBottom:48}},
+      [{icon:"\uD83C\uDFAF",title:"Goal Types",desc:"Summarize, Compare, Argue..."},{icon:"\uD83D\uDCCC",title:"Note Selection",desc:"Pick the right bullets"},{icon:"\uD83D\uDEE0\uFE0F",title:"Full Synthesis",desc:"Notes + goal + choices"},{icon:"\uD83D\uDD00",title:"4 Exercises",desc:"Classify, select, synthesize"},{icon:"\uD83D\uDCDD",title:"10 Practice Qs",desc:"PSAT-format questions"}
+      ].map(function(c,i){ return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
+        e("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        e("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
+        e("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      );})
+    ),
+    e("button", {onClick:onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")", "#fff"), onMouseOver:function(ev){ev.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(ev){ev.currentTarget.style.transform="scale(1)";}}, "Start Learning \u2192"),
+    e("div", {style:{color:C.muted,fontSize:13,marginTop:24}}, "\u23F1 ~45 min \u00B7 Expression of Ideas")
+  );
+}
+
+/* ── LessonViewer ── */
+function LessonViewer(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var lesson = LESSONS[idx];
+  var total = LESSONS.length;
+
+  function renderVisual() {
+    if (lesson.visual === "sample-question") {
+      return e("div", {style:{padding:"12px 20px"}},
+        e(NotesCard, {title:"Notes from a student's research", bullets:[
+          "The Voyager 1 spacecraft was launched by NASA in 1977.",
+          "Its primary mission was to study Jupiter and Saturn.",
+          "In 2012, Voyager 1 became the first human-made object to enter interstellar space.",
+          "As of 2024, it continues to transmit data from over 15 billion miles away."
+        ]}),
+        e("div", {style:{background:C.surface,border:"1px solid "+C.border,borderLeft:"3px solid "+C.mod,borderRadius:8,padding:14,marginBottom:8}},
+          e("p", {style:{fontSize:14,color:"#ddd",marginBottom:8}},
+            e("strong", null, "Question: "),
+            "The student wants to ",
+            e("strong", null, "emphasize the ongoing significance"),
+            " of the Voyager 1 mission. Which choice most effectively uses relevant information from the notes to accomplish this goal?"
+          ),
+          e("p", {style:{fontSize:13,color:C.muted,lineHeight:1.6,marginBottom:4}}, e("strong",null,"A. "), "Launched in 1977, Voyager 1 was designed to study Jupiter and Saturn."),
+          e("p", {style:{fontSize:13,color:C.muted,lineHeight:1.6,marginBottom:4}}, e("strong",null,"B. "), "NASA launched the Voyager 1 spacecraft over 45 years ago."),
+          e("p", {style:{fontSize:13,color:C.correct,lineHeight:1.6,marginBottom:4}}, e("strong",null,"C. \u2713 "), "After becoming the first human-made object to reach interstellar space in 2012, Voyager 1 continues to transmit data from over 15 billion miles away."),
+          e("p", {style:{fontSize:13,color:C.muted,lineHeight:1.6}}, e("strong",null,"D. "), "Voyager 1, launched in 1977, studied Jupiter and Saturn before entering interstellar space in 2012.")
+        )
+      );
+    }
+    if (lesson.visual === "three-step") {
+      var steps = [
+        {num:"1",label:"GOAL",desc:"Read the question stem. Underline the rhetorical goal.",color:C.mod},
+        {num:"2",label:"SELECT",desc:"Which bullet points are relevant to that goal?",color:C.info},
+        {num:"3",label:"EVALUATE",desc:"Which answer uses the RIGHT notes to achieve the goal?",color:C.sec}
+      ];
+      return e("div",{style:{padding:"12px 20px"}},
+        steps.map(function(s,i){
+          return e("div",{key:i,style:{display:"flex",alignItems:"center",gap:12,marginBottom:8,padding:"10px 14px",background:s.color+"08",borderLeft:"3px solid "+s.color,borderRadius:"0 8px 8px 0"}},
+            e("div",{style:{width:32,height:32,borderRadius:8,background:s.color,color:"#000",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:14,flexShrink:0}},s.num),
+            e("div",null,
+              e("div",{style:{color:s.color,fontWeight:700,fontSize:13}},s.label),
+              e("div",{style:{color:C.sub,fontSize:12}},s.desc)
+            )
+          );
+        })
+      );
+    }
+    if (lesson.visual === "five-goals") {
+      var goals = [
+        {name:"Summarize",desc:"Cover the MOST important points broadly",color:"#34d399"},
+        {name:"Compare",desc:"Mention BOTH things and show differences",color:"#60a5fa"},
+        {name:"Argue",desc:"Clear position + strongest evidence",color:"#ef4444"},
+        {name:"Describe",desc:"Accurately convey the relevant information",color:"#fbbf24"},
+        {name:"Emphasize",desc:"Foreground the MOST impactful detail",color:"#c084fc"}
+      ];
+      return e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:8,padding:"12px 20px"}},
+        goals.map(function(g,i){
+          return e("div",{key:i,style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:12,textAlign:"center",borderTop:"3px solid "+g.color}},
+            e("div",{style:{fontSize:14,fontWeight:700,color:g.color,marginBottom:4}},g.name),
+            e("div",{style:{fontSize:11,color:C.sub,lineHeight:1.4}},g.desc)
+          );
+        })
+      );
+    }
+    return null;
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      LESSONS.map(function(_,i){
+        return e("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+      })
+    ),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      e("div",{style:{padding:"28px 28px 0"}},
+        e("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        e("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:16,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},lesson.title),
+        lesson.body.map(function(p,i){
+          return e("p",{key:i,style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p);
+        })
+      ),
+      lesson.visual && e("div",{style:{padding:"8px 4px 20px"}},renderVisual())
+    ),
+    e("div",{style:{display:"flex",justifyContent:"space-between"}},
+      e("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#444":C.sub),{border:"1px solid "+C.border,padding:"10px 20px",fontSize:14})},"\u2190 Back"),
+      idx < total-1
+        ? e("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
+        : e("button",{onClick:onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Exercises \u2192")
+    )
+  );
+}
+
+/* ── ClassifyExercise ── */
+function ClassifyExercise(props) {
+  var title=props.title, icon=props.icon, subtitle=props.subtitle, items=props.items, options=props.options, renderStimulus=props.renderStimulus, borderColor=props.borderColor, onComplete=props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  /* Option colors based on goal type for Goal Identifier */
+  var optionColors = props.optionColors || null;
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus ? renderStimulus(q,i) : e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+(borderColor||C.mod),fontFamily:"'JetBrains Mono',monospace"}},q.text),
+        e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          options.map(function(o,oi){
+            var gc = optionColors && optionColors[oi] ? optionColors[oi] : null;
+            var st = {padding:"6px 14px",background:gc?gc.bg:C.surface,border:"2px solid "+(gc?gc.color+"44":C.border),borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:gc?gc.color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return e("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        ),
+        h && e("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===q.c?C.correctBg:C.wrongBg,color:a===q.c?C.correct:C.wrong}},(a===q.c?"\u2713 ":"\u2717 ")+q.fb)
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(borderColor||C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── MCExercise ── */
+function MCExercise(props) {
+  var title=props.title, icon=props.icon, subtitle=props.subtitle, items=props.items, renderStimulus=props.renderStimulus, borderColor=props.borderColor, onComplete=props.onComplete, buttonLabel=props.buttonLabel;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus(q,i),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return e("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              e("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              e("span",{style:{fontSize:13,lineHeight:1.6}},ch)
+            );
+          })
+        ),
+        h && e("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(borderColor||C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},buttonLabel||"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── DifferentGoalsExercise (Exercise 4) ── */
+function DifferentGoalsExercise(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = DIF.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === DIF[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:C.expr,fontSize:14,fontWeight:700}},"\uD83D\uDD00 Same Notes, Different Goals"),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"All three questions use the SAME notes. Watch how the goal changes the correct answer."),
+    e(NotesCard, {title:DIF_NOTES_TITLE, bullets:DIF_NOTES_BULLETS}),
+    DIF.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        e("div",{style:{marginBottom:8}},e(GoalTag,{type:q.goalType})),
+        e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.6,marginBottom:12}},q.goal),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return e("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              e("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              e("span",{style:{fontSize:13,lineHeight:1.6}},ch)
+            );
+          })
+        ),
+        h && e("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(C.expr,"#000",{fontSize:14,padding:"10px 24px"})},"Start Practice \u2192")
+    )
+  );
+}
+
+/* ── QuizEngine ── */
+function QuizEngine(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var item = QUIZ[idx];
+
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s){ return s+1; });
+  }
+  function next() {
+    if (idx < QUIZ.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+
+  if (done) {
+    return e("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      e("div",{style:{fontSize:48,marginBottom:16}},"\uD83D\uDCDD"),
+      e("h2",{style:{color:C.ink,fontSize:28,fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Practice Complete"),
+      e("div",{style:{color:C.mod,fontSize:48,fontWeight:900}},score,"/",QUIZ.length),
+      e("p",{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},
+        score >= 9 ? "Outstanding! You've mastered rhetorical synthesis." :
+        score >= 7 ? "Great work! A few more practice rounds and you'll own this topic." :
+        score >= 5 ? "Solid foundation. Review the errors you made and try again." :
+        "Keep practicing! Focus on identifying the goal type first."
+      ),
+      e("button",{onClick:function(){onComplete(score,QUIZ.length);},style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff")},"Continue \u2192")
+    );
+  }
+
+  var tierColors = {1:C.sec, 2:C.info, 3:C.rw};
+  var tierLabels = {1:"Easy", 2:"Medium", 3:"Hard"};
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
+      e("div",{style:{color:C.mod,fontSize:13,fontWeight:700}},"\uD83D\uDCDD PSAT Practice"),
+      e("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        e("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:600,background:tierColors[item.t]+"22",color:tierColors[item.t]}},tierLabels[item.t]),
+        e("span",{style:{color:C.muted,fontSize:13}},idx+1,"/",QUIZ.length)
+      )
+    ),
+    e("div",{style:{height:4,background:C.border,borderRadius:2,marginBottom:20,overflow:"hidden"}},
+      e("div",{style:{height:"100%",width:((idx+(confirmed?1:0))/QUIZ.length*100)+"%",background:"linear-gradient(90deg,"+C.mod+","+C.rw+")",borderRadius:2,transition:"width .4s"}})
+    ),
+    e(NotesCard, {title:item.title, bullets:item.bullets}),
+    e("div",{style:{color:C.ink,fontSize:14,fontWeight:600,marginBottom:16}},
+      e("strong",null,"Goal: "), item.goal
+    ),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      item.choices.map(function(c,ci){
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = C.surface, bdr = "1px solid "+C.border, tc = "#ddd";
+        if (confirmed && isCorr) { bg = C.correct+"18"; bdr = "2px solid "+C.correct; tc = C.correct; }
+        else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
+        else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
+        return e("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+          e("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          e("span",{style:{color:tc,fontSize:14,lineHeight:1.5}},c)
+        );
+      })
+    ),
+    confirmed && e("div",{style:{background:C.border,borderRadius:12,padding:20,marginBottom:24,borderLeft:"4px solid "+C.mod}},
+      e("div",{style:{color:C.mod,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+      e("div",{style:{color:C.sub,fontSize:14,lineHeight:1.6}},item.explain)
+    ),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed
+        ? e("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?C.border:C.mod,selected===null?"#555":"#fff",{fontSize:14,padding:"10px 24px"})},"Confirm")
+        : e("button",{onClick:next,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},idx<QUIZ.length-1?"Next \u2192":"See Results \u2192")
+    )
+  );
+}
+
+/* ── NavLinks ── */
+function NavLinks() {
+  return e("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border,flexWrap:"wrap"}},
+    NAV.prev && e("a",{href:NAV.prev.file,style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"})},"\u2190 "+NAV.prev.label),
+    NAV.next && e("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"10px 20px"})},NAV.next.label+" \u2192")
+  );
+}
+
+/* ── ModuleComplete ── */
+function ModuleComplete(props) {
+  var quizScore = props.quizScore, quizTotal = props.quizTotal;
+  var pct = Math.round(quizScore/quizTotal*100);
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
+    e("div",{style:{fontSize:64,marginBottom:16}},pct>=90?"\uD83C\uDFC6":pct>=70?"\uD83C\uDF1F":"\uD83D\uDCAA"),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 9 Complete!"),
+    e("div",{style:{color:C.mod,fontSize:48,fontWeight:900,marginBottom:8}},quizScore,"/",quizTotal),
+    e("p",{style:{color:C.sub,fontSize:15,marginBottom:32}},"on PSAT-format practice questions"),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
+      e("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+      KEY_TAKEAWAYS.map(function(t,i){
+        return e("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
+          e("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+          e("span",null,t)
+        );
+      })
+    ),
+    e(NavLinks, null)
+  );
+}
+
+/* ── Exercises Router ── */
+function Exercises(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+
+  /* Exercise 1: Goal Identifier (classify) */
+  if (step === 0) {
+    return e(ClassifyExercise, {
+      title:"Goal Identifier", icon:"\uD83C\uDFAF",
+      subtitle:"Read each question stem and identify the rhetorical goal type.",
+      items:GOL, options:GOPTS, borderColor:C.mod,
+      optionColors:[
+        {color:"#34d399",bg:"rgba(52,211,153,.15)"},
+        {color:"#60a5fa",bg:"rgba(96,165,250,.15)"},
+        {color:"#ef4444",bg:"rgba(239,68,68,.15)"},
+        {color:"#fbbf24",bg:"rgba(251,191,36,.15)"},
+        {color:"#c084fc",bg:"rgba(192,132,252,.15)"}
+      ],
+      renderStimulus:function(q){
+        return e("div",{style:{fontStyle:"italic",color:"#bbb",fontSize:14,lineHeight:1.6,marginBottom:10,padding:"10px 14px",background:C.mod+"06",borderRadius:8,borderLeft:"3px solid "+C.mod}},"\u201C"+q.stem+"\u201D");
+      },
+      onComplete:function(){ setStep(1); }
+    });
+  }
+  /* Exercise 2: Note Selector (MC) */
+  if (step === 1) {
+    return e(MCExercise, {
+      title:"Note Selector", icon:"\uD83D\uDCCC",
+      subtitle:"Given the goal, which bullet points should the answer focus on?",
+      items:NTS, borderColor:C.info,
+      renderStimulus:function(q){
+        return e("div",null,
+          e(NotesCard, {title:q.title, bullets:q.bullets}),
+          e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.6,marginBottom:12}},
+            e("strong",null,"Goal: "), q.goal
+          )
+        );
+      },
+      onComplete:function(){ setStep(2); }
+    });
+  }
+  /* Exercise 3: Full Synthesis Practice (MC) */
+  if (step === 2) {
+    return e(MCExercise, {
+      title:"Full Synthesis Practice", icon:"\uD83D\uDEE0\uFE0F",
+      subtitle:"Notes + goal + four choices. Apply all three steps.",
+      items:SYN, borderColor:C.rw,
+      renderStimulus:function(q){
+        return e("div",null,
+          e(NotesCard, {title:q.title, bullets:q.bullets}),
+          e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.6,marginBottom:12}},
+            e("strong",null,"Goal: "), q.goal
+          )
+        );
+      },
+      onComplete:function(){ setStep(3); }
+    });
+  }
+  /* Exercise 4: Same Notes, Different Goals */
+  if (step === 3) {
+    return e(DifferentGoalsExercise, {
+      onComplete:function(){ onComplete(); }
+    });
+  }
+  return null;
+}
+
+/* ── App Shell ── */
+function App() {
+  var _s = useState("welcome"), screen = _s[0], setScreen = _s[1];
+  var _s2 = useState(true), vis = _s2[0], setVis = _s2[1];
+  var _s3 = useState(0), quizScore = _s3[0], setQuizScore = _s3[1];
+  var _s4 = useState(10), quizTotal = _s4[0], setQuizTotal = _s4[1];
+
+  function go(next) {
+    setVis(false);
+    setTimeout(function(){ setScreen(next); setVis(true); window.scrollTo(0,0); }, 350);
+  }
+
+  var content = null;
+  if (screen === "welcome") content = e(Welcome,{onNext:function(){go("lesson");}});
+  else if (screen === "lesson") content = e(LessonViewer,{onComplete:function(){go("exercises");}});
+  else if (screen === "exercises") content = e(Exercises,{onComplete:function(){go("practice");}});
+  else if (screen === "practice") content = e(QuizEngine,{onComplete:function(s,t){setQuizScore(s);setQuizTotal(t);go("complete");}});
+  else if (screen === "complete") content = e(ModuleComplete,{quizScore:quizScore,quizTotal:quizTotal});
+
+  return e("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

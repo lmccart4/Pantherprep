@@ -10,58 +10,42 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--adv));width:0%;transition:width .3s ease}
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
-.back-link:hover{color:var(--accent)}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}.back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
 .mod-badge{display:inline-block;background:var(--adv);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
 .mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
 .mod-header .subtitle{color:var(--muted);font-size:1rem}
 .mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
-.section{margin-bottom:36px}
-.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section{margin-bottom:36px}.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
 .card-accent{border-left:3px solid var(--accent)}
 .callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
 .callout strong{color:var(--accent)}
-.callout-purple{background:var(--adv-bg);border-color:rgba(167,139,250,.3)}
-.callout-purple strong{color:var(--adv)}
-.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
-.callout-blue strong{color:var(--math)}
-
-/* EXPANDABLE TOPICS */
+.callout-purple{background:var(--adv-bg);border-color:rgba(167,139,250,.3)}.callout-purple strong{color:var(--adv)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
 .topic{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
 .topic-header{padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .15s}
 .topic-header:hover{background:rgba(167,139,250,.05)}
-.topic-title{font-weight:700;font-size:.95rem}
-.topic-tag{font-size:.72rem;padding:3px 10px;border-radius:12px;font-weight:600}
-.topic-arrow{transition:transform .2s;color:var(--muted);font-size:.9rem}
+.topic-title{font-weight:700;font-size:.95rem}.topic-arrow{transition:transform .2s;color:var(--muted);font-size:.9rem}
 .topic.open .topic-arrow{transform:rotate(90deg)}
-.topic-body{display:none;padding:0 20px 20px;font-size:.9rem;color:#ccc;line-height:1.7}
-.topic.open .topic-body{display:block}
-
-/* THREE FORMS TABLE */
+.topic-body{display:none;padding:0 20px 20px;font-size:.9rem;color:#ccc;line-height:1.7}.topic.open .topic-body{display:block}
 .forms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.form-card{background:var(--paper);border:2px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:border-color .2s}
-.form-card:hover{border-color:var(--adv)}
+.form-card{background:var(--paper);border:2px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:border-color .2s}.form-card:hover{border-color:var(--adv)}
 .form-name{font-weight:700;font-size:.88rem;margin-bottom:4px}
 .form-eq{font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--adv);margin-bottom:6px}
 .form-reveals{font-size:.78rem;color:var(--muted);line-height:1.4}
-
-/* FORMULA BOX */
 .formula{background:var(--paper);border:2px solid var(--adv);border-radius:10px;padding:14px 18px;margin-bottom:12px;text-align:center}
 .formula-main{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--adv);margin-bottom:4px}
 .formula-note{font-size:.82rem;color:var(--muted)}
-
-/* EXPONENT RULES TABLE */
 .rules-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:14px}
 .rules-table th,.rules-table td{padding:8px 12px;border:1px solid var(--border);text-align:left}
 .rules-table th{background:var(--surface);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
 .rules-table code{background:var(--adv-bg);color:var(--adv);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.84rem}
-
-/* INTERACTIVE EXERCISES */
 .exercise{background:var(--surface);border:2px solid var(--adv);border-radius:14px;padding:22px;margin-bottom:16px}
 .exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
 .exercise-sub{font-size:.85rem;color:var(--muted);margin-bottom:14px}
@@ -75,76 +59,53 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .ex-opt.ex-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
 .ex-opt.ex-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .ex-opt.ex-dis{pointer-events:none;opacity:.6}
-.ex-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.5}
-.ex-fb.show{display:block}
+.ex-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.5}.ex-fb.show{display:block}
 .ex-score{text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)}
-
-/* GRID-IN INPUT */
 .ex-input-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .ex-input{width:100px;padding:8px 10px;background:var(--surface);border:2px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;text-align:center}
 .ex-input:focus{border-color:var(--adv);outline:none}
 .ex-input.inp-correct{border-color:var(--correct);background:var(--correct-bg)}
 .ex-input.inp-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
 .ex-check-btn{padding:7px 16px;background:var(--adv);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600;transition:background .15s}
-.ex-check-btn:hover{background:#8b6fd4}
-.ex-check-btn:disabled{opacity:.4;pointer-events:none}
-
-/* SAT PRACTICE */
+.ex-check-btn:hover{background:#8b6fd4}.ex-check-btn:disabled{opacity:.4;pointer-events:none}
 .sat-q{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
-.sat-passage{background:var(--surface);border-left:3px solid var(--adv);padding:12px 14px;border-radius:0 8px 8px 0;font-size:.9rem;line-height:1.7;margin-bottom:12px;color:#ddd}
 .sat-choices{display:flex;flex-direction:column;gap:6px}
 .sat-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:.88rem;transition:all .15s}
 .sat-choice:hover:not(.sc-dis){border-color:var(--adv);background:var(--adv-bg)}
 .sat-choice.sc-correct{border-color:var(--correct);background:var(--correct-bg)}
 .sat-choice.sc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.sat-choice.sc-dis{pointer-events:none;opacity:.6}
+.sat-choice.sc-dis{pointer-events:none;opacity:.6}.sat-choice.sc-dis.sc-correct{opacity:1}
 .sc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
 .sat-choice.sc-correct .sc-letter{background:var(--correct);color:#fff}
 .sat-choice.sc-wrong .sc-letter{background:var(--wrong);color:#fff}
 .sat-fb{margin-top:8px;padding:10px;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}
-.sat-fb.show{display:block}
-.sat-fb.sfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
+.sat-fb.show{display:block}.sat-fb.sfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
 .sat-fb.sfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
-
-/* TIMER / SPEED DRILL */
 .drill-timer{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:12px}
-.drill-timer.running{color:var(--psda)}
-.drill-timer.done{color:var(--correct)}
-
-.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
-.btn:hover{background:#a00d24}
-.btn-sm{padding:8px 16px;font-size:.82rem}
-.btn-purple{background:var(--adv)}.btn-purple:hover{background:#8b6fd4}
-.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
-.btn-outline:hover{background:var(--accent-light)}
-
+.drill-timer.running{color:var(--psda)}.drill-timer.done{color:var(--correct)}
+.tier{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:6px}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:rgba(96,165,250,.15);color:var(--math)}.tier-3{background:rgba(167,139,250,.15);color:var(--adv)}
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}.btn:hover{background:#a00d24}
 .mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
-
+.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}.mod-nav a:hover{text-decoration:underline}
 @media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.forms-grid{grid-template-columns:1fr}.ex-options{flex-direction:column}}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div class="container">
 <a class="back-link" href="index.html">← Back to Math Course</a>
-
 <div class="mod-header">
   <div class="mod-badge">Module 3 · Advanced Math</div>
   <h1>Quadratics, Polynomials & Exponents</h1>
-  <p class="subtitle">The backbone of Advanced Math — master these and you control ~32% of the test.</p>
-  <div class="mod-meta">
-    <span>⏱ 2–3 sessions</span>
-    <span>📋 4 topics</span>
-    <span>🔨 Phase 2: Build</span>
-  </div>
+  <p class="subtitle">The backbone of Advanced Math — master these and you control ~35% of the test.</p>
+  <div class="mod-meta"><span>⏱ 2–3 sessions</span><span>📋 4 topics</span><span>🔨 Phase 2: Build</span></div>
 </div>
 
-<!-- INTRO -->
 <div class="section">
   <div class="section-label">Why This Matters</div>
-  <h2>Advanced Math = 32% of the SAT</h2>
+  <h2>Advanced Math = 35% of the SAT</h2>
   <div class="callout-purple callout"><strong>Quadratics are the most tested topic in Advanced Math.</strong> If you learn nothing else in this module, learn the three quadratic forms and when to use each one. That single skill can be worth 40–60 points.</div>
   <p>This module covers four interconnected topics: quadratic equations, polynomials, exponent rules, and rational expressions. Each builds on the last, and all of them show up repeatedly on every SAT.</p>
 </div>
@@ -153,27 +114,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <div class="section">
   <div class="section-label">Topic 3A</div>
   <h2>Quadratic Equations</h2>
-
   <p>The SAT loves quadratics because they can be expressed in three different forms — and each form reveals different information. The key skill is knowing which form to use for each question.</p>
-
   <div class="forms-grid">
-    <div class="form-card" style="border-color:var(--adv)">
-      <div class="form-name">Standard Form</div>
-      <div class="form-eq">f(x) = ax² + bx + c</div>
-      <div class="form-reveals">Reveals: <strong>y-intercept</strong> (c)<br>direction (a > 0 opens up)</div>
-    </div>
-    <div class="form-card" style="border-color:var(--algebra)">
-      <div class="form-name">Factored Form</div>
-      <div class="form-eq">f(x) = a(x − r)(x − s)</div>
-      <div class="form-reveals">Reveals: <strong>x-intercepts</strong><br>(zeros/roots: r and s)</div>
-    </div>
-    <div class="form-card" style="border-color:var(--psda)">
-      <div class="form-name">Vertex Form</div>
-      <div class="form-eq">f(x) = a(x − h)² + k</div>
-      <div class="form-reveals">Reveals: <strong>vertex</strong><br>(min or max point: (h, k))</div>
-    </div>
+    <div class="form-card" style="border-color:var(--adv)"><div class="form-name">Standard Form</div><div class="form-eq">f(x) = ax² + bx + c</div><div class="form-reveals">Reveals: <strong>y-intercept</strong> (c)<br>direction (a > 0 opens up)</div></div>
+    <div class="form-card" style="border-color:var(--algebra)"><div class="form-name">Factored Form</div><div class="form-eq">f(x) = a(x − r)(x − s)</div><div class="form-reveals">Reveals: <strong>x-intercepts</strong><br>(zeros/roots: r and s)</div></div>
+    <div class="form-card" style="border-color:var(--psda)"><div class="form-name">Vertex Form</div><div class="form-eq">f(x) = a(x − h)² + k</div><div class="form-reveals">Reveals: <strong>vertex</strong><br>(min or max point: (h, k))</div></div>
   </div>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Converting Between Forms</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -183,12 +129,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <p><strong>Any form → Solutions:</strong> Use the Quadratic Formula if factoring is difficult.</p>
     </div>
   </div>
-
-  <div class="formula">
-    <div class="formula-main">x = (−b ± √(b² − 4ac)) / 2a</div>
-    <div class="formula-note">The Quadratic Formula — works for ALL quadratics in standard form</div>
-  </div>
-
+  <div class="formula"><div class="formula-main">x = (−b ± √(b² − 4ac)) / 2a</div><div class="formula-note">The Quadratic Formula — works for ALL quadratics in standard form</div></div>
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">The Discriminant: How Many Solutions?</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -199,7 +140,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <p>The SAT frequently asks: "How many solutions does the equation have?" or "For what value of k does the equation have no real solutions?" Both are discriminant questions.</p>
     </div>
   </div>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Vertex Shortcut</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -210,24 +150,41 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <p>If a &gt; 0, the vertex is a <strong>minimum</strong>. If a &lt; 0, the vertex is a <strong>maximum</strong>.</p>
     </div>
   </div>
-
+  <div class="topic" onclick="this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Preview: Transformations of Quadratics</div><div class="topic-arrow">▶</div></div>
+    <div class="topic-body">
+      <p>Understanding vertex form is actually your first lesson in <strong>function transformations</strong> (covered fully in Module 4). The vertex form f(x) = a(x − h)² + k encodes three transformations of the parent function y = x²:</p>
+      <p>• <strong>h</strong> shifts the parabola <strong>horizontally</strong> (right if h > 0, left if h < 0)</p>
+      <p>• <strong>k</strong> shifts the parabola <strong>vertically</strong> (up if k > 0, down if k < 0)</p>
+      <p>• <strong>a</strong> stretches/compresses AND reflects: |a| > 1 = narrower, |a| < 1 = wider, a < 0 = flipped</p>
+      <p>This same pattern applies to ALL functions on the SAT — not just quadratics. If you get this intuition now, Module 4 will be much easier.</p>
+    </div>
+  </div>
   <div class="callout-blue callout"><strong>Desmos Power Move:</strong> Graph any quadratic and Desmos labels the vertex, x-intercepts, and y-intercept. Click them for exact coordinates. Use sliders to explore how changing a, b, or c transforms the parabola.</div>
 </div>
 
-<!-- INTERACTIVE: FORM IDENTIFIER -->
+<!-- EXERCISE: FORM IDENTIFIER -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 1</div>
   <h2>Quadratic Form Identifier</h2>
   <p>For each equation, identify which form it's in and what information it immediately reveals.</p>
   <div class="exercise" id="formExercise"></div>
   <div id="formScore" class="ex-score"></div>
 </div>
 
+<!-- NEW EXERCISE: WHICH FORM DO I NEED? -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 2</div>
+  <h2>Which Form Do I Need?</h2>
+  <p>This is the critical skill: given a problem description, which quadratic form gets you to the answer fastest? Don't just practice one form at a time — learn to <em>choose</em> the right tool for each question.</p>
+  <div class="exercise" style="border-color:var(--psda)" id="whichFormEx"></div>
+  <div id="whichFormScore" class="ex-score"></div>
+</div>
+
 <!-- TOPIC 3B: POLYNOMIALS -->
 <div class="section">
   <div class="section-label">Topic 3B</div>
   <h2>Polynomials</h2>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Factoring Techniques</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -238,7 +195,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <p><strong>5. Factor by Grouping:</strong> For 4-term polynomials, group pairs and factor each pair.<br>Example: x³ + 3x² + 2x + 6 = x²(x + 3) + 2(x + 3) = (x² + 2)(x + 3)</p>
     </div>
   </div>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Zeros, Factors & the Remainder Theorem</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -254,9 +210,9 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<!-- INTERACTIVE: FACTORING WORKSHOP -->
+<!-- FACTORING WORKSHOP -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 3</div>
   <h2>Factoring Workshop</h2>
   <p>Factor each expression. Type your answer in the box and check. Use the form like <code>(x+3)(x-2)</code> or <code>3x(x+5)</code>.</p>
   <div class="exercise" id="factorExercise"></div>
@@ -267,7 +223,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <div class="section">
   <div class="section-label">Topic 3C</div>
   <h2>Exponential & Radical Expressions</h2>
-
   <table class="rules-table">
     <tr><th>Rule</th><th>Formula</th><th>Example</th></tr>
     <tr><td>Product Rule</td><td><code>aᵐ · aⁿ = aᵐ⁺ⁿ</code></td><td>x³ · x⁴ = x⁷</td></tr>
@@ -278,7 +233,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     <tr><td>Fractional Exponent</td><td><code>a^(1/n) = ⁿ√a</code></td><td>8^(1/3) = ∛8 = 2</td></tr>
     <tr><td>Combined Fractional</td><td><code>a^(m/n) = (ⁿ√a)ᵐ</code></td><td>27^(2/3) = (∛27)² = 9</td></tr>
   </table>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Exponential Growth vs. Decay</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -286,24 +240,33 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <p><strong>Exponential Decay:</strong> f(x) = a(1 − r)ˣ — same formula but subtracting the rate</p>
       <p><strong>Key difference from linear:</strong> Linear = constant amount of change (add 5 each time). Exponential = constant percent change (grow by 10% each time).</p>
       <p>SAT tip: If a table shows values increasing by the same amount → linear. If values increase by the same multiplier → exponential.</p>
+      <p><strong>Watch for the base:</strong> If the base (the number being raised to a power) is between 0 and 1, it's decay. If the base is greater than 1, it's growth. Example: 500(0.85)ᵗ → the base 0.85 is less than 1, so this is 15% decay per period.</p>
     </div>
   </div>
 </div>
 
-<!-- INTERACTIVE: EXPONENT SPEED DRILL -->
+<!-- EXPONENT SPEED DRILL -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 4</div>
   <h2>Exponent Rules Speed Drill</h2>
   <p>Simplify each expression as fast as you can. Timer starts when you answer the first question.</p>
   <div class="exercise" id="expDrill"></div>
   <div id="expScore" class="ex-score"></div>
 </div>
 
+<!-- NEW: GROWTH OR DECAY CLASSIFIER -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 5</div>
+  <h2>Growth or Decay?</h2>
+  <p>For each expression, classify it as exponential growth or decay, then identify the rate. This is one of the most commonly confused topics on the SAT — students mix up (1 + r) and (1 − r) constantly.</p>
+  <div class="exercise" style="border-color:var(--psda)" id="gdEx"></div>
+  <div id="gdScore" class="ex-score"></div>
+</div>
+
 <!-- TOPIC 3D: RATIONAL EXPRESSIONS -->
 <div class="section">
   <div class="section-label">Topic 3D</div>
   <h2>Rational Expressions & Equations</h2>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Simplifying Rational Expressions</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -314,7 +277,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <p><strong>Domain restrictions:</strong> Any value that makes the denominator zero is excluded. In the example above, x ≠ −2 and x ≠ −3.</p>
     </div>
   </div>
-
   <div class="topic" onclick="this.classList.toggle('open')">
     <div class="topic-header"><div class="topic-title">Solving Rational Equations</div><div class="topic-arrow">▶</div></div>
     <div class="topic-body">
@@ -325,29 +287,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <p>Example: 1/x + 1/3 = 1/2 → LCD = 6x → 6 + 2x = 3x → x = 6 ✓</p>
     </div>
   </div>
-
   <div class="callout"><strong>SAT Trap:</strong> Rational equation questions almost always have an extraneous solution designed to catch students who don't check their work. Always plug your answer back into the original equation.</div>
 </div>
 
-<!-- INTERACTIVE: DISCRIMINANT CALCULATOR -->
+<!-- DISCRIMINANT EXPLORER -->
 <div class="section">
   <div class="section-label">Interactive Tool</div>
   <h2>Discriminant Explorer</h2>
   <p>Enter values for a, b, and c from any standard-form quadratic (ax² + bx + c = 0) and see how many solutions it has.</p>
   <div class="exercise" style="border-color:var(--psda)">
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:6px">
-        <span style="font-weight:700;font-size:.9rem">a =</span>
-        <input type="number" id="discA" value="1" style="width:60px;padding:6px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;text-align:center" oninput="calcDisc()">
-      </div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <span style="font-weight:700;font-size:.9rem">b =</span>
-        <input type="number" id="discB" value="0" style="width:60px;padding:6px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;text-align:center" oninput="calcDisc()">
-      </div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <span style="font-weight:700;font-size:.9rem">c =</span>
-        <input type="number" id="discC" value="-4" style="width:60px;padding:6px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;text-align:center" oninput="calcDisc()">
-      </div>
+      <div style="display:flex;align-items:center;gap:6px"><span style="font-weight:700;font-size:.9rem">a =</span><input type="number" id="discA" value="1" style="width:60px;padding:6px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;text-align:center" oninput="calcDisc()"></div>
+      <div style="display:flex;align-items:center;gap:6px"><span style="font-weight:700;font-size:.9rem">b =</span><input type="number" id="discB" value="0" style="width:60px;padding:6px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;text-align:center" oninput="calcDisc()"></div>
+      <div style="display:flex;align-items:center;gap:6px"><span style="font-weight:700;font-size:.9rem">c =</span><input type="number" id="discC" value="-4" style="width:60px;padding:6px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;text-align:center" oninput="calcDisc()"></div>
     </div>
     <div id="discResult" style="font-size:.92rem;line-height:1.7"></div>
   </div>
@@ -357,7 +309,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <div class="section">
   <div class="section-label">SAT-Style Practice</div>
   <h2>Practice Questions</h2>
-  <p>8 questions covering all topics in this module. Tiered difficulty: 3 foundational, 3 intermediate, 2 advanced.</p>
+  <p>10 questions covering all topics in this module. Tiered difficulty: 3 foundational, 4 intermediate, 3 advanced.</p>
   <div id="satQuestions"></div>
   <div id="satScore" class="ex-score"></div>
 </div>
@@ -369,11 +321,14 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="card card-accent">
     <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
       <li>Know the three quadratic forms and what each one reveals (y-intercept, zeros, vertex).</li>
+      <li><strong>Choose the right form for each question</strong> — this is the #1 Advanced Math skill on the SAT.</li>
       <li>The discriminant (b² − 4ac) tells you how many solutions — positive = 2, zero = 1, negative = 0.</li>
       <li>Vertex x-coordinate shortcut: x = −b/2a. The y-coordinate is always the min or max value.</li>
       <li>Master all five factoring techniques — the SAT tests every one of them.</li>
       <li>Memorize the exponent rules cold. They show up in almost every Advanced Math question.</li>
+      <li>Growth vs. decay: base > 1 = growth, 0 < base < 1 = decay. Watch for (1 + r) vs. (1 − r).</li>
       <li>On rational equations, ALWAYS check for extraneous solutions.</li>
+      <li>Vertex form is your first taste of transformations — the same patterns apply to all functions (Module 4).</li>
       <li>Use Desmos to graph quadratics — it labels vertices and intercepts automatically.</li>
     </ol>
   </div>
@@ -386,40 +341,50 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <script>
-// ============ FORM IDENTIFIER ============
-const FORMS=[
+// ============ PROGRESS BAR ============
+window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;var pct=h>0?(window.scrollY/h)*100:0;document.getElementById('progressFill').style.width=pct+'%';});
+
+// ============ HELPER ============
+function showScore(id,ans,items){var t=items.length,a=Object.keys(ans).length,c=Object.entries(ans).filter(function(p){return p[1]===items[parseInt(p[0])].correct;}).length;document.getElementById(id).innerHTML=a===t?'<strong style="color:'+(c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';}
+
+// ============ EXERCISE 1: FORM IDENTIFIER ============
+var FORMS=[
   {eq:'f(x) = 2(x − 3)(x + 1)',correct:'Factored Form',reveal:'x-intercepts at x = 3 and x = −1',opts:['Standard Form','Factored Form','Vertex Form']},
   {eq:'f(x) = x² − 6x + 8',correct:'Standard Form',reveal:'y-intercept at (0, 8), opens upward (a = 1 > 0)',opts:['Standard Form','Factored Form','Vertex Form']},
   {eq:'f(x) = −3(x + 2)² + 7',correct:'Vertex Form',reveal:'Vertex at (−2, 7), opens downward (a = −3), so 7 is the maximum',opts:['Standard Form','Factored Form','Vertex Form']},
-  {eq:'g(x) = (x − 5)(x − 5)',correct:'Factored Form',reveal:'Double root at x = 5 — the parabola touches the x-axis at one point. Also vertex form: (x−5)²',opts:['Standard Form','Factored Form','Vertex Form']},
+  {eq:'g(x) = (x − 5)(x − 5)',correct:'Factored Form',reveal:'Double root at x = 5 — the parabola touches the x-axis at one point',opts:['Standard Form','Factored Form','Vertex Form']},
   {eq:'h(x) = 4x² + 12x − 7',correct:'Standard Form',reveal:'y-intercept at (0, −7), opens upward (a = 4 > 0)',opts:['Standard Form','Factored Form','Vertex Form']},
   {eq:'y = −(x − 1)² − 4',correct:'Vertex Form',reveal:'Vertex at (1, −4), opens downward, so −4 is the maximum value',opts:['Standard Form','Factored Form','Vertex Form']},
   {eq:'p(x) = ½(x + 6)(x − 2)',correct:'Factored Form',reveal:'x-intercepts at x = −6 and x = 2, opens upward (a = ½ > 0)',opts:['Standard Form','Factored Form','Vertex Form']},
   {eq:'f(x) = 5(x − 4)² + 0',correct:'Vertex Form',reveal:'Vertex at (4, 0) — the vertex IS the x-intercept. Minimum value is 0.',opts:['Standard Form','Factored Form','Vertex Form']},
 ];
-let formAns={};
+var formAns={};
 function renderForms(){
-  document.getElementById('formExercise').innerHTML=`<h3>📐 Identify the Form</h3><div class="exercise-sub">Click the correct form for each quadratic.</div>`+
-    FORMS.map((f,i)=>{
-      const ans=formAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Equation ${i+1}</div>
-        <div class="ex-prompt"><code>${f.eq}</code></div>
-        <div class="ex-options">${f.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===f.correct)cls+=' ex-correct';else if(o===ans&&o!==f.correct)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="formAns[${i}]='${o}';renderForms()">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===f.correct?'✓ Correct! ':'✗ Incorrect. The answer is '+f.correct+'. ')+f.reveal:''}</div></div>`;
-    }).join('');
-  showScore('formScore',formAns,FORMS,'formAns');
-}
-function showScore(id,ans,items,name){
-  const t=items.length,a=Object.keys(ans).length,c=Object.entries(ans).filter(([i,v])=>v===items[i].correct).length;
-  document.getElementById(id).innerHTML=a===t?`<strong style="color:${c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('formExercise').innerHTML='<h3>📐 Identify the Form</h3><div class="exercise-sub">Click the correct form for each quadratic.</div>'+FORMS.map(function(f,i){var ans=formAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Equation '+(i+1)+'</div><div class="ex-prompt"><code>'+f.eq+'</code></div><div class="ex-options">'+f.opts.map(function(o){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===f.correct)cls+=' ex-correct';else if(o===ans&&o!==f.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="formAns['+i+']=\''+o+'\';renderForms()">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===f.correct?'✓ Correct! ':'✗ Incorrect. The answer is '+f.correct+'. ')+f.reveal:'')+'</div></div>';}).join('');
+  showScore('formScore',formAns,FORMS);
 }
 renderForms();
 
-// ============ FACTORING WORKSHOP ============
-const FACTORS=[
+// ============ EXERCISE 2: WHICH FORM DO I NEED? ============
+var WHICH_FORM=[
+  {q:'The question asks: "What is the maximum height the ball reaches?"',correct:'Vertex Form',fb:'Maximum/minimum → you need the vertex → Vertex Form f(x) = a(x − h)² + k. The max/min is k.',opts:['Standard Form','Factored Form','Vertex Form']},
+  {q:'The question asks: "At what times does the ball hit the ground?"',correct:'Factored Form',fb:'Hitting the ground = height of 0 = x-intercepts → Factored Form f(x) = a(x − r)(x − s). Set f(x) = 0.',opts:['Standard Form','Factored Form','Vertex Form']},
+  {q:'The question asks: "What is the initial height of the projectile?"',correct:'Standard Form',fb:'Initial height = value when x = 0 = y-intercept → Standard Form f(x) = ax² + bx + c. The y-intercept is c.',opts:['Standard Form','Factored Form','Vertex Form']},
+  {q:'The question asks: "Does the parabola open upward or downward?"',correct:'Standard Form',fb:'Direction is determined by the sign of a. While all three forms show a, Standard Form makes it most immediately visible.',opts:['Standard Form','Factored Form','Vertex Form']},
+  {q:'The question gives: "f(x) = 0 when x = −3 and x = 7" and asks for the equation.',correct:'Factored Form',fb:'Given the zeros/roots → build Factored Form: f(x) = a(x + 3)(x − 7). If they give another point, solve for a.',opts:['Standard Form','Factored Form','Vertex Form']},
+  {q:'The question asks: "How many real solutions does 2x² − 5x + 4 = 0 have?"',correct:'Standard Form',fb:'Number of solutions → Discriminant → needs a, b, c from Standard Form. b² − 4ac = 25 − 32 = −7 < 0 → no real solutions.',opts:['Standard Form','Factored Form','Vertex Form']},
+  {q:'The question gives a graph with vertex at (3, −2) and asks for the equation.',correct:'Vertex Form',fb:'Given the vertex → Vertex Form: f(x) = a(x − 3)² + (−2). Use another point to find a.',opts:['Standard Form','Factored Form','Vertex Form']},
+  {q:'The question asks: "What value of x gives the minimum value of f(x) = x² − 8x + 12?"',correct:'Vertex Form',fb:'Minimum value → vertex x-coordinate → use x = −b/2a = −(−8)/2(1) = 4. Or convert to vertex form.',opts:['Standard Form','Factored Form','Vertex Form']},
+];
+var whichFormAns={};
+function renderWhichForm(){
+  document.getElementById('whichFormEx').innerHTML='<h3>🎯 Pick the Right Form</h3><div class="exercise-sub">Given each problem description, which quadratic form should you start with?</div>'+WHICH_FORM.map(function(q,i){var ans=whichFormAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Scenario '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="ex-options">'+q.opts.map(function(o){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===q.correct)cls+=' ex-correct';else if(o===ans&&o!==q.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="whichFormAns['+i+']=\''+o+'\';renderWhichForm()">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Not the best choice. ')+q.fb:'')+'</div></div>';}).join('');
+  showScore('whichFormScore',whichFormAns,WHICH_FORM);
+}
+renderWhichForm();
+
+// ============ EXERCISE 3: FACTORING WORKSHOP ============
+var FACTORS=[
   {expr:'x² + 7x + 12',answers:['(x+3)(x+4)','(x+4)(x+3)'],hint:'Find two numbers that multiply to 12 and add to 7.'},
   {expr:'x² − 16',answers:['(x+4)(x-4)','(x-4)(x+4)'],hint:'Difference of squares: a² − b² = (a+b)(a−b).'},
   {expr:'2x² + 6x',answers:['2x(x+3)'],hint:'Factor out the GCF first.'},
@@ -427,142 +392,92 @@ const FACTORS=[
   {expr:'x² + 10x + 25',answers:['(x+5)^2','(x+5)(x+5)'],hint:'This is a perfect square trinomial.'},
   {expr:'4x² − 9',answers:['(2x+3)(2x-3)','(2x-3)(2x+3)'],hint:'Difference of squares: (2x)² − 3².'},
 ];
-let factorAns={};
+var factorAns={};
 function renderFactors(){
-  document.getElementById('factorExercise').innerHTML=`<h3>✂️ Factoring Workshop</h3><div class="exercise-sub">Type the factored form. Use ^ for exponents.</div>`+
-    FACTORS.map((f,i)=>{
-      const ans=factorAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Problem ${i+1}</div>
-        <div class="ex-prompt">Factor: <code>${f.expr}</code></div>
-        <div class="ex-input-row">
-          <input class="ex-input${has?(ans?'  inp-correct':' inp-wrong'):''}" id="fInp${i}" placeholder="(x+?)(x+?)" style="width:200px" ${has?'disabled':''}>
-          <button class="ex-check-btn" onclick="checkFactor(${i})" ${has?'disabled':''}>Check</button>
-        </div>
-        <div class="ex-fb${has?' show':''}" style="${has?(ans?'color:var(--correct)':'color:var(--wrong)'):''}">
-          ${has?(ans?'✓ Correct!':'✗ Not quite. '+f.hint+' Answer: '+f.answers[0]):''}</div></div>`;
-    }).join('');
-  const t=FACTORS.length,a=Object.keys(factorAns).length,c=Object.values(factorAns).filter(v=>v).length;
-  document.getElementById('factorScore').innerHTML=a===t?`<strong style="color:${c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('factorExercise').innerHTML='<h3>✂️ Factoring Workshop</h3><div class="exercise-sub">Type the factored form. Use ^ for exponents.</div>'+FACTORS.map(function(f,i){var ans=factorAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">Factor: <code>'+f.expr+'</code></div><div class="ex-input-row"><input class="ex-input'+(has?(ans?' inp-correct':' inp-wrong'):'')+'" id="fInp'+i+'" placeholder="(x+?)(x+?)" style="width:200px" '+(has?'disabled':'')+'><button class="ex-check-btn" onclick="checkFactor('+i+')" '+(has?'disabled':'')+'>Check</button></div><div class="ex-fb'+(has?' show':'')+'" style="'+(has?(ans?'color:var(--correct)':'color:var(--wrong)'):'')+'">'+( has?(ans?'✓ Correct!':'✗ Not quite. '+f.hint+' Answer: '+f.answers[0]):'')+'</div></div>';}).join('');
+  var t=FACTORS.length,a=Object.keys(factorAns).length,c=0;Object.values(factorAns).forEach(function(v){if(v)c++;});
+  document.getElementById('factorScore').innerHTML=a===t?'<strong style="color:'+(c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
 }
-function checkFactor(i){
-  const inp=document.getElementById('fInp'+i).value.replace(/\s/g,'').toLowerCase();
-  const correct=FACTORS[i].answers.some(a=>inp===a.replace(/\s/g,'').toLowerCase());
-  factorAns[i]=correct;
-  renderFactors();
-}
+function checkFactor(i){var inp=document.getElementById('fInp'+i).value.replace(/\s/g,'').toLowerCase();var correct=false;FACTORS[i].answers.forEach(function(a){if(inp===a.replace(/\s/g,'').toLowerCase())correct=true;});factorAns[i]=correct;renderFactors();}
 renderFactors();
 
-// ============ EXPONENT SPEED DRILL ============
-const EXPS=[
-  {expr:'x³ · x⁵',correct:'x^8',display:'x⁸',opts:['x⁸','x¹⁵','x²','8x']},
-  {expr:'(x⁴)²',correct:'x^8',display:'x⁸',opts:['x⁶','x⁸','x²','4x²']},
-  {expr:'x⁷ / x³',correct:'x^4',display:'x⁴',opts:['x⁴','x¹⁰','x²¹','x³']},
-  {expr:'5⁰',correct:'1',display:'1',opts:['0','1','5','undefined']},
-  {expr:'x⁻³',correct:'1/x^3',display:'1/x³',opts:['1/x³','−x³','x³','−3x']},
-  {expr:'8^(1/3)',correct:'2',display:'2',opts:['2','4','2.67','8/3']},
-  {expr:'27^(2/3)',correct:'9',display:'9',opts:['9','18','3','81']},
-  {expr:'(2x³)²',correct:'4x^6',display:'4x⁶',opts:['2x⁶','4x⁶','4x⁵','2x⁵']},
-  {expr:'x⁴ · x⁻⁴',correct:'1',display:'1',opts:['x⁸','0','1','x⁰']},
-  {expr:'(x²y³)⁴',correct:'x^8y^12',display:'x⁸y¹²',opts:['x⁸y¹²','x⁶y⁷','x⁸y⁷','x²y¹²']},
+// ============ EXERCISE 4: EXPONENT SPEED DRILL ============
+var EXPS=[
+  {expr:'x³ · x⁵',display:'x⁸',opts:['x⁸','x¹⁵','x²','8x']},
+  {expr:'(x⁴)²',display:'x⁸',opts:['x⁶','x⁸','x²','4x²']},
+  {expr:'x⁷ / x³',display:'x⁴',opts:['x⁴','x¹⁰','x²¹','x³']},
+  {expr:'5⁰',display:'1',opts:['0','1','5','undefined']},
+  {expr:'x⁻³',display:'1/x³',opts:['1/x³','−x³','x³','−3x']},
+  {expr:'8^(1/3)',display:'2',opts:['2','4','2.67','8/3']},
+  {expr:'27^(2/3)',display:'9',opts:['9','18','3','81']},
+  {expr:'(2x³)²',display:'4x⁶',opts:['2x⁶','4x⁶','4x⁵','2x⁵']},
+  {expr:'x⁴ · x⁻⁴',display:'1',opts:['x⁸','0','1','x⁰']},
+  {expr:'(x²y³)⁴',display:'x⁸y¹²',opts:['x⁸y¹²','x⁶y⁷','x⁸y⁷','x²y¹²']},
 ];
-let expAns={};let expStart=null;let expTimer=null;
+var expAns={};var expStart=null;var expTimer=null;
 function renderExps(){
-  const elapsed=expStart?((Date.now()-expStart)/1000).toFixed(1):'0.0';
-  const allDone=Object.keys(expAns).length===EXPS.length;
-  document.getElementById('expDrill').innerHTML=
-    `<h3>⚡ Speed Drill</h3><div class="exercise-sub">Simplify each expression. How fast can you go?</div>
-    <div class="drill-timer ${expStart&&!allDone?'running':''}${allDone?' done':''}">${allDone?elapsed+'s — Done!':expStart?elapsed+'s':'Ready'}</div>`+
-    EXPS.map((e,i)=>{
-      const ans=expAns[i];const has=ans!==undefined;
-      return `<div class="ex-item" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <div style="flex:1;min-width:120px"><code>${e.expr}</code> = ?</div>
-        <div class="ex-options" style="flex:2">${e.opts.map(o=>{
-          let cls='ex-opt';
-          if(has){cls+=' ex-dis';if(o===e.display)cls+=' ex-correct';else if(o===ans&&o!==e.display)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="ansExp(${i},'${o}')">${o}</div>`;
-        }).join('')}</div></div>`;
-    }).join('');
-  const t=EXPS.length,a=Object.keys(expAns).length,c=Object.entries(expAns).filter(([i,v])=>v===EXPS[i].display).length;
-  document.getElementById('expScore').innerHTML=allDone?`<strong style="color:${c>=8?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)'}">${c}/${t} correct in ${elapsed}s</strong> ${c===t?'🔥 Perfect!':''}`:(a>0?`${a}/${t} completed`:'');
+  var elapsed=expStart?((Date.now()-expStart)/1000).toFixed(1):'0.0';var allDone=Object.keys(expAns).length===EXPS.length;
+  document.getElementById('expDrill').innerHTML='<h3>⚡ Speed Drill</h3><div class="exercise-sub">Simplify each expression. How fast can you go?</div><div class="drill-timer '+(expStart&&!allDone?'running':'')+(allDone?' done':'')+'">'+(allDone?elapsed+'s — Done!':expStart?elapsed+'s':'Ready')+'</div>'+EXPS.map(function(e,i){var ans=expAns[i];var has=ans!==undefined;return '<div class="ex-item" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:120px"><code>'+e.expr+'</code> = ?</div><div class="ex-options" style="flex:2">'+e.opts.map(function(o){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===e.display)cls+=' ex-correct';else if(o===ans&&o!==e.display)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansExp('+i+',\''+o+'\')">'+o+'</div>';}).join('')+'</div></div>';}).join('');
+  var t=EXPS.length,a=Object.keys(expAns).length,c=0;Object.entries(expAns).forEach(function(p){if(p[1]===EXPS[parseInt(p[0])].display)c++;});
+  document.getElementById('expScore').innerHTML=allDone?'<strong style="color:'+(c>=8?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct in '+elapsed+'s</strong>'+(c===t?' 🔥 Perfect!':''):(a>0?a+'/'+t+' completed':'');
 }
-function ansExp(i,v){
-  if(expAns[i]!==undefined)return;
-  if(!expStart){expStart=Date.now();expTimer=setInterval(()=>renderExps(),100);}
-  expAns[i]=v;
-  if(Object.keys(expAns).length===EXPS.length&&expTimer){clearInterval(expTimer);expTimer=null;}
-  renderExps();
-}
+function ansExp(i,v){if(expAns[i]!==undefined)return;if(!expStart){expStart=Date.now();expTimer=setInterval(renderExps,100);}expAns[i]=v;if(Object.keys(expAns).length===EXPS.length&&expTimer){clearInterval(expTimer);expTimer=null;}renderExps();}
 renderExps();
+
+// ============ EXERCISE 5: GROWTH OR DECAY ============
+var GD_QS=[
+  {expr:'f(t) = 500(1.08)ᵗ',correct:'Growth — 8%',opts:['Growth — 8%','Decay — 8%','Growth — 1.08%','Decay — 92%'],fb:'Base is 1.08 > 1 → growth. Rate = 1.08 − 1 = 0.08 = 8%.'},
+  {expr:'f(t) = 1200(0.95)ᵗ',correct:'Decay — 5%',opts:['Growth — 95%','Decay — 95%','Decay — 5%','Growth — 5%'],fb:'Base is 0.95 < 1 → decay. Rate = 1 − 0.95 = 0.05 = 5%.'},
+  {expr:'f(t) = 80(1.005)ᵗ',correct:'Growth — 0.5%',opts:['Growth — 0.5%','Decay — 0.5%','Growth — 5%','Growth — 1.005%'],fb:'Base is 1.005 > 1 → growth. Rate = 0.005 = 0.5%. Small rate, but it compounds!'},
+  {expr:'f(t) = 10000(0.7)ᵗ',correct:'Decay — 30%',opts:['Decay — 70%','Decay — 30%','Growth — 70%','Decay — 7%'],fb:'Base is 0.7 < 1 → decay. Rate = 1 − 0.7 = 0.30 = 30%. Common trap: confusing 70% remaining with 30% lost.'},
+  {expr:'P = 250(2)ᵗ',correct:'Growth — 100%',opts:['Growth — 2%','Growth — 200%','Growth — 100%','Decay — 50%'],fb:'Base is 2 > 1 → growth. Rate = 2 − 1 = 1 = 100% (doubling each period). Not 200%!'},
+  {expr:'A = 5000(1 − 0.12)ᵗ',correct:'Decay — 12%',opts:['Growth — 12%','Decay — 12%','Decay — 88%','Growth — 88%'],fb:'Written as (1 − 0.12) = 0.88 → base < 1 → decay at 12% per period.'},
+  {expr:'The table shows: Year 0: 400, Year 1: 440, Year 2: 484, Year 3: 532.4',correct:'Growth — 10%',opts:['Linear — adds 40','Growth — 10%','Growth — 40%','Decay — 10%'],fb:'440/400 = 1.1, 484/440 = 1.1, 532.4/484 = 1.1. Constant multiplier → exponential growth at 10%.'},
+  {expr:'The table shows: Year 0: 200, Year 1: 250, Year 2: 300, Year 3: 350',correct:'Linear — not exponential',opts:['Growth — 25%','Decay — 25%','Growth — 50','Linear — not exponential'],fb:'250 − 200 = 50, 300 − 250 = 50, 350 − 300 = 50. Constant addend → LINEAR, not exponential. Trap: seeing growth and assuming exponential.'},
+];
+var gdAns={};
+function ansGD(i,oi){if(gdAns[i]!==undefined)return;gdAns[i]=GD_QS[i].opts[oi];renderGD();}
+function renderGD(){
+  document.getElementById('gdEx').innerHTML='<h3>📈📉 Growth or Decay?</h3><div class="exercise-sub">Classify each expression and identify the rate.</div>'+GD_QS.map(function(q,i){var ans=gdAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Expression '+(i+1)+'</div><div class="ex-prompt"><code>'+q.expr+'</code></div><div class="ex-options">'+q.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===q.correct)cls+=' ex-correct';else if(o===ans&&o!==q.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansGD('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+  showScore('gdScore',gdAns,GD_QS);
+}
+renderGD();
 
 // ============ DISCRIMINANT EXPLORER ============
 function calcDisc(){
-  const a=parseFloat(document.getElementById('discA').value)||0;
-  const b=parseFloat(document.getElementById('discB').value)||0;
-  const c=parseFloat(document.getElementById('discC').value)||0;
-  const disc=b*b-4*a*c;
-  let solutions,color,icon;
+  var a=parseFloat(document.getElementById('discA').value)||0;var b=parseFloat(document.getElementById('discB').value)||0;var c=parseFloat(document.getElementById('discC').value)||0;
+  var disc=b*b-4*a*c;var solutions,color,icon;
   if(disc>0){solutions='Two distinct real solutions';color='var(--correct)';icon='✓✓';}
   else if(disc===0){solutions='Exactly one real solution (double root)';color='var(--psda)';icon='✓';}
   else{solutions='No real solutions';color='var(--wrong)';icon='✗';}
-  const el=document.getElementById('discResult');
+  var el=document.getElementById('discResult');
   if(a===0){el.innerHTML='<span style="color:var(--wrong)">a cannot be 0 (that would make it linear, not quadratic)</span>';return;}
-  let solStr='';
-  if(disc>=0){
-    const x1=(-b+Math.sqrt(disc))/(2*a);
-    const x2=(-b-Math.sqrt(disc))/(2*a);
-    if(disc>0)solStr=`<br>x₁ = ${Math.round(x1*1000)/1000}, x₂ = ${Math.round(x2*1000)/1000}`;
-    else solStr=`<br>x = ${Math.round(x1*1000)/1000}`;
-  }
-  el.innerHTML=`
-    <div style="margin-bottom:8px"><strong>Equation:</strong> <code style="background:var(--adv-bg);color:var(--adv);padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace">${a}x² ${b>=0?'+ '+b:'− '+Math.abs(b)}x ${c>=0?'+ '+c:'− '+Math.abs(c)} = 0</code></div>
-    <div style="margin-bottom:6px"><strong>Discriminant:</strong> b² − 4ac = ${b}² − 4(${a})(${c}) = ${b*b} − ${4*a*c} = <span style="font-family:'JetBrains Mono',monospace;font-weight:700;color:${color}">${disc}</span></div>
-    <div><strong>Result:</strong> <span style="color:${color};font-weight:700">${icon} ${solutions}</span>${solStr}</div>
-    <div style="margin-top:6px;font-size:.82rem;color:var(--muted)">Vertex: x = −b/2a = ${Math.round((-b/(2*a))*1000)/1000}</div>`;
+  var solStr='';
+  if(disc>=0){var x1=(-b+Math.sqrt(disc))/(2*a);var x2=(-b-Math.sqrt(disc))/(2*a);
+    if(disc>0)solStr='<br>x₁ = '+Math.round(x1*1000)/1000+', x₂ = '+Math.round(x2*1000)/1000;
+    else solStr='<br>x = '+Math.round(x1*1000)/1000;}
+  el.innerHTML='<div style="margin-bottom:8px"><strong>Equation:</strong> <code style="background:var(--adv-bg);color:var(--adv);padding:2px 8px;border-radius:4px;font-family:\'JetBrains Mono\',monospace">'+a+'x² '+(b>=0?'+ '+b:'− '+Math.abs(b))+'x '+(c>=0?'+ '+c:'− '+Math.abs(c))+' = 0</code></div><div style="margin-bottom:6px"><strong>Discriminant:</strong> b² − 4ac = '+b+'² − 4('+a+')('+c+') = '+(b*b)+' − '+(4*a*c)+' = <span style="font-family:\'JetBrains Mono\',monospace;font-weight:700;color:'+color+'">'+disc+'</span></div><div><strong>Result:</strong> <span style="color:'+color+';font-weight:700">'+icon+' '+solutions+'</span>'+solStr+'</div><div style="margin-top:6px;font-size:.82rem;color:var(--muted)">Vertex: x = −b/2a = '+Math.round((-b/(2*a))*1000)/1000+'</div>';
 }
 calcDisc();
 
 // ============ SAT PRACTICE ============
-const SAT_QS=[
-  {tier:'Tier 1',q:'What are the solutions of x² − 5x + 6 = 0?',
-   choices:['x = 2 and x = 3','x = −2 and x = −3','x = 1 and x = 6','x = −1 and x = −6'],correct:0,
-   fb:'Factor: (x − 2)(x − 3) = 0, so x = 2 or x = 3.'},
-  {tier:'Tier 1',q:'What is the y-intercept of f(x) = 3x² − 7x + 4?',
-   choices:['(0, 3)','(0, −7)','(0, 4)','(0, 0)'],correct:2,
-   fb:'In standard form f(x) = ax² + bx + c, the y-intercept is c. Here c = 4, so the y-intercept is (0, 4).'},
-  {tier:'Tier 1',q:'Simplify: x⁵ · x³ / x²',
-   choices:['x⁶','x⁸','x⁴','x¹⁰'],correct:0,
-   fb:'x⁵ · x³ = x⁸, then x⁸ / x² = x⁶.'},
-  {tier:'Tier 2',q:'The function f(x) = −2(x − 4)² + 18 models the height of a ball. What is the maximum height?',
-   choices:['4','18','−2','20'],correct:1,
-   fb:'This is vertex form f(x) = a(x − h)² + k. The vertex is (4, 18). Since a = −2 < 0, the parabola opens downward, so 18 is the maximum.'},
-  {tier:'Tier 2',q:'For what value of k does 2x² + kx + 8 = 0 have exactly one real solution?',
-   choices:['k = 4','k = 8','k = ±8','k = 16'],correct:2,
-   fb:'One solution means discriminant = 0. b² − 4ac = k² − 4(2)(8) = k² − 64 = 0, so k² = 64, k = ±8.'},
-  {tier:'Tier 2',q:'Which expression is equivalent to (x² − 9) / (x + 3)?',
-   choices:['x − 3','x + 3','x² − 3','(x − 3)/(x + 3)'],correct:0,
-   fb:'Factor the numerator: x² − 9 = (x + 3)(x − 3). Cancel (x + 3): result is (x − 3).'},
-  {tier:'Tier 3',q:'If f(x) = ax² + bx + c has roots at x = −1 and x = 5, and passes through (0, −10), what is the value of a?',
-   choices:['a = 2','a = −2','a = 1','a = −10'],correct:0,
-   fb:'Factored form: f(x) = a(x + 1)(x − 5). Plug in (0, −10): −10 = a(0 + 1)(0 − 5) = −5a. So a = 2.'},
-  {tier:'Tier 3',q:'The equation 3/(x − 2) + 1/(x + 1) = 4/(x² − x − 2) has how many valid solutions?',
-   choices:['0','1','2','Infinitely many'],correct:0,
-   fb:'Note x² − x − 2 = (x − 2)(x + 1). Multiply through by (x − 2)(x + 1): 3(x + 1) + (x − 2) = 4 → 4x + 1 = 4 → x = 3/4. BUT check: 3/4 doesn\'t make any denominator zero, so it IS valid. Wait — let me recheck: 3(3/4+1) + 1(3/4−2) = 3(7/4)+1(-5/4) = 21/4 − 5/4 = 16/4 = 4. And 4/((3/4)²−3/4−2) = 4/(9/16−3/4−2) = 4/(9/16−12/16−32/16) = 4/(−35/16) ≠ 4. The equation is actually inconsistent — 0 valid solutions.'},
+var SAT_QS=[
+  {tier:'Tier 1',q:'What are the solutions of x² − 5x + 6 = 0?',choices:['x = 2 and x = 3','x = −2 and x = −3','x = 1 and x = 6','x = −1 and x = −6'],correct:0,fb:'Factor: (x − 2)(x − 3) = 0, so x = 2 or x = 3.'},
+  {tier:'Tier 1',q:'What is the y-intercept of f(x) = 3x² − 7x + 4?',choices:['(0, 3)','(0, −7)','(0, 4)','(0, 0)'],correct:2,fb:'In standard form f(x) = ax² + bx + c, the y-intercept is c. Here c = 4, so (0, 4).'},
+  {tier:'Tier 1',q:'Simplify: x⁵ · x³ / x²',choices:['x⁶','x⁸','x⁴','x¹⁰'],correct:0,fb:'x⁵ · x³ = x⁸, then x⁸ / x² = x⁶.'},
+  {tier:'Tier 2',q:'The function f(x) = −2(x − 4)² + 18 models the height of a ball. What is the maximum height?',choices:['4','18','−2','20'],correct:1,fb:'Vertex form: vertex is (4, 18). Since a = −2 < 0, parabola opens downward, so 18 is the maximum.'},
+  {tier:'Tier 2',q:'For what value of k does 2x² + kx + 8 = 0 have exactly one real solution?',choices:['k = 4','k = 8','k = ±8','k = 16'],correct:2,fb:'One solution → discriminant = 0. k² − 4(2)(8) = k² − 64 = 0 → k² = 64 → k = ±8.'},
+  {tier:'Tier 2',q:'Which expression is equivalent to (x² − 9) / (x + 3)?',choices:['x − 3','x + 3','x² − 3','(x − 3)/(x + 3)'],correct:0,fb:'Factor: x² − 9 = (x + 3)(x − 3). Cancel (x + 3): result is (x − 3).'},
+  {tier:'Tier 2',q:'A population of 800 bacteria doubles every 3 hours. Which function models the population after t hours?',choices:['P(t) = 800(2)^(t/3)','P(t) = 800(2)^(3t)','P(t) = 800 + 2t','P(t) = 1600^t'],correct:0,fb:'Doubles → multiply by 2. Every 3 hours → exponent is t/3. P(t) = 800(2)^(t/3).'},
+  {tier:'Tier 3',q:'If f(x) = ax² + bx + c has roots at x = −1 and x = 5, and passes through (0, −10), what is a?',choices:['a = 2','a = −2','a = 1','a = −10'],correct:0,fb:'Factored form: f(x) = a(x + 1)(x − 5). Plug in (0, −10): −10 = a(1)(−5) = −5a → a = 2.'},
+  {tier:'Tier 3',q:'If x² + bx + 7 = 0 has roots r and s, what is the value of r² + s²?',choices:['b² − 14','b² + 14','b² − 7','Cannot be determined'],correct:0,fb:'By Vieta\'s: r + s = −b and rs = 7. Then r² + s² = (r + s)² − 2rs = b² − 14.'},
+  {tier:'Tier 3',q:'A projectile\'s height is h(t) = −16t² + 96t + 5. At what time does it reach maximum height, and what is that height?',choices:['t = 3, h = 149','t = 6, h = 5','t = 3, h = 144','t = 96, h = 5'],correct:0,fb:'Vertex x = −b/2a = −96/(2·−16) = 3. h(3) = −16(9) + 96(3) + 5 = −144 + 288 + 5 = 149. Max height is 149 at t = 3.'},
 ];
-let satAns={};
+var satAns={};
 function renderSAT(){
-  document.getElementById('satQuestions').innerHTML=SAT_QS.map((q,i)=>{
-    const ans=satAns[i];const has=ans!==undefined;
-    return `<div class="sat-q"><div class="ex-num">${q.tier} · Question ${i+1}</div>
-      <div class="ex-prompt">${q.q}</div>
-      <div class="sat-choices">${q.choices.map((ch,ci)=>{
-        let cls='sat-choice';
-        if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}
-        return `<div class="${cls}" onclick="satAns[${i}]=${ci};renderSAT()"><div class="sc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
-      }).join('')}</div>
-      <div class="sat-fb${has?' show':''}${has?(ans===q.correct?' sfb-correct':' sfb-wrong'):''}">${has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
-  }).join('');
-  const t=SAT_QS.length,a=Object.keys(satAns).length,c=Object.entries(satAns).filter(([i,v])=>v===SAT_QS[i].correct).length;
-  document.getElementById('satScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('satQuestions').innerHTML=SAT_QS.map(function(q,i){var ans=satAns[i];var has=ans!==undefined;return '<div class="sat-q"><div class="ex-num">'+q.tier+' · Question '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="sat-choices">'+q.choices.map(function(ch,ci){var cls='sat-choice';if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}return '<div class="'+cls+'" onclick="satAns['+i+']='+ci+';renderSAT()"><div class="sc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="sat-fb'+(has?' show':'')+(has?(ans===q.correct?' sfb-correct':' sfb-wrong'):'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+  var t=SAT_QS.length,a=Object.keys(satAns).length,c=0;Object.entries(satAns).forEach(function(p){if(parseInt(p[1])===SAT_QS[parseInt(p[0])].correct)c++;});
+  document.getElementById('satScore').innerHTML=a===t?'<strong style="color:'+(c>=7?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
 }
 renderSAT();
 </script>

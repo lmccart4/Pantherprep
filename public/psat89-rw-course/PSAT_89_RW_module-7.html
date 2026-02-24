@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 7: Agreement, Verb Form & Modifiers — PSAT 8/9 R&W — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var e = React.createElement;
+var useState = React.useState, useEffect = React.useEffect, useCallback = React.useCallback, useRef = React.useRef;
+
+/* ── design tokens ── */
+var C = {
+  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
+  sub:"#999", muted:"#666", accent:"#0891b2",
+  mod:"#e879f9", modBg:"rgba(232,121,249,.12)",
+  craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
+  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+};
+var btn = function(bg, color, extra) {
+  return Object.assign({
+    padding:"12px 28px", borderRadius:10, border:"none", background:bg,
+    color:color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s"
+  }, extra || {});
+};
+var NAV = {
+  prev:{ label:"Module 6: Sentence Boundaries", file:"PSAT_89_RW_module-6.html" },
+  next:{ label:"Module 8: Transitions", file:"PSAT_89_RW_module-8.html" }
+};
+
+/* ── LESSONS ── */
+var LESSONS = [
+  {
+    id:"7a", title:"Finding the True Subject",
+    subtitle:"Topic 7A \u2014 Subject-Verb Agreement",
+    body:[
+      "The PSAT\u2019s favorite trick: bury the subject under prepositional phrases, appositives, or relative clauses so you lose track of whether it\u2019s singular or plural.",
+      "The Core Rule: A singular subject takes a singular verb. A plural subject takes a plural verb. The challenge is finding the TRUE subject.",
+      "Strategy: Cross Out the Noise\nStep 1: Find the verb.\nStep 2: Ask \u201cWHO or WHAT does this verb?\u201d \u2014 that\u2019s the subject.\nStep 3: Cross out everything between the subject and verb (prepositional phrases, appositives, relative clauses). These are noise.\nStep 4: Check: does the subject match the verb in number?",
+      "Five Tricky Patterns:\n\u2022 Intervening phrase: \"The collection of rare stamps is valuable.\" (Subject = collection, singular.)\n\u2022 Inverted order: \"Among the ruins were several ancient artifacts.\" (Subject = artifacts, plural \u2014 it comes AFTER the verb.)\n\u2022 Compound with \"or/nor\": \"Neither the teacher nor the students were prepared.\" (Verb matches the closer subject \u2014 students = plural.)\n\u2022 Compound with \"and\": \"The coach and the captain are meeting.\" (Two subjects = plural.)\n\u2022 Each/every/one of: \"Each of the experiments was repeated.\" (Each = always singular, even though \"experiments\" is plural.)",
+      "Indefinite pronoun cheat sheet: Always singular: each, every, everyone, everybody, everything, anyone, anybody, anything, no one, nobody, nothing, either, neither. Always plural: both, few, many, several. Variable: some, any, all, none, most (depends on what follows \"of\")."
+    ],
+    visual:"cross-out"
+  },
+  {
+    id:"7b", title:"Pronoun-Antecedent Agreement & Ambiguity",
+    subtitle:"Topic 7B \u2014 Pronoun Agreement & Clarity",
+    body:[
+      "Every pronoun must clearly match ONE specific antecedent in number (singular/plural) and person (first/second/third).",
+      "Agreement Rules:\n\u2022 Singular antecedent \u2192 singular pronoun: \"The student submitted her project.\"\n\u2022 Plural antecedent \u2192 plural pronoun: \"The students submitted their projects.\"\n\u2022 Compound antecedent (and) \u2192 plural: \"Maya and James presented their research.\"\n\u2022 Each/every + noun \u2192 singular: \"Every player must bring his or her own equipment.\"",
+      "Ambiguous Reference: If a pronoun could refer to more than one noun, it\u2019s ambiguous \u2014 and wrong on the PSAT.\n\u2717 \"Dr. Lee told Dr. Patel that she should revise the study.\" (Who is \"she\"?)\n\u2713 \"Dr. Lee told Dr. Patel that Dr. Patel should revise the study.\"",
+      "Consistency of Person: Don\u2019t shift between \"you,\" \"one,\" \"they,\" or \"we\" within the same passage unless the meaning requires it.\n\u2717 \"If a person studies hard, you will succeed.\"\n\u2713 \"If a person studies hard, he or she will succeed.\"",
+      "Possessive nouns vs. pronouns: On the PSAT, a possessive noun like \"the scientist\u2019s\" CANNOT be an antecedent for a pronoun. \"The scientist\u2019s research was groundbreaking; she published it in Nature\" is wrong because \"scientist\u2019s\" is a possessive modifier, not a subject. Fix: \"The scientist conducted groundbreaking research; she published it in Nature.\""
+    ],
+    visual:"pronoun-cards"
+  },
+  {
+    id:"7c", title:"Tense Consistency & Correct Verb Forms",
+    subtitle:"Topic 7C \u2014 Verb Tense & Form",
+    body:[
+      "Tense questions test whether you can keep verb tenses consistent within a passage and select the correct form for the context.",
+      "The Consistency Rule: Within a single passage, don\u2019t switch tenses unless the timeline requires it. If a passage is written in past tense, keep it in past tense.\n\u2717 \"The team analyzed the data and discovers an anomaly.\" (past \u2192 present shift)\n\u2713 \"The team analyzed the data and discovered an anomaly.\" (consistent past)",
+      "When Tense Shifts ARE Correct:\n\u2022 Something that happened BEFORE another past event: \"By the time the rescue team arrived, the flood had already destroyed the bridge.\" (past perfect for the earlier event)\n\u2022 A general truth within a past narrative: \"Galileo demonstrated that the Earth revolves around the Sun.\" (present tense for a permanent fact)\n\u2022 A present-tense result of past research: \"A 2020 study found that exercise improves memory.\" (present for ongoing truth)",
+      "Common Verb Form Errors:\n\u2022 Would have + past participle: \"If she had studied, she would have passed.\" (NOT \"would of passed\")\n\u2022 Irregular past participles: begun (not began), written (not wrote), chosen (not chose), spoken (not spoke), driven (not drove)\n\u2022 Subjunctive \"were\": \"If the hypothesis were correct, the results would differ.\" (NOT \"was\")"
+    ],
+    visual:"tense-timeline"
+  },
+  {
+    id:"7d", title:"Dangling Modifiers & Parallel Structure",
+    subtitle:"Topic 7D \u2014 Modifiers & Parallel Structure",
+    body:[
+      "A modifier must be placed next to the word it modifies. Parallel structure means items in a list or comparison must have the same grammatical form.",
+      "Dangling Modifiers: An introductory modifying phrase MUST be followed immediately by the noun it modifies.\n\u2717 \"Running through the park, the sunset was beautiful.\" (The sunset isn\u2019t running.)\n\u2713 \"Running through the park, she noticed the beautiful sunset.\" (She is running.)\n\nTest: Read the modifier, then ask: WHO is doing this? The answer must be the very next noun.\nPattern: \"[Modifier], [SUBJECT the modifier describes] + verb...\"",
+      "Parallel Structure: Items in a list, comparison, or paired construction must share the same grammatical form.\n\u2717 \"The study required collecting data, analyzing results, and to write a report.\"\n\u2713 \"The study required collecting data, analyzing results, and writing a report.\"",
+      "Parallel structure details:\n\u2022 Verbs match verbs: to run, to swim, and to bike (all infinitives) OR running, swimming, and biking (all gerunds)\n\u2022 Nouns match nouns: the clarity, precision, and accuracy of the work\n\u2022 Clauses match clauses: what they discovered and how they applied it",
+      "PSAT formatting clue: When you see a list of three or more items with an underlined portion, check parallel structure first. The underlined item almost always needs to match the form of the other items in the list."
+    ],
+    visual:"dangling-fix"
+  }
+];
+
+/* ── EXERCISE DATA ── */
+
+/* Exercise 1: Subject Hunt (8 items, 2 choices each) */
+var SUB = [
+  {sent:"The bouquet of roses on the kitchen counter ___ wilting.",
+   ch:["are","is"],c:1,subj:"bouquet",
+   fb:"Subject = \"bouquet\" (singular). \"Of roses\" and \"on the counter\" are prepositional phrases \u2014 noise. Bouquet IS wilting."},
+  {sent:"Neither the captain nor the crew members ___ aware of the approaching storm.",
+   ch:["was","were"],c:1,subj:"crew members",
+   fb:"With \"neither...nor,\" the verb matches the CLOSER subject. \"Crew members\" (plural) is closer to the verb, so \"were.\""},
+  {sent:"The list of ingredients for the three recipes ___ posted on the refrigerator.",
+   ch:["are","is"],c:1,subj:"list",
+   fb:"Subject = \"list\" (singular). \"Of ingredients\" and \"for the three recipes\" are prepositional phrases. The list IS posted."},
+  {sent:"Every one of the 200 participants in the study ___ completed the survey.",
+   ch:["have","has"],c:1,subj:"every one",
+   fb:"\"Every one\" is always singular, even with \"of the 200 participants.\" Every one HAS completed."},
+  {sent:"The professor, along with several graduate students, ___ conducting fieldwork in Peru.",
+   ch:["are","is"],c:1,subj:"professor",
+   fb:"\"Along with several graduate students\" is a parenthetical phrase, NOT a compound subject. Only \"professor\" (singular) is the true subject. The professor IS conducting."},
+  {sent:"Among the artifacts discovered at the site ___ a gold necklace dating to 1200 BCE.",
+   ch:["were","was"],c:1,subj:"necklace",
+   fb:"Inverted sentence! The subject comes AFTER the verb. \"A gold necklace\" (singular) is the subject. A necklace WAS among the artifacts."},
+  {sent:"The data from the first three experiments ___ the hypothesis.",
+   ch:["supports","support"],c:1,subj:"data",
+   fb:"\"Data\" is plural (singular: datum). The data SUPPORT the hypothesis. \"From the first three experiments\" is a prepositional phrase."},
+  {sent:"Each of the novels on the reading list ___ more than 300 pages.",
+   ch:["contain","contains"],c:1,subj:"each",
+   fb:"\"Each\" is always singular. \"Of the novels\" is a prepositional phrase. Each CONTAINS more than 300 pages."}
+];
+
+/* Exercise 2: Pronoun Fix-Up (6 items, 5 options) */
+var PRO = [
+  {sent:"The committee announced that they would release their findings next month.",
+   c:0,
+   fb:"\"Committee\" is singular (it\u2019s one group). Should be: \"it would release its findings.\" Collective nouns are singular on the PSAT."},
+  {sent:"When a student finishes the exam early, you should review your answers.",
+   c:1,
+   fb:"Shifts from third person (\"a student\") to second person (\"you\"). Fix: \"he or she should review his or her answers\" or \"students...they.\""},
+  {sent:"Dr. Rivera told Dr. Chen that she should reconsider her methodology.",
+   c:2,
+   fb:"\"She\" and \"her\" could refer to either Dr. Rivera or Dr. Chen. Fix: use the specific name instead of the pronoun."},
+  {sent:"The hikers packed their gear, checked their maps, and made sure they had enough water.",
+   c:3,
+   fb:"All pronouns clearly refer to \"hikers\" (plural), and the person is consistent throughout. No error!"},
+  {sent:"If one wants to succeed in college, they need to develop strong study habits.",
+   c:1,
+   fb:"\"One\" (third person singular) shifts to \"they\" (third person plural). Fix: \"one needs to develop\" or rewrite with \"students...they.\""},
+  {sent:"The scientist\u2019s research was groundbreaking; she published it in three major journals.",
+   c:4,
+   fb:"\"Scientist\u2019s\" is possessive (modifies \"research\"), so it can\u2019t serve as the antecedent for \"she.\" Fix: \"The scientist conducted groundbreaking research; she published it...\""}
+];
+var POPTS = ["Wrong Number","Person Shift","Ambiguous Reference","No Error","Possessive Antecedent"];
+
+/* Exercise 3: Tense Patrol (5 items, MC 4 choices) */
+var TNS = [
+  {ctx:"The biologist observed the bird colony for six months. During that time, she <u>documents</u> over 40 distinct behaviors.",
+   ch:["documents (present)","documented (past)","has documented (present perfect)","had documented (past perfect)"],c:1,
+   fb:"The passage is in past tense (\"observed\"). The action happened during the same past time period. \"Documented\" (simple past) keeps the tense consistent."},
+  {ctx:"By the time the firefighters arrived at the scene, the fire <u>destroyed</u> most of the warehouse.",
+   ch:["destroyed (past)","has destroyed (present perfect)","had destroyed (past perfect)","was destroying (past progressive)"],c:2,
+   fb:"The fire finished destroying the warehouse BEFORE the firefighters arrived. Use past perfect (\"had destroyed\") for an action completed before another past event."},
+  {ctx:"In his 1905 paper, Einstein demonstrated that light <u>traveled</u> at a constant speed regardless of the observer\u2019s motion.",
+   ch:["traveled (past)","travels (present)","had traveled (past perfect)","would travel (conditional)"],c:1,
+   fb:"Light traveling at a constant speed is a permanent scientific truth. Even within a past-tense narrative, use present tense for facts that are still true: \"light travels.\""},
+  {ctx:"The orchestra rehearsed every afternoon last week. By Friday, the musicians <u>perfected</u> the difficult third movement.",
+   ch:["perfected (past)","had perfected (past perfect)","have perfected (present perfect)","perfect (present)"],c:1,
+   fb:"Both the rehearsing and the perfecting happened in the same past time frame (last week). Past perfect (\"had perfected\") would work if we then described a LATER past event, but here simple past is the best fit for the parallel timeline."},
+  {ctx:"Researchers at the university are studying how prolonged screen time <u>affected</u> children\u2019s sleep patterns.",
+   ch:["affected (past)","affects (present)","has affected (present perfect)","will affect (future)"],c:1,
+   fb:"The researchers ARE studying (present progressive) how something currently happens. The ongoing relationship between screen time and sleep calls for present tense: \"affects.\""}
+];
+
+/* Exercise 4: Modifier & Parallel Structure Clinic (4 items, MC 4 choices) */
+var MOD = [
+  {sent:"Soaring above the canyon, the tourists watched the eagle with binoculars.",
+   ch:["No change needed.",
+       "Soaring above the canyon, the eagle was watched by the tourists with binoculars.",
+       "The tourists watched the eagle soaring above the canyon with binoculars.",
+       "Soaring above the canyon, the eagle caught the attention of the tourists, who watched with binoculars."],c:3,
+   fb:"As written, \"soaring above the canyon\" modifies \"the tourists\" \u2014 implying the tourists are soaring. D correctly places the eagle right after the modifier and clarifies who has binoculars."},
+  {sent:"The internship requires writing reports, analyzing data, and to present findings to the board.",
+   ch:["No change needed.",
+       "writing reports, analyzing data, and presenting findings to the board.",
+       "to write reports, to analyze data, and to present findings to the board.",
+       "Both B and C fix the error."],c:3,
+   fb:"The list mixes gerunds (\"writing,\" \"analyzing\") with an infinitive (\"to present\"). Both B (all gerunds) and C (all infinitives) fix the parallel structure error."},
+  {sent:"Known for her innovative techniques, the gallery displayed the artist\u2019s paintings in a special exhibit.",
+   ch:["No change needed.",
+       "Known for her innovative techniques, the artist\u2019s paintings were displayed in the gallery\u2019s special exhibit.",
+       "Known for her innovative techniques, the artist had her paintings displayed in a special exhibit at the gallery.",
+       "The gallery, known for her innovative techniques, displayed the artist\u2019s paintings."],c:2,
+   fb:"\"Known for her innovative techniques\" must modify the ARTIST, not \"the gallery.\" C places \"the artist\" right after the modifier. B puts \"paintings\" after the modifier, which is also wrong."},
+  {sent:"The program aims to improve literacy, to reduce dropout rates, and strengthening community engagement.",
+   ch:["No change needed.",
+       "to improve literacy, to reduce dropout rates, and to strengthen community engagement.",
+       "improving literacy, reducing dropout rates, and strengthening community engagement.",
+       "Both B and C fix the error."],c:3,
+   fb:"The list mixes infinitives (\"to improve,\" \"to reduce\") with a gerund (\"strengthening\"). Both B (all infinitives) and C (all gerunds) create proper parallel structure."}
+];
+
+/* Exercise 5: Error Type Sorter (8 items, 5 options) */
+var SRT = [
+  {sent:"The team of engineers are designing a new bridge.",c:0,
+   fb:"Subject = \"team\" (singular). \"Of engineers\" is a prepositional phrase. Should be \"is designing.\" Subject-verb agreement error."},
+  {sent:"Walking through the museum, the paintings impressed the visitors.",c:3,
+   fb:"\"Walking through the museum\" modifies \"the paintings\" \u2014 paintings can\u2019t walk. Dangling modifier."},
+  {sent:"The researcher published her findings, and her colleague reviewed it carefully.",c:1,
+   fb:"\"Findings\" is plural, but \"it\" is singular. Should be \"them.\" Pronoun agreement error."},
+  {sent:"The chef prepared the appetizers, grills the steaks, and plated the desserts.",c:2,
+   fb:"\"Prepared\" (past) \u2192 \"grills\" (present) \u2192 \"plated\" (past). Should be \"grilled.\" Verb tense error."},
+  {sent:"The company plans to hire new employees, to expand its offices, and launching a new product.",c:4,
+   fb:"Two infinitives (\"to hire,\" \"to expand\") then a gerund (\"launching\"). Should be \"to launch.\" Parallel structure error."},
+  {sent:"Each of the volunteers were given a certificate of appreciation.",c:0,
+   fb:"\"Each\" is always singular. Should be \"was given.\" Subject-verb agreement error."},
+  {sent:"Having completed the experiment, the data was analyzed by the team.",c:3,
+   fb:"\"Having completed the experiment\" modifies \"the data\" \u2014 data can\u2019t complete experiments. Should be: \"Having completed the experiment, the team analyzed the data.\""},
+  {sent:"The study was published in 2020, and it shows that biodiversity was declining rapidly.",c:2,
+   fb:"\"Was published\" (past) is fine, but \"shows\" (present) and \"was declining\" (past progressive) create an awkward tense shift. Either \"showed...was declining\" or \"shows...is declining.\""}
+];
+var SOPTS = ["Subject-Verb Agreement","Pronoun Agreement","Verb Tense","Dangling Modifier","Parallel Structure"];
+
+/* ── PRACTICE QUESTIONS ── */
+var QUIZ = [
+  {id:0,t:1,passage:"The group of students who volunteered at the food bank last Saturday ___ planning another visit next month.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["are","is","were","have been"],answer:1,
+   explain:"Subject = \"group\" (singular). \"Of students who volunteered at the food bank last Saturday\" is all noise. The group IS planning."},
+  {id:1,t:1,passage:"Neither the principal nor the teachers ___ received the updated schedule.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["has","have","is","was"],answer:1,
+   explain:"With \"neither...nor,\" the verb agrees with the closer subject. \"Teachers\" (plural) is closer, so \"have\" received."},
+  {id:2,t:1,passage:"Covered in frost, the gardener carefully wrapped the delicate rose bushes in burlap to protect them from the cold.",
+   stem:"Which choice best corrects the sentence?",
+   choices:["No change needed.",
+            "Covered in frost, the delicate rose bushes were carefully wrapped in burlap by the gardener.",
+            "The gardener carefully wrapped the frost-covered rose bushes in burlap to protect them from the cold.",
+            "Both B and C fix the error."],answer:3,
+   explain:"\"Covered in frost\" modifies \"the gardener\" \u2014 but the rose bushes are frosted, not the gardener. Both B (bushes after modifier) and C (restructured to eliminate the modifier) fix this."},
+  {id:3,t:2,passage:"The archaeological team discovered ancient pottery, bronze tools, and ___ at the dig site.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["they found several gold coins","were finding several gold coins","several gold coins","to find several gold coins"],answer:2,
+   explain:"The list needs parallel nouns: \"pottery, bronze tools, and several gold coins.\" C matches the noun structure. A and B introduce verbs that break parallelism. D uses an infinitive."},
+  {id:4,t:2,passage:"The novelist, whose early works ___ largely unnoticed, received international acclaim for her latest book.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["has gone","had gone","have gone","goes"],answer:1,
+   explain:"The early works going unnoticed happened BEFORE the acclaim (a past event). Past perfect (\"had gone\") shows the earlier action. \"Works\" is plural but \"had gone\" works for both singular and plural subjects."},
+  {id:5,t:2,passage:"When a researcher submits a paper for peer review, ___ must be prepared for rigorous criticism.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["you","they","one","the researcher"],answer:3,
+   explain:"The sentence starts with \"a researcher\" (third person singular). \"You\" shifts to second person. \"They\" shifts to plural. \"One\" is possible but formal. \"The researcher\" (D) is the clearest and avoids any shift."},
+  {id:6,t:2,passage:"The results of the decade-long study, which included participants from twelve countries, ___ published in the New England Journal of Medicine.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["was","were","has been","is being"],answer:1,
+   explain:"Subject = \"results\" (plural). \"Of the decade-long study\" and \"which included participants from twelve countries\" are both intervening phrases. The results WERE published."},
+  {id:7,t:3,passage:"In her 2019 paper, Dr. Yamamoto argues that urban green spaces ___ air quality, ___ stress levels in nearby residents, and contribute to higher property values.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["improve ... reduce","improves ... reduces","improved ... reduced","improving ... reducing"],answer:0,
+   explain:"The sentence is in present tense (\"argues\"). The three verbs in the list must be parallel AND match: \"improve, reduce, and contribute\" (all base form after \"spaces\"). A maintains both tense consistency and parallel structure."},
+  {id:8,t:3,passage:"Hoping to attract younger audiences, the museum\u2019s new exhibit features interactive displays, virtual reality stations, and ___ visitors to create their own digital art.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["it allows","allowing","allows","a space that allows"],answer:2,
+   explain:"The subject is \"the museum\u2019s new exhibit.\" The verb pattern is \"features X, Y, and ___.\" We need a parallel verb: \"features displays, features stations, and allows visitors.\" C maintains the parallel verb structure with \"allows.\""},
+  {id:9,t:3,passage:"The city council voted to increase funding for public libraries, which ___ by budget cuts over the past five years; the decision ___ widespread support from local educators.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["had been weakened ... received","were weakened ... receives","has been weakened ... has received","was weakened ... had received"],answer:0,
+   explain:"The weakening happened OVER the past five years (before the vote) \u2192 past perfect \"had been weakened.\" The decision receiving support is a straightforward past event \u2192 simple past \"received.\" A correctly sequences both."}
+];
+
+var KEY_TAKEAWAYS = [
+  "Subject-verb agreement: Cross out prepositional phrases and appositives to find the true subject. Then match the verb.",
+  "Watch for inverted sentences (\"Among the ruins were artifacts\") \u2014 the subject comes after the verb.",
+  "Pronoun agreement: Every pronoun needs a clear, singular or plural antecedent. If a pronoun could refer to two nouns, it\u2019s wrong.",
+  "Don\u2019t shift person: if you start with \"a person,\" don\u2019t switch to \"you.\"",
+  "Tense consistency: Keep tenses consistent unless the timeline requires a shift (past perfect for earlier events, present for ongoing truths).",
+  "Modifiers: An introductory phrase MUST be followed by the noun it modifies. If it\u2019s not, it\u2019s a dangling modifier.",
+  "Parallel structure: Items in a list must share the same grammatical form (all gerunds, all infinitives, all nouns, etc.).",
+  "\"Each,\" \"every,\" \"everyone,\" \"nobody\" are always singular \u2014 even when they feel plural."
+];
+
+/* ========== COMPONENTS ========== */
+
+/* ── Welcome ── */
+function Welcome(props) {
+  var onNext = props.onNext;
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  return e("div", { style:{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"100vh", padding:"0 24px", transition:"all .7s", opacity:show?1:0, transform:show?"translateY(0)":"translateY(16px)" } },
+    e("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"44", borderRadius:12, padding:"6px 18px", fontSize:13, letterSpacing:1.5, textTransform:"uppercase", color:C.mod, marginBottom:12, fontWeight:600 } }, "Phase 2 \u00B7 Module 7"),
+    e("h1", { style:{ fontSize:"clamp(1.7rem,4.5vw,3rem)", fontWeight:800, background:"linear-gradient(135deg,"+C.mod+","+C.rw+")", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", lineHeight:1.1, textAlign:"center", marginBottom:16, fontFamily:"'Cormorant Garamond',serif" } }, "Agreement, Verb Form & Modifiers"),
+    e("p", { style:{ color:C.sub, fontSize:18, maxWidth:560, textAlign:"center", lineHeight:1.6, marginBottom:12 } }, "The remaining Standard English Conventions skills \u2014 about 5\u20137 questions per test. These questions test whether subjects match verbs, pronouns match their antecedents, tenses stay consistent, and modifiers land in the right place."),
+    e("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"33", borderRadius:12, padding:"14px 22px", maxWidth:540, marginBottom:40, fontSize:14, color:C.sub, lineHeight:1.6, textAlign:"center" } },
+      e("strong", { style:{ color:C.mod } }, "Completing Conventions: "),
+      "Module 6 covered sentence boundaries (~5\u20136 questions). This module covers the remaining Standard English Conventions skills: subject-verb agreement, pronoun agreement, verb tense/form, and modifier placement. Together with Module 6, you\u2019ll own the entire ~26% Conventions domain."
+    ),
+    e("div", { style:{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:16, maxWidth:700, width:"100%", marginBottom:48 } },
+      [{icon:"\uD83C\uDFAF",title:"Subject-Verb",desc:"Agreement across tricky patterns"},{icon:"\uD83D\uDD0D",title:"Pronouns",desc:"Agreement, ambiguity & person"},{icon:"\u23F0",title:"Verb Tense",desc:"Consistency & correct forms"},{icon:"\u2702\uFE0F",title:"Modifiers",desc:"Dangling modifiers & parallelism"},{icon:"\uD83D\uDCDD",title:"10 Practice Qs",desc:"PSAT-format questions"}
+      ].map(function(c,i){ return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
+        e("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        e("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
+        e("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      );})
+    ),
+    e("button", { onClick:onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")", "#fff"), onMouseOver:function(ev){ev.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(ev){ev.currentTarget.style.transform="scale(1)";} }, "Start Learning \u2192"),
+    e("div", { style:{ color:C.muted, fontSize:13, marginTop:24 } }, "\u23F1 ~55 min \u00B7 Standard English Conventions")
+  );
+}
+
+/* ── LessonViewer ── */
+function LessonViewer(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var lesson = LESSONS[idx];
+  var total = LESSONS.length;
+
+  function renderVisual() {
+    if (lesson.visual === "cross-out") {
+      /* "Cross Out the Noise" — example sentence with prep phrase crossed out */
+      return e("div",{style:{padding:"12px 20px"}},
+        e("div",{style:{color:C.mod,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Cross Out the Noise"),
+        e("div",{style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:16,marginBottom:8}},
+          e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,lineHeight:2,color:"#ddd",textAlign:"center"}},
+            e("span",{style:{color:C.correct,fontWeight:700,textDecoration:"underline",textDecorationColor:C.correct,textUnderlineOffset:"4px"}},"The collection"),
+            " ",
+            e("span",{style:{color:C.wrong,textDecoration:"line-through",opacity:.6}},"of rare stamps"),
+            " ",
+            e("span",{style:{color:C.correct,fontWeight:700}}, "is"),
+            e("span",{style:{color:"#ddd"}}," valuable.")
+          ),
+          e("div",{style:{display:"flex",justifyContent:"center",gap:16,marginTop:10}},
+            e("span",{style:{fontSize:11,color:C.correct}},"\u2713 Subject: collection (singular)"),
+            e("span",{style:{fontSize:11,color:C.correct}},"\u2713 Verb: is (singular)"),
+            e("span",{style:{fontSize:11,color:C.wrong,textDecoration:"line-through"}},"\u2717 Noise: of rare stamps")
+          )
+        ),
+        e("div",{style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:16}},
+          e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,lineHeight:2,color:"#ddd",textAlign:"center"}},
+            e("span",{style:{color:C.correct,fontWeight:700,textDecoration:"underline",textDecorationColor:C.correct,textUnderlineOffset:"4px"}},"Each"),
+            " ",
+            e("span",{style:{color:C.wrong,textDecoration:"line-through",opacity:.6}},"of the experiments"),
+            " ",
+            e("span",{style:{color:C.correct,fontWeight:700}},"was"),
+            e("span",{style:{color:"#ddd"}}," repeated.")
+          ),
+          e("div",{style:{display:"flex",justifyContent:"center",gap:16,marginTop:10}},
+            e("span",{style:{fontSize:11,color:C.correct}},"\u2713 Subject: each (singular)"),
+            e("span",{style:{fontSize:11,color:C.correct}},"\u2713 Verb: was (singular)"),
+            e("span",{style:{fontSize:11,color:C.wrong,textDecoration:"line-through"}},"\u2717 Noise: of the experiments")
+          )
+        )
+      );
+    }
+    if (lesson.visual === "pronoun-cards") {
+      /* Quick reference cards: singular→singular, plural→plural */
+      var cards = [
+        {label:"Singular \u2192 Singular",examples:["The student \u2192 her/his","The committee \u2192 it/its","Each player \u2192 his or her"],color:C.sec},
+        {label:"Plural \u2192 Plural",examples:["The students \u2192 their","Maya and James \u2192 their","Both teams \u2192 their"],color:C.info},
+        {label:"No Person Shifts",examples:["\u2717 a person \u2192 you","\u2713 a person \u2192 he or she","\u2713 students \u2192 they"],color:C.expr},
+        {label:"Possessive \u2260 Antecedent",examples:["\u2717 The scientist's \u2192 she","\u2713 The scientist \u2192 she","Possessive = modifier only"],color:C.wrong}
+      ];
+      return e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:8,padding:"12px 20px"}},
+        cards.map(function(c,i){
+          return e("div",{key:i,style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:12,borderTop:"3px solid "+c.color}},
+            e("div",{style:{fontSize:11,fontWeight:700,color:c.color,marginBottom:6,textTransform:"uppercase",letterSpacing:.5}},c.label),
+            c.examples.map(function(ex,j){
+              return e("div",{key:j,style:{fontSize:11,color:C.sub,lineHeight:1.6,fontFamily:"'JetBrains Mono',monospace"}},ex);
+            })
+          );
+        })
+      );
+    }
+    if (lesson.visual === "tense-timeline") {
+      /* Past ← Present → Future timeline with past perfect earlier */
+      var tenses = [
+        {label:"Past Perfect",time:"had destroyed",desc:"Before another past event",color:C.rw,pos:0},
+        {label:"Simple Past",time:"destroyed",desc:"Completed past action",color:C.mod,pos:1},
+        {label:"Present",time:"destroys",desc:"Ongoing/habitual/truth",color:C.sec,pos:2},
+        {label:"Future",time:"will destroy",desc:"Not yet happened",color:C.info,pos:3}
+      ];
+      return e("div",{style:{padding:"12px 20px"}},
+        e("div",{style:{color:C.mod,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Tense Timeline"),
+        /* timeline bar */
+        e("div",{style:{position:"relative",height:8,background:C.border,borderRadius:4,margin:"24px 0 12px"}},
+          e("div",{style:{position:"absolute",left:0,width:"25%",height:"100%",background:C.rw+"44",borderRadius:"4px 0 0 4px"}}),
+          e("div",{style:{position:"absolute",left:"25%",width:"25%",height:"100%",background:C.mod+"44"}}),
+          e("div",{style:{position:"absolute",left:"50%",width:"25%",height:"100%",background:C.sec+"44"}}),
+          e("div",{style:{position:"absolute",left:"75%",width:"25%",height:"100%",background:C.info+"44",borderRadius:"0 4px 4px 0"}})
+        ),
+        e("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}},
+          tenses.map(function(t,i){
+            return e("div",{key:i,style:{textAlign:"center",padding:"8px 4px",background:C.paper,border:"1px solid "+C.border,borderRadius:8,borderTop:"3px solid "+t.color}},
+              e("div",{style:{fontSize:10,fontWeight:700,color:t.color,textTransform:"uppercase",letterSpacing:.5,marginBottom:4}},t.label),
+              e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.ink,marginBottom:2}},t.time),
+              e("div",{style:{fontSize:10,color:C.sub}},t.desc)
+            );
+          })
+        ),
+        e("div",{style:{marginTop:10,padding:"8px 12px",background:C.sec+"08",borderLeft:"3px solid "+C.sec,borderRadius:"0 8px 8px 0"}},
+          e("span",{style:{color:C.sec,fontSize:12,fontWeight:700}},"Key: "),
+          e("span",{style:{color:C.sub,fontSize:12}},"Use past perfect for an action that happened BEFORE another past action. Use present for ongoing truths, even in past narratives.")
+        )
+      );
+    }
+    if (lesson.visual === "dangling-fix") {
+      /* Wrong vs. Right pattern with modifier highlighted */
+      return e("div",{style:{padding:"12px 20px"}},
+        e("div",{style:{color:C.mod,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Dangling Modifier Fix"),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:8}},
+          /* Wrong */
+          e("div",{style:{background:C.wrongBg,border:"1px solid "+C.wrong+"33",borderRadius:10,padding:14}},
+            e("div",{style:{fontSize:11,fontWeight:700,color:C.wrong,marginBottom:6}},"\u2717 WRONG \u2014 Modifier dangles"),
+            e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:"#ddd",lineHeight:1.8}},
+              e("span",{style:{background:C.mod+"22",padding:"2px 4px",borderRadius:4,color:C.mod}},"Running through the park,"),
+              " ",
+              e("span",{style:{textDecoration:"underline",textDecorationColor:C.wrong,color:C.wrong}},"the sunset"),
+              " was beautiful."
+            ),
+            e("div",{style:{fontSize:11,color:C.wrong,marginTop:4}},"The sunset isn\u2019t running! Modifier attaches to wrong noun.")
+          ),
+          /* Right */
+          e("div",{style:{background:C.correctBg,border:"1px solid "+C.correct+"33",borderRadius:10,padding:14}},
+            e("div",{style:{fontSize:11,fontWeight:700,color:C.correct,marginBottom:6}},"\u2713 RIGHT \u2014 Modifier attaches correctly"),
+            e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:"#ddd",lineHeight:1.8}},
+              e("span",{style:{background:C.mod+"22",padding:"2px 4px",borderRadius:4,color:C.mod}},"Running through the park,"),
+              " ",
+              e("span",{style:{textDecoration:"underline",textDecorationColor:C.correct,color:C.correct}},"she"),
+              " noticed the beautiful sunset."
+            ),
+            e("div",{style:{fontSize:11,color:C.correct,marginTop:4}},"\"She\" is running \u2014 the very next noun matches the modifier.")
+          )
+        ),
+        e("div",{style:{marginTop:10,padding:"8px 12px",background:C.mod+"08",borderLeft:"3px solid "+C.mod,borderRadius:"0 8px 8px 0"}},
+          e("span",{style:{color:C.mod,fontSize:12,fontWeight:700}},"Rule: "),
+          e("span",{style:{color:C.sub,fontSize:12}},"[Modifier], [SUBJECT the modifier describes] + verb...")
+        )
+      );
+    }
+    return null;
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      LESSONS.map(function(_,i){
+        return e("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+      })
+    ),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      e("div",{style:{padding:"28px 28px 0"}},
+        e("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        e("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:16,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},lesson.title),
+        lesson.body.map(function(p,i){
+          return e("p",{key:i,style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p);
+        })
+      ),
+      lesson.visual && e("div",{style:{padding:"8px 4px 20px"}},renderVisual())
+    ),
+    e("div",{style:{display:"flex",justifyContent:"space-between"}},
+      e("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#444":C.sub),{border:"1px solid "+C.border,padding:"10px 20px",fontSize:14})},"\u2190 Back"),
+      idx < total-1
+        ? e("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
+        : e("button",{onClick:onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Exercises \u2192")
+    )
+  );
+}
+
+/* ── Classify Exercise (reusable for SUB, PRO, SRT) ── */
+function ClassifyExercise(props) {
+  var title = props.title, icon = props.icon, subtitle = props.subtitle, items = props.items, options = props.options, renderStimulus = props.renderStimulus, renderFeedback = props.renderFeedback, borderColor = props.borderColor, onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus ? renderStimulus(q,i) : e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+(borderColor||C.mod),fontFamily:"'JetBrains Mono',monospace"}},q.sent||q.text),
+        e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          options.map(function(o,oi){
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return e("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        ),
+        h && (renderFeedback ? renderFeedback(q,a) : e("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===q.c?C.correctBg:C.wrongBg,color:a===q.c?C.correct:C.wrong}},(a===q.c?"\u2713 ":"\u2717 ")+q.fb))
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(borderColor||C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── MC Exercise (for TNS, MOD) ── */
+function MCExercise(props) {
+  var title = props.title, icon = props.icon, subtitle = props.subtitle, items = props.items, renderStimulus = props.renderStimulus, borderColor = props.borderColor, onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus(q,i),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return e("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              e("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              e("span",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:12}},ch)
+            );
+          })
+        ),
+        h && e("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(borderColor||C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── QuizEngine ── */
+function QuizEngine(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var item = QUIZ[idx];
+
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s){ return s+1; });
+  }
+  function next() {
+    if (idx < QUIZ.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+
+  if (done) {
+    return e("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      e("div",{style:{fontSize:48,marginBottom:16}},"\uD83D\uDCDD"),
+      e("h2",{style:{color:C.ink,fontSize:28,fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Practice Complete"),
+      e("div",{style:{color:C.mod,fontSize:48,fontWeight:900}},score,"/",QUIZ.length),
+      e("p",{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},
+        score >= 9 ? "Outstanding! You\u2019ve mastered agreement, verb form, and modifiers." :
+        score >= 7 ? "Great work! A few more practice rounds and you\u2019ll own these skills." :
+        score >= 5 ? "Solid foundation. Review the errors you missed and try again." :
+        "Keep practicing! Focus on finding the true subject and matching modifiers."
+      ),
+      e("button",{onClick:function(){onComplete(score,QUIZ.length);},style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff")},"Continue \u2192")
+    );
+  }
+
+  var tierColors = {1:C.sec, 2:C.info, 3:C.rw};
+  var tierLabels = {1:"Easy", 2:"Medium", 3:"Hard"};
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
+      e("div",{style:{color:C.mod,fontSize:13,fontWeight:700}},"\uD83D\uDCDD PSAT Practice"),
+      e("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        e("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:600,background:tierColors[item.t]+"22",color:tierColors[item.t]}},tierLabels[item.t]),
+        e("span",{style:{color:C.muted,fontSize:13}},idx+1,"/",QUIZ.length)
+      )
+    ),
+    e("div",{style:{height:4,background:C.border,borderRadius:2,marginBottom:20,overflow:"hidden"}},
+      e("div",{style:{height:"100%",width:((idx+(confirmed?1:0))/QUIZ.length*100)+"%",background:"linear-gradient(90deg,"+C.mod+","+C.rw+")",borderRadius:2,transition:"width .4s"}})
+    ),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,marginBottom:16}},
+      e("div",{style:{color:"#ddd",fontSize:15,lineHeight:1.8,fontFamily:"Georgia,serif"}},item.passage)
+    ),
+    e("div",{style:{color:C.ink,fontSize:14,fontWeight:600,marginBottom:16}},item.stem),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      item.choices.map(function(c,ci){
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = C.surface, bdr = "1px solid "+C.border, tc = "#ddd";
+        if (confirmed && isCorr) { bg = C.correct+"18"; bdr = "2px solid "+C.correct; tc = C.correct; }
+        else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
+        else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
+        return e("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+          e("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          e("span",{style:{color:tc,fontSize:14,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace"}},c)
+        );
+      })
+    ),
+    confirmed && e("div",{style:{background:C.border,borderRadius:12,padding:20,marginBottom:24,borderLeft:"4px solid "+C.mod}},
+      e("div",{style:{color:C.mod,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+      e("div",{style:{color:C.sub,fontSize:14,lineHeight:1.6}},item.explain)
+    ),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed
+        ? e("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?C.border:C.mod,selected===null?"#555":"#fff",{fontSize:14,padding:"10px 24px"})},"Confirm")
+        : e("button",{onClick:next,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},idx<QUIZ.length-1?"Next \u2192":"See Results \u2192")
+    )
+  );
+}
+
+/* ── NavLinks ── */
+function NavLinks() {
+  return e("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border}},
+    NAV.prev && e("a",{href:NAV.prev.file,style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"})},"\u2190 "+NAV.prev.label),
+    NAV.next && e("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"10px 20px"})},NAV.next.label+" \u2192")
+  );
+}
+
+/* ── ModuleComplete ── */
+function ModuleComplete(props) {
+  var quizScore = props.quizScore, quizTotal = props.quizTotal;
+  var pct = Math.round(quizScore/quizTotal*100);
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
+    e("div",{style:{fontSize:64,marginBottom:16}},pct>=90?"\uD83C\uDFC6":pct>=70?"\uD83C\uDF1F":"\uD83D\uDCAA"),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 7 Complete!"),
+    e("div",{style:{color:C.mod,fontSize:48,fontWeight:900,marginBottom:8}},quizScore,"/",quizTotal),
+    e("p",{style:{color:C.sub,fontSize:15,marginBottom:32}},"on PSAT-format practice questions"),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
+      e("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+      KEY_TAKEAWAYS.map(function(t,i){
+        return e("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
+          e("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+          e("span",null,t)
+        );
+      })
+    ),
+    e(NavLinks, null)
+  );
+}
+
+/* ── SubjectHunt (Exercise 1) — each item has its own 2 verb choices ── */
+function SubjectHunt(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = SUB.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === SUB[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:C.mod,fontSize:14,fontWeight:700}},"\uD83C\uDFAF Subject Hunt"),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Find the true subject and pick the verb that agrees."),
+    SUB.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      var parts = q.sent.split("___");
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        /* Stimulus: sentence with blank */
+        e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.mod,fontFamily:"'JetBrains Mono',monospace"}},
+          parts[0],
+          e("span",{style:{color:C.mod,fontWeight:700}},"___"),
+          parts[1] || ""
+        ),
+        /* 2 choices for this item */
+        e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(o,oi){
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",fontFamily:"'JetBrains Mono',monospace"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return e("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        ),
+        /* Feedback with subject revealed */
+        h && e("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===q.c?C.correctBg:C.wrongBg,color:a===q.c?C.correct:C.wrong}},
+          (a===q.c?"\u2713 ":"\u2717 ")+"Subject = ",
+          e("strong",null,q.subj),
+          ". "+q.fb
+        )
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── Exercises Router ── */
+function Exercises(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+
+  /* Exercise 1: Subject Hunt — binary per-item, reveal subject */
+  if (step === 0) {
+    return e(SubjectHunt, {
+      onComplete:function(){ setStep(1); }
+    });
+  }
+
+  /* Exercise 2: Pronoun Fix-Up — 5-option classify */
+  if (step === 1) {
+    return e(ClassifyExercise, {
+      title:"Pronoun Fix-Up", icon:"\uD83D\uDD0D",
+      subtitle:"What type of pronoun error does each sentence contain (if any)?",
+      items:PRO, options:POPTS, borderColor:C.rw,
+      onComplete:function(){ setStep(2); }
+    });
+  }
+
+  /* Exercise 3: Tense Patrol — MC 4 choices */
+  if (step === 2) {
+    return e(MCExercise, {
+      title:"Tense Patrol", icon:"\u23F0",
+      subtitle:"Which verb tense fits the context?",
+      items:TNS, borderColor:C.accent,
+      renderStimulus:function(q){
+        return e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.accent,fontFamily:"'JetBrains Mono',monospace"},dangerouslySetInnerHTML:{__html:q.ctx}});
+      },
+      onComplete:function(){ setStep(3); }
+    });
+  }
+
+  /* Exercise 4: Modifier & Parallel Structure Clinic — MC 4 choices */
+  if (step === 3) {
+    return e(MCExercise, {
+      title:"Modifier & Parallel Structure Clinic", icon:"\u2702\uFE0F",
+      subtitle:"Find and fix the dangling modifier or parallelism error.",
+      items:MOD, borderColor:C.info,
+      renderStimulus:function(q){
+        return e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.info,fontFamily:"'JetBrains Mono',monospace"}},q.sent);
+      },
+      onComplete:function(){ setStep(4); }
+    });
+  }
+
+  /* Exercise 5: Error Type Sorter — 5-option classify */
+  if (step === 4) {
+    return e(ClassifyExercise, {
+      title:"Error Type Sorter", icon:"\u26A1",
+      subtitle:"Classify the error in each sentence.",
+      items:SRT, options:SOPTS, borderColor:C.expr,
+      onComplete:function(){ onComplete(); }
+    });
+  }
+
+  return null;
+}
+
+/* ── App Shell ── */
+function App() {
+  var _s = useState("welcome"), screen = _s[0], setScreen = _s[1];
+  var _s2 = useState(true), vis = _s2[0], setVis = _s2[1];
+  var _s3 = useState(0), quizScore = _s3[0], setQuizScore = _s3[1];
+  var _s4 = useState(10), quizTotal = _s4[0], setQuizTotal = _s4[1];
+
+  function go(next) {
+    setVis(false);
+    setTimeout(function(){ setScreen(next); setVis(true); window.scrollTo(0,0); }, 350);
+  }
+
+  var content = null;
+  if (screen === "welcome") content = e(Welcome,{onNext:function(){go("lesson");}});
+  else if (screen === "lesson") content = e(LessonViewer,{onComplete:function(){go("exercises");}});
+  else if (screen === "exercises") content = e(Exercises,{onComplete:function(){go("practice");}});
+  else if (screen === "practice") content = e(QuizEngine,{onComplete:function(s,t){setQuizScore(s);setQuizTotal(t);go("complete");}});
+  else if (screen === "complete") content = e(ModuleComplete,{quizScore:quizScore,quizTotal:quizTotal});
+
+  return e("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

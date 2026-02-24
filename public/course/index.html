@@ -3,137 +3,468 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAT R&W Course — PantherPrep</title>
+<title>SAT Reading & Writing — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171}
+:root{--ink:#f0f0f0;--paper:#0a0a0f;--accent:#a855f7;--accent-light:rgba(168,85,247,.12);--border:#1e293b;--muted:#94a3b8;--muted-dim:#64748b;--surface:#13131f;--surface-hover:#16162a;--sat:#a855f7;--sat-bg:rgba(168,85,247,.15);--conv:#10b981;--conv-bg:rgba(16,185,129,.12);--craft:#f59e0b;--craft-bg:rgba(245,158,11,.12);--info:#3b82f6;--info-bg:rgba(59,130,246,.12);--expr:#a855f7;--expr-bg:rgba(168,85,247,.12);--sim:#06b6d4;--sim-bg:rgba(6,182,212,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--finale:#eab308;--finale-bg:rgba(234,179,8,.12);--neutral:#94a3b8;--neutral-bg:rgba(100,116,139,.15)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
-.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
-.back-link:hover{color:var(--accent)}
-.course-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px;text-align:center}
-.course-icon{font-size:3rem;margin-bottom:12px}
-.course-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:700;margin-bottom:8px}
-.course-header .sub{color:var(--muted);font-size:1rem;max-width:600px;margin:0 auto}
-.stats{display:flex;justify-content:center;gap:24px;margin-top:18px}
-.stat{text-align:center}
-.stat-val{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--craft)}
-.stat-label{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;min-height:100vh}
 
-.domains{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:32px}
-.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
-.domain-pct{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
-.domain-name{font-size:.75rem;color:var(--muted);margin-top:2px}
+/* Grid background (original SAT feel) */
+.grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.03;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:40px 40px}
 
-.phase-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;margin-top:28px}
-.phase-diagnose{color:var(--accent)}
-.phase-build{color:var(--craft)}
-.phase-strategize{color:var(--express)}
-.phase-reflect{color:var(--info)}
-.mod-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
-.mod-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-decoration:none;color:inherit;transition:all .2s}
-.mod-card:hover{border-color:var(--craft);transform:translateX(4px)}
-.mod-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0}
-.mod-info{flex:1}
-.mod-title{font-weight:700;font-size:.95rem;margin-bottom:2px}
-.mod-desc{font-size:.82rem;color:var(--muted);line-height:1.4}
-.mod-arrow{color:var(--muted);font-size:1.1rem;flex-shrink:0}
+/* Top stripe (ported from PSAT) */
+.top-stripe{height:4px;background:linear-gradient(90deg,var(--conv) 0%,var(--conv) 25%,var(--craft) 25%,var(--craft) 50%,var(--info) 50%,var(--info) 75%,var(--expr) 75%);position:fixed;top:0;left:0;right:0;z-index:100}
 
-@media(max-width:600px){.stats{flex-wrap:wrap;gap:16px}.domains{grid-template-columns:1fr 1fr}}
+.container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:48px 20px 80px}
+
+/* ── Header ── */
+.header{text-align:center;margin-bottom:12px}
+.header .badge{display:inline-block;padding:6px 18px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;background:var(--sat-bg);border:1px solid rgba(168,85,247,.3);color:var(--sat);margin-bottom:18px}
+.header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;line-height:1.2;margin-bottom:10px}
+.header h1 span{color:var(--sat)}
+.header p{color:var(--muted);font-size:1.05rem;max-width:560px;margin:0 auto;line-height:1.6}
+
+/* ── Stats Row ── */
+.stats{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0 36px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 24px;text-align:center;min-width:110px}
+.stat .num{font-family:'JetBrains Mono',monospace;font-size:1.7rem;font-weight:700}
+.stat .label{color:var(--muted-dim);font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+.divider{height:1px;background:var(--border);margin:0 0 36px}
+
+/* ── Unit sections ── */
+.unit{margin-bottom:36px}
+
+/* Phase labels (ported from PSAT) */
+.phase-label{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:6px;padding:5px 14px;border-radius:6px}
+.phase-label.orient{color:var(--neutral);background:var(--neutral-bg);border:1px solid rgba(100,116,139,.25)}
+.phase-label.foundations{color:var(--conv);background:var(--conv-bg);border:1px solid rgba(16,185,129,.25)}
+.phase-label.craft-phase{color:var(--craft);background:var(--craft-bg);border:1px solid rgba(245,158,11,.25)}
+.phase-label.ideas-phase{color:var(--info);background:var(--info-bg);border:1px solid rgba(59,130,246,.25)}
+.phase-label.expression-phase{color:var(--expr);background:var(--expr-bg);border:1px solid rgba(168,85,247,.25)}
+.phase-label.assessment{color:var(--sim);background:var(--sim-bg);border:1px solid rgba(6,182,212,.25)}
+
+.unit-header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-radius:14px;margin-bottom:12px}
+.unit-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;font-family:'JetBrains Mono',monospace}
+.unit-info h2{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700}
+.unit-info .sub{font-size:.78rem;color:var(--muted-dim)}
+
+/* ── Module cards ── */
+.modules{display:flex;flex-direction:column;gap:8px;padding-left:18px}
+.module-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-decoration:none;color:inherit;transition:all .2s;cursor:pointer;position:relative;overflow:hidden}
+.module-card:hover{border-color:rgba(168,85,247,.4);transform:translateX(4px);background:var(--surface-hover)}
+.module-card .num-badge{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.module-card .info{flex:1;min-width:0}
+.module-card .title{font-size:.9rem;font-weight:700}
+.module-card .desc{font-size:.78rem;color:var(--muted-dim);margin-top:2px}
+.module-card .arrow{color:var(--muted-dim);font-size:1.1rem;transition:all .2s}
+.module-card:hover .arrow{color:var(--sat)}
+
+/* Boss cards */
+.module-card.boss{border-left:3px solid}
+
+/* Diagnostic M0 */
+.module-card.diagnostic{border-style:dashed}
+
+/* ── Tags (class-based, ported from PSAT pattern) ── */
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.tag{font-size:.62rem;font-weight:700;letter-spacing:.4px;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+.tag-lesson{background:var(--conv-bg);color:var(--conv)}
+.tag-practice{background:var(--conv-bg);color:var(--conv)}
+.tag-quiz{background:var(--conv-bg);color:var(--conv)}
+.tag-craft-lesson{background:var(--craft-bg);color:var(--craft)}
+.tag-craft-practice{background:var(--craft-bg);color:var(--craft)}
+.tag-craft-quiz{background:var(--craft-bg);color:var(--craft)}
+.tag-info-lesson{background:var(--info-bg);color:var(--info)}
+.tag-info-practice{background:var(--info-bg);color:var(--info)}
+.tag-info-quiz{background:var(--info-bg);color:var(--info)}
+.tag-expr-lesson{background:var(--expr-bg);color:var(--expr)}
+.tag-expr-practice{background:var(--expr-bg);color:var(--expr)}
+.tag-expr-quiz{background:var(--expr-bg);color:var(--expr)}
+.tag-boss{background:var(--wrong-bg);color:var(--wrong)}
+.tag-timed{background:var(--wrong-bg);color:var(--wrong)}
+.tag-qs{background:rgba(255,255,255,.05);color:var(--muted-dim)}
+.tag-neutral{background:var(--neutral-bg);color:var(--neutral)}
+.tag-sim{background:var(--sim-bg);color:var(--sim)}
+.tag-finale{background:var(--finale-bg);color:var(--finale)}
+.tag-drill{background:var(--craft-bg);color:var(--craft)}
+
+/* ── Footer ── */
+.footer{text-align:center;margin-top:40px;padding-top:28px;border-top:1px solid var(--border)}
+.footer p{color:var(--muted-dim);font-size:.78rem;line-height:1.6}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .stats{gap:8px}
+  .stat{min-width:70px;padding:12px 14px}
+  .stat .num{font-size:1.3rem}
+  .modules{padding-left:8px}
+  .module-card{padding:12px 14px;gap:10px}
+}
+
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.unit{animation:fadeUp .4s ease both}
+.unit:nth-of-type(1){animation-delay:.05s}
+.unit:nth-of-type(2){animation-delay:.1s}
+.unit:nth-of-type(3){animation-delay:.15s}
+.unit:nth-of-type(4){animation-delay:.2s}
+.unit:nth-of-type(5){animation-delay:.25s}
+.unit:nth-of-type(6){animation-delay:.3s}
 </style>
 </head>
 <body>
-<div class="top-stripe"></div>
-<div class="container">
-<a class="back-link" href="/index.html">← Back to PantherPrep</a>
 
-<div class="course-header">
-  <div class="course-icon">📚</div>
-  <h1>SAT Reading & Writing Course</h1>
-  <p class="sub">10 modules covering all four R&W domains — vocabulary, grammar, reading comprehension, rhetorical analysis, and test-day strategies. Aligned to the Digital SAT adaptive format.</p>
-  <div class="stats">
-    <div class="stat"><div class="stat-val">10</div><div class="stat-label">Modules</div></div>
-    <div class="stat"><div class="stat-val">18–28</div><div class="stat-label">Sessions</div></div>
-    <div class="stat"><div class="stat-val">54</div><div class="stat-label">SAT Questions</div></div>
-    <div class="stat"><div class="stat-val">4</div><div class="stat-label">Domains</div></div>
+<div class="grid-bg"></div>
+<div class="top-stripe"></div>
+
+<div class="container">
+
+<div class="header">
+  <div class="badge">📖 PantherPrep Course</div>
+  <h1>SAT <span>Reading & Writing</span></h1>
+  <p>18 interactive modules covering every question type on the digital SAT Reading & Writing section. Built for mastery.</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num" style="color:var(--sat)">18</div><div class="label">Modules</div></div>
+  <div class="stat"><div class="num" style="color:var(--info)">5</div><div class="label">Units</div></div>
+  <div class="stat"><div class="num" style="color:var(--sim)">17</div><div class="label">Question Types</div></div>
+  <div class="stat"><div class="num" style="color:var(--conv)">200+</div><div class="label">Practice Qs</div></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- MODULE 0 -->
+<div class="unit">
+  <div class="phase-label orient">Start Here — Orientation</div>
+  <div class="unit-header" style="background:var(--neutral-bg);border:1px solid rgba(100,116,139,.2)">
+    <div class="unit-num" style="background:rgba(100,116,139,.2);color:var(--neutral)">⚡</div>
+    <div class="unit-info">
+      <h2>Diagnostic & Orientation</h2>
+      <div class="sub">Baseline assessment, test structure, goal setting</div>
+    </div>
+  </div>
+  <div class="modules">
+    <a href="SAT_RW_module0.html" class="module-card diagnostic" style="border-color:rgba(100,116,139,.3)">
+      <div class="num-badge" style="background:var(--neutral-bg);color:var(--neutral)">0</div>
+      <div class="info">
+        <div class="title">Know Your Battlefield</div>
+        <div class="desc">Find your baseline score, understand the adaptive engine & set your target</div>
+        <div class="tags">
+          <span class="tag tag-neutral">15 questions</span>
+          <span class="tag tag-neutral">~20 min</span>
+          <span class="tag tag-neutral">diagnostic</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
   </div>
 </div>
 
-<div class="domains">
-  <div class="domain-card"><div class="domain-pct" style="color:var(--craft)">~28%</div><div class="domain-name">Craft & Structure</div></div>
-  <div class="domain-card"><div class="domain-pct" style="color:var(--info)">~26%</div><div class="domain-name">Information & Ideas</div></div>
-  <div class="domain-card"><div class="domain-pct" style="color:var(--express)">~20%</div><div class="domain-name">Expression of Ideas</div></div>
-  <div class="domain-card"><div class="domain-pct" style="color:var(--convention)">~26%</div><div class="domain-name">Standard English Conventions</div></div>
+<!-- UNIT 1: Standard English Conventions -->
+<div class="unit">
+  <div class="phase-label foundations">Phase 1 — Foundations</div>
+  <div class="unit-header" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15)">
+    <div class="unit-num" style="background:var(--conv-bg);color:var(--conv)">1</div>
+    <div class="unit-info">
+      <h2>Standard English Conventions</h2>
+      <div class="sub">Grammar, punctuation, and sentence structure · Modules 1–4</div>
+    </div>
+  </div>
+  <div class="modules">
+    <a href="SAT_RW_module1.html" class="module-card">
+      <div class="num-badge" style="background:var(--conv-bg);color:var(--conv)">1</div>
+      <div class="info">
+        <div class="title">Sentence Structure & Boundaries</div>
+        <div class="desc">Independent/dependent clauses, run-ons, fragments, coordination</div>
+        <div class="tags">
+          <span class="tag tag-lesson">lessons</span>
+          <span class="tag tag-practice">practice</span>
+          <span class="tag tag-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module2.html" class="module-card">
+      <div class="num-badge" style="background:var(--conv-bg);color:var(--conv)">2</div>
+      <div class="info">
+        <div class="title">Punctuation & Agreement</div>
+        <div class="desc">Commas, semicolons, colons, subject-verb & pronoun agreement</div>
+        <div class="tags">
+          <span class="tag tag-lesson">lessons</span>
+          <span class="tag tag-practice">practice</span>
+          <span class="tag tag-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module3.html" class="module-card">
+      <div class="num-badge" style="background:var(--conv-bg);color:var(--conv)">3</div>
+      <div class="info">
+        <div class="title">Advanced Conventions</div>
+        <div class="desc">Possessives, modifiers, parallelism, verb tense consistency</div>
+        <div class="tags">
+          <span class="tag tag-lesson">lessons</span>
+          <span class="tag tag-practice">practice</span>
+          <span class="tag tag-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module4.html" class="module-card boss" style="border-left-color:var(--conv)">
+      <div class="num-badge" style="background:rgba(16,185,129,.18);color:var(--conv)">4</div>
+      <div class="info">
+        <div class="title">⚔️ Conventions Boss Battle</div>
+        <div class="desc">25-question boss fight — defeat The Grammar Golem</div>
+        <div class="tags">
+          <span class="tag tag-boss">boss battle</span>
+          <span class="tag tag-qs">25 Qs</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
 </div>
 
-<div class="phase-label phase-diagnose">Phase 1: Diagnose</div>
-<div class="mod-list">
-  <a class="mod-card" href="module-1.html">
-    <div class="mod-num" style="background:var(--accent)">1</div>
-    <div class="mod-info"><div class="mod-title">Diagnostic & Orientation</div><div class="mod-desc">Baseline R&W assessment, error analysis framework, study plan creation, SAT R&W structure overview</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
+<!-- UNIT 2: Vocabulary & Craft -->
+<div class="unit">
+  <div class="phase-label craft-phase">Phase 2 — Skill Building</div>
+  <div class="unit-header" style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15)">
+    <div class="unit-num" style="background:var(--craft-bg);color:var(--craft)">2</div>
+    <div class="unit-info">
+      <h2>Vocabulary & Craft</h2>
+      <div class="sub">Words in context, precision, structure & purpose · Modules 5–8</div>
+    </div>
+  </div>
+  <div class="modules">
+    <a href="SAT_RW_module5.html" class="module-card">
+      <div class="num-badge" style="background:var(--craft-bg);color:var(--craft)">5</div>
+      <div class="info">
+        <div class="title">Words in Context</div>
+        <div class="desc">Context clues, connotation, tone matching, secondary meanings</div>
+        <div class="tags">
+          <span class="tag tag-craft-lesson">lessons</span>
+          <span class="tag tag-craft-practice">practice</span>
+          <span class="tag tag-craft-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module6.html" class="module-card">
+      <div class="num-badge" style="background:var(--craft-bg);color:var(--craft)">6</div>
+      <div class="info">
+        <div class="title">Precision & Word Choice</div>
+        <div class="desc">Scope, intensity, domain-specific language, precise revision</div>
+        <div class="tags">
+          <span class="tag tag-craft-lesson">lessons</span>
+          <span class="tag tag-craft-practice">practice</span>
+          <span class="tag tag-craft-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module7.html" class="module-card">
+      <div class="num-badge" style="background:var(--craft-bg);color:var(--craft)">7</div>
+      <div class="info">
+        <div class="title">Text Structure & Purpose</div>
+        <div class="desc">Author's purpose, text organization, rhetorical function</div>
+        <div class="tags">
+          <span class="tag tag-craft-lesson">lessons</span>
+          <span class="tag tag-craft-practice">practice</span>
+          <span class="tag tag-craft-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module8.html" class="module-card boss" style="border-left-color:var(--craft)">
+      <div class="num-badge" style="background:rgba(245,158,11,.18);color:var(--craft)">8</div>
+      <div class="info">
+        <div class="title">⚔️ Craft & Structure Boss Battle</div>
+        <div class="desc">25-question boss fight — defeat The Syntax Serpent</div>
+        <div class="tags">
+          <span class="tag tag-boss">boss battle</span>
+          <span class="tag tag-qs">25 Qs</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
 </div>
 
-<div class="phase-label phase-build">Phase 2: Build</div>
-<div class="mod-list">
-  <a class="mod-card" href="module-2.html">
-    <div class="mod-num" style="background:var(--craft)">2</div>
-    <div class="mod-info"><div class="mod-title">Vocabulary Foundations</div><div class="mod-desc">Words in context, precision of language, connotation vs. denotation, vocabulary-building strategies</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod-card" href="module-3.html">
-    <div class="mod-num" style="background:var(--convention)">3</div>
-    <div class="mod-info"><div class="mod-title">Grammar & Conventions I</div><div class="mod-desc">Sentence boundaries, subject-verb agreement, pronoun clarity, punctuation rules</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod-card" href="module-4.html">
-    <div class="mod-num" style="background:var(--convention)">4</div>
-    <div class="mod-info"><div class="mod-title">Grammar & Conventions II</div><div class="mod-desc">Modifiers, parallelism, verb tense, possessives, advanced punctuation patterns</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod-card" href="module-5.html">
-    <div class="mod-num" style="background:var(--info)">5</div>
-    <div class="mod-info"><div class="mod-title">Reading — The Three Key Questions</div><div class="mod-desc">Central ideas, command of evidence, inferences, data interpretation in reading passages</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod-card" href="module-6.html">
-    <div class="mod-num" style="background:var(--craft)">6</div>
-    <div class="mod-info"><div class="mod-title">Advanced Reading — Rhetoric, Purpose & Synthesis</div><div class="mod-desc">Text structure, author purpose, cross-text connections, rhetorical analysis</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
+<!-- UNIT 3: Information & Ideas -->
+<div class="unit">
+  <div class="unit-header" style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15)">
+    <div class="unit-num" style="background:var(--info-bg);color:var(--info)">3</div>
+    <div class="unit-info">
+      <h2>Information & Ideas</h2>
+      <div class="sub">Comprehension, evidence, data, logical reasoning · Modules 9–12</div>
+    </div>
+  </div>
+  <div class="modules">
+    <a href="SAT_RW_module9.html" class="module-card">
+      <div class="num-badge" style="background:var(--info-bg);color:var(--info)">9</div>
+      <div class="info">
+        <div class="title">Central Ideas & Comprehension</div>
+        <div class="desc">Main idea, detail, inference, summary skills</div>
+        <div class="tags">
+          <span class="tag tag-info-lesson">lessons</span>
+          <span class="tag tag-info-practice">practice</span>
+          <span class="tag tag-info-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module10.html" class="module-card">
+      <div class="num-badge" style="background:var(--info-bg);color:var(--info)">10</div>
+      <div class="info">
+        <div class="title">Command of Evidence & Data</div>
+        <div class="desc">Textual evidence, data interpretation, tables & graphs</div>
+        <div class="tags">
+          <span class="tag tag-info-lesson">lessons</span>
+          <span class="tag tag-info-practice">practice</span>
+          <span class="tag tag-info-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module11.html" class="module-card">
+      <div class="num-badge" style="background:var(--info-bg);color:var(--info)">11</div>
+      <div class="info">
+        <div class="title">Logical Reasoning & Synthesis</div>
+        <div class="desc">Strengthen/weaken, assumptions, completion, synthesis</div>
+        <div class="tags">
+          <span class="tag tag-info-lesson">lessons</span>
+          <span class="tag tag-info-practice">practice</span>
+          <span class="tag tag-info-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module12.html" class="module-card boss" style="border-left-color:var(--info)">
+      <div class="num-badge" style="background:rgba(59,130,246,.18);color:var(--info)">12</div>
+      <div class="info">
+        <div class="title">⚔️ Information & Ideas Boss Battle</div>
+        <div class="desc">25-question boss fight — defeat The Data Specter</div>
+        <div class="tags">
+          <span class="tag tag-boss">boss battle</span>
+          <span class="tag tag-qs">25 Qs</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
 </div>
 
-<div class="phase-label phase-strategize">Phase 3: Strategize</div>
-<div class="mod-list">
-  <a class="mod-card" href="module-7.html">
-    <div class="mod-num" style="background:var(--express)">7</div>
-    <div class="mod-info"><div class="mod-title">Transitions & Rhetorical Synthesis</div><div class="mod-desc">Logical transitions, rhetorical synthesis questions, expression of ideas strategies</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod-card" href="module-8.html">
-    <div class="mod-num" style="background:var(--express)">8</div>
-    <div class="mod-info"><div class="mod-title">Test Strategy & Time Management</div><div class="mod-desc">Elimination techniques, time budgeting, question triage, adaptive test strategies</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
+<!-- UNIT 4: Expression & Strategy -->
+<div class="unit">
+  <div class="phase-label expression-phase">Phase 3 — Integration</div>
+  <div class="unit-header" style="background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.15)">
+    <div class="unit-num" style="background:var(--expr-bg);color:var(--expr)">4</div>
+    <div class="unit-info">
+      <h2>Expression & Strategy</h2>
+      <div class="sub">Synthesis, transitions, expression, test strategy · Modules 13–15</div>
+    </div>
+  </div>
+  <div class="modules">
+    <a href="SAT_RW_module13.html" class="module-card">
+      <div class="num-badge" style="background:var(--expr-bg);color:var(--expr)">13</div>
+      <div class="info">
+        <div class="title">Rhetorical Synthesis & Expression</div>
+        <div class="desc">Notes-based synthesis, transitions, effective expression</div>
+        <div class="tags">
+          <span class="tag tag-expr-lesson">lessons</span>
+          <span class="tag tag-expr-practice">practice</span>
+          <span class="tag tag-expr-quiz">quiz</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module14.html" class="module-card">
+      <div class="num-badge" style="background:var(--expr-bg);color:var(--expr)">14</div>
+      <div class="info">
+        <div class="title">Test Strategy & Pacing</div>
+        <div class="desc">Digital SAT format, time management, triage, elimination</div>
+        <div class="tags">
+          <span class="tag tag-expr-lesson">lessons</span>
+          <span class="tag tag-drill">timed drill</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module15.html" class="module-card boss" style="border-left-color:var(--expr)">
+      <div class="num-badge" style="background:rgba(168,85,247,.18);color:var(--expr)">15</div>
+      <div class="info">
+        <div class="title">⚔️ Expression & Strategy Boss Battle</div>
+        <div class="desc">25-question boss fight — defeat The Rhetoric Phantom</div>
+        <div class="tags">
+          <span class="tag tag-boss">boss battle</span>
+          <span class="tag tag-qs">25 Qs</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
 </div>
 
-<div class="phase-label phase-reflect">Phase 4: Reflect</div>
-<div class="mod-list">
-  <a class="mod-card" href="module-9.html">
-    <div class="mod-num" style="background:var(--info)">9</div>
-    <div class="mod-info"><div class="mod-title">Full Practice Test & Deep Error Analysis</div><div class="mod-desc">Timed full R&W section, pattern report builder, study plan revision</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod-card" href="module-10.html">
-    <div class="mod-num" style="background:var(--accent)">10</div>
-    <div class="mod-info"><div class="mod-title">Final Review & Test-Day Preparation</div><div class="mod-desc">Must-know grammar rules, vocabulary review, strategy flash cards, test-day checklist</div></div>
-    <div class="mod-arrow">→</div>
-  </a>
+<!-- UNIT 5: Practice & Review -->
+<div class="unit">
+  <div class="phase-label assessment">Phase 4 — Assessment</div>
+  <div class="unit-header" style="background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.15)">
+    <div class="unit-num" style="background:var(--sim-bg);color:var(--sim)">5</div>
+    <div class="unit-info">
+      <h2>Practice & Review</h2>
+      <div class="sub">Full practice tests, diagnostics & study plan · Modules 16–18</div>
+    </div>
+  </div>
+  <div class="modules">
+    <a href="SAT_RW_module16.html" class="module-card">
+      <div class="num-badge" style="background:var(--sim-bg);color:var(--sim)">16</div>
+      <div class="info">
+        <div class="title">Full Practice Test 1</div>
+        <div class="desc">27 questions, 32-minute timer, all question types</div>
+        <div class="tags">
+          <span class="tag tag-timed">timed test</span>
+          <span class="tag tag-sim">27 Qs</span>
+          <span class="tag tag-sim">32 min</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module17.html" class="module-card">
+      <div class="num-badge" style="background:var(--sim-bg);color:var(--sim)">17</div>
+      <div class="info">
+        <div class="title">Full Practice Test 2</div>
+        <div class="desc">27 new questions, 32-minute timer, track your growth</div>
+        <div class="tags">
+          <span class="tag tag-timed">timed test</span>
+          <span class="tag tag-sim">27 Qs</span>
+          <span class="tag tag-sim">32 min</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="SAT_RW_module18.html" class="module-card" style="border:1px solid rgba(234,179,8,.3);background:linear-gradient(135deg,var(--surface),rgba(234,179,8,.04))">
+      <div class="num-badge" style="background:rgba(234,179,8,.18);color:var(--finale)">18</div>
+      <div class="info">
+        <div class="title">🏆 Course Finale & Diagnostics</div>
+        <div class="desc">Comprehensive review, final diagnostic, personalized study plan</div>
+        <div class="tags">
+          <span class="tag tag-finale">review</span>
+          <span class="tag tag-finale">diagnostic</span>
+          <span class="tag tag-finale">study plan</span>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<div class="footer">
+  <p>PantherPrep SAT R&W · 18 Modules · 5 Units · 200+ Practice Questions<br>Built with 🐾 for PAPS students</p>
 </div>
 
 </div>
-<script src="/translate.js"></script></body>
+</body>
 </html>

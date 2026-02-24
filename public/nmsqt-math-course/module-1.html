@@ -196,6 +196,13 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   .results-domains{grid-template-columns:1fr}
   .ec-options{flex-direction:column}
 }
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
+.strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
+.strat-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.strat-card.flipped .sf-front{display:none}.strat-card.flipped .sf-back{display:block}
+.sf-front{text-align:center}.sf-icon{font-size:2rem;margin-bottom:6px}.sf-title{font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:4px}
+.sf-hint{font-size:.78rem;color:var(--muted)}.sf-flip{font-size:.68rem;color:var(--accent);margin-top:8px;text-transform:uppercase;letter-spacing:1px}
+.sf-back{font-size:.85rem;color:#ccc;line-height:1.6;display:none}
 </style>
 </head>
 <body>
@@ -351,10 +358,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- ==================== SECTION 6: MINI DIAGNOSTIC ==================== -->
+
+<!-- STRATEGY TOOLKIT PREVIEW -->
+<div class="section">
+  <div class="section-label">Strategy Preview</div>
+  <h2>The PSAT/NMSQT Math Strategy Toolkit</h2>
+  <p>These six strategies will be your weapons throughout the course. Click each card to learn more. We’ll practice all of them in Modules 6–7.</p>
+  <div class="strat-grid" id="stratGrid"></div>
+</div>
+
 <div class="section">
   <div class="section-label">Session 2: Diagnostic</div>
   <h2>Mini Diagnostic Assessment</h2>
-  <p>Answer these 12 questions spanning all four domains. For each question, first rate your confidence, then select your answer. This helps identify both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
+  <p>Answer these 20 questions spanning all four domains. For each question, first rate your confidence, then select your answer. This helps identify both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
   <div id="diagQuestions"></div>
   <div style="text-align:center;margin-top:16px">
     <button class="btn btn-blue" id="diagSubmit" onclick="scoreDiag()" style="display:none">Score My Diagnostic →</button>
@@ -437,6 +453,21 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- KEY TAKEAWAYS -->
+
+<!-- HOMEWORK -->
+<div class="section">
+  <div class="section-label">Session 3: Action Items</div>
+  <h2>Homework</h2>
+  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
+    <p><strong style="color:var(--ink)">1. Complete Your Baseline Test</strong> — Full 44 questions, 70 minutes, official Bluebook practice test under test conditions.</p>
+    <p><strong style="color:var(--ink)">2. Self-Score & Mark Uncertain Questions</strong> — Score yourself before reviewing. Flag every question you weren’t sure about.</p>
+    <p><strong style="color:var(--ink)">3. Complete the Error Analysis Worksheet</strong> — One entry for every missed AND uncertain question.</p>
+    <p><strong style="color:var(--ink)">4. Use the Score Projector</strong> — Enter your raw scores above to estimate your scaled score and see where you stand.</p>
+    <p><strong style="color:var(--ink)">5. Identify Your Top 3 Priority Areas</strong> — Based on the error analysis, what domains/topics cost you the most points?</p>
+    <p style="margin:0"><strong style="color:var(--ink)">6. Explore Desmos</strong> — Go to <a href="https://desmos.com/calculator" target="_blank" style="color:var(--math)">desmos.com/calculator</a> and spend 15 minutes graphing equations and finding intersection points.</p>
+  </div>
+</div>
+
 <div class="section">
   <div class="section-label">Summary</div>
   <h2>Key Takeaways</h2>
@@ -575,42 +606,70 @@ function showCutoff(){
 
 // ============ MINI DIAGNOSTIC ============
 const DIAG_QS=[
-  {domain:'Algebra',color:'var(--algebra)',stem:'If <code>3(2x − 5) = 4x + 7</code>, what is the value of <code>x</code>?',
+  // ALGEBRA (5 questions)
+  {domain:'Algebra',color:'var(--algebra)',stem:'If <code>3(2x \u2212 5) = 4x + 7</code>, what is the value of <code>x</code>?',
    choices:['8','9','11','22/6'],correct:2,
-   explain:'Distribute: 6x − 15 = 4x + 7. Subtract 4x: 2x − 15 = 7. Add 15: 2x = 22. Divide: x = 11.'},
+   explain:'Distribute: 6x \u2212 15 = 4x + 7. Subtract 4x: 2x = 22. x = 11.'},
   {domain:'Algebra',color:'var(--algebra)',stem:'A gym charges a $50 registration fee plus $25 per month. Which equation represents the total cost <code>C</code> after <code>m</code> months?',
    choices:['C = 50m + 25','C = 25m + 50','C = 75m','C = 25(m + 50)'],correct:1,
-   explain:'The fixed fee ($50) is the constant, and $25 per month is the rate. C = 25m + 50 (slope-intercept form).'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'The system of equations <code>2x + 3y = 12</code> and <code>4x + 6y = 24</code> has how many solutions?',
+   explain:'Fixed fee ($50) is the constant, $25/month is the rate. C = 25m + 50.'},
+  {domain:'Algebra',color:'var(--algebra)',stem:'The system <code>2x + 3y = 12</code> and <code>4x + 6y = 24</code> has how many solutions?',
    choices:['Zero','Exactly one','Exactly two','Infinitely many'],correct:3,
-   explain:'The second equation is exactly 2× the first (4x+6y=24 = 2(2x+3y)=2(12)). They\'re the same line → infinitely many solutions.'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'What are the solutions to <code>x² − 5x + 6 = 0</code>?',
-   choices:['x = 2 and x = 3','x = −2 and x = −3','x = 1 and x = 6','x = −1 and x = −6'],correct:0,
-   explain:'Factor: (x − 2)(x − 3) = 0. So x = 2 or x = 3. Check: 2² − 5(2) + 6 = 4 − 10 + 6 = 0 ✓'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'If <code>f(x) = 2x² − 3</code>, what is <code>f(−4)</code>?',
-   choices:['29','−35','5','−11'],correct:0,
-   explain:'f(−4) = 2(−4)² − 3 = 2(16) − 3 = 32 − 3 = 29. Remember: (−4)² = 16 (positive!).'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'Which expression is equivalent to <code>(3x²)(4x³)</code>?',
-   choices:['7x⁵','12x⁵','12x⁶','7x⁶'],correct:1,
-   explain:'Multiply coefficients: 3 × 4 = 12. Add exponents (same base): x² · x³ = x⁵. Answer: 12x⁵.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A shirt originally costs $40 and is marked 30% off. What is the sale price?',
+   explain:'Second equation is 2\u00d7 the first. Same line \u2192 infinitely many solutions.'},
+  {domain:'Algebra',color:'var(--algebra)',stem:'The line through (\u22121, 4) and (3, 12) has slope:',
+   choices:['2','4','1/2','\u22122'],correct:0,
+   explain:'m = (12\u22124)/(3\u2212(\u22121)) = 8/4 = 2.'},
+  {domain:'Algebra',color:'var(--algebra)',stem:'If <code>|2x \u2212 5| = 9</code>, what is the sum of all solutions?',
+   choices:['5','7','9','12'],correct:0,
+   explain:'2x\u22125=9 \u2192 x=7. 2x\u22125=\u22129 \u2192 x=\u22122. Sum = 7+(\u22122) = 5.'},
+  // ADVANCED MATH (5 questions)
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'What are the solutions to <code>x\u00b2 \u2212 5x + 6 = 0</code>?',
+   choices:['x = 2 and x = 3','x = \u22122 and x = \u22123','x = 1 and x = 6','x = \u22121 and x = \u22126'],correct:0,
+   explain:'Factor: (x\u22122)(x\u22123) = 0. x = 2 or x = 3.'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'If <code>f(x) = 2x\u00b2 \u2212 3</code>, what is <code>f(\u22124)</code>?',
+   choices:['29','\u221235','5','\u221211'],correct:0,
+   explain:'f(\u22124) = 2(16) \u2212 3 = 29. Remember: (\u22124)\u00b2 = 16 (positive!).'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'Which expression is equivalent to <code>(3x\u00b2)(4x\u00b3)</code>?',
+   choices:['7x\u2075','12x\u2075','12x\u2076','7x\u2076'],correct:1,
+   explain:'Multiply coefficients: 12. Add exponents: x\u2075. Answer: 12x\u2075.'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'The vertex of <code>y = x\u00b2 \u2212 8x + 12</code> is at:',
+   choices:['(4, \u22124)','(\u22124, 4)','(4, 12)','(8, 12)'],correct:0,
+   explain:'x = \u2212b/2a = 8/2 = 4. y = 16\u221232+12 = \u22124. Vertex (4,\u22124).'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'A population starts at 500 and triples every 4 years. Which models this?',
+   choices:['500(3)^(t/4)','500(3)^(4t)','500 + 3t','1500t'],correct:0,
+   explain:'Triples every 4 years \u2192 base 3, exponent t/4.'},
+  // PSDA (5 questions)
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A shirt costs $40 and is 30% off. Sale price?',
    choices:['$10','$12','$28','$30'],correct:2,
-   explain:'30% of $40 = 0.30 × 40 = $12 discount. Sale price = $40 − $12 = $28. Or: $40 × 0.70 = $28.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'The mean of 5 numbers is 12. If a sixth number, 30, is added, what is the new mean?',
+   explain:'30% of 40 = 12. Sale: 40\u221212 = $28. Or: 40\u00d70.70 = $28.'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'The mean of 5 numbers is 12. If 30 is added, the new mean is:',
    choices:['14','15','17','21'],correct:1,
-   explain:'Sum of original 5 numbers = 5 × 12 = 60. New sum = 60 + 30 = 90. New mean = 90 ÷ 6 = 15.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A researcher surveys 200 randomly selected students from a university of 10,000. The survey finds 35% prefer online classes. Which is the best conclusion?',
-   choices:['Exactly 3,500 students prefer online classes','About 35% of students at this university likely prefer online classes','35% of all college students prefer online classes','The survey is invalid because it\'s too small'],correct:1,
-   explain:'A random sample supports inference about the population it was drawn from (this university), not all students everywhere.'},
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A right triangle has legs of length 5 and 12. What is the length of the hypotenuse?',
-   choices:['13','15','17','√119'],correct:0,
-   explain:'Pythagorean theorem: 5² + 12² = 25 + 144 = 169 = 13². This is the classic 5-12-13 triple.'},
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A circle has an area of 36π. What is its circumference?',
-   choices:['6π','12π','18π','36π'],correct:1,
-   explain:'Area = πr² = 36π → r² = 36 → r = 6. Circumference = 2πr = 2π(6) = 12π.'},
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'In a right triangle, if the side opposite angle θ is 3 and the hypotenuse is 5, what is sin(θ)?',
-   choices:['3/5','4/5','3/4','5/3'],correct:0,
-   explain:'SOH: sin(θ) = Opposite / Hypotenuse = 3/5. (The adjacent side would be 4, from the 3-4-5 triple.)'}
+   explain:'Sum = 60. New sum = 90. 90/6 = 15.'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A random sample of 200 from a university of 10,000 finds 35% prefer online classes. Best conclusion?',
+   choices:['Exactly 3,500 students prefer online','About 35% of this university likely prefers online','35% of all college students prefer online','The survey is too small'],correct:1,
+   explain:'Random sample supports inference about THIS university only.'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A scatterplot shows strong negative linear association. The correlation r is closest to:',
+   choices:['\u22120.92','\u22120.15','0.85','0.45'],correct:0,
+   explain:'Strong negative \u2192 r close to \u22121. \u22120.92.'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A price increases 20% then decreases 20%. Compared to original?',
+   choices:['Same','4% less','2% less','4% more'],correct:1,
+   explain:'100 \u2192 120 \u2192 96. Net: 4% less. Successive percents trap!'},
+  // GEOMETRY & TRIG (5 questions)
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A right triangle has legs 5 and 12. Hypotenuse?',
+   choices:['13','15','17','\u221a119'],correct:0,
+   explain:'5\u00b2 + 12\u00b2 = 169 = 13\u00b2. Classic 5-12-13 triple.'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A circle has area 36\u03c0. Its circumference?',
+   choices:['6\u03c0','12\u03c0','18\u03c0','36\u03c0'],correct:1,
+   explain:'r\u00b2=36 \u2192 r=6. C=2\u03c0r=12\u03c0.'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'In a right triangle, sin(\u03b8) = 3/5. What is cos(\u03b8)?',
+   choices:['3/5','4/5','3/4','5/3'],correct:1,
+   explain:'Opp=3, hyp=5. Adj=4 (3-4-5). cos=adj/hyp=4/5.'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'The circle <code>(x\u22123)\u00b2 + (y+1)\u00b2 = 25</code> has center:',
+   choices:['(3, \u22121)','(\u22123, 1)','(3, 1)','(\u22123, \u22121)'],correct:0,
+   explain:'(x\u2212h)\u00b2+(y\u2212k)\u00b2=r\u00b2. h=3, k=\u22121. Center (3,\u22121).'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A cone has radius 3 and height 8. Volume?',
+   choices:['24\u03c0','72\u03c0','8\u03c0','192\u03c0'],correct:0,
+   explain:'V=\u2153\u03c0r\u00b2h = \u2153\u03c0(9)(8) = 24\u03c0.'},
 ];
 
 let diagAnswers=new Array(DIAG_QS.length).fill(null);
@@ -672,14 +731,14 @@ function scoreDiag(){
   });
 
   const colors={Algebra:'var(--algebra)','Advanced Math':'var(--advanced)','Problem-Solving & Data':'var(--psda)','Geometry & Trig':'var(--geotrig)'};
-  const pct=Math.round((total/12)*100);
+  const pct=Math.round((total/DIAG_QS.length)*100);
   let scoreColor=pct>=80?'var(--correct)':pct>=60?'var(--psda)':'var(--wrong)';
 
   document.getElementById('diagResults').style.display='block';
   document.getElementById('diagResults').innerHTML=`
     <div class="results fade-in">
       <div class="results-score">
-        <div class="results-big" style="color:${scoreColor}">${total}/12</div>
+        <div class="results-big" style="color:${scoreColor}">${total}/${DIAG_QS.length}</div>
         <div class="results-sub">${pct}% correct</div>
       </div>
       <div class="results-domains">${Object.keys(domScores).map(d=>{
@@ -697,10 +756,30 @@ function scoreDiag(){
         <div style="font-size:.82rem;color:var(--muted);margin-top:8px;font-style:italic">Overconfident = you felt sure but got it wrong (watch for these!). Underconfident = you guessed but were right (you may know more than you think).</div>
       </div>`:''}
       <div style="margin-top:16px;font-size:.9rem;color:#ccc">
-        <strong style="color:var(--ink)">Next step:</strong> Use these results alongside your full Bluebook baseline to identify your priority domains for the course.
+        <strong style="color:var(--ink)">Next step:</strong> Use these results to focus your study. See your personalized plan below.
       </div>
+      <div id="studyPlan"></div>
     </div>`;
+  // Build study plan
+  buildStudyPlan(domScores,domTotals);
   document.getElementById('diagResults').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function buildStudyPlan(domScores,domTotals){
+  var mods={'Algebra':'Module 2','Advanced Math':'Module 3','Problem-Solving & Data':'Module 4','Geometry & Trig':'Module 5'};
+  var weak=[],strong=[];
+  Object.keys(domTotals).forEach(function(d){
+    var pct=domTotals[d]>0?domScores[d]/domTotals[d]:1;
+    if(pct<0.6)weak.push({d:d,m:mods[d],pct:Math.round(pct*100)});
+    else if(pct>=0.8)strong.push({d:d,pct:Math.round(pct*100)});
+  });
+  var h='<div style="margin-top:16px;padding:16px;background:var(--surface);border-radius:12px;border:2px solid var(--accent)">';
+  h+='<div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:8px">\ud83c\udfaf Your Study Plan</div>';
+  if(weak.length>0){h+='<div style="margin-bottom:8px"><strong style="color:var(--wrong)">Priority Review:</strong></div>';weak.forEach(function(w){h+='<div style="padding:4px 0;font-size:.88rem;color:#ccc">\u2022 <strong>'+w.d+'</strong> ('+w.pct+'%) \u2192 Focus on <strong>'+w.m+'</strong></div>';});}
+  if(strong.length>0){h+='<div style="margin:8px 0"><strong style="color:var(--correct)">Strong Areas:</strong></div>';strong.forEach(function(s){h+='<div style="padding:4px 0;font-size:.88rem;color:#ccc">\u2022 '+s.d+' ('+s.pct+'%) \u2014 review briefly</div>';});}
+  if(weak.length===0&&strong.length===0)h+='<div style="font-size:.88rem;color:#ccc">All domains 60\u201380%. Work through all modules with equal attention.</div>';
+  h+='<div style="margin-top:10px;font-size:.85rem;color:var(--muted)"><em>For a full baseline, take the Bluebook practice test (44 questions) described below.</em></div>';
+  h+='</div>';
+  document.getElementById('studyPlan').innerHTML=h;
 }
 renderDiag();
 
@@ -850,16 +929,38 @@ function updateScores(){
   const m1=parseInt(document.getElementById('m1Score').value);
   const m2=parseInt(document.getElementById('m2Score').value);
   const el=document.getElementById('scoreResult');
-  if(isNaN(m1)||isNaN(m2)){el.textContent='Enter both scores to see your total and recommended pathway.';return;}
+  if(isNaN(m1)||isNaN(m2)){el.textContent='Enter both scores to see your estimated scaled score.';return;}
   const total=m1+m2;
-  let path='',color='';
-  if(total<18){path='Developing (below 400) — Focus on Modules 2, 3, 4. Priority: linear equations, basic quadratics, Desmos basics.';color='var(--wrong)';}
-  else if(total<28){path='Approaching (400–530) — Complete all modules with extra time on your weakest domain.';color='var(--psda)';}
-  else if(total<36){path='Proficient (530–650) — Focus on Modules 3, 4, 6. Priority: quadratics, functions, Desmos power moves, strategy.';color='var(--math)';}
-  else{path='Advanced (650+) — Focus on Modules 3, 4, 6, 7. Priority: advanced functions, strategy optimization, time management.';color='var(--correct)';}
-  el.innerHTML=`<div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:${color}">${total}/44</div>
-    <div style="margin-top:6px;font-size:.88rem;color:#ccc">${path}</div>`;
+  const scaled=Math.round(160+((total/44)*600));
+  const capped=Math.min(Math.max(scaled,160),760);
+  let lvl,color,advice;
+  if(capped>=650){lvl='Advanced';color='var(--correct)';advice='Focus on Modules 3, 4, 6, 7. Priority: advanced functions, strategy optimization, National Merit push.';}
+  else if(capped>=530){lvl='Proficient';color='var(--math)';advice='Solid foundation! Focus on your weakest domain and Modules 3, 4, 6 to push higher.';}
+  else if(capped>=460){lvl='On Track';color='var(--accent)';advice='At or above the college readiness benchmark. Complete all modules with focus on weak areas.';}
+  else if(capped>=350){lvl='Building';color='var(--psda)';advice='Complete all modules with extra attention on Algebra (Module 2) and Data Analysis (Module 4).';}
+  else{lvl='Developing';color='var(--wrong)';advice='Start with Modules 2 and 4. Build your foundation in linear equations and data analysis.';}
+  const benchPct=((460-160)/600)*100;
+  const scorePct=((capped-160)/600)*100;
+  el.innerHTML=`<div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;color:${color}">${capped}</div>
+    <div style="font-size:.82rem;color:var(--muted)">${total}/44 raw \u00b7 ${lvl}</div>
+    <div style="height:8px;border-radius:4px;background:var(--border);margin:12px 0;position:relative">
+      <div style="height:100%;border-radius:4px;background:${color};width:${scorePct}%;transition:width .4s"></div>
+      <div style="position:absolute;left:${benchPct}%;top:-6px;width:2px;height:20px;background:var(--correct);border-radius:1px" title="460 Benchmark"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:12px"><span>160</span><span style="color:var(--correct)">460 benchmark \u2191</span><span>760</span></div>
+    <div style="font-size:.88rem;color:#ccc;line-height:1.6">${advice}</div>`;
 }
+
+// ============ STRATEGY TOOLKIT ============
+var STRATS=[
+  {icon:'\ud83d\udd0c',title:'Plug In (PIYON)',hint:'Variables in answer choices? Choose numbers.',back:'When you see variables in the answer choices, pick easy numbers (2, 3, 5, 10), solve to get a target answer, then test each choice with your numbers.'},
+  {icon:'\ud83d\udd04',title:'Backsolve (PITA)',hint:'Number answers? Plug them back in.',back:'When answer choices are specific numbers, start with B or C and plug it into the problem. If too big, try smaller; if too small, try larger.'},
+  {icon:'\ud83d\udccf',title:'Ballpark',hint:'Estimate first, eliminate the impossible.',back:'Before calculating, estimate the answer to eliminate clearly wrong choices. 15% of 820 \u2248 120 \u2014 anything far from that is gone.'},
+  {icon:'\ud83d\udcca',title:'Desmos',hint:'Your built-in graphing superpower.',back:'Many questions can be solved with Desmos. Graph equations, find intersections, use tables. Module 6 covers this in depth.'},
+  {icon:'\u274c',title:'POE for Math',hint:'Wrong answers reveal themselves.',back:'If the question asks for a positive value, eliminate negatives. If context requires small numbers, eliminate large ones. POE turns 25% odds into 33% or 50%.'},
+  {icon:'\u23f1\ufe0f',title:'POOD + LOTD',hint:'Your order, your pace, your backup letter.',back:'Answer confident questions first, flag uncertain ones. On second pass, attempt flagged questions. Use Letter of the Day for remaining guesses. Never leave blanks.'}
+];
+document.getElementById('stratGrid').innerHTML=STRATS.map(function(s){return '<div class="strat-card" onclick="this.classList.toggle(\'flipped\')"><div class="sf-front"><div class="sf-icon">'+s.icon+'</div><div class="sf-title">'+s.title+'</div><div class="sf-hint">'+s.hint+'</div><div class="sf-flip">tap to flip</div></div><div class="sf-back">'+s.back+'</div></div>';}).join('');
 </script>
 <script src="/translate.js"></script>
 </body>

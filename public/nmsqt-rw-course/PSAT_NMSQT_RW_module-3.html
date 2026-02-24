@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3: The Grammar Playbook, Part II — PSAT/NMSQT R&W — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#0e0e14;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#1e293b;--muted:#64748b;--sub:#94a3b8;--surface:#13131f;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.1);--info:#34d399;--conv:#fbbf24;--conv-bg:rgba(251,191,36,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.1);--expr:#f472b6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+input[type="range"]{width:100%}
+button{font-family:inherit}
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const {useState,useEffect,useCallback,useRef,useMemo}=React;
+const e=React.createElement;
+
+// ══════════ DESIGN TOKENS ══════════
+const C={
+  paper:"#0e0e14",surface:"#13131f",border:"#1e293b",ink:"#f0f0f0",sub:"#94a3b8",muted:"#64748b",
+  craft:"#60a5fa",craftBg:"rgba(96,165,250,.1)",accent:"#0891b2",accentLight:"rgba(8,145,178,.12)",
+  correct:"#22c55e",correctBg:"rgba(34,197,94,.12)",wrong:"#ef4444",wrongBg:"rgba(239,68,68,.12)",
+  conv:"#fbbf24",convBg:"rgba(251,191,36,.1)",nm:"#a78bfa",nmBg:"rgba(167,139,250,.1)",
+  info:"#34d399",expr:"#f472b6",rw:"#c084fc"
+};
+const btn=(bg,color,extra)=>({padding:"12px 28px",borderRadius:10,border:"none",background:bg,color,fontWeight:700,fontSize:15,cursor:"pointer",transition:"transform .12s, filter .12s",...extra});
+const btnSm=(bg,color,extra)=>btn(bg,color,{padding:"8px 18px",fontSize:13,...extra});
+
+// ══════════ CONTENT DATA ══════════
+
+// --- WARMUP (Retrieval from Module 2: Boundaries) ---
+const WARMUP=[
+  {passage:'The renovation of the city\'s oldest theater took three years longer than _______ the final result was widely praised as a masterful blend of preservation and modernization.',
+   choices:['expected, the','expected; the','expected the','expected and, the'],correct:1,type:'Boundaries',
+   explain:'Two ICs. A semicolon correctly joins them. (A) comma splice. (C) run-on. (D) misplaced comma.'},
+  {passage:'Although the new solar panel design was significantly more efficient than previous _______ the high manufacturing costs prevented it from being adopted widely.',
+   choices:['models. The','models; the','models, the','models the'],correct:2,type:'Boundaries',
+   explain:'"Although…models" is a dependent clause. A comma separates it from the following IC. Period (A) creates a fragment. Semicolons (B) need ICs on both sides.'},
+  {passage:'Dr. Singh developed a groundbreaking technique for detecting early-stage cancer using a simple blood _______ her method can identify tumors months before they would appear on traditional imaging scans.',
+   choices:['test, her','test: her','test, however, her','test her'],correct:1,type:'Boundaries',
+   explain:'The second IC explains what makes the technique "groundbreaking." A colon signals this. (A) comma splice. (C) comma splice with conjunctive adverb. (D) run-on.'},
+  {passage:'Because the river had been contaminated by decades of industrial _______ the local government allocated $50 million to a comprehensive cleanup effort.',
+   choices:['waste; the','waste. The','waste, the','waste the'],correct:2,type:'Boundaries',
+   explain:'"Because…waste" is a dependent clause. Comma correctly separates it from the IC. (A) semicolons need ICs both sides. (B) period creates a fragment.'},
+  {passage:'The quantum computer solved in four minutes a problem that would have taken a classical computer 10,000 _______ skeptics noted that the comparison involved a problem specifically designed to favor quantum approaches.',
+   choices:['years, skeptics','years; skeptics','years skeptics','years, but, skeptics'],correct:1,type:'Boundaries',
+   explain:'Two ICs. (A) comma splice. (B) semicolon works. (C) run-on. (D) unnecessary comma after "but."'},
+  {passage:'In the 1960s, marine biologist Rachel Carson warned that widespread pesticide use was devastating bird populations. Her book Silent Spring sparked a national _______ leading directly to the creation of the Environmental Protection Agency.',
+   choices:['debate, leading','debate. Leading','debate; leading','debate leading'],correct:0,type:'Boundaries',
+   explain:'"Leading…" is a participial phrase, not an IC. A comma attaches it. (B) creates a fragment. (C) semicolons need ICs on both sides.'}
+];
+
+// --- SUBJECT-VERB SURGERY ---
+const SV_DATA=[
+  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">analysis</b> <i style="color:#64748b">of the experimental results from three independent laboratories</i>',opts:['suggest','suggests'],correct:1,
+   explain:'Subject = "analysis" (singular). "Results" and "laboratories" are inside prepositional phrases.'},
+  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">paintings</b> <i style="color:#64748b">hanging in the west gallery of the modern art museum</i>',opts:['was restored','were restored'],correct:1,
+   explain:'Subject = "paintings" (plural). "Gallery" and "museum" are distractors inside prepositional phrases.'},
+  {before:'Each <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">student</b> <i style="color:#64748b">in the advanced placement classes offered by the district</i>',opts:['are required','is required'],correct:1,
+   explain:'"Each" is always singular. "Students," "classes," and "district" are all distractors.'},
+  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">collection</b> <i style="color:#64748b">of ancient coins, manuscripts, and ceramic artifacts discovered during the excavation</i>',opts:['have attracted','has attracted'],correct:1,
+   explain:'Subject = "collection" (singular). The list "coins, manuscripts, and ceramic artifacts" is inside the prepositional phrase.'},
+  {before:'Neither the <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">director</b> nor the <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">producers</b> <i style="color:#64748b">of the critically acclaimed documentary</i>',opts:['was available','were available'],correct:1,
+   explain:'With "neither…nor," the verb agrees with the nearer subject: "producers" (plural) → "were."'},
+  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">series</b> <i style="color:#64748b">of lectures on quantum mechanics that Professor Walsh delivered last semester</i>',opts:['were recorded','was recorded'],correct:1,
+   explain:'"Series" is singular (even though it ends in -s). "Lectures" is inside a prepositional phrase.'},
+  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">data</b> <i style="color:#64748b">collected from the three-year longitudinal study of urban bird populations</i>',opts:['indicates','indicate'],correct:1,
+   explain:'In formal/academic English, "data" is plural (singular: "datum"). The PSAT follows this convention.'},
+  {before:'Every one <i style="color:#64748b">of the proposals submitted by the engineering firms competing for the contract</i>',opts:['meet the requirements','meets the requirements'],correct:1,
+   explain:'"Every one" is singular. "Proposals," "firms," and "contract" are all prepositional phrase distractors.'},
+  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">committee</b> <i style="color:#64748b">responsible for reviewing applications from prospective members across all regional chapters</i>',opts:['have announced','has announced'],correct:1,
+   explain:'Collective nouns like "committee" are singular when acting as a unit (which is almost always on the PSAT).'},
+  {before:'A number <i style="color:#64748b">of recent studies conducted at universities in Europe and Asia</i>',opts:['has shown','have shown'],correct:1,
+   explain:'"A number of" = plural (it means "several/many"). Contrast with "the number of" = singular.'}
+];
+
+// --- CONVENTIONS BUILDER ---
+const BUILDER=[
+  {left:'The collection of ancient Roman coins',right:'to a private museum in Geneva.',
+   opts:['was donated','were donated','has been donated','have been donated'],
+   correct:[0,2],best:0,subtype:'Agreement',
+   explain:'"Collection" (singular) is the subject. "Coins" is inside the prep phrase. "Was donated" and "has been donated" both work; simple past is cleanest.'},
+  {left:'After analyzing the soil samples from three continents,',right:'that the mineral composition varied significantly by region.',
+   opts:['it was determined by the geologists','the geologists determined','determination was made by the geologists','determining by the geologists'],
+   correct:[1],best:1,subtype:'Modifier',
+   explain:'The geologists analyzed the samples, so "the geologists" must immediately follow the modifier. All other options create dangling modifiers.'},
+  {left:'The funding for the new laboratories',right:'until the board reviews the budget proposal next quarter.',
+   opts:['will not be approved','are not approved','were not approved','is not approving'],
+   correct:[0],best:0,subtype:'Tense',
+   explain:'"Until…next quarter" signals future time. "Will not be approved" is the correct future tense form.'},
+  {left:'Neither the principal nor the teachers',right:'with the proposed schedule changes for the fall semester.',
+   opts:['agrees','agree','has agreed','is agreeing'],
+   correct:[1],best:1,subtype:'Agreement',
+   explain:'With "neither…nor," the verb matches the nearer subject: "teachers" (plural) → "agree."'},
+  {left:'The researchers aimed to collect data efficiently, analyze it thoroughly,',right:'',
+   opts:['and presenting findings clearly.','and to present findings clearly.','and present findings clearly.','and clear presentation of findings.'],
+   correct:[2],best:2,subtype:'Parallelism',
+   explain:'The series uses bare infinitives after "to": "collect…, analyze…, and present…" Option C maintains the parallel pattern.'},
+  {left:'By the time the documentary aired,',right:'every interview featured in the film.',
+   opts:['the production team has already edited','the production team had already edited','the production team already edits','the production team will have already edited'],
+   correct:[1],best:1,subtype:'Tense',
+   explain:'"By the time X aired" (past) signals past perfect for the earlier action → "had already edited."'},
+  {left:'The symphony orchestra — along with two guest soloists and a choir of forty voices —',right:'a stunning performance of Beethoven\'s Ninth.',
+   opts:['delivered','have delivered','were delivering','deliver'],
+   correct:[0],best:0,subtype:'Agreement',
+   explain:'"The symphony orchestra" is the subject (singular). "Along with…" is a parenthetical aside — it doesn\'t change the subject number.'},
+  {left:'The new policy requires employees to submit timesheets on Friday, report expenses monthly,',right:'',
+   opts:['and attendance at quarterly reviews.','and attending quarterly reviews.','and attend quarterly reviews.','and that they attend quarterly reviews.'],
+   correct:[2],best:2,subtype:'Parallelism',
+   explain:'The series uses bare infinitives: "submit…, report…, and attend…" Nouns, gerunds, and clauses break the pattern.'}
+];
+
+// --- MODIFIER MATCH ---
+const MOD_DATA=[
+  {wrong:'Covered in frost, the scientist examined the specimens carefully.',right:'The scientist examined the specimens, which were covered in frost.',explain:'"Covered in frost" describes specimens, not the scientist.'},
+  {wrong:'After reviewing the evidence, the verdict was announced by the judge.',right:'After reviewing the evidence, the judge announced the verdict.',explain:'The judge reviewed the evidence, so "the judge" must follow the modifying phrase.'},
+  {wrong:'Flying over the canyon, the landscape amazed the passengers.',right:'Flying over the canyon, the passengers were amazed by the landscape.',explain:'The passengers are flying, not the landscape.'},
+  {wrong:'Exhausted from the long hike, the campsite was a welcome sight for the climbers.',right:'Exhausted from the long hike, the climbers found the campsite a welcome sight.',explain:'The climbers are exhausted, not the campsite.'},
+  {wrong:'Using advanced imaging technology, the tumor was detected by the radiologist.',right:'Using advanced imaging technology, the radiologist detected the tumor.',explain:'The radiologist is using the technology, not the tumor.'},
+  {wrong:'Praised by critics worldwide, audiences flocked to see the director\'s new film.',right:'Praised by critics worldwide, the director\'s new film attracted large audiences.',explain:'The film was praised, not the audiences.'}
+];
+
+// --- PARALLELISM SORT ---
+const PAR_DATA=[
+  {text:'The study examined how pollution affects air quality, water purity, and soil composition.',cat:'Parallel',why:'Three noun phrases: air quality, water purity, soil composition.'},
+  {text:'The new policy encourages recycling, reducing waste, and to conserve energy.',cat:'Not Parallel',why:'"recycling" (gerund), "reducing" (gerund), "to conserve" (infinitive) — the third item breaks the pattern.'},
+  {text:'The architect designed buildings that were innovative, sustainable, and that attracted international attention.',cat:'Not Parallel',why:'"innovative" (adjective), "sustainable" (adjective), "that attracted…" (clause) — the third item breaks the adjective pattern.'},
+  {text:'She succeeded not only by working hard but also by seeking mentorship from experienced colleagues.',cat:'Parallel',why:'"by working hard" and "by seeking mentorship" — both "by + gerund" phrases.'},
+  {text:'The candidate promised to lower taxes, increase funding for education, and that she would reform healthcare.',cat:'Not Parallel',why:'"to lower" (infinitive), "increase" (implied infinitive), "that she would reform" (clause) — the third breaks the pattern.'},
+  {text:'The program teaches students to think critically, to write persuasively, and to collaborate effectively.',cat:'Parallel',why:'Three parallel infinitive phrases: "to + verb + adverb."'},
+  {text:'The report was thorough, well-organized, and presented the findings clearly.',cat:'Not Parallel',why:'"thorough" (adjective), "well-organized" (adjective), "presented…" (verb phrase) — break in the adjective series.'},
+  {text:'Residents complained about the noise, the traffic congestion, and the lack of parking.',cat:'Parallel',why:'Three parallel noun phrases, each starting with "the."'}
+];
+
+// --- MIXED PRACTICE (14 questions, interleaved Boundaries + FSS) ---
+const PRACTICE=[
+  {passage:'The diversity of marine species found in coral reef ecosystems _______ scientists, who continue to discover new organisms each year.',
+   choices:['astonish','astonishes','have astonished','are astonishing'],correct:1,subtype:'Agreement',diff:'easy',
+   rule:'SVA: singular subject "diversity"',explain:'"Diversity" (singular) is the subject. "Species" and "ecosystems" are inside prepositional phrases. Singular subject → "astonishes."'},
+  {passage:'The architect envisioned a building that would blend seamlessly with the surrounding _______ her design incorporated living walls covered in native plants and a rooftop garden visible from the street below.',
+   choices:['landscape, her','landscape; her','landscape her','landscape, and, her'],correct:1,subtype:'Boundaries',diff:'easy',
+   rule:'Semicolon between ICs',explain:'Two ICs. (A) comma splice. (B) semicolon correct. (C) run-on. (D) unnecessary comma after "and."'},
+  {passage:'When the archaeologists first arrived at the site in 2018, they _______ that the structure was far older than initial surveys had suggested.',
+   choices:['discover','have discovered','had discovered','discovered'],correct:3,subtype:'Tense',diff:'medium',
+   rule:'Past tense consistency',explain:'The passage is in past tense ("arrived," "was," "had suggested"). The discovery happened at the time of arrival → simple past "discovered."'},
+  {passage:'_______ the research team identified several compounds that could potentially slow the progression of the disease.',
+   choices:['Analyzing thousands of molecular structures,','Having been analyzed for thousands of molecular structures,','Thousands of molecular structures being analyzed,','After analyzing, thousands of molecular structures by'],correct:0,subtype:'Modifier',diff:'medium',
+   rule:'Modifier must touch its subject',explain:'The research team is doing the analyzing. (A) correctly places "the research team" right after the modifying phrase.'},
+  {passage:'Although the initial trials were _______ the pharmaceutical company decided to invest an additional $200 million in the drug\'s development.',
+   choices:['disappointing; the','disappointing. The','disappointing, the','disappointing the'],correct:2,subtype:'Boundaries',diff:'easy',
+   rule:'Comma after DC',explain:'"Although the initial trials were disappointing" is a DC. A comma separates it from the IC. (A) semicolons need ICs on both sides. (B) period makes the DC a fragment.'},
+  {passage:'The new curriculum emphasizes not only analytical thinking and collaborative problem-solving but also _______ across multiple media platforms.',
+   choices:['students communicating effectively','effective communication','that students should communicate effectively','to communicate effectively'],correct:1,subtype:'Parallelism',diff:'medium',
+   rule:'Parallel noun phrases',explain:'"Not only X but also Y" — X = "analytical thinking and collaborative problem-solving" (noun phrases). Y must match: "effective communication" (noun phrase).'},
+  {passage:'The committee, along with several advisory board members and two external _______ unanimously approved the new policy on data privacy.',
+   choices:['consultants, have','consultants, has','consultants have','consultants; has'],correct:1,subtype:'Agreement',diff:'hard',
+   rule:'SVA: "along with" doesn\'t change subject number',explain:'"The committee" is the subject (singular). "Along with…consultants" is a parenthetical. Singular → "has."'},
+  {passage:'The festival attracted visitors from twelve _______ local businesses reported a 40% increase in revenue during the three-day event.',
+   choices:['countries, local','countries; local','countries local','countries: local'],correct:1,subtype:'Boundaries',diff:'easy',
+   rule:'Semicolon between ICs',explain:'Two ICs. (A) comma splice. (B) semicolon correct. (C) run-on.'},
+  {passage:'By the time the rescue team arrived at the remote mountain village, the floodwaters _______ most of the bridges connecting the settlement to the main road.',
+   choices:['destroyed','have destroyed','had already destroyed','will have destroyed'],correct:2,subtype:'Tense',diff:'medium',
+   rule:'Past perfect for earlier past action',explain:'The destruction happened BEFORE the arrival. Past perfect ("had destroyed") indicates an action completed before another past action.'},
+  {passage:'Originally bred to herd sheep across rugged Scottish _______ border collies are now among the most popular companion animals in urban households worldwide.',
+   choices:['terrain. Border','terrain; border','terrain, border','terrain border'],correct:2,subtype:'Modifier',diff:'easy',
+   rule:'Comma after participial phrase',explain:'"Originally bred…terrain" is a participial phrase modifying "border collies." A comma connects the modifier to the subject.'},
+  {passage:'Neither the lead researcher nor her two graduate _______ able to replicate the results of the original experiment.',
+   choices:['assistants was','assistants were','assistants is','assistant were'],correct:1,subtype:'Agreement',diff:'medium',
+   rule:'Neither/nor: verb matches nearer subject',explain:'With "neither…nor," the verb agrees with the nearer subject: "assistants" (plural) → "were."'},
+  {passage:'The poet\'s use of iambic pentameter gives the sonnet its characteristic _______ each line contains exactly ten syllables alternating between unstressed and stressed beats.',
+   choices:['rhythm, each','rhythm; each','rhythm each','rhythm and each'],correct:1,subtype:'Boundaries',diff:'medium',
+   rule:'Semicolon between ICs',explain:'Two ICs. (A) comma splice. (B) semicolon correct — second IC elaborates the first. (C) run-on.'},
+  {passage:'The company\'s sustainability report highlighted three key achievements: reducing carbon emissions by 30%, _______ and eliminating single-use plastics from all offices.',
+   choices:['the implementation of renewable energy sources,','implementing renewable energy sources,','to implement renewable energy sources,','renewable energy sources were implemented,'],correct:1,subtype:'Parallelism',diff:'hard',
+   rule:'Parallel gerund phrases',explain:'The series uses gerund phrases: "reducing…," "[verb]-ing…," "eliminating…" → "implementing" maintains the pattern.'},
+  {passage:'The migration patterns of Arctic terns _______ ornithologists for decades; these birds travel roughly 44,000 miles each year between their Arctic breeding grounds and Antarctic feeding areas.',
+   choices:['fascinate','fascinated','have fascinated','will fascinate'],correct:2,subtype:'Tense',diff:'hard',
+   rule:'Present perfect for ongoing past action',explain:'"For decades" signals a duration that started in the past and continues to the present → present perfect "have fascinated."'}
+];
+
+// --- 10 RULES ---
+const RULES=[
+  {num:1,text:'Period, semicolon, or colon between two independent clauses. Never a comma alone.',source:'M2'},
+  {num:2,text:'Comma + FANBOYS (For, And, Nor, But, Or, Yet, So) can join two ICs. "However," "therefore," "moreover" are NOT FANBOYS.',source:'M2'},
+  {num:3,text:'Comma after a dependent clause that comes before an independent clause. (DC, IC)',source:'M2'},
+  {num:4,text:'A semicolon requires an IC on both sides. A phrase or DC can\'t go on either side of a semicolon.',source:'M2'},
+  {num:5,text:'A colon requires an IC before it. What follows can be an IC, list, or explanation.',source:'M2'},
+  {num:6,text:'Subject-verb agreement: Cross out prepositional phrases and parentheticals to find the true subject. The verb matches the subject, not the nearest noun.',source:'M3'},
+  {num:7,text:'Verb tense consistency: Stay in the same tense unless a time marker signals a shift. Use past perfect ("had + verb") for the earlier of two past events.',source:'M3'},
+  {num:8,text:'Modifiers must touch what they modify. If a sentence starts with a participial phrase, the subject of the sentence must be the doer.',source:'M3'},
+  {num:9,text:'Parallel structure: Items in a list, comparison, or "not only…but also" must share the same grammatical form.',source:'M3'},
+  {num:10,text:'Pronouns must clearly match their antecedent in number and person. "Each," "every," "neither," "either" are singular.',source:'M3'}
+];
+
+// --- CHALLENGE MODE (Pronoun Case & Literary Passages) ---
+const CHALLENGE=[
+  {passage:'The playwright, _______ the committee had unanimously selected to receive the lifetime achievement award, delivered a speech that moved the audience to tears.',
+   choices:['who','whom','which','whose'],correct:1,diff:'hard',
+   rule:'Whom = object of "selected"',explain:'"The committee selected [whom]" — the pronoun receives the action of "selected." Object case = "whom."'},
+  {passage:'It was unclear _______ the funding would come from, since both the federal and state governments had recently imposed strict budget freezes.',
+   choices:['where','from where','which','whom'],correct:0,diff:'hard',
+   rule:'Adverb "where" for source/location',explain:'"Where the funding would come from" — "where" functions as a relative adverb indicating source. "From where" is redundant with "from" at the end.'},
+  {passage:'The researchers could not determine whether the decline in pollinator populations was caused by pesticide exposure, habitat loss, or a combination of both, _______ made it difficult to recommend a single policy intervention.',
+   choices:['that','which','this','it'],correct:1,diff:'hard',
+   rule:'Non-restrictive "which" for clause antecedent',explain:'"Which" refers to the entire preceding situation (the inability to determine the cause). Non-restrictive clauses use "which," not "that."'},
+  {passage:'The study compared the test scores of students _______ had completed the preparatory course with those of students who had not.',
+   choices:['who','whom','which','whose'],correct:0,diff:'hard',
+   rule:'Who = subject of "had completed"',explain:'The students performed the action of completing → subject case = "who." "Whom" would be incorrect here.'},
+  {passage:'Between the two researchers, Dr. Okafor has published more frequently than _______ though Dr. Lin\'s papers tend to receive more citations.',
+   choices:['her,','she,','her;','she;'],correct:1,diff:'hard',
+   rule:'Pronoun case in comparison',explain:'"Than she [has published]" — the implied verb makes "she" the subject. Comma needed for the following contrasting clause.'},
+  {passage:'In the valley below, where the river _______ its course through ancient limestone, the village had survived unchanged for centuries.',
+   choices:['has wound','wound','winds','winding'],correct:2,diff:'hard',
+   rule:'Tense: present for ongoing geography',explain:'The river\'s course through limestone is an ongoing geographical fact → present tense "winds." The village "had survived" is past perfect for the historical statement.'},
+  {passage:'So profound _______ the impact of the new legislation that even its most vocal opponents acknowledged it had fundamentally altered the political landscape.',
+   choices:['is','was','were','had been'],correct:1,diff:'hard',
+   rule:'Inverted syntax: subject after verb',explain:'Normal order: "The impact was so profound that…" Inverted: "So profound was the impact." Subject = "impact" (singular), past tense → "was."'},
+  {passage:'The artifacts — each of _______ had been meticulously cataloged by the museum staff — were moved to a climate-controlled storage facility.',
+   choices:['who','whom','which','that'],correct:2,diff:'hard',
+   rule:'"Each of which" for non-human antecedent',explain:'"Artifacts" are non-human → "which." "Who/whom" are for people. "That" doesn\'t work after a preposition.'},
+  {passage:'Having been denied funding for the third consecutive year, _______ to abandon the research project entirely.',
+   choices:['the decision was made by the scientists','it was decided by the scientists','the scientists decided','a decision was reached by the team to'],correct:2,diff:'hard',
+   rule:'Modifier must match subject',explain:'"Having been denied funding" describes the scientists. Only (C) places "the scientists" immediately after the modifier.'},
+  {passage:'The cellist performed the concerto with a technical precision and an emotional depth that _______ even the most discerning critics in the audience.',
+   choices:['impresses','impressed','have impressed','impressing'],correct:1,diff:'hard',
+   rule:'SVA + tense: past performance',explain:'The performance happened in the past → "impressed." The relative "that" refers to the compound "precision and depth."'},
+  {passage:'It was _______ whom the director ultimately entrusted with the most demanding role in the production, despite the protests of more senior cast members.',
+   choices:['she','her','they','them'],correct:1,diff:'hard',
+   rule:'Pronoun case after "whom"',explain:'"Her" is correct as the object of "entrusted." The dominant grammatical relationship is "entrusted [her] with."'}
+];
+
+// ══════════ UTILITY COMPONENTS ══════════
+
+function ProgressBar({current,total}){
+  const pct=total>0?Math.round(current/total*100):0;
+  return e("div",{style:{position:"fixed",top:0,left:0,right:0,zIndex:100}},
+    e("div",{style:{height:4,background:`linear-gradient(90deg,${C.craft} 0%,${C.craft} 28%,${C.info} 28%,${C.info} 54%,${C.conv} 54%,${C.conv} 80%,${C.expr} 80%)`}}),
+    e("div",{style:{height:3,background:C.border}},
+      e("div",{style:{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${C.conv},${C.accent})`,transition:"width .4s ease"}})));
+}
+
+function Badge({text,color,bg}){
+  return e("span",{style:{display:"inline-block",background:color||C.conv,color:bg||"#000",fontSize:11,fontWeight:700,letterSpacing:2,textTransform:"uppercase",padding:"5px 14px",borderRadius:16}},text);
+}
+
+function DiffBadge({diff}){
+  const col=diff==="easy"?C.correct:diff==="medium"?C.conv:C.wrong;
+  const bg=diff==="easy"?C.correctBg:diff==="medium"?C.convBg:C.wrongBg;
+  return e("span",{style:{fontSize:10,padding:"2px 10px",borderRadius:4,fontWeight:700,background:bg,color:col,textTransform:"uppercase",letterSpacing:1}},diff);
+}
+
+function Card({children,accent,style:s}){
+  return e("div",{style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:"18px 20px",marginBottom:12,borderLeft:accent?`3px solid ${accent}`:undefined,...s}},children);
+}
+
+function Callout({children,color,style:s}){
+  const c=color||C.accent;
+  return e("div",{style:{background:`${c}10`,border:`1px solid ${c}44`,borderRadius:10,padding:"14px 18px",marginBottom:16,fontSize:".9rem",...s}},children);
+}
+
+function QuizChoice({letter,text,onClick,disabled,state}){
+  let bg=C.paper,bdr=`2px solid ${C.border}`,tc="#ccc";
+  if(state==="correct"){bg=C.correctBg;bdr=`2px solid ${C.correct}`;tc=C.correct;}
+  else if(state==="wrong"){bg=C.wrongBg;bdr=`2px solid ${C.wrong}`;tc=C.wrong;}
+  else if(state==="selected"){bg=C.convBg;bdr=`2px solid ${C.conv}`;tc=C.conv;}
+  let letterBg=C.border,letterColor=C.muted;
+  if(state==="correct"){letterBg=C.correct;letterColor=C.paper;}
+  else if(state==="wrong"){letterBg=C.wrong;letterColor=C.paper;}
+  else if(state==="selected"){letterBg=C.conv;letterColor=C.paper;}
+  return e("button",{onClick,disabled,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"12px 16px",borderRadius:10,background:bg,border:bdr,cursor:disabled?"default":"pointer",textAlign:"left",width:"100%",transition:"all .15s"}},
+    e("span",{style:{minWidth:26,height:26,borderRadius:7,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:12,background:letterBg,color:letterColor,flexShrink:0}},letter),
+    e("span",{style:{color:tc,fontSize:14,lineHeight:1.7}},text));
+}
+
+function Explain({text,show}){
+  if(!show)return null;
+  return e("div",{style:{marginTop:10,padding:12,background:C.paper,borderRadius:8,fontSize:".85rem",color:C.sub,lineHeight:1.65,borderLeft:`3px solid ${C.correct}`}},text);
+}
+
+function RuleTag({rule}){
+  if(!rule)return null;
+  return e("div",{style:{marginTop:6,padding:"8px 12px",background:C.convBg,borderRadius:6,fontSize:".82rem",color:C.conv,fontWeight:600}},
+    "Rule: ",rule);
+}
+
+// ══════════ SCREEN: WELCOME ══════════
+function Welcome({onNext}){
+  const[show,setShow]=useState(false);
+  useEffect(()=>{setTimeout(()=>setShow(true),100);},[]);
+  const sessions=[
+    {icon:"🔄",title:"Retrieval Warm-Up",desc:"Review Module 2 Boundaries",time:"5 min"},
+    {icon:"🔬",title:"Subject-Verb Surgery",desc:"Find the true subject",time:"12 min"},
+    {icon:"🔧",title:"Conventions Builder",desc:"Construct correct sentences",time:"8 min"},
+    {icon:"🧩",title:"Modifier & Parallelism Lab",desc:"Drag-and-drop matching",time:"12 min"},
+    {icon:"⏱️",title:"Mixed Timed Practice",desc:"14 questions at test pace",time:"20 min"},
+    {icon:"📋",title:"The 10 Rules",desc:"Your Conventions cheat sheet",time:"5 min"}
+  ];
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    e(Badge,{text:"Module 3 • Phase 1: Conventions"}),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(2rem,5vw,3.2rem)",fontWeight:700,color:C.ink,lineHeight:1.1,textAlign:"center",marginTop:16,marginBottom:8}},"The Grammar Playbook, Part II"),
+    e("p",{style:{color:C.sub,fontSize:17,maxWidth:560,textAlign:"center",lineHeight:1.65,marginBottom:12}},"Form, Structure & Sense — Subject-Verb Agreement, Tense, Modifiers, and Parallelism"),
+    e("div",{style:{color:C.muted,fontSize:13,marginBottom:36,display:"flex",gap:20}},
+      e("span",null,"⏱ ~65 minutes"),e("span",null,"📋 7 sessions"),e("span",null,"🔍 Conventions")),
+    e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:14,maxWidth:700,width:"100%",marginBottom:44}},
+      sessions.map((s,i)=>e("div",{key:i,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:14,padding:"18px 16px",textAlign:"center"}},
+        e("div",{style:{fontSize:28,marginBottom:6}},s.icon),
+        e("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:3}},s.title),
+        e("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},s.desc),
+        e("div",{style:{color:C.conv,fontSize:11,fontWeight:600,marginTop:6}},s.time)))),
+    e("button",{onClick:onNext,style:btn(`linear-gradient(135deg,${C.conv},#d97706)`,C.paper),
+      onMouseOver:ev=>ev.currentTarget.style.transform="scale(1.04)",
+      onMouseOut:ev=>ev.currentTarget.style.transform="scale(1)"},"Start Module →"));
+}
+
+// ══════════ SCREEN: WARMUP ══════════
+function WarmupScreen({onComplete}){
+  const[answers,setAnswers]=useState(Array(WARMUP.length).fill(null));
+  const done=answers.every(a=>a!==null);
+  const score=answers.filter((a,i)=>a===WARMUP[i].correct).length;
+  function pick(qi,ci){
+    if(answers[qi]!==null)return;
+    setAnswers(p=>{const n=[...p];n[qi]=ci;return n;});
+  }
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 1 • Retrieval Warm-Up (5 min)"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Boundaries Review from Module 2"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7}},"6 Boundaries questions to keep Module 2 skills sharp while we layer on new material."),
+    WARMUP.map((q,qi)=>{
+      const answered=answers[qi]!==null;
+      return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1,transition:"all .3s"}},
+        e("div",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6,display:"inline-block",padding:"2px 8px",borderRadius:4,background:C.convBg,color:C.conv}},"Conventions — ",q.type," (Review)"),
+        e("div",{style:{background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:12,borderLeft:`3px solid ${C.muted}`}},q.passage),
+        e("div",{style:{fontSize:14,marginBottom:12,color:"#ddd"}},"Which choice completes the text so that it conforms to the conventions of Standard English?"),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+          q.choices.map((c,ci)=>{
+            let st=null;
+            if(answered&&ci===q.correct)st="correct";
+            else if(answered&&answers[qi]===ci)st="wrong";
+            return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:answered,onClick:()=>pick(qi,ci)});
+          })),
+        e(Explain,{text:q.explain,show:answered}));
+    }),
+    done&&e("div",{style:{textAlign:"center",padding:"16px 0"}},
+      e("div",{style:{fontSize:15,fontWeight:700,color:score>=5?C.correct:score>=3?C.conv:C.wrong,marginBottom:12}},score,"/",WARMUP.length," — ",score===6?"Perfect Boundaries recall!":score>=4?"Solid — the rules are sticking.":"Review the Boundaries rules from Module 2."),
+      e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${C.conv},#d97706)`,C.paper)},"Continue to Lessons →")));
+}
+
+// ══════════ SCREEN: LESSONS (SVA + Builder + Modifier/Parallelism) ══════════
+function LessonScreen({onComplete}){
+  const[phase,setPhase]=useState(0);
+  const titles=["Session 2: Subject-Verb Surgery","Session 2B: Conventions Builder","Session 3: Modifier & Parallelism Lab"];
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"center",gap:8,marginBottom:32}},
+      [0,1,2].map(i=>e("div",{key:i,style:{width:i===phase?28:10,height:8,borderRadius:4,background:i===phase?C.conv:i<phase?`${C.conv}66`:C.border,cursor:"pointer",transition:"all .3s"},onClick:()=>{if(i<=phase)setPhase(i);}}))),
+    phase===0&&e(SVASession,{onDone:()=>setPhase(1)}),
+    phase===1&&e(BuilderSession,{onDone:()=>setPhase(2)}),
+    phase===2&&e(ModParSession,{onDone:onComplete}));
+}
+
+// --- SVA Session ---
+function SVASession({onDone}){
+  const[answers,setAnswers]=useState(Array(SV_DATA.length).fill(null));
+  const done=answers.every(a=>a!==null);
+  const score=answers.filter((a,i)=>a===SV_DATA[i].correct).length;
+  function pick(qi,ci){if(answers[qi]!==null)return;setAnswers(p=>{const n=[...p];n[qi]=ci;return n;});}
+
+  return e("div",null,
+    e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 2 • Subject-Verb Surgery (12 min)"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Agreement Across the Distance"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:6,lineHeight:1.7}},"The PSAT's favorite trick is to put a long phrase between the subject and verb — often a prepositional phrase containing a noun of a different number. Your job: mentally cross out the distractor and connect the true subject to its verb."),
+    // Rule cards
+    e(Card,{accent:C.conv},
+      e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:6}},"Subject-Verb Agreement"),
+      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},"The verb must match the ",e("strong",null,"subject")," in number — not the nearest noun."),
+      e("div",{style:{fontSize:13,color:C.muted,fontStyle:"italic",padding:"6px 10px",background:C.paper,borderRadius:6,marginTop:8,lineHeight:1.6}},
+        e("span",{style:{color:C.wrong,textDecoration:"line-through"}},"The collection of rare manuscripts are valuable."),e("br",null),
+        e("span",{style:{color:C.correct}},"The collection of rare manuscripts is valuable."),e("br",null),
+        e("span",{style:{color:C.muted}},'Subject = "collection" (singular). "Manuscripts" is inside a prepositional phrase.'))),
+    e(Card,{accent:C.conv},
+      e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:6}},"Verb Tense Consistency"),
+      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},"Verbs should maintain a ",e("strong",null,"consistent tense"),' unless a time marker signals a shift ("previously," "now," "by next year").'),
+      e("div",{style:{fontSize:13,color:C.muted,fontStyle:"italic",padding:"6px 10px",background:C.paper,borderRadius:6,marginTop:8,lineHeight:1.6}},
+        e("span",{style:{color:C.wrong,textDecoration:"line-through"}},"The team analyzed the data and discovers a pattern."),e("br",null),
+        e("span",{style:{color:C.correct}},"The team analyzed the data and discovered a pattern."))),
+    e(Card,{accent:C.conv},
+      e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:6}},"Modifiers Must Touch What They Modify"),
+      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},"A modifier (especially one that opens a sentence) must be ",e("strong",null,"immediately followed by the thing it describes"),"."),
+      e("div",{style:{fontSize:13,color:C.muted,fontStyle:"italic",padding:"6px 10px",background:C.paper,borderRadius:6,marginTop:8,lineHeight:1.6}},
+        e("span",{style:{color:C.wrong,textDecoration:"line-through"}},"Running through the data, an error was discovered by the analyst."),e("br",null),
+        e("span",{style:{color:C.correct}},"Running through the data, the analyst discovered an error."))),
+    e(Card,{accent:C.conv},
+      e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:6}},"Parallel Structure"),
+      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},"Items in a list or comparison must share the ",e("strong",null,"same grammatical form"),"."),
+      e("div",{style:{fontSize:13,color:C.muted,fontStyle:"italic",padding:"6px 10px",background:C.paper,borderRadius:6,marginTop:8,lineHeight:1.6}},
+        e("span",{style:{color:C.wrong,textDecoration:"line-through"}},"The program teaches students to read critically, writing persuasively, and to speak confidently."),e("br",null),
+        e("span",{style:{color:C.correct}},"The program teaches students to read critically, to write persuasively, and to speak confidently."))),
+    // Practice
+    e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",margin:"20px 0 10px"}},"Subject-Verb Surgery Practice"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"In each sentence below, the subject is highlighted in blue and the distractor is dimmed. Select the correct verb form."),
+    SV_DATA.map((q,qi)=>{
+      const answered=answers[qi]!==null;
+      return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:10}},
+        e("div",{style:{fontSize:12,color:C.muted,marginBottom:6}},"Sentence ",qi+1),
+        e("div",{style:{fontSize:14,color:"#ddd",lineHeight:2,marginBottom:10,background:C.paper,padding:"12px 14px",borderRadius:8,borderLeft:`3px solid ${C.muted}`,dangerouslySetInnerHTML:{__html:q.before+" _______"}}}),
+        e("div",{style:{display:"flex",gap:8,flexWrap:"wrap"}},
+          q.opts.map((o,oi)=>{
+            let st=null;
+            if(answered&&oi===q.correct)st="correct";
+            else if(answered&&answers[qi]===oi)st="wrong";
+            let bg=C.paper,bdr=`2px solid ${C.border}`,tc="#ccc";
+            if(st==="correct"){bg=C.correctBg;bdr=`2px solid ${C.correct}`;tc=C.correct;}
+            else if(st==="wrong"){bg=C.wrongBg;bdr=`2px solid ${C.wrong}`;tc=C.wrong;}
+            return e("button",{key:oi,onClick:()=>pick(qi,oi),disabled:answered,style:{padding:"6px 14px",background:bg,border:bdr,borderRadius:8,cursor:answered?"default":"pointer",fontSize:14,color:tc,transition:"all .15s"}},o);
+          })),
+        e(Explain,{text:q.explain,show:answered}));
+    }),
+    done&&e("div",{style:{textAlign:"center",padding:"16px 0"}},
+      e("div",{style:{fontSize:15,fontWeight:700,color:score>=8?C.correct:score>=6?C.conv:C.wrong,marginBottom:12}},score,"/",SV_DATA.length," — ",score===10?"Perfect! You see through every distractor.":score>=7?"Strong. Review the tricky ones.":"Practice the \"cross out the preposition\" technique."),
+      e("button",{onClick:onDone,style:btn(C.conv,C.paper)},"Continue to Conventions Builder →")));
+}
+
+// --- Builder Session ---
+function BuilderSession({onDone}){
+  const[selected,setSelected]=useState(Array(BUILDER.length).fill(null));
+  const[confirmed,setConfirmed]=useState(Array(BUILDER.length).fill(false));
+  const done=confirmed.every(x=>x);
+  const score=confirmed.map((c,i)=>c&&BUILDER[i].correct.includes(selected[i])).filter(x=>x).length;
+
+  function sel(i,v){if(confirmed[i])return;setSelected(p=>{const n=[...p];n[i]=v;return n;});}
+  function confirm(i){if(selected[i]===null||confirmed[i])return;setConfirmed(p=>{const n=[...p];n[i]=true;return n;});}
+
+  return e("div",null,
+    e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 2B • Conventions Builder (8 min)"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Build the Correct Sentence"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:20,lineHeight:1.7}},"Here you ",e("strong",null,"construct")," the correct sentence by choosing the right form for the blank. Read the context, then pick the best completion."),
+    BUILDER.map((q,i)=>{
+      const s=selected[i];const c=confirmed[i];
+      const isCorrect=c&&q.correct.includes(s);
+      const isBest=c&&s===q.best;
+      return e("div",{key:i,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:10,borderLeft:`3px solid ${c?(isCorrect?C.correct:C.wrong):C.conv}`}},
+        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}},
+          e("span",{style:{fontSize:12,color:C.muted}},"Builder ",i+1," of ",BUILDER.length),
+          e("span",{style:{fontSize:11,fontWeight:700,letterSpacing:1,textTransform:"uppercase",padding:"2px 8px",borderRadius:4,background:C.convBg,color:C.conv}},q.subtype)),
+        e("div",{style:{fontSize:14,color:"#ddd",lineHeight:2,background:C.paper,padding:"12px 14px",borderRadius:8,borderLeft:`3px solid ${C.conv}`,marginBottom:10}},
+          q.left," ",e("strong",{style:{color:c?(isCorrect?C.correct:C.wrong):C.conv,borderBottom:`2px solid ${C.conv}`}},s!==null?q.opts[s]:"______")," ",q.right),
+        e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}},
+          q.opts.map((o,oi)=>{
+            let bg=C.paper,border=`2px solid ${C.border}`,color="#ccc";
+            if(c){
+              if(oi===q.best){bg=C.correctBg;border=`2px solid ${C.correct}`;color=C.correct;}
+              else if(q.correct.includes(oi)){bg="rgba(34,197,94,.06)";border=`1px solid rgba(34,197,94,.4)`;color=C.correct;}
+              else if(oi===s){bg=C.wrongBg;border=`2px solid ${C.wrong}`;color=C.wrong;}
+            }else if(oi===s){bg=C.convBg;border=`2px solid ${C.conv}`;color=C.conv;}
+            return e("button",{key:oi,onClick:()=>sel(i,oi),disabled:c,style:{padding:"10px 12px",background:bg,border,borderRadius:8,cursor:c?"default":"pointer",fontSize:14,color,textAlign:"center",fontWeight:(c&&oi===q.best)||oi===s?700:400,transition:"all .15s"}},o,c&&oi===q.best?" ★":"");
+          })),
+        !c&&s!==null&&e("div",{style:{textAlign:"center",marginTop:10}},
+          e("button",{onClick:()=>confirm(i),style:btnSm(C.conv,C.paper)},"Confirm")),
+        c&&e(Explain,{text:(isCorrect?(isBest?"Best answer! ":"Correct! (Though there's a better option) "):"Not quite. ")+q.explain,show:true}));
+    }),
+    done&&e("div",{style:{textAlign:"center",padding:"16px 0"}},
+      e("div",{style:{fontSize:15,fontWeight:700,color:score>=7?C.correct:score>=5?C.conv:C.wrong,marginBottom:12}},score,"/",BUILDER.length," — ",score===8?"Perfect construction!":score>=6?"Strong building skills.":"Review the rule cards, then try again."),
+      e("button",{onClick:onDone,style:btn(C.conv,C.paper)},"Continue to Modifier & Parallelism Lab →")));
+}
+
+// --- Modifier & Parallelism Lab ---
+function ModParSession({onDone}){
+  const[phase,setPhase]=useState(0);
+  return e("div",null,
+    e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 3 • Modifier & Parallelism Lab (12 min)"),
+    e("div",{style:{display:"flex",gap:8,marginBottom:24}},
+      e("button",{onClick:()=>setPhase(0),style:{...btnSm(phase===0?C.conv:"transparent",phase===0?C.paper:C.conv),border:`2px solid ${C.conv}`}},"Part A: Modifier Match"),
+      e("button",{onClick:()=>setPhase(1),style:{...btnSm(phase===1?C.conv:"transparent",phase===1?C.paper:C.conv),border:`2px solid ${C.conv}`}},"Part B: Parallel or Not?")),
+    phase===0&&e(ModifierMatch,null),
+    phase===1&&e(ParallelSort,null),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onDone,style:btn(`linear-gradient(135deg,${C.conv},#d97706)`,C.paper)},"Start Timed Practice →")));
+}
+
+function ModifierMatch(){
+  const shuffled=useMemo(()=>[...MOD_DATA.map((m,i)=>({...m,idx:i}))].sort(()=>.5-Math.random()),[]);
+  const[placed,setPlaced]=useState(()=>{const o={};MOD_DATA.forEach((_,i)=>o[i]=null);return o;});
+  const[checked,setChecked]=useState(false);
+  const[dragIdx,setDragIdx]=useState(null);
+
+  function drop(slot){
+    if(dragIdx===null||placed[slot]!==null)return;
+    setPlaced(p=>({...p,[slot]:dragIdx}));setDragIdx(null);setChecked(false);
+  }
+  function remove(slot){setPlaced(p=>({...p,[slot]:null}));setChecked(false);}
+  function check(){if(Object.values(placed).some(x=>x===null))return;setChecked(true);}
+  function reset(){const o={};MOD_DATA.forEach((_,i)=>o[i]=null);setPlaced(o);setChecked(false);}
+
+  const placedVals=Object.values(placed).filter(x=>x!==null);
+  const remaining=shuffled.filter(m=>!placedVals.includes(m.idx));
+  const correct=checked?Object.entries(placed).filter(([k,v])=>parseInt(k)===v).length:0;
+
+  return e("div",null,
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.3rem",fontWeight:700,marginBottom:8}},"Fix the Modifier"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"Each sentence has a ",e("strong",null,"misplaced or dangling modifier"),". Click a sentence from the bank, then click the matching corrected version."),
+    e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,padding:12,background:C.surface,border:`1px solid ${C.border}`,borderRadius:10,marginBottom:12,minHeight:48}},
+      remaining.length>0?remaining.map(m=>e("div",{key:m.idx,onClick:()=>setDragIdx(m.idx),style:{display:"inline-block",padding:"6px 12px",background:dragIdx===m.idx?C.convBg:C.surface,border:`2px solid ${dragIdx===m.idx?C.conv:C.border}`,borderRadius:8,cursor:"pointer",fontSize:13,margin:3,transition:"all .15s",userSelect:"none"}},m.wrong)):
+      e("span",{style:{fontSize:13,color:C.muted}},"All matched!")),
+    MOD_DATA.map((m,i)=>{
+      const p=placed[i];
+      const isCorrect=checked&&p===i;
+      const isWrong=checked&&p!==null&&p!==i;
+      return e("div",{key:i,style:{marginBottom:8}},
+        e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.correct,marginBottom:4}},'Corrected: "',m.right.substring(0,60),'…"'),
+        e("div",{onClick:()=>drop(i),style:{minHeight:48,background:isCorrect?C.correctBg:isWrong?C.wrongBg:C.paper,border:`2px dashed ${isCorrect?C.correct:isWrong?C.wrong:C.border}`,borderRadius:10,padding:10,cursor:"pointer",transition:"all .2s"}},
+          p!==null?e("div",{style:{fontSize:13}},MOD_DATA[p].wrong," ",!checked&&e("span",{onClick:ev=>{ev.stopPropagation();remove(i);},style:{cursor:"pointer",color:C.muted,fontSize:11}},"✕"),
+            checked&&e("div",{style:{fontSize:12,color:C.muted,marginTop:4}},isCorrect?"✓ Correct!":"✗ "+MOD_DATA[i].explain)):
+          e("span",{style:{fontSize:13,color:C.muted}},"Click to place here")));
+    }),
+    e("div",{style:{display:"flex",gap:8,marginTop:12}},
+      e("button",{onClick:check,style:btnSm(C.conv,C.paper)},"Check Matches"),
+      e("button",{onClick:reset,style:btnSm("transparent",C.conv,{border:`2px solid ${C.conv}`})},"Reset")),
+    checked&&e("div",{style:{marginTop:10,fontSize:14,fontWeight:700,color:correct===MOD_DATA.length?C.correct:C.wrong}},
+      correct,"/",MOD_DATA.length," — ",correct===MOD_DATA.length?"Perfect! You can spot every dangling modifier.":"Remember: the modifier must touch what it modifies."));
+}
+
+function ParallelSort(){
+  const shuffled=useMemo(()=>[...PAR_DATA].sort(()=>.5-Math.random()),[]);
+  const[placed,setPlaced]=useState({Parallel:[],NotParallel:[]});
+  const[checked,setChecked]=useState(false);
+  const[selected,setSelected]=useState(null);
+  const allPlaced=[...placed.Parallel,...placed.NotParallel];
+  const remaining=shuffled.filter(p=>!allPlaced.includes(p.text));
+
+  function placeIn(cat){
+    if(!selected)return;
+    if(allPlaced.includes(selected))return;
+    setPlaced(p=>({...p,[cat]:[...p[cat],selected]}));setSelected(null);setChecked(false);
+  }
+  function remove(cat,txt){setPlaced(p=>({...p,[cat]:p[cat].filter(x=>x!==txt)}));setChecked(false);}
+  function check(){if(allPlaced.length<PAR_DATA.length)return;setChecked(true);}
+  function reset(){setPlaced({Parallel:[],NotParallel:[]});setChecked(false);setSelected(null);}
+
+  let correct=0;
+  if(checked){
+    placed.Parallel.forEach(txt=>{const item=PAR_DATA.find(p=>p.text===txt);if(item&&item.cat==='Parallel')correct++;});
+    placed.NotParallel.forEach(txt=>{const item=PAR_DATA.find(p=>p.text===txt);if(item&&item.cat==='Not Parallel')correct++;});
+  }
+
+  return e("div",null,
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.3rem",fontWeight:700,marginBottom:8}},"Parallel or Not?"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"Click a sentence, then click the correct category to sort it."),
+    e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,padding:12,background:C.surface,border:`1px solid ${C.border}`,borderRadius:10,marginBottom:12,minHeight:48}},
+      remaining.length>0?remaining.map(p=>e("div",{key:p.text,onClick:()=>setSelected(p.text),style:{display:"inline-block",padding:"6px 12px",background:selected===p.text?C.convBg:C.surface,border:`2px solid ${selected===p.text?C.conv:C.border}`,borderRadius:8,cursor:"pointer",fontSize:13,margin:3,transition:"all .15s"}},p.text)):
+      e("span",{style:{fontSize:13,color:C.muted}},"All sorted!")),
+    e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}},
+      [{key:"Parallel",label:"Parallel",color:C.correct},{key:"NotParallel",label:"Not Parallel",color:C.wrong}].map(cat=>
+        e("div",{key:cat.key},
+          e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:cat.color,marginBottom:4}},cat.label),
+          e("div",{onClick:()=>placeIn(cat.key),style:{minHeight:60,background:C.paper,border:`2px dashed ${cat.color}40`,borderRadius:10,padding:10,cursor:"pointer"}},
+            placed[cat.key].length>0?placed[cat.key].map(txt=>{
+              const item=PAR_DATA.find(p=>p.text===txt);
+              const isRight=checked&&item&&item.cat===(cat.key==='NotParallel'?'Not Parallel':'Parallel');
+              return e("div",{key:txt,style:{fontSize:13,padding:6,background:checked?(isRight?C.correctBg:C.wrongBg):C.surface,border:`1px solid ${checked?(isRight?C.correct:C.wrong):C.border}`,borderRadius:6,marginBottom:4}},
+                txt," ",!checked&&e("span",{onClick:ev=>{ev.stopPropagation();remove(cat.key,txt);},style:{cursor:"pointer",color:C.muted,fontSize:11}},"✕"),
+                checked&&item&&e("div",{style:{fontSize:12,color:C.muted,marginTop:4}},isRight?"✓":"✗ Should be: "+item.cat," — ",item.why));
+            }):e("span",{style:{fontSize:13,color:C.muted}},"Click to place here"))))),
+    e("div",{style:{display:"flex",gap:8}},
+      e("button",{onClick:check,style:btnSm(C.conv,C.paper)},"Check Answers"),
+      e("button",{onClick:reset,style:btnSm("transparent",C.conv,{border:`2px solid ${C.conv}`})},"Reset")),
+    checked&&e("div",{style:{marginTop:10,fontSize:14,fontWeight:700,color:correct===PAR_DATA.length?C.correct:C.wrong}},
+      correct,"/",PAR_DATA.length," — ",correct===PAR_DATA.length?"Perfect! You can spot parallelism errors reliably.":"Check each list: do all items share the same grammatical form?"));
+}
+
+// ══════════ SCREEN: TIMED PRACTICE ══════════
+function TimedPractice({onComplete}){
+  const[started,setStarted]=useState(false);
+  const[current,setCurrent]=useState(0);
+  const[answers,setAnswers]=useState(Array(PRACTICE.length).fill(null));
+  const[timeLeft,setTimeLeft]=useState(18*60+40);
+  const[done,setDone]=useState(false);
+  const timerRef=useRef(null);
+
+  function start(){setStarted(true);timerRef.current=setInterval(()=>{setTimeLeft(t=>{if(t<=1){clearInterval(timerRef.current);return 0;}return t-1;});},1000);}
+  function pick(ci){if(answers[current]!==null||done)return;setAnswers(p=>{const n=[...p];n[current]=ci;return n;});}
+  function next(){if(current<PRACTICE.length-1)setCurrent(current+1);else finish();}
+  function finish(){if(timerRef.current)clearInterval(timerRef.current);setDone(true);}
+  useEffect(()=>{if(timeLeft<=0&&!done)finish();},[timeLeft]);
+  useEffect(()=>()=>{if(timerRef.current)clearInterval(timerRef.current);},[]);
+
+  const score=answers.filter((a,i)=>a===PRACTICE[i].correct).length;
+  const answered=answers[current]!==null;
+  const q=PRACTICE[current];
+  const m=Math.floor(timeLeft/60),s=timeLeft%60;
+  const pct=(timeLeft/(18*60+40))*100;
+
+  if(done){
+    const scorePct=Math.round(score/PRACTICE.length*100);
+    const byType={};
+    PRACTICE.forEach((q2,i)=>{if(!byType[q2.subtype])byType[q2.subtype]={c:0,t:0};byType[q2.subtype].t++;if(answers[i]===q2.correct)byType[q2.subtype].c++;});
+    const typeColors={Boundaries:C.conv,Agreement:C.craft,Tense:C.info,Modifier:C.expr,Parallelism:C.rw};
+    return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+      e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 4 • Results"),
+      e("div",{style:{background:C.surface,border:`2px solid ${C.conv}`,borderRadius:14,padding:28,textAlign:"center",marginBottom:24}},
+        e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"3rem",fontWeight:700,color:scorePct>=75?C.correct:scorePct>=50?C.conv:C.wrong}},score,"/",PRACTICE.length),
+        e("div",{style:{fontSize:14,color:C.muted,marginTop:4}},scorePct,"% correct · Mixed Conventions Practice")),
+      e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:24}},
+        Object.entries(byType).map(([name,d])=>{
+          const dp=d.t>0?Math.round((d.c/d.t)*100):0;
+          return e("div",{key:name,style:{padding:12,background:C.paper,borderRadius:8,textAlign:"center"}},
+            e("div",{style:{fontSize:11,color:typeColors[name]||C.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:4}},name),
+            e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.2rem",fontWeight:700,color:dp>=75?C.correct:dp>=50?C.conv:C.wrong}},d.c,"/",d.t),
+            e("div",{style:{height:6,borderRadius:3,background:C.border,marginTop:6,overflow:"hidden"}},
+              e("div",{style:{height:"100%",width:`${dp}%`,background:typeColors[name]||C.conv,borderRadius:3}})));
+        })),
+      e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",margin:"0 0 12px"}},"Review All Questions"),
+      PRACTICE.map((q2,qi)=>{
+        const a=answers[qi];
+        return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:10,opacity:.85}},
+          e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+            e("span",{style:{fontSize:13,fontWeight:700,color:C.ink}},"Q",qi+1),
+            e(DiffBadge,{diff:q2.diff}),
+            e("span",{style:{fontSize:13,fontWeight:700,color:a===q2.correct?C.correct:C.wrong}},a===q2.correct?"✓":"✗")),
+          e("div",{style:{fontSize:13,color:C.sub,lineHeight:1.6}},q2.explain),
+          e(RuleTag,{rule:q2.rule}));
+      }),
+      e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+        e("button",{onClick:()=>onComplete(score,PRACTICE.length),style:btn(`linear-gradient(135deg,${C.conv},#d97706)`,C.paper)},"Continue to 10 Rules →")));
+  }
+
+  if(!started){
+    return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}},
+      e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 4 • Timed Practice (20 min)"),
+      e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8,textAlign:"center"}},"Boundaries + Form, Structure & Sense"),
+      e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7,textAlign:"center",maxWidth:560}},"14 PSAT-format questions ",e("strong",null,"interleaving both Conventions sub-types")," — exactly how they appear on the real test. You have ",e("strong",null,"80 seconds per question"),"."),
+      e("button",{onClick:start,style:btn(`linear-gradient(135deg,${C.conv},#d97706)`,C.paper,{fontSize:17,padding:"14px 36px"})},"Start Timed Practice (18:40) →"));
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:pct<20?C.wrong:C.muted,textAlign:"right",marginBottom:4}},m,":",String(s).padStart(2,"0")),
+    e("div",{style:{height:6,borderRadius:3,background:C.border,marginBottom:12,overflow:"hidden"}},
+      e("div",{style:{height:"100%",borderRadius:3,background:pct<20?C.wrong:C.conv,width:`${pct}%`,transition:"width .1s linear"}})),
+    e("div",{style:{display:"flex",gap:4,marginBottom:16,flexWrap:"wrap"}},
+      PRACTICE.map((_,i)=>{
+        let dotStyle={width:28,height:28,borderRadius:"50%",border:`2px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",transition:"all .2s"};
+        if(answers[i]!==null&&answers[i]===PRACTICE[i].correct)dotStyle={...dotStyle,borderColor:C.correct,background:C.correctBg,color:C.correct};
+        else if(answers[i]!==null)dotStyle={...dotStyle,borderColor:C.wrong,background:C.wrongBg,color:C.wrong};
+        if(i===current)dotStyle={...dotStyle,borderColor:C.conv,boxShadow:`0 0 0 3px ${C.convBg}`};
+        return e("div",{key:i,style:dotStyle},i+1);
+      })),
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+      e("span",{style:{fontSize:15,fontWeight:700,color:C.ink}},"Question ",current+1," of ",PRACTICE.length),
+      e(DiffBadge,{diff:q.diff})),
+    e("div",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6,display:"inline-block",padding:"2px 8px",borderRadius:4,background:C.convBg,color:C.conv}},"Conventions — ",q.subtype),
+    e("div",{style:{background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:12,borderLeft:`3px solid ${C.muted}`}},q.passage),
+    e("div",{style:{fontSize:14,marginBottom:12,color:"#ddd"}},"Which choice completes the text so that it conforms to the conventions of Standard English?"),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:16}},
+      q.choices.map((c,ci)=>{
+        let st=null;
+        if(answered&&ci===q.correct)st="correct";
+        else if(answered&&answers[current]===ci)st="wrong";
+        return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:answered,onClick:()=>pick(ci)});
+      })),
+    e(Explain,{text:q.explain,show:answered}),
+    answered&&e("div",null,e(RuleTag,{rule:q.rule}),
+      e("div",{style:{textAlign:"center",marginTop:16}},
+        e("button",{onClick:next,style:btn(C.conv,C.paper)},current<PRACTICE.length-1?"Next Question →":"See Results →"))));
+}
+
+// ══════════ SCREEN: 10 RULES + ERROR LOG ══════════
+function RulesScreen({practiceScore,practiceTotal,onComplete}){
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 5 • Reference Sheet"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"The 10 Rules That Cover 90%"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:20,lineHeight:1.7}},"After two modules of Conventions, here's your cheat sheet. These 10 rules cover the vast majority of Standard English Conventions questions on the PSAT."),
+    e("div",{style:{background:C.surface,border:`2px solid ${C.conv}`,borderRadius:14,padding:22,marginBottom:24}},
+      e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:12,color:C.conv}},"📋 Your Conventions Cheat Sheet"),
+      RULES.map(r=>e("div",{key:r.num,style:{display:"flex",alignItems:"flex-start",gap:10,padding:10,background:C.paper,borderRadius:8,marginBottom:6,border:`1px solid ${C.border}`}},
+        e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1rem",fontWeight:700,color:C.conv,minWidth:28,textAlign:"center"}},r.num),
+        e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.5,flex:1},dangerouslySetInnerHTML:{__html:r.text+" <span style='font-size:.72rem;color:#64748b;opacity:.7'>("+r.source+")</span>"}}))),
+      e("div",{style:{textAlign:"center",marginTop:14}},
+        e("button",{onClick:()=>{
+          const txt='PSAT/NMSQT RW — 10 CONVENTIONS RULES\n'+RULES.map(r=>`${r.num}. ${r.text}`).join('\n');
+          navigator.clipboard.writeText(txt).then(()=>alert('Rules copied!')).catch(()=>alert('Copy failed.'));
+        },style:btnSm(C.conv,C.paper)},"📋 Copy to Clipboard"))),
+    e(Callout,{color:C.info},
+      e("strong",{style:{color:C.info}},"How to use this: "),"Before each practice test, re-read these 10 rules. After each practice test, check which rules you violated. If a rule is on this list and you still missed it, that's a drilling priority — not a knowledge gap."),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${C.nm},#7c3aed)`,C.paper)},"Enter Challenge Mode ⭐ →")));
+}
+
+// ══════════ SCREEN: CHALLENGE MODE ══════════
+function ChallengeMode({onComplete}){
+  const[answers,setAnswers]=useState(Array(CHALLENGE.length).fill(null));
+  const[timeLeft,setTimeLeft]=useState(8*60);
+  const[started,setStarted]=useState(false);
+  const[done,setDone]=useState(false);
+  const timerRef=useRef(null);
+  const allDone=answers.every(a=>a!==null);
+  const score=answers.filter((a,i)=>a===CHALLENGE[i].correct).length;
+
+  function start(){setStarted(true);timerRef.current=setInterval(()=>{setTimeLeft(t=>{if(t<=1){clearInterval(timerRef.current);return 0;}return t-1;});},1000);}
+  function pick(qi,ci){if(answers[qi]!==null||done)return;setAnswers(p=>{const n=[...p];n[qi]=ci;return n;});}
+  useEffect(()=>{if(timeLeft<=0&&!done){setDone(true);}},[timeLeft]);
+  useEffect(()=>()=>{if(timerRef.current)clearInterval(timerRef.current);},[]);
+
+  const m2=Math.floor(timeLeft/60),s2=timeLeft%60;
+  const pct2=(timeLeft/(8*60))*100;
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{background:C.nmBg,border:`2px solid ${C.nm}66`,borderRadius:14,padding:22,marginBottom:24}},
+      e("div",{style:{display:"inline-block",background:C.nm,color:"#fff",fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",padding:"4px 12px",borderRadius:12,marginBottom:12}},"⭐ Challenge Mode"),
+      e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.4rem",fontWeight:700,marginBottom:12}},"Pronoun Case & Literary Passages"),
+      e("p",{style:{fontSize:14,color:"#ccc",lineHeight:1.7}},"The hardest Form, Structure & Sense questions use complex pronoun constructions and inverted or archaic syntax. These are the questions that separate 700+ from 650.")),
+    // Who vs Whom rules
+    e(Card,{accent:C.nm},
+      e("div",{style:{color:C.nm,fontWeight:700,fontSize:15,marginBottom:6}},"Who vs. Whom"),
+      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},e("code",{style:{background:C.nmBg,color:C.nm,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"Who")," = subject. ",e("code",{style:{background:C.nmBg,color:C.nm,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"Whom")," = object. Test: replace with he/she → who, or him/her → whom.")),
+    e(Card,{accent:C.nm},
+      e("div",{style:{color:C.nm,fontWeight:700,fontSize:15,marginBottom:6}},"Comparisons with Implied Verbs"),
+      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},'"She is taller than ',e("strong",null,"I"),' [am]." Complete the implied verb to test the case.')),
+    !started?e("div",{style:{textAlign:"center",marginTop:16}},
+      e("button",{onClick:start,style:btn(C.nm,"#fff")},"Start Challenge Sprint (8 min) →")):
+    e("div",null,
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:pct2<25?C.wrong:C.muted,textAlign:"right",marginBottom:4}},m2,":",String(s2).padStart(2,"0")),
+      e("div",{style:{height:6,borderRadius:3,background:C.border,marginBottom:16,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:pct2<25?C.wrong:C.nm,width:`${pct2}%`,transition:"width .1s linear"}})),
+      CHALLENGE.map((q,qi)=>{
+        const answered=answers[qi]!==null;
+        return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1}},
+          e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}},
+            e("span",{style:{fontSize:12,color:C.nm,fontWeight:700}},"Challenge ",qi+1," of ",CHALLENGE.length),
+            e("span",{style:{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",padding:"3px 10px",borderRadius:4,background:C.wrongBg,color:C.wrong}},q.diff)),
+          e("div",{style:{background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:12,borderLeft:`3px solid ${C.muted}`}},q.passage),
+          e("div",{style:{fontSize:14,marginBottom:12,color:"#ddd"}},"Which choice completes the text so that it conforms to the conventions of Standard English?"),
+          e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+            q.choices.map((c,ci)=>{
+              let st=null;
+              if(answered&&ci===q.correct)st="correct";
+              else if(answered&&answers[qi]===ci)st="wrong";
+              return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:answered,onClick:()=>pick(qi,ci)});
+            })),
+          answered&&e("div",null,e(Explain,{text:q.explain,show:true}),e(RuleTag,{rule:q.rule})));
+      }),
+      (allDone||done)&&e("div",{style:{textAlign:"center",padding:"20px 0"}},
+        e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"2rem",fontWeight:700,color:C.nm}},score,"/",CHALLENGE.length),
+        e("div",{style:{fontSize:14,color:C.muted,marginBottom:16}},score>=7?"Outstanding! You handle inverted syntax and pronoun case with precision.":score>=5?"Strong work. Drill who/whom and inverted syntax — they appear on nearly every hard Module 2.":"These are the hardest grammar questions on the test. Review the rule cards and practice the he/him substitution test."),
+        e("button",{onClick:()=>onComplete(score),style:btn(`linear-gradient(135deg,${C.nm},#7c3aed)`,C.paper)},"Complete Module →"))));
+}
+
+// ══════════ SCREEN: MODULE COMPLETE ══════════
+function ModuleComplete({practiceScore,practiceTotal,challengeScore}){
+  const practicePct=Math.round(practiceScore/practiceTotal*100);
+  const[show,setShow]=useState(false);
+  useEffect(()=>{setTimeout(()=>setShow(true),100);},[]);
+
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",textAlign:"center",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    e("div",{style:{fontSize:64,marginBottom:16}},"🎉"),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.8rem,4vw,2.8rem)",fontWeight:700,color:C.conv,marginBottom:8}},"Module 3 Complete"),
+    e("p",{style:{color:C.sub,fontSize:16,marginBottom:32,maxWidth:480}},"You've conquered Form, Structure & Sense. Combined with Module 2, you now own the entire Conventions domain."),
+    e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:16,maxWidth:600,width:"100%",marginBottom:32}},
+      e("div",{style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:16,padding:24,textAlign:"center"}},
+        e("div",{style:{color:C.conv,fontSize:42,fontWeight:900,fontFamily:"'JetBrains Mono',monospace"}},practiceScore,"/",practiceTotal),
+        e("div",{style:{color:C.sub,fontSize:13,marginTop:4}},"Timed Practice (",practicePct,"%)"),
+        e("div",{style:{height:6,background:C.border,borderRadius:3,marginTop:12,overflow:"hidden"}},
+          e("div",{style:{height:"100%",width:`${practicePct}%`,background:`linear-gradient(90deg,${C.conv},${C.accent})`,borderRadius:3}}))),
+      e("div",{style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:16,padding:24,textAlign:"center"}},
+        e("div",{style:{color:C.nm,fontSize:42,fontWeight:900,fontFamily:"'JetBrains Mono',monospace"}},challengeScore,"/",CHALLENGE.length),
+        e("div",{style:{color:C.sub,fontSize:13,marginTop:4}},"Challenge Mode"),
+        e("div",{style:{height:6,background:C.border,borderRadius:3,marginTop:12,overflow:"hidden"}},
+          e("div",{style:{height:"100%",width:`${Math.round(challengeScore/CHALLENGE.length*100)}%`,background:`linear-gradient(90deg,${C.nm},#7c3aed)`,borderRadius:3}})))),
+    e(Card,{accent:C.conv,style:{maxWidth:520,textAlign:"left"}},
+      e("div",{style:{color:C.ink,fontWeight:700,fontSize:15,marginBottom:8}},"Key Takeaways"),
+      e("div",{style:{color:C.sub,fontSize:13,lineHeight:1.7}},
+        practicePct>=80?"Strong performance! Your Conventions skills cover both Boundaries and FSS. The 10 Rules cheat sheet is your ongoing review tool — glance at it before every practice test.":
+        practicePct>=60?"Good foundation. Focus on the rule types you missed most frequently — your error log tells you exactly what to drill. The 10 Rules sheet is your study companion.":
+        "Keep building! Review the 4 rule cards from this module daily. Practice identifying the true subject in long sentences, and watch for modifier placement. The 10 Rules sheet is your lifeline.")),
+    e(Card,{accent:C.conv,style:{maxWidth:520,textAlign:"left",marginTop:8}},
+      e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:8}},"Homework"),
+      e("div",{style:{color:"#ccc",fontSize:13,lineHeight:1.9}},
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"1. Subject-Verb Hunt")," — In any textbook or article, find 5 sentences where the subject and verb are separated by 5+ words. Identify the true subject and confirm agreement."),
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"2. Parallelism Repair")," — Write 3 sentences with intentional parallelism errors, then fix them. Share with a partner."),
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"3. Review the 10 Rules")," — Read through the reference sheet once. Circle any rule you don't feel 100% confident on."),
+        e("div",null,e("strong",{style:{color:C.ink}},"4. Preview Module 4")," — Next: Words in Context. Try reading one article this week and underlining 5 unknown words — look them up and note root/prefix/suffix patterns."))),
+    e("div",{style:{color:C.muted,fontSize:13,marginTop:24}},"Next up: Module 4 — Words Are Weapons"));
+}
+
+// ══════════ APP ══════════
+const SCREENS=["welcome","warmup","lessons","practice","rules","challenge","complete"];
+function App(){
+  const[screen,setScreen]=useState("welcome");
+  const[fade,setFade]=useState(true);
+  const[practiceScore,setPracticeScore]=useState(0);
+  const[practiceTotal,setPracticeTotal]=useState(14);
+  const[challengeScore,setChallengeScore]=useState(0);
+
+  const screenIdx=SCREENS.indexOf(screen);
+  const totalScreens=SCREENS.length;
+
+  const go=useCallback((to)=>{
+    setFade(false);
+    setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},350);
+  },[]);
+
+  return e("div",{style:{minHeight:"100vh",background:C.paper,color:C.ink,fontFamily:"'Source Sans 3',sans-serif"}},
+    e(ProgressBar,{current:screenIdx,total:totalScreens-1}),
+    e("div",{style:{position:"fixed",inset:0,pointerEvents:"none",opacity:.02,backgroundImage:"linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",backgroundSize:"40px 40px"}}),
+    e("div",{style:{position:"relative",zIndex:1,transition:"opacity .35s,transform .35s",opacity:fade?1:0,transform:fade?"translateY(0)":"translateY(8px)",paddingTop:12}},
+      screen==="welcome"&&e(Welcome,{onNext:()=>go("warmup")}),
+      screen==="warmup"&&e(WarmupScreen,{onComplete:()=>go("lessons")}),
+      screen==="lessons"&&e(LessonScreen,{onComplete:()=>go("practice")}),
+      screen==="practice"&&e(TimedPractice,{onComplete:(s,t)=>{setPracticeScore(s);setPracticeTotal(t);go("rules");}}),
+      screen==="rules"&&e(RulesScreen,{practiceScore,practiceTotal,onComplete:()=>go("challenge")}),
+      screen==="challenge"&&e(ChallengeMode,{onComplete:(s)=>{setChallengeScore(s);go("complete");}}),
+      screen==="complete"&&e(ModuleComplete,{practiceScore,practiceTotal,challengeScore})));
+}
+
+const{createRoot}=ReactDOM;
+createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>

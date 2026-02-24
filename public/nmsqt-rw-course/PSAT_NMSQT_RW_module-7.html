@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 7: How It's Built — PSAT/NMSQT R&W — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback, useRef } = React;
+const e = React.createElement;
+
+/* ═══ DESIGN TOKENS ═══ */
+const CRAFT = "#60a5fa";
+const CRAFT2 = "#3b82f6";
+const INFO = "#34d399";
+const CONV = "#fbbf24";
+const EXPR = "#f472b6";
+const CORRECT = "#22c55e";
+const WRONG = "#ef4444";
+const NM = "#a78bfa";
+const ACCENT = "#0891b2";
+const DARK = "#121212";
+const CARD = "#1a1a1a";
+const BORDER = "#2a2a2a";
+const MUTED = "#999";
+const TEXT = "#f0f0f0";
+const SUB = "#ccc";
+
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px", borderRadius: 10, border: "none", background: bg,
+  color, fontWeight: 700, fontSize: 15, cursor: "pointer", transition: "transform .12s", ...extra
+});
+
+/* ═══ DATA ═══ */
+
+const WARMUP = [
+  { passage: 'The festival attracted visitors from twelve _______ local businesses reported a 40% revenue increase during the event.', stem: 'Which choice conforms to Standard English?', choices: ['countries, local', 'countries; local', 'countries local', 'countries: local'], correct: 1, domain: 'Conventions', color: CONV, explain: 'Two ICs — semicolon joins them.' },
+  { passage: 'The cellist performed with technical precision and emotional depth that _______ even the most discerning critics.', stem: 'Which word best completes the text?', choices: ['baffled', 'impressed', 'alarmed', 'amused'], correct: 1, domain: 'WIC', color: CRAFT, explain: '"Technical precision and emotional depth" are positive → "impressed."' },
+  { passage: 'Rooftop gardens reduced energy use by 25%, but installation costs remain prohibitive, suggesting that _______', stem: 'Which choice most logically completes the text?', choices: ['adoption will require financial incentives to offset initial costs.', 'rooftop gardens have no environmental benefits.', 'energy consumption is unrelated to building design.', 'all buildings should be required to install them.'], correct: 0, domain: 'Inferences', color: INFO, explain: 'Benefits + cost barrier = need subsidies.' },
+  { passage: 'The report highlighted three achievements: reducing emissions by 30%, _______ and eliminating single-use plastics.', stem: 'Which choice conforms to Standard English?', choices: ['the implementation of renewable energy,', 'implementing renewable energy,', 'to implement renewable energy,', 'renewable energy was implemented,'], correct: 1, domain: 'Conventions', color: CONV, explain: 'Parallel gerunds: reducing, implementing, eliminating.' },
+  { passage: 'The historian argues that the conventional narrative _______ their actual positions, as private letters reveal deep reservations.', stem: 'Which word best completes the text?', choices: ['captures', 'oversimplifies', 'validates', 'strengthens'], correct: 1, domain: 'WIC', color: CRAFT, explain: '"Deep reservations" contradicts "unified champions" — oversimplifies.' },
+  { passage: 'A study found that free-ranging cats kill 1.3–4 billion birds annually in the U.S., making them the largest source of anthropogenic bird mortality.', stem: 'How does this finding relate to the claim that outdoor cats harm bird populations?', choices: ['It provides a counterexample.', 'It offers direct quantitative support.', 'It qualifies the claim.', 'It raises an unrelated comparison.'], correct: 1, domain: 'Evidence', color: INFO, explain: 'Specific kill numbers = direct quantitative support for "harm."' }
+];
+
+const LESSONS = [
+  { id: "why", title: "Reading Like an Architect", subtitle: "Why structure questions are different", body: [
+    'Most reading questions ask what a passage says. Structure questions ask how and why it\'s built. Text Structure/Purpose (~4 questions) and Cross-Text Connections (~2 questions) total about 6 of your 54 questions.',
+    'The key shift: read for FUNCTION, not content. Every sentence has a job — claim, evidence, counterpoint, or transition. Once you see the architecture, these questions become straightforward.',
+    'Three question types: Overall purpose ("Which choice best describes the structure?"), Sentence function ("What does the underlined sentence do?"), Cross-text ("How would Author 2 respond to Author 1?")'
+  ], visual: "stats" },
+  { id: "functions", title: "Six Sentence Functions", subtitle: "Every sentence has a job", body: [
+    'Every PSAT passage sentence performs one of six roles. Learning to tag them instantly is the core skill for structure questions.',
+    'CLAIM — States the author\'s position or main argument.\nEVIDENCE — Facts, studies, or examples supporting the claim.\nCOUNTERPOINT — An opposing view or objection.\nCONCESSION — Acknowledges the counterpoint has some merit.\nTRANSITION — Shifts between ideas or sections.\nCONTEXT — Background or setup information.',
+    'Practice this: before answering any structure question, label every sentence in the passage with its function. The answer becomes obvious.'
+  ], visual: "function-grid" },
+  { id: "cross-text", title: "Cross-Text Relationships", subtitle: "How two texts relate", body: [
+    'Cross-text questions give you two short passages and ask how the authors relate. There are four possible relationships:',
+    'AGREEMENT — Both support the same position.\nDISAGREEMENT — Opposite conclusions on the same question.\nQUALIFICATION — Author 2 accepts the basic point but adds a limitation. ("Yes, but...")\nEXTENSION — Author 2 builds on Author 1\'s idea, taking it further.',
+    'The PSAT strongly favors QUALIFICATION. Author 2 usually agrees with Author 1 on the facts but disagrees on emphasis, scope, or interpretation. Map the relationship before looking at choices.'
+  ], visual: "relationship-grid" },
+  { id: "says-does", title: "Says vs. Does", subtitle: "Content vs. function — the key distinction", body: [
+    '"Says" = what information the sentence communicates.\n"Does" = what role it plays in the argument.\n\nStructure questions ask about "does." The most common trap is picking an answer that accurately describes what a sentence SAYS but misidentifies what it DOES.',
+    'EXAMPLE: "However, a 2023 study found that the drug\'s effectiveness decreases by 40% after six months."\n\nSays: A study found the drug becomes less effective over time.\nDoes: Introduces evidence that qualifies the previous claim about the drug\'s benefits.',
+    'Before answering, always ask: "Why did the author include this sentence?" not "What does this sentence mean?"'
+  ], visual: null }
+];
+
+const FUNC_PASSAGES = [
+  { sentences: [
+    { text: 'Many school districts have adopted later start times to improve student well-being.', fn: 'Context' },
+    { text: 'Research from the AAP shows students starting after 8:30 AM get more sleep and perform better academically.', fn: 'Evidence' },
+    { text: 'Critics argue later times create logistical problems for bus schedules and activities.', fn: 'Counterpoint' },
+    { text: 'While these concerns are valid, the health data suggests benefits outweigh scheduling challenges.', fn: 'Concession' },
+    { text: 'Districts should prioritize adolescent health when setting school start times.', fn: 'Claim' }
+  ]},
+  { sentences: [
+    { text: 'The octopus has long fascinated marine biologists with its cognitive abilities.', fn: 'Context' },
+    { text: 'However, recent research suggests the most surprising aspect may be its fundamentally different neural architecture.', fn: 'Transition' },
+    { text: 'Unlike vertebrates, octopuses distribute two-thirds of their neurons across their eight arms.', fn: 'Evidence' },
+    { text: 'Each arm can independently taste, touch, and make basic decisions without the central brain.', fn: 'Evidence' },
+    { text: 'This decentralized intelligence challenges the assumption that complex cognition requires a centralized brain.', fn: 'Claim' }
+  ]},
+  { sentences: [
+    { text: 'Proponents of nuclear energy argue it is essential for climate goals because it produces electricity with virtually no carbon emissions.', fn: 'Claim' },
+    { text: 'France, generating 70% of electricity from nuclear, has one of the lowest per-capita carbon footprints.', fn: 'Evidence' },
+    { text: 'Opponents counter that nuclear creates dangerous radioactive waste hazardous for thousands of years.', fn: 'Counterpoint' },
+    { text: 'This is a legitimate concern, and no permanent storage solution has been universally adopted.', fn: 'Concession' },
+    { text: 'Nevertheless, the climate crisis may require accepting imperfect solutions while improving waste technology.', fn: 'Claim' }
+  ]}
+];
+
+const CROSS_QS = [
+  { passage: '<strong>Text 1 (Rivera):</strong> Automation will create more jobs than it eliminates — the industrial revolution displaced workers but ultimately generated far more employment.<br><br><strong>Text 2 (Park):</strong> AI-driven automation threatens cognitive work — the very jobs that absorbed displaced manual workers before. Without policy intervention, the transition could be devastating.', stem: 'How would Park most likely respond to Rivera?', choices: ['By rejecting that automation affects the labor market.', 'By accepting historical precedent is relevant but arguing AI differs fundamentally from past disruptions.', 'By agreeing entirely with Rivera.', "By questioning Rivera's historical accuracy."], correct: 1, explain: 'Park agrees automation transforms markets but argues AI is DIFFERENT. Classic qualification — accepts the premise, adds a limitation.' },
+  { passage: "<strong>Text 1 (Chen):</strong> Migratory birds navigate primarily using the Earth's magnetic field. Birds with magnetic disruptors became disoriented.<br><br><strong>Text 2 (Okafor):</strong> The same species navigated accurately with disrupted magnetics when they could see the night sky. Stellar navigation may be a backup — or primary — system.", stem: "How would Okafor characterize Chen's theory?", choices: ['As fundamentally incorrect.', 'As an oversimplification that underestimates stellar navigation.', 'As entirely consistent with her findings.', 'As irrelevant to bird migration.'], correct: 1, explain: "Okafor doesn't reject magnetic navigation — she says it may not be the PRIMARY system. Qualification." },
+  { passage: "<strong>Text 1 (Alvarez):</strong> Gatsby's central theme is the corruption of the American Dream by materialism.<br><br><strong>Text 2 (Osei):</strong> Gatsby's corruption reflects a systemic critique of class immobility — Gatsby acquires wealth but never the social legitimacy of old money.", stem: "How does Osei's analysis relate to Alvarez's?", choices: ['Osei disagrees with Alvarez.', 'Osei extends Alvarez by adding a structural class dimension beyond individual materialism.', 'Osei argues materialism is irrelevant.', 'Osei focuses on a different novel.'], correct: 1, explain: 'Osei builds ON Alvarez (accepts corruption theme) and goes further (personal → systemic). Extension.' }
+];
+
+const SD_DATA = [
+  { sent: 'Although the theory has been widely accepted for decades, recent experimental data has raised significant questions about its core assumptions.', says: 'Recent data challenges a long-accepted theory.', does: 'Introduces a tension/conflict that the passage will likely explore — signals a shift from consensus to doubt.' },
+  { sent: 'For example, a 2022 study of 3,000 participants found that the predicted correlation between diet and disease risk was weaker than previous models suggested.', says: 'A large study found a weaker diet-disease link than expected.', does: "Provides specific evidence supporting the previous sentence's claim that the theory is being questioned." },
+  { sent: 'Dr. Yamamoto, a leading researcher in the field, has proposed an alternative framework that accounts for genetic variation among populations.', says: 'A researcher proposed a new framework incorporating genetic variation.', does: 'Introduces a potential resolution to the conflict — shifts from critique to a constructive alternative.' },
+  { sent: 'The debate over the origins of language in Homo sapiens remains one of the most contested questions in anthropology.', says: 'Language origins are heavily debated in anthropology.', does: "Establishes context and frames the passage's topic as an ongoing scholarly controversy." },
+  { sent: 'These findings, however, do not necessarily invalidate the original theory — they may instead suggest that the theory needs to be refined rather than replaced.', says: 'The findings might mean the theory needs updating, not rejection.', does: 'Qualifies the earlier critique by introducing a more moderate interpretation — a concession that prevents the argument from being overstated.' },
+  { sent: 'To understand why this matters, consider the practical implications for clinical medicine.', says: 'There are practical medical implications to consider.', does: 'Functions as a transition — pivots from theoretical discussion to real-world application.' }
+];
+
+const PRACTICE = [
+  { passage: "Biologist Dr. Tanaka has spent two decades studying the social behavior of elephants. Her research has revealed that elephant herds are led by the oldest female, whose accumulated knowledge of food and water sources is critical to the group's survival. <u>When Tanaka removed the matriarch from a study group temporarily, the remaining elephants showed significantly increased stress hormones and made poorer foraging decisions.</u> Tanaka argues that elephant society depends on intergenerational knowledge transfer.", stem: 'Which choice best describes the function of the underlined sentence?', choices: ["It presents a finding that challenges Tanaka's overall argument.", "It provides experimental evidence that supports the claim about the matriarch's importance.", 'It introduces a new topic unrelated to the main idea.', "It describes the methodology of Tanaka's research without drawing conclusions."], correct: 1, subtype: 'Structure', diff: 'easy', explain: "The underlined sentence shows what happened when the matriarch was removed (more stress, worse decisions) — directly proving the matriarch matters. It's evidence for the claim." },
+  { passage: 'The muralist approached each new commission not as an opportunity to display technical virtuosity, but as a chance to _______ the stories and struggles of the community where the mural would stand.', stem: 'Which word best completes the text?', choices: ['obscure', 'commemorate', 'undermine', 'parody'], correct: 1, subtype: 'WIC', diff: 'easy', explain: '"Stories and struggles of the community" + "not technical virtuosity but community focus" → "commemorate" = honor/preserve in memory.' },
+  { passage: "The novelist's early works were celebrated for their _______ prose style — clean, spare sentences that communicated maximum meaning with minimum words.", stem: 'Which word best completes the text?', choices: ['ornate', 'economical', 'verbose', 'ambiguous'], correct: 1, subtype: 'WIC', diff: 'easy', explain: '"Clean, spare, maximum meaning with minimum words" = economical.' },
+  { passage: 'The passage begins by describing the conventional view that coral reefs are fragile ecosystems highly vulnerable to climate change. It then introduces recent research showing that certain reef systems have demonstrated unexpected resilience, adapting to warmer temperatures through symbiotic shifts. The passage concludes by arguing that conservation strategies should account for this adaptive capacity rather than assuming inevitable decline.', stem: 'Which choice best describes the overall structure of the text?', choices: ['It presents a problem and argues that no solution exists.', 'It introduces a conventional view, presents contrasting evidence, then argues for a revised approach.', 'It compares two competing scientific theories without taking a position.', 'It describes a natural phenomenon in chronological order.'], correct: 1, subtype: 'Structure', diff: 'medium', explain: 'The structure is: conventional view (fragile) → contrasting evidence (resilient) → revised conclusion (change conservation approach). B captures this three-part progression.' },
+  { passage: "<strong>Text 1:</strong> Historian Lee argues that the Roman Empire fell primarily because of economic decline — debasement of currency, overtaxation, and disrupted trade routes weakened the empire from within.<br><br><strong>Text 2:</strong> Historian Patel agrees that economic factors played a role but contends that the decisive factor was the empire's inability to integrate the Germanic peoples who settled within its borders, leading to internal fragmentation that economic weakness alone would not have caused.", stem: 'Based on the texts, how would Patel most likely respond to Lee?', choices: ['By arguing that economic factors were completely irrelevant.', 'By agreeing that economic decline contributed but maintaining that political-cultural failure to integrate was the more decisive cause.', 'By providing additional evidence for economic decline.', 'By questioning whether the Roman Empire actually fell.'], correct: 1, subtype: 'Cross-Text', diff: 'medium', explain: 'Patel agrees economics "played a role" (partial agreement) but argues integration failure was more decisive. Qualification with a different emphasis.' },
+  { passage: "The architect's designs were notable for their _______ of natural and industrial materials — glass and steel framing would open onto living walls of native plants, and concrete floors gave way to courtyards of reclaimed wood.", stem: 'Which word best completes the text?', choices: ['separation', 'integration', 'elimination', 'imitation'], correct: 1, subtype: 'WIC', diff: 'easy', explain: 'Natural + industrial materials combined harmoniously. "Integration" = combining into a unified whole.' },
+  { passage: "<strong>Text 1:</strong> Psychologist Kim argues that social media use among teenagers is strongly associated with increased anxiety and depression, pointing to correlational studies showing higher rates of mental health issues among heavy users.<br><br><strong>Text 2:</strong> Psychologist Okonjo notes that while the correlational data Kim cites is accurate, longitudinal studies tracking the same individuals over time show much weaker effects. Okonjo suggests the correlation may reflect that anxious teenagers seek out social media rather than social media causing anxiety.", stem: "Based on the texts, what is Okonjo's position relative to Kim's?", choices: ["Complete agreement with Kim's conclusions.", "Acceptance of Kim's data but disagreement about the direction of causation.", 'Total rejection of the correlation between social media and anxiety.', 'Indifference to the research question.'], correct: 1, subtype: 'Cross-Text', diff: 'medium', explain: 'Okonjo says the correlation is "accurate" (accepts data) but argues causation may run the opposite direction (reverse causation). Classic qualification on methodology.' },
+  { passage: '<u>Despite its name, the "Dark Ages" in medieval Europe were characterized by significant artistic and intellectual achievements that are often overlooked.</u> Monasteries preserved and copied classical texts. Irish monks produced illuminated manuscripts of extraordinary beauty. The Carolingian Renaissance under Charlemagne saw a revival of learning. These examples suggest that the period\'s reputation for cultural stagnation is largely undeserved.', stem: 'Which choice best describes the function of the underlined sentence?', choices: ['It provides evidence for a claim made earlier in the passage.', 'It introduces a concession to a counterargument.', 'It presents the passage\'s central claim that the "Dark Ages" label is misleading.', 'It transitions from one topic to a new, unrelated topic.'], correct: 2, subtype: 'Structure', diff: 'medium', explain: 'The underlined sentence states the main argument (achievements overlooked, name misleading). Everything that follows is evidence. This is the claim.' },
+  { passage: "<strong>Text 1:</strong> Nutritionist Alvarez argues that intermittent fasting provides metabolic benefits beyond simple calorie reduction, including improved insulin sensitivity and cellular repair through autophagy.<br><br><strong>Text 2:</strong> Nutritionist Brennan responds that while the cellular mechanisms Alvarez describes are real, they have been demonstrated primarily in animal studies, and the few human trials show benefits no greater than those achieved through sustained moderate calorie reduction.", stem: "How would Brennan most likely characterize Alvarez's claims?", choices: ['As completely fabricated without scientific basis.', 'As based on real mechanisms but overstated when applied to humans.', 'As revolutionary findings that demand immediate dietary changes.', 'As irrelevant to the field of nutrition.'], correct: 1, subtype: 'Cross-Text', diff: 'hard', explain: 'Brennan says the mechanisms are "real" (accepts science) but the human evidence doesn\'t support the extra claims (limits application). Qualification on evidence quality.' },
+  { passage: "The study begins with a review of existing research on urban heat islands. <u>It then describes the researchers' novel approach of using satellite thermal imaging combined with ground-level sensors to create high-resolution temperature maps.</u> Finally, it presents findings showing that tree canopy coverage is the single strongest predictor of neighborhood temperature variation.", stem: 'Which choice best describes the function of the underlined sentence?', choices: ["It introduces the study's main conclusion about tree coverage.", 'It explains the methodology the researchers used to gather their data.', 'It provides a counterargument to the existing research.', 'It summarizes the findings of previous studies.'], correct: 1, subtype: 'Structure', diff: 'hard', explain: 'The underlined sentence describes HOW the researchers collected data (methodology), positioned between the lit review and the findings.' },
+  { passage: "<strong>Text 1:</strong> Economist Torres argues that universal basic income (UBI) would reduce poverty without disincentivizing work, citing a Finnish pilot program where recipients reported higher well-being and equal employment rates.<br><br><strong>Text 2:</strong> Economist Nakamura notes that the Finnish pilot involved only 2,000 participants over two years and argues that scaling UBI nationally would create fiscal pressures and behavioral changes that a small pilot cannot capture.", stem: "Based on the texts, what is Nakamura's main criticism of Torres's evidence?", choices: ['The Finnish pilot never occurred.', "The pilot's small scale and duration make it insufficient for predicting national-level outcomes.", 'UBI is morally wrong regardless of economic evidence.', 'The Finnish participants were not actually receiving basic income.'], correct: 1, subtype: 'Cross-Text', diff: 'hard', explain: "Nakamura doesn't dispute the pilot's results — she argues the SCALE is too small to generalize. The pilot is valid but insufficient as evidence for national policy." },
+  { passage: "The diplomat's memoir reveals a leader who was both idealistic and _______ — passionately committed to democratic principles yet willing to make calculated compromises when political reality demanded flexibility.", stem: 'Which word best completes the text?', choices: ['naive', 'pragmatic', 'inflexible', 'reckless'], correct: 1, subtype: 'WIC', diff: 'medium', explain: '"Calculated compromises when reality demanded flexibility" = pragmatic (dealing with things practically rather than ideologically).' }
+];
+
+const CHALLENGE = [
+  { passage: 'In the opening stanza of the poem, the speaker describes a winter landscape in precise, almost clinical detail — bare branches, frozen earth, colorless sky. <u>In the second stanza, without transition, the speaker shifts to addressing a lover in language rich with color, warmth, and movement.</u> The juxtaposition continues throughout the poem, alternating between external desolation and internal passion.', stem: "Which choice best describes the function of the underlined sentence in the context of the poem's structure?", choices: ["It introduces the poem's central conflict between nature and civilization.", "It describes the poem's tonal shift from detached observation to intimate address, establishing the contrast that structures the entire work.", 'It provides evidence that the speaker lives in a cold climate.', "It summarizes the poem's conclusion."], correct: 1, subtype: 'Literary Structure', explain: "The underlined sentence identifies the STRUCTURAL principle of the poem (alternation between cold exterior/warm interior). It describes the tonal shift that the rest of the passage explains as the poem's organizing device." },
+  { passage: "<strong>Text 1:</strong> Art historian Ramos argues that Frida Kahlo's self-portraits should be understood primarily as political statements. Kahlo's unflinching depictions of physical suffering, Ramos claims, were deliberate challenges to conventional beauty standards and assertions of female bodily autonomy in a patriarchal society.<br><br><strong>Text 2:</strong> Art historian Chen agrees that Kahlo's work carries political dimensions but argues that reducing her art to political statement overlooks its deeply personal, even therapeutic function. Chen points to Kahlo's private diaries, which describe painting as a way to process and survive chronic pain — suggesting the work's primary purpose was personal rather than political.", stem: "Based on the texts, how does Chen's interpretation relate to Ramos's?", choices: ["Chen completely rejects the idea that Kahlo's work has any political significance.", "Chen accepts Kahlo's work has political dimensions but argues this reading is incomplete without acknowledging its primarily personal motivation.", "Chen extends Ramos's political reading by adding new examples.", 'Chen argues that art cannot be simultaneously personal and political.'], correct: 1, subtype: 'Adversarial Cross-Text', explain: "Both agree the work has political dimensions (surface agreement on facts). But they disagree on what's PRIMARY — Ramos says political, Chen says personal. Chen qualifies Ramos by accepting the political reading but arguing it's secondary to the personal." },
+  { passage: 'The short story opens with the protagonist methodically cleaning his apartment — wiping surfaces, organizing bookshelves, aligning picture frames. The narrator describes each action in meticulous detail. <u>Only in the final paragraph does the reader learn that the protagonist is preparing for a visit from his estranged daughter, whom he has not seen in three years.</u>', stem: "Which choice best describes the effect of revealing the daughter's visit in the final paragraph?", choices: ['It introduces a subplot unrelated to the cleaning.', 'It recontextualizes the preceding actions, transforming what appeared to be mundane routine into an expression of anxiety and desire for reconnection.', 'It contradicts the earlier description of the cleaning.', "It provides exposition about the protagonist's career."], correct: 1, subtype: 'Literary Structure', explain: "The late reveal REFRAMES everything before it. The cleaning wasn't routine — it was preparation driven by emotional stakes. This is a structural technique (delayed revelation that recontextualizes prior events)." },
+  { passage: "<strong>Text 1:</strong> Philosopher Nakamura argues that artificial intelligence will never achieve genuine consciousness because consciousness requires subjective, first-person experience — what philosopher Thomas Nagel called \"what it is like\" to be something — and no amount of computational complexity can generate subjective experience from objective processes.<br><br><strong>Text 2:</strong> Computer scientist Obi argues that Nakamura's position rests on an unproven assumption: that subjective experience cannot emerge from complex information processing. Obi points out that human consciousness itself emerges from objective neural processes, and that dismissing AI consciousness requires explaining why biological information processing can produce consciousness but silicon-based processing cannot.", stem: 'Based on the texts, what is the fundamental nature of the disagreement between Nakamura and Obi?', choices: ['They disagree about whether AI technology is advancing rapidly.', "They disagree about whether subjective experience can emerge from objective computational processes — Nakamura assumes it cannot, while Obi argues this assumption is unjustified.", 'They disagree about the definition of information processing.', 'They disagree about whether humans are conscious.'], correct: 1, subtype: 'Adversarial Cross-Text', explain: "Both engage with the same philosophical question (can computation produce consciousness?). Nakamura ASSUMES the answer is no; Obi challenges that assumption by pointing to the analogy with biological neural processes. The disagreement is about the premise, not the conclusion." },
+  { passage: 'The playwright structures the first act as a series of parallel scenes: in each, a different family member tells the same story from their perspective. <u>The stories agree on basic facts — the date, the location, the people present — but diverge dramatically on motivations, emotions, and meaning.</u> By the second act, the audience understands that the family\'s central conflict is not about what happened but about what it meant.', stem: 'Which choice best describes the function of the underlined sentence?', choices: ["It provides a summary of the play's conclusion.", "It identifies the precise nature of the parallel structure — factual agreement but interpretive divergence — which sets up the play's thematic concern.", 'It introduces a character not mentioned elsewhere.', 'It describes the physical staging of the play.'], correct: 1, subtype: 'Literary Structure', explain: "The underlined sentence pinpoints WHAT makes the parallel scenes structurally meaningful: same facts, different interpretations. This is the structural mechanism that produces the play's theme (conflict over meaning, not facts)." }
+];
+
+const FN_TYPES = ['Claim','Evidence','Counterpoint','Concession','Transition','Context'];
+const FN_COLORS = { Claim: CRAFT, Evidence: INFO, Counterpoint: CONV, Concession: EXPR, Transition: ACCENT, Context: MUTED };
+
+/* ═══ REUSABLE COMPONENTS ═══ */
+
+function TopStripe() {
+  return e("div", { style: { height: 4, background: `linear-gradient(90deg,${CRAFT} 0%,${CRAFT} 28%,${INFO} 28%,${INFO} 54%,${CONV} 54%,${CONV} 80%,${EXPR} 80%)`, position: "fixed", top: 0, left: 0, right: 0, zIndex: 100 }});
+}
+
+function MCQuestion({ q, selected, confirmed, onSelect, onConfirm, domColor, domLabel, diffLabel }) {
+  const letters = "ABCD";
+  const diffColors = { easy: CORRECT, medium: CRAFT, hard: WRONG };
+  return e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, marginBottom: 14 }},
+    e("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }},
+      e("span", { style: { fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", padding: "2px 8px", borderRadius: 4, background: `${domColor}20`, color: domColor }}, domLabel),
+      diffLabel && e("span", { style: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", padding: "2px 8px", borderRadius: 4, background: `${diffColors[diffLabel]}18`, color: diffColors[diffLabel] }}, diffLabel)
+    ),
+    q.passage && e("div", { style: { background: DARK, border: `1px solid ${BORDER}`, borderRadius: 8, padding: "12px 14px", fontSize: 14, color: "#ddd", lineHeight: 1.75, marginBottom: 12, borderLeft: `3px solid ${MUTED}` }, dangerouslySetInnerHTML: { __html: q.passage }}),
+    e("div", { style: { fontSize: 15, marginBottom: 14, color: "#ddd", lineHeight: 1.7 }}, q.stem),
+    e("div", { style: { display: "flex", flexDirection: "column", gap: 7 }},
+      q.choices.map((c, ci) => {
+        let bg = DARK, bdr = `2px solid ${BORDER}`, tc = "#cbd5e1";
+        if (confirmed && ci === q.correct) { bg = `${CORRECT}18`; bdr = `2px solid ${CORRECT}`; tc = CORRECT; }
+        else if (confirmed && selected === ci) { bg = `${WRONG}18`; bdr = `2px solid ${WRONG}`; tc = WRONG; }
+        else if (selected === ci && !confirmed) { bg = `${CRAFT}15`; bdr = `2px solid ${CRAFT}`; tc = CRAFT; }
+        return e("button", { key: ci, onClick: () => { if (!confirmed) onSelect(ci); }, disabled: confirmed,
+          style: { display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 14px", borderRadius: 8, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" }},
+          e("span", { style: { fontWeight: 700, color: confirmed && ci === q.correct ? CORRECT : confirmed && selected === ci ? WRONG : selected === ci ? CRAFT : MUTED, minWidth: 20, flexShrink: 0 }}, letters[ci]),
+          e("span", { style: { color: tc, fontSize: 14 }}, c)
+        );
+      })
+    ),
+    selected !== null && !confirmed && e("div", { style: { textAlign: "right", marginTop: 10 }},
+      e("button", { onClick: onConfirm, style: { ...btn(CRAFT, "#fff"), fontSize: 13, padding: "8px 20px" }}, "Confirm Answer →")
+    ),
+    confirmed && e("div", { style: { marginTop: 12, padding: 14, background: DARK, borderRadius: 8, borderLeft: `3px solid ${CORRECT}`, fontSize: 13, color: MUTED, lineHeight: 1.6 }}, q.explain)
+  );
+}
+
+/* ═══ SCREENS ═══ */
+
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => { setTimeout(() => setShow(true), 100); }, []);
+  const sessions = [
+    { icon: "🔄", title: "Retrieval Warm-Up", desc: "Review from prior modules" },
+    { icon: "📖", title: "Learn the Concepts", desc: "Functions, cross-text, says vs. does" },
+    { icon: "🏗️", title: "Label the Architecture", desc: "Tag sentence functions" },
+    { icon: "🔗", title: "Cross-Text Practice", desc: "Map author relationships" },
+    { icon: "⚖️", title: "Says vs. Does Drill", desc: "Content vs. function" },
+    { icon: "📝", title: "Timed Practice", desc: "12 questions, 80 sec each" }
+  ];
+  return e("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" }},
+    e("div", { style: { background: `${CRAFT}22`, border: `1px solid ${CRAFT}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: CRAFT, marginBottom: 12, fontWeight: 600 }}, "Phase 4 · Module 7"),
+    e("h1", { style: { fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(1.8rem,5vw,3rem)", fontWeight: 800, background: `linear-gradient(135deg,${CRAFT},${CRAFT2})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 }}, "How It's Built"),
+    e("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 40 }}, "Text Structure, Purpose & Cross-Text Connections. Read like an architect — learn to see why passages are built the way they are."),
+    e("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 14, maxWidth: 750, width: "100%", marginBottom: 48 }},
+      sessions.map((s, i) => e("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, textAlign: "center" }},
+        e("div", { style: { fontSize: 28, marginBottom: 6 }}, s.icon),
+        e("div", { style: { color: TEXT, fontWeight: 700, fontSize: 14, marginBottom: 2 }}, s.title),
+        e("div", { style: { color: MUTED, fontSize: 12, lineHeight: 1.4 }}, s.desc)
+      ))
+    ),
+    e("button", { onClick: onNext, style: btn(`linear-gradient(135deg,${CRAFT},${CRAFT2})`, "#fff"),
+      onMouseOver: ev => ev.currentTarget.style.transform = "scale(1.04)",
+      onMouseOut: ev => ev.currentTarget.style.transform = "scale(1)" }, "Start Module →"),
+    e("div", { style: { color: "#475569", fontSize: 13, marginTop: 24 }}, "~60 minutes · Craft & Structure")
+  );
+}
+
+function WarmUpScreen({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [sel, setSel] = useState(null);
+  const [conf, setConf] = useState(false);
+  const [results, setResults] = useState([]);
+  const q = WARMUP[idx];
+  const total = WARMUP.length;
+
+  function confirm() { if (sel === null) return; setConf(true); setResults(r => [...r, sel === q.correct]); }
+  function next() {
+    if (idx < total - 1) { setIdx(idx + 1); setSel(null); setConf(false); }
+    else { onComplete(results.concat(sel === q.correct)); }
+  }
+
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }},
+      e("div", { style: { color: CONV, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}, "🔄 Retrieval Warm-Up"),
+      e("span", { style: { color: MUTED, fontSize: 13 }}, (idx+1) + "/" + total)
+    ),
+    e("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 24, overflow: "hidden" }},
+      e("div", { style: { height: "100%", width: `${(idx + (conf?1:0))/total*100}%`, background: `linear-gradient(90deg,${CONV},${CRAFT})`, borderRadius: 2, transition: "width .4s" }})
+    ),
+    e(MCQuestion, { q, selected: sel, confirmed: conf, onSelect: setSel, onConfirm: confirm, domColor: q.color, domLabel: q.domain + " (Review)" }),
+    conf && e("div", { style: { display: "flex", justifyContent: "flex-end", marginTop: 8 }},
+      e("button", { onClick: next, style: btn(`linear-gradient(135deg,${CRAFT},${CRAFT2})`, "#fff", { fontSize: 14, padding: "10px 24px" }) },
+        idx < total - 1 ? "Next →" : "Continue to Lesson →"
+      )
+    )
+  );
+}
+
+function LessonScreen({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const lesson = LESSONS[idx];
+  const total = LESSONS.length;
+
+  function renderVisual() {
+    if (lesson.visual === "stats") {
+      return e("div", { style: { display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", padding: 16 }},
+        [{ n: "~6", label: "questions/test", sub: "Structure + Cross-Text" }, { n: "3", label: "question types", sub: "Purpose, Function, Cross-Text" }, { n: "6", label: "sentence functions", sub: "Claim, Evidence, Counterpoint…" }].map((s,i) =>
+          e("div", { key: i, style: { background: `${CRAFT}11`, border: `1px solid ${CRAFT}33`, borderRadius: 14, padding: "16px 24px", textAlign: "center", minWidth: 140 }},
+            e("div", { style: { color: CRAFT, fontWeight: 900, fontSize: 28 }}, s.n),
+            e("div", { style: { color: TEXT, fontSize: 13, fontWeight: 600 }}, s.label),
+            e("div", { style: { color: MUTED, fontSize: 11 }}, s.sub)
+          ))
+      );
+    }
+    if (lesson.visual === "function-grid") {
+      const funcs = [
+        { name: "Claim", color: CRAFT, desc: "Author's position" }, { name: "Evidence", color: INFO, desc: "Facts/studies" },
+        { name: "Counterpoint", color: CONV, desc: "Opposing view" }, { name: "Concession", color: EXPR, desc: "Accepts counterpoint merit" },
+        { name: "Transition", color: ACCENT, desc: "Shifts between ideas" }, { name: "Context", color: MUTED, desc: "Background/setup" }
+      ];
+      return e("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "8px 20px" }},
+        funcs.map((f,i) => e("div", { key: i, style: { background: `${f.color}12`, border: `1px solid ${f.color}33`, borderRadius: 10, padding: 12, textAlign: "center" }},
+          e("div", { style: { color: f.color, fontWeight: 800, fontSize: 14 }}, f.name),
+          e("div", { style: { color: MUTED, fontSize: 11, marginTop: 2 }}, f.desc)
+        ))
+      );
+    }
+    if (lesson.visual === "relationship-grid") {
+      const rels = [
+        { name: "Agreement", color: CORRECT, icon: "🤝" }, { name: "Disagreement", color: WRONG, icon: "⚔️" },
+        { name: "Qualification", color: CONV, icon: "⚖️" }, { name: "Extension", color: CRAFT, icon: "🔗" }
+      ];
+      return e("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, padding: "8px 20px" }},
+        rels.map((r,i) => e("div", { key: i, style: { background: `${r.color}12`, border: `1px solid ${r.color}33`, borderRadius: 10, padding: 14, textAlign: "center" }},
+          e("div", { style: { fontSize: 24, marginBottom: 4 }}, r.icon),
+          e("div", { style: { color: r.color, fontWeight: 800, fontSize: 14 }}, r.name)
+        ))
+      );
+    }
+    return null;
+  }
+
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "center", gap: 6, marginBottom: 32 }},
+      LESSONS.map((_, i) => e("div", { key: i, onClick: () => setIdx(i), style: { width: i === idx ? 24 : 8, height: 8, borderRadius: 4, background: i === idx ? CRAFT : i < idx ? `${CRAFT}66` : BORDER, cursor: "pointer", transition: "all .3s" }}))
+    ),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", marginBottom: 32 }},
+      e("div", { style: { padding: "28px 28px 0" }},
+        e("div", { style: { color: CRAFT, fontSize: 12, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 }}, lesson.subtitle),
+        e("h2", { style: { fontFamily: "'Cormorant Garamond', serif", color: TEXT, fontSize: "clamp(1.2rem,3vw,1.6rem)", fontWeight: 800, marginBottom: 16, lineHeight: 1.2 }}, lesson.title),
+        lesson.body.map((p, i) => e("p", { key: i, style: { color: SUB, fontSize: 14, lineHeight: 1.75, marginBottom: 14, whiteSpace: "pre-line" }}, p))
+      ),
+      lesson.visual && e("div", { style: { padding: "8px 4px 20px" }}, renderVisual())
+    ),
+    e("div", { style: { display: "flex", justifyContent: "space-between" }},
+      e("button", { onClick: () => setIdx(Math.max(0, idx-1)), disabled: idx === 0,
+        style: { ...btn("transparent", idx===0?"#334155":SUB), border: `1px solid ${BORDER}`, padding: "10px 20px", fontSize: 14 }}, "← Back"),
+      idx < total - 1
+        ? e("button", { onClick: () => setIdx(idx+1), style: btn(CRAFT, "#fff", { fontSize: 14, padding: "10px 20px" }) }, "Next →")
+        : e("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${CRAFT},${CRAFT2})`, "#fff", { fontSize: 14, padding: "10px 24px" }) }, "Start Function Labeling →")
+    )
+  );
+}
+
+function FuncLabelScreen({ onComplete }) {
+  const [pi, setPi] = useState(0);
+  const [answers, setAnswers] = useState(FUNC_PASSAGES.map(p => p.sentences.map(() => null)));
+  const [confirmed, setConfirmed] = useState(FUNC_PASSAGES.map(() => false));
+  const passage = FUNC_PASSAGES[pi];
+  const total = FUNC_PASSAGES.length;
+  const myAns = answers[pi];
+  const isConf = confirmed[pi];
+  const allFilled = myAns.every(a => a !== null);
+
+  function select(si, tag) { if (isConf) return; setAnswers(a => { const n = a.map(x=>x.slice()); n[pi][si] = tag; return n; }); }
+  function confirm() { if (!allFilled) return; setConfirmed(c => { const n = [...c]; n[pi] = true; return n; }); }
+  function reset() { setAnswers(a => { const n = a.map(x=>x.slice()); n[pi] = FUNC_PASSAGES[pi].sentences.map(()=>null); return n; }); setConfirmed(c => { const n = [...c]; n[pi] = false; return n; }); }
+  function next() { if (pi < total - 1) { setPi(pi + 1); window.scrollTo(0, 0); } else { onComplete(); } }
+
+  const score = isConf ? passage.sentences.filter((s,i) => myAns[i] === s.fn).length : 0;
+
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }},
+      e("div", { style: { color: CRAFT, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}, "🏗️ Label the Architecture"),
+      e("div", { style: { display: "flex", gap: 6 }},
+        FUNC_PASSAGES.map((_, i) => e("div", { key: i, style: { width: i === pi ? 20 : 8, height: 8, borderRadius: 4, transition: "all .3s",
+          background: i === pi ? CRAFT : confirmed[i] ? (answers[i].every((a,j) => a === FUNC_PASSAGES[i].sentences[j].fn) ? CORRECT : WRONG) : BORDER }}))
+      )
+    ),
+    e("div", { style: { color: MUTED, fontSize: 13, marginBottom: 16 }}, "Passage " + (pi+1) + " of " + total + " — Tag each sentence's function, then confirm."),
+    passage.sentences.map((s, si) =>
+      e("div", { key: si, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 14, marginBottom: 8 }},
+        e("div", { style: { fontSize: 14, color: "#ddd", lineHeight: 1.7, marginBottom: 8 }}, s.text),
+        e("div", { style: { display: "flex", flexWrap: "wrap", gap: 4 }},
+          FN_TYPES.map(tag => {
+            let bg = "transparent", bdr = `2px solid ${BORDER}`, tc = FN_COLORS[tag];
+            if (isConf && tag === s.fn) { bg = `${CORRECT}18`; bdr = `2px solid ${CORRECT}`; tc = CORRECT; }
+            else if (isConf && myAns[si] === tag && tag !== s.fn) { bg = `${WRONG}18`; bdr = `2px solid ${WRONG}`; tc = WRONG; }
+            else if (myAns[si] === tag && !isConf) { bg = `${CRAFT}15`; bdr = `2px solid ${CRAFT}`; }
+            return e("button", { key: tag, onClick: () => select(si, tag), disabled: isConf,
+              style: { padding: "3px 10px", borderRadius: 5, border: bdr, background: bg, color: tc, fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: .5, cursor: isConf?"default":"pointer" }}, tag);
+          })
+        ),
+        isConf && myAns[si] !== s.fn && e("div", { style: { fontSize: 12, color: WRONG, marginTop: 4 }}, "→ " + s.fn)
+      )
+    ),
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 14 }},
+      !isConf ? e("div", { style: { display: "flex", gap: 8 }},
+        e("button", { onClick: confirm, disabled: !allFilled, style: btn(allFilled ? CRAFT : BORDER, allFilled ? "#fff" : "#475569", { fontSize: 13, padding: "8px 20px" })}, "Confirm All →"),
+        e("button", { onClick: reset, style: { ...btn("transparent", SUB), border: `1px solid ${BORDER}`, fontSize: 13, padding: "8px 16px" }}, "Reset")
+      ) : e("div", { style: { fontSize: 14, color: score === passage.sentences.length ? CORRECT : WRONG, fontWeight: 700 }},
+        score + "/" + passage.sentences.length + " correct"
+      ),
+      isConf && e("button", { onClick: next, style: btn(`linear-gradient(135deg,${CRAFT},${CRAFT2})`, "#fff", { fontSize: 14, padding: "10px 24px" })},
+        pi < total - 1 ? "Next Passage →" : "Continue to Cross-Text →"
+      )
+    )
+  );
+}
+
+function CrossTextScreen({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [sel, setSel] = useState(null);
+  const [conf, setConf] = useState(false);
+  const [results, setResults] = useState([]);
+  const q = CROSS_QS[idx];
+  const total = CROSS_QS.length;
+  function confirm() { if (sel === null) return; setConf(true); setResults(r => [...r, sel === q.correct]); }
+  function next() { if (idx < total-1) { setIdx(idx+1); setSel(null); setConf(false); window.scrollTo(0,0); } else { onComplete(results.concat(sel === q.correct)); } }
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }},
+      e("div", { style: { color: CONV, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}, "🔗 Cross-Text Practice"),
+      e("span", { style: { color: MUTED, fontSize: 13 }}, (idx+1)+"/"+total)
+    ),
+    e("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 24, overflow: "hidden" }},
+      e("div", { style: { height: "100%", width: `${(idx+(conf?1:0))/total*100}%`, background: `linear-gradient(90deg,${CONV},${CRAFT})`, borderRadius: 2, transition: "width .4s" }})
+    ),
+    e(MCQuestion, { q, selected: sel, confirmed: conf, onSelect: setSel, onConfirm: confirm, domColor: CONV, domLabel: "Cross-Text" }),
+    conf && e("div", { style: { display: "flex", justifyContent: "flex-end", marginTop: 8 }},
+      e("button", { onClick: next, style: btn(`linear-gradient(135deg,${CRAFT},${CRAFT2})`, "#fff", { fontSize: 14, padding: "10px 24px" }) },
+        idx < total-1 ? "Next →" : "Continue to Says vs. Does →"
+      )
+    )
+  );
+}
+
+function SaysDoesScreen({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [revealed, setRevealed] = useState(false);
+  const item = SD_DATA[idx];
+  const total = SD_DATA.length;
+  function reveal() { setRevealed(true); }
+  function next() { if (idx < total-1) { setIdx(idx+1); setRevealed(false); window.scrollTo(0,0); } else { onComplete(); } }
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }},
+      e("div", { style: { color: INFO, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}, "⚖️ Says vs. Does"),
+      e("span", { style: { color: MUTED, fontSize: 13 }}, (idx+1)+"/"+total)
+    ),
+    e("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 24, overflow: "hidden" }},
+      e("div", { style: { height: "100%", width: `${(idx+(revealed?1:0))/total*100}%`, background: `linear-gradient(90deg,${INFO},${CRAFT})`, borderRadius: 2, transition: "width .4s" }})
+    ),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, marginBottom: 16 }},
+      e("div", { style: { color: MUTED, fontSize: 12, fontWeight: 600, marginBottom: 8 }}, "Read this sentence. What does it SAY? What does it DO?"),
+      e("div", { style: { background: DARK, borderLeft: `3px solid ${CRAFT}`, borderRadius: 6, padding: "10px 14px", fontSize: 14, color: "#ddd", lineHeight: 1.7 }}, item.sent)
+    ),
+    !revealed
+      ? e("div", { style: { textAlign: "center" }}, e("button", { onClick: reveal, style: btn(CRAFT, "#fff", { fontSize: 14 }) }, "Reveal Says & Does →"))
+      : e("div", null,
+          e("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }},
+            e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 14, borderLeft: `3px solid ${INFO}` }},
+              e("div", { style: { fontSize: 11, fontWeight: 700, color: INFO, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}, "Says (Content)"),
+              e("div", { style: { fontSize: 13, color: SUB, lineHeight: 1.6 }}, item.says)
+            ),
+            e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 14, borderLeft: `3px solid ${CRAFT}` }},
+              e("div", { style: { fontSize: 11, fontWeight: 700, color: CRAFT, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}, "Does (Function)"),
+              e("div", { style: { fontSize: 13, color: SUB, lineHeight: 1.6 }}, item.does)
+            )
+          ),
+          e("div", { style: { display: "flex", justifyContent: "flex-end" }},
+            e("button", { onClick: next, style: btn(`linear-gradient(135deg,${CRAFT},${CRAFT2})`, "#fff", { fontSize: 14, padding: "10px 24px" }) },
+              idx < total-1 ? "Next →" : "Start Timed Practice →"
+            )
+          )
+        )
+  );
+}
+
+function TimedPractice({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [sel, setSel] = useState(null);
+  const [conf, setConf] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(16 * 60);
+  const timerRef = useRef(null);
+  const q = PRACTICE[idx];
+  const total = PRACTICE.length;
+  const diffColors = { easy: CORRECT, medium: CRAFT, hard: WRONG };
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setTimeLeft(t => {
+        if (t <= 1) { clearInterval(timerRef.current); return 0; }
+        return t - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, []);
+
+  useEffect(() => { if (timeLeft <= 0) finish(); }, [timeLeft]);
+
+  function confirm() { if (sel === null) return; setConf(true); setAnswers(a => [...a, { selected: sel, correct: q.correct, subtype: q.subtype, diff: q.diff }]); }
+  function next() {
+    if (idx < total - 1) { setIdx(idx+1); setSel(null); setConf(false); window.scrollTo(0,0); }
+    else finish();
+  }
+  function finish() {
+    clearInterval(timerRef.current);
+    const final = conf ? answers : [...answers, sel !== null ? { selected: sel, correct: q.correct, subtype: q.subtype, diff: q.diff } : { selected: -1, correct: q.correct, subtype: q.subtype, diff: q.diff }];
+    onComplete(final);
+  }
+
+  const m = Math.floor(timeLeft/60), s = timeLeft%60;
+  const pct = timeLeft / (16*60) * 100;
+
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }},
+      e("div", { style: { color: CRAFT, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}, "📝 Timed Practice"),
+      e("div", { style: { fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: pct < 20 ? WRONG : MUTED }}, m + ":" + (s<10?"0":"") + s)
+    ),
+    e("div", { style: { height: 5, background: BORDER, borderRadius: 3, marginBottom: 8, overflow: "hidden" }},
+      e("div", { style: { height: "100%", width: pct+"%", background: pct < 20 ? WRONG : CRAFT, borderRadius: 3, transition: "width .1s linear" }})
+    ),
+    e("div", { style: { display: "flex", gap: 4, marginBottom: 16, flexWrap: "wrap" }},
+      PRACTICE.map((_, i) => {
+        let bg = BORDER, c2 = "#666";
+        if (i < answers.length) { bg = answers[i].selected === answers[i].correct ? `${CORRECT}88` : `${WRONG}88`; c2 = "#fff"; }
+        else if (i === idx) { bg = CRAFT; c2 = "#fff"; }
+        return e("div", { key: i, style: { width: 26, height: 26, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, fontFamily: "'JetBrains Mono',monospace", background: bg, color: c2 }}, i+1);
+      })
+    ),
+    e(MCQuestion, { q, selected: sel, confirmed: conf, onSelect: setSel, onConfirm: confirm, domColor: CRAFT, domLabel: q.subtype, diffLabel: q.diff }),
+    conf && e("div", { style: { display: "flex", justifyContent: "flex-end", marginTop: 8 }},
+      e("button", { onClick: next, style: btn(`linear-gradient(135deg,${CRAFT},${CRAFT2})`, "#fff", { fontSize: 14, padding: "10px 24px" }) },
+        idx < total-1 ? "Next →" : "See Results →"
+      )
+    )
+  );
+}
+
+function ResultsScreen({ practiceAnswers, onContinue }) {
+  const total = practiceAnswers.length;
+  const correct = practiceAnswers.filter(a => a.selected === a.correct).length;
+  const pct = Math.round(correct / total * 100);
+
+  const byType = {};
+  const byDiff = {};
+  practiceAnswers.forEach(a => {
+    if (!byType[a.subtype]) byType[a.subtype] = { c: 0, t: 0 };
+    byType[a.subtype].t++;
+    if (a.selected === a.correct) byType[a.subtype].c++;
+    if (!byDiff[a.diff]) byDiff[a.diff] = { c: 0, t: 0 };
+    byDiff[a.diff].t++;
+    if (a.selected === a.correct) byDiff[a.diff].c++;
+  });
+
+  const typeColors = { Structure: CRAFT, "Cross-Text": CONV, WIC: INFO };
+  const diffColors = { easy: CORRECT, medium: CRAFT, hard: WRONG };
+
+  const errors = practiceAnswers.filter(a => a.selected !== a.correct);
+  const errByType = {};
+  errors.forEach(er => { errByType[er.subtype] = (errByType[er.subtype]||0) + 1; });
+
+  let advice = "";
+  if (pct >= 85) advice = "Excellent. You're reading for function, not just content. Your structure instincts are strong. Push yourself with Challenge Mode — literary structure and adversarial cross-texts will test whether you can apply these skills to more nuanced passages.";
+  else if (pct >= 65) {
+    advice = "Solid foundation. ";
+    if (byType.Structure && byType.Structure.c < byType.Structure.t) advice += 'For Structure questions, ask "why did the author include this?" not "what does this say." ';
+    if (byType["Cross-Text"] && byType["Cross-Text"].c < byType["Cross-Text"].t) advice += "For Cross-Text, map the relationship first: agreement, disagreement, qualification, or extension. ";
+    if (byType.WIC && byType.WIC.c < byType.WIC.t) advice += "For WIC, determine tone before looking at choices. ";
+    advice += "Review errors, then try Challenge Mode.";
+  } else if (pct >= 40) advice = 'Keep building. The most common mistake: reading for content instead of function. Before answering any structure question, pause and ask: "What JOB does this sentence do?" Go back to the lesson screens and redo the function labeling exercise.';
+  else advice = 'Focus on fundamentals. Start with the "Says vs. Does" distinction: every sentence both communicates information (says) and performs a role (does). Structure questions only ask about "does." Revisit the lesson, then retake this quiz.';
+
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px", minHeight: "100vh" }},
+    e("div", { style: { textAlign: "center", marginBottom: 32 }},
+      e("div", { style: { fontFamily: "'JetBrains Mono',monospace", fontSize: 64, fontWeight: 900, color: pct >= 75 ? CORRECT : pct >= 50 ? CRAFT : WRONG }}, correct + "/" + total),
+      e("div", { style: { color: MUTED, fontSize: 15 }}, pct + "% · Structure + Cross-Text + WIC")
+    ),
+    e("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }},
+      e("div", null,
+        e("div", { style: { fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: MUTED, marginBottom: 8 }}, "By Question Type"),
+        Object.entries(byType).map(([name, d]) => {
+          const dp = Math.round(d.c/d.t*100);
+          return e("div", { key: name, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 12, marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }},
+            e("span", { style: { color: typeColors[name] || MUTED, fontWeight: 700, fontSize: 13 }}, name),
+            e("span", { style: { fontFamily: "'JetBrains Mono',monospace", fontSize: 15, fontWeight: 700, color: dp >= 75 ? CORRECT : dp >= 50 ? CRAFT : WRONG }}, d.c + "/" + d.t)
+          );
+        })
+      ),
+      e("div", null,
+        e("div", { style: { fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: MUTED, marginBottom: 8 }}, "By Difficulty"),
+        ["easy","medium","hard"].filter(d => byDiff[d]).map(d => {
+          const dd = byDiff[d];
+          const dp = Math.round(dd.c/dd.t*100);
+          return e("div", { key: d, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 12, marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }},
+            e("span", { style: { color: diffColors[d], fontWeight: 700, fontSize: 13, textTransform: "capitalize" }}, d),
+            e("span", { style: { fontFamily: "'JetBrains Mono',monospace", fontSize: 15, fontWeight: 700, color: dp >= 75 ? CORRECT : dp >= 50 ? CRAFT : WRONG }}, dd.c + "/" + dd.t)
+          );
+        })
+      )
+    ),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, marginBottom: 24, borderLeft: `3px solid ${CRAFT}` }},
+      e("div", { style: { color: CRAFT, fontWeight: 700, fontSize: 13, marginBottom: 6 }}, "Analysis"),
+      e("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.7 }}, advice)
+    ),
+    errors.length > 0 && e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, marginBottom: 24 }},
+      e("div", { style: { color: WRONG, fontWeight: 700, fontSize: 13, marginBottom: 10 }}, errors.length + " error" + (errors.length > 1 ? "s" : "")),
+      Object.entries(errByType).map(([st, count]) =>
+        e("div", { key: st, style: { background: DARK, borderRadius: 8, padding: 10, marginBottom: 6, border: `1px solid ${BORDER}`, display: "flex", alignItems: "center", gap: 8 }},
+          e("span", { style: { background: `${WRONG}22`, color: WRONG, padding: "2px 8px", borderRadius: 4, fontSize: 11, fontWeight: 700 }}, count + "x"),
+          e("span", { style: { fontWeight: 700, fontSize: 13 }}, st)
+        )
+      ),
+      errByType.Structure >= 2 && e("div", { style: { marginTop: 10, padding: 10, background: `${CRAFT}11`, border: `1px solid ${CRAFT}33`, borderRadius: 8, fontSize: 13, color: CRAFT }},
+        "Pattern: Multiple Structure errors. You may be picking answers that describe content instead of function."
+      ),
+      errByType["Cross-Text"] >= 2 && e("div", { style: { marginTop: 10, padding: 10, background: `${CONV}11`, border: `1px solid ${CONV}33`, borderRadius: 8, fontSize: 13, color: CONV }},
+        "Pattern: Multiple Cross-Text errors. Map the relationship (agree/disagree/qualify/extend) before looking at choices."
+      ),
+      byDiff.easy && byDiff.easy.c < byDiff.easy.t - 1 && e("div", { style: { marginTop: 10, padding: 10, background: `${WRONG}11`, border: `1px solid ${WRONG}33`, borderRadius: 8, fontSize: 13, color: WRONG }},
+        "⚠ Multiple errors on easy questions. This suggests a foundational gap — revisit the lesson screens."
+      )
+    ),
+    e("div", { style: { textAlign: "center" }},
+      e("button", { onClick: onContinue, style: btn(`linear-gradient(135deg,${NM},${CRAFT2})`, "#fff") }, "Continue to Challenge Mode →")
+    )
+  );
+}
+
+function ChallengeScreen({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [sel, setSel] = useState(null);
+  const [conf, setConf] = useState(false);
+  const [results, setResults] = useState([]);
+  const q = CHALLENGE[idx];
+  const total = CHALLENGE.length;
+  function confirm() { if (sel === null) return; setConf(true); setResults(r => [...r, sel === q.correct]); }
+  function next() { if (idx < total-1) { setIdx(idx+1); setSel(null); setConf(false); window.scrollTo(0,0); } else { onComplete(results.concat(sel === q.correct)); } }
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }},
+      e("div", { style: { color: NM, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}, "⭐ Challenge Mode"),
+      e("span", { style: { color: MUTED, fontSize: 13 }}, (idx+1)+"/"+total)
+    ),
+    e("div", { style: { background: `${NM}11`, border: `1px solid ${NM}33`, borderRadius: 10, padding: 12, marginBottom: 16, fontSize: 13, color: SUB }},
+      "Literary structure questions ask about ", e("em", null, "effect"), ", not argument. Adversarial cross-texts feature authors who agree on facts but differ on interpretation."
+    ),
+    e("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 20, overflow: "hidden" }},
+      e("div", { style: { height: "100%", width: `${(idx+(conf?1:0))/total*100}%`, background: `linear-gradient(90deg,${NM},${CRAFT})`, borderRadius: 2, transition: "width .4s" }})
+    ),
+    e(MCQuestion, { q, selected: sel, confirmed: conf, onSelect: setSel, onConfirm: confirm, domColor: NM, domLabel: "Challenge — " + q.subtype }),
+    conf && e("div", { style: { display: "flex", justifyContent: "flex-end", marginTop: 8 }},
+      e("button", { onClick: next, style: btn(`linear-gradient(135deg,${NM},${CRAFT2})`, "#fff", { fontSize: 14, padding: "10px 24px" }) },
+        idx < total-1 ? "Next →" : "See Final Results →"
+      )
+    )
+  );
+}
+
+function CompleteScreen({ practiceScore, practiceTotal, challengeScore, challengeTotal }) {
+  const pp = Math.round(practiceScore/practiceTotal*100);
+  const cp = Math.round(challengeScore/challengeTotal*100);
+  return e("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", textAlign: "center" }},
+    e("div", { style: { fontSize: 64, marginBottom: 16 }}, "🏗️"),
+    e("h1", { style: { fontFamily: "'Cormorant Garamond',serif", color: CRAFT, fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 800, marginBottom: 8 }}, "Module 7 Complete"),
+    e("p", { style: { color: SUB, fontSize: 16, marginBottom: 32, maxWidth: 480 }}, "You've learned to read for structure, map cross-text relationships, and distinguish content from function."),
+    e("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32, maxWidth: 400, width: "100%" }},
+      e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24 }},
+        e("div", { style: { color: CRAFT, fontSize: 40, fontWeight: 900 }}, practiceScore + "/" + practiceTotal),
+        e("div", { style: { color: MUTED, fontSize: 13, marginTop: 4 }}, "Practice (" + pp + "%)"),
+        e("div", { style: { height: 6, background: BORDER, borderRadius: 3, marginTop: 10, overflow: "hidden" }},
+          e("div", { style: { height: "100%", width: pp+"%", background: `linear-gradient(90deg,${CRAFT},${CORRECT})`, borderRadius: 3 }}))
+      ),
+      e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24 }},
+        e("div", { style: { color: NM, fontSize: 40, fontWeight: 900 }}, challengeScore + "/" + challengeTotal),
+        e("div", { style: { color: MUTED, fontSize: 13, marginTop: 4 }}, "Challenge (" + cp + "%)"),
+        e("div", { style: { height: 6, background: BORDER, borderRadius: 3, marginTop: 10, overflow: "hidden" }},
+          e("div", { style: { height: "100%", width: cp+"%", background: `linear-gradient(90deg,${NM},${CORRECT})`, borderRadius: 3 }}))
+      )
+    ),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, maxWidth: 480, marginBottom: 32 }},
+      e("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 }}, "Key Takeaways"),
+      e("ol", { style: { color: SUB, fontSize: 13, lineHeight: 2, textAlign: "left", paddingLeft: 18 }},
+        e("li", null, "Every sentence has a ", e("strong", null, "function"), ". Structure questions test whether you can identify it."),
+        e("li", null, e("strong", null, '"Says" vs. "Does"'), " — wrong answers describe content when questions ask about function."),
+        e("li", null, "Cross-text: ", e("strong", null, "agreement, disagreement, qualification, extension"), ". PSAT favors qualification."),
+        e("li", null, 'Ask: "Why did the author include this?" not "What does this mean?"'),
+        e("li", null, "Literary passages ask about ", e("strong", null, "effect"), " (tension, setting, character) not argument structure.")
+      )
+    ),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, maxWidth: 480, marginBottom: 32 }},
+      e("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 }}, "Homework"),
+      e("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.8, textAlign: "left" }},
+        e("strong", { style: { color: TEXT }}, "1. Function Labeling"), " — Label every sentence in 2 paragraphs: claim, evidence, counterpoint, transition, or context.", e("br"),
+        e("strong", { style: { color: TEXT }}, "2. Says vs. Does"), ' — Pick 3 sentences. Write both a \u201csays\u201d and \u201cdoes\u201d summary for each.', e("br"),
+        e("strong", { style: { color: TEXT }}, "3. Cross-Text Spotting"), " — Find 2 articles on the same topic. Do they agree, disagree, qualify, or extend?", e("br"),
+        e("strong", { style: { color: TEXT }}, "4. Preview Module 8"), ' — Transitions. Notice \u201chowever,\u201d \u201cmoreover,\u201d \u201cconsequently.\u201d'
+      )
+    ),
+    e("div", { style: { display: "flex", gap: 12 }},
+      e("a", { href: "module-6.html", style: { color: ACCENT, fontSize: 14, textDecoration: "none" }}, "← Module 6"),
+      e("a", { href: "module-8.html", style: { color: ACCENT, fontSize: 14, textDecoration: "none" }}, "Module 8 →")
+    ),
+    e("div", { style: { color: MUTED, fontSize: 13, marginTop: 16 }}, "Next up: Module 8 — Connecting the Dots")
+  );
+}
+
+/* ═══ APP ═══ */
+
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [practiceAnswers, setPracticeAnswers] = useState([]);
+  const [challengeResults, setChallengeResults] = useState([]);
+
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => { setScreen(to); window.scrollTo(0, 0); setFade(true); }, 350);
+  }, []);
+
+  const practiceScore = practiceAnswers.filter(a => a.selected === a.correct).length;
+  const challengeScore = challengeResults.filter(Boolean).length;
+
+  return e("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }},
+    e(TopStripe),
+    e("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" }},
+      screen === "welcome" && e(Welcome, { onNext: () => go("warmup") }),
+      screen === "warmup" && e(WarmUpScreen, { onComplete: () => go("lesson") }),
+      screen === "lesson" && e(LessonScreen, { onComplete: () => go("funclabel") }),
+      screen === "funclabel" && e(FuncLabelScreen, { onComplete: () => go("crosstext") }),
+      screen === "crosstext" && e(CrossTextScreen, { onComplete: () => go("saysdoes") }),
+      screen === "saysdoes" && e(SaysDoesScreen, { onComplete: () => go("practice") }),
+      screen === "practice" && e(TimedPractice, { onComplete: (ans) => { setPracticeAnswers(ans); go("results"); } }),
+      screen === "results" && e(ResultsScreen, { practiceAnswers, onContinue: () => go("challenge") }),
+      screen === "challenge" && e(ChallengeScreen, { onComplete: (res) => { setChallengeResults(res); go("complete"); } }),
+      screen === "complete" && e(CompleteScreen, { practiceScore, practiceTotal: PRACTICE.length, challengeScore, challengeTotal: CHALLENGE.length })
+    )
+  );
+}
+
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>

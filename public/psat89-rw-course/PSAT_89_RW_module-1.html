@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1: Welcome & Diagnostic — PSAT 8/9 Reading & Writing — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var ce = React.createElement;
+var useState = React.useState;
+var useEffect = React.useEffect;
+var useCallback = React.useCallback;
+var useRef = React.useRef;
+
+/* ── design tokens ── */
+var C = {
+  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
+  sub:"#999", muted:"#666", accent:"#0891b2",
+  mod:"#0891b2", modBg:"rgba(8,145,178,.12)",
+  craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
+  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)",
+  grow:"#06d6a0"
+};
+var btn = function(bg, color, extra) {
+  return Object.assign({
+    padding:"12px 28px", borderRadius:10, border:"none", background:bg,
+    color:color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s"
+  }, extra || {});
+};
+var NAV = {
+  prev: null,
+  next:{ label:"Module 2: Words in Context", file:"PSAT_89_RW_module-2.html" }
+};
+
+/* ── ANATOMY QUESTIONS ── */
+var ANAT_QS = [
+  {tab:"Vocabulary", domain:"Craft & Structure",
+   passage:"The researcher's findings were met with considerable ________ from the scientific community, as her methodology challenged long-held assumptions about climate patterns in the Southern Hemisphere.",
+   highlights:[
+     {text:"________", note:"This is the target word. Your job is to figure out what fits here based on context clues \u2014 the rest of the passage tells you the answer."},
+     {text:"challenged long-held assumptions", note:"This is your key context clue! 'Challenged long-held assumptions' suggests controversy or doubt \u2014 not praise. Use this to predict a word meaning 'doubt' or 'suspicion' before looking at the choices."}
+   ],
+   stem:"Which choice completes the text with the most logical and precise word or phrase?",
+   choices:["skepticism","funding","celebration","confusion"], correct:0,
+   explain:"The passage says the methodology \"challenged long-held assumptions\" \u2014 this signals doubt or questioning, not praise. \"Skepticism\" (doubt) fits perfectly. \"Funding\" is unrelated to the reaction described. \"Celebration\" contradicts the challenging tone. \"Confusion\" is closer but less precise than skepticism."},
+  {tab:"Evidence", domain:"Information & Ideas",
+   passage:"A 2023 study of urban tree canopy coverage found that neighborhoods with at least 30% tree coverage experienced average summer temperatures 4.2\u00b0F lower than neighborhoods with less than 10% coverage. The researchers noted that tree-lined streets also showed 23% higher pedestrian traffic during peak heat hours.",
+   highlights:[
+     {text:"neighborhoods with at least 30% tree coverage experienced average summer temperatures 4.2\u00b0F lower", note:"Key data: neighborhoods with MORE trees had LOWER temperatures. This cause-effect relationship is what the question will ask about."},
+     {text:"tree-lined streets also showed 23% higher pedestrian traffic", note:"This additional detail strengthens the finding by showing tree coverage also has other benefits. But the question asks specifically about temperature \u2014 stay focused on what's asked."}
+   ],
+   stem:"Which finding, if true, would most directly support the researchers' conclusion about tree coverage and temperature?",
+   choices:["Cities with more parks have higher property values.","Satellite thermal imaging confirmed lower surface temperatures in high-canopy zones.","Residents in tree-covered areas reported greater life satisfaction.","Tree planting programs have expanded in 45 U.S. cities since 2020."], correct:1,
+   explain:"The conclusion is about tree coverage reducing temperatures. Choice B directly supports this with independent thermal data. A, C, and D are related to trees but don't address the specific temperature claim."},
+  {tab:"Grammar", domain:"Std. English Conventions",
+   passage:"The museum's newest exhibit, which features interactive displays from twelve countries and spans three entire floors of the building, ________ more than 10,000 visitors since its opening last month.",
+   highlights:[
+     {text:"interactive displays from twelve countries and spans three entire floors of the building", note:"This 'which' clause is a NON-ESSENTIAL element \u2014 it adds information but could be removed. Non-essential clauses need commas on BOTH sides. The question tests whether you can spot the correct punctuation pattern."},
+     {text:"________", note:"This is the main verb. The subject is 'exhibit' (singular), NOT 'countries' or 'floors.' Subject-verb agreement with intervening phrases is one of the most commonly tested grammar rules."}
+   ],
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["have attracted","has attracted","are attracting","attract"], correct:1,
+   explain:"The subject is \"exhibit\" (singular), not \"countries\" or \"floors.\" The intervening clause between commas is a trap \u2014 ignore it and connect \"exhibit...has attracted.\" B is correct: singular subject + singular verb + past participle for present perfect tense."},
+  {tab:"Transitions", domain:"Expression of Ideas",
+   passage:"Arctic fox populations have declined by nearly 90% in Scandinavia over the past century due to overhunting and habitat loss. ________ recent conservation programs, including captive breeding and habitat restoration, have helped populations in Norway and Sweden begin to recover.",
+   highlights:[
+     {text:"________", note:"The blank needs a transition. Read the sentence BEFORE and AFTER the blank. Before: populations declined 90%. After: conservation programs have helped recovery. This is a CONTRAST."},
+     {text:"recent conservation programs, including captive breeding and habitat restoration, have helped populations in Norway and Sweden begin to recover.", note:"'Recent conservation programs' signals a shift from negative to positive. You need a contrast transition like 'However' \u2014 not a continuation like 'Furthermore.'"}
+   ],
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["Furthermore,","Similarly,","However,","Specifically,"], correct:2,
+   explain:"\"However\" is correct because the passage shifts from a negative trend (decline) to a positive development (recovery). This is a classic contrast transition. \"Furthermore\" and \"Similarly\" would continue the negative direction. \"Specifically\" would elaborate on the decline, not introduce a new direction."}
+];
+
+/* ── DIAGNOSTIC QUESTIONS ── */
+var DIAG_QS = [
+  {domain:"Craft & Structure", color:C.craft,
+   passage:"The city council's proposal to convert the abandoned rail yard into a public park was met with ________ enthusiasm from local residents, many of whom had spent years advocating for more green space in the neighborhood.",
+   stem:"Which choice completes the text with the most logical and precise word?",
+   choices:["unreserved","token","manufactured","qualified"], correct:0,
+   explain:"\"Unreserved\" means wholehearted/without reservation. The residents had \"spent years advocating\" for this \u2014 they'd be genuinely enthusiastic. \"Token\" means minimal, \"manufactured\" means fake, and \"qualified\" means limited \u2014 all contradict the passage's positive tone."},
+  {domain:"Craft & Structure", color:C.craft,
+   passage:"Chef Hana Yoshida's new cookbook doesn't just collect recipes \u2014 it traces each dish to a specific memory from her childhood in rural Hokkaido, weaving personal narrative through precise culinary instruction.",
+   stem:"Which choice best states the main purpose of the text?",
+   choices:["To review the quality of recipes in Yoshida's cookbook","To describe how Yoshida's cookbook combines storytelling with cooking","To argue that memoir-style cookbooks are superior to traditional ones","To explain the cultural significance of Hokkaido cuisine"], correct:1,
+   explain:"The passage describes how the cookbook \"weaves personal narrative through precise culinary instruction\" \u2014 it combines stories with recipes. It doesn't review quality, make an argument about cookbook styles, or focus on Hokkaido cuisine broadly."},
+  {domain:"Craft & Structure", color:C.craft,
+   passage:"Text 1: Economist Ravi Patel argues that remote work has permanently restructured labor markets, enabling companies to hire from a global talent pool and reducing the geographic concentration of economic opportunity.\n\nText 2: Sociologist Clara Mu\u00f1oz contends that the shift to remote work has primarily benefited high-income knowledge workers while leaving service and manufacturing workers further behind, potentially widening economic inequality.",
+   stem:"Based on the texts, how would Mu\u00f1oz most likely respond to Patel's argument?",
+   choices:["By agreeing that remote work has restructured labor markets","By arguing that Patel overlooks who actually benefits from remote work","By suggesting that service workers should transition to knowledge work","By questioning whether remote work is truly permanent"], correct:1,
+   explain:"Mu\u00f1oz focuses on inequality \u2014 remote work benefits some but not others. She would challenge Patel's optimistic view by pointing out that the benefits are unevenly distributed."},
+  {domain:"Information & Ideas", color:C.info,
+   passage:"Marine biologists studying coral reef ecosystems in the Pacific Ocean observed that reefs located near river mouths showed significantly lower biodiversity than those in open ocean locations. The researchers attributed this difference to increased sediment and nutrient runoff from agricultural activity upstream.",
+   stem:"Which choice best states the main idea of the text?",
+   choices:["Agricultural runoff is the leading cause of coral reef decline worldwide","Coral reefs near river mouths have reduced biodiversity due to agricultural runoff","Pacific Ocean reefs are more vulnerable to pollution than Atlantic reefs","Marine biologists need more funding to study coral reef ecosystems"], correct:1,
+   explain:"The passage specifically links lower biodiversity near river mouths to agricultural runoff. Choice B captures this precisely. A overgeneralizes (\"worldwide\"), C compares oceans (not in the passage), and D is about funding (not mentioned)."},
+  {domain:"Information & Ideas", color:C.info,
+   passage:"A psychologist surveyed 500 high school students about study habits and found that students who studied in 25-minute intervals with short breaks scored an average of 12% higher on exams than students who studied in continuous sessions of two hours or more.",
+   stem:"Which finding, if true, would most directly weaken the psychologist's implied conclusion that interval studying improves exam performance?",
+   choices:["Some students prefer longer study sessions","The interval-study group also had higher GPAs prior to the experiment","Teachers reported that students seemed more engaged in class","The study was published in a well-regarded journal"], correct:1,
+   explain:"If the interval group already had higher GPAs, the difference in exam scores might be due to pre-existing ability, not the study method. This is a confounding variable."},
+  {domain:"Information & Ideas", color:C.info,
+   passage:"A researcher asked whether a new fertilizer increased crop yield in tomato plants. Over eight weeks, 30 plants receiving the fertilizer produced an average of 4.2 kg of tomatoes, while 30 control plants produced an average of 3.8 kg.",
+   stem:"Which choice most accurately describes a limitation of the study design?",
+   choices:["The study used too many plants to draw meaningful conclusions","The 0.4 kg difference may not be statistically significant given natural variation","Tomatoes are not representative of all crops","The researcher should have used a different fertilizer"], correct:1,
+   explain:"With only 30 plants per group and a relatively small difference (0.4 kg), natural variation could account for the results. This is a key statistical reasoning skill."},
+  {domain:"Std. English Conventions", color:C.sec,
+   passage:"The documentary series, which profiles groundbreaking women in STEM fields across six ________ audiences with its compelling storytelling and stunning cinematography.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["episodes, have captivated","episodes, has captivated","episodes have captivated","episodes; has captivated"], correct:1,
+   explain:"The subject is \"series\" (singular). The \"which\" clause is non-essential and needs commas on both sides: \"series, which profiles...episodes, has captivated.\" B correctly closes the non-essential clause with a comma and uses the singular verb \"has.\""},
+  {domain:"Std. English Conventions", color:C.sec,
+   passage:"By the time the rescue team arrived at the remote mountain ________ trapped hikers had already managed to signal a passing helicopter using a reflective emergency blanket.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["village the","village, the","village; the","village. The"], correct:1,
+   explain:"This sentence has an introductory adverbial clause (\"By the time...village\") that must be separated from the main clause by a comma. A semicolon or period would incorrectly split the introductory clause from its main clause."},
+  {domain:"Std. English Conventions", color:C.sec,
+   passage:"Neither the lead architect nor the structural engineers ________ comfortable approving the revised building plans without conducting additional soil testing at the proposed construction site.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["was","were","is","has been"], correct:1,
+   explain:"With \"neither...nor,\" the verb agrees with the CLOSER subject \u2014 \"engineers\" (plural). So \"were\" is correct. This is a frequently tested agreement pattern."},
+  {domain:"Expression of Ideas", color:C.expr,
+   passage:"The museum's latest exhibition traces the evolution of Japanese woodblock printing from the 17th century to the present day. ________ the exhibit examines how contemporary artists have adapted traditional ukiyo-e techniques to address modern themes like urbanization and climate change.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["In contrast,","Nevertheless,","In particular,","Similarly,"], correct:2,
+   explain:"\"In particular\" works because the second sentence gives a specific example of what the exhibition covers. It narrows from the general (evolution of woodblock printing) to the specific (contemporary artists adapting techniques)."},
+  {domain:"Expression of Ideas", color:C.expr,
+   passage:"Researchers have found that bilingual individuals often outperform monolinguals on tasks requiring cognitive flexibility, such as switching between different rules or perspectives. ________ some studies suggest that these advantages may diminish or disappear when other factors like socioeconomic status and education level are controlled for.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["Furthermore,","For example,","However,","Therefore,"], correct:2,
+   explain:"\"However\" signals the contrast between the initial finding (bilingual advantages) and the complication (advantages may disappear when controlling for other factors)."},
+  {domain:"Expression of Ideas", color:C.expr,
+   passage:"While researching a topic, a student has taken the following notes:\n\u2022 The axolotl is a salamander native to Lake Xochimilco in Mexico City.\n\u2022 Unlike most amphibians, axolotls retain their larval features throughout adulthood (neoteny).\n\u2022 Axolotls can regenerate lost limbs, heart tissue, and portions of their brain.\n\u2022 Scientists study axolotl regeneration to understand potential applications in human medicine.",
+   stem:"The student wants to emphasize the scientific significance of the axolotl. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+   choices:["The axolotl is a salamander found in Lake Xochimilco that stays in its larval form throughout life.","Because axolotls can regenerate limbs, heart tissue, and brain matter, scientists study them to explore potential applications in human medicine.","Axolotls are unique amphibians that live in a lake in Mexico City and exhibit neoteny.","The axolotl, which is native to Mexico City, is a salamander that scientists find interesting."], correct:1,
+   explain:"The goal is \"scientific significance.\" Choice B connects regeneration ability (the remarkable trait) directly to medical research (why it matters to science). A and C describe the animal but don't emphasize significance. D is vague."}
+];
+
+/* ── ERROR CLASSIFICATION ── */
+var EC_QS = [
+  {scenario:"A student reads a vocabulary-in-context question and immediately picks \"benevolent\" because it sounds positive and the passage seems positive. But the correct answer was \"pragmatic\" \u2014 the passage described a practical, results-oriented approach, not a kind one.",
+   options:["Vocabulary Gap","Didn't Use Evidence","Misread the Question","Trap Answer"], correct:3,
+   fb:"This is a <b>Trap Answer</b>. The student matched a vague feeling (\"positive\") instead of the specific meaning. \"Benevolent\" (kind) and \"pragmatic\" (practical) are both positive but mean very different things. Fix: predict your own word BEFORE looking at choices."},
+  {scenario:"A student answers a grammar question about subject-verb agreement. The sentence reads: \"The collection of rare stamps ___ valuable.\" The student chose \"are\" because \"stamps\" is plural. The correct answer was \"is\" because the subject is \"collection\" (singular).",
+   options:["Grammar Rule Gap","Didn't Use Evidence","Time Pressure","Careless Error"], correct:0,
+   fb:"This is a <b>Grammar Rule Gap</b>. The student doesn't know the rule: the subject is \"collection\" (singular), not \"stamps.\" Prepositional phrases between subject and verb are traps. Fix: learn to identify the true subject by crossing out intervening phrases."},
+  {scenario:"A student reads a transition question. The first sentence describes a problem; the second sentence describes a solution. The student chose \"Furthermore\" instead of \"However\" because they rushed and didn't read the second sentence carefully.",
+   options:["Vocabulary Gap","Didn't Use Evidence","Time Pressure","Careless Error"], correct:1,
+   fb:"This is <b>Didn't Use Evidence</b>. The student didn't read both sentences carefully enough to notice the problem\u2192solution shift. Fix: always read the sentence before AND after the transition blank to determine the logical relationship."},
+  {scenario:"A student correctly identifies that a question is asking about the \"main purpose\" of a passage, but confuses it with the \"main idea.\" They pick a choice that states what the passage is about, rather than WHY the author wrote it.",
+   options:["Vocabulary Gap","Didn't Use Evidence","Misread the Question","Trap Answer"], correct:2,
+   fb:"This is a <b>Misread the Question</b>. \"Main idea\" (what the text says) and \"main purpose\" (why the author wrote it) require different answers. Fix: underline the key phrase in the question stem. Purpose = why. Idea = what."},
+  {scenario:"A student encounters a rhetorical synthesis question (the bullet-point format) for the first time and doesn't understand what it's asking. They pick the longest answer choice because it seems most complete.",
+   options:["Grammar Rule Gap","Didn't Use Evidence","Misread the Question","Unfamiliar Format"], correct:3,
+   fb:"This is an <b>Unfamiliar Format</b> error. Rhetorical synthesis questions are unique to the digital SAT Suite. The student needs to learn: (1) read the goal in the stem, (2) identify which bullet points are relevant to that goal, (3) pick the choice that uses those points effectively. Fix: dedicated practice with this question type in Module 9."},
+  {scenario:"A student gets a \"command of evidence \u2014 quantitative\" question with a bar graph. They misread the y-axis scale and interpret 15,000 as 1,500. Their chosen answer is based on this incorrect reading.",
+   options:["Vocabulary Gap","Careless Error","Misread the Question","Didn't Use Evidence"], correct:1,
+   fb:"This is a <b>Careless Error</b>. The student has the skill to read graphs but made a mechanical mistake with the axis labels. Fix: always read BOTH axes carefully, check the units, and verify the scale before interpreting the data."}
+];
+
+/* ── CHECKLIST & WORKSHEET DATA ── */
+var CL_ITEMS = ["Bluebook app installed and working","Quiet testing environment prepared","Phone silenced and out of reach","Scratch paper and pencil ready (for notes)","64 uninterrupted minutes available","Water bottle nearby"];
+var CL_KEY = "pp_psat89_rw_m1_cl";
+var WS_KEY = "pp_psat89_rw_m1_ws";
+
+/* ── DOMAIN DATA ── */
+var DOMAINS = [
+  {name:"Craft & Structure", pct:"~28%", qs:"13\u201315 questions", color:C.craft,
+   front:"Words in context, text structure & purpose, cross-text connections",
+   back:"Sub-skills: Words in Context (~10\u201311 Qs \u2014 the biggest single type!) \u00b7 Text Structure & Purpose (~2 Qs) \u00b7 Cross-Text Connections (~1\u20132 Qs). Tests vocabulary, author's purpose, and comparing paired passages."},
+  {name:"Information & Ideas", pct:"~26%", qs:"12\u201314 questions", color:C.info,
+   front:"Central ideas, textual evidence, quantitative evidence, inferences",
+   back:"Sub-skills: Central Ideas & Details (~4\u20135 Qs) \u00b7 Command of Evidence \u2014 Textual (~4 Qs) \u00b7 Command of Evidence \u2014 Quantitative (~3\u20134 Qs, with graphs/tables) \u00b7 Inferences (~3\u20134 Qs)"},
+  {name:"Std. English Conventions", pct:"~26%", qs:"11\u201315 questions", color:C.sec,
+   front:"Sentence boundaries, punctuation, agreement, verb form, modifiers",
+   back:"Sub-skills: Boundaries (~5\u20136 Qs \u2014 run-ons, comma splices, fragments, semicolons, colons) \u00b7 Form, Structure & Sense (~7\u20138 Qs \u2014 subject-verb agreement, pronoun agreement, verb tense, parallel structure, modifiers)"},
+  {name:"Expression of Ideas", pct:"~20%", qs:"8\u201312 questions", color:C.expr,
+   front:"Transitions, rhetorical synthesis",
+   back:"Sub-skills: Transitions (~5\u20136 Qs \u2014 selecting logical connecting words) \u00b7 Rhetorical Synthesis (~5\u20136 Qs \u2014 unique format: bulleted notes \u2192 construct an effective sentence). The only questions without traditional prose passages."}
+];
+
+/* ── STRATEGY DATA ── */
+var STRATS = [
+  {icon:"\uD83D\uDD2E", title:"Predict Before You Peek", hint:"Cover choices. Generate your own answer first.",
+   back:"For vocabulary questions, read the passage, cover the answer choices, and predict what word fits. Then look for a match. This prevents trap answers from hijacking your thinking."},
+  {icon:"\uD83C\uDFAF", title:"Read the Question First", hint:"Know what you're looking for before you read.",
+   back:"Since each passage has only ONE question, reading the question stem first tells you exactly what to look for. This makes your reading faster and more focused."},
+  {icon:"\uD83D\uDCCC", title:"Evidence Hunting", hint:"Point to the proof before you pick.",
+   back:"Every correct answer is supported by specific words in the passage. Before selecting, mentally (or physically) point to the exact words that prove your answer. If you can't point to evidence, you're guessing."},
+  {icon:"\u274C", title:"Process of Elimination", hint:"Use Bluebook's built-in answer eliminator.",
+   back:"Cross out wrong answers using the digital tool. Extreme words (\"always,\" \"never,\" \"completely\") are almost always wrong. Eliminating even one choice improves your odds from 25% to 33%."},
+  {icon:"\u23F1\uFE0F", title:"Two-Pass System", hint:"Confident answers first. Flagged questions second.",
+   back:"First pass: answer all confident questions, flag uncertain ones with Mark for Review. Second pass: return to flagged items. Never spend more than 90 seconds on any single question in the first pass."},
+  {icon:"\uD83D\uDD17", title:"Transition Signals", hint:"Learn the function categories of connecting words.",
+   back:"Transitions fall into categories: addition (moreover), contrast (however), cause/effect (therefore), sequence (subsequently), example (for instance). Knowing these categories makes transition questions nearly automatic."}
+];
+
+/* ── KEY TAKEAWAYS ── */
+var KEY_TAKEAWAYS = [
+  "The PSAT 8/9 R&W section has 54 questions in 64 minutes, split into two adaptive modules of 27 questions each.",
+  "Every question has its own short passage (25\u2013150 words) \u2014 no more long reading passages with multiple questions.",
+  "Module 1 performance determines your Module 2 difficulty \u2014 and your score ceiling. Accuracy in Module 1 matters most.",
+  "The four domains are Craft & Structure (~28%), Information & Ideas (~26%), Standard English Conventions (~26%), and Expression of Ideas (~20%).",
+  "Words in Context is the single most common question type (~20% of the test). Building vocabulary pays off.",
+  "There's no penalty for wrong answers \u2014 never leave a question blank.",
+  "Your PSAT 8/9 score uses the same scale as the SAT \u2014 every point of growth here carries forward to future tests.",
+  "Error analysis is the most powerful study tool: identify why you missed a question, not just what you missed."
+];
+
+/* ========== COMPONENTS ========== */
+
+/* ── Welcome ── */
+function Welcome(props) {
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  return ce("div", {style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    ce("div", {style:{background:C.modBg,border:"1px solid "+C.mod+"44",borderRadius:12,padding:"6px 18px",fontSize:13,letterSpacing:1.5,textTransform:"uppercase",color:C.mod,marginBottom:12,fontWeight:600}}, "Phase 1 \u00B7 Module 1"),
+    ce("h1", {style:{fontSize:"clamp(1.7rem,4.5vw,3rem)",fontWeight:800,background:"linear-gradient(135deg,"+C.mod+","+C.rw+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1.1,textAlign:"center",marginBottom:16,fontFamily:"'Cormorant Garamond',serif"}}, "Welcome to the PSAT 8/9 Reading & Writing"),
+    ce("p", {style:{color:C.sub,fontSize:18,maxWidth:560,textAlign:"center",lineHeight:1.6,marginBottom:12}}, "Understand the test, see how questions actually work, establish your baseline, and build your study plan."),
+    ce("div", {style:{background:C.modBg,border:"1px solid "+C.mod+"33",borderRadius:12,padding:"14px 22px",maxWidth:540,marginBottom:40,fontSize:14,color:C.sub,lineHeight:1.6,textAlign:"center"}},
+      ce("strong", {style:{color:C.mod}}, "Your First Step: "),
+      "This module covers everything you need to know about the PSAT 8/9 R&W section \u2014 format, question types, strategies, and your diagnostic baseline."
+    ),
+    ce("div", {style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:16,maxWidth:700,width:"100%",marginBottom:48}},
+      [{icon:"\uD83D\uDCCB",title:"Test Structure",desc:"Format, timing, scoring"},
+       {icon:"\uD83D\uDD0D",title:"Question Anatomy",desc:"4 question types walkthrough"},
+       {icon:"\uD83C\uDFAF",title:"Strategy Toolkit",desc:"6 core strategies"},
+       {icon:"\uD83D\uDCDD",title:"12-Q Diagnostic",desc:"Find your baseline"},
+       {icon:"\uD83D\uDCC8",title:"Study Plan",desc:"Personalized next steps"}
+      ].map(function(c,i){ return ce("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
+        ce("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        ce("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
+        ce("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      );})
+    ),
+    ce("button", {onClick:props.onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff"), onMouseOver:function(e){e.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";}}, "Start Learning \u2192"),
+    ce("div", {style:{color:C.muted,fontSize:13,marginTop:24}}, "\u23F1 ~60 min \u00B7 All 4 R&W Domains")
+  );
+}
+
+/* ── LessonViewer with 7 slides ── */
+function LessonViewer(props) {
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var total = 7;
+
+  function renderSlide() {
+    if (idx === 0) return ce(SlideTestStructure, null);
+    if (idx === 1) return ce(SlideAnatomy, null);
+    if (idx === 2) return ce(SlideAdaptive, null);
+    if (idx === 3) return ce(SlideDomains, null);
+    if (idx === 4) return ce(SlideStrategy, null);
+    if (idx === 5) return ce(SlideGrowth, null);
+    if (idx === 6) return ce(SlideScoreProjector, null);
+    return null;
+  }
+
+  var subtitles = [
+    "Know Your Test \u2014 Digital PSAT 8/9 R&W: Structure & Format",
+    "Interactive Walkthrough \u2014 Anatomy of a PSAT R&W Question",
+    "How It Works \u2014 The Adaptive Module System",
+    "Content Breakdown \u2014 The Four Content Domains",
+    "Preview \u2014 The PSAT 8/9 R&W Strategy Toolkit",
+    "The Big Picture \u2014 Your Growth Trajectory",
+    "Interactive Tool \u2014 Score Projector"
+  ];
+
+  return ce("div",{style:{maxWidth:760,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    ce("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      Array.from({length:total}).map(function(_,i){
+        return ce("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+      })
+    ),
+    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8,textAlign:"center"}}, subtitles[idx]),
+    renderSlide(),
+    ce("div",{style:{display:"flex",justifyContent:"space-between",marginTop:32}},
+      ce("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#444":C.sub),{border:"1px solid "+C.border,padding:"10px 20px",fontSize:14})},"\u2190 Back"),
+      idx < total-1
+        ? ce("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
+        : ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Diagnostic \u2192")
+    )
+  );
+}
+
+/* ── Slide 1: Test Structure ── */
+function SlideTestStructure() {
+  var rows = [
+    ["Total Questions","54 (27 per module)"],
+    ["Total Time","64 minutes (32 per module)"],
+    ["Time per Question","~71 seconds average"],
+    ["Adaptive Format","Module 2 difficulty adjusts based on Module 1 performance"],
+    ["Question Types","100% multiple choice (4 options), each with its own short passage"],
+    ["Passages","25\u2013150 words each \u00B7 Literature, History, Humanities, Science"],
+    ["Scoring","120\u2013720 R&W section score (no penalty for wrong answers)"],
+    ["Digital Tools","Highlighting, annotation, answer eliminator, Mark for Review"]
+  ];
+  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"Digital PSAT 8/9 R&W: Structure & Format"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"The PSAT 8/9 is the first test in the SAT Suite \u2014 the same adaptive format and question style as the PSAT 10 and SAT, but calibrated for 8th and 9th graders. Simpler vocabulary, more accessible passages, more straightforward analysis. Everything you need is either already in your literacy toolkit or covered in this course."),
+    ce("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:14,marginBottom:16}},
+      ce("thead",null,ce("tr",null,
+        ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"Feature"),
+        ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"Details")
+      )),
+      ce("tbody",null, rows.map(function(r,i){
+        return ce("tr",{key:i},
+          ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc",fontWeight:600}},r[0]),
+          ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc"}},
+            r[0]==="Total Questions" ? ce("span",null,ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"54")," (27 per module)") :
+            r[0]==="Total Time" ? ce("span",null,ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"64 minutes")," (32 per module)") :
+            r[0]==="Time per Question" ? ce("span",null,"~",ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"71 seconds")," average") :
+            r[0]==="Passages" ? ce("span",null,ce("strong",null,"25\u2013150 words")," each \u00B7 Literature, History, Humanities, Science") :
+            r[0]==="Scoring" ? ce("span",null,ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"120\u2013720")," R&W section score (no penalty for wrong answers)") :
+            r[1]
+          )
+        );
+      }))
+    ),
+    ce("div",{style:{background:C.rwBg,border:"1px solid rgba(192,132,252,.3)",borderRadius:10,padding:"14px 18px",marginBottom:12,fontSize:14,lineHeight:1.6}},
+      ce("strong",{style:{color:C.rw}},"One passage, one question. "),
+      "Every question comes with its own short passage of 25\u2013150 words. You'll never face a long 5-page reading passage. This means you need to read fast, extract meaning quickly, and move on. It's a sprint, not a marathon."
+    ),
+    ce("div",{style:{background:C.modBg,border:"1px solid rgba(8,145,178,.3)",borderRadius:10,padding:"14px 18px",fontSize:14,lineHeight:1.6}},
+      ce("strong",{style:{color:C.mod}},"No wrong-answer penalty "),
+      "means you should ",
+      ce("strong",null,"answer every single question"),
+      " \u2014 even if you have to guess. A random guess gives you a 25% chance. Never leave anything blank."
+    )
+  );
+}
+
+/* ── Slide 2: Anatomy Interactive ── */
+function SlideAnatomy() {
+  var _s = useState(0), tabIdx = _s[0], setTabIdx = _s[1];
+  var _s2 = useState({}), answers = _s2[0], setAnswers = _s2[1];
+  var _s3 = useState(null), annotation = _s3[0], setAnnotation = _s3[1];
+  var q = ANAT_QS[tabIdx];
+  var answered = answers[tabIdx] !== undefined;
+  var isCorrect = answered && answers[tabIdx] === q.correct;
+
+  function pickAnswer(ci) {
+    if (answered) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[tabIdx] = ci; return n; });
+  }
+
+  function renderPassageWithHighlights() {
+    var text = q.passage;
+    var parts = [];
+    var remaining = text;
+    q.highlights.forEach(function(h, hi) {
+      var pos = remaining.indexOf(h.text);
+      if (pos >= 0) {
+        if (pos > 0) parts.push({type:"text", content:remaining.substring(0, pos)});
+        parts.push({type:"highlight", content:h.text, note:h.note, idx:hi});
+        remaining = remaining.substring(pos + h.text.length);
+      }
+    });
+    if (remaining.length > 0) parts.push({type:"text", content:remaining});
+
+    return parts.map(function(p, i) {
+      if (p.type === "text") return ce("span", {key:i}, p.content);
+      return ce("span", {key:i, onClick:function(){ setAnnotation(p.note); },
+        style:{background:"rgba(192,132,252,.2)",borderBottom:"2px solid "+C.rw,padding:"0 2px",cursor:"pointer",transition:"all .2s"}
+      }, p.content);
+    });
+  }
+
+  return ce("div",{style:{background:C.surface,border:"2px solid "+C.rw,borderRadius:14,overflow:"hidden"}},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,padding:"20px 24px 0",lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"Anatomy of a PSAT R&W Question"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,padding:"8px 24px 0"}},"This is what you'll see on test day \u2014 a short passage on the left, a question on the right. Click the highlighted portions of the passage to see annotations, then try answering. Use the tabs to explore all four question types."),
+    ce("div",{style:{display:"flex",gap:0,borderBottom:"2px solid "+C.border,margin:"16px 0 0"}},
+      ANAT_QS.map(function(aq, i){
+        return ce("div",{key:i,onClick:function(){ setTabIdx(i); setAnnotation(null); },
+          style:{padding:"10px 18px",fontSize:13,fontWeight:600,cursor:"pointer",color:i===tabIdx?C.rw:C.muted,borderBottom:"2px solid "+(i===tabIdx?C.rw:"transparent"),marginBottom:-2,transition:"all .15s"}
+        }, aq.tab);
+      })
+    ),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:0,minHeight:200}},
+      ce("div",{style:{padding:20,borderRight:"1px solid "+C.border}},
+        ce("span",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:C.rw,display:"block",marginBottom:10}},"Passage"),
+        ce("div",{style:{fontSize:14,lineHeight:1.8,color:"#ccc"}}, renderPassageWithHighlights())
+      ),
+      ce("div",{style:{padding:20}},
+        ce("span",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:C.mod,display:"block",marginBottom:10}},"Question"),
+        ce("div",{style:{fontSize:14,fontWeight:600,marginBottom:14,color:"#ddd",lineHeight:1.6}}, q.stem),
+        ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+          q.choices.map(function(c,ci){
+            var letter = String.fromCharCode(65+ci);
+            var st = {padding:"8px 12px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,fontSize:14,color:"#ccc",cursor:answered?"default":"pointer",transition:"all .15s",display:"flex",alignItems:"flex-start",gap:8,textAlign:"left",width:"100%"};
+            if (answered) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.correct) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (answers[tabIdx] === ci) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return ce("button",{key:ci,onClick:function(){pickAnswer(ci);},style:st},
+              ce("span",{style:{fontWeight:700,color:answered&&ci===q.correct?C.correct:answered&&answers[tabIdx]===ci?C.wrong:C.muted,minWidth:18,flexShrink:0}},letter+")"),
+              ce("span",null,c)
+            );
+          })
+        ),
+        answered && ce("div",{style:{marginTop:10,padding:12,background:C.paper,borderRadius:8,fontSize:13,color:C.muted,lineHeight:1.6,borderLeft:"3px solid "+C.correct}},
+          (isCorrect ? "\u2705 Correct! " : "\u274C Incorrect. ") + q.explain
+        )
+      )
+    ),
+    ce("div",{style:{fontSize:13,padding:"14px 20px",color:C.muted,lineHeight:1.6,minHeight:40,borderTop:"1px solid "+C.border}},
+      annotation
+        ? ce("span",null, ce("span",{style:{color:C.rw}},"\uD83D\uDCA1 Annotation: "), annotation)
+        : answered
+          ? ce("span",null, ce("span",{style:{color:C.rw}},"\u2713 "+q.domain), " \u2014 ", tabIdx < ANAT_QS.length-1 ? "Try the next tab \u2192" : "You've completed the walkthrough!")
+          : "\uD83D\uDC46 Click a highlighted phrase in the passage to see why it matters, then answer the question."
+    )
+  );
+}
+
+/* ── Slide 3: Adaptive Module System ── */
+function SlideAdaptive() {
+  var _s = useState(14), simVal = _s[0], setSimVal = _s[1];
+
+  function getSimData(v) {
+    var pct = v / 27;
+    if (pct >= 0.63) return {route:"Harder Module 2", color:C.correct, floor:350, ceil:720, bg:C.correctBg};
+    if (pct >= 0.48) return {route:"Borderline \u2014 Could go either way", color:C.expr, floor:300, ceil:580, bg:"rgba(251,191,36,.1)"};
+    return {route:"Easier Module 2", color:C.wrong, floor:120, ceil:Math.min(480+v*6,560), bg:C.wrongBg};
+  }
+
+  var sim = getSimData(simVal);
+  var meterPct = ((sim.ceil - 120) / 600) * 100;
+
+  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"The Adaptive Module System"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"The PSAT 8/9 uses multistage adaptive testing. Your Module 1 performance determines which version of Module 2 you get \u2014 and that determines your maximum possible score."),
+    /* Flow diagram */
+    ce("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:8,marginBottom:20}},
+      ce("div",{style:{padding:"12px 20px",borderRadius:10,textAlign:"center",fontSize:14,fontWeight:600,minWidth:200,background:C.modBg,border:"2px solid "+C.mod}},
+        "Module 1: Mixed Difficulty",
+        ce("br"),
+        ce("span",{style:{fontSize:12,color:C.muted}},"27 questions \u00B7 32 minutes \u00B7 Easy \u2192 Hard within each skill group")
+      ),
+      ce("div",{style:{color:C.muted,fontSize:"1.2rem"}},"\u2193 Your performance determines\u2026"),
+      ce("div",{style:{display:"flex",gap:16,width:"100%"}},
+        ce("div",{style:{flex:1,textAlign:"center"}},
+          ce("div",{style:{padding:"12px 20px",borderRadius:10,textAlign:"center",fontSize:14,fontWeight:600,background:C.correctBg,border:"2px solid "+C.correct}},
+            "Module 2: ", ce("strong",null,"Harder"), ce("br"),
+            ce("span",{style:{fontSize:12,color:C.muted}},"Unlocks scores up to 720")
+          )
+        ),
+        ce("div",{style:{flex:1,textAlign:"center"}},
+          ce("div",{style:{padding:"12px 20px",borderRadius:10,textAlign:"center",fontSize:14,fontWeight:600,background:C.wrongBg,border:"2px solid "+C.wrong}},
+            "Module 2: ", ce("strong",null,"Easier"), ce("br"),
+            ce("span",{style:{fontSize:12,color:C.muted}},"Score ceiling ~480\u2013560")
+          )
+        )
+      )
+    ),
+    /* Simulator */
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:12}},"Use the slider below to see how your Module 1 accuracy affects your routing and score ceiling:"),
+    ce("div",{style:{background:C.paper,border:"2px solid "+C.mod,borderRadius:14,padding:22}},
+      ce("div",{style:{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted,marginBottom:10}},"Module 1 Routing Simulator"),
+      ce("div",{style:{display:"flex",alignItems:"center",gap:14,marginBottom:16}},
+        ce("span",{style:{fontSize:12,color:C.muted}},"0"),
+        ce("input",{type:"range",min:0,max:27,value:simVal,onChange:function(e){setSimVal(parseInt(e.target.value));},
+          style:{flex:1,WebkitAppearance:"none",appearance:"none",height:8,borderRadius:4,background:"linear-gradient(90deg,"+C.wrong+" 0%,"+C.expr+" 50%,"+C.correct+" 100%)",outline:"none",cursor:"pointer"}
+        }),
+        ce("span",{style:{fontSize:12,color:C.muted}},"27"),
+        ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.4rem",fontWeight:700,minWidth:60,textAlign:"center",color:C.ink}},simVal)
+      ),
+      ce("div",{style:{textAlign:"center",padding:16,borderRadius:10,background:sim.bg,transition:"all .3s"}},
+        ce("div",{style:{fontSize:16,fontWeight:700,color:sim.color,marginBottom:4}},simVal+"/27 correct \u2192 "+sim.route),
+        ce("div",{style:{fontSize:14,color:C.muted}},"Estimated score range: "+sim.floor+"\u2013"+sim.ceil)
+      ),
+      ce("div",{style:{marginTop:12}},
+        ce("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted,marginBottom:4}},
+          ce("span",null,"Score Floor"),
+          ce("span",null,sim.floor+"\u2013"+sim.ceil),
+          ce("span",null,"Score Ceiling")
+        ),
+        ce("div",{style:{height:12,borderRadius:6,background:C.border,overflow:"hidden"}},
+          ce("div",{style:{height:"100%",borderRadius:6,width:meterPct+"%",background:sim.color,transition:"width .4s ease, background .4s ease"}})
+        )
+      )
+    ),
+    ce("div",{style:{background:C.wrongBg,border:"1px solid rgba(239,68,68,.3)",borderRadius:10,padding:"14px 18px",marginTop:16,fontSize:14,lineHeight:1.6}},
+      ce("strong",{style:{color:C.wrong}},"Module 1 is make-or-break. "),
+      "Missing just 2\u20133 extra questions can drop you from the harder Module 2 to the easier one \u2014 and cap your maximum score by 150+ points. Accuracy in Module 1 matters more than speed."
+    )
+  );
+}
+
+/* ── Slide 4: Four Domains ── */
+function SlideDomains() {
+  var _s = useState({}), flipped = _s[0], setFlipped = _s[1];
+  function toggle(i) { setFlipped(function(prev){ var n = Object.assign({}, prev); n[i] = !n[i]; return n; }); }
+
+  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"The Four Content Domains"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"Questions appear in this exact order within each module. Click each domain card to flip it and see the specific skills tested."),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12,marginBottom:16}},
+      DOMAINS.map(function(d, i){
+        var isFlipped = flipped[i];
+        return ce("div",{key:i,onClick:function(){toggle(i);},style:{background:C.paper,border:"1px solid "+C.border,borderRadius:12,padding:16,cursor:"pointer",transition:"all .3s"}},
+          !isFlipped
+            ? ce("div",null,
+                ce("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
+                  ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.3rem",fontWeight:700,color:d.color}},d.pct),
+                  ce("div",{style:{fontWeight:700,fontSize:15}},d.name)
+                ),
+                ce("div",{style:{fontSize:13,color:C.muted}},d.qs),
+                ce("div",{style:{fontSize:13,color:C.muted,lineHeight:1.5,marginTop:4}},d.front),
+                ce("div",{style:{fontSize:11,color:C.muted,textAlign:"right",marginTop:6}},"tap to see sub-skills \u2192")
+              )
+            : ce("div",null,
+                ce("div",{style:{fontSize:14,color:"#ccc",lineHeight:1.6},dangerouslySetInnerHTML:{__html:d.back}}),
+                ce("div",{style:{fontSize:11,color:C.muted,textAlign:"right",marginTop:6}},"\u2190 tap to flip back")
+              )
+        );
+      })
+    ),
+    ce("div",{style:{background:C.rwBg,border:"1px solid rgba(192,132,252,.3)",borderRadius:10,padding:"14px 18px",fontSize:14,lineHeight:1.6}},
+      ce("strong",{style:{color:C.rw}},"Key Insight: "),
+      "Craft & Structure and Standard English Conventions together make up roughly ",
+      ce("strong",null,"54%"),
+      " of the test. Vocabulary-in-context alone is ~20% \u2014 the single most common question type. If you're short on study time, these areas give you the biggest return."
+    )
+  );
+}
+
+/* ── Slide 5: Strategy Toolkit ── */
+function SlideStrategy() {
+  var _s = useState({}), flipped = _s[0], setFlipped = _s[1];
+  function toggle(i) { setFlipped(function(prev){ var n = Object.assign({}, prev); n[i] = !n[i]; return n; }); }
+
+  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"The PSAT 8/9 R&W Strategy Toolkit"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"These six strategies will be your tools throughout the course. Click each card to learn more. We'll practice all of them in depth in Modules 2\u20139."),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}},
+      STRATS.map(function(s, i){
+        var isFlipped = flipped[i];
+        return ce("div",{key:i,onClick:function(){toggle(i);},style:{background:C.paper,border:"1px solid "+C.border,borderRadius:12,padding:14,cursor:"pointer",transition:"all .2s"}},
+          !isFlipped
+            ? ce("div",{style:{textAlign:"center"}},
+                ce("div",{style:{fontSize:"2rem",marginBottom:6}},s.icon),
+                ce("div",{style:{fontWeight:700,fontSize:14,color:C.ink,marginBottom:4}},s.title),
+                ce("div",{style:{fontSize:12,color:C.muted}},s.hint),
+                ce("div",{style:{fontSize:11,color:C.mod,marginTop:8,textTransform:"uppercase",letterSpacing:1}},"tap to flip")
+              )
+            : ce("div",{style:{fontSize:14,color:"#ccc",lineHeight:1.6}},s.back)
+        );
+      })
+    )
+  );
+}
+
+/* ── Slide 6: Growth Trajectory ── */
+function SlideGrowth() {
+  var tests = [
+    {name:"PSAT 8/9", range:"120\u2013720", diff:"Grade-level vocabulary, accessible passages", color:C.mod, flex:1},
+    {name:"PSAT 10", range:"160\u2013760", diff:"More complex inference, harder vocabulary", color:"#6366f1", flex:1},
+    {name:"PSAT/NMSQT", range:"160\u2013760", diff:"Same as PSAT 10 + National Merit eligibility", color:"#8b5cf6", flex:1},
+    {name:"SAT", range:"200\u2013800", diff:"College-level texts, sophisticated analysis", color:C.rw, flex:1.3}
+  ];
+
+  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"Your Growth Trajectory"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"The PSAT 8/9 is your starting line, not your finish line. Every test in the SAT Suite shares the same scale \u2014 so a 500 here means the same thing as a 500 on the SAT."),
+    ce("div",{style:{background:C.paper,border:"2px solid "+C.grow,borderRadius:14,padding:22}},
+      /* Progress bar */
+      ce("div",{style:{display:"flex",alignItems:"center",height:40,borderRadius:8,overflow:"hidden",margin:"14px 0"}},
+        tests.map(function(t,i){
+          return ce("div",{key:i,style:{height:"100%",flex:t.flex,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,color:"#fff",letterSpacing:.5,background:t.color}},t.name);
+        })
+      ),
+      ce("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted}},
+        ce("span",null,"8th\u20139th Grade"),
+        ce("span",null,"10th Grade"),
+        ce("span",null,"11th Grade"),
+        ce("span",null,"11th\u201312th Grade")
+      ),
+      /* Table */
+      ce("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:14,marginTop:16}},
+        ce("thead",null,ce("tr",null,
+          ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"Test"),
+          ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"R&W Score Range"),
+          ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"Key Difference")
+        )),
+        ce("tbody",null,tests.map(function(t,i){
+          return ce("tr",{key:i},
+            ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:t.color,fontWeight:700}},t.name),
+            ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc"}},ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},t.range)),
+            ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc"}},t.diff)
+          );
+        }))
+      ),
+      ce("div",{style:{marginTop:14,textAlign:"center",fontSize:14,color:"#ccc"}},
+        ce("strong",{style:{color:C.grow}},"College Readiness Benchmark (R&W): 480"),
+        ce("br"),
+        ce("span",{style:{fontSize:13,color:C.muted}},"For 8th graders, the on-track benchmark is 390. For 9th graders, it's 410. These are your first targets.")
+      )
+    ),
+    ce("div",{style:{background:"rgba(6,214,160,.08)",border:"1px solid rgba(6,214,160,.3)",borderRadius:10,padding:"14px 18px",marginTop:16,fontSize:14,lineHeight:1.6}},
+      ce("strong",{style:{color:C.grow}},"Why this matters: "),
+      "Every skill you build now transfers directly to harder tests ahead. The vocabulary, grammar rules, and reading strategies you master for the PSAT 8/9 are the same skills tested on the SAT \u2014 just at an easier starting level."
+    )
+  );
+}
+
+/* ── Slide 7: Score Projector ── */
+function SlideScoreProjector() {
+  var _s = useState(""), m1 = _s[0], setM1 = _s[1];
+  var _s2 = useState(""), m2 = _s2[0], setM2 = _s2[1];
+
+  var result = null;
+  var m1v = parseInt(m1), m2v = parseInt(m2);
+  if (!isNaN(m1v) && !isNaN(m2v) && m1v >= 0 && m1v <= 27 && m2v >= 0 && m2v <= 27) {
+    var total = m1v + m2v;
+    var scaled = Math.round(120 + ((total / 54) * 600));
+    var capped = Math.min(Math.max(scaled, 120), 720);
+    var lvl, color, advice;
+    if (capped >= 550) { lvl = "Strong"; color = C.correct; advice = "Focus on strategy refinement and the trickiest question types (cross-text, rhetorical synthesis) to push higher."; }
+    else if (capped >= 410) { lvl = "On Track"; color = C.mod; advice = "You're at or above the 9th-grade benchmark! Focus on your weakest domain to keep growing."; }
+    else if (capped >= 350) { lvl = "Building"; color = C.expr; advice = "Complete all modules with extra attention on Vocabulary (Module 2) and Conventions (Modules 6\u20137)."; }
+    else { lvl = "Developing"; color = C.wrong; advice = "Start with vocabulary building and basic grammar rules. Modules 2, 6, and 7 are your priority."; }
+    var bench9Pct = ((410 - 120) / 600) * 100;
+    var scorePct = ((capped - 120) / 600) * 100;
+    result = {total:total, capped:capped, lvl:lvl, color:color, advice:advice, bench9Pct:bench9Pct, scorePct:scorePct};
+  }
+
+  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"Score Projector"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"Enter your raw scores after a practice test to estimate your scaled score and see where you stand relative to the college readiness benchmarks."),
+    ce("div",{style:{background:C.paper,border:"2px solid "+C.grow,borderRadius:14,padding:22}},
+      ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}},
+        ce("div",null,
+          ce("div",{style:{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted,marginBottom:6}},"Module 1 Raw Score"),
+          ce("input",{type:"number",placeholder:"/27",min:0,max:27,value:m1,onChange:function(e){setM1(e.target.value);},
+            style:{width:80,padding:8,background:C.surface,border:"1px solid "+C.border,borderRadius:8,color:C.ink,fontFamily:"'JetBrains Mono',monospace",fontSize:"1.2rem",textAlign:"center"}
+          })
+        ),
+        ce("div",null,
+          ce("div",{style:{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted,marginBottom:6}},"Module 2 Raw Score"),
+          ce("input",{type:"number",placeholder:"/27",min:0,max:27,value:m2,onChange:function(e){setM2(e.target.value);},
+            style:{width:80,padding:8,background:C.surface,border:"1px solid "+C.border,borderRadius:8,color:C.ink,fontFamily:"'JetBrains Mono',monospace",fontSize:"1.2rem",textAlign:"center"}
+          })
+        )
+      ),
+      result
+        ? ce("div",{style:{textAlign:"center"}},
+            ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"2rem",fontWeight:700,color:result.color}},result.capped),
+            ce("div",{style:{fontSize:13,color:C.muted}},result.total+"/54 raw \u00B7 "+result.lvl),
+            ce("div",{style:{height:8,borderRadius:4,background:C.border,margin:"12px 0",position:"relative"}},
+              ce("div",{style:{height:"100%",borderRadius:4,background:result.color,width:result.scorePct+"%",transition:"width .4s"}}),
+              ce("div",{style:{position:"absolute",left:result.bench9Pct+"%",top:-6,width:2,height:20,background:C.grow,borderRadius:1},title:"410 Benchmark (9th)"})
+            ),
+            ce("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted}},
+              ce("span",null,"120"),
+              ce("span",{style:{color:C.grow}},"410 (9th grade) \u2191"),
+              ce("span",null,"720")
+            ),
+            ce("div",{style:{marginTop:12,fontSize:14,color:"#ccc"}},result.advice)
+          )
+        : ce("div",{style:{textAlign:"center",fontSize:14,color:C.muted}},"Enter both scores to see your estimated scaled score.")
+    )
+  );
+}
+
+/* ── DiagnosticScreen ── */
+function DiagnosticScreen(props) {
+  var _s = useState(new Array(DIAG_QS.length).fill(null)), answers = _s[0], setAnswers = _s[1];
+  var _s2 = useState(new Array(DIAG_QS.length).fill(null)), conf = _s2[0], setConf = _s2[1];
+  var _s3 = useState(false), scored = _s3[0], setScored = _s3[1];
+  var _s4 = useState(null), results = _s4[0], setResults = _s4[1];
+  var _s5 = useState(null), studyPlan = _s5[0], setStudyPlan = _s5[1];
+
+  var allAnswered = answers.every(function(a){ return a !== null; });
+
+  function pickAnswer(qi, ci) {
+    if (scored) return;
+    setAnswers(function(prev){ var n = prev.slice(); n[qi] = ci; return n; });
+  }
+  function pickConf(qi, ci) {
+    if (scored) return;
+    setConf(function(prev){ var n = prev.slice(); n[qi] = ci; return n; });
+  }
+
+  function scoreDiag() {
+    setScored(true);
+    var total = 0, domScores = {}, domTotals = {}, miscal = [];
+    DIAG_QS.forEach(function(q, i) {
+      var correct = answers[i] === q.correct;
+      if (correct) total++;
+      if (!domScores[q.domain]) domScores[q.domain] = 0;
+      if (!domTotals[q.domain]) domTotals[q.domain] = 0;
+      domTotals[q.domain]++;
+      if (correct) domScores[q.domain]++;
+      if (conf[i] === 2 && !correct) miscal.push({q:i+1, type:"Overconfident", domain:q.domain});
+      if (conf[i] === 0 && correct) miscal.push({q:i+1, type:"Underconfident", domain:q.domain});
+    });
+    setResults({total:total, domScores:domScores, domTotals:domTotals, miscal:miscal});
+
+    /* Build study plan */
+    var mods = {"Craft & Structure":"Module 2\u20133","Information & Ideas":"Module 4\u20135","Std. English Conventions":"Module 6\u20137","Expression of Ideas":"Module 8\u20139"};
+    var weak = [], strong = [];
+    Object.keys(domTotals).forEach(function(d) {
+      var pct = domTotals[d] > 0 ? domScores[d] / domTotals[d] : 1;
+      if (pct < 0.6) weak.push({d:d, m:mods[d], pct:Math.round(pct*100)});
+      else if (pct >= 0.8) strong.push({d:d, pct:Math.round(pct*100)});
+    });
+    setStudyPlan({weak:weak, strong:strong});
+  }
+
+  var domColors = {"Craft & Structure":C.craft, "Information & Ideas":C.info, "Std. English Conventions":C.sec, "Expression of Ideas":C.expr};
+  var confLabels = ["Guessing","Unsure","Confident"];
+
+  return ce("div",{style:{maxWidth:760,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Session 2: Diagnostic"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Mini Diagnostic Assessment"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:24}},"Answer these 12 questions spanning all four R&W domains. For each question, first rate your confidence, then select your answer. This helps identify both skill gaps and calibration gaps."),
+
+    DIAG_QS.map(function(q, i) {
+      var answered = answers[i] !== null;
+      var isCorrect = answered && answers[i] === q.correct;
+      return ce("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:18,marginBottom:12,transition:"all .3s",opacity:scored&&answered?0.85:1}},
+        ce("div",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6,display:"inline-block",padding:"2px 8px",borderRadius:4,background:q.color+"22",color:q.color}},q.domain),
+        ce("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"12px 16px",background:C.paper,borderRadius:8,marginBottom:12,borderLeft:"3px solid "+C.border,fontStyle:"italic",whiteSpace:"pre-line"}},q.passage),
+        ce("div",{style:{fontSize:14,marginBottom:12,color:"#ddd",lineHeight:1.7}},q.stem),
+        !scored && ce("div",{style:{marginBottom:8}},
+          ce("div",{style:{fontSize:12,color:C.muted,marginBottom:6}},"How confident are you?"),
+          ce("div",{style:{display:"flex",gap:6}},
+            confLabels.map(function(c, ci) {
+              return ce("button",{key:ci,onClick:function(){pickConf(i, ci);},
+                style:{padding:"4px 12px",borderRadius:6,border:"1px solid "+(conf[i]===ci?C.mod:C.border),background:conf[i]===ci?C.modBg:C.paper,color:conf[i]===ci?C.mod:C.muted,cursor:"pointer",fontSize:12,transition:"all .15s"}
+              },c);
+            })
+          )
+        ),
+        ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+          q.choices.map(function(c, ci) {
+            var letter = String.fromCharCode(65+ci);
+            var st = {padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:scored?"default":"pointer",fontSize:14,transition:"all .15s",display:"flex",alignItems:"flex-start",gap:10,textAlign:"left",width:"100%",color:"#ccc"};
+            if (scored) {
+              if (ci === q.correct) { st.borderColor = C.correct; st.background = C.correctBg; }
+              else if (answers[i] === ci) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+              st.pointerEvents = "none"; st.opacity = 0.7;
+              if (ci === q.correct) st.opacity = 1;
+            } else if (answers[i] === ci) {
+              st.borderColor = C.correct; st.background = C.correctBg;
+            }
+            return ce("button",{key:ci,onClick:function(){pickAnswer(i, ci);},style:st},
+              ce("span",{style:{fontWeight:700,color:scored&&ci===q.correct?C.correct:scored&&answers[i]===ci?C.wrong:C.muted,minWidth:20,flexShrink:0}},letter+")"),
+              ce("span",null,c)
+            );
+          })
+        ),
+        scored && ce("div",{style:{marginTop:10,padding:12,background:C.paper,borderRadius:8,fontSize:14,color:C.muted,lineHeight:1.6,borderLeft:"3px solid "+C.correct}},
+          (isCorrect ? "\u2705 Correct! " : "\u274C Incorrect. ") + q.explain
+        )
+      );
+    }),
+
+    !scored && allAnswered && ce("div",{style:{textAlign:"center",marginTop:16}},
+      ce("button",{onClick:scoreDiag,style:btn("linear-gradient(135deg,"+C.rw+","+C.mod+")","#fff")},"Score My Diagnostic \u2192")
+    ),
+
+    results && ce("div",{style:{marginTop:24}},
+      ce("div",{style:{background:C.surface,border:"2px solid "+C.mod,borderRadius:14,padding:22}},
+        ce("div",{style:{textAlign:"center",marginBottom:16}},
+          ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"3rem",fontWeight:700,color:Math.round(results.total/12*100)>=80?C.correct:Math.round(results.total/12*100)>=60?C.expr:C.wrong}},results.total+"/12"),
+          ce("div",{style:{fontSize:14,color:C.muted}},Math.round(results.total/12*100)+"% correct")
+        ),
+        ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10,marginBottom:16}},
+          Object.keys(results.domScores).map(function(d) {
+            var s = results.domScores[d], t = results.domTotals[d], p = Math.round((s/t)*100);
+            var clr = p >= 80 ? C.correct : p >= 50 ? C.expr : C.wrong;
+            return ce("div",{key:d,style:{padding:12,background:C.paper,borderRadius:8,textAlign:"center"}},
+              ce("div",{style:{fontSize:12,color:domColors[d],textTransform:"uppercase",letterSpacing:1,marginBottom:4}},d),
+              ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.2rem",fontWeight:700,color:clr}},s+"/"+t),
+              ce("div",{style:{height:6,borderRadius:3,background:C.border,marginTop:6,overflow:"hidden"}},
+                ce("div",{style:{height:"100%",borderRadius:3,width:p+"%",background:clr,transition:"width .6s ease"}})
+              )
+            );
+          })
+        ),
+        results.miscal.length > 0 && ce("div",{style:{marginTop:12}},
+          ce("div",{style:{fontSize:13,fontWeight:700,color:C.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:8}},"\u26A0\uFE0F Calibration Flags"),
+          results.miscal.map(function(m, mi) {
+            return ce("div",{key:mi,style:{fontSize:14,color:"#ccc",padding:"4px 0"}},
+              "Q"+m.q+": ",
+              ce("span",{style:{color:m.type==="Overconfident"?C.wrong:C.mod}}, ce("strong",null,m.type)),
+              " ("+m.domain+")"
+            );
+          }),
+          ce("div",{style:{fontSize:13,color:C.muted,marginTop:8,fontStyle:"italic"}},"Overconfident = you felt sure but got it wrong (dangerous on test day!). Underconfident = you guessed right (you know more than you think).")
+        ),
+        ce("div",{style:{marginTop:16,fontSize:14,color:"#ccc"}},
+          ce("strong",{style:{color:C.ink}},"Next step: "),
+          "Use these results alongside your full Bluebook baseline to identify your priority domains for the course."
+        ),
+        studyPlan && ce("div",{style:{marginTop:16,padding:16,background:C.paper,borderRadius:12,border:"2px solid "+C.mod}},
+          ce("div",{style:{fontSize:13,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.mod,marginBottom:8}},"Your Study Plan"),
+          studyPlan.weak.length > 0 && ce("div",null,
+            ce("div",{style:{marginBottom:8}},ce("strong",{style:{color:C.wrong}},"Priority Review:")),
+            studyPlan.weak.map(function(w, wi) {
+              return ce("div",{key:wi,style:{padding:"4px 0",fontSize:14,color:"#ccc"}},
+                "\u2022 ", ce("strong",null,w.d), " ("+w.pct+"%) \u2192 Focus on ", ce("strong",null,w.m)
+              );
+            })
+          ),
+          studyPlan.strong.length > 0 && ce("div",null,
+            ce("div",{style:{margin:"8px 0"}},ce("strong",{style:{color:C.correct}},"Strong Areas:")),
+            studyPlan.strong.map(function(s, si) {
+              return ce("div",{key:si,style:{padding:"4px 0",fontSize:14,color:"#ccc"}},
+                "\u2022 "+s.d+" ("+s.pct+"%) \u2014 review briefly"
+              );
+            })
+          ),
+          studyPlan.weak.length === 0 && studyPlan.strong.length === 0 && ce("div",{style:{fontSize:14,color:"#ccc"}},"All domains around 60\u201380%. Work through all modules with equal attention."),
+          ce("div",{style:{marginTop:10,fontSize:14,color:C.muted}},
+            ce("em",null,"For a full baseline, take the Bluebook practice test (54 questions) described in the worksheet section.")
+          )
+        )
+      ),
+      ce("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+        ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Continue to Error Classification \u2192")
+      )
+    )
+  );
+}
+
+/* ── ClassifyScreen (Error Classification) ── */
+function ClassifyScreen(props) {
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = EC_QS.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === EC_QS[i].correct; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return ce("div",{style:{maxWidth:760,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    ce("div",{style:{color:C.rw,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Interactive Exercise"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Error Classification Practice"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:20}},"Before analyzing your own mistakes, practice classifying these common PSAT 8/9 R&W errors. Correctly identifying why you missed a question is the key to knowing what to study."),
+    ce("div",{style:{display:"flex",justifyContent:"flex-end",marginBottom:12}},
+      ce("span",{style:{color:C.muted,fontSize:13}},correct+"/"+total+" correct")
+    ),
+    EC_QS.map(function(q, i) {
+      var a = answers[i], h = a !== undefined;
+      var isCorrect = h && a === q.correct;
+      return ce("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:18,marginBottom:12}},
+        ce("div",{style:{fontSize:14,lineHeight:1.6,marginBottom:10,color:"#ddd"}},q.scenario),
+        ce("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          q.options.map(function(o, oi) {
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.correct) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return ce("button",{key:oi,onClick:function(){pick(i, oi);},style:st},o);
+          })
+        ),
+        h && ce("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:isCorrect?C.correctBg:C.wrongBg,color:isCorrect?C.correct:C.wrong},dangerouslySetInnerHTML:{__html:(isCorrect?"\u2713 ":"\u2717 ")+q.fb}})
+      );
+    }),
+    ce("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      ce("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      ce("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        ce("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && ce("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Continue to Worksheet \u2192")
+    )
+  );
+}
+
+/* ── WorksheetScreen ── */
+function WorksheetScreen(props) {
+  /* Checklist state */
+  var initCL;
+  try { initCL = JSON.parse(localStorage.getItem(CL_KEY) || "[]"); } catch(e) { initCL = []; }
+  if (initCL.length !== CL_ITEMS.length) initCL = CL_ITEMS.map(function(){ return false; });
+  var _cl = useState(initCL), clState = _cl[0], setCLState = _cl[1];
+
+  function toggleCL(i) {
+    setCLState(function(prev) {
+      var n = prev.slice(); n[i] = !n[i];
+      localStorage.setItem(CL_KEY, JSON.stringify(n));
+      return n;
+    });
+  }
+
+  /* Worksheet state */
+  function loadWS() { try { return JSON.parse(localStorage.getItem(WS_KEY) || "[]"); } catch(e) { return []; } }
+  var _ws = useState(function(){ var d = loadWS(); return d.length === 0 ? [{qnum:"",domain:"",skill:"",errorType:"",shouldHave:"",reread:""}] : d; }),
+      wsEntries = _ws[0], setWsEntries = _ws[1];
+
+  function saveWS(d) { localStorage.setItem(WS_KEY, JSON.stringify(d)); }
+
+  function addEntry() {
+    setWsEntries(function(prev) {
+      var n = prev.concat([{qnum:"",domain:"",skill:"",errorType:"",shouldHave:"",reread:""}]);
+      saveWS(n);
+      return n;
+    });
+  }
+  function removeEntry(idx) {
+    setWsEntries(function(prev) {
+      var n = prev.slice(); n.splice(idx, 1);
+      if (n.length === 0) n = [{qnum:"",domain:"",skill:"",errorType:"",shouldHave:"",reread:""}];
+      saveWS(n);
+      return n;
+    });
+  }
+  function updateEntry(idx, field, val) {
+    setWsEntries(function(prev) {
+      var n = prev.map(function(e,i){ return i===idx ? Object.assign({},e,function(){var o={};o[field]=val;return o;}()) : e; });
+      saveWS(n);
+      return n;
+    });
+  }
+
+  function exportWS() {
+    var d = wsEntries;
+    var txt = "PSAT 8/9 R&W ERROR ANALYSIS \u2014 PantherPrep\n";
+    txt += "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n";
+    var counts = {}, domCounts = {};
+    d.forEach(function(e) {
+      txt += "Q" + (e.qnum || "?") + " | " + (e.domain || "\u2014") + " | " + (e.skill || "\u2014") + " | " + (e.errorType || "\u2014") + " | Reread: " + (e.reread || "\u2014") + "\n";
+      txt += "  \u2192 " + (e.shouldHave || "\u2014") + "\n\n";
+      if (e.errorType) counts[e.errorType] = (counts[e.errorType] || 0) + 1;
+      if (e.domain) domCounts[e.domain] = (domCounts[e.domain] || 0) + 1;
+    });
+    txt += "ERROR TYPE SUMMARY:\n";
+    Object.keys(counts).forEach(function(k) { txt += "  " + k + ": " + counts[k] + "\n"; });
+    txt += "\nDOMAIN SUMMARY:\n";
+    Object.keys(domCounts).forEach(function(k) { txt += "  " + k + ": " + domCounts[k] + "\n"; });
+    navigator.clipboard.writeText(txt).then(function(){ alert("Worksheet copied to clipboard!"); }).catch(function(){
+      var ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); alert("Copied!");
+    });
+  }
+
+  var clDone = clState.filter(Boolean).length;
+  var domainOptions = ["","Craft & Structure","Information & Ideas","Std. English Conventions","Expression of Ideas"];
+  var errorOptions = ["","Vocabulary Gap","Grammar Rule Gap","Didn't Use Evidence","Misread the Question","Trap Answer","Time Pressure","Careless Error","Unfamiliar Format"];
+  var rereadOptions = ["","Yes","No","I didn't read carefully the first time"];
+  var inputSt = {padding:"6px 10px",background:C.surface,border:"1px solid "+C.border,borderRadius:6,color:C.ink,fontFamily:"inherit",fontSize:14};
+  var labelSt = {fontSize:12,fontWeight:700,color:C.muted,textTransform:"uppercase",letterSpacing:.5,whiteSpace:"nowrap"};
+
+  return ce("div",{style:{maxWidth:760,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+
+    /* ── Baseline Protocol ── */
+    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Session 3: Full Baseline"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Baseline Assessment Protocol"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:20}},"After the mini diagnostic, take a full-length PSAT 8/9 Reading & Writing section using the Bluebook app. This establishes your true baseline score."),
+
+    ce("div",{style:{background:C.surface,border:"2px solid "+C.mod,borderRadius:14,overflow:"hidden",marginBottom:24}},
+      ce("div",{style:{background:C.mod,padding:"12px 20px",fontWeight:700,fontSize:15,color:"#fff"}},"Full Baseline Protocol"),
+      [
+        ["1","Open the Bluebook app and select a PSAT 8/9 practice test. Take only the Reading & Writing section (54 questions, 64 minutes)."],
+        ["2","Practice using the digital tools during the baseline \u2014 highlighting, annotation, and answer eliminator. This establishes your current comfort level."],
+        ["3","Simulate test conditions: no phone, no notes, timed modules, quiet environment. No pausing between modules."],
+        ["4","After completion, mark every question you were unsure about, even if you got it correct. \"Lucky correct\" answers mask skill gaps."],
+        ["5","Review your score report. Note which domain(s) had the most errors."],
+        ["6","Complete the Error Analysis Worksheet below for every missed and uncertain question."]
+      ].map(function(step, i) {
+        return ce("div",{key:i,style:{display:"flex",gap:14,padding:"14px 20px",borderBottom:i<5?"1px solid "+C.border:"none",fontSize:14,color:"#ccc",alignItems:"flex-start"}},
+          ce("div",{style:{flexShrink:0,width:28,height:28,borderRadius:"50%",background:C.modBg,border:"1px solid "+C.mod,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:13,color:C.mod,fontFamily:"'JetBrains Mono',monospace"}},step[0]),
+          ce("div",null,
+            i === 0
+              ? ce("span",null,"Open the ",ce("a",{href:"https://bluebook.collegeboard.org/",target:"_blank",style:{color:C.mod}},"Bluebook app")," and select a PSAT 8/9 practice test. Take only the Reading & Writing section (54 questions, 64 minutes).")
+              : i === 1
+                ? ce("span",null,ce("strong",null,"Practice using the digital tools")," during the baseline \u2014 highlighting, annotation, and answer eliminator. This establishes your current comfort level.")
+                : i === 3
+                  ? ce("span",null,"After completion, ",ce("strong",null,"mark every question you were unsure about"),", even if you got it correct. \"Lucky correct\" answers mask skill gaps.")
+                  : step[1]
+          )
+        );
+      })
+    ),
+
+    /* ── Pre-Test Checklist ── */
+    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Preparation"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:12,fontFamily:"'Cormorant Garamond',serif"}},"Pre-Test Checklist"),
+    ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:20,marginBottom:24}},
+      ce("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:12}},"\u2705 Before Your Baseline Test"),
+      CL_ITEMS.map(function(item, i) {
+        return ce("div",{key:i,onClick:function(){toggleCL(i);},style:{display:"flex",alignItems:"flex-start",gap:10,padding:"7px 0",borderBottom:i<CL_ITEMS.length-1?"1px solid "+C.border:"none",fontSize:14,color:clState[i]?"#666":"#ccc",cursor:"pointer",textDecoration:clState[i]?"line-through":"none",transition:"all .2s"}},
+          ce("div",{style:{flexShrink:0,width:22,height:22,border:"2px solid "+(clState[i]?C.correct:C.border),borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,background:clState[i]?C.correct:"transparent",color:clState[i]?"#fff":"transparent",transition:"all .15s"}},clState[i]?"\u2713":""),
+          ce("div",null,item)
+        );
+      }),
+      ce("div",{style:{fontSize:13,color:C.muted,marginTop:8,textAlign:"right"}},clDone+"/"+CL_ITEMS.length+" complete")
+    ),
+
+    /* ── Error Analysis Worksheet ── */
+    ce("div",{style:{color:C.rw,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Session 3: Interactive Tool"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Error Analysis Worksheet"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"For every missed or uncertain question on your baseline test, fill in one entry. Data saves in your browser."),
+
+    ce("div",{style:{background:C.surface,border:"2px solid "+C.rw,borderRadius:14,padding:22,marginBottom:24}},
+      ce("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:4}},"\uD83D\uDCCA PSAT 8/9 R&W Error Analysis"),
+      ce("div",{style:{fontSize:14,color:C.muted,marginBottom:14}},"Complete one entry per missed/uncertain question"),
+      wsEntries.map(function(e, i) {
+        return ce("div",{key:i,style:{background:C.paper,borderRadius:10,padding:14,marginBottom:10,border:"1px solid "+C.border}},
+          ce("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+            ce("div",{style:{fontWeight:700,fontSize:14,color:C.rw}},"Question "+(i+1)),
+            ce("button",{onClick:function(){removeEntry(i);},style:{background:"none",border:"none",color:C.muted,cursor:"pointer",fontSize:13}},"\u2715 Remove")
+          ),
+          ce("div",{style:{display:"grid",gridTemplateColumns:"auto 1fr",gap:"8px 12px",alignItems:"center",marginBottom:6}},
+            ce("div",{style:labelSt},"Q #"),
+            ce("input",{type:"number",min:1,max:54,placeholder:"1\u201354",value:e.qnum,onChange:function(ev){updateEntry(i,"qnum",ev.target.value);},style:Object.assign({},inputSt,{width:80})}),
+            ce("div",{style:labelSt},"Domain"),
+            ce("select",{value:e.domain,onChange:function(ev){updateEntry(i,"domain",ev.target.value);},style:inputSt},
+              ce("option",{value:""},"Select domain\u2026"),
+              domainOptions.slice(1).map(function(d){ return ce("option",{key:d,value:d},d); })
+            ),
+            ce("div",{style:labelSt},"Skill"),
+            ce("input",{placeholder:"e.g., Words in Context, Subject-Verb Agreement",value:e.skill||"",onChange:function(ev){updateEntry(i,"skill",ev.target.value);},style:Object.assign({},inputSt,{width:"100%"})}),
+            ce("div",{style:labelSt},"Error Type"),
+            ce("select",{value:e.errorType,onChange:function(ev){updateEntry(i,"errorType",ev.target.value);},style:inputSt},
+              ce("option",{value:""},"Select type\u2026"),
+              errorOptions.slice(1).map(function(d){ return ce("option",{key:d,value:d},d); })
+            )
+          ),
+          ce("div",{style:Object.assign({},labelSt,{marginBottom:4,marginTop:4})},"What I should have done"),
+          ce("textarea",{placeholder:"Write the correct approach in your own words\u2026",value:e.shouldHave||"",onChange:function(ev){updateEntry(i,"shouldHave",ev.target.value);},
+            style:{width:"100%",padding:"6px 10px",background:C.surface,border:"1px solid "+C.border,borderRadius:6,color:C.ink,fontFamily:"inherit",fontSize:14,resize:"vertical",minHeight:40}
+          }),
+          ce("div",{style:{display:"grid",gridTemplateColumns:"auto 1fr",gap:"8px 12px",alignItems:"center",marginTop:6}},
+            ce("div",{style:labelSt},"Reread?"),
+            ce("select",{value:e.reread,onChange:function(ev){updateEntry(i,"reread",ev.target.value);},style:inputSt},
+              ce("option",{value:""},"Would rereading the passage have helped?"),
+              rereadOptions.slice(1).map(function(d){ return ce("option",{key:d,value:d},d); })
+            )
+          )
+        );
+      }),
+      ce("div",{style:{display:"flex",gap:8,marginTop:12,flexWrap:"wrap"}},
+        ce("button",{onClick:addEntry,style:btn(C.rw,"#fff",{padding:"8px 16px",fontSize:13})},"\u002B Add Entry"),
+        ce("button",{onClick:exportWS,style:Object.assign({},btn("transparent",C.mod,{padding:"8px 16px",fontSize:13}),{border:"2px solid "+C.mod})},"\uD83D\uDCCB Export to Clipboard"),
+        ce("button",{onClick:function(){if(confirm("Clear all entries?")){localStorage.removeItem(WS_KEY);setWsEntries([{qnum:"",domain:"",skill:"",errorType:"",shouldHave:"",reread:""}]);}},style:btn(C.wrong,"#fff",{padding:"8px 16px",fontSize:13})},"Reset")
+      )
+    ),
+
+    /* ── Homework ── */
+    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Action Items"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:12,fontFamily:"'Cormorant Garamond',serif"}},"Homework"),
+    ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,borderLeft:"3px solid "+C.mod,padding:"18px 20px",marginBottom:24}},
+      [
+        ["1. Complete Your Baseline Test","Full 54 questions, 64 minutes, official Bluebook practice test under test conditions."],
+        ["2. Self-Score & Mark Uncertain Questions","Score yourself before reviewing. Flag every question you weren't sure about."],
+        ["3. Complete the Error Analysis Worksheet","One entry for every missed AND uncertain question."],
+        ["4. Use the Score Projector","Enter your raw scores to estimate your scaled score and see where you stand."],
+        ["5. Identify Your Top 3 Priority Areas","Based on the error analysis, what domains/skills cost you the most points?"],
+        ["6. Start a Vocabulary Journal","Write down 5 unfamiliar words from the practice test with definitions and example sentences."]
+      ].map(function(h, i) {
+        return ce("p",{key:i,style:{fontSize:14,color:"#ccc",marginBottom:i<5?12:0}},
+          ce("strong",{style:{color:C.ink}},h[0]),
+          " \u2014 " + h[1]
+        );
+      })
+    ),
+
+    ce("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:8}},
+      ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Finish Module \u2192")
+    )
+  );
+}
+
+/* ── NavLinks ── */
+function NavLinks() {
+  return ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border}},
+    ce("a",{href:"index.html",style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"})},"\u2190 Course Home"),
+    NAV.next && ce("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"10px 20px"})},NAV.next.label+" \u2192")
+  );
+}
+
+/* ── ModuleComplete ── */
+function ModuleComplete() {
+  return ce("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
+    ce("div",{style:{fontSize:64,marginBottom:16}},"\uD83C\uDFC6"),
+    ce("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 1 Complete!"),
+    ce("p",{style:{color:C.sub,fontSize:15,marginBottom:32,textAlign:"center",maxWidth:500}},"You've learned the PSAT 8/9 R&W structure, explored all four question types, completed your diagnostic assessment, and built your personalized study plan."),
+    ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
+      ce("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+      KEY_TAKEAWAYS.map(function(t,i){
+        return ce("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
+          ce("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+          ce("span",null,t)
+        );
+      })
+    ),
+    ce(NavLinks, null)
+  );
+}
+
+/* ── App Shell ── */
+function App() {
+  var _s = useState("welcome"), screen = _s[0], setScreen = _s[1];
+  var _s2 = useState(true), vis = _s2[0], setVis = _s2[1];
+
+  function go(next) {
+    setVis(false);
+    setTimeout(function(){ setScreen(next); setVis(true); window.scrollTo(0,0); }, 350);
+  }
+
+  var content = null;
+  if (screen === "welcome") content = ce(Welcome, {onNext:function(){go("lesson");}});
+  else if (screen === "lesson") content = ce(LessonViewer, {onComplete:function(){go("diagnostic");}});
+  else if (screen === "diagnostic") content = ce(DiagnosticScreen, {onComplete:function(){go("classify");}});
+  else if (screen === "classify") content = ce(ClassifyScreen, {onComplete:function(){go("worksheet");}});
+  else if (screen === "worksheet") content = ce(WorksheetScreen, {onComplete:function(){go("complete");}});
+  else if (screen === "complete") content = ce(ModuleComplete, null);
+
+  return ce("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(ce(App));
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

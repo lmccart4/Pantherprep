@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4: Central Ideas, Details & Inferences — PSAT 8/9 R&W — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var createElement = React.createElement;
+var useState = React.useState;
+var useEffect = React.useEffect;
+var useCallback = React.useCallback;
+var useRef = React.useRef;
+
+/* ── design tokens ── */
+var C = {
+  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
+  sub:"#999", muted:"#666", accent:"#0891b2",
+  mod:"#60a5fa", modBg:"rgba(96,165,250,.12)",
+  craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
+  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+};
+var btn = function(bg, color, extra) {
+  return Object.assign({
+    padding:"12px 28px", borderRadius:10, border:"none", background:bg,
+    color:color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s"
+  }, extra || {});
+};
+var NAV = {
+  prev:{ label:"Module 3: Text Structure & Cross-Text", file:"PSAT_89_RW_module-3.html" },
+  next:{ label:"Module 5: Command of Evidence", file:"PSAT_89_RW_module-5.html" }
+};
+
+/* ── LESSONS ── */
+var LESSONS = [
+  {
+    id:"4a", title:"Central Ideas & Main Claims",
+    subtitle:"Topic 4A \u2014 Topic vs. Central Idea, the \u201cSo What?\u201d Test, and Common Wrong-Answer Types",
+    body:[
+      "Central Idea questions ask: \u201cWhat is the passage mainly about?\u201d This isn\u2019t just the topic \u2014 it\u2019s the author\u2019s specific point about that topic.",
+      "Topic vs. Central Idea:\n\u2022 Topic: What the passage is about in 1\u20133 words. (Coral reefs. Sleep research. The Industrial Revolution.)\n\u2022 Central idea: The specific point the author makes about the topic. (Coral reefs are declining faster than predicted due to ocean acidification.)",
+      "Step 1: Read the full passage. Identify the topic (1\u20133 words).\nStep 2: Ask \u201cSo what?\u201d \u2014 What specific point does the author make about this topic?\nStep 3: Check: Does my central idea cover the WHOLE passage, not just one part?\nStep 4: Match to the answer choice that\u2019s neither too broad nor too narrow.",
+      "The \u201cSo What?\u201d Test: After reading, complete this sentence: \u201cThis passage is about [topic], and the author\u2019s main point is that [central idea].\u201d If you can\u2019t complete it, re-read the first and last sentences \u2014 they usually frame the central idea.",
+      "Four Wrong-Answer Types:\n\u2022 Too broad: \u201cDiscusses the importance of scientific research\u201d \u2014 true but vague, could apply to thousands of passages.\n\u2022 Too narrow: Focuses on only one detail or example instead of the overall point.\n\u2022 Off-topic: Mentions something related but not actually discussed in the passage.\n\u2022 Distorted: Gets the topic right but the claim wrong (says the author supports X when they actually question X)."
+    ],
+    visual:"central-idea-steps"
+  },
+  {
+    id:"4b", title:"Key Details & Supporting Evidence",
+    subtitle:"Topic 4B \u2014 Finding Details, Distinguishing Stated vs. Implied, and the Evidence-First Method",
+    body:[
+      "Detail questions ask you to find specific information stated directly in the passage. The answer is always there \u2014 you just have to find it.",
+      "The Evidence-First Method: For every answer you choose, you should be able to point to the exact sentence(s) in the passage that support it. If you can\u2019t point to evidence, the answer is probably wrong.",
+      "Rule 1: If the passage doesn\u2019t say it, don\u2019t choose it \u2014 even if it\u2019s true in real life.\nRule 2: Don\u2019t add your own knowledge. The PSAT only tests what\u2019s IN the text.\nRule 3: Beware of \u201cstrong\u201d words: always, never, all, none, every, completely. The text usually uses more moderate language.\nRule 4: Details from only ONE part of the passage are too narrow for a central idea question, but perfect for a detail question.",
+      "Question stem clues: \u201cAccording to the passage\u201d or \u201cThe text states\u201d = look for explicitly stated information. \u201cBased on the passage, it can be inferred\u201d = look for what the text implies."
+    ],
+    visual:"stated-vs-implied"
+  },
+  {
+    id:"4c", title:"Making Inferences",
+    subtitle:"Topic 4C \u2014 The Inference Spectrum, \u201cClosest to the Text\u201d Principle, and Logical Leaps to Avoid",
+    body:[
+      "Inference questions ask you to draw a logical conclusion that the passage supports but doesn\u2019t directly state. Think of it as reading between the lines \u2014 but staying close to the text.",
+      "The Inference Spectrum:\n\u2022 Restated: \u201cThe population declined by 40%.\u201d \u2192 The population shrank. (Too obvious \u2014 not really an inference.)\n\u2022 Valid inference: \u201cThe population declined by 40% after the dam was built.\u201d \u2192 The dam likely contributed to the decline. (Supported by the text.)\n\u2022 Logical leap: \u201cThe population declined by 40%.\u201d \u2192 The species will go extinct. (The passage never says this \u2014 too extreme.)",
+      "On the PSAT, the correct answer is always the most conservative, best-supported inference \u2014 the one closest to what the text actually says.",
+      "Three Inference Types on the PSAT:\n\u2022 Character/author inference: What can you infer about how this person thinks or feels? (Look for word choice, actions, reactions.)\n\u2022 Logical consequence: If the passage says X, what logically follows? (If a study shows A causes B, and this treatment uses A, then...)\n\u2022 Implicit comparison: The passage describes two things differently \u2014 what can you infer about how they differ?",
+      "The \u201cClosest to the Text\u201d Principle: When two answers both seem plausible, pick the one that requires the FEWEST assumptions beyond what the passage states. The PSAT rewards cautious, evidence-based reasoning."
+    ],
+    visual:"inference-spectrum"
+  }
+];
+
+/* ── EXERCISE DATA ── */
+
+/* Exercise 1: Central Idea Finder */
+var CEN = [
+  {passage:"For decades, scientists believed that the brain stopped producing new neurons in adulthood. However, research published in the late 1990s revealed that neurogenesis \u2014 the birth of new neurons \u2014 continues in specific brain regions throughout life, particularly the hippocampus, which is critical for memory and learning. This discovery has opened new avenues for treating neurodegenerative diseases like Alzheimer\u2019s.",
+   ch:["The brain is the most complex organ in the human body.","Scientists once believed neurogenesis stopped in adulthood, but new research shows it continues and may help treat brain diseases.","Alzheimer\u2019s disease affects the hippocampus.","The hippocampus is the most important region of the brain."],c:1,
+   fb:"The passage tells a story: old belief (no new neurons) \u2192 new discovery (neurogenesis continues) \u2192 implication (disease treatment). Answer B captures this full arc. A is too broad. C and D are details, not the central idea."},
+  {passage:"The common octopus can change the color, texture, and even the shape of its skin in milliseconds, allowing it to blend seamlessly with coral, rocks, or sandy ocean floors. Researchers have discovered that this ability relies not on eyesight but on light-sensitive proteins called opsins embedded directly in the skin cells, enabling the skin itself to \u201csee\u201d and respond to its surroundings.",
+   ch:["Octopuses are intelligent marine animals.","Octopuses use their skin\u2019s light-sensitive proteins, rather than eyesight, to achieve rapid camouflage.","Marine animals have developed many survival strategies.","Opsins are proteins found in many animals."],c:1,
+   fb:"The passage\u2019s specific point: octopus camouflage works through skin-based opsins, NOT eyesight. That\u2019s both surprising and specific. A and C are too broad. D is a detail."},
+  {passage:"During the Great Migration of the early twentieth century, approximately six million Black Americans relocated from the rural South to cities in the North, Midwest, and West. While economic opportunity was a primary driver, many migrants also sought to escape the racial violence and legal oppression of Jim Crow laws. The migration fundamentally reshaped American culture, contributing to the Harlem Renaissance, the growth of jazz, and the rise of the civil rights movement.",
+   ch:["The Great Migration was caused by economic factors.","Many Black Americans moved to northern cities during the twentieth century.","The Great Migration, driven by both economic opportunity and the desire to escape racial oppression, profoundly transformed American culture.","The Harlem Renaissance was the most significant cultural movement of the twentieth century."],c:2,
+   fb:"C captures the full passage: WHAT happened (migration), WHY (economic + escape oppression), and RESULT (cultural transformation). A is too narrow (only one cause). B is too vague. D goes beyond the passage."},
+  {passage:"A team of archaeologists working in southern Turkey has uncovered evidence that G\u00f6bekli Tepe, a massive stone complex dating to approximately 9600 BCE, was constructed by hunter-gatherers \u2014 not settled agricultural communities as previously assumed. The discovery challenges the long-held theory that monumental architecture required the surplus resources only farming societies could produce.",
+   ch:["G\u00f6bekli Tepe is an archaeological site in Turkey.","Hunter-gatherers at G\u00f6bekli Tepe built monumental architecture, challenging the assumption that such construction required agricultural societies.","Archaeological discoveries are rewriting human history.","Farming was not practiced in Turkey before 9600 BCE."],c:1,
+   fb:"B captures the specific finding (hunter-gatherers built it) AND its significance (challenges previous assumptions). A is just a fact. C is too broad. D is not stated."}
+];
+
+/* Exercise 2: Point to the Evidence */
+var EVI = [
+  {passage:"Researchers at the University of Michigan found that spending just 20 minutes in a natural setting \u2014 a park, a garden, or even a tree-lined street \u2014 significantly reduced cortisol levels in participants. The study controlled for exercise by requiring participants to sit or walk slowly. The researchers noted that the cortisol reduction was comparable to that achieved through some meditation practices.",
+   claims:[
+     {text:"Spending 20 minutes in nature reduces cortisol levels.",c:0,fb:"Directly stated: \u201cspending just 20 minutes in a natural setting...significantly reduced cortisol levels.\u201d"},
+     {text:"Exercise was responsible for the cortisol reduction.",c:2,fb:"The passage explicitly RULES THIS OUT: \u201ccontrolled for exercise by requiring participants to sit or walk slowly.\u201d This is contradicted."},
+     {text:"Nature exposure could be a viable alternative to meditation for stress reduction.",c:1,fb:"The passage says cortisol reduction was \u201ccomparable to...some meditation practices\u201d \u2014 this IMPLIES nature could be an alternative, but the passage doesn\u2019t directly state it."},
+     {text:"Indoor plants provide the same cortisol-reducing benefits as outdoor nature.",c:2,fb:"The study only mentions \u201ca park, a garden, or even a tree-lined street\u201d \u2014 all outdoor settings. Indoor plants are never mentioned."}
+   ]},
+  {passage:"When the volcano Krakatoa erupted in 1883, the explosion was heard over 3,000 miles away and generated tsunamis that killed more than 36,000 people. The eruption also ejected massive quantities of sulfur dioxide into the stratosphere, creating a global haze that lowered average temperatures by 1.2\u00b0C for the following year and produced vivid red sunsets visible across Europe.",
+   claims:[
+     {text:"The Krakatoa eruption caused a temporary global cooling effect.",c:0,fb:"Directly stated: \u201clowered average temperatures by 1.2\u00b0C for the following year.\u201d"},
+     {text:"Krakatoa was the deadliest volcanic eruption in human history.",c:2,fb:"The passage says it killed 36,000 people but never claims it was the deadliest EVER. This goes beyond the text."},
+     {text:"The sulfur dioxide from Krakatoa affected atmospheric conditions worldwide.",c:1,fb:"The passage describes effects visible \u201cacross Europe\u201d and \u201cglobal haze\u201d \u2014 implying worldwide atmospheric impact, though it doesn\u2019t say \u201cworldwide\u201d for every effect."},
+     {text:"The explosion was heard over 3,000 miles away.",c:0,fb:"Directly stated in the first sentence, word for word."}
+   ]}
+];
+var EVI_OPTS = ["Directly Stated","Valid Inference","Not Supported"];
+
+/* Exercise 3: Inference Strength Sorter */
+var INF = [
+  {passage:"The city council voted 7\u20132 to approve the new park, with the two dissenting members citing budget concerns.",
+   claim:"A majority of council members supported the park.",c:0,
+   fb:"7\u20132 IS a majority. This is just restating the vote count in different words."},
+  {passage:"The city council voted 7\u20132 to approve the new park, with the two dissenting members citing budget concerns.",
+   claim:"The dissenting members did not value public recreation.",c:2,
+   fb:"They cited BUDGET concerns, not opposition to recreation. You can\u2019t infer they don\u2019t value parks \u2014 they may have wanted the park but worried about cost."},
+  {passage:"The city council voted 7\u20132 to approve the new park, with the two dissenting members citing budget concerns.",
+   claim:"Budget was a consideration in the council\u2019s deliberations.",c:1,
+   fb:"The passage says two members cited budget concerns, so budget WAS discussed. But the passage doesn\u2019t say the full council debated it \u2014 just that two members raised it. This is a valid inference, slightly beyond restatement."},
+  {passage:"After the factory closed, the town\u2019s population dropped from 12,000 to 8,500 within five years. Most of the departing residents were between 25 and 40 years old.",
+   claim:"The factory closure contributed to the town\u2019s population decline.",c:1,
+   fb:"The passage places the decline AFTER the closure, and the timing strongly suggests a connection. But it doesn\u2019t explicitly say \u201cbecause of the closure.\u201d Valid inference based on sequence and logic."},
+  {passage:"After the factory closed, the town\u2019s population dropped from 12,000 to 8,500 within five years. Most of the departing residents were between 25 and 40 years old.",
+   claim:"The town will eventually become a ghost town.",c:2,
+   fb:"The passage describes a decline but never says it will continue to zero. The decline could stabilize. This extrapolates far beyond the text."},
+  {passage:"After the factory closed, the town\u2019s population dropped from 12,000 to 8,500 within five years. Most of the departing residents were between 25 and 40 years old.",
+   claim:"The town\u2019s remaining population likely skewed older after the decline.",c:1,
+   fb:"If working-age adults (25\u201340) left disproportionately, the remaining population would naturally have a higher average age. Logically supported but not directly stated."}
+];
+var INF_OPTS = ["Restatement","Valid Inference","Logical Leap"];
+
+/* Exercise 4: Wrong-Answer Autopsy */
+var AUT = [
+  {passage:"Researchers have found that elephants communicate using infrasound \u2014 low-frequency vibrations undetectable to the human ear. These rumbles can travel through the ground for miles, allowing elephants to coordinate movements and warn of danger across vast distances. The discovery has led scientists to reconsider how many large animals might use seismic communication.",
+   wrong:"Elephants have the most sophisticated communication system of any animal.",
+   c:2,
+   fb:"The passage discusses elephant infrasound but never compares it to ALL other animals or claims it\u2019s \u201cthe most sophisticated.\u201d This goes beyond the text by making an unsupported superlative claim."},
+  {passage:"The tiny island nation of Tuvalu faces an existential threat from rising sea levels. With its highest point only 4.6 meters above sea level, even modest increases in ocean height could render the country uninhabitable. The government has begun negotiating \u201cclimate refugee\u201d agreements with neighboring nations, while simultaneously investing in coastal reinforcement projects.",
+   wrong:"Tuvalu\u2019s government is negotiating with neighboring nations.",
+   c:1,
+   fb:"This is TRUE but captures only ONE detail. As a central idea, it misses the bigger picture: the existential threat, the low elevation, and the dual strategy of negotiation AND reinforcement. Too narrow."},
+  {passage:"A new study suggests that the \u201cfive-second rule\u201d \u2014 the popular belief that food dropped on the floor is safe to eat if picked up within five seconds \u2014 has some basis in science. Researchers found that moisture, surface type, and contact time all affect bacterial transfer, with wet foods on tile picking up significantly more bacteria than dry foods on carpet. However, the researchers emphasized that some bacteria transfer happens almost instantly.",
+   wrong:"The five-second rule has been proven completely true by scientific research.",
+   c:3,
+   fb:"The passage says the rule has \u201csome basis\u201d but ALSO says \u201csome bacteria transfer happens almost instantly.\u201d The wrong answer distorts this nuanced finding into a definitive claim the passage doesn\u2019t make."},
+  {passage:"During the 2010s, streaming services fundamentally changed how audiences consumed television. Shows could now be released as entire seasons at once, enabling \u201cbinge-watching.\u201d This shift also affected how writers structured stories \u2014 with longer arcs and fewer recaps, since audiences were expected to watch episodes in rapid succession rather than waiting a week between installments.",
+   wrong:"The history of television technology from the 1950s to today.",
+   c:0,
+   fb:"The passage focuses specifically on 2010s streaming and its effect on storytelling. \u201cThe history of television technology from the 1950s to today\u201d is far too broad \u2014 the passage doesn\u2019t discuss decades of TV history."}
+];
+var AUT_OPTS = ["Too Broad","Too Narrow","Off-Topic","Distorted"];
+
+/* ── PRACTICE QUESTIONS ── */
+var QUIZ = [
+  {id:0,t:1,passage:"Honeybees are not native to the Americas. They were introduced by European colonists in the seventeenth century for honey production and crop pollination. Today, managed honeybee colonies pollinate roughly one-third of the food crops grown in the United States, making them economically indispensable \u2014 even though thousands of native bee species also contribute significantly to pollination.",
+   stem:"Which choice best states the central idea of the text?",
+   choices:["Honeybees are the only pollinators in the Americas.","European colonists introduced honeybees, which have become economically vital to U.S. agriculture despite being non-native.","Native bee species are more effective pollinators than honeybees.","Honey production is the primary reason honeybees were brought to the Americas."],answer:1,
+   explain:"B captures the full passage: origin (introduced by colonists), significance (economically vital), and nuance (non-native). A contradicts the passage (native bees also pollinate). C is not stated. D is too narrow (passage says both honey AND pollination)."},
+  {id:1,t:1,passage:"The Library of Alexandria, founded in the third century BCE, is often cited as the greatest repository of knowledge in the ancient world. Scholars estimate it held between 400,000 and 700,000 scrolls. Contrary to popular belief, the library was not destroyed in a single catastrophic fire but declined gradually over several centuries due to reduced funding, political instability, and multiple smaller incidents of damage.",
+   stem:"Based on the text, which statement about the Library of Alexandria is accurate?",
+   choices:["It was destroyed in a single fire.","It contained exactly 500,000 scrolls.","Its decline was gradual rather than sudden.","It was the only library in the ancient world."],answer:2,
+   explain:"The passage explicitly states its decline was gradual: \u201cnot destroyed in a single catastrophic fire but declined gradually.\u201d A is directly contradicted. B says \u201cexactly\u201d when the passage gives a range. D is never stated."},
+  {id:2,t:1,passage:"Studies have shown that bilingual children often perform better on tasks requiring cognitive flexibility \u2014 the ability to switch between different rules or perspectives. Researchers believe this advantage develops because bilingual children must constantly monitor which language to use in different social contexts, strengthening the brain\u2019s executive control systems.",
+   stem:"It can most reasonably be inferred from the text that:",
+   choices:["All bilingual children are smarter than monolingual children.","Managing two languages exercises cognitive skills that have broader applications.","Bilingualism has no disadvantages.","Executive control systems are located in a specific brain region."],answer:1,
+   explain:"The passage connects language monitoring to stronger executive control to better cognitive flexibility. B captures this chain: managing languages \u2192 cognitive benefits beyond language. A uses \u201call\u201d and \u201csmarter\u201d (too extreme). C and D go beyond the text."},
+  {id:3,t:2,passage:"When psychologist Walter Mischel conducted his famous \u201cmarshmallow test\u201d in the late 1960s, he found that children who could delay gratification \u2014 waiting to receive two marshmallows instead of eating one immediately \u2014 tended to achieve better academic and social outcomes later in life. However, recent replications with larger and more diverse samples have shown that the correlation weakens significantly when researchers control for socioeconomic factors, suggesting that family wealth and stability, rather than innate self-control, may largely explain the original findings.",
+   stem:"Which choice best states the central idea of the text?",
+   choices:["The marshmallow test proves that self-control determines life success.","Walter Mischel\u2019s research methods were fundamentally flawed.","Recent research suggests that socioeconomic factors, not self-control alone, may explain the outcomes originally attributed to delayed gratification.","Children from wealthy families always perform better on cognitive tests."],answer:2,
+   explain:"C captures the passage\u2019s arc: original finding \u2192 recent challenge \u2192 alternative explanation (socioeconomic factors). A restates the OLD claim the passage is challenging. B is too extreme (methods weren\u2019t \u201cfundamentally flawed\u201d). D uses \u201calways\u201d and \u201ccognitive tests\u201d (not stated)."},
+  {id:4,t:2,passage:"Ecologist Suzanne Simard discovered that trees in a forest communicate and share nutrients through an underground network of fungal threads called mycorrhizal networks. Through this \u201cwood wide web,\u201d older trees can transfer carbon and nutrients to younger, shaded seedlings, boosting their survival rates. Simard\u2019s research has also revealed that when a tree is dying, it sometimes dumps its resources into the network, effectively bequeathing its nutrients to its neighbors.",
+   stem:"Based on the text, what can most reasonably be inferred about tree behavior?",
+   choices:["Trees are conscious beings capable of making deliberate decisions.","Trees have evolved mechanisms that facilitate resource sharing within forest communities.","Mycorrhizal networks only benefit young trees.","Dying trees always transfer their nutrients to nearby trees."],answer:1,
+   explain:"The passage describes carbon transfer, nutrient sharing, and resource dumping \u2014 all mechanisms of resource sharing. B captures this without overclaiming. A implies consciousness (not stated). C contradicts the passage (dying trees also contribute). D uses \u201calways\u201d when the passage says \u201csometimes.\u201d"},
+  {id:5,t:2,passage:"In 1848, gold was discovered at Sutter\u2019s Mill in California, triggering one of the largest mass migrations in American history. An estimated 300,000 people arrived in California between 1848 and 1855. While some prospectors struck it rich, most found that the real money was in supplying miners with tools, food, and clothing. Levi Strauss, for instance, made his fortune not by mining but by selling durable denim pants to miners.",
+   stem:"According to the text, what was true about the California Gold Rush?",
+   choices:["Most prospectors became wealthy from mining gold.","Levi Strauss was the most successful Gold Rush entrepreneur.","Supplying goods to miners was often more profitable than mining itself.","Exactly 300,000 people moved to California during the Gold Rush."],answer:2,
+   explain:"The passage states \u201cmost found that the real money was in supplying miners.\u201d C paraphrases this accurately. A contradicts the passage (\u201cmost\u201d did NOT get rich mining). B is not stated (\u201cmost successful\u201d is never claimed). D says \u201cexactly\u201d when the passage says \u201can estimated.\u201d"},
+  {id:6,t:2,passage:"A team of marine biologists studying coral reefs near Indonesia found that certain species of parrotfish play a critical role in reef health by eating algae that would otherwise smother coral. When parrotfish populations declined due to overfishing, algae coverage increased by 60% within two years, and new coral growth dropped to near zero. The researchers argue that protecting parrotfish populations should be a priority in coral conservation efforts.",
+   stem:"It can most reasonably be inferred from the text that without intervention:",
+   choices:["All coral reefs worldwide will die within two years.","Continued overfishing of parrotfish would likely accelerate coral reef decline in the studied region.","Parrotfish are the only species that eat algae on coral reefs.","Algae is always harmful to marine ecosystems."],answer:1,
+   explain:"If removing parrotfish caused 60% more algae and near-zero coral growth, continuing that trend would worsen decline. B is the most conservative, supported inference. A is too extreme (worldwide, all). C and D go beyond what\u2019s stated."},
+  {id:7,t:3,passage:"Linguist John McWhorter argues that the widespread concern about texting ruining the English language is unfounded. He notes that abbreviations like \u201cLOL\u201d and \u201cu\u201d are not signs of linguistic decay but rather a new form of informal written language \u2014 what he calls \u201cfingered speech.\u201d McWhorter points out that similar anxieties arose when the telephone was invented, when radio became popular, and when television entered homes, none of which destroyed the language. He suggests that texting actually demonstrates linguistic creativity, as users develop new ways to convey tone and nuance in a constrained medium.",
+   stem:"Which choice best describes how McWhorter would most likely characterize concerns about texting\u2019s effect on language?",
+   choices:["As a reasonable response to genuine linguistic decline","As a recurring pattern of unfounded anxiety about new communication technologies","As evidence that education standards have declined","As an overreaction that ignores how texting harms formal writing skills"],answer:1,
+   explain:"McWhorter calls the concern \u201cunfounded,\u201d compares it to past anxieties about phones/radio/TV (a recurring pattern), and argues texting shows creativity. B captures this. A contradicts his position. C is not his argument. D introduces \u201charms formal writing\u201d which McWhorter doesn\u2019t discuss."},
+  {id:8,t:3,passage:"For centuries, historians portrayed Genghis Khan primarily as a brutal conqueror whose armies left devastation across Asia and Europe. Recent scholarship, however, has painted a more complex picture. While acknowledging the violence of Mongol conquests, historians now emphasize that the Mongol Empire also established the most extensive trade network the world had seen, promoted religious tolerance across its territories, created a reliable postal system spanning thousands of miles, and facilitated unprecedented cultural exchange between East and West.",
+   stem:"The text primarily serves to:",
+   choices:["Argue that Genghis Khan was a benevolent ruler","Present a more nuanced historical assessment that acknowledges both the destructive and constructive aspects of the Mongol Empire","Prove that the Mongol Empire was more advanced than European civilizations","Challenge all previous scholarship about the Mongol Empire"],answer:1,
+   explain:"The passage presents BOTH sides: violence acknowledged AND positive contributions highlighted. B captures this nuance. A goes too far (never says \u201cbenevolent\u201d). C makes a comparison not in the passage. D is too extreme (\u201call previous scholarship\u201d)."},
+  {id:9,t:3,passage:"The axolotl, a salamander native to Lake Xochimilco in Mexico City, possesses an extraordinary ability: it can regenerate entire limbs, spinal cord tissue, heart tissue, and even parts of its brain with no scarring. While many animals can regenerate to some degree \u2014 lizards regrow tails, starfish regrow arms \u2014 the axolotl\u2019s regeneration is uniquely comprehensive. Scientists studying axolotl regeneration have identified key genes involved in the process, raising the possibility that understanding these mechanisms could eventually inform treatments for human injuries and degenerative diseases.",
+   stem:"It can most reasonably be inferred from the text that the author considers axolotl regeneration research to be:",
+   choices:["Unlikely to produce practical results for humans","Potentially valuable for advancing human medical treatments","More important than all other biological research","The only way to develop treatments for degenerative diseases"],answer:1,
+   explain:"The passage ends with \u201craising the possibility\u201d of informing human treatments \u2014 the author presents this as a genuine potential benefit, making B a supported inference. A contradicts the tone. C and D use extreme language (\u201call other,\u201d \u201conly way\u201d) not supported by the text."}
+];
+
+var KEY_TAKEAWAYS = [
+  "Central Idea = the author\u2019s specific POINT, not just the topic. Use the \u201cSo What?\u201d test.",
+  "The correct central idea covers the WHOLE passage \u2014 not too broad, not too narrow.",
+  "\u201cPoint to the evidence\u201d \u2014 for every answer, you should be able to underline the supporting text.",
+  "Don\u2019t add outside knowledge. The answer is always IN the passage.",
+  "Beware of extreme words (always, never, all, none). The text is usually more moderate.",
+  "Valid inferences stay close to the text. Pick the MOST conservative, best-supported conclusion.",
+  "Four wrong-answer types: too broad, too narrow, off-topic, and distorted (wrong claim about right topic).",
+  "Question stems tell you what to look for: \u201cstates\u201d = explicit, \u201cinferred\u201d = implicit, \u201cmainly about\u201d = central idea."
+];
+
+/* ========== COMPONENTS ========== */
+
+/* ── Welcome ── */
+function Welcome(props) {
+  var onNext = props.onNext;
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  return createElement("div", { style:{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"100vh", padding:"0 24px", transition:"all .7s", opacity:show?1:0, transform:show?"translateY(0)":"translateY(16px)" } },
+    createElement("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"44", borderRadius:12, padding:"6px 18px", fontSize:13, letterSpacing:1.5, textTransform:"uppercase", color:C.mod, marginBottom:12, fontWeight:600 } }, "Phase 2 \u00B7 Module 4"),
+    createElement("h1", { style:{ fontSize:"clamp(1.7rem,4.5vw,3rem)", fontWeight:800, background:"linear-gradient(135deg,"+C.mod+","+C.rw+")", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", lineHeight:1.1, textAlign:"center", marginBottom:16, fontFamily:"'Cormorant Garamond',serif" } }, "Central Ideas, Details & Inferences"),
+    createElement("p", { style:{ color:C.sub, fontSize:18, maxWidth:560, textAlign:"center", lineHeight:1.6, marginBottom:12 } }, "The core of Information & Ideas \u2014 about 12\u201314 questions per test. Can you find the main point, support it with evidence, and read between the lines?"),
+    createElement("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"33", borderRadius:12, padding:"14px 22px", maxWidth:540, marginBottom:40, fontSize:14, color:C.sub, lineHeight:1.6, textAlign:"center" } },
+      createElement("strong", { style:{ color:C.mod } }, "High-Frequency Domain: "),
+      "Central Ideas, Details & Inferences make up the largest chunk of Information & Ideas (~12\u201314 questions, ~26% of the test). These skills transfer directly to every class you take."
+    ),
+    createElement("div", { style:{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:16, maxWidth:700, width:"100%", marginBottom:48 } },
+      [{icon:"\uD83C\uDFAF",title:"Central Ideas",desc:"Find the main point"},{icon:"\uD83D\uDD0D",title:"Key Details",desc:"Stated vs. implied"},{icon:"\uD83E\uDDE0",title:"Inferences",desc:"Read between the lines"},{icon:"\uD83D\uDD2C",title:"4 Exercises",desc:"Classify, sort, diagnose"},{icon:"\uD83D\uDCDD",title:"10 Practice Qs",desc:"PSAT-format questions"}
+      ].map(function(c,i){ return createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
+        createElement("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        createElement("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
+        createElement("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      );})
+    ),
+    createElement("button", { onClick:onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")", "#fff"), onMouseOver:function(e){e.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";} }, "Start Learning \u2192"),
+    createElement("div", { style:{ color:C.muted, fontSize:13, marginTop:24 } }, "\u23F1 ~60 min \u00B7 Information & Ideas")
+  );
+}
+
+/* ── LessonViewer ── */
+function LessonViewer(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var lesson = LESSONS[idx];
+  var total = LESSONS.length;
+
+  function renderVisual() {
+    if (lesson.visual === "central-idea-steps") {
+      var steps = [
+        {num:"1",label:"Read",desc:"Read the full passage. Identify the topic (1\u20133 words).",color:C.sec},
+        {num:"2",label:"\u201cSo What?\u201d",desc:"What specific point does the author make about this topic?",color:C.mod},
+        {num:"3",label:"Covers whole passage?",desc:"Does your central idea cover the WHOLE passage, not just one part?",color:C.rw},
+        {num:"4",label:"Match answer",desc:"Match to the answer choice that\u2019s neither too broad nor too narrow.",color:C.expr}
+      ];
+      return createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:8,padding:"12px 20px"}},
+        steps.map(function(s,i){
+          return createElement("div",{key:i,style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:14,textAlign:"center"}},
+            createElement("div",{style:{width:32,height:32,borderRadius:"50%",background:s.color+"22",color:s.color,fontWeight:800,fontSize:15,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 8px"}},"Step "+s.num),
+            createElement("div",{style:{fontSize:13,fontWeight:700,color:s.color,marginBottom:4}},s.label),
+            createElement("div",{style:{fontSize:11,color:C.sub,lineHeight:1.4}},s.desc)
+          );
+        })
+      );
+    }
+    if (lesson.visual === "stated-vs-implied") {
+      var cards = [
+        {label:"Stated (Explicit)",desc:"The passage directly says it. You can underline the exact words.",example:"\u201cThe study found a 30% increase.\u201d",color:C.sec,icon:"\uD83D\uDCCC"},
+        {label:"Implied (Implicit)",desc:"The passage strongly suggests it without saying it directly. You connect two pieces of information.",example:"\u201cThe study found a 30% increase, surprising researchers who had expected no change.\u201d \u2192 The results were unexpected.",color:C.rw,icon:"\uD83E\uDDE9"}
+      ];
+      return createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:10,padding:"12px 20px"}},
+        cards.map(function(c,i){
+          return createElement("div",{key:i,style:{background:C.paper,border:"1px solid "+c.color+"44",borderRadius:12,padding:16}},
+            createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8}},
+              createElement("span",{style:{fontSize:20}},c.icon),
+              createElement("span",{style:{color:c.color,fontWeight:700,fontSize:14}},c.label)
+            ),
+            createElement("div",{style:{color:C.sub,fontSize:12,lineHeight:1.5,marginBottom:8}},c.desc),
+            createElement("div",{style:{color:"#ddd",fontSize:11,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace",padding:"8px 10px",background:c.color+"08",borderRadius:6,borderLeft:"3px solid "+c.color}},c.example)
+          );
+        })
+      );
+    }
+    if (lesson.visual === "inference-spectrum") {
+      var items = [
+        {label:"Restated",desc:"Too obvious \u2014 not really an inference",example:"\u201cThe population declined by 40%.\u201d \u2192 The population shrank.",color:C.sec},
+        {label:"Valid Inference",desc:"Supported by the text",example:"\u201cThe population declined by 40% after the dam was built.\u201d \u2192 The dam likely contributed.",color:C.mod},
+        {label:"Logical Leap",desc:"Too extreme \u2014 the passage never says this",example:"\u201cThe population declined by 40%.\u201d \u2192 The species will go extinct.",color:C.wrong}
+      ];
+      return createElement("div",{style:{padding:"12px 20px"}},
+        createElement("div",{style:{color:C.mod,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"The Inference Spectrum"),
+        items.map(function(it,i){
+          return createElement("div",{key:i,style:{display:"flex",alignItems:"flex-start",gap:10,marginBottom:8,padding:"10px 14px",background:it.color+"08",borderLeft:"3px solid "+it.color,borderRadius:"0 8px 8px 0"}},
+            createElement("div",{style:{minWidth:110}},
+              createElement("span",{style:{color:it.color,fontWeight:700,fontSize:13}},it.label),
+              createElement("div",{style:{color:C.muted,fontSize:10,marginTop:2}},it.desc)
+            ),
+            createElement("span",{style:{color:C.sub,fontSize:12,fontFamily:"'JetBrains Mono',monospace",lineHeight:1.5}},it.example)
+          );
+        })
+      );
+    }
+    return null;
+  }
+
+  return createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    createElement("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      LESSONS.map(function(_,i){
+        return createElement("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+      })
+    ),
+    createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      createElement("div",{style:{padding:"28px 28px 0"}},
+        createElement("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        createElement("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:16,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},lesson.title),
+        lesson.body.map(function(p,i){
+          return createElement("p",{key:i,style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p);
+        })
+      ),
+      lesson.visual && createElement("div",{style:{padding:"8px 4px 20px"}},renderVisual())
+    ),
+    createElement("div",{style:{display:"flex",justifyContent:"space-between"}},
+      createElement("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#444":C.sub),{border:"1px solid "+C.border,padding:"10px 20px",fontSize:14})},"\u2190 Back"),
+      idx < total-1
+        ? createElement("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
+        : createElement("button",{onClick:onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Exercises \u2192")
+    )
+  );
+}
+
+/* ── ClassifyExercise (reusable) ── */
+function ClassifyExercise(props) {
+  var title = props.title, icon = props.icon, subtitle = props.subtitle, items = props.items, options = props.options, renderStimulus = props.renderStimulus, borderColor = props.borderColor, onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      createElement("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus ? renderStimulus(q,i) : createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+(borderColor||C.mod),fontFamily:"'JetBrains Mono',monospace"}},q.text),
+        createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          options.map(function(o,oi){
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return createElement("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        ),
+        h && createElement("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===q.c?C.correctBg:C.wrongBg,color:a===q.c?C.correct:C.wrong}},(a===q.c?"\u2713 ":"\u2717 ")+q.fb)
+      );
+    }),
+    createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      createElement("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── MCExercise (for Central Idea Finder) ── */
+function MCExercise(props) {
+  var title = props.title, icon = props.icon, subtitle = props.subtitle, items = props.items, renderStimulus = props.renderStimulus, borderColor = props.borderColor, onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      createElement("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus(q,i),
+        createElement("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return createElement("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              createElement("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              createElement("span",{style:{fontSize:12,lineHeight:1.5}},ch)
+            );
+          })
+        ),
+        h && createElement("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      createElement("button",{onClick:onComplete,style:btn(borderColor||C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── EvidenceExercise (nested passage + claims) ── */
+function EvidenceExercise(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+
+  var totalClaims = 0;
+  var correctCount = 0;
+  EVI.forEach(function(block, bi) {
+    block.claims.forEach(function(cl, ci) {
+      totalClaims++;
+      var key = bi + "_" + ci;
+      if (answers[key] !== undefined && answers[key] === cl.c) correctCount++;
+    });
+  });
+  var answeredCount = Object.keys(answers).length;
+  var done = answeredCount === totalClaims;
+
+  function pick(key, v) {
+    if (answers[key] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[key] = v; return n; });
+  }
+
+  return createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      createElement("div",{style:{color:C.rw,fontSize:14,fontWeight:700}},"\uD83D\uDD0D Point to the Evidence"),
+      createElement("span",{style:{color:C.muted,fontSize:13}},correctCount,"/",totalClaims," correct")
+    ),
+    createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"For each claim, classify: Directly Stated, Valid Inference, or Not Supported by the passage."),
+    EVI.map(function(block, bi) {
+      return createElement("div",{key:bi,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:12}},
+        createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"12px 16px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:14,borderLeft:"3px solid "+C.rw,fontFamily:"Georgia,serif"}},block.passage),
+        block.claims.map(function(cl, ci) {
+          var key = bi + "_" + ci;
+          var a = answers[key], h = a !== undefined;
+          return createElement("div",{key:ci,style:{padding:"10px 0",borderTop:ci>0?"1px solid "+C.border:"none"}},
+            createElement("div",{style:{fontSize:13,color:"#ddd",marginBottom:8,lineHeight:1.6}},"\u201c"+cl.text+"\u201d"),
+            createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+              EVI_OPTS.map(function(o, oi) {
+                var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+                if (h) {
+                  st.opacity = 0.6; st.pointerEvents = "none";
+                  if (oi === cl.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+                  else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+                }
+                return createElement("button",{key:oi,onClick:function(){pick(key,oi);},style:st},o);
+              })
+            ),
+            h && createElement("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===cl.c?C.correctBg:C.wrongBg,color:a===cl.c?C.correct:C.wrong}},(a===cl.c?"\u2713 ":"\u2717 ")+cl.fb)
+          );
+        })
+      );
+    }),
+    createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(totalClaims?correctCount/totalClaims*100:0)+"%",transition:"width .4s"}})
+      ),
+      createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correctCount+"/"+totalClaims)
+    ),
+    done && createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      createElement("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── QuizEngine ── */
+function QuizEngine(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var item = QUIZ[idx];
+
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s){ return s+1; });
+  }
+  function next() {
+    if (idx < QUIZ.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+
+  if (done) {
+    return createElement("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      createElement("div",{style:{fontSize:48,marginBottom:16}},"\uD83D\uDCDD"),
+      createElement("h2",{style:{color:C.ink,fontSize:28,fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Practice Complete"),
+      createElement("div",{style:{color:C.mod,fontSize:48,fontWeight:900}},score,"/",QUIZ.length),
+      createElement("p",{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},
+        score >= 9 ? "Outstanding! You\u2019ve mastered central ideas, details, and inferences." :
+        score >= 7 ? "Great work! A few more practice rounds and you\u2019ll own this topic." :
+        score >= 5 ? "Solid foundation. Review the errors you made and try again." :
+        "Keep practicing! Focus on the \u201cSo What?\u201d test and staying close to the text."
+      ),
+      createElement("button",{onClick:function(){onComplete(score,QUIZ.length);},style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff")},"Continue \u2192")
+    );
+  }
+
+  var tierColors = {1:C.sec, 2:C.info, 3:C.rw};
+  var tierLabels = {1:"Easy", 2:"Medium", 3:"Hard"};
+
+  return createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
+      createElement("div",{style:{color:C.mod,fontSize:13,fontWeight:700}},"\uD83D\uDCDD PSAT Practice"),
+      createElement("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        createElement("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:600,background:tierColors[item.t]+"22",color:tierColors[item.t]}},tierLabels[item.t]),
+        createElement("span",{style:{color:C.muted,fontSize:13}},idx+1,"/",QUIZ.length)
+      )
+    ),
+    createElement("div",{style:{height:4,background:C.border,borderRadius:2,marginBottom:20,overflow:"hidden"}},
+      createElement("div",{style:{height:"100%",width:((idx+(confirmed?1:0))/QUIZ.length*100)+"%",background:"linear-gradient(90deg,"+C.mod+","+C.rw+")",borderRadius:2,transition:"width .4s"}})
+    ),
+    createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,marginBottom:16}},
+      createElement("div",{style:{color:"#ddd",fontSize:15,lineHeight:1.8,fontFamily:"Georgia,serif"}},item.passage)
+    ),
+    createElement("div",{style:{color:C.ink,fontSize:14,fontWeight:600,marginBottom:16}},item.stem),
+    createElement("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      item.choices.map(function(c,ci){
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = C.surface, bdr = "1px solid "+C.border, tc = "#ddd";
+        if (confirmed && isCorr) { bg = C.correct+"18"; bdr = "2px solid "+C.correct; tc = C.correct; }
+        else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
+        else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
+        return createElement("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+          createElement("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          createElement("span",{style:{color:tc,fontSize:14,lineHeight:1.5}},c)
+        );
+      })
+    ),
+    confirmed && createElement("div",{style:{background:C.border,borderRadius:12,padding:20,marginBottom:24,borderLeft:"4px solid "+C.mod}},
+      createElement("div",{style:{color:C.mod,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+      createElement("div",{style:{color:C.sub,fontSize:14,lineHeight:1.6}},item.explain)
+    ),
+    createElement("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed
+        ? createElement("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?C.border:C.mod,selected===null?"#555":"#fff",{fontSize:14,padding:"10px 24px"})},"Confirm")
+        : createElement("button",{onClick:next,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},idx<QUIZ.length-1?"Next \u2192":"See Results \u2192")
+    )
+  );
+}
+
+/* ── NavLinks ── */
+function NavLinks() {
+  return createElement("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border,flexWrap:"wrap"}},
+    NAV.prev && createElement("a",{href:NAV.prev.file,style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"})},"\u2190 "+NAV.prev.label),
+    NAV.next && createElement("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"10px 20px"})},NAV.next.label+" \u2192")
+  );
+}
+
+/* ── ModuleComplete ── */
+function ModuleComplete(props) {
+  var quizScore = props.quizScore, quizTotal = props.quizTotal;
+  var pct = Math.round(quizScore/quizTotal*100);
+  return createElement("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
+    createElement("div",{style:{fontSize:64,marginBottom:16}},pct>=90?"\uD83C\uDFC6":pct>=70?"\uD83C\uDF1F":"\uD83D\uDCAA"),
+    createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 4 Complete!"),
+    createElement("div",{style:{color:C.mod,fontSize:48,fontWeight:900,marginBottom:8}},quizScore,"/",quizTotal),
+    createElement("p",{style:{color:C.sub,fontSize:15,marginBottom:32}},"on PSAT-format practice questions"),
+    createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
+      createElement("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+      KEY_TAKEAWAYS.map(function(t,i){
+        return createElement("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
+          createElement("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+          createElement("span",null,t)
+        );
+      })
+    ),
+    createElement(NavLinks, null)
+  );
+}
+
+/* ── Exercises Router ── */
+function Exercises(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+
+  if (step === 0) {
+    return createElement(MCExercise, {
+      title:"Central Idea Finder", icon:"\uD83C\uDFAF",
+      subtitle:"Which choice best states the central idea of the passage?",
+      items:CEN, borderColor:C.mod,
+      renderStimulus:function(q){
+        return createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"12px 16px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:12,borderLeft:"3px solid "+C.mod,fontFamily:"Georgia,serif"}},q.passage);
+      },
+      onComplete:function(){ setStep(1); }
+    });
+  }
+  if (step === 1) {
+    return createElement(EvidenceExercise, {
+      onComplete:function(){ setStep(2); }
+    });
+  }
+  if (step === 2) {
+    return createElement(ClassifyExercise, {
+      title:"Inference Strength Sorter", icon:"\u2696\uFE0F",
+      subtitle:"Classify each inference as a Restatement (too obvious), Valid Inference (supported), or Logical Leap (too extreme).",
+      items:INF, options:INF_OPTS, borderColor:C.accent,
+      renderStimulus:function(q){
+        return createElement("div",null,
+          createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"10px 14px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:8,borderLeft:"3px solid "+C.accent,fontFamily:"Georgia,serif"}},q.passage),
+          createElement("div",{style:{fontSize:13,color:"#ddd",marginBottom:8,lineHeight:1.6}},"\u201c"+q.claim+"\u201d")
+        );
+      },
+      onComplete:function(){ setStep(3); }
+    });
+  }
+  if (step === 3) {
+    return createElement(ClassifyExercise, {
+      title:"Wrong-Answer Autopsy", icon:"\uD83D\uDD2C",
+      subtitle:"Each wrong answer fails for a specific reason. Diagnose it.",
+      items:AUT, options:AUT_OPTS, borderColor:C.expr,
+      renderStimulus:function(q){
+        return createElement("div",null,
+          createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"10px 14px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.expr,fontFamily:"Georgia,serif"}},q.passage),
+          createElement("div",{style:{padding:"6px 12px",borderRadius:6,background:C.wrongBg,border:"1px solid "+C.wrong,fontSize:13,marginBottom:10,display:"inline-block"}},
+            createElement("span",{style:{color:C.wrong,fontWeight:700}},"Wrong answer: "),
+            createElement("span",{style:{color:"#ccc"}},"\u201c"+q.wrong+"\u201d")
+          )
+        );
+      },
+      onComplete:function(){ onComplete(); }
+    });
+  }
+  return null;
+}
+
+/* ── App Shell ── */
+function App() {
+  var _s = useState("welcome"), screen = _s[0], setScreen = _s[1];
+  var _s2 = useState(true), vis = _s2[0], setVis = _s2[1];
+  var _s3 = useState(0), quizScore = _s3[0], setQuizScore = _s3[1];
+  var _s4 = useState(10), quizTotal = _s4[0], setQuizTotal = _s4[1];
+
+  function go(next) {
+    setVis(false);
+    setTimeout(function(){ setScreen(next); setVis(true); window.scrollTo(0,0); }, 350);
+  }
+
+  var content = null;
+  if (screen === "welcome") content = createElement(Welcome,{onNext:function(){go("lesson");}});
+  else if (screen === "lesson") content = createElement(LessonViewer,{onComplete:function(){go("exercises");}});
+  else if (screen === "exercises") content = createElement(Exercises,{onComplete:function(){go("practice");}});
+  else if (screen === "practice") content = createElement(QuizEngine,{onComplete:function(s,t){setQuizScore(s);setQuizTotal(t);go("complete");}});
+  else if (screen === "complete") content = createElement(ModuleComplete,{quizScore:quizScore,quizTotal:quizTotal});
+
+  return createElement("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(createElement(App));
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

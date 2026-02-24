@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 9: Central Ideas & Comprehension — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback } = React;
+const BLUE = "#3b82f6";
+const BLUE2 = "#2563eb";
+const ACCENT = "#10b981";
+const AMBER = "#f59e0b";
+const PURPLE = "#a855f7";
+const RED = "#ef4444";
+const CYAN = "#06b6d4";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px",
+  borderRadius: 10,
+  border: "none",
+  background: bg,
+  color,
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: "pointer",
+  transition: "transform .12s",
+  ...extra
+});
+const LESSONS = [
+  {
+    id: "intro",
+    title: "The Foundation of Reading",
+    subtitle: "Understanding what you read",
+    body: [
+      "Unit 3 covers Information & Ideas — the comprehension domain. These questions test whether you actually UNDERSTAND what a passage says, what it implies, and what conclusions the evidence supports.",
+      "Central Ideas & Details questions ask: What is the passage mainly about? What specific information does the passage provide? These appear roughly 5-6 times per test.",
+      "Inference questions ask: What can you reasonably conclude based on the passage? What does the evidence suggest? These appear roughly 2-4 times per test.",
+      "Unlike Craft & Structure (HOW it's written) or Conventions (grammar), these questions focus purely on WHAT the passage communicates. The good news: the answer is always in the passage."
+    ],
+    visual: "stats"
+  },
+  {
+    id: "central-idea",
+    title: "Central Idea Questions",
+    subtitle: "What is the passage MAINLY about?",
+    body: [
+      "Central Idea questions ask you to identify the main point of a passage. The passage might discuss multiple things, but only one choice captures the CENTRAL idea — the one that everything else supports.",
+      'STRATEGY: After reading, ask yourself: "If I had to summarize this passage in one sentence, what would I say?" That sentence is the central idea.',
+      "COMMON TRAPS:\n• Too narrow: An answer that describes ONE detail but not the whole passage.\n• Too broad: An answer so general it could apply to many passages.\n• Off-topic: An answer about something the passage mentions but isn't the main point.\n• Distortion: An answer that twists the passage's meaning or overstates its claims.",
+      "The best answer is specific enough to distinguish this passage from others, but broad enough to cover the whole passage — not just one paragraph."
+    ],
+    visual: "scope-visual"
+  },
+  {
+    id: "details",
+    title: "Supporting Detail Questions",
+    subtitle: "What does the passage specifically state?",
+    body: [
+      "Detail questions ask about specific information stated in the passage. The answer is explicitly there — you just need to find it.",
+      'These questions often begin with:\n• "According to the passage..."\n• "The passage states that..."\n• "Which detail from the passage supports..."',
+      "STRATEGY: When you see a detail question, go back to the passage. Don't rely on memory. Find the exact sentence that answers the question, then match it to a choice.",
+      "TRAP: Answer choices that are TRUE in real life but NOT stated in the passage. The SAT tests whether you can distinguish between what a passage actually says and what you already know about the topic."
+    ],
+    visual: null
+  },
+  {
+    id: "inference",
+    title: "Inference Questions",
+    subtitle: "What can you REASONABLY conclude?",
+    body: [
+      "Inference questions ask what the passage IMPLIES without directly stating. This is the hardest comprehension skill because it requires reading between the lines.",
+      "An inference is NOT a guess. It's a logical conclusion supported by evidence in the passage. Think of it as: What MUST be true based on what the passage says?",
+      'EXAMPLE: A passage says "After the regulation was enacted, pollution levels in the river decreased by 40% over three years."\nVALID inference: The regulation was at least somewhat effective at reducing pollution.\nINVALID inference: The regulation was the ONLY reason pollution decreased. (Maybe other factors contributed.)',
+      "RULE: The correct inference is the one that requires the SMALLEST logical leap from what's stated. If you have to assume multiple unstated things to reach a conclusion, it's probably wrong."
+    ],
+    visual: "inference-scale"
+  },
+  {
+    id: "summary",
+    title: "Summary Questions",
+    subtitle: "Which choice best summarizes the passage?",
+    body: [
+      "Summary questions are a variant of Central Idea. Instead of asking for the main point, they ask which choice best summarizes the passage's content.",
+      "A good summary:\n• Captures the main idea and key supporting points\n• Maintains the passage's emphasis (doesn't elevate minor details)\n• Preserves the passage's tone and perspective\n• Doesn't add information not in the passage",
+      "A bad summary:\n• Focuses on one paragraph while ignoring others\n• Changes the passage's emphasis or conclusion\n• Includes the reader's opinions or outside knowledge\n• Overstates or understates the passage's claims",
+      "STRATEGY: Check each answer choice against every part of the passage. If an answer ignores a major section or elevates a minor detail, it's incomplete."
+    ],
+    visual: null
+  },
+  {
+    id: "literary",
+    title: "Reading Literary Passages",
+    subtitle: "Fiction and poetry on the SAT",
+    body: [
+      "About 20-25% of SAT passages are literary — fiction excerpts or poems. These require slightly different reading strategies:",
+      "CHARACTERS: Who is the narrator? Who are the characters? What is their relationship? What is the emotional dynamic?",
+      "TONE/MOOD: What atmosphere does the passage create? Is the narrator nostalgic, anxious, reflective, detached? Literary passages often test your ability to read emotional register.",
+      "FIGURATIVE LANGUAGE: Literary passages may use metaphor, simile, imagery, or symbolism. The SAT won't ask you to identify literary devices by name, but it will ask what the language SUGGESTS or what effect it creates.",
+      "STRATEGY: For literary passages, pay extra attention to the emotional arc. What does the character feel at the beginning? Does it change? The central idea of a literary passage is often about an emotional realization or a shift in perspective."
+    ],
+    visual: "literary-elements"
+  },
+  {
+    id: "science-social",
+    title: "Reading Science & Social Science",
+    subtitle: "Data-rich informational passages",
+    body: [
+      "About 50-60% of SAT passages are informational — science, social science, and history. These passages often present research findings, arguments, or analyses.",
+      "SCIENCE PASSAGES: Focus on the CLAIM, the EVIDENCE, and the CONCLUSION. What did the researchers find? What does it mean? What are the limitations?",
+      "SOCIAL SCIENCE PASSAGES: Focus on the ARGUMENT and the EVIDENCE. What position is the author taking? What supports it? Is there a counterargument?",
+      "KEY SKILL: Distinguishing between what the passage CLAIMS and what it PROVES. A passage might claim that X causes Y, but the evidence might only show a correlation, not causation. The SAT tests whether you can catch this distinction.",
+      "DATA: Some passages include tables, graphs, or charts. When they do, the questions will ask you to connect the data to the passage's claims. We'll cover this in detail in Module 10."
+    ],
+    visual: null
+  },
+  {
+    id: "framework",
+    title: "The Comprehension Framework",
+    subtitle: "Your approach for every reading question",
+    body: [
+      "STEP 1: Read the passage actively. Don't just let words wash over you. As you read, identify: What is the topic? What is the author's position or the passage's main point? What evidence is given?",
+      "STEP 2: Identify the question type. Is it asking for the central idea, a specific detail, an inference, or a summary? This tells you WHERE to look and HOW to evaluate answers.",
+      "STEP 3: For detail questions, go back to the passage and find the specific sentence. For inference questions, find the evidence that supports the conclusion.",
+      "STEP 4: Evaluate each answer choice against the passage. The correct answer must be fully supported. If any part of an answer contradicts the passage or requires unstated assumptions, eliminate it.",
+      "GOLDEN RULE: The answer is always in the passage. If you can't point to specific text that supports your choice, reconsider."
+    ],
+    visual: "framework-visual"
+  }
+];
+const MAINIDEA_ITEMS = [
+  {
+    passage: "For decades, the prevailing theory held that the extinction of large Ice Age mammals — mammoths, giant sloths, saber-toothed cats — was driven primarily by human hunting. However, a 2023 study analyzing fossilized pollen and sediment layers across North America revealed that many of these species had already begun declining centuries before humans arrived on the continent. The researchers argue that rapid climate shifts at the end of the Pleistocene disrupted the ecosystems these animals depended on, and that human hunting, while a contributing factor, merely accelerated an extinction process already underway.",
+    question: "Which choice best states the main idea of the passage?",
+    choices: [
+      "Human hunting was the sole cause of Ice Age mammal extinctions",
+      "A study suggests that climate change, not just human hunting, played a primary role in Ice Age extinctions",
+      "Scientists have discovered new fossils of Ice Age mammals in North America",
+      "The Pleistocene era was characterized by extreme weather events that affected all animal species equally"
+    ],
+    answer: 1,
+    diff: "easy",
+    explain: "The passage presents a traditional theory (human hunting) and then a newer study that challenges it (climate-driven decline preceded humans). B captures both the challenge and the nuance (not JUST hunting). A is the old view being challenged. C and D misrepresent the content."
+  },
+  {
+    passage: "When Alma Thomas began exhibiting her vibrant abstract paintings in the 1960s, she was already in her seventies — a Black woman artist entering the mainstream art world at an age when most careers are winding down. Her mosaic-like compositions, inspired by the view of flowers and trees from her Washington, D.C., window, employed bold bands of color that anticipated developments in Color Field painting. Though she received significant recognition in her final years, including becoming the first African American woman to have a solo exhibition at the Whitney Museum, Thomas's contributions to American abstraction remained largely overlooked by art historians until a major reassessment began in the 2010s.",
+    question: "Which choice best states the main idea of the passage?",
+    choices: [
+      "Alma Thomas was the first African American woman to exhibit at the Whitney Museum",
+      "Alma Thomas's significant contributions to American abstract art were not fully recognized until decades after her career",
+      "Abstract painting in the 1960s was dominated by the Color Field movement",
+      "Washington, D.C., has produced many important American artists"
+    ],
+    answer: 1,
+    diff: "medium",
+    explain: "The passage covers Thomas's late-career emergence, her artistic significance, and the delayed recognition. B captures the full arc. A is one detail, not the central idea. C and D aren't the passage's focus."
+  },
+  {
+    passage: "The octopus's three hearts, blue blood, and ability to change color in milliseconds have made it a subject of intense scientific interest. But it is the animal's cognitive abilities that have most surprised researchers. Octopuses can solve complex puzzles, navigate mazes, and distinguish individual human faces — capabilities previously thought to require the kind of centralized brain structure that octopuses lack. Instead, roughly two-thirds of an octopus's neurons are distributed throughout its eight arms, each of which can act semi-independently. This decentralized nervous system challenges fundamental assumptions about the relationship between brain structure and intelligence.",
+    question: "Which choice best states the main idea of the passage?",
+    choices: [
+      "Octopuses have three hearts and blue blood, making them biologically unique",
+      "The octopus's decentralized nervous system challenges traditional assumptions about what brain structures are necessary for intelligence",
+      "Researchers have successfully trained octopuses to solve puzzles and navigate mazes",
+      "The eight arms of an octopus operate independently of its central brain"
+    ],
+    answer: 1,
+    diff: "medium",
+    explain: 'The passage starts with physical features, pivots to cognitive abilities ("But it is..."), then reveals the surprising mechanism (decentralized neurons) and its implication (challenges assumptions). B captures the core argument. A and D are supporting details.'
+  },
+  {
+    passage: "In the decades following the Second World War, the Brazilian government pursued an aggressive program of road construction through the Amazon rainforest, motivated by a vision of economic development and national integration. These roads succeeded in opening previously inaccessible regions to farming and mining but also triggered a pattern of deforestation that has since destroyed roughly 17% of the original forest cover. A 2022 study found that deforested areas near roads experienced not only biodiversity loss but also significant changes in local rainfall patterns, suggesting that the ecological consequences of road construction extend far beyond the immediate footprint of the roads themselves.",
+    question: "Which choice best states the main idea of the passage?",
+    choices: [
+      "Brazil's post-war road construction in the Amazon opened regions for economic development but caused ecological damage extending beyond deforestation itself",
+      "The Amazon rainforest has lost 17% of its original cover due to farming and mining",
+      "Road construction is the primary threat to tropical rainforests worldwide",
+      "A 2022 study demonstrated that deforestation affects rainfall patterns"
+    ],
+    answer: 0,
+    diff: "hard",
+    explain: 'The passage traces roads → economic opening → deforestation → ecological consequences beyond deforestation (rainfall changes). A captures the full arc. B is one statistic, C overgeneralizes ("worldwide"), D is one finding.'
+  }
+];
+const INFERENCE_ITEMS = [
+  {
+    passage: "After implementing a four-day work week in 2022, the technology firm reported a 23% increase in employee satisfaction scores and a 15% reduction in turnover. Productivity metrics, measured by project completion rates and client satisfaction surveys, remained statistically unchanged from the previous year's five-day schedule.",
+    question: "Which inference is best supported by the passage?",
+    choices: [
+      "A four-day work week always increases productivity",
+      "The reduced schedule improved employee well-being without significantly harming output",
+      "The company saved money by closing its offices one day per week",
+      "All technology companies should adopt a four-day work week"
+    ],
+    answer: 1,
+    diff: "easy",
+    explain: `Satisfaction up, turnover down, productivity unchanged = employees are happier and output didn't suffer. B captures this precisely. A says "always" (too strong). C is about cost savings (not mentioned). D overgeneralizes from one company.`
+  },
+  {
+    passage: "Archaeological evidence from the ancient city of Mohenjo-daro reveals a sophisticated urban drainage system — covered channels running beneath every street, connected to individual household waste outlets. The consistency and precision of this infrastructure across the entire city suggests a level of centralized planning and public health awareness that would not be seen again in urban design for thousands of years.",
+    question: "Which inference is best supported by the passage?",
+    choices: [
+      "Mohenjo-daro's residents had a greater understanding of germ theory than medieval Europeans",
+      "The city's drainage system indicates that Mohenjo-daro had an organized governmental authority capable of large-scale infrastructure projects",
+      "All ancient civilizations had advanced drainage systems",
+      "Mohenjo-daro was the largest city in the ancient world"
+    ],
+    answer: 1,
+    diff: "medium",
+    explain: '"Consistency and precision across the entire city" + "centralized planning" = an organized authority must have existed to coordinate this. B follows logically. A jumps to germ theory (not mentioned). C and D are unsupported generalizations.'
+  },
+  {
+    passage: "Dr. Okafor's study tracked 3,000 adults over fifteen years and found that those who maintained strong social connections had a 50% greater likelihood of survival than those with weaker ties. Notably, this association held regardless of age, sex, initial health status, or socioeconomic position, and the magnitude of the effect was comparable to that of quitting smoking.",
+    question: "Which inference is best supported by the passage?",
+    choices: [
+      "Social connections are more important than medical treatment for longevity",
+      "The health benefits of social connections are robust across different demographic groups and rival the impact of major health interventions",
+      "Lonely people should be prescribed social activities by their doctors",
+      "The study proves that loneliness directly causes premature death"
+    ],
+    answer: 1,
+    diff: "medium",
+    explain: `The effect "held regardless of" demographic factors (robust across groups) and was "comparable to quitting smoking" (major health intervention). B captures this. A overstates ("more important than medical treatment" — not compared). D says "proves" and "directly causes" — correlation isn't causation.`
+  },
+  {
+    passage: "The traditional Japanese art of kintsugi involves repairing broken pottery with lacquer mixed with gold, silver, or platinum. Rather than disguising the damage, the technique highlights the cracks, transforming them into luminous veins that make the repaired object arguably more beautiful — and certainly more valuable — than the original unbroken piece.",
+    question: "Which inference is best supported by the passage?",
+    choices: [
+      "Japanese pottery is more valuable than pottery from other cultures",
+      "The philosophy behind kintsugi values history and imperfection rather than concealing flaws",
+      "Kintsugi is the most popular art form in Japan",
+      "Gold is the most commonly used metal in kintsugi repair"
+    ],
+    answer: 1,
+    diff: "easy",
+    explain: `"Rather than disguising" + "highlights the cracks" + "more beautiful" = the philosophy VALUES the damage rather than hiding it. B captures this underlying philosophy. A, C, and D aren't supported.`
+  },
+  {
+    passage: "A longitudinal study of 5,000 children found that those who were read to daily before age three had vocabularies approximately 30% larger than peers who were read to less frequently by the time they entered kindergarten. The researchers noted, however, that the vocabulary gap narrowed significantly by third grade regardless of early reading exposure, suggesting that school-based literacy instruction can substantially compensate for differences in home reading environments.",
+    question: "Which inference is best supported by the passage?",
+    choices: [
+      "Reading to children before age three permanently determines their vocabulary size",
+      "Early reading provides an initial advantage that school instruction later reduces, suggesting both home and school environments contribute to language development",
+      "Schools should replace home reading with intensive vocabulary programs",
+      "Children who are not read to before age three can never catch up academically"
+    ],
+    answer: 1,
+    diff: "hard",
+    explain: 'Initial 30% gap → gap "narrowed significantly" by third grade = early reading helps initially but school compensates. B captures both the advantage AND the convergence. A says "permanently" (contradicted by narrowing). D says "never" (contradicted).'
+  },
+  {
+    passage: "Between 2015 and 2023, the city of Copenhagen reduced its carbon emissions by 80% — far exceeding the reductions achieved by any other major European capital during the same period. Officials attribute this success primarily to the city's investment in district heating systems powered by waste incineration and biomass, which supply 99% of the city's heating needs. Critics, however, note that waste incineration produces its own pollutants and that Copenhagen has increasingly imported waste from neighboring countries to fuel its incinerators.",
+    question: "Which inference is best supported by the passage?",
+    choices: [
+      "Copenhagen's carbon reduction strategy involves tradeoffs that complicate its environmental record",
+      "Copenhagen should stop using waste incineration immediately",
+      "All European cities should adopt Copenhagen's approach to carbon reduction",
+      "Carbon emissions are the only important measure of environmental impact"
+    ],
+    answer: 0,
+    diff: "hard",
+    explain: "Impressive carbon reductions BUT incinerators produce pollutants AND import waste = success comes with complications. A captures this nuance. B, C, D overstate or oversimplify."
+  }
+];
+const QUIZ = [
+  {
+    id: 1,
+    diff: "easy",
+    type: "central",
+    passage: "Researchers at MIT have developed a new desalination membrane that uses graphene oxide to filter salt from seawater at a fraction of the energy cost of conventional reverse-osmosis systems. In laboratory tests, the membrane removed 99.6% of sodium chloride while allowing water to pass through at rates up to ten times faster than existing commercial membranes. The team estimates that if the technology can be scaled to industrial production, it could reduce the cost of desalinated water by up to 70%, potentially transforming access to clean drinking water in arid coastal regions worldwide.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["MIT has developed a new type of graphene oxide material", "A new desalination technology could dramatically reduce the cost of converting seawater to drinking water", "Reverse-osmosis systems are too expensive for widespread use", "Arid coastal regions currently lack access to clean drinking water"],
+    answer: 1,
+    explain: "The passage describes a new technology, its lab performance, and its potential to reduce desalination costs by 70%. B captures the core: new tech + dramatic cost reduction potential."
+  },
+  {
+    id: 2,
+    diff: "easy",
+    type: "detail",
+    passage: "The monarch butterfly's annual migration spans up to 3,000 miles, from breeding grounds in the northern United States and Canada to overwintering sites in the oyamel fir forests of central Mexico. Unlike most migratory species, no single monarch completes the entire round trip. The northward journey takes three to four generations, with each successive generation flying a portion of the route before reproducing and dying. Only the 'super generation' born in late summer makes the complete southward journey, living up to eight months — roughly eight times longer than its parents.",
+    stem: "According to the passage, what is distinctive about the 'super generation' of monarch butterflies?",
+    choices: ["They are the largest monarchs ever recorded", "They make the complete southward migration and live significantly longer than other generations", "They breed exclusively in the oyamel fir forests", "They can fly faster than other generations of monarchs"],
+    answer: 1,
+    explain: 'The passage explicitly states the super generation "makes the complete southward journey" and lives "up to eight months — roughly eight times longer." B matches these specific details.'
+  },
+  {
+    id: 3,
+    diff: "medium",
+    type: "inference",
+    passage: "A team of marine biologists studying deep-sea hydrothermal vents discovered thriving communities of organisms — giant tube worms, eyeless shrimp, and chemosynthetic bacteria — at depths where sunlight never penetrates and water temperatures exceed 400 degrees Celsius. These ecosystems derive their energy not from photosynthesis but from chemical reactions between minerals released by the vents and the surrounding seawater, a process called chemosynthesis.",
+    stem: "Which inference is best supported by the text?",
+    choices: ["Deep-sea organisms are more evolved than surface-dwelling organisms", "Life can exist independently of sunlight by utilizing alternative energy sources", "Hydrothermal vents are found in all of Earth's oceans", "Chemosynthesis produces more energy than photosynthesis"],
+    answer: 1,
+    explain: `Organisms thrive without sunlight using chemosynthesis = life doesn't require solar energy. B is the logical inference. A ("more evolved"), C ("all oceans"), D ("more energy") aren't supported.`
+  },
+  {
+    id: 4,
+    diff: "medium",
+    type: "central",
+    passage: "When cognitive psychologist George Miller published his famous 1956 paper 'The Magical Number Seven, Plus or Minus Two,' he proposed that human short-term memory has a limited capacity of roughly seven items. Subsequent research, however, has substantially revised this estimate downward. Psychologist Nelson Cowan's influential 2001 review concluded that the true capacity is closer to four items, and that Miller's higher estimate reflected participants' use of 'chunking' — the unconscious grouping of individual items into larger meaningful units. A phone number like 8005551234, for instance, is ten digits but can be chunked into three groups (800-555-1234), effectively reducing the memory load.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["George Miller's research on short-term memory was fundamentally wrong", "The capacity of short-term memory is smaller than originally proposed, with the earlier estimate inflated by the brain's tendency to group information", "Phone numbers are easier to remember when broken into groups", "Nelson Cowan's research disproved all previous theories about memory"],
+    answer: 1,
+    explain: "The passage presents Miller's original finding, then shows how later research revised it downward by identifying chunking as a confound. B captures both the revision and the explanation."
+  },
+  {
+    id: 5,
+    diff: "medium",
+    type: "inference",
+    passage: "In her landmark 1962 book Silent Spring, Rachel Carson documented the devastating effects of the pesticide DDT on bird populations, particularly its role in thinning eggshells to the point that parent birds crushed their own eggs. The book sparked a public outcry that led directly to the establishment of the Environmental Protection Agency in 1970 and a nationwide ban on DDT in 1972. Today, populations of bald eagles, peregrine falcons, and brown pelicans — all species driven to the brink of extinction by DDT — have made dramatic recoveries.",
+    stem: "Which inference is best supported by the text?",
+    choices: ["Rachel Carson personally lobbied Congress to create the EPA", "Public awareness and policy action can successfully reverse environmental damage caused by human activity", "DDT is the only chemical that has ever threatened bird populations", "All endangered species will eventually recover if given enough time"],
+    answer: 1,
+    explain: `Book → public outcry → policy changes → species recovery = public awareness + policy can reverse damage. B captures this chain. A isn't stated. C ("only") and D ("all") overgeneralize.`
+  },
+  {
+    id: 6,
+    diff: "medium",
+    type: "literary",
+    passage: "The house had been emptied of everything but echoes. Mara stood in the doorway of what had been her grandmother's kitchen, where the air still carried the ghost of cardamom and burned sugar. The linoleum, once hidden beneath a patchwork of rugs her grandmother had collected from three continents, now stretched bare and scarred beneath the overhead light. She had come to collect the last of the boxes, but instead found herself standing very still, listening to the house breathe without its furniture, its curtains, its voice.",
+    stem: "Which choice best describes the main effect of the passage?",
+    choices: ["It conveys a sense of accomplishment as Mara completes a difficult task", "It creates an atmosphere of loss and absence as a character encounters a space emptied of its former life", "It establishes a tense, suspenseful mood suggesting something dangerous is about to happen", "It provides detailed information about the grandmother's multicultural background"],
+    answer: 1,
+    explain: '"Emptied of everything but echoes," "ghost of cardamom," "bare and scarred," "breathe without its furniture" = the passage is saturated with absence and loss. B captures the emotional effect. A (accomplishment) misreads the tone.'
+  },
+  {
+    id: 7,
+    diff: "hard",
+    type: "central",
+    passage: "Behavioral economist Richard Thaler's concept of 'nudging' — designing choice environments to guide people toward better decisions without restricting their options — has been widely adopted by governments worldwide. The UK's Behavioural Insights Team, for example, increased organ donor registration by 100,000 per year simply by changing the default option on driver's license forms. However, philosopher Cass Sunstein, who co-authored the original work on nudging with Thaler, has recently acknowledged that nudges are most effective for simple, one-time decisions and may be insufficient for addressing deeply entrenched behaviors such as chronic overeating or persistent financial mismanagement, which require more sustained interventions.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["Nudging has been proven ineffective as a policy tool", "While nudging has demonstrated success for simple behavioral changes, its limitations for more complex, persistent behaviors are increasingly recognized", "Governments should stop using nudging and adopt stricter regulatory approaches", "Richard Thaler and Cass Sunstein fundamentally disagree about behavioral economics"],
+    answer: 1,
+    explain: "Success examples (organ donation) + but limitations for complex behaviors (Sunstein's acknowledgment) = effective but with recognized limits. B captures both the success and the qualification."
+  },
+  {
+    id: 8,
+    diff: "hard",
+    type: "inference",
+    passage: "A 2024 study of 12,000 scientific papers found that research conducted by teams spanning multiple institutions and countries was cited 45% more frequently than single-institution studies, even after controlling for factors such as journal prestige, author reputation, and research funding levels. The citation advantage was most pronounced in interdisciplinary fields and least pronounced in highly specialized subfields where a single laboratory might possess all necessary expertise.",
+    stem: "Which inference is best supported by the text?",
+    choices: ["Multi-institution research is always of higher quality than single-institution research", "Collaborative research across institutions may produce work of broader impact, particularly in fields requiring diverse expertise", "Highly specialized research has less scientific value than interdisciplinary research", "Citation count is the only valid measure of research quality"],
+    answer: 1,
+    explain: 'Higher citations for multi-institution work + most pronounced in interdisciplinary fields = collaboration produces broader impact, especially where diverse expertise helps. B uses appropriate hedging ("may"). A says "always" (too strong).'
+  },
+  {
+    id: 9,
+    diff: "hard",
+    type: "literary",
+    passage: "We were the last to leave the lake that summer, my father and I. The other cabins had shuttered their windows weeks before, their docks pulled ashore like beached canoes. But my father kept finding reasons to stay — a fence that needed mending, a shutter that had come loose, the northern pike that he swore was getting bigger each day and would certainly take his lure tomorrow. I was twelve and understood none of this. I understand now that he was not fixing fences. He was holding the door open against something that was coming, something that had already arrived in the careful way my mother folded her clothes into suitcases back in the city.",
+    stem: "Which inference is best supported by the text?",
+    choices: ["The narrator's father was an avid fisherman who loved spending time outdoors", "The narrator's parents' marriage was ending, and the father was delaying the family's return to avoid confronting this reality", "The family could not afford to return to the city", "The narrator did not enjoy spending summers at the lake"],
+    answer: 1,
+    explain: `"Holding the door open against something that was coming" + "already arrived" + mother "folding clothes into suitcases" (suggesting departure/separation) = the father was avoiding the end of the marriage. The narrator says they didn't understand at 12 but understands now.`
+  },
+  {
+    id: 10,
+    diff: "hard",
+    type: "central",
+    passage: "The discovery that certain gut bacteria can metabolize the immunosuppressive drug tacrolimus has forced a fundamental reconsideration of how medications are dosed. Transplant patients who harbor high levels of the bacterium Faecalibacterium prausnitzii require significantly higher doses of tacrolimus to achieve therapeutic blood levels — in some cases, up to three times the standard dose. Gastroenterologist Dr. Nasir Malik proposes that routine gut microbiome profiling before transplant surgery could allow physicians to personalize drug dosages based on each patient's bacterial composition, potentially reducing both drug toxicity from overdosing and organ rejection from underdosing.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["Gut bacteria are harmful to transplant patients and should be eliminated before surgery", "The interaction between gut bacteria and drug metabolism may require personalized dosing based on individual microbiome profiles", "Tacrolimus is an ineffective immunosuppressive drug", "All patients should undergo microbiome profiling as part of routine medical care"],
+    answer: 1,
+    explain: "Bacteria affect drug metabolism → patients need different doses → proposal for personalized dosing based on microbiome. B captures the central argument: bacteria-drug interaction necessitates personalized approaches."
+  }
+];
+
+const WARMUP = [
+  {passage:"The novelist's ability to capture the _______ of small-town life — the whispered gossip, the unspoken rivalries, the fierce loyalty — earned her comparisons to writers who had spent decades in rural communities.",question:"Which choice completes the text with the most logical and precise word?",choices:["simplicity","monotony","nuances","hardships"],answer:2,type:"wic",diff:"easy",explain:"'Nuances' = subtle distinctions. The passage lists specific subtle social dynamics, not simplicity or monotony."},
+  {passage:"The architect argued that buildings should not merely shelter their inhabitants _______ they should inspire, challenge, and transform the way people experience physical space.",question:"Which choice completes the text so that it conforms to the conventions of Standard English?",choices:["inhabitants, they","inhabitants; they","inhabitants they","inhabitants. They"],answer:1,type:"conventions",diff:"medium",explain:"Two independent clauses joined by a semicolon. (A) is a comma splice. (C) is a run-on."},
+  {passage:"While the journalist's tone throughout the profile remained largely admiring, her choice to include the CEO's evasive responses to questions about labor practices served to _______ the otherwise flattering portrait.",question:"Which choice completes the text with the most logical and precise word?",choices:["reinforce","complicate","simplify","dismiss"],answer:1,type:"wic",diff:"medium",explain:"'Complicate' = make less straightforward. Including evasive responses adds a critical dimension to an admiring piece."},
+  {passage:"In her analysis of Renaissance patronage, historian Vasquez demonstrated that the Medici family's support for artists was motivated less by aesthetic appreciation than by a calculated desire to project political _______ through cultural dominance.",question:"Which choice completes the text with the most logical and precise word?",choices:["neutrality","legitimacy","anonymity","spontaneity"],answer:1,type:"wic",diff:"hard",explain:"'Legitimacy' = the quality of being accepted as valid authority. The Medicis used art to project political power."},
+  {passage:"The phenomenon known as 'island gigantism' — whereby species evolve to be significantly larger on isolated islands than their mainland counterparts — has been observed in organisms ranging from Komodo dragons to the now-extinct dodo. Biologists attribute the effect primarily to the absence of large predators, which removes the survival advantage of being small enough to hide.",question:"Based on the text, which choice best describes the relationship between predator absence and island gigantism?",choices:["Predator absence directly causes genetic mutations that increase body size","Without predators selecting against large body size, there is no disadvantage to growing bigger, allowing larger individuals to thrive","Island environments have more food resources, which causes animals to grow larger","Island gigantism occurs randomly and is unrelated to predator presence"],answer:1,type:"inference",diff:"medium",explain:"The passage says predator absence 'removes the survival advantage of being small enough to hide' — meaning without that selective pressure, larger size isn't penalized."}
+];
+
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${BLUE}22`, border: `1px solid ${BLUE}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: BLUE, marginBottom: 12, fontWeight: 600 } }, "Unit 3 · Module 9"), /* @__PURE__ */ React.createElement("h1", { style: { fontSize: "clamp(1.8rem,5vw,3rem)", fontWeight: 800, background: `linear-gradient(135deg,${BLUE},${CYAN})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 } }, "Central Ideas & Comprehension"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 40 } }, "The foundation of every reading question. Learn to identify main ideas, extract key details, and draw inferences that are fully supported by the passage."), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 16, maxWidth: 750, width: "100%", marginBottom: 48 } }, [
+    { icon: "📖", title: "Learn the Skills", desc: "Central idea, detail, inference, summary" },
+    { icon: "🔄", title: "Retrieval Warm-Up", desc: "5 review questions from prior modules" },
+    { icon: "🎯", title: "Main Idea Practice", desc: "Identify the central point of passages" },
+    { icon: "🔍", title: "Inference Lab", desc: "Draw supported conclusions" },
+    { icon: "📝", title: "Timed Practice Quiz", desc: "10 mixed questions in 15 minutes" }
+  ].map((c, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 32, marginBottom: 8 } }, c.icon), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 4 } }, c.title), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13, lineHeight: 1.5 } }, c.desc)))), /* @__PURE__ */ React.createElement("button", { onClick: onNext, style: btn(`linear-gradient(135deg,${BLUE},${CYAN})`, DARK), onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.04)", onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)" }, "Start Learning →"), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 13, marginTop: 24 } }, "~60 minutes · Information & Ideas"));
+}
+function LessonViewer({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const lesson = LESSONS[idx];
+  const total = LESSONS.length;
+  function renderVisual() {
+    if (lesson.visual === "stats") return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", padding: 16 } }, [{ n: "5-6", label: "per test", sub: "Central Ideas & Details" }, { n: "2-4", label: "per test", sub: "Inference questions" }, { n: "100%", label: "in the passage", sub: "The answer is always there" }].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: `${BLUE}11`, border: `1px solid ${BLUE}33`, borderRadius: 14, padding: "16px 24px", textAlign: "center", minWidth: 140 } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontWeight: 900, fontSize: 24 } }, s.n), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13, fontWeight: 600 } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, s.sub))));
+    if (lesson.visual === "scope-visual") return /* @__PURE__ */ React.createElement(ScopeVisual, null);
+    if (lesson.visual === "inference-scale") return /* @__PURE__ */ React.createElement(InferenceScale, null);
+    if (lesson.visual === "literary-elements") return /* @__PURE__ */ React.createElement(LiteraryElements, null);
+    if (lesson.visual === "framework-visual") return /* @__PURE__ */ React.createElement(FrameworkVis, null);
+    return null;
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 6, marginBottom: 32 } }, LESSONS.map((_, i) => /* @__PURE__ */ React.createElement("div", { key: i, onClick: () => setIdx(i), style: { width: i === idx ? 24 : 8, height: 8, borderRadius: 4, background: i === idx ? BLUE : i < idx ? `${BLUE}66` : BORDER, cursor: "pointer", transition: "all .3s" } }))), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "28px 28px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 } }, lesson.subtitle), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: "clamp(1.2rem,3vw,1.6rem)", fontWeight: 800, marginBottom: 16, lineHeight: 1.2 } }, lesson.title), lesson.body.map((p, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { color: SUB, fontSize: 14, lineHeight: 1.75, marginBottom: 14, whiteSpace: "pre-line" } }, p))), lesson.visual && /* @__PURE__ */ React.createElement("div", { style: { padding: "8px 4px 20px" } }, renderVisual())), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setIdx(Math.max(0, idx - 1)), disabled: idx === 0, style: { ...btn("transparent", idx === 0 ? "#334155" : SUB), border: `1px solid ${BORDER}`, padding: "10px 20px", fontSize: 14 } }, "← Back"), idx < total - 1 ? /* @__PURE__ */ React.createElement("button", { onClick: () => setIdx(idx + 1), style: btn(BLUE, TEXT, { fontSize: 14, padding: "10px 20px" }) }, "Next →") : /* @__PURE__ */ React.createElement("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${BLUE},${CYAN})`, DARK, { fontSize: 14, padding: "10px 24px" }) }, "Start Main Idea Practice →")));
+}
+function ScopeVisual() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Finding the right scope"), [
+    { label: "Too Broad", example: '"Science helps us understand nature"', color: RED, note: "Could describe any science passage" },
+    { label: "Just Right", example: '"A new study challenges the assumption that X caused Y"', color: ACCENT, note: "Specific to THIS passage" },
+    { label: "Too Narrow", example: '"Pollen samples were collected from three sites"', color: AMBER, note: "One detail, not the main idea" }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", gap: 10, marginBottom: 8, padding: "8px 12px", borderLeft: `3px solid ${s.color}`, borderRadius: "0 8px 8px 0", background: `${s.color}08` } }, /* @__PURE__ */ React.createElement("div", { style: { minWidth: 70 } }, /* @__PURE__ */ React.createElement("div", { style: { color: s.color, fontWeight: 800, fontSize: 12 } }, s.label)), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 12, fontFamily: "Georgia, serif", fontStyle: "italic" } }, s.example), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 10, marginTop: 2 } }, s.note)))));
+}
+function InferenceScale() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Inference strength: smaller leaps are better"), [
+    { label: "Stated", example: "The passage directly says it", color: ACCENT, bar: 100 },
+    { label: "Strong inference", example: "Must be true based on evidence", color: BLUE, bar: 80 },
+    { label: "Reasonable inference", example: "Very likely based on evidence", color: AMBER, bar: 55 },
+    { label: "Weak inference", example: "Possible but requires assumptions", color: RED, bar: 30 },
+    { label: "Unsupported", example: "Not based on passage evidence", color: "#475569", bar: 10 }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { marginBottom: 6 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 2 } }, /* @__PURE__ */ React.createElement("span", { style: { color: s.color, fontWeight: 700, fontSize: 11 } }, s.label), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 10 } }, s.example)), /* @__PURE__ */ React.createElement("div", { style: { height: 6, background: BORDER, borderRadius: 3, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${s.bar}%`, background: s.color, borderRadius: 3 } })))));
+}
+function LiteraryElements() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Literary passage focus areas"), [
+    { label: "Characters", detail: "Who are they? What do they feel?", color: PURPLE, icon: "👤" },
+    { label: "Tone/Mood", detail: "What atmosphere is created?", color: AMBER, icon: "🎭" },
+    { label: "Figurative Language", detail: "What does imagery/metaphor suggest?", color: CYAN, icon: "✨" },
+    { label: "Emotional Arc", detail: "Does the character's feeling change?", color: RED, icon: "📈" }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6, padding: "8px 12px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 8px 8px 0" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 18 } }, s.icon), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: s.color, fontWeight: 700, fontSize: 12 } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 10 } }, s.detail)))));
+}
+function FrameworkVis() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, [
+    { n: "1", label: "Read actively", detail: "Topic? Author's position? Evidence?", color: BLUE },
+    { n: "2", label: "Identify question type", detail: "Central idea, detail, inference, or summary?", color: PURPLE },
+    { n: "3", label: "Go back to the passage", detail: "Find the specific text that answers the question", color: ACCENT },
+    { n: "4", label: "Evaluate against passage", detail: "Every part of the answer must be supported", color: AMBER },
+    { n: "★", label: "Golden Rule", detail: "The answer is ALWAYS in the passage", color: RED }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6, padding: "6px 10px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 6px 6px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 22, height: 22, borderRadius: 11, background: `${s.color}22`, color: s.color, fontWeight: 900, fontSize: 11, display: "flex", alignItems: "center", justifyContent: "center" } }, s.n), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontWeight: 700, fontSize: 12 } }, s.label), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 11 } }, " — ", s.detail)))));
+}
+function QuizEngine({ items, label, icon, accentColor, onComplete, showTypeTag, timed, timerSeconds }) {
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(timerSeconds || 0);
+  const timerRef = React.useRef(null);
+  useEffect(() => { if (timed && timerSeconds > 0) { timerRef.current = setInterval(() => setTimeLeft(t => { if (t <= 1) { clearInterval(timerRef.current); setDone(true); return 0; } return t - 1; }), 1000); return () => clearInterval(timerRef.current); } return undefined; }, [timed, timerSeconds]);
+  const item = items[idx];
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    const correct = selected === item.answer;
+    if (correct) setScore((s) => s + 1);
+    setAnswers(a => [...a, { selected, correct: item.answer, wasRight: correct, item }]);
+  }
+  function next() {
+    if (idx < items.length - 1) {
+      setIdx(idx + 1);
+      setSelected(null);
+      setConfirmed(false);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+      setDone(true);
+    }
+  }
+  if (done) return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "80px 20px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 48, marginBottom: 16 } }, icon), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, label, " Complete"), /* @__PURE__ */ React.createElement("div", { style: { color: accentColor, fontSize: 48, fontWeight: 900 } }, score, "/", items.length), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 15, marginTop: 8, marginBottom: 32 } }, "correct answers"), /* @__PURE__ */ React.createElement("button", { onClick: () => onComplete(score, items.length, answers), style: btn(`linear-gradient(135deg,${BLUE},${CYAN})`, DARK) }, "Continue →"));
+  const questionText = item.question || item.stem;
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: accentColor, fontSize: 13, fontWeight: 700 } }, icon, " ", label), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, showTypeTag && item.type && /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 600,
+    background: item.type === "central" ? `${BLUE}22` : item.type === "inference" ? `${PURPLE}22` : item.type === "detail" ? `${ACCENT}22` : item.type === "literary" ? `${AMBER}22` : `${CYAN}22`,
+    color: item.type === "central" ? BLUE : item.type === "inference" ? PURPLE : item.type === "detail" ? ACCENT : item.type === "literary" ? AMBER : CYAN
+  } }, item.type), item.diff && /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 700,
+    background: item.diff === "easy" ? `${ACCENT}22` : item.diff === "medium" ? `${AMBER}22` : `${RED}22`,
+    color: item.diff === "easy" ? ACCENT : item.diff === "medium" ? AMBER : RED
+  } }, item.diff), /* @__PURE__ */ timed && React.createElement("span", { style: { fontFamily: "'JetBrains Mono',monospace", fontSize: 13, color: timeLeft < 60 ? RED : MUTED } }, Math.floor(timeLeft / 60) + ":" + (timeLeft % 60 < 10 ? "0" : "") + (timeLeft % 60)), React.createElement("span", { style: { color: MUTED, fontSize: 13 } }, idx + 1, "/", items.length))), /* @__PURE__ */ React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 20, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${(idx + (confirmed ? 1 : 0)) / items.length * 100}%`, background: `linear-gradient(90deg,${BLUE},${CYAN})`, borderRadius: 2, transition: "width .4s" } })), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, item.passage)), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, questionText), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } }, item.choices.map((c, ci) => {
+    const letter = "ABCD"[ci];
+    const isSel = selected === ci;
+    const isCorr = ci === item.answer;
+    let bg = CARD, bdr = `1px solid ${BORDER}`, tc = "#cbd5e1";
+    if (confirmed && isCorr) {
+      bg = `${ACCENT}18`;
+      bdr = `2px solid ${ACCENT}`;
+      tc = ACCENT;
+    } else if (confirmed && isSel && !isCorr) {
+      bg = `${RED}18`;
+      bdr = `2px solid ${RED}`;
+      tc = RED;
+    } else if (isSel && !confirmed) {
+      bg = `${accentColor}15`;
+      bdr = `2px solid ${accentColor}`;
+      tc = accentColor;
+    }
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: ci,
+        onClick: () => {
+          if (!confirmed) setSelected(ci);
+        },
+        disabled: confirmed,
+        style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: {
+        minWidth: 28,
+        height: 28,
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 800,
+        fontSize: 13,
+        flexShrink: 0,
+        marginTop: 1,
+        background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? accentColor : BORDER,
+        color: isSel || confirmed ? DARK : MUTED
+      } }, letter),
+      /* @__PURE__ */ React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+    );
+  })), confirmed && /* @__PURE__ */ React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: `4px solid ${BLUE}` } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "Explanation"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 } }, item.explain)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } }, !confirmed ? /* @__PURE__ */ React.createElement("button", { onClick: confirm, disabled: selected === null, style: btn(selected === null ? BORDER : accentColor, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Confirm") : /* @__PURE__ */ React.createElement("button", { onClick: next, style: btn(accentColor, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < items.length - 1 ? "Next →" : "See Results →")));
+}
+function ModuleComplete({ quizScore, quizTotal, quizAnswers }) {
+  const pct = Math.round(quizScore / quizTotal * 100);
+  /* Multi-dimensional error analysis */
+  const byType = {};
+  const byDiff = { easy: { c: 0, t: 0 }, medium: { c: 0, t: 0 }, hard: { c: 0, t: 0 } };
+  (quizAnswers || []).forEach(a => {
+    const it = a.item;
+    if (it.type) { if (!byType[it.type]) byType[it.type] = { c: 0, t: 0 }; byType[it.type].t++; if (a.wasRight) byType[it.type].c++; }
+    if (it.diff) { byDiff[it.diff].t++; if (a.wasRight) byDiff[it.diff].c++; }
+  });
+  function Bar({ label, correct, total, color }) {
+    const p = total > 0 ? Math.round(correct / total * 100) : 0;
+    return React.createElement("div", { style: { padding: 12, background: DARK, borderRadius: 8, textAlign: "center" } },
+      React.createElement("div", { style: { fontSize: 11, color: MUTED, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 } }, label),
+      React.createElement("div", { style: { fontFamily: "'JetBrains Mono',monospace", fontSize: 18, fontWeight: 700, color: p >= 75 ? ACCENT : p >= 50 ? BLUE : RED } }, correct, "/", total),
+      React.createElement("div", { style: { height: 6, borderRadius: 3, background: BORDER, marginTop: 6, overflow: "hidden" } },
+        React.createElement("div", { style: { height: "100%", width: p + "%", borderRadius: 3, background: color } })));
+  }
+  /* Error advice */
+  let advice = pct >= 80 ? "Strong comprehension skills! You're identifying main ideas precisely and drawing well-supported inferences." : pct >= 60 ? "Good progress. Remember the Golden Rule: the answer is always in the passage. For main idea questions, check scope — not too broad, not too narrow." : "Focus on the fundamentals. After reading each passage, practice summarizing it in one sentence before looking at choices.";
+  const typeEntries = Object.entries(byType);
+  const worst = typeEntries.sort((a, b) => (a[1].t > 0 ? a[1].c / a[1].t : 1) - (b[1].t > 0 ? b[1].c / b[1].t : 1));
+  if (worst.length > 0 && worst[0][1].t > 0 && worst[0][1].c / worst[0][1].t < 0.5) advice += " Focus on " + worst[0][0] + " questions — these were your toughest area.";
+  if ((byDiff.easy.t - byDiff.easy.c) >= 2) advice += " ⚠️ Easy questions missed — slow down and re-read before choosing.";
+  const typeColors = { central: BLUE, inference: PURPLE, detail: ACCENT, literary: AMBER, wic: CYAN, conventions: AMBER };
+
+  return React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", textAlign: "center" } },
+    React.createElement("div", { style: { fontSize: 64, marginBottom: 16 } }, "🎉"),
+    React.createElement("h1", { style: { color: BLUE, fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 800, marginBottom: 8 } }, "Module 9 Complete"),
+    React.createElement("p", { style: { color: SUB, fontSize: 16, marginBottom: 32, maxWidth: 480 } }, "You've built the comprehension foundation for all Information & Ideas questions."),
+    React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 20, padding: 32, marginBottom: 24, minWidth: 280 } },
+      React.createElement("div", { style: { color: BLUE, fontSize: 56, fontWeight: 900 } }, quizScore, "/", quizTotal),
+      React.createElement("div", { style: { color: SUB, fontSize: 14, marginTop: 4 } }, "Practice Quiz Score (", pct, "%)"),
+      React.createElement("div", { style: { height: 8, background: BORDER, borderRadius: 4, marginTop: 16, overflow: "hidden" } },
+        React.createElement("div", { style: { height: "100%", width: pct + "%", background: "linear-gradient(90deg," + BLUE + "," + CYAN + ")", borderRadius: 4 } }))),
+    /* Difficulty breakdown */
+    React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 20, maxWidth: 560, marginBottom: 16, width: "100%" } },
+      React.createElement("div", { style: { fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: MUTED, marginBottom: 8 } }, "By Difficulty"),
+      React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 } },
+        Object.entries(byDiff).filter(function(e) { return e[1].t > 0; }).map(function(e) { return React.createElement(Bar, { key: e[0], label: e[0], correct: e[1].c, total: e[1].t, color: e[0] === "easy" ? ACCENT : e[0] === "medium" ? AMBER : RED }); })),
+      React.createElement("div", { style: { fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: MUTED, marginBottom: 8, marginTop: 12 } }, "By Question Type"),
+      React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } },
+        Object.entries(byType).filter(function(e) { return e[1].t > 0; }).map(function(e) { return React.createElement(Bar, { key: e[0], label: e[0], correct: e[1].c, total: e[1].t, color: typeColors[e[0]] || BLUE }); }))),
+    /* Personalized advice */
+    React.createElement("div", { style: { background: BLUE + "11", border: "1px solid " + BLUE + "33", borderRadius: 12, padding: 16, maxWidth: 560, marginBottom: 16, width: "100%", textAlign: "left" } },
+      React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.7 } }, advice)),
+    /* Homework */
+    React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 20, maxWidth: 560, marginBottom: 16, width: "100%", textAlign: "left" } },
+      React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 } }, "Homework"),
+      React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.8 } },
+        "1. One-Sentence Summaries — Read 3 short articles. After each, write the central idea in one sentence before looking at any questions.", React.createElement("br"),
+        "2. Inference Journal — Find 2 passages and write one valid and one invalid inference for each. Note what makes the invalid one too big a leap.", React.createElement("br"),
+        "3. Literary Lens — Read a short story excerpt. Identify the emotional arc: what does the character feel at the start vs. end?", React.createElement("br"),
+        "4. Preview Module 10 — Next: Command of Evidence & Data.")),
+    /* Module navigation */
+    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", width: "100%", maxWidth: 560, marginBottom: 32, marginTop: 8 } },
+      React.createElement("a", { href: "module-8.html", style: { color: BLUE, textDecoration: "none", fontSize: 14 } }, "← Module 8"),
+      React.createElement("a", { href: "module-10.html", style: { color: BLUE, textDecoration: "none", fontSize: 14 } }, "Module 10 →")));
+}
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [quizScore, setQuizScore] = useState(0);
+  const [quizTotal, setQuizTotal] = useState(10);
+  const [quizAnswers, setQuizAnswers] = useState([]);
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    inset: 0,
+    pointerEvents: "none",
+    opacity: 0.03,
+    backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",
+    backgroundSize: "40px 40px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } }, screen === "welcome" && /* @__PURE__ */ React.createElement(Welcome, { onNext: () => go("lesson") }), screen === "lesson" && /* @__PURE__ */ React.createElement(LessonViewer, { onComplete: () => go("warmup") }), screen === "warmup" && /* @__PURE__ */ React.createElement(QuizEngine, { items: WARMUP, label: "Retrieval Warm-Up", icon: "🔄", accentColor: CYAN, onComplete: () => go("mainidea") }), screen === "mainidea" && /* @__PURE__ */ React.createElement(QuizEngine, { items: MAINIDEA_ITEMS, label: "Main Idea Practice", icon: "🎯", accentColor: BLUE, onComplete: () => go("inference") }), screen === "inference" && /* @__PURE__ */ React.createElement(QuizEngine, { items: INFERENCE_ITEMS, label: "Inference Lab", icon: "🔍", accentColor: PURPLE, onComplete: () => go("quiz") }), screen === "quiz" && /* @__PURE__ */ React.createElement(QuizEngine, { items: QUIZ, label: "Practice Quiz", icon: "📝", accentColor: BLUE, showTypeTag: true, timed: true, timerSeconds: 15 * 60, onComplete: (s, t, ans) => {
+    setQuizScore(s);
+    setQuizTotal(t);
+    setQuizAnswers(ans);
+    go("complete");
+  } }), screen === "complete" && /* @__PURE__ */ React.createElement(ModuleComplete, { quizScore, quizTotal, quizAnswers })));
+}
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>

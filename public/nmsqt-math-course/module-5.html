@@ -373,6 +373,15 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- ==================== PSAT PRACTICE ==================== -->
+
+<!-- COMPOSITE SHAPE CALCULATOR -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 5</div>
+  <h2>Composite Shape Calculator</h2>
+  <p>Find the shaded or remaining area in each problem. These multi-step geometry problems appear regularly on the PSAT/NMSQT. Leave answers in terms of π where appropriate.</p>
+  <div class="exercise" style="border-color:var(--geo)" id="cmpEx"></div>
+</div>
+
 <div class="section">
   <div class="section-label">PSAT-Style Practice</div>
   <h2>Practice Questions</h2>
@@ -603,6 +612,27 @@ function renderPSAT(){
 }
 function ansPSAT(i,ci){if(psatAns[i]!==undefined)return;psatAns[i]=ci;renderPSAT();}
 renderPSAT();
+
+// ============ COMPOSITE SHAPES ============
+var CMP_QS=[
+  {p:'A square with side 10 has a circle of radius 5 inscribed inside it. Find the shaded area (square minus circle). Leave in terms of \u03c0.',acc:['100-25\u03c0','100-25pi','100 - 25\u03c0','100 - 25pi'],s:'Square: 10\u00b2 = 100. Circle: \u03c0(5\u00b2) = 25\u03c0. Shaded: 100 \u2212 25\u03c0.'},
+  {p:'A circle with radius 8 has a square inscribed inside it (corners touch the circle). The square diagonal = 16. Find the square\'s area.',acc:['128'],s:'Diagonal = 16. Side = 16/\u221a2 = 8\u221a2. Area = (8\u221a2)\u00b2 = 128. Or: \u00bdd\u00b2 = \u00bd(16\u00b2) = 128.'},
+  {p:'A rectangle is 12 \u00d7 8. A semicircle with diameter 8 is cut from one end. Find the remaining area in terms of \u03c0.',acc:['96-8\u03c0','96-8pi','96 - 8\u03c0','96 - 8pi'],s:'Rectangle: 96. Semicircle: \u00bd\u03c0(4\u00b2) = 8\u03c0. Remaining: 96 \u2212 8\u03c0.'},
+  {p:'Two concentric circles have radii 10 and 6. Find the area of the ring (annulus) between them in terms of \u03c0.',acc:['64\u03c0','64pi'],s:'Outer: \u03c0(100). Inner: \u03c0(36). Ring: 100\u03c0 \u2212 36\u03c0 = 64\u03c0.'},
+  {p:'An equilateral triangle with side 6 is inscribed in a circle. The circle has radius 2\u221a3. Find the area of the circle minus the triangle, in terms of \u03c0 and \u221a3.',acc:['12\u03c0-9\u221a3','12pi-9\u221a3','12\u03c0 - 9\u221a3','12pi - 9sqrt3'],s:'Circle: \u03c0(2\u221a3)\u00b2 = 12\u03c0. Triangle: (\u221a3/4)(6\u00b2) = 9\u221a3. Shaded: 12\u03c0 \u2212 9\u221a3.'},
+];
+function renderCmp(){
+  document.getElementById('cmpEx').innerHTML='<h3>\ud83d\udd32 Composite Shapes</h3><div class="exercise-sub">Find the shaded or remaining area. Type \u03c0 or "pi" for \u03c0.</div>'+
+    CMP_QS.map(function(q,i){return '<div class="ex-item"><div class="ex-prompt">'+q.p+'</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">= </span><input class="ex-input" type="text" id="cmp'+i+'" placeholder="?" style="width:160px"><button class="ex-btn" style="background:var(--geo)" onclick="chkCmp('+i+')">Check</button></div><div class="ex-fb" id="cmpFb'+i+'"></div></div>';}).join('');
+}
+function chkCmp(i){
+  var v=document.getElementById('cmp'+i).value.trim().replace(/\s/g,'').toLowerCase(),fb=document.getElementById('cmpFb'+i),q=CMP_QS[i];
+  if(!v){fb.className='ex-fb show wrong';fb.textContent='Enter an answer.';return;}
+  var ok=q.acc.some(function(a){return v===a.replace(/\s/g,'').toLowerCase();});
+  fb.className='ex-fb show '+(ok?'correct':'wrong');
+  fb.textContent=(ok?'\u2713 Correct! ':'\u2717 Answer: '+q.acc[0]+'. ')+q.s;
+}
+renderCmp();
 </script>
 <script src="/translate.js"></script>
 </body>

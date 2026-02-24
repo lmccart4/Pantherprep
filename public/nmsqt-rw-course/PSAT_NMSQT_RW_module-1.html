@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1: Know the Battlefield — PSAT/NMSQT Reading & Writing — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--rw:#c084fc;--rw-bg:rgba(192,132,252,.1);--craft:#60a5fa;--craft-bg:rgba(96,165,250,.1);--info:#34d399;--info-bg:rgba(52,211,153,.1);--conv:#fbbf24;--conv-bg:rgba(251,191,36,.1);--expr:#f472b6;--expr-bg:rgba(244,114,182,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--grow:#06d6a0;--gold:#d4a843;--gold-bg:rgba(212,168,67,.1);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,var(--craft) 0%,var(--craft) 28%,var(--info) 28%,var(--info) 54%,var(--conv) 54%,var(--conv) 80%,var(--expr) 80%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--rw));width:0%;transition:width .3s ease}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+
+/* ── Module Header ── */
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+
+/* ── Stats Row (ported from SAT) ── */
+.stats-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:32px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;text-align:center;min-width:100px;flex:1;max-width:160px}
+.stat-card .stat-num{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700}
+.stat-card .stat-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:2px}
+
+/* ── Content Tags (ported from SAT) ── */
+.content-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tag{font-size:.68rem;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:5px;text-transform:uppercase}
+.tag-lesson{background:var(--accent-light);color:var(--accent);border:1px solid rgba(8,145,178,.25)}
+.tag-interactive{background:var(--rw-bg);color:var(--rw);border:1px solid rgba(192,132,252,.25)}
+.tag-timed{background:var(--wrong-bg);color:var(--wrong);border:1px solid rgba(239,68,68,.25)}
+.tag-quiz{background:var(--info-bg);color:var(--info);border:1px solid rgba(52,211,153,.25)}
+.tag-challenge{background:var(--nm-bg);color:var(--nm);border:1px solid rgba(167,139,250,.25)}
+.tag-tool{background:var(--conv-bg);color:var(--conv);border:1px solid rgba(251,191,36,.25)}
+
+/* ── Sections ── */
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+
+/* ── Cards ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+
+/* ── Callouts ── */
+.callout{background:var(--accent-light);border:1px solid rgba(8,145,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+.callout-rw{background:var(--rw-bg);border-color:rgba(192,132,252,.3)}
+.callout-rw strong{color:var(--rw)}
+.callout-green{background:rgba(6,214,160,.08);border-color:rgba(6,214,160,.3)}
+.callout-green strong{color:var(--grow)}
+.callout-gold{background:var(--gold-bg);border-color:rgba(212,168,67,.3)}
+.callout-gold strong{color:var(--gold)}
+.callout-nm{background:var(--nm-bg);border-color:rgba(167,139,250,.3)}
+.callout-nm strong{color:var(--nm)}
+.callout-red{background:var(--wrong-bg);border-color:rgba(239,68,68,.3)}
+.callout-red strong{color:var(--wrong)}
+
+/* ── Tables ── */
+.struct-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px}
+.struct-table th,.struct-table td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+.struct-table th{background:var(--surface);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.struct-table td{color:#ccc}
+.struct-table code{background:rgba(192,132,252,.1);color:var(--rw);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82rem}
+
+/* ── Domain Grid ── */
+.domain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.domain-card:hover{transform:translateY(-2px)}
+.domain-card.flipped .dc-front{display:none}
+.domain-card.flipped .dc-back{display:block}
+.dc-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dc-pct{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+.dc-name{font-weight:700;font-size:.95rem}
+.dc-qs{font-size:.82rem;color:var(--muted)}
+.dc-topics{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:4px}
+.dc-back{display:none;font-size:.85rem;color:#ccc;line-height:1.6}
+.dc-flip{font-size:.68rem;color:var(--muted);text-align:right;margin-top:6px}
+
+/* ── Adaptive Flow ── */
+.adaptive{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.adaptive-flow{display:flex;flex-direction:column;align-items:center;gap:8px}
+.adaptive-box{padding:12px 20px;border-radius:10px;text-align:center;font-size:.88rem;font-weight:600;min-width:200px;transition:all .3s}
+.adaptive-arrow{color:var(--muted);font-size:1.2rem}
+.adaptive-split{display:flex;gap:16px;width:100%}
+.adaptive-branch{flex:1;text-align:center}
+
+/* ── Sim container ── */
+.sim-container{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:22px;margin-bottom:16px}
+.sim-slider-row{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.sim-slider{flex:1;-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--wrong) 0%,var(--conv) 50%,var(--correct) 100%);outline:none}
+.sim-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--ink);border:3px solid var(--accent);cursor:pointer}
+.sim-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--ink);border:3px solid var(--accent);cursor:pointer}
+.sim-val{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;min-width:60px;text-align:center}
+.sim-result{text-align:center;padding:16px;border-radius:10px;transition:all .3s}
+.sim-meter{height:12px;border-radius:6px;background:var(--border);margin:10px 0;overflow:hidden}
+.sim-meter-fill{height:100%;border-radius:6px;transition:width .4s ease,background .4s ease}
+
+/* ── Selection Index ── */
+.si-calc{background:var(--surface);border:2px solid var(--nm);border-radius:14px;padding:22px;margin-bottom:16px}
+.si-input{width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.2rem;text-align:center}
+.si-input:focus{border-color:var(--nm);outline:none}
+
+/* ── Drag-and-Drop ── */
+.dd-zone{min-height:60px;background:var(--paper);border:2px dashed var(--border);border-radius:10px;padding:10px;margin-bottom:8px;transition:all .2s}
+.dd-zone.over{border-color:var(--accent);background:var(--accent-light)}
+.dd-zone-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.dd-item{display:inline-block;padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:grab;font-size:.85rem;margin:3px;transition:all .15s;user-select:none}
+.dd-item:hover{border-color:var(--accent);transform:translateY(-1px)}
+.dd-item.dragging{opacity:.5}
+.dd-item.correct{border-color:var(--correct);background:var(--correct-bg)}
+.dd-item.wrong{border-color:var(--wrong);background:var(--wrong-bg);animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.dd-bank{display:flex;flex-wrap:wrap;gap:6px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;min-height:48px}
+
+/* ── Diagnostic Quiz ── */
+.diag-q{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;transition:all .3s}
+.diag-q.answered{opacity:.85}
+.diag-domain{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;display:inline-block;padding:2px 8px;border-radius:4px}
+.diag-passage{background:var(--paper);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.88rem;color:#ddd;line-height:1.75;margin-bottom:12px;border-left:3px solid var(--muted)}
+.diag-stem{font-size:.93rem;margin-bottom:12px;color:#ddd;line-height:1.7}
+.diag-choices{display:flex;flex-direction:column;gap:6px}
+.diag-choice{padding:10px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s;display:flex;align-items:flex-start;gap:10px}
+.diag-choice:hover:not(.dc-dis){border-color:var(--accent);background:var(--accent-light)}
+.diag-choice .letter{font-weight:700;color:var(--muted);min-width:20px;flex-shrink:0}
+.diag-choice.dc-correct{border-color:var(--correct);background:var(--correct-bg)}
+.diag-choice.dc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.diag-choice.dc-dis{pointer-events:none;opacity:.7}
+.diag-choice.dc-correct .letter{color:var(--correct)}
+.diag-choice.dc-wrong .letter{color:var(--wrong)}
+.diag-explain{margin-top:10px;padding:12px;background:var(--paper);border-radius:8px;font-size:.85rem;color:var(--muted);line-height:1.6;display:none;border-left:3px solid var(--correct)}
+.diag-explain.show{display:block}
+
+/* ── Boss-framed Diagnostic (ported from SAT) ── */
+.boss-frame{border:2px solid var(--rw);border-radius:14px;overflow:hidden;margin-bottom:16px;position:relative}
+.boss-frame::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--craft),var(--info),var(--conv),var(--expr))}
+.boss-banner{background:linear-gradient(135deg,rgba(192,132,252,.12),var(--surface));padding:20px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px}
+.boss-icon{font-size:2.2rem;filter:drop-shadow(0 0 8px rgba(192,132,252,.4))}
+.boss-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--rw)}
+.boss-subtitle{font-size:.82rem;color:var(--muted);margin-top:2px}
+.boss-body{padding:22px}
+
+/* ── Results ── */
+.results{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:22px;margin-bottom:16px}
+.results-score{text-align:center;margin-bottom:16px}
+.results-big{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:700}
+.results-sub{font-size:.88rem;color:var(--muted)}
+.results-domains{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.results-domain{padding:12px;background:var(--paper);border-radius:8px;text-align:center}
+.results-domain-name{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.results-domain-score{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700}
+.results-domain-bar{height:6px;border-radius:3px;background:var(--border);margin-top:6px;overflow:hidden}
+.results-domain-fill{height:100%;border-radius:3px;transition:width .6s ease}
+
+/* ── Study Plan Tabs (ported from SAT Module 0) ── */
+.plan-tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--surface);border-radius:10px;padding:4px}
+.plan-tab{flex:1;padding:10px 12px;border-radius:8px;border:none;font-weight:600;font-size:.82rem;cursor:pointer;background:transparent;color:var(--muted);font-family:inherit;transition:all .2s}
+.plan-tab.active{background:rgba(192,132,252,.15);color:var(--rw)}
+.plan-panel{display:none}
+.plan-panel.active{display:block}
+
+/* ── Trajectory ── */
+.trajectory{background:var(--surface);border:2px solid var(--grow);border-radius:14px;padding:22px;margin-bottom:16px}
+.traj-bar{display:flex;align-items:center;gap:0;height:40px;border-radius:8px;overflow:hidden;margin:14px 0}
+.traj-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;letter-spacing:.5px}
+.traj-labels{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted)}
+
+/* ── Domain order game ── */
+.dog-container{background:var(--surface);border:2px solid var(--rw);border-radius:14px;padding:22px;margin-bottom:16px}
+.dog-slot{background:var(--paper);border:2px dashed var(--border);border-radius:10px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;min-height:52px;transition:all .2s}
+.dog-slot.over{border-color:var(--rw);background:var(--rw-bg)}
+.dog-slot.filled{border-style:solid}
+.dog-slot.correct-slot{border-color:var(--correct);background:var(--correct-bg)}
+.dog-slot.wrong-slot{border-color:var(--wrong);background:var(--wrong-bg)}
+.dog-num{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--muted);min-width:24px}
+.dog-placed{font-size:.9rem;font-weight:600}
+
+/* ── Timer ── */
+.timer-bar{height:6px;border-radius:3px;background:var(--border);margin-bottom:12px;overflow:hidden}
+.timer-fill{height:100%;border-radius:3px;background:var(--accent);transition:width .1s linear}
+.timer-fill.warning{background:var(--conv)}
+.timer-fill.danger{background:var(--wrong)}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--muted);text-align:right;margin-bottom:8px}
+
+/* ── Buttons ── */
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+.btn:hover{filter:brightness(1.15)}
+.btn-sm{padding:8px 16px;font-size:.82rem}
+.btn-rw{background:var(--rw)}.btn-rw:hover{filter:brightness(1.15)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent-light)}
+.btn-nm{background:var(--nm)}
+
+/* ── Protocol ── */
+.protocol{background:var(--surface);border:2px solid var(--accent);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.protocol-title{background:var(--accent);padding:12px 20px;font-weight:700;font-size:.95rem}
+.protocol-step{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;align-items:flex-start}
+.protocol-step:last-child{border-bottom:none}
+.step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent-light);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--accent);font-family:'JetBrains Mono',monospace}
+
+/* ── Checklist ── */
+.checklist{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;cursor:pointer;transition:all .2s}
+.cl-item:last-child{border-bottom:none}
+.cl-item.done{opacity:.5;text-decoration:line-through}
+.cl-check{flex-shrink:0;width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .15s}
+.cl-item.done .cl-check{background:var(--correct);border-color:var(--correct);color:#fff}
+.cl-progress{font-size:.82rem;color:var(--muted);margin-top:8px;text-align:right}
+
+/* ── NM Challenge ── */
+.nm-section{background:var(--nm-bg);border:2px solid rgba(167,139,250,.4);border-radius:14px;padding:22px;margin-bottom:16px}
+.nm-badge{display:inline-block;background:var(--nm);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+
+/* ── Nav ── */
+.mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
+.mod-nav a{color:var(--accent);text-decoration:none}
+.mod-nav a:hover{text-decoration:underline}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .domain-grid{grid-template-columns:1fr}
+  .adaptive-split{flex-direction:column}
+  .mod-meta{flex-wrap:wrap;gap:10px}
+  .traj-bar{height:32px}
+  .traj-seg{font-size:.6rem}
+  .results-domains{grid-template-columns:1fr}
+  .stats-row{gap:8px}
+  .stat-card{min-width:70px;padding:10px 12px}
+  .stat-card .stat-num{font-size:1.2rem}
+  .plan-tabs{flex-wrap:wrap}
+}
+
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.section{animation:fadeUp .4s ease both}
+.section:nth-of-type(2){animation-delay:.05s}
+.section:nth-of-type(3){animation-delay:.1s}
+.section:nth-of-type(4){animation-delay:.15s}
+.section:nth-of-type(5){animation-delay:.2s}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="container">
+<a class="back-link" href="PSAT_NMSQT_RW_index.html">← Back to PSAT/NMSQT R&W Course</a>
+
+<div class="mod-header">
+  <div class="mod-badge">Module 1 · Phase 1</div>
+  <h1>Know the Battlefield</h1>
+  <p class="subtitle">Understand the test structure, experience the adaptive engine, establish your baseline, and set your target score.</p>
+  <div class="mod-meta">
+    <span>⏱ ~60 minutes</span>
+    <span>📋 4 sessions</span>
+    <span>🔍 Phase 1: Foundations</span>
+  </div>
+  <div class="content-tags">
+    <span class="tag tag-lesson">lessons</span>
+    <span class="tag tag-interactive">interactive</span>
+    <span class="tag tag-timed">timed diagnostic</span>
+    <span class="tag tag-tool">calculators</span>
+    <span class="tag tag-challenge">NM challenge</span>
+  </div>
+</div>
+
+<!-- ── Stats Row (ported from SAT index) ── -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--rw)">4</div>
+    <div class="stat-label">Sessions</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--craft)">3</div>
+    <div class="stat-label">Interactive</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--info)">12</div>
+    <div class="stat-label">Diagnostic Qs</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--nm)">2</div>
+    <div class="stat-label">Calculators</div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 1: TEST STRUCTURE ══════════════════════ -->
+<div class="section">
+  <div class="section-label">Session 1 · Know Your Test</div>
+  <h2>Digital PSAT/NMSQT: Reading & Writing Structure</h2>
+  <p>The PSAT/NMSQT Reading & Writing section is a <strong>single combined section</strong> — no separate "Reading" and "Writing" tests like the old paper format. Every question pairs a short passage (25–150 words) with a single multiple-choice question. You'll face 54 of these mini-tasks across two adaptive modules.</p>
+  <table class="struct-table">
+    <tr><th>Feature</th><th>Details</th></tr>
+    <tr><td><strong>Total Questions</strong></td><td><code>54</code> (27 per module, ~25 scored + 2 pretest)</td></tr>
+    <tr><td><strong>Total Time</strong></td><td><code>64 minutes</code> (32 per module)</td></tr>
+    <tr><td><strong>Time per Question</strong></td><td>~<code>71 seconds</code> average</td></tr>
+    <tr><td><strong>Adaptive Format</strong></td><td>Module 2 difficulty adjusts based on Module 1 performance</td></tr>
+    <tr><td><strong>Question Format</strong></td><td>All multiple choice — 4 options (A/B/C/D)</td></tr>
+    <tr><td><strong>Passage Length</strong></td><td>25–150 words per question (one passage = one question)</td></tr>
+    <tr><td><strong>Scoring</strong></td><td><code>160–760</code> section score (no penalty for wrong answers)</td></tr>
+    <tr><td><strong>Total Test</strong></td><td>R&W (64 min) + Break (10 min) + Math (70 min) = <code>2 hr 14 min</code></td></tr>
+  </table>
+  <div class="callout"><strong>No wrong-answer penalty</strong> means you should <strong>answer every single question</strong> — even if you have to guess. A random guess gives you a 25% chance. Never leave anything blank.</div>
+  <div class="callout-rw callout"><strong>One passage, one question.</strong> This is the biggest shift from the old paper PSAT. You won't see 10 questions about the same 700-word passage anymore. Each question is a fresh, self-contained reading task. This means you can't "get stuck" on a bad passage — every question is a clean slate.</div>
+</div>
+
+<!-- ══════════════════════ SECTION 2: DOMAIN ORDER WITHIN A MODULE ══════════════════════ -->
+<div class="section">
+  <div class="section-label">Content Breakdown</div>
+  <h2>The Four Content Domains</h2>
+  <p>The RW section tests four domains in a <strong>fixed, predictable order</strong> within every module. Click each card to see the specific skills tested and question types.</p>
+  <div class="domain-grid" id="domainGrid"></div>
+  <div class="callout-rw callout"><strong>Key insight:</strong> Questions within each domain are ordered easy → hard. The first questions you see (Words in Context) will be the easiest on the entire module. The last questions (Rhetorical Synthesis) will be the hardest. Plan your time accordingly.</div>
+</div>
+
+<!-- ══════════════════════ SECTION 3: DOMAIN ORDER DRAG-AND-DROP ══════════════════════ -->
+<div class="section">
+  <div class="section-label">Interactive Exercise</div>
+  <h2>Domain Order Challenge</h2>
+  <p>Questions on the PSAT/NMSQT always appear in the same domain order. Drag the domains into the correct sequence as they appear in every module — first to last.</p>
+  <div class="dog-container">
+    <div id="dogBank" class="dd-bank"></div>
+    <div style="margin-top:12px">
+      <div id="dogSlots"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-sm btn-rw" onclick="checkDogOrder()">Check Order</button>
+      <button class="btn btn-sm btn-outline" onclick="resetDog()">Reset</button>
+    </div>
+    <div id="dogFeedback" style="margin-top:10px;font-size:.88rem;color:var(--muted)"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 4: QUESTION TYPE SORT ══════════════════════ -->
+<div class="section">
+  <div class="section-label">Interactive Exercise</div>
+  <h2>Question Type Sort</h2>
+  <p>Each domain contains specific question types. Drag each question type into its correct domain. This exercise teaches you to recognize what a question is testing before you solve it.</p>
+  <div class="sim-container" style="border-color:var(--rw)">
+    <div id="qtBank" class="dd-bank"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px" id="qtZones"></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-sm btn-rw" onclick="checkQtSort()">Check Answers</button>
+      <button class="btn btn-sm btn-outline" onclick="resetQt()">Reset</button>
+    </div>
+    <div id="qtFeedback" style="margin-top:10px;font-size:.88rem;color:var(--muted)"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 5: ADAPTIVE ENGINE ══════════════════════ -->
+<div class="section">
+  <div class="section-label">How It Works</div>
+  <h2>The Adaptive Module System</h2>
+  <p>The PSAT/NMSQT uses <strong>multistage adaptive testing</strong>. Your Module 1 performance determines which version of Module 2 you receive — and that determines your <strong>maximum possible score</strong>.</p>
+  <div class="adaptive">
+    <div class="adaptive-flow">
+      <div class="adaptive-box" style="background:var(--accent-light);border:2px solid var(--accent)">
+        Module 1: Mixed Difficulty<br>
+        <span style="font-size:.78rem;color:var(--muted)">27 questions · 32 minutes · All four domains</span>
+      </div>
+      <div class="adaptive-arrow">↓ Your performance determines…</div>
+      <div class="adaptive-split">
+        <div class="adaptive-branch">
+          <div class="adaptive-box" style="background:var(--correct-bg);border:2px solid var(--correct)">
+            Module 2: <strong>Harder</strong><br>
+            <span style="font-size:.78rem;color:var(--muted)">Unlocks scores up to 760</span>
+          </div>
+        </div>
+        <div class="adaptive-branch">
+          <div class="adaptive-box" style="background:var(--wrong-bg);border:2px solid var(--wrong)">
+            Module 2: <strong>Easier</strong><br>
+            <span style="font-size:.78rem;color:var(--muted)">Score ceiling ~600–630</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout-red callout"><strong>This is the single most important fact about the test.</strong> If you make too many careless errors on Module 1, you get routed to the easier Module 2 — and your score is <em>permanently capped</em> around 600–630, no matter how well you do afterward. Module 1 is the qualifying round. Accuracy beats speed.</div>
+
+  <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin:20px 0 10px">Routing Simulator</h3>
+  <p>Drag the slider to see how your Module 1 performance affects your score ceiling.</p>
+  <div class="sim-container">
+    <div class="sim-slider-row">
+      <span style="font-size:.82rem;color:var(--muted)">Module 1 Correct:</span>
+      <input type="range" class="sim-slider" id="simSlider" min="0" max="27" value="14" oninput="updateSim()">
+      <div class="sim-val" id="simVal">14</div>
+    </div>
+    <div class="sim-result" id="simResult"></div>
+    <div style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:4px">
+        <span>Score Floor</span>
+        <span id="simRange">—</span>
+        <span>Score Ceiling</span>
+      </div>
+      <div class="sim-meter"><div class="sim-meter-fill" id="simMeter"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 6: SELECTION INDEX & NATIONAL MERIT ══════════════════════ -->
+<div class="section">
+  <div class="section-label">National Merit Pathway</div>
+  <h2>The Selection Index: Why RW Matters Most</h2>
+  <p>The PSAT/NMSQT is the <strong>only test</strong> that determines National Merit eligibility. The Selection Index formula double-weights your Reading & Writing score:</p>
+  <div class="card" style="text-align:center;padding:24px;border-color:var(--nm)">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--nm);margin-bottom:8px">Selection Index = (2 × RW + Math) ÷ 10</div>
+    <div style="font-size:.85rem;color:var(--muted)">Range: 48–228 · RW contributes <strong style="color:var(--nm)">two-thirds</strong> of your index</div>
+  </div>
+  <div class="callout-nm callout"><strong>What this means for you:</strong> A 10-point RW improvement adds +2 to your Selection Index. The same Math improvement adds only +1. Point for point, the Reading & Writing section is <strong>twice as valuable</strong> as Math for National Merit.</div>
+
+  <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin:20px 0 10px">Selection Index Calculator</h3>
+  <p>Enter projected section scores to calculate your Selection Index and see where you stand relative to National Merit cutoffs.</p>
+  <div class="si-calc">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div>
+        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">RW Section Score</div>
+        <input type="number" class="si-input" id="siRW" placeholder="160–760" min="160" max="760" step="10" oninput="updateSI()">
+      </div>
+      <div>
+        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Math Section Score</div>
+        <input type="number" class="si-input" id="siMath" placeholder="160–760" min="160" max="760" step="10" oninput="updateSI()">
+      </div>
+    </div>
+    <div id="siResult" style="text-align:center;font-size:.9rem;color:var(--muted)">Enter both scores to calculate your Selection Index.</div>
+  </div>
+
+  <table class="struct-table">
+    <tr><th>Recognition Level</th><th>Selection Index</th><th>Who Qualifies</th></tr>
+    <tr><td><strong>Commended Student</strong></td><td><code>~210</code></td><td>Top ~34,000 nationally (single cutoff)</td></tr>
+    <tr><td><strong>Semifinalist</strong></td><td><code>210–225</code></td><td>Top ~16,000 (varies by state)</td></tr>
+    <tr><td style="color:var(--nm)"><strong>NJ Semifinalist (2026)</strong></td><td><code style="color:var(--nm)">225</code></td><td>Among the highest cutoffs nationally</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════ SECTION 7: GROWTH TRAJECTORY ══════════════════════ -->
+<div class="section">
+  <div class="section-label">The Big Picture</div>
+  <h2>Your Growth Trajectory</h2>
+  <p>The PSAT/NMSQT shares the <strong>exact same format</strong> as the PSAT 8/9 and SAT — same question types, same timing, same domains. A 600 here means the same thing as a 600 on the SAT. Everything you build now transfers directly.</p>
+  <div class="trajectory">
+    <div class="traj-bar">
+      <div class="traj-seg" style="flex:1;background:var(--accent)">PSAT 8/9</div>
+      <div class="traj-seg" style="flex:1.2;background:var(--rw)">PSAT/NMSQT</div>
+      <div class="traj-seg" style="flex:1.3;background:var(--nm)">SAT</div>
+    </div>
+    <div class="traj-labels">
+      <span>8th–9th Grade</span>
+      <span>10th–11th Grade</span>
+      <span>11th–12th Grade</span>
+    </div>
+    <div style="margin-top:16px">
+      <table class="struct-table" style="margin-bottom:0">
+        <tr><th>Test</th><th>RW Score Range</th><th>Key Difference</th></tr>
+        <tr><td style="color:var(--accent);font-weight:700">PSAT 8/9</td><td><code>120–720</code></td><td>Simpler passages, more common vocabulary</td></tr>
+        <tr><td style="color:var(--rw);font-weight:700">PSAT/NMSQT</td><td><code>160–760</code></td><td>National Merit eligibility (11th grade only)</td></tr>
+        <tr><td style="color:var(--nm);font-weight:700">SAT</td><td><code>200–800</code></td><td>Hardest passages, most nuanced vocabulary</td></tr>
+      </table>
+    </div>
+    <div style="margin-top:14px;text-align:center;font-size:.88rem;color:#ccc">
+      <strong style="color:var(--grow)">College Readiness Benchmark (RW): 460</strong><br>
+      <span style="font-size:.82rem;color:var(--muted)">Scoring 460+ means you're on track for college-level reading & writing.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 8: MINI DIAGNOSTIC (Boss-framed) ══════════════════════ -->
+<div class="section">
+  <div class="section-label">Session 2 · Diagnostic</div>
+  <h2>Mini Diagnostic Assessment</h2>
+  <p>Answer these 12 questions spanning all four RW domains. This samples every question type you'll see on the real test and establishes your baseline strengths and weaknesses. You have <strong>~85 seconds per question</strong> — slightly more generous than the real test to account for learning.</p>
+
+  <div class="boss-frame">
+    <div class="boss-banner">
+      <div class="boss-icon">⚔️</div>
+      <div>
+        <div class="boss-title">The Baseline Gauntlet</div>
+        <div class="boss-subtitle">12 questions · 17 minutes · All four domains · Timed</div>
+      </div>
+    </div>
+    <div class="boss-body">
+      <div id="diagTimer" style="display:none">
+        <div class="timer-display" id="timerDisplay">17:00</div>
+        <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+      </div>
+      <div style="text-align:center;margin-bottom:16px">
+        <button class="btn btn-rw" id="diagStart" onclick="startDiag()">Begin the Gauntlet →</button>
+      </div>
+      <div id="diagQuestions" style="display:none"></div>
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn" id="diagSubmit" onclick="scoreDiag()" style="display:none">Score My Diagnostic →</button>
+      </div>
+      <div id="diagResults" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 9: GOAL SETTING ══════════════════════ -->
+<div class="section">
+  <div class="section-label">Session 3 · Plan</div>
+  <h2>Score Interpretation & Goal Setting</h2>
+  <p>After completing the diagnostic, use this protocol to interpret your results and set concrete targets.</p>
+  <div class="protocol">
+    <div class="protocol-title">Goal-Setting Protocol</div>
+    <div class="protocol-step"><div class="step-num">1</div><div>Review your domain breakdown from the diagnostic. Which domain had the <strong>most errors</strong>? That's your biggest opportunity.</div></div>
+    <div class="protocol-step"><div class="step-num">2</div><div>For each missed question, classify the error: <strong>Content Gap</strong> (didn't know the rule/word), <strong>Trap Answer</strong> (fell for a distractor), <strong>Misread</strong> (went too fast), or <strong>Time Pressure</strong> (ran out of time).</div></div>
+    <div class="protocol-step"><div class="step-num">3</div><div>Set your <strong>target RW score</strong> using the benchmarks below. Be specific — not "do better" but "score 680+ on RW."</div></div>
+    <div class="protocol-step"><div class="step-num">4</div><div>If targeting National Merit, use the Selection Index Calculator above to determine the <strong>exact RW score</strong> you need given a realistic Math estimate.</div></div>
+    <div class="protocol-step"><div class="step-num">5</div><div>Write down your target score and your top 2 priority domains. Bring these to Module 2.</div></div>
+  </div>
+  <table class="struct-table">
+    <tr><th>RW Score Range</th><th>Percentile (10th)</th><th>What It Means</th></tr>
+    <tr><td><code>680–760</code></td><td>95th–99th+</td><td>National Merit contention · Competitive for top-50 colleges</td></tr>
+    <tr><td><code>580–670</code></td><td>80th–94th</td><td>Strong performance · On track for selective colleges</td></tr>
+    <tr><td><code>460–570</code></td><td>50th–79th</td><td>College ready · Room for significant growth</td></tr>
+    <tr><td><code>360–450</code></td><td>25th–49th</td><td>Building foundations · Focus on Conventions first</td></tr>
+    <tr><td><code>160–350</code></td><td>Below 25th</td><td>Start with grammar rules and core vocabulary</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════ CHALLENGE MODE ══════════════════════ -->
+<div class="section">
+  <div class="nm-section">
+    <div class="nm-badge">⭐ Challenge Mode</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin-bottom:12px">National Merit Extension</h2>
+    <p style="font-size:.9rem;color:#ccc;margin-bottom:16px">For students targeting Selection Index 215+ and National Merit qualification. These exercises go deeper into the strategic math behind the test.</p>
+
+    <h3 style="font-size:1rem;color:var(--nm);margin-bottom:8px">Challenge 1: Selection Index Optimization</h3>
+    <p style="font-size:.88rem;color:#ccc;margin-bottom:12px">Given that RW is double-weighted, calculate the <strong>minimum RW score</strong> needed for each scenario. Use the formula: SI = (2 × RW + Math) ÷ 10</p>
+    <div id="nmChallenge1"></div>
+
+    <h3 style="font-size:1rem;color:var(--nm);margin:20px 0 8px">Challenge 2: Score Ceiling Analysis</h3>
+    <p style="font-size:.88rem;color:#ccc;margin-bottom:12px">If you score 18/27 on Module 1 and get routed to the harder Module 2, but score only 15/27 on Module 2, you'll likely score around <strong>620–650</strong>. If you score 16/27 on Module 1 and get routed to the <em>easier</em> Module 2, even with a perfect 27/27, your ceiling is about <strong>600–630</strong>.</p>
+    <div class="card" style="border-color:var(--nm)">
+      <p style="font-size:.9rem;color:var(--nm);font-weight:700;margin-bottom:8px">Key Takeaway:</p>
+      <p style="font-size:.88rem;color:#ccc;margin:0">Two more correct answers on Module 1 (16 → 18) can mean a <strong>50+ point difference</strong> in your final score — not because those two questions are worth more, but because they change which Module 2 you receive. This is why we say: Module 1 accuracy is everything.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ KEY TAKEAWAYS ══════════════════════ -->
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>The RW section has <strong>54 questions in 64 minutes</strong>, split into two 27-question adaptive modules of 32 minutes each.</li>
+      <li>Every question pairs <strong>one short passage with one question</strong> — no more 10-question-per-passage marathons.</li>
+      <li>Questions always appear in domain order: <strong>Craft & Structure → Information & Ideas → Conventions → Expression of Ideas</strong>, easy to hard within each domain.</li>
+      <li>Module 1 performance determines your Module 2 difficulty — and your <strong>score ceiling</strong>. Accuracy on Module 1 matters more than speed.</li>
+      <li>The Selection Index <strong>double-weights RW</strong> — this section is worth twice as much as Math for National Merit qualification.</li>
+      <li>There's <strong>no penalty for wrong answers</strong> — never leave a question blank.</li>
+      <li>Standard English Conventions (~26% of the section) tests a <strong>finite set of learnable rules</strong> — it's the fastest path to score gains.</li>
+      <li>Error analysis is your most powerful tool: classify <em>why</em> you missed a question, not just <em>what</em> you missed.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════════════════ HOMEWORK ══════════════════════ -->
+<div class="section">
+  <div class="section-label">Session 4 · Action Items</div>
+  <h2>Homework</h2>
+  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
+    <p><strong style="color:var(--ink)">1. Download Bluebook</strong> — Install the <a href="https://bluebook.collegeboard.org/" target="_blank" style="color:var(--accent)">Bluebook app</a> if you haven't already. This is the only platform that replicates the real adaptive algorithm.</p>
+    <p><strong style="color:var(--ink)">2. Take a Full RW Section</strong> — Complete one full PSAT/NMSQT practice test (RW section only: 54 questions, 64 minutes) under test conditions.</p>
+    <p><strong style="color:var(--ink)">3. Record Your Domain Scores</strong> — Note your performance in each of the four domains.</p>
+    <p><strong style="color:var(--ink)">4. Classify Every Error</strong> — For each missed question, write: Content Gap, Trap Answer, Misread, or Time Pressure.</p>
+    <p style="margin:0"><strong style="color:var(--ink)">5. Identify Your Top 2 Priorities</strong> — Which domains or question types cost you the most points? Bring this to Module 2.</p>
+  </div>
+</div>
+
+<!-- PRE-TEST CHECKLIST -->
+<div class="section">
+  <div class="section-label">Preparation</div>
+  <h2>Pre-Test Checklist</h2>
+  <div class="checklist" id="preChecklist"></div>
+</div>
+
+<div class="mod-nav">
+  <a href="PSAT_NMSQT_RW_index.html">← Course Home</a>
+  <a href="PSAT_NMSQT_RW_module-2.html">Module 2: The Grammar Playbook, Part I →</a>
+</div>
+</div>
+
+<script>
+// ═══════════════════════ PROGRESS BAR ═══════════════════════
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  const pct=h>0?(window.scrollY/h)*100:0;
+  document.getElementById('progressFill').style.width=Math.min(pct,100)+'%';
+});
+
+// ═══════════════════════ DOMAIN CARDS ═══════════════════════
+const DOMAINS=[
+  {name:'Craft & Structure',pct:'~28%',qs:'13–15 questions',color:'var(--craft)',
+   front:'Words in Context, Text Structure & Purpose, Cross-Text Connections',
+   back:'<strong>Words in Context (~11 Qs):</strong> Select the most precise word to complete a text or interpret meaning in context.<br><strong>Text Structure & Purpose (~2 Qs):</strong> Identify the function of a sentence or overall structure of a passage.<br><strong>Cross-Text Connections (~1 Q):</strong> Analyze how two paired passages relate to each other.'},
+  {name:'Information & Ideas',pct:'~26%',qs:'12–14 questions',color:'var(--info)',
+   front:'Central Ideas, Evidence (Textual & Quantitative), Inferences',
+   back:'<strong>Central Ideas & Details (~5 Qs):</strong> Identify the main idea or locate specific supporting details.<br><strong>Command of Evidence — Textual (~4 Qs):</strong> Select the quotation that best supports a claim.<br><strong>Command of Evidence — Quantitative (~4 Qs):</strong> Use tables/graphs to complete statements.<br><strong>Inferences (~4 Qs):</strong> Select the most supported concluding statement.'},
+  {name:'Standard English Conventions',pct:'~26%',qs:'11–15 questions',color:'var(--conv)',
+   front:'Sentence Boundaries, Subject-Verb Agreement, Verb Tense, Modifiers, Parallelism',
+   back:'<strong>Boundaries (~6 Qs):</strong> Comma splices, run-ons, fragments, semicolons, colons, dashes.<br><strong>Form, Structure & Sense (~8 Qs):</strong> Subject-verb agreement (with intervening phrases), verb tense consistency, pronoun-antecedent agreement, modifier placement, parallel structure.<br><em>All questions use the same prompt: "Which choice conforms to the conventions of Standard English?"</em>'},
+  {name:'Expression of Ideas',pct:'~20%',qs:'8–12 questions',color:'var(--expr)',
+   front:'Transitions, Rhetorical Synthesis',
+   back:'<strong>Transitions (~6 Qs):</strong> Select the most logical transition connecting ideas within a passage.<br><strong>Rhetorical Synthesis (~6 Qs):</strong> Given bulleted research notes, select the answer that uses the notes to accomplish a specific rhetorical goal — the most novel question type on the Digital PSAT.'}
+];
+document.getElementById('domainGrid').innerHTML=DOMAINS.map(d=>`
+  <div class="domain-card" onclick="this.classList.toggle('flipped')">
+    <div class="dc-front">
+      <div class="dc-header"><div class="dc-pct" style="color:${d.color}">${d.pct}</div><div class="dc-name">${d.name}</div></div>
+      <div class="dc-qs">${d.qs}</div>
+      <div class="dc-topics">${d.front}</div>
+      <div class="dc-flip">tap to see details →</div>
+    </div>
+    <div class="dc-back">${d.back}<div class="dc-flip">← tap to flip back</div></div>
+  </div>`).join('');
+
+// ═══════════════════════ DOMAIN ORDER DRAG-AND-DROP ═══════════════════════
+const DOG_CORRECT=['Craft & Structure','Information & Ideas','Standard English Conventions','Expression of Ideas'];
+const DOG_COLORS={'Craft & Structure':'var(--craft)','Information & Ideas':'var(--info)','Standard English Conventions':'var(--conv)','Expression of Ideas':'var(--expr)'};
+let dogPlaced=[null,null,null,null];
+let dogChecked=false;
+
+function renderDog(){
+  const available=DOG_CORRECT.filter(d=>!dogPlaced.includes(d));
+  const shuffled=dogChecked?available:[...available].sort(()=>Math.random()-.5);
+  document.getElementById('dogBank').innerHTML=shuffled.map(d=>
+    `<div class="dd-item" draggable="true" ondragstart="dogDragStart(event,'${d}')" style="border-color:${DOG_COLORS[d]};color:${DOG_COLORS[d]}">${d}</div>`
+  ).join('');
+  document.getElementById('dogSlots').innerHTML=dogPlaced.map((d,i)=>{
+    let cls='dog-slot';
+    if(d)cls+=' filled';
+    if(dogChecked&&d){cls+=d===DOG_CORRECT[i]?' correct-slot':' wrong-slot';}
+    return `<div class="${cls}" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="dogDrop(event,${i})">
+      <div class="dog-num">${i+1}</div>
+      ${d?`<div class="dog-placed" style="color:${DOG_COLORS[d]}">${d} <span style="cursor:pointer;color:var(--muted);font-size:.75rem" onclick="dogRemove(${i})">✕</span></div>`:'<span style="font-size:.82rem;color:var(--muted)">Drop domain here…</span>'}
+    </div>`;
+  }).join('');
+}
+function dogDragStart(e,name){e.dataTransfer.setData('text',name);}
+function dogDrop(e,slot){
+  e.preventDefault();e.target.closest('.dog-slot').classList.remove('over');
+  const name=e.dataTransfer.getData('text');
+  if(dogPlaced[slot])return;
+  dogPlaced[slot]=name;dogChecked=false;renderDog();
+}
+function dogRemove(i){dogPlaced[i]=null;dogChecked=false;document.getElementById('dogFeedback').textContent='';renderDog();}
+function checkDogOrder(){
+  if(dogPlaced.includes(null)){document.getElementById('dogFeedback').textContent='Place all four domains first!';return;}
+  dogChecked=true;
+  const correct=dogPlaced.every((d,i)=>d===DOG_CORRECT[i]);
+  document.getElementById('dogFeedback').innerHTML=correct
+    ?'<span style="color:var(--correct)">✓ Perfect! Craft & Structure → Information & Ideas → Conventions → Expression of Ideas. The first half of each module is "reading" questions, the second half is "writing" questions.</span>'
+    :'<span style="color:var(--wrong)">✗ Not quite. The correct order is always: Craft & Structure → Information & Ideas → Standard English Conventions → Expression of Ideas.</span>';
+  renderDog();
+}
+function resetDog(){dogPlaced=[null,null,null,null];dogChecked=false;document.getElementById('dogFeedback').textContent='';renderDog();}
+renderDog();
+
+// ═══════════════════════ QUESTION TYPE SORT ═══════════════════════
+const QT_DATA={
+  'Craft & Structure':['Words in Context','Text Structure & Purpose','Cross-Text Connections'],
+  'Information & Ideas':['Central Ideas & Details','Evidence (Textual)','Evidence (Quantitative)','Inferences'],
+  'Standard English Conventions':['Boundaries','Form, Structure & Sense'],
+  'Expression of Ideas':['Transitions','Rhetorical Synthesis']
+};
+const QT_ALL=Object.values(QT_DATA).flat().sort(()=>Math.random()-.5);
+let qtPlaced={};Object.keys(QT_DATA).forEach(k=>qtPlaced[k]=[]);
+let qtChecked=false;
+
+function renderQt(){
+  const placed=Object.values(qtPlaced).flat();
+  const remaining=QT_ALL.filter(q=>!placed.includes(q));
+  document.getElementById('qtBank').innerHTML=remaining.map(q=>
+    `<div class="dd-item" draggable="true" ondragstart="qtDragStart(event,'${q}')">${q}</div>`
+  ).join('')||(qtChecked?'':'<span style="font-size:.82rem;color:var(--muted)">All items placed!</span>');
+  const zoneColors={'Craft & Structure':'var(--craft)','Information & Ideas':'var(--info)','Standard English Conventions':'var(--conv)','Expression of Ideas':'var(--expr)'};
+  document.getElementById('qtZones').innerHTML=Object.keys(QT_DATA).map(domain=>{
+    const items=qtPlaced[domain];
+    return `<div>
+      <div class="dd-zone-label" style="color:${zoneColors[domain]}">${domain}</div>
+      <div class="dd-zone" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="qtDrop(event,'${domain}')" style="border-color:${zoneColors[domain]}30">
+        ${items.map(q=>{
+          let cls='dd-item';
+          if(qtChecked){cls+=QT_DATA[domain].includes(q)?' correct':' wrong';}
+          return `<div class="${cls}" style="cursor:default">${q} <span style="cursor:pointer;color:var(--muted);font-size:.7rem" onclick="qtRemove('${domain}','${q}')">✕</span></div>`;
+        }).join('')||'<span style="font-size:.78rem;color:var(--muted)">Drop items here</span>'}
+      </div>
+    </div>`;
+  }).join('');
+}
+function qtDragStart(e,q){e.dataTransfer.setData('text',q);}
+function qtDrop(e,domain){
+  e.preventDefault();e.target.closest('.dd-zone').classList.remove('over');
+  const q=e.dataTransfer.getData('text');
+  if(Object.values(qtPlaced).flat().includes(q))return;
+  qtPlaced[domain].push(q);qtChecked=false;renderQt();
+}
+function qtRemove(domain,q){qtPlaced[domain]=qtPlaced[domain].filter(x=>x!==q);qtChecked=false;document.getElementById('qtFeedback').textContent='';renderQt();}
+function checkQtSort(){
+  const placed=Object.values(qtPlaced).flat();
+  if(placed.length<QT_ALL.length){document.getElementById('qtFeedback').textContent='Place all question types first!';return;}
+  qtChecked=true;
+  let correct=0,total=0;
+  Object.keys(QT_DATA).forEach(d=>{qtPlaced[d].forEach(q=>{total++;if(QT_DATA[d].includes(q))correct++;});});
+  document.getElementById('qtFeedback').innerHTML=correct===total
+    ?`<span style="color:var(--correct)">✓ Perfect! ${correct}/${total} correct. You know exactly what each domain tests.</span>`
+    :`<span style="color:var(--wrong)">${correct}/${total} correct. Review the domain cards above and try again.</span>`;
+  renderQt();
+}
+function resetQt(){Object.keys(QT_DATA).forEach(k=>qtPlaced[k]=[]);qtChecked=false;document.getElementById('qtFeedback').textContent='';renderQt();}
+renderQt();
+
+// ═══════════════════════ ROUTING SIMULATOR ═══════════════════════
+function updateSim(){
+  const v=parseInt(document.getElementById('simSlider').value);
+  document.getElementById('simVal').textContent=v;
+  const pct=v/27;
+  let route,color,floor,ceil,bg;
+  if(pct>=.67){route='Harder Module 2';color='var(--correct)';floor=400;ceil=760;bg='var(--correct-bg)';}
+  else if(pct>=.56){route='Borderline — Could go either way';color='var(--conv)';floor=350;ceil=640;bg='rgba(251,191,36,.1)';}
+  else{route='Easier Module 2';color='var(--wrong)';floor=160;ceil=Math.min(520+v*7,630);bg='var(--wrong-bg)';}
+  document.getElementById('simResult').innerHTML=
+    `<div style="font-size:1rem;font-weight:700;color:${color};margin-bottom:4px">${v}/27 correct → ${route}</div>
+     <div style="font-size:.85rem;color:var(--muted)">Estimated RW score range: ${floor}–${ceil}</div>`;
+  document.getElementById('simResult').style.background=bg;
+  const meterPct=((ceil-160)/600)*100;
+  const fill=document.getElementById('simMeter');
+  fill.style.width=meterPct+'%';
+  fill.style.background=pct>=.67?'var(--correct)':pct>=.56?'var(--conv)':'var(--wrong)';
+  document.getElementById('simRange').textContent=floor+'–'+ceil;
+}
+updateSim();
+
+// ═══════════════════════ SELECTION INDEX CALCULATOR ═══════════════════════
+function updateSI(){
+  const rw=parseInt(document.getElementById('siRW').value);
+  const math=parseInt(document.getElementById('siMath').value);
+  const el=document.getElementById('siResult');
+  if(isNaN(rw)||isNaN(math)){el.textContent='Enter both scores to calculate your Selection Index.';return;}
+  const si=Math.round((2*rw+math)/10);
+  let lvl,color,advice;
+  if(si>=223){lvl='Semifinalist Range (Top States)';color='var(--nm)';advice='Competitive for NJ, MA, CA, DC, and other high-cutoff states.';}
+  else if(si>=215){lvl='Semifinalist Range (Most States)';color='var(--correct)';advice='Likely qualifies in the majority of states.';}
+  else if(si>=210){lvl='Commended Student';color='var(--accent)';advice='Top ~34,000 nationally. Semifinalist in lowest-cutoff states.';}
+  else if(si>=190){lvl='Strong Performance';color='var(--conv)';advice='Above average. Focus on RW gains for maximum SI improvement.';}
+  else{lvl='Building';color='var(--muted)';advice='This course will help you build the foundation for significant growth.';}
+  const total=rw+math;
+  const siPct=Math.min(((si-48)/180)*100,100);
+  el.innerHTML=`<div style="font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:${color}">${si}</div>
+    <div style="font-size:.85rem;color:var(--muted);margin-bottom:4px">Selection Index · Total: ${total} · ${lvl}</div>
+    <div style="height:10px;border-radius:5px;background:var(--border);margin:12px 0;position:relative">
+      <div style="height:100%;border-radius:5px;background:${color};width:${siPct}%;transition:width .4s"></div>
+      <div style="position:absolute;left:${((210-48)/180)*100}%;top:-6px;width:2px;height:22px;background:var(--accent);border-radius:1px" title="210 Commended"></div>
+      <div style="position:absolute;left:${((225-48)/180)*100}%;top:-6px;width:2px;height:22px;background:var(--nm);border-radius:1px" title="225 NJ Cutoff"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted)">
+      <span>48</span><span style="color:var(--accent)">210 Commended ↑</span><span style="color:var(--nm)">225 NJ ↑</span><span>228</span>
+    </div>
+    <div style="margin-top:12px;font-size:.88rem;color:#ccc">${advice}</div>
+    <div style="margin-top:8px;font-size:.82rem;color:var(--muted)">RW contributes ${Math.round((2*rw)/(2*rw+math)*100)}% of your index · Math contributes ${Math.round(math/(2*rw+math)*100)}%</div>`;
+}
+
+// ═══════════════════════ MINI DIAGNOSTIC ═══════════════════════
+const DIAG_QS=[
+  // Craft & Structure — Words in Context (3)
+  {domain:'Craft & Structure',color:'var(--craft)',type:'Words in Context',
+   passage:'Marine biologists studying coral reefs have found that certain species of parrotfish play a crucial role in reef health. By feeding on algae that would otherwise _______ coral, parrotfish help maintain the delicate balance of reef ecosystems.',
+   stem:'Which choice completes the text with the most logical and precise word?',
+   choices:['illuminate','smother','decorate','approach'],correct:1,
+   explain:'The passage describes algae as harmful to coral — something parrotfish prevent by feeding on it. "Smother" means to suffocate or overwhelm, which precisely captures how algae harms coral by blocking light and nutrients. "Illuminate" and "decorate" are positive, and "approach" is too vague.'},
+
+  {domain:'Craft & Structure',color:'var(--craft)',type:'Words in Context',
+   passage:'When the poet Langston Hughes first published "The Weary Blues" in 1926, critics were divided. Some praised his _______ of jazz rhythms into formal verse, calling it revolutionary. Others dismissed the technique as undisciplined.',
+   stem:'Which choice completes the text with the most logical and precise word?',
+   choices:['rejection','integration','criticism','memorization'],correct:1,
+   explain:'"Integration" means the combining of two things into a unified whole — perfectly describing how Hughes wove jazz rhythms into poetry. "Rejection" contradicts the passage (he used jazz, not rejected it). "Criticism" and "memorization" don\'t describe a creative technique.'},
+
+  {domain:'Craft & Structure',color:'var(--craft)',type:'Text Structure & Purpose',
+   passage:'In 2019, researchers at MIT developed a new algorithm that can predict protein structures with remarkable accuracy. Previous methods required months of computation; the new approach produces results in hours. However, the algorithm performs best with proteins that have well-characterized homologs and struggles with entirely novel sequences.',
+   stem:'Which choice best describes the overall structure of the text?',
+   choices:['It presents a discovery, explains its advantage over prior methods, and then notes a limitation.',
+            'It compares two competing theories and argues in favor of one.',
+            'It describes a problem and then proposes a solution that eliminates the problem entirely.',
+            'It traces the historical development of a technology from its origins to the present.'],correct:0,
+   explain:'The passage introduces the MIT algorithm (discovery), compares it to previous methods (advantage), then notes it struggles with novel sequences (limitation). This is a classic "claim → evidence → qualification" structure.'},
+
+  // Information & Ideas (3)
+  {domain:'Information & Ideas',color:'var(--info)',type:'Central Ideas',
+   passage:'Archaeologist Sarah Parcak has pioneered the use of satellite imagery to locate ancient sites buried beneath modern landscapes. Using infrared sensors that detect subtle differences in vegetation and soil composition, Parcak has identified thousands of potential archaeological sites in Egypt, including a previously unknown pyramid. Her work demonstrates that even the most thoroughly studied regions may still harbor significant undiscovered structures.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['Infrared technology is superior to traditional archaeological methods in every respect.',
+            'Egypt contains more pyramids than archaeologists previously believed.',
+            'Satellite-based archaeology can reveal hidden sites even in well-studied areas.',
+            'Sarah Parcak is the most important archaeologist of the 21st century.'],correct:2,
+   explain:'The passage\'s central claim is in the final sentence: even well-studied regions may have undiscovered structures. Choice C captures this. Choice A uses "every respect" (too extreme). Choice B is too narrow (one detail). Choice D makes a superlative claim ("most important") the passage never makes.'},
+
+  {domain:'Information & Ideas',color:'var(--info)',type:'Inferences',
+   passage:'Urban ecologist Dr. Kenji Tanaka has studied noise pollution in cities for over a decade. His research shows that birds in urban areas sing at higher pitches than their rural counterparts. Tanaka found that this shift is not genetic — when urban birds are raised in quiet environments, they sing at the same pitch as rural birds. He concluded that the pitch adjustment is a real-time behavioral response to _______ .',
+   stem:'Which choice most logically completes the text?',
+   choices:['genetic differences between urban and rural bird populations',
+            'the preference of urban birds for higher-frequency songs',
+            'low-frequency background noise that masks standard birdsong',
+            'changes in diet caused by urban food sources'],correct:2,
+   explain:'The passage says the change is NOT genetic and IS behavioral (real-time). If urban noise is predominantly low-frequency (traffic, machinery), singing higher avoids being masked. This is the only inference fully supported. A is contradicted, B is circular, D introduces diet with no textual support.'},
+
+  {domain:'Information & Ideas',color:'var(--info)',type:'Command of Evidence (Textual)',
+   passage:'Literary scholar Maria Chen argues that 19th-century author Charlotte Perkins Gilman used domestic spaces in her fiction not merely as settings but as symbols of social constraint.',
+   stem:'Which finding, if true, would most directly support Chen\'s argument?',
+   choices:['Gilman\'s personal diaries reveal she disliked housework and preferred outdoor activities.',
+            'In Gilman\'s "The Yellow Wallpaper," the protagonist\'s confinement to a single room mirrors her growing psychological distress and loss of autonomy.',
+            'Several of Gilman\'s contemporaries also wrote stories set in domestic spaces.',
+            'Gilman published a nonfiction book advocating for women\'s economic independence.'],correct:1,
+   explain:'Chen\'s argument is that Gilman used domestic spaces as SYMBOLS OF SOCIAL CONSTRAINT. Choice B directly shows this: a room (domestic space) mirrors loss of autonomy (social constraint). A is about personal preference, not literary technique. C shows others did it too but doesn\'t support the "symbol" claim. D is about nonfiction, not fiction.'},
+
+  // Standard English Conventions (3)
+  {domain:'Standard English Conventions',color:'var(--conv)',type:'Boundaries',
+   passage:'The James Webb Space Telescope, launched in December 2021, has provided astronomers with unprecedented views of the early _______ its infrared instruments can detect light from galaxies that formed just 300 million years after the Big Bang.',
+   stem:'Which choice completes the text so that it conforms to the conventions of Standard English?',
+   choices:['universe, its','universe. Its','universe its','universe; and its'],correct:1,
+   explain:'Two independent clauses need proper separation. "The telescope has provided views" is one clause; "its instruments can detect light" is another. A comma alone (choice A) creates a comma splice. No punctuation (C) creates a run-on. Choice D uses "and" after a semicolon, which is redundant. A period (B) cleanly separates them.'},
+
+  {domain:'Standard English Conventions',color:'var(--conv)',type:'Form, Structure & Sense',
+   passage:'The museum\'s new collection of Renaissance paintings, donated by several private collectors from across Europe, _______ a significant expansion of the institution\'s holdings in Italian art.',
+   stem:'Which choice completes the text so that it conforms to the conventions of Standard English?',
+   choices:['represent','represents','have been representing','were representing'],correct:1,
+   explain:'The subject is "collection" (singular), not "paintings" or "collectors." The intervening phrases ("of Renaissance paintings, donated by several private collectors from across Europe") are distractors. A singular subject requires a singular verb: "represents." This is the classic subject-verb agreement trap with intervening phrases.'},
+
+  {domain:'Standard English Conventions',color:'var(--conv)',type:'Form, Structure & Sense',
+   passage:'After reviewing the data from the clinical trial, the research team concluded that patients who received the new treatment recovered more quickly than _______ who received the placebo.',
+   stem:'Which choice completes the text so that it conforms to the conventions of Standard English?',
+   choices:['them','they','those','these patients here'],correct:2,
+   explain:'"Those" is a demonstrative pronoun that correctly refers back to "patients." "Them" is an object pronoun (wrong case — it\'s the subject of "received"). "They" lacks the demonstrative function needed to clearly refer to the comparison group. "These patients here" is informal and redundant.'},
+
+  // Expression of Ideas (3)
+  {domain:'Expression of Ideas',color:'var(--expr)',type:'Transitions',
+   passage:'Traditional beekeeping relies on stationary hives that draw from nearby flower sources. _______ migratory beekeeping involves transporting hives across hundreds of miles to follow seasonal blooms, maximizing honey production throughout the year.',
+   stem:'Which choice completes the text with the most logical transition?',
+   choices:['Similarly,','In contrast,','Therefore,','For instance,'],correct:1,
+   explain:'The passage sets up a contrast: "stationary" vs. "transporting across hundreds of miles." These are opposing approaches, so "In contrast" is correct. "Similarly" suggests agreement, "Therefore" implies cause/effect, and "For instance" would introduce an example of the same thing.'},
+
+  {domain:'Expression of Ideas',color:'var(--expr)',type:'Transitions',
+   passage:'The city of Medellín, Colombia, was once notorious for its high crime rates. Since 2000, the city has invested heavily in public transportation, libraries, and parks in its poorest neighborhoods. _______ Medellín\'s homicide rate has dropped by over 90%, and it has received international recognition for urban innovation.',
+   stem:'Which choice completes the text with the most logical transition?',
+   choices:['Nevertheless,','As a result,','On the other hand,','Granted,'],correct:1,
+   explain:'The investments (cause) led to reduced crime and recognition (effect). "As a result" correctly signals this cause-and-effect relationship. "Nevertheless" signals unexpected contrast. "On the other hand" introduces an opposing perspective. "Granted" concedes a point.'},
+
+  {domain:'Expression of Ideas',color:'var(--expr)',type:'Rhetorical Synthesis',
+   passage:'While researching a presentation on renewable energy, a student has taken these notes:\n• Solar panel efficiency has increased from 6% in 1960 to over 47% in laboratory settings by 2023.\n• The cost of solar panels has dropped by 99% since 1976.\n• Wind energy now supplies over 10% of electricity in the United States.\n• Both solar and wind are intermittent — they only generate power when the sun shines or wind blows.\n• Battery storage technology has improved significantly but remains expensive.',
+   stem:'The student wants to emphasize a challenge that limits the adoption of renewable energy despite its progress. Which choice most effectively uses the relevant information from the notes to accomplish this goal?',
+   choices:['Solar panel efficiency has increased dramatically since 1960, reaching over 47% in laboratory settings.',
+            'While renewable sources like solar and wind have become far more efficient and affordable, their intermittent nature and the high cost of battery storage remain barriers to widespread adoption.',
+            'The cost of solar panels has dropped by 99% since 1976, and wind energy now provides over 10% of U.S. electricity.',
+            'Battery storage technology continues to improve, suggesting that the intermittency problem may soon be resolved.'],correct:1,
+   explain:'The goal is to "emphasize a CHALLENGE despite progress." B does both: it acknowledges progress ("more efficient and affordable") and then pivots to the challenge ("intermittent nature and high cost of battery storage"). A and C only discuss progress. D is optimistic about solving the problem, not emphasizing the challenge.'}
+];
+
+let diagAns=new Array(DIAG_QS.length).fill(undefined);
+let diagScored=false;
+let timerInterval=null;
+let timeLeft=17*60;
+
+function renderDiag(){
+  document.getElementById('diagQuestions').innerHTML=DIAG_QS.map((q,i)=>{
+    const answered=diagAns[i]!==undefined;
+    return `<div class="diag-q ${answered?'answered':''}" id="dq${i}">
+      <div class="diag-domain" style="background:${q.color}20;color:${q.color}">${q.domain} — ${q.type}</div>
+      <div class="diag-passage">${q.passage}</div>
+      <div class="diag-stem">${q.stem}</div>
+      <div class="diag-choices">${q.choices.map((c,ci)=>{
+        let cls='diag-choice';
+        if(diagScored){
+          if(ci===q.correct)cls+=' dc-correct';
+          else if(diagAns[i]===ci)cls+=' dc-wrong';
+          cls+=' dc-dis';
+        }
+        return `<div class="${cls}" onclick="ansDiag(${i},${ci})"><span class="letter">${'ABCD'[ci]}</span><span>${c}</span></div>`;
+      }).join('')}</div>
+      <div class="diag-explain ${diagScored?'show':''}">${diagScored?q.explain:''}</div>
+    </div>`;
+  }).join('');
+  const allAnswered=diagAns.every(a=>a!==undefined);
+  document.getElementById('diagSubmit').style.display=allAnswered&&!diagScored?'inline-block':'none';
+}
+
+function startDiag(){
+  document.getElementById('diagStart').style.display='none';
+  document.getElementById('diagQuestions').style.display='block';
+  document.getElementById('diagTimer').style.display='block';
+  renderDiag();
+  timerInterval=setInterval(()=>{
+    timeLeft--;
+    if(timeLeft<=0){clearInterval(timerInterval);scoreDiag();}
+    const m=Math.floor(timeLeft/60);
+    const s=timeLeft%60;
+    document.getElementById('timerDisplay').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+    const pct=(timeLeft/(17*60))*100;
+    const fill=document.getElementById('timerFill');
+    fill.style.width=pct+'%';
+    fill.className='timer-fill'+(pct<20?' danger':pct<40?' warning':'');
+  },1000);
+}
+
+function ansDiag(i,v){
+  if(diagAns[i]!==undefined||diagScored)return;
+  diagAns[i]=v;renderDiag();
+}
+
+function scoreDiag(){
+  if(timerInterval)clearInterval(timerInterval);
+  document.getElementById('diagTimer').style.display='none';
+  diagScored=true;renderDiag();
+  document.getElementById('diagSubmit').style.display='none';
+  const domains={'Craft & Structure':{c:0,t:0,color:'var(--craft)'},'Information & Ideas':{c:0,t:0,color:'var(--info)'},'Standard English Conventions':{c:0,t:0,color:'var(--conv)'},'Expression of Ideas':{c:0,t:0,color:'var(--expr)'}};
+  let total=0;
+  DIAG_QS.forEach((q,i)=>{
+    domains[q.domain].t++;
+    if(diagAns[i]===q.correct){total++;domains[q.domain].c++;}
+  });
+  const pct=Math.round((total/DIAG_QS.length)*100);
+
+  // Find weakest and strongest domains
+  let weakest='',strongest='',weakPct=101,strongPct=-1;
+  Object.entries(domains).forEach(([name,d])=>{
+    const dp=d.t>0?Math.round((d.c/d.t)*100):0;
+    if(dp<weakPct){weakPct=dp;weakest=name;}
+    if(dp>strongPct){strongPct=dp;strongest=name;}
+  });
+
+  const el=document.getElementById('diagResults');
+  el.style.display='block';
+  el.innerHTML=`<div class="results">
+    <div class="results-score">
+      <div class="results-big" style="color:${pct>=75?'var(--correct)':pct>=50?'var(--accent)':'var(--wrong)'}">${total}/${DIAG_QS.length}</div>
+      <div class="results-sub">${pct}% correct · The Baseline Gauntlet</div>
+    </div>
+
+    <!-- Quick Stats (ported from SAT Module 0) -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+      <div style="background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+        <div style="color:var(--muted);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Score</div>
+        <div style="color:${pct>=75?'var(--correct)':pct>=50?'var(--accent)':'var(--wrong)'};font-weight:800;font-size:1.2rem">${pct}%</div>
+      </div>
+      <div style="background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+        <div style="color:var(--muted);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Strongest</div>
+        <div style="color:${domains[strongest].color};font-weight:800;font-size:.85rem">${strongest.split(' ')[0]}</div>
+        <div style="color:var(--muted);font-size:.72rem">${Math.round((domains[strongest].c/domains[strongest].t)*100)}%</div>
+      </div>
+      <div style="background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+        <div style="color:var(--muted);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Weakest</div>
+        <div style="color:${domains[weakest].color};font-weight:800;font-size:.85rem">${weakest.split(' ')[0]}</div>
+        <div style="color:var(--muted);font-size:.72rem">${weakPct}%</div>
+      </div>
+    </div>
+
+    <div class="results-domains">
+      ${Object.entries(domains).map(([name,d])=>{
+        const dp=d.t>0?Math.round((d.c/d.t)*100):0;
+        return `<div class="results-domain">
+          <div class="results-domain-name" style="color:${d.color}">${name}</div>
+          <div class="results-domain-score" style="color:${dp>=75?'var(--correct)':dp>=50?'var(--accent)':'var(--wrong)'}">${d.c}/${d.t}</div>
+          <div class="results-domain-bar"><div class="results-domain-fill" style="width:${dp}%;background:${d.color}"></div></div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- Tabbed Results (ported from SAT Module 0) -->
+    <div class="plan-tabs">
+      <button class="plan-tab active" onclick="switchTab(this,'overview')">Domain Breakdown</button>
+      <button class="plan-tab" onclick="switchTab(this,'plan')">Your Path Forward</button>
+    </div>
+
+    <div class="plan-panel active" id="panel-overview">
+      ${Object.entries(domains).map(([name,d])=>{
+        const dp=d.t>0?Math.round((d.c/d.t)*100):0;
+        const domainAdvice={
+          'Craft & Structure':'Words in Context makes up the largest portion of this domain. Building vocabulary with spaced repetition and practicing morphology will pay huge dividends.',
+          'Information & Ideas':'Inference and evidence questions are the hardest types on the test. Practice the question-first reading strategy to improve accuracy.',
+          'Standard English Conventions':'Grammar rules are finite and learnable — this is typically the quickest domain to improve. Focus on sentence boundaries first.',
+          'Expression of Ideas':'Transitions and Rhetorical Synthesis are highly learnable with the right framework. The logic-mapping approach will give you a systematic method.'
+        };
+        return `<div style="background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="color:${d.color};font-weight:700;font-size:.9rem">${name}</span>
+            <span style="color:${dp>=75?'var(--correct)':dp>=50?'var(--accent)':'var(--wrong)'};font-weight:800">${dp}% (${d.c}/${d.t})</span>
+          </div>
+          <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:8px">
+            <div style="height:100%;width:${dp}%;background:${d.color};border-radius:4px;transition:width .6s"></div>
+          </div>
+          <div style="font-size:.82rem;color:var(--muted);line-height:1.5">${dp<75?domainAdvice[name]:'Strong performance — continue building on this foundation.'}</div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="plan-panel" id="panel-plan">
+      <!-- Priority Focus -->
+      <div style="background:linear-gradient(135deg,${domains[weakest].color}15,var(--paper));border:1px solid ${domains[weakest].color}44;border-radius:12px;padding:18px;margin-bottom:12px">
+        <div style="color:${domains[weakest].color};font-weight:800;font-size:.95rem;margin-bottom:6px">🎯 Priority Focus: ${weakest}</div>
+        <div style="font-size:.85rem;color:var(--muted);line-height:1.6">This was your lowest-scoring domain at ${weakPct}%. This is where you'll see the fastest improvement.</div>
+      </div>
+
+      <!-- Phased Path (ported from SAT Module 0) -->
+      <div style="background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px">
+        <div style="color:var(--conv);font-weight:800;font-size:.95rem;margin-bottom:10px">📈 ${pct<50?'Foundation Building Phase':pct<70?'Threshold Push Phase':pct<85?'Refinement Phase':'Elite Optimization Phase'}</div>
+        <div style="font-size:.85rem;color:var(--muted);line-height:1.7">
+          ${pct<50?'<strong style="color:var(--ink)">Focus on mastering grammar conventions first (Modules 2–3)</strong> — they\'re the fastest path to raising your score. Build core vocabulary concurrently (Module 4). Getting fundamentals solid will push you toward the 70% Module 1 threshold.':''}
+          ${pct>=50&&pct<70?'<strong style="color:var(--ink)">You\'re close to the critical 70% Module 1 gate.</strong> Eliminating careless errors on easy questions is your highest-leverage move right now. Strengthen your weakest domain and practice careful reading strategies.':''}
+          ${pct>=70&&pct<85?'<strong style="color:var(--ink)">You\'d likely reach the harder Module 2 — great.</strong> Now it\'s about maximizing your score within it. Focus on the "almost right vs. exactly right" distinction, expand vocabulary, and practice hard-difficulty questions.':''}
+          ${pct>=85?'<strong style="color:var(--ink)">You\'re performing at a high level.</strong> Your gains will come from eliminating the last careless errors and mastering the most nuanced question types: inference, cross-text connections, and complex evidence questions.':''}
+        </div>
+      </div>
+
+      <!-- Recommended Module Order -->
+      <div style="background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:18px">
+        <div style="color:var(--ink);font-weight:800;font-size:.95rem;margin-bottom:12px">🗺️ Recommended Module Order</div>
+        ${[
+          {n:'2–3',label:'Standard English Conventions',note:'Grammar & punctuation rules',color:'var(--conv)'},
+          {n:'4',label:'Words Are Weapons',note:'Vocabulary, morphology, precision',color:'var(--craft)'},
+          {n:'5',label:'Central Ideas & Inferences',note:'Comprehension & reading strategy',color:'var(--info)'},
+          {n:'6–7',label:'Evidence & Text Structure',note:'Textual, quantitative, cross-text',color:'var(--info)'},
+          {n:'8–9',label:'Transitions & Synthesis',note:'Logical flow & rhetorical goals',color:'var(--expr)'},
+          {n:'10–11',label:'War Games I & II',note:'Full mixed practice & adaptive sim',color:'var(--rw)'},
+          {n:'12',label:'Final Assessment',note:'Capstone diagnostic & growth plan',color:'var(--nm)'}
+        ].map(m=>`<div style="display:flex;align-items:center;gap:12px;padding:6px 10px;border-left:3px solid ${m.color};margin-bottom:4px">
+          <div style="color:${m.color};font-weight:800;font-size:.82rem;min-width:32px;font-family:'JetBrains Mono',monospace">M${m.n}</div>
+          <div><div style="color:var(--ink);font-size:.85rem;font-weight:600">${m.label}</div><div style="color:var(--muted);font-size:.75rem">${m.note}</div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div style="font-size:.88rem;color:#ccc;text-align:center;margin-top:16px">
+      <strong>What this tells you:</strong> This 12-question sample shows where your instincts are strong and where you need focused practice. Scroll up to the Goal Setting section to interpret these results and set your targets.
+    </div>
+  </div>`;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Tab switching for results
+function switchTab(btn,panel){
+  document.querySelectorAll('.plan-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+panel).classList.add('active');
+}
+
+// ═══════════════════════ NM CHALLENGE ═══════════════════════
+const NM_SCENARIOS=[
+  {q:'Target SI: 220 · Math score: 700 · What minimum RW score do you need?',answer:620,
+   fb:'SI = (2×RW + 700) ÷ 10 = 220 → 2×RW + 700 = 2200 → 2×RW = 1500 → RW = 750. Wait — but if Math is 700, you need: (2×RW + 700)/10 ≥ 220 → RW ≥ 750. Correction: let\'s solve. 2200 = 2×RW + 700 → RW = 750.'},
+  {q:'Target SI: 225 (NJ cutoff) · Math score: 720 · What minimum RW score?',answer:640,
+   fb:'(2×RW + 720) ÷ 10 = 225 → 2×RW = 2250 − 720 = 1530 → RW = 765. But max is 760! You\'d need Math 730+ or hope the cutoff drops.'},
+  {q:'Two students both score 1400 total. Student A: RW 750, Math 650. Student B: RW 650, Math 750. Who has the higher Selection Index?',answer:'A',
+   fb:'Student A: (2×750 + 650) ÷ 10 = 2150 ÷ 10 = 215. Student B: (2×650 + 750) ÷ 10 = 2050 ÷ 10 = 205. Same total score, but Student A\'s index is 10 points higher — because RW is double-weighted.'}
+];
+document.getElementById('nmChallenge1').innerHTML=NM_SCENARIOS.map((s,i)=>`
+  <div class="card" style="border-color:rgba(167,139,250,.3);margin-bottom:10px">
+    <div style="font-size:.9rem;color:#ddd;margin-bottom:8px"><strong>Scenario ${i+1}:</strong> ${s.q}</div>
+    <details style="font-size:.85rem;color:var(--muted)">
+      <summary style="cursor:pointer;color:var(--nm)">Reveal solution</summary>
+      <div style="margin-top:8px;padding:8px;background:var(--paper);border-radius:6px;line-height:1.6">${s.fb}</div>
+    </details>
+  </div>`).join('');
+
+// ═══════════════════════ CHECKLIST ═══════════════════════
+const CL_ITEMS=['Bluebook app installed and updated','Quiet testing environment identified','Phone silenced and out of reach','Scratch paper and pencil ready','64 uninterrupted minutes available','Water bottle nearby','Know your target RW score'];
+const CL_KEY='pp_psat_nmsqt_rw_m1_cl';
+let clState=JSON.parse(localStorage.getItem(CL_KEY)||'[]');
+if(clState.length!==CL_ITEMS.length)clState=CL_ITEMS.map(()=>false);
+function renderCL(){
+  const done=clState.filter(Boolean).length;
+  document.getElementById('preChecklist').innerHTML=
+    `<h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:12px">✅ Before Your Full Baseline Test</h3>`+
+    CL_ITEMS.map((item,i)=>`<div class="cl-item ${clState[i]?'done':''}" onclick="toggleCL(${i})">
+      <div class="cl-check">${clState[i]?'✓':''}</div><div>${item}</div></div>`).join('')+
+    `<div class="cl-progress">${done}/${CL_ITEMS.length} complete</div>`;
+}
+function toggleCL(i){clState[i]=!clState[i];localStorage.setItem(CL_KEY,JSON.stringify(clState));renderCL();}
+renderCL();
+</script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSAT 8/9 Math Course — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--grow:#06d6a0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#0891b2 0%,#0891b2 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.course-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px;text-align:center}
+.course-icon{font-size:3rem;margin-bottom:12px}
+.course-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:700;margin-bottom:8px}
+.course-header .sub{color:var(--muted);font-size:1rem;max-width:620px;margin:0 auto}
+.stats{display:flex;justify-content:center;gap:24px;margin-top:18px}
+.stat{text-align:center}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--accent)}
+.stat-label{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.domains{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:32px}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.domain-pct{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+.domain-name{font-size:.75rem;color:var(--muted);margin-top:2px}
+.grow-banner{background:linear-gradient(135deg,rgba(6,214,160,.1),rgba(6,214,160,.05));border:1px solid rgba(6,214,160,.3);border-radius:12px;padding:14px 18px;margin-bottom:32px;text-align:center;font-size:.9rem;color:#ccc}
+.grow-banner strong{color:var(--grow)}
+.phase-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;margin-top:28px}
+.phase-orient{color:var(--accent)}
+.phase-build{color:var(--math)}
+.phase-strategize{color:var(--psda)}
+.phase-prove{color:var(--advanced)}
+.mod-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.mod-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-decoration:none;color:inherit;transition:all .2s}
+.mod-card:hover{border-color:var(--accent);transform:translateX(4px)}
+.mod-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0}
+.mod-info{flex:1}
+.mod-title{font-weight:700;font-size:.95rem;margin-bottom:2px}
+.mod-desc{font-size:.82rem;color:var(--muted);line-height:1.4}
+.mod-arrow{color:var(--muted);font-size:1.1rem;flex-shrink:0}
+.mod-time{font-size:.72rem;color:var(--muted);margin-top:4px}
+.score-range{display:flex;align-items:center;gap:10px;justify-content:center;margin:18px 0 8px;font-size:.82rem;color:var(--muted)}
+.score-bar{height:8px;border-radius:4px;flex:1;max-width:300px;background:linear-gradient(90deg,var(--geo),var(--psda),var(--algebra),var(--accent))}
+@media(max-width:600px){.stats{flex-wrap:wrap;gap:16px}.domains{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="container">
+<a class="back-link" href="../index.html">← Back to PantherPrep</a>
+
+<div class="course-header">
+  <div class="course-icon">🎯</div>
+  <h1>PSAT 8/9 Math Course</h1>
+  <p class="sub">8 modules built for 9th graders. All four content domains, Desmos mastery, test strategy, and full practice — calibrated to the PSAT 8/9 difficulty level. No trig required.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-val">8</div><div class="stat-label">Modules</div></div>
+    <div class="stat"><div class="stat-val">~8</div><div class="stat-label">Hours</div></div>
+    <div class="stat"><div class="stat-val">44</div><div class="stat-label">Questions</div></div>
+    <div class="stat"><div class="stat-val">4</div><div class="stat-label">Domains</div></div>
+  </div>
+  <div class="score-range">
+    <span>120</span><div class="score-bar"></div><span>720</span>
+  </div>
+  <div style="font-size:.75rem;color:var(--muted);text-align:center">PSAT 8/9 Math Score Range · College Readiness Benchmark: 450</div>
+</div>
+
+<div class="domains">
+  <div class="domain-card"><div class="domain-pct" style="color:var(--algebra)">~35%</div><div class="domain-name">Algebra</div></div>
+  <div class="domain-card"><div class="domain-pct" style="color:var(--advanced)">~35%</div><div class="domain-name">Advanced Math</div></div>
+  <div class="domain-card"><div class="domain-pct" style="color:var(--psda)">~15%</div><div class="domain-name">Problem-Solving & Data</div></div>
+  <div class="domain-card"><div class="domain-pct" style="color:var(--geo)">~15%</div><div class="domain-name">Geometry</div></div>
+</div>
+
+<div class="grow-banner">
+  <strong>📈 Your Starting Line:</strong> The PSAT 8/9 is the first test in the SAT Suite. Your score here becomes your baseline — and every point you grow from here carries forward to the PSAT 10 and SAT. Same scale, same skills, bigger stakes later. Start strong now.
+</div>
+
+<div class="phase-label phase-orient">Phase 1: Orient</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-1.html">
+    <div class="mod-num" style="background:var(--accent)">1</div>
+    <div class="mod-info">
+      <div class="mod-title">Welcome to the PSAT 8/9 & Diagnostic</div>
+      <div class="mod-desc">Test structure, adaptive routing explained, score scale (120–720), college readiness benchmark, growth trajectory to PSAT 10 & SAT, 12-question mini diagnostic with confidence calibration, error classification intro</div>
+      <div class="mod-time">⏱ ~60 min</div>
+    </div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+<div class="phase-label phase-build">Phase 2: Build</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-2.html">
+    <div class="mod-num" style="background:var(--algebra)">2</div>
+    <div class="mod-info">
+      <div class="mod-title">Algebra: Linear Equations, Systems & Inequalities</div>
+      <div class="mod-desc">Prerequisite checkpoint (negatives, fractions), one-variable equations, three forms of linear equations, slope, systems, inequalities, word problem translation traps</div>
+      <div class="mod-time">⏱ ~60 min</div>
+    </div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-3.html">
+    <div class="mod-num" style="background:var(--advanced)">3</div>
+    <div class="mod-info">
+      <div class="mod-title">Advanced Math: Quadratics, Polynomials & Functions</div>
+      <div class="mod-desc">Exponent rules, polynomial operations, factoring, solving quadratics, three forms, discriminant, function notation, exponential growth/decay, basic transformations</div>
+      <div class="mod-time">⏱ ~60 min</div>
+    </div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-4.html">
+    <div class="mod-num" style="background:var(--psda)">4</div>
+    <div class="mod-info">
+      <div class="mod-title">Problem-Solving & Data Analysis</div>
+      <div class="mod-desc">Ratios, rates, proportions, percentages, one- and two-variable data, scatterplots, probability, two-way tables, study design, correlation vs. causation</div>
+      <div class="mod-time">⏱ ~60 min</div>
+    </div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-5.html">
+    <div class="mod-num" style="background:var(--geo)">5</div>
+    <div class="mod-info">
+      <div class="mod-title">Geometry (No Trig!)</div>
+      <div class="mod-desc">Lines & angles, triangles, Pythagorean theorem, special right triangles by ratio, area & volume, circles (arc, sector, equations), composite shapes</div>
+      <div class="mod-time">⏱ ~60 min</div>
+    </div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+<div class="phase-label phase-strategize">Phase 3: Strategize</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-6.html">
+    <div class="mod-num" style="background:var(--accent)">6</div>
+    <div class="mod-info">
+      <div class="mod-title">Desmos Mastery</div>
+      <div class="mod-desc">First-steps tutorial, 10 essential skills, autoregression, calculator modes, keyboard shortcuts, "Desmos or Algebra?" decision drill, CAS ban context</div>
+      <div class="mod-time">⏱ ~60 min</div>
+    </div>
+    <div class="mod-arrow">→</div>
+  </a>
+  <a class="mod-card" href="module-7.html">
+    <div class="mod-num" style="background:var(--psda)">7</div>
+    <div class="mod-info">
+      <div class="mod-title">Strategy Toolkit & Time Management</div>
+      <div class="mod-desc">5-second decision tree, adaptive module strategy, plug in, backsolve, ballpark & POE, grid-in rules & traps, preventable mistakes diagnostic, time budgeting</div>
+      <div class="mod-time">⏱ ~60 min</div>
+    </div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+<div class="phase-label phase-prove">Phase 4: Prove</div>
+<div class="mod-list">
+  <a class="mod-card" href="module-8.html">
+    <div class="mod-num" style="background:var(--advanced)">8</div>
+    <div class="mod-info">
+      <div class="mod-title">Practice Test, Error Analysis & Growth Plan</div>
+      <div class="mod-desc">Timed 44-question practice section, domain breakdown scoring, error analysis, score projection to PSAT 10 & SAT, growth plan builder, test-day checklist</div>
+      <div class="mod-time">⏱ ~90 min (includes test)</div>
+    </div>
+    <div class="mod-arrow">→</div>
+  </a>
+</div>
+
+</div>
+<script src="/translate.js"></script>
+</body>
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5: Words in Context — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback, useRef } = React;
+const e = React.createElement;
+const AMBER = "#f59e0b";
+const AMBER2 = "#d97706";
+const ACCENT = "#10b981";
+const BLUE = "#3b82f6";
+const PURPLE = "#a855f7";
+const RED = "#ef4444";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px", borderRadius: 10, border: "none", background: bg,
+  color, fontWeight: 700, fontSize: 15, cursor: "pointer", transition: "transform .12s", ...extra
+});
+
+/* ═══════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════ */
+
+/* NEW: Interleaved warm-up from Modules 1-4 */
+const WARMUP = [
+  { passage: "The study found that participants who exercised regularly _______ fewer symptoms of anxiety than those in the control group.", stem: "Which choice completes the text with the most logical and precise word?", choices: ["exhibited", "created", "imagined", "ignored"], correct: 0, domain: "WIC (Review)", color: AMBER, explain: '"Found that" + comparison to control group = reporting a measured result. "Exhibited" = displayed/showed.' },
+  { passage: "The city council, which _______ approved the budget last Tuesday, will reconvene in March to discuss infrastructure spending.", stem: "Which choice conforms to the conventions of Standard English?", choices: ["unanimously", "unanimous", "unanimity", "unanimousness"], correct: 0, domain: "Conventions (Review)", color: PURPLE, explain: "Need an adverb to modify the verb \"approved.\" \"Unanimously\" is the adverb form." },
+  { passage: "Researchers found that adding nitrogen to soil increased crop yields by 35%. However, excessive nitrogen caused algal blooms in nearby waterways, suggesting that _______", stem: "Which choice most logically completes the text?", choices: ["nitrogen has no effect on agriculture.", "the benefits of nitrogen fertilization must be balanced against its environmental costs.", "algal blooms improve water quality.", "crop yields are unrelated to soil composition."], correct: 1, domain: "Inferences (Review)", color: ACCENT, explain: "Benefits (yield increase) + costs (algal blooms) = need balance. Classic \"however\" pivot." },
+  { passage: "The orchestra performed Beethoven's Ninth Symphony; _______ the audience responded with a ten-minute standing ovation.", stem: "Which choice conforms to the conventions of Standard English?", choices: ["afterward,", "afterward", "afterwards;", "afterward:"], correct: 0, domain: "Conventions (Review)", color: PURPLE, explain: "After a semicolon, the transitional adverb \"afterward\" needs a comma before the independent clause continues." },
+  { passage: "A 2023 survey of 500 teachers found that 78% reported increased student engagement when using interactive digital tools compared to traditional lectures.", stem: "Which choice best describes the role of this finding?", choices: ["It contradicts the claim that technology aids learning.", "It provides quantitative evidence supporting the effectiveness of digital tools.", "It raises concerns about screen time.", "It compares two unrelated teaching methods."], correct: 1, domain: "Evidence (Review)", color: ACCENT, explain: "Specific percentage from a study = quantitative evidence supporting the claim about digital tools." },
+  { passage: "The author's latest novel, a sweeping epic set across three continents and spanning four decades, demonstrates her remarkable ability to _______ complex narratives without sacrificing emotional intimacy.", stem: "Which choice completes the text with the most logical and precise word?", choices: ["simplify", "orchestrate", "abbreviate", "discard"], correct: 1, domain: "WIC (Review)", color: AMBER, explain: "Managing complex, multi-threaded narratives = orchestrating (arranging/coordinating many elements skillfully). Not simplifying (that would reduce complexity)." }
+];
+
+const LESSONS = [
+  {
+    id: "intro", title: "The Most Common Question Type", subtitle: "Words in Context = ~20% of the SAT R&W",
+    body: [
+      "Words in Context questions are the single most frequent question type on the entire SAT Reading & Writing section \u2014 averaging 10-11 questions per test. Master these, and you've locked down one-fifth of your score.",
+      "Each question gives you a short passage (25-50 words) with a blank. Four vocabulary words are offered as choices. Your job: pick the word that is most logical AND most precise in that specific context.",
+      "This is NOT a memorization test. The SAT tests whether you can use context clues to determine meaning \u2014 even for words you've never seen before. That said, knowing common Tier 2 academic vocabulary gives you a massive advantage."
+    ], visual: "stats"
+  },
+  {
+    id: "tone-first", title: "Strategy #1: Tone First", subtitle: "Positive, negative, or neutral?",
+    body: [
+      "Before looking at the answer choices, read the passage and determine the TONE of the blank. Is the passage describing something positive, negative, or neutral?",
+      'This one step eliminates wrong answers instantly. If the passage describes a scientist\'s careful, methodical approach, the blank needs a positive or neutral word \u2014 you can immediately cross out anything negative like "reckless" or "haphazard."',
+      'POSITIVE indicators: praise words, success language, words like "impressive," "effective," "skillfully"\nNEGATIVE indicators: criticism, failure, words like "despite," "unfortunately," "flawed"\nNEUTRAL indicators: factual description, no judgment, reporting language'
+    ], visual: "tone-sorter"
+  },
+  {
+    id: "context-clues", title: "Strategy #2: Context Clue Types", subtitle: "The passage always tells you the answer",
+    body: [
+      "The SAT builds context clues into every Words in Context passage. Learn to spot these four types:",
+      'DEFINITION CLUE: The passage restates the meaning nearby.\n"The artist\'s OEUVRE \u2014 her complete body of work \u2014 spans four decades."',
+      'CONTRAST CLUE: Signal words like "but," "however," "unlike," "rather than" tell you the blank is the OPPOSITE of something stated.\n"Unlike her predecessor\'s cautious approach, the new director pursued a ______ strategy." \u2192 The blank must mean something opposite of cautious.',
+      'EXAMPLE CLUE: The passage gives specific examples that reveal the blank\'s meaning.\n"The politician\'s ______ behavior \u2014 refusing to compromise, insulting opponents, and rejecting expert advice \u2014 alienated even her allies."',
+      'LOGIC CLUE: The cause-and-effect or sequential logic of the passage points to the meaning.\n"Because the data was ______, the researchers could not draw any reliable conclusions." \u2192 The blank must describe data that prevents reliable conclusions.'
+    ], visual: "clue-identifier"
+  },
+  {
+    id: "connotation", title: "Strategy #3: Connotation Matters", subtitle: "Words that mean similar things feel different",
+    body: [
+      'Many SAT answer choices are near-synonyms \u2014 they have similar dictionary definitions but different CONNOTATIONS (emotional associations). The SAT tests whether you can pick the one with the right "feel."',
+      'Consider: "thrifty" vs. "cheap" vs. "frugal" vs. "stingy"\nAll describe someone who doesn\'t spend much money, but:\n\u2022 Thrifty = positive (smart with money)\n\u2022 Frugal = positive/neutral (disciplined spending)\n\u2022 Cheap = negative (unwilling to spend even when appropriate)\n\u2022 Stingy = strongly negative (meanly unwilling to share)',
+      'On the SAT, two choices often have the right general meaning, but one has the wrong connotation for the passage\'s tone. If the passage is praising someone\'s spending habits, "thrifty" fits but "stingy" doesn\'t \u2014 even though both involve not spending money.',
+      'STRATEGY: After narrowing to two choices that both seem to fit, ask: "Does the passage view this positively, negatively, or neutrally?" Then pick the word whose connotation matches.'
+    ], visual: "connotation-demo"
+  },
+  {
+    id: "secondary", title: "Trap: Secondary Meanings", subtitle: "Common words with uncommon definitions",
+    body: [
+      "The SAT loves testing secondary meanings of common words. You know the word, but not in the way the passage uses it.",
+      'EXAMPLE: "The company\'s gravity was evident in the CEO\'s somber tone."\n"Gravity" here means SERIOUSNESS, not the physical force. The SAT would offer choices like: weight, seriousness, attraction, importance.',
+      'More secondary meanings the SAT tests:\n\u2022 "Check" = to restrain (not a bank check)\n\u2022 "Novel" = new/original (not a book)\n\u2022 "Temper" = to moderate/soften (not anger)\n\u2022 "Harbor" = to hold/shelter (not a port)\n\u2022 "Qualify" = to limit/modify (not to meet requirements)\n\u2022 "Fashion" = to create/shape (not clothing style)\n\u2022 "Arrest" = to stop/capture attention (not a police action)\n\u2022 "Cultivate" = to develop/nurture (not farming)',
+      "STRATEGY: If a common word appears as an answer choice, consider whether the passage might be using it in an unusual way. Don't default to the most familiar definition."
+    ], visual: null
+  },
+  {
+    id: "tier2", title: "Tier 2 Academic Vocabulary", subtitle: "The 'sweet spot' the SAT targets",
+    body: [
+      'The SAT focuses on Tier 2 vocabulary \u2014 words that appear across academic contexts but aren\'t common in everyday speech. These are words like "substantiate," "ambivalent," "pervasive," and "ephemeral."',
+      'They\'re not obscure or esoteric (Tier 3) \u2014 you won\'t see words like "defenestration" or "syzygy." And they\'re not basic everyday words (Tier 1) like "happy" or "run."',
+      "Building Tier 2 vocabulary is one of the highest-ROI test prep activities. Research shows that a targeted list of 300-500 words covers the vast majority of SAT vocabulary questions. We'll build this vocabulary throughout Units 2 and 3.",
+      "For now, focus on the PROCESS: use context clues first, then let vocabulary knowledge confirm your answer. Even if you don't know a word, you can usually narrow to two choices using tone and context \u2014 then educated guessing gives you 50/50 odds instead of 25%."
+    ], visual: "tier-visual"
+  },
+  {
+    id: "process", title: "The 4-Step Process", subtitle: "Your approach for every Words in Context question",
+    body: [
+      "STEP 1: Read the passage. Before looking at choices, predict what type of word belongs in the blank. Determine tone (positive/negative/neutral) and the general meaning needed.",
+      "STEP 2: Identify context clues. Find the definition, contrast, example, or logic clue that points to the answer. Underline it mentally.",
+      "STEP 3: Scan the choices. Eliminate any that have the wrong tone or don't match the context clues. You should be able to cut at least 1-2 immediately.",
+      'STEP 4: Choose the most PRECISE match. Among remaining options, pick the word that most specifically fits. "Innovative" might work, but "pioneering" might be more precise if the passage describes someone doing something for the first time.',
+      "COMMON MISTAKE: Picking a word that generally fits the topic instead of one that precisely fits the blank. Every word in the right answer must earn its place."
+    ], visual: "process-framework"
+  }
+];
+
+const TONE_PASSAGES = [
+  { text: 'Despite receiving widespread acclaim for her earlier novels, the author\'s latest work has been met with ______ reviews, with critics noting its disjointed narrative and underdeveloped characters.', tone: "negative", explain: '"Despite acclaim" + "disjointed" + "underdeveloped" = the reviews are negative.' },
+  { text: 'The researcher\'s ______ approach to data collection \u2014 involving meticulous cross-referencing and triple verification of every data point \u2014 ensured that the study\'s conclusions were virtually unassailable.', tone: "positive", explain: '"Meticulous," "triple verification," and "unassailable" conclusions = positive, careful approach.' },
+  { text: "The committee ______ the proposal, noting that while the concept showed promise, the implementation timeline and budget estimates required significant revision.", tone: "neutral", explain: "They didn't reject or accept it \u2014 they gave qualified feedback. \"Showed promise\" but \"required revision\" = measured/neutral response." },
+  { text: "The dancer's ______ performance captivated the audience, with each movement flowing seamlessly into the next in a display of extraordinary physical control.", tone: "positive", explain: '"Captivated," "seamlessly," "extraordinary" = strongly positive.' },
+  { text: 'Although the policy was ______ in its ambitions, its reliance on voluntary compliance and lack of enforcement mechanisms ultimately rendered it ineffective.', tone: "positive", explain: 'Tricky! The policy failed (negative outcome), but the BLANK describes the ambitions themselves, which were positive. "Although" signals the blank contrasts with "ineffective."' },
+  { text: "The archaeologist's ______ claims about the site's age \u2014 made without sufficient radiocarbon dating or peer review \u2014 drew sharp criticism from the broader scientific community.", tone: "negative", explain: '"Without sufficient" evidence + "sharp criticism" = the claims were irresponsible/negative.' }
+];
+
+const CLUE_ITEMS = [
+  { passage: 'Unlike the ______ designs of her contemporaries, which favored ornate decoration and complex layering, Nakamura\'s architecture emphasized clean lines and open space.', clueType: "contrast", clueText: '"Unlike" + "ornate decoration and complex layering"', choices: ["minimalist", "elaborate", "conventional", "innovative"], answer: 1, explain: 'Contrast clue: "Unlike" tells us the blank is what her contemporaries did \u2014 ornate and complex = elaborate. Nakamura is the minimalist one; the blank describes the others.' },
+  { passage: "The diplomat's ______ response \u2014 carefully avoiding direct criticism while still expressing reservations about the treaty's enforcement provisions \u2014 demonstrated her skill in navigating sensitive political situations.", clueType: "example", clueText: '"carefully avoiding direct criticism while still expressing reservations"', choices: ["diplomatic", "evasive", "measured", "ambiguous"], answer: 2, explain: 'Example clue: the dash introduces HOW she responded \u2014 careful, balanced, not too direct but still substantive. "Measured" captures this precisely. "Diplomatic" is too on-the-nose/circular. "Evasive" is too negative.' },
+  { passage: "Because the region's infrastructure had been severely compromised by decades of neglect, even routine maintenance tasks proved ______.", clueType: "logic", clueText: '"severely compromised" + "decades of neglect" \u2192 routine tasks would be...', choices: ["feasible", "straightforward", "arduous", "unnecessary"], answer: 2, explain: 'Logic clue: If infrastructure is severely compromised, routine tasks become difficult. "Arduous" (requiring great effort) fits.' },
+  { passage: "The novelist's prose is characterized by its ______ \u2014 a spareness and economy of expression in which every word serves a deliberate purpose and no sentence contains an unnecessary element.", clueType: "definition", clueText: '"spareness and economy of expression" directly defines the blank', choices: ["verbosity", "concision", "complexity", "elegance"], answer: 1, explain: 'Definition clue: the dash restates the blank\'s meaning. "Spareness," "economy of expression," "no unnecessary element" = concision.' },
+  { passage: "While many of her peers dismissed the theory as speculative, Dr. Okafor remained ______, continuing her research for another decade until she had gathered sufficient evidence to convince even her harshest critics.", clueType: "contrast", clueText: '"While many dismissed" (contrast) + "continuing her research" (persistence)', choices: ["steadfast", "skeptical", "indifferent", "cautious"], answer: 0, explain: 'Contrast clue: "While" signals opposition. Peers dismissed it, but she was the opposite \u2014 persistent, unwavering. "Steadfast" means firmly resolved.' },
+  { passage: "The composer's early works, though technically proficient, lacked the emotional ______ that would later define her mature compositions \u2014 audiences often described them as competent but cold.", clueType: "definition", clueText: '"competent but cold" tells us what was MISSING \u2014 emotional warmth/depth', choices: ["restraint", "resonance", "precision", "complexity"], answer: 1, explain: 'Definition/example clue: the works were "competent but cold" \u2014 so they lacked emotional impact/depth. "Resonance" means the quality of evoking emotion.' },
+  { passage: "The journalist's investigation revealed that the company had taken ______ steps to conceal the environmental damage, including falsifying reports, intimidating witnesses, and bribing local officials.", clueType: "example", clueText: "Falsifying, intimidating, bribing = deliberate, extreme concealment efforts", choices: ["modest", "deliberate", "transparent", "inadequate"], answer: 1, explain: 'Example clue: falsifying reports, intimidating witnesses, and bribing officials are all intentional, calculated actions. "Deliberate" captures this purposefulness.' },
+  { passage: 'The discovery of high concentrations of microplastics in Arctic ice cores, thousands of miles from any industrial source, underscored the ______ nature of plastic pollution \u2014 no ecosystem on Earth, however remote, remains untouched.', clueType: "logic", clueText: "Found thousands of miles away + no ecosystem untouched = everywhere", choices: ["localized", "pervasive", "temporary", "visible"], answer: 1, explain: 'Logic clue: plastic found in remote Arctic + "no ecosystem untouched" = pollution is everywhere. "Pervasive" means spread throughout.' }
+];
+
+const QUIZ = [
+  { id: 1, diff: "easy", passage: "The mountain village, accessible only by a narrow winding road that became impassable during winter storms, had remained largely ______ by modern development.", choices: ["affected", "untouched", "improved", "restricted"], answer: 1, clueType: "logic", explain: 'The village is hard to reach (narrow road, impassable in winter), so modern development hasn\'t reached it. "Untouched" means not affected or changed.' },
+  { id: 2, diff: "easy", passage: "The comedian's ______ delivery \u2014 every pause timed to perfection, every word precisely chosen for maximum impact \u2014 transformed even mundane observations into moments of genuine hilarity.", choices: ["impeccable", "spontaneous", "verbose", "monotonous"], answer: 0, clueType: "definition", explain: '"Every pause timed to perfection, every word precisely chosen" = flawless execution. "Impeccable" means faultless.' },
+  { id: 3, diff: "easy", passage: "Rather than simply memorizing formulas, the physics teacher encouraged students to develop an ______ understanding of the principles, one that would allow them to apply concepts to unfamiliar problems.", choices: ["intuitive", "superficial", "theoretical", "rigid"], answer: 0, clueType: "contrast", explain: 'Contrast with "memorizing formulas" + ability to "apply to unfamiliar problems" = deep, instinctive understanding. "Intuitive" means understood at a gut level.' },
+  { id: 4, diff: "medium", passage: "Although the initial findings appeared to ______ the researcher's hypothesis, subsequent experiments with larger sample sizes produced contradictory results that called the entire framework into question.", choices: ["undermine", "substantiate", "ignore", "complicate"], answer: 1, clueType: "contrast", explain: '"Although" signals contrast: initial findings did X, BUT later experiments contradicted. So the initial findings SUPPORTED the hypothesis. "Substantiate" means to provide evidence for.' },
+  { id: 5, diff: "medium", passage: "The architect's design was praised for its ______, achieving a striking visual impact through the use of only three materials: concrete, glass, and steel.", choices: ["elegance", "complexity", "austerity", "grandeur"], answer: 0, clueType: "logic", explain: '"Striking visual impact" with only three materials = beauty through simplicity. "Elegance" captures graceful effectiveness. "Complexity" contradicts the simplicity.' },
+  { id: 6, diff: "medium", passage: "The senator's position on the trade agreement has been notably ______: she has voiced support for its economic provisions while simultaneously criticizing its environmental protections as inadequate.", choices: ["resolute", "transparent", "ambivalent", "hostile"], answer: 2, clueType: "example", explain: 'She supports parts while criticizing others \u2014 mixed feelings. "Ambivalent" means having contradictory attitudes toward something.' },
+  { id: 7, diff: "medium", passage: "The documentary filmmaker ______ accepted the criticism, acknowledging that her portrayal of the community had been incomplete and promising to incorporate additional perspectives in future projects.", choices: ["reluctantly", "graciously", "dismissively", "angrily"], answer: 1, clueType: "example", explain: 'She acknowledged the criticism and promised to improve \u2014 a positive, mature response. "Graciously" means in a courteous, kind manner.' },
+  { id: 8, diff: "hard", passage: "Far from being a static document, the Constitution has proven remarkably ______, accommodating profound social transformations through both formal amendments and evolving judicial interpretation over more than two centuries.", choices: ["rigid", "adaptable", "controversial", "prescient"], answer: 1, clueType: "logic", explain: '"Far from static" + "accommodating social transformations" + "evolving interpretation" = flexible. "Adaptable" captures this precisely. "Prescient" (having foresight) misses the point.' },
+  { id: 9, diff: "hard", passage: "The critic argued that the gallery's decision to exhibit the controversial works was not an act of artistic courage but rather a ______ attempt to generate publicity, noting that the exhibition coincided precisely with the gallery's annual fundraising campaign.", choices: ["calculated", "spontaneous", "sincere", "reluctant"], answer: 0, clueType: "logic", explain: '"Not courage but rather..." + timed with fundraising = strategic, intentional. "Calculated" means done with deliberate intent (negative connotation here).' },
+  { id: 10, diff: "hard", passage: "While the novelist's early works featured ______ plots involving dozens of characters across multiple continents and time periods, her later novels achieved greater emotional depth through tightly focused narratives centered on a single family.", choices: ["sprawling", "predictable", "simplistic", "cohesive"], answer: 0, clueType: "contrast", explain: '"Dozens of characters across multiple continents and time periods" = spread out, expansive. "Sprawling" means spreading over a large area. Contrasts with "tightly focused."' },
+  { id: 11, diff: "hard", passage: "The ecologist cautioned against interpreting the recent uptick in the eagle population as evidence of full recovery, noting that the species' long-term viability remained ______ given ongoing threats from habitat fragmentation and pesticide contamination.", choices: ["assured", "precarious", "irrelevant", "unprecedented"], answer: 1, clueType: "logic", explain: '"Cautioned against" optimism + "ongoing threats" = still unstable/uncertain. "Precarious" means not securely held, dangerously uncertain.' }
+];
+
+/* ═══════════════════════════════════════════
+   LESSON VISUALS (preserved from original)
+   ═══════════════════════════════════════════ */
+
+function MiniToneSorter() {
+  const items = [
+    { word: "meticulous", tone: "positive" }, { word: "pedestrian", tone: "negative" },
+    { word: "comprehensive", tone: "neutral" }, { word: "groundbreaking", tone: "positive" },
+    { word: "superficial", tone: "negative" }, { word: "preliminary", tone: "neutral" }
+  ];
+  const [answers, setAnswers] = useState({});
+  const tones = ["positive", "neutral", "negative"];
+  const toneColors = { positive: ACCENT, neutral: BLUE, negative: RED };
+  return e("div", { style: { padding: "12px 20px" }},
+    e("div", { style: { color: AMBER, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 }}, "Quick Check: Sort by connotation"),
+    items.map((item, i) => {
+      const ans = answers[i]; const isRight = ans === item.tone;
+      return e("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6, padding: "6px 10px", borderRadius: 8, background: ans ? (isRight ? `${ACCENT}11` : `${RED}11`) : "transparent" }},
+        e("span", { style: { color: TEXT, fontWeight: 700, fontSize: 14, minWidth: 120 }}, item.word),
+        e("div", { style: { display: "flex", gap: 4 }}, tones.map(t =>
+          e("button", { key: t, onClick: () => setAnswers(p => ({...p, [i]: t})), disabled: !!ans,
+            style: { padding: "3px 10px", borderRadius: 6, border: `1px solid ${ans === t ? toneColors[t] : BORDER}`, background: "transparent", color: ans === t ? toneColors[t] : MUTED, fontSize: 11, fontWeight: 600, cursor: ans ? "default" : "pointer", textTransform: "capitalize" }}, t[0].toUpperCase())
+        )),
+        ans && e("span", { style: { fontSize: 12 }}, isRight ? "\u2705" : "\u274C")
+      );
+    })
+  );
+}
+function ClueTypeVisual() {
+  const clues = [
+    { type: "Definition", signal: "dashes, commas, 'meaning,' 'that is'", color: ACCENT, ex: "...oeuvre \u2014 her complete body of work \u2014..." },
+    { type: "Contrast", signal: "'unlike,' 'but,' 'however,' 'rather than'", color: AMBER, ex: "Unlike her cautious approach, the new director..." },
+    { type: "Example", signal: "specific details after a dash or colon", color: BLUE, ex: "...refusing to compromise, insulting opponents..." },
+    { type: "Logic", signal: "cause/effect: 'because,' 'therefore,' 'so'", color: PURPLE, ex: "Because the data was ______, they couldn't..." }
+  ];
+  return e("div", { style: { padding: "12px 20px" }}, clues.map((c, i) =>
+    e("div", { key: i, style: { display: "flex", gap: 12, marginBottom: 8, padding: "8px 12px", borderLeft: `3px solid ${c.color}`, borderRadius: "0 8px 8px 0", background: `${c.color}08` }},
+      e("div", { style: { minWidth: 80 }}, e("div", { style: { color: c.color, fontWeight: 800, fontSize: 13 }}, c.type), e("div", { style: { color: MUTED, fontSize: 10, marginTop: 2 }}, c.signal)),
+      e("div", { style: { color: SUB, fontSize: 12, fontFamily: "Georgia, serif", fontStyle: "italic" }}, c.ex))
+  ));
+}
+function ConnotationScale() {
+  const words = [{ word: "stingy", pos: -2 }, { word: "cheap", pos: -1 }, { word: "frugal", pos: 0.5 }, { word: "thrifty", pos: 1.5 }];
+  return e("div", { style: { padding: "16px 20px" }},
+    e("div", { style: { color: AMBER, fontSize: 12, fontWeight: 700, marginBottom: 12, textTransform: "uppercase", letterSpacing: 1 }}, "Connotation Spectrum: \"Doesn't spend money\""),
+    e("div", { style: { position: "relative", height: 60, marginBottom: 8 }},
+      e("div", { style: { position: "absolute", top: 28, left: 0, right: 0, height: 3, background: `linear-gradient(90deg,${RED},${MUTED},${ACCENT})`, borderRadius: 2 }}),
+      words.map((w, i) => { const left = (w.pos+2.5)/5*100; return e("div", { key: i, style: { position: "absolute", left: left+"%", top: 0, transform: "translateX(-50%)", textAlign: "center" }}, e("div", { style: { color: TEXT, fontWeight: 700, fontSize: 13, marginBottom: 4 }}, w.word), e("div", { style: { width: 12, height: 12, borderRadius: 6, background: w.pos < 0 ? RED : ACCENT, margin: "0 auto", border: `2px solid ${DARK}` }})); })
+    ),
+    e("div", { style: { display: "flex", justifyContent: "space-between", marginTop: 8 }},
+      e("span", { style: { color: RED, fontSize: 11, fontWeight: 600 }}, "\u2190 Negative"),
+      e("span", { style: { color: ACCENT, fontSize: 11, fontWeight: 600 }}, "Positive \u2192"))
+  );
+}
+function TierVisual() {
+  return e("div", { style: { padding: "12px 20px" }},
+    [{ tier: "Tier 1", label: "Everyday words", examples: "happy, run, big, eat", color: MUTED, note: "Not tested" },
+     { tier: "Tier 2", label: "Academic vocabulary", examples: "substantiate, ambivalent, pervasive, ephemeral", color: AMBER, note: "SAT sweet spot \u2605" },
+     { tier: "Tier 3", label: "Domain-specific", examples: "photosynthesis, jurisprudence, synecdoche", color: PURPLE, note: "Rarely tested" }
+    ].map((t, i) => e("div", { key: i, style: { display: "flex", gap: 12, marginBottom: 8, padding: "10px 14px", borderLeft: `3px solid ${t.color}`, borderRadius: "0 8px 8px 0", background: `${t.color}08` }},
+      e("div", { style: { minWidth: 50 }}, e("div", { style: { color: t.color, fontWeight: 800, fontSize: 13 }}, t.tier)),
+      e("div", { style: { flex: 1 }}, e("div", { style: { color: TEXT, fontSize: 13, fontWeight: 600 }}, t.label, " ", e("span", { style: { color: t.color, fontSize: 11 }}, t.note)), e("div", { style: { color: MUTED, fontSize: 12, fontStyle: "italic" }}, t.examples))
+    ))
+  );
+}
+function ProcessFramework() {
+  return e("div", { style: { padding: "12px 20px" }},
+    [{ n: "1", label: "Read & predict", detail: "Determine tone + general meaning before looking at choices", color: AMBER },
+     { n: "2", label: "Find the clue", detail: "Definition, contrast, example, or logic?", color: BLUE },
+     { n: "3", label: "Eliminate", detail: "Cut choices with wrong tone or meaning", color: RED },
+     { n: "4", label: "Choose precision", detail: "Among remaining options, pick the MOST specific fit", color: ACCENT }
+    ].map((s, i) => e("div", { key: i, style: { display: "flex", alignItems: "center", gap: 12, marginBottom: 8, padding: "8px 12px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 8px 8px 0" }},
+      e("div", { style: { width: 28, height: 28, borderRadius: 14, background: `${s.color}22`, color: s.color, fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }}, s.n),
+      e("div", null, e("div", { style: { color: TEXT, fontWeight: 700, fontSize: 13 }}, s.label), e("div", { style: { color: MUTED, fontSize: 11 }}, s.detail))
+    ))
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SCREENS
+   ═══════════════════════════════════════════ */
+
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => { setTimeout(() => setShow(true), 100); }, []);
+  return e("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" }},
+    e("div", { style: { background: `${AMBER}22`, border: `1px solid ${AMBER}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: AMBER, marginBottom: 12, fontWeight: 600 }}, "Unit 2 \u00B7 Module 5"),
+    e("h1", { style: { fontSize: "clamp(1.8rem,5vw,3rem)", fontWeight: 800, background: `linear-gradient(135deg,${AMBER},${AMBER2})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 }}, "Words in Context"),
+    e("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 40 }}, "The most common question type on the entire SAT R&W section. Learn to decode context clues, read connotation, and choose the most precise word \u2014 every time."),
+    e("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 14, maxWidth: 750, width: "100%", marginBottom: 48 }},
+      [{ icon: "\uD83D\uDD04", title: "Retrieval Warm-Up", desc: "Review from prior modules" },
+       { icon: "\uD83D\uDCD6", title: "Learn the Strategies", desc: "Tone, context clues, connotation" },
+       { icon: "\uD83C\uDFA8", title: "Tone Sorter", desc: "Read passages & classify the tone" },
+       { icon: "\uD83D\uDD0E", title: "Context Clue Practice", desc: "Find clues and pick the right word" },
+       { icon: "\u23F1\uFE0F", title: "Timed Practice Quiz", desc: "11 SAT-style questions, 55 sec each" }
+      ].map((c, i) => e("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, textAlign: "center" }},
+        e("div", { style: { fontSize: 28, marginBottom: 6 }}, c.icon),
+        e("div", { style: { color: TEXT, fontWeight: 700, fontSize: 14, marginBottom: 2 }}, c.title),
+        e("div", { style: { color: MUTED, fontSize: 12, lineHeight: 1.4 }}, c.desc)
+      ))
+    ),
+    e("button", { onClick: onNext, style: btn(`linear-gradient(135deg,${AMBER},${AMBER2})`, DARK),
+      onMouseOver: ev => ev.currentTarget.style.transform = "scale(1.04)",
+      onMouseOut: ev => ev.currentTarget.style.transform = "scale(1)" }, "Start Module \u2192"),
+    e("div", { style: { color: "#475569", fontSize: 13, marginTop: 24 }}, "~60 minutes \u00B7 Craft & Structure")
+  );
+}
+
+/* NEW: Retrieval Warm-Up Screen */
+function WarmUpScreen({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [sel, setSel] = useState(null);
+  const [conf, setConf] = useState(false);
+  const [score, setScore] = useState(0);
+  const q = WARMUP[idx]; const total = WARMUP.length;
+  function confirm() { if (sel === null) return; setConf(true); if (sel === q.correct) setScore(s => s+1); }
+  function next() {
+    if (idx < total - 1) { setIdx(idx+1); setSel(null); setConf(false); }
+    else onComplete(score + (sel === q.correct ? 1 : 0));
+  }
+  const letters = "ABCD";
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }},
+      e("div", { style: { color: PURPLE, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}, "\uD83D\uDD04 Retrieval Warm-Up"),
+      e("span", { style: { color: MUTED, fontSize: 13 }}, (idx+1)+"/"+total)
+    ),
+    e("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 24, overflow: "hidden" }},
+      e("div", { style: { height: "100%", width: `${(idx+(conf?1:0))/total*100}%`, background: `linear-gradient(90deg,${PURPLE},${AMBER})`, borderRadius: 2, transition: "width .4s" }})
+    ),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 20 }},
+      e("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 700, background: `${q.color}22`, color: q.color }}, q.domain),
+      e("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif", marginTop: 12 }}, q.passage)
+    ),
+    e("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 14 }}, q.stem),
+    e("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }},
+      q.choices.map((c, ci) => {
+        let bg = CARD, bdr = `1px solid ${BORDER}`, tc = "#cbd5e1";
+        if (conf && ci === q.correct) { bg = `${ACCENT}18`; bdr = `2px solid ${ACCENT}`; tc = ACCENT; }
+        else if (conf && sel === ci) { bg = `${RED}18`; bdr = `2px solid ${RED}`; tc = RED; }
+        else if (sel === ci && !conf) { bg = `${AMBER}15`; bdr = `2px solid ${AMBER}`; tc = AMBER; }
+        return e("button", { key: ci, onClick: () => { if (!conf) setSel(ci); }, disabled: conf,
+          style: { display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 10, background: bg, border: bdr, cursor: conf ? "default" : "pointer", textAlign: "left", width: "100%" }},
+          e("span", { style: { minWidth: 26, height: 26, borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 12, background: conf && ci === q.correct ? ACCENT : conf && sel === ci ? RED : sel === ci ? AMBER : BORDER, color: (sel === ci || conf) ? DARK : MUTED }}, letters[ci]),
+          e("span", { style: { color: tc, fontSize: 14 }}, c)
+        );
+      })
+    ),
+    conf && e("div", { style: { background: BORDER, borderRadius: 12, padding: 16, marginBottom: 20, borderLeft: `4px solid ${BLUE}` }},
+      e("div", { style: { color: BLUE, fontWeight: 700, fontSize: 13, marginBottom: 6 }}, "Explanation"),
+      e("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 }}, q.explain)
+    ),
+    e("div", { style: { display: "flex", justifyContent: "flex-end" }},
+      !conf
+        ? e("button", { onClick: confirm, disabled: sel === null, style: btn(sel === null ? BORDER : AMBER, sel === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Confirm Answer \u2192")
+        : e("button", { onClick: next, style: btn(`linear-gradient(135deg,${AMBER},${AMBER2})`, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < total-1 ? "Next \u2192" : "Continue to Lesson \u2192")
+    )
+  );
+}
+
+function LessonViewer({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const lesson = LESSONS[idx]; const total = LESSONS.length;
+  function renderVisual() {
+    if (lesson.visual === "stats") return e("div", { style: { display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", padding: 16 }},
+      [{ n: "~20%", label: "of SAT R&W", sub: "Highest frequency Q type" }, { n: "10-11", label: "questions/test", sub: "Words in Context" }, { n: "4", label: "context clue types", sub: "Definition, contrast, example, logic" }].map((s,i) =>
+        e("div", { key: i, style: { background: `${AMBER}11`, border: `1px solid ${AMBER}33`, borderRadius: 14, padding: "16px 24px", textAlign: "center", minWidth: 140 }},
+          e("div", { style: { color: AMBER, fontWeight: 900, fontSize: 28 }}, s.n), e("div", { style: { color: TEXT, fontSize: 13, fontWeight: 600 }}, s.label), e("div", { style: { color: MUTED, fontSize: 11 }}, s.sub))));
+    if (lesson.visual === "tone-sorter") return e(MiniToneSorter);
+    if (lesson.visual === "clue-identifier") return e(ClueTypeVisual);
+    if (lesson.visual === "connotation-demo") return e(ConnotationScale);
+    if (lesson.visual === "tier-visual") return e(TierVisual);
+    if (lesson.visual === "process-framework") return e(ProcessFramework);
+    return null;
+  }
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "center", gap: 6, marginBottom: 32 }},
+      LESSONS.map((_, i) => e("div", { key: i, onClick: () => setIdx(i), style: { width: i === idx ? 24 : 8, height: 8, borderRadius: 4, background: i === idx ? AMBER : i < idx ? `${AMBER}66` : BORDER, cursor: "pointer", transition: "all .3s" }}))
+    ),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", marginBottom: 32 }},
+      e("div", { style: { padding: "28px 28px 0" }},
+        e("div", { style: { color: AMBER, fontSize: 12, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 }}, lesson.subtitle),
+        e("h2", { style: { color: TEXT, fontSize: "clamp(1.2rem,3vw,1.6rem)", fontWeight: 800, marginBottom: 16, lineHeight: 1.2 }}, lesson.title),
+        lesson.body.map((p, i) => e("p", { key: i, style: { color: SUB, fontSize: 14, lineHeight: 1.75, marginBottom: 14, whiteSpace: "pre-line" }}, p))
+      ),
+      lesson.visual && e("div", { style: { padding: "8px 4px 20px" }}, renderVisual())
+    ),
+    e("div", { style: { display: "flex", justifyContent: "space-between" }},
+      e("button", { onClick: () => setIdx(Math.max(0, idx-1)), disabled: idx === 0,
+        style: { ...btn("transparent", idx===0 ? "#334155" : SUB), border: `1px solid ${BORDER}`, padding: "10px 20px", fontSize: 14 }}, "\u2190 Back"),
+      idx < total - 1
+        ? e("button", { onClick: () => setIdx(idx+1), style: btn(AMBER, DARK, { fontSize: 14, padding: "10px 20px" }) }, "Next \u2192")
+        : e("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${AMBER},${AMBER2})`, DARK, { fontSize: 14, padding: "10px 24px" }) }, "Start Tone Sorter \u2192")
+    )
+  );
+}
+
+function ToneSorter({ onComplete }) {
+  const [idx, setIdx] = useState(0); const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false); const [score, setScore] = useState(0); const [done, setDone] = useState(false);
+  const item = TONE_PASSAGES[idx]; const tones = ["positive","neutral","negative"];
+  const toneColors = { positive: ACCENT, neutral: BLUE, negative: RED };
+  const toneIcons = { positive: "\u2600\uFE0F", neutral: "\u2601\uFE0F", negative: "\uD83C\uDF27\uFE0F" };
+  function confirm() { if (!selected) return; setConfirmed(true); if (selected === item.tone) setScore(s=>s+1); }
+  function next() { if (idx < TONE_PASSAGES.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); } else setDone(true); }
+  if (done) return e("div", { style: { maxWidth: 600, margin: "0 auto", padding: "80px 20px", textAlign: "center" }},
+    e("div", { style: { fontSize: 48, marginBottom: 16 }}, "\uD83C\uDFA8"), e("h2", { style: { color: TEXT, fontSize: 28, fontWeight: 800, marginBottom: 8 }}, "Tone Sorter Complete"),
+    e("div", { style: { color: AMBER, fontSize: 48, fontWeight: 900 }}, score, "/", TONE_PASSAGES.length),
+    e("p", { style: { color: SUB, fontSize: 15, marginTop: 8, marginBottom: 32 }}, "tones correctly identified"),
+    e("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${AMBER},${AMBER2})`, DARK) }, "Continue to Context Clues \u2192"));
+  const isRight = confirmed && selected === item.tone;
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 24 }},
+      e("div", { style: { color: AMBER, fontSize: 13, fontWeight: 700 }}, "\uD83C\uDFA8 Tone Sorter"),
+      e("div", { style: { color: MUTED, fontSize: 13 }}, idx+1, " of ", TONE_PASSAGES.length, " \u00B7 Score: ", score)),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 28, marginBottom: 20 }},
+      e("div", { style: { color: MUTED, fontSize: 12, fontWeight: 600, marginBottom: 12, textTransform: "uppercase", letterSpacing: 1 }}, "What tone does the blank need?"),
+      e("div", { style: { color: TEXT, fontSize: 16, fontFamily: "Georgia, serif", lineHeight: 1.8 }}, item.text)),
+    e("div", { style: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 24 }},
+      tones.map(t => { const isSel = selected === t; const isCorr = confirmed && t === item.tone; const isWrong = confirmed && isSel && t !== item.tone;
+        return e("button", { key: t, onClick: () => { if (!confirmed) setSelected(t); }, disabled: confirmed,
+          style: { padding: "16px 12px", borderRadius: 14, textAlign: "center", cursor: confirmed?"default":"pointer",
+            background: isCorr ? `${toneColors[t]}22` : isWrong ? `${RED}22` : isSel ? `${toneColors[t]}15` : CARD,
+            border: isCorr ? `2px solid ${toneColors[t]}` : isWrong ? `2px solid ${RED}` : isSel ? `2px solid ${toneColors[t]}` : `1px solid ${BORDER}` }},
+          e("div", { style: { fontSize: 24, marginBottom: 4 }}, toneIcons[t]),
+          e("div", { style: { color: isCorr ? toneColors[t] : isWrong ? RED : isSel ? toneColors[t] : TEXT, fontWeight: 700, fontSize: 14, textTransform: "capitalize" }}, t));
+      })),
+    confirmed && e("div", { style: { background: isRight ? `${ACCENT}11` : `${RED}11`, border: `1px solid ${isRight?ACCENT:RED}44`, borderRadius: 12, padding: 16, marginBottom: 20 }},
+      e("div", { style: { color: isRight ? ACCENT : RED, fontWeight: 700, fontSize: 14, marginBottom: 6 }}, isRight ? "Correct!" : "Not quite \u2014 the tone is "+item.tone+"."),
+      e("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 }}, item.explain)),
+    e("div", { style: { display: "flex", justifyContent: "flex-end" }},
+      !confirmed ? e("button", { onClick: confirm, disabled: !selected, style: btn(!selected ? BORDER : AMBER, !selected ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Check")
+        : e("button", { onClick: next, style: btn(AMBER, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < TONE_PASSAGES.length-1 ? "Next \u2192" : "See Results \u2192"))
+  );
+}
+
+function CluePractice({ onComplete }) {
+  const [idx, setIdx] = useState(0); const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false); const [score, setScore] = useState(0); const [done, setDone] = useState(false);
+  const item = CLUE_ITEMS[idx]; const clueColors = { definition: ACCENT, contrast: AMBER, example: BLUE, logic: PURPLE };
+  function confirm() { if (selected === null) return; setConfirmed(true); if (selected === item.answer) setScore(s=>s+1); }
+  function next() { if (idx < CLUE_ITEMS.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); } else setDone(true); }
+  if (done) return e("div", { style: { maxWidth: 600, margin: "0 auto", padding: "80px 20px", textAlign: "center" }},
+    e("div", { style: { fontSize: 48, marginBottom: 16 }}, "\uD83D\uDD0E"), e("h2", { style: { color: TEXT, fontSize: 28, fontWeight: 800, marginBottom: 8 }}, "Context Clues Complete"),
+    e("div", { style: { color: AMBER, fontSize: 48, fontWeight: 900 }}, score, "/", CLUE_ITEMS.length),
+    e("p", { style: { color: SUB, fontSize: 15, marginTop: 8, marginBottom: 32 }}, "correct answers"),
+    e("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${AMBER},${AMBER2})`, DARK) }, "Continue to Timed Practice \u2192"));
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }},
+      e("div", { style: { color: BLUE, fontSize: 13, fontWeight: 700 }}, "\uD83D\uDD0E Context Clue Practice"),
+      e("div", { style: { display: "flex", alignItems: "center", gap: 8 }},
+        e("span", { style: { color: clueColors[item.clueType], fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 6, background: `${clueColors[item.clueType]}15` }}, item.clueType+" clue"),
+        e("span", { style: { color: MUTED, fontSize: 13 }}, idx+1, "/", CLUE_ITEMS.length))),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 28, marginBottom: 20 }},
+      e("div", { style: { color: TEXT, fontSize: 16, fontFamily: "Georgia, serif", lineHeight: 1.8 }}, item.passage),
+      confirmed && e("div", { style: { marginTop: 12, padding: "8px 12px", borderRadius: 8, background: `${clueColors[item.clueType]}11`, border: `1px solid ${clueColors[item.clueType]}33` }},
+        e("div", { style: { color: clueColors[item.clueType], fontSize: 12, fontWeight: 600 }}, "Context clue: ", item.clueText))),
+    e("div", { style: { display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 10, marginBottom: 24 }},
+      item.choices.map((c, ci) => {
+        let bg = CARD, bdr = `1px solid ${BORDER}`, tc = TEXT;
+        if (confirmed && ci === item.answer) { bg = `${ACCENT}18`; bdr = `2px solid ${ACCENT}`; tc = ACCENT; }
+        else if (confirmed && selected === ci) { bg = `${RED}18`; bdr = `2px solid ${RED}`; tc = RED; }
+        else if (selected === ci && !confirmed) { bg = `${AMBER}15`; bdr = `2px solid ${AMBER}`; tc = AMBER; }
+        return e("button", { key: ci, onClick: () => { if (!confirmed) setSelected(ci); }, disabled: confirmed,
+          style: { padding: "14px 16px", borderRadius: 12, background: bg, border: bdr, color: tc, fontWeight: 700, fontSize: 15, cursor: confirmed?"default":"pointer", textAlign: "center" }}, c);
+      })),
+    confirmed && e("div", { style: { background: BORDER, borderRadius: 12, padding: 16, marginBottom: 20, borderLeft: `4px solid ${BLUE}` }},
+      e("div", { style: { color: BLUE, fontWeight: 700, fontSize: 13, marginBottom: 6 }}, "Explanation"),
+      e("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 }}, item.explain)),
+    e("div", { style: { display: "flex", justifyContent: "flex-end" }},
+      !confirmed ? e("button", { onClick: confirm, disabled: selected === null, style: btn(selected === null ? BORDER : AMBER, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Check")
+        : e("button", { onClick: next, style: btn(AMBER, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < CLUE_ITEMS.length-1 ? "Next \u2192" : "See Results \u2192"))
+  );
+}
+
+/* UPDATED: Timed Practice Quiz with countdown timer + score dots */
+function PracticeQuiz({ onComplete }) {
+  const [idx, setIdx] = useState(0); const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false); const [answers, setAnswers] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(QUIZ.length * 55);
+  const timerRef = useRef(null);
+  const q = QUIZ[idx]; const total = QUIZ.length;
+  const diffColors = { easy: ACCENT, medium: AMBER, hard: RED };
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setTimeLeft(t => { if (t <= 1) { clearInterval(timerRef.current); return 0; } return t-1; });
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, []);
+  useEffect(() => { if (timeLeft <= 0) finish(); }, [timeLeft]);
+
+  function handleConfirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    setAnswers(p => [...p, { selected, correct: q.answer, diff: q.diff, clueType: q.clueType }]);
+  }
+  function next() {
+    if (idx < total-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); window.scrollTo(0,0); }
+    else finish();
+  }
+  function finish() {
+    clearInterval(timerRef.current);
+    const final = confirmed ? answers : [...answers, selected !== null ? { selected, correct: q.answer, diff: q.diff, clueType: q.clueType } : { selected: -1, correct: q.answer, diff: q.diff, clueType: q.clueType }];
+    onComplete(final);
+  }
+
+  const m = Math.floor(timeLeft/60), s = timeLeft%60;
+  const totalTime = QUIZ.length * 55;
+  const pct = timeLeft / totalTime * 100;
+
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "32px 20px", minHeight: "100vh" }},
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }},
+      e("div", { style: { color: AMBER, fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}, "\uD83D\uDCDD Timed Practice"),
+      e("div", { style: { fontFamily: "'Courier New',monospace", fontSize: 14, fontWeight: 700, color: pct < 20 ? RED : MUTED }}, m+":"+(s<10?"0":"")+s)
+    ),
+    e("div", { style: { height: 5, background: BORDER, borderRadius: 3, marginBottom: 8, overflow: "hidden" }},
+      e("div", { style: { height: "100%", width: pct+"%", background: pct < 20 ? RED : `linear-gradient(90deg,${AMBER},${AMBER2})`, borderRadius: 3, transition: "width .1s linear" }})
+    ),
+    e("div", { style: { display: "flex", gap: 4, marginBottom: 16, flexWrap: "wrap" }},
+      QUIZ.map((_, i) => {
+        let bg = BORDER, c2 = "#555";
+        if (i < answers.length) { bg = answers[i].selected === answers[i].correct ? `${ACCENT}88` : `${RED}88`; c2 = "#fff"; }
+        else if (i === idx) { bg = AMBER; c2 = DARK; }
+        return e("div", { key: i, style: { width: 26, height: 26, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, fontFamily: "monospace", background: bg, color: c2 }}, i+1);
+      })
+    ),
+    e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }},
+      e("div", { style: { color: TEXT, fontWeight: 800, fontSize: 15 }}, "Question ", idx+1, " of ", total),
+      e("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 700, background: `${diffColors[q.diff]}22`, color: diffColors[q.diff] }}, q.diff)
+    ),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 20 }},
+      e("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif" }}, q.passage)),
+    e("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 }}, "Which choice completes the text with the most logical and precise word?"),
+    e("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }},
+      q.choices.map((c, ci) => {
+        const letter = "ABCD"[ci]; const isSel = selected === ci; const isCorr = ci === q.answer;
+        let bg = CARD, bdr = `1px solid ${BORDER}`, tc = "#cbd5e1";
+        if (confirmed && isCorr) { bg = `${ACCENT}18`; bdr = `2px solid ${ACCENT}`; tc = ACCENT; }
+        else if (confirmed && isSel && !isCorr) { bg = `${RED}18`; bdr = `2px solid ${RED}`; tc = RED; }
+        else if (isSel && !confirmed) { bg = `${AMBER}15`; bdr = `2px solid ${AMBER}`; tc = AMBER; }
+        return e("button", { key: ci, onClick: () => { if (!confirmed) setSelected(ci); }, disabled: confirmed,
+          style: { display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed?"default":"pointer", textAlign: "left", width: "100%" }},
+          e("span", { style: { minWidth: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? AMBER : BORDER, color: isSel || confirmed ? DARK : MUTED }}, letter),
+          e("span", { style: { color: tc, fontSize: 14 }}, c));
+      })),
+    confirmed && e("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: `4px solid ${BLUE}` }},
+      e("div", { style: { color: BLUE, fontWeight: 700, fontSize: 13, marginBottom: 6 }}, "Explanation"),
+      e("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 }}, q.explain)),
+    e("div", { style: { display: "flex", justifyContent: "flex-end" }},
+      !confirmed
+        ? e("button", { onClick: handleConfirm, disabled: selected === null, style: btn(selected === null ? BORDER : AMBER, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Confirm Answer")
+        : e("button", { onClick: next, style: btn(`linear-gradient(135deg,${AMBER},${AMBER2})`, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < total-1 ? "Next \u2192" : "See Results \u2192"))
+  );
+}
+
+/* NEW: Results Screen with Error Pattern Analysis */
+function ResultsScreen({ answers, onComplete }) {
+  const total = answers.length;
+  const correct = answers.filter(a => a.selected === a.correct).length;
+  const pct = Math.round(correct / total * 100);
+
+  const byDiff = {}; const byClue = {};
+  answers.forEach(a => {
+    if (!byDiff[a.diff]) byDiff[a.diff] = { c: 0, t: 0 }; byDiff[a.diff].t++;
+    if (a.selected === a.correct) byDiff[a.diff].c++;
+    if (!byClue[a.clueType]) byClue[a.clueType] = { c: 0, t: 0 }; byClue[a.clueType].t++;
+    if (a.selected === a.correct) byClue[a.clueType].c++;
+  });
+
+  const errors = answers.filter(a => a.selected !== a.correct);
+  const errByClue = {}; errors.forEach(er => { errByClue[er.clueType] = (errByClue[er.clueType]||0)+1; });
+  const diffColors = { easy: ACCENT, medium: AMBER, hard: RED };
+  const clueColors = { definition: ACCENT, contrast: AMBER, example: BLUE, logic: PURPLE };
+
+  let advice = "";
+  if (pct >= 80) advice = "Excellent! Your vocabulary intuition is strong. Module 6 builds on this with advanced vocabulary \u2014 secondary meanings, precise distinctions, and the hardest connotation questions the SAT throws at you.";
+  else if (pct >= 60) {
+    advice = "Good foundation! ";
+    if (errByClue.contrast) advice += "Watch for contrast clues \u2014 words like \"although,\" \"unlike,\" and \"but\" signal the blank is opposite to something stated. ";
+    if (errByClue.logic) advice += "For logic clues, trace the cause-and-effect chain before looking at choices. ";
+    if (errByClue.definition) advice += "Definition clues restate the blank's meaning near dashes or commas \u2014 underline them mentally. ";
+    advice += "Focus on the 4-step process: tone first, find the clue, eliminate, then choose precision.";
+  } else advice = "Keep practicing the fundamentals. The single most important habit: determine the TONE of the blank before looking at choices. This one step eliminates 1-2 wrong answers immediately. Then find the context clue. Review the lesson slides and retake the quiz tomorrow.";
+
+  return e("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px", minHeight: "100vh" }},
+    e("div", { style: { textAlign: "center", marginBottom: 32 }},
+      e("div", { style: { fontSize: 56, fontWeight: 900, color: pct >= 75 ? ACCENT : pct >= 50 ? AMBER : RED }}, correct+"/"+total),
+      e("div", { style: { color: MUTED, fontSize: 15 }}, pct+"% \u00B7 Words in Context")
+    ),
+    e("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }},
+      e("div", null,
+        e("div", { style: { fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: MUTED, marginBottom: 8 }}, "By Difficulty"),
+        ["easy","medium","hard"].filter(d => byDiff[d]).map(d => {
+          const dd = byDiff[d]; const dp = Math.round(dd.c/dd.t*100);
+          return e("div", { key: d, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 12, marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }},
+            e("span", { style: { color: diffColors[d], fontWeight: 700, fontSize: 13, textTransform: "capitalize" }}, d),
+            e("span", { style: { fontSize: 15, fontWeight: 700, color: dp >= 75 ? ACCENT : dp >= 50 ? AMBER : RED }}, dd.c+"/"+dd.t));
+        })
+      ),
+      e("div", null,
+        e("div", { style: { fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: MUTED, marginBottom: 8 }}, "By Context Clue Type"),
+        Object.entries(byClue).map(([name, d]) => {
+          const dp = Math.round(d.c/d.t*100);
+          return e("div", { key: name, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 12, marginBottom: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }},
+            e("span", { style: { color: clueColors[name] || MUTED, fontWeight: 700, fontSize: 13, textTransform: "capitalize" }}, name),
+            e("span", { style: { fontSize: 15, fontWeight: 700, color: dp >= 75 ? ACCENT : dp >= 50 ? AMBER : RED }}, d.c+"/"+d.t));
+        })
+      )
+    ),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, marginBottom: 24, borderLeft: `3px solid ${AMBER}` }},
+      e("div", { style: { color: AMBER, fontWeight: 700, fontSize: 13, marginBottom: 6 }}, "Analysis"),
+      e("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.7 }}, advice)
+    ),
+    errors.length > 0 && e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, marginBottom: 24 }},
+      e("div", { style: { color: RED, fontWeight: 700, fontSize: 13, marginBottom: 10 }}, errors.length+" error"+(errors.length>1?"s":"")),
+      Object.entries(errByClue).map(([ct, count]) =>
+        e("div", { key: ct, style: { background: DARK, borderRadius: 8, padding: 10, marginBottom: 6, border: `1px solid ${BORDER}`, display: "flex", alignItems: "center", gap: 8 }},
+          e("span", { style: { background: `${RED}22`, color: RED, padding: "2px 8px", borderRadius: 4, fontSize: 11, fontWeight: 700 }}, count+"x"),
+          e("span", { style: { fontWeight: 700, fontSize: 13, textTransform: "capitalize" }}, ct+" clue"))
+      ),
+      errByClue.contrast >= 2 && e("div", { style: { marginTop: 10, padding: 10, background: `${AMBER}11`, border: `1px solid ${AMBER}33`, borderRadius: 8, fontSize: 13, color: AMBER }},
+        "Pattern: Multiple contrast clue errors. Look for signal words: \"although,\" \"unlike,\" \"but,\" \"rather than.\" The blank is the OPPOSITE of what follows."),
+      errByClue.logic >= 2 && e("div", { style: { marginTop: 10, padding: 10, background: `${PURPLE}11`, border: `1px solid ${PURPLE}33`, borderRadius: 8, fontSize: 13, color: PURPLE }},
+        "Pattern: Multiple logic clue errors. Trace the cause-and-effect chain: \"Because X, the result was ______.\" The blank must complete the logical sequence."),
+      byDiff.easy && byDiff.easy.c < byDiff.easy.t - 1 && e("div", { style: { marginTop: 10, padding: 10, background: `${RED}11`, border: `1px solid ${RED}33`, borderRadius: 8, fontSize: 13, color: RED }},
+        "\u26A0 Multiple errors on easy questions. Review Strategy #1 (Tone First) \u2014 determining positive/negative/neutral before looking at choices should handle these.")
+    ),
+    e("div", { style: { textAlign: "center" }},
+      e("button", { onClick: () => onComplete(correct, total), style: btn(`linear-gradient(135deg,${AMBER},${AMBER2})`, DARK) }, "Finish Module \u2192"))
+  );
+}
+
+function ModuleComplete({ quizScore, quizTotal }) {
+  const pct = Math.round(quizScore / quizTotal * 100);
+  return e("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", textAlign: "center" }},
+    e("div", { style: { fontSize: 64, marginBottom: 16 }}, "\uD83C\uDF89"),
+    e("h1", { style: { color: AMBER, fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 800, marginBottom: 8 }}, "Module 5 Complete"),
+    e("p", { style: { color: SUB, fontSize: 16, marginBottom: 32, maxWidth: 480 }}, "You've learned the core strategies for Words in Context questions."),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 32, marginBottom: 32, minWidth: 280 }},
+      e("div", { style: { color: AMBER, fontSize: 56, fontWeight: 900 }}, quizScore, "/", quizTotal),
+      e("div", { style: { color: SUB, fontSize: 14, marginTop: 4 }}, "Practice Quiz Score (", pct, "%)"),
+      e("div", { style: { height: 8, background: BORDER, borderRadius: 4, marginTop: 16, overflow: "hidden" }},
+        e("div", { style: { height: "100%", width: pct+"%", background: `linear-gradient(90deg,${AMBER},${ACCENT})`, borderRadius: 4 }}))),
+    e("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, maxWidth: 480, marginBottom: 32 }},
+      e("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 }}, "Homework"),
+      e("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.8, textAlign: "left" }},
+        e("strong", { style: { color: TEXT }}, "1. Vocabulary Journal"), " \u2014 Find 5 Tier 2 words in an article you read this week. Write context-based definitions.", e("br"),
+        e("strong", { style: { color: TEXT }}, "2. Tone Practice"), " \u2014 Read 3 short passages and label each blank as positive, negative, or neutral before looking at choices.", e("br"),
+        e("strong", { style: { color: TEXT }}, "3. Connotation Pairs"), " \u2014 Pick 3 near-synonym pairs (e.g., stubborn/resolute). Write a sentence where only one fits.", e("br"),
+        e("strong", { style: { color: TEXT }}, "4. Preview Module 6"), " \u2014 Advanced Vocabulary: secondary meanings and precision distinctions."
+      )),
+    e("div", { style: { display: "flex", gap: 12 }},
+      e("a", { href: "module-4.html", style: { color: AMBER, fontSize: 14, textDecoration: "none" }}, "\u2190 Module 4"),
+      e("a", { href: "module-6.html", style: { color: AMBER, fontSize: 14, textDecoration: "none" }}, "Module 6 \u2192")),
+    e("div", { style: { color: MUTED, fontSize: 13, marginTop: 16 }}, "Next up: Module 6 \u2014 Advanced Vocabulary & Precision")
+  );
+}
+
+/* ═══════════════════════════════════════════
+   APP
+   ═══════════════════════════════════════════ */
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [quizScore, setQuizScore] = useState(0);
+  const [quizTotal, setQuizTotal] = useState(QUIZ.length);
+  const [quizAnswers, setQuizAnswers] = useState([]);
+
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => { setScreen(to); window.scrollTo(0, 0); setFade(true); }, 350);
+  }, []);
+
+  return e("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }},
+    e("div", { style: { position: "fixed", inset: 0, pointerEvents: "none", opacity: 0.03,
+      backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)", backgroundSize: "40px 40px" }}),
+    e("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" }},
+      screen === "welcome" && e(Welcome, { onNext: () => go("warmup") }),
+      screen === "warmup" && e(WarmUpScreen, { onComplete: () => go("lesson") }),
+      screen === "lesson" && e(LessonViewer, { onComplete: () => go("tone") }),
+      screen === "tone" && e(ToneSorter, { onComplete: () => go("clue") }),
+      screen === "clue" && e(CluePractice, { onComplete: () => go("quiz") }),
+      screen === "quiz" && e(PracticeQuiz, { onComplete: (ans) => { setQuizAnswers(ans); go("results"); } }),
+      screen === "results" && e(ResultsScreen, { answers: quizAnswers, onComplete: (s, t) => { setQuizScore(s); setQuizTotal(t); go("complete"); } }),
+      screen === "complete" && e(ModuleComplete, { quizScore, quizTotal })
+    )
+  );
+}
+
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>

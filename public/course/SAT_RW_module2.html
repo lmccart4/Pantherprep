@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 2: Agreement & Verb Tense — SAT R&W — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e2e8f0;font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+input[type="range"]{width:100%}
+button{font-family:inherit}
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const{useState,useEffect,useCallback,useRef,useMemo}=React;
+const e=React.createElement;
+
+// ══════════ DESIGN TOKENS ══════════
+const ACCENT="#10b981",ACCENT2="#f59e0b",BLUE="#3b82f6",RED="#ef4444",DARK="#0a0a0f",CARD="#13131f",BORDER="#1e293b",MUTED="#64748b",TEXT="#e2e8f0",SUB="#94a3b8",PURPLE="#a855f7";
+const btn=(bg,color,extra)=>({padding:"12px 28px",borderRadius:10,border:"none",background:bg,color,fontWeight:700,fontSize:15,cursor:"pointer",transition:"transform .12s, filter .12s",...extra});
+const btnSm=(bg,color,extra)=>btn(bg,color,{padding:"8px 18px",fontSize:13,...extra});
+
+// ══════════ CONTENT DATA ══════════
+
+// --- WARMUP: Retrieval from Module 1 (Boundaries) ---
+const WARMUP=[
+  {passage:'The marine biologist noted that the coral reefs, which had been damaged by decades of rising ocean temperatures _______ were beginning to show signs of recovery thanks to new conservation efforts.',
+   choices:['and pollution,','and pollution','and pollution;','and, pollution'],correct:0,type:'Boundaries',
+   explain:'The nonrestrictive clause "which had been damaged by…" must close with a comma. "And pollution" is part of the clause, so the comma goes after "pollution," to close the clause before "were."'},
+  {passage:'The architect\'s most ambitious project — a floating concert hall designed to rise and fall with the _______ required engineering solutions that had never been attempted before.',
+   choices:['tides,','tides —','tides;','tides'],correct:1,type:'Boundaries',
+   explain:'The em-dash opens a nonrestrictive element. It must close with a matching em-dash before "required."'},
+  {passage:'Several historians have challenged the traditional narrative of the Industrial _______ they argue that the economic transformation was far more gradual than textbooks suggest.',
+   choices:['Revolution, they','Revolution; they','Revolution they','Revolution: they,'],correct:1,type:'Boundaries',
+   explain:'Two independent clauses. A semicolon correctly joins them. (A) = comma splice. (C) = run-on.'},
+  {passage:'The photographer spent three years documenting the lives of migrant workers in California\'s Central _______ her images captured both the hardship and the resilience of the communities she visited.',
+   choices:['Valley, her','Valley; her','Valley her','Valley. Her,'],correct:1,type:'Boundaries',
+   explain:'Two ICs joined by semicolon. (A) = comma splice. (C) = fused sentence.'},
+  {passage:'Though the novel received mixed reviews from literary _______ it went on to become one of the best-selling books of the decade.',
+   choices:['critics. It','critics, it','critics; it','critics it'],correct:1,type:'Boundaries',
+   explain:'Dependent clause ("Though…critics") + independent clause → comma separates them. A period/semicolon would strand the DC as a fragment.'},
+  {passage:'The museum\'s newest exhibit features artifacts from ancient _______ including pottery, tools, and jewelry dating back more than 3,000 years.',
+   choices:['Mesopotamia, including','Mesopotamia; including','Mesopotamia: including','Mesopotamia including'],correct:0,type:'Boundaries',
+   explain:'"Including…" is a nonrestrictive participial phrase modifying "artifacts." A comma sets it off. A semicolon would require an IC after it; a colon would also work grammatically but the comma is standard here.'}
+];
+
+// --- LESSONS ---
+const LESSONS=[
+  {id:"intro",title:"The Agreement Principle",subtitle:"Subjects and verbs must match — always",
+   body:[
+     'Agreement questions make up about 14% of the SAT R&W section — roughly 7-8 questions per test under "Form, Structure & Sense." They\'re the second most common grammar question type after boundary questions.',
+     'The core rule is simple: a singular subject takes a singular verb, and a plural subject takes a plural verb. "The dog runs" (singular). "The dogs run" (plural).',
+     "If that sounds easy, it's because the SAT never tests it that simply. The test buries the real subject under layers of intervening phrases, prepositional clauses, and inverted sentence structures designed to trick your ear."
+   ],visual:"stats"},
+  {id:"intervening",title:"Trap #1: The Intervening Phrase",subtitle:"The SAT's favorite agreement trick",
+   body:[
+     "The most common SAT agreement trap places words between the subject and verb that make you forget what the real subject is.",
+     '"The collection of rare manuscripts WAS donated..."',
+     'Your ear hears "manuscripts" (plural) right before the verb and wants to say "were." But the subject is "collection" (singular). The phrase "of rare manuscripts" is a prepositional phrase modifying "collection" — it\'s not the subject.',
+     'RULE: The subject of a sentence is NEVER inside a prepositional phrase (of, in, at, by, with, among, between, etc.).',
+     'This is tested on virtually every SAT. Cross out the prepositional phrase mentally and the correct verb becomes obvious: "The collection...WAS donated."'
+   ],visual:"cross-out-demo"},
+  {id:"relative",title:"Trap #2: Relative Clauses",subtitle:"Who/which/that — what do they refer to?",
+   body:[
+     "When a verb appears inside a relative clause (starting with who, which, or that), the verb must agree with whatever the relative pronoun refers to — not the nearest noun.",
+     '"The artist, whose murals depicting community resilience HAVE earned her acclaim..."',
+     'The verb "have earned" is inside a clause starting with "whose." What earned acclaim? The murals (plural), not the artist. So "have earned" is correct.',
+     '"She is one of the researchers who HAVE published on this topic."',
+     'Who published? The researchers (plural). So "have" is correct. This construction with "one of the [plural noun] who" is a classic SAT question.'
+   ],visual:null},
+  {id:"inverted",title:"Trap #3: Inverted Sentence Order",subtitle:"When the subject comes after the verb",
+   body:[
+     "Sometimes the SAT flips the normal subject-verb order. The verb comes first, and you have to look ahead to find the subject.",
+     '"Among the artifacts discovered at the site WERE a bronze shield and two ceramic vessels."',
+     'The subject is "a bronze shield and two ceramic vessels" (compound/plural), which comes after the verb. So "were" is correct.',
+     '"There IS a growing concern among educators about screen time."',
+     '"There" is never the subject. The real subject is "concern" (singular), so "is" is correct.',
+     'STRATEGY: When a sentence starts with "there," "here," or a prepositional phrase, look PAST the verb to find the real subject.'
+   ],visual:null},
+  {id:"compound",title:"Compound Subjects & Special Cases",subtitle:"Neither/nor, either/or, and other tricky pairs",
+   body:[
+     'COMPOUND SUBJECTS with "and" are almost always plural: "The director and the producer WERE nominated."',
+     'NEITHER/NOR and EITHER/OR: The verb agrees with the subject CLOSER to it.\n"Neither the professor nor her students WERE available." (students = closer, plural)\n"Neither the students nor the professor WAS available." (professor = closer, singular)',
+     'EACH/EVERY: Always singular, even with compound subjects.\n"Every student and teacher HAS been notified."\n"Each of the experiments WAS repeated three times."',
+     'COLLECTIVE NOUNS (team, group, committee, audience, family): Usually singular in American English.\n"The committee HAS reached a decision."\n"The team IS preparing for the tournament."'
+   ],visual:"special-cases-quiz"},
+  {id:"pronoun-agreement",title:"Pronoun-Antecedent Agreement",subtitle:"Pronouns must match what they replace",
+   body:[
+     "A pronoun must agree in number with its antecedent (the noun it replaces).",
+     'WRONG: "Each student must submit their application by Friday." ← "Each" is singular, but "their" is plural.',
+     'RIGHT: "Each student must submit his or her application by Friday." or restructure: "Students must submit their applications by Friday."',
+     "The SAT also tests pronoun CLARITY. If a pronoun could refer to more than one noun, it's ambiguous.",
+     'AMBIGUOUS: "When Dr. Lee met with Dr. Patel, she presented new findings." ← Who is "she"?',
+     "On the SAT, the correct answer will always make the reference unambiguous — often by replacing the pronoun with the specific noun."
+   ],visual:null},
+  {id:"tense-basics",title:"Verb Tense: The Timeline",subtitle:"Past, present, and future — with complications",
+   body:[
+     "The SAT tests six tenses. The key is consistency within a passage and using the right tense for the time relationship:",
+     'SIMPLE PRESENT: "The researchers study..." (habitual, general truths)\nSIMPLE PAST: "The researchers studied..." (completed action)\nPRESENT PERFECT: "The researchers have studied..." (started in past, continues or has relevance now)\nPAST PERFECT: "The researchers had studied..." (completed before another past event)\nFUTURE: "The researchers will study..."\nCONDITIONAL: "The researchers would study..." (hypothetical)',
+     'The most commonly tested: PAST PERFECT (had + past participle). Use it when one past event happened BEFORE another past event. "By the time the results were published, the team had already moved on to a new project."'
+   ],visual:"timeline"},
+  {id:"tense-consistency",title:"Tense Consistency & Shifts",subtitle:"Don't change tense without a reason",
+   body:[
+     "Within a passage, verb tense should remain consistent unless there's a clear reason to shift (a change in time frame).",
+     'WRONG: "The archaeologists excavated the site for three months. They discover several artifacts." ← Shifts from past to present for no reason.',
+     'RIGHT: "The archaeologists excavated the site for three months. They discovered several artifacts."',
+     'JUSTIFIED SHIFT: "The archaeologists excavated the site in 2019. Today, the artifacts they discovered ARE on display at the national museum." ← The shift to present is justified by "today."',
+     'STRATEGY: Look for time markers in the passage ("in 1952," "currently," "before the study began," "by the time"). These tell you which tense is required.'
+   ],visual:null},
+  {id:"subjunctive",title:"Subjunctive Mood (Rare but Tested)",subtitle:"Wishes, demands, and hypotheticals",
+   body:[
+     "The subjunctive mood appears occasionally on the SAT — usually 0-1 times per test. It uses the base form of the verb after verbs of demand, suggestion, or necessity.",
+     '"The committee recommended that the proposal BE revised." (not "is revised" or "was revised")',
+     '"It is essential that every student SUBMIT the form on time." (not "submits")',
+     "Trigger words: recommend, suggest, demand, insist, require, essential, important, necessary, crucial.",
+     'For hypothetical conditions contrary to fact, use "were" regardless of subject:\n"If the study WERE replicated..." (not "was")\n"She spoke as though she WERE an expert." (not "was")'
+   ],visual:null},
+  {id:"decision",title:"The Agreement Decision Framework",subtitle:"Your step-by-step approach",
+   body:[
+     "STEP 1: Find the verb being tested (it's in the blank or underlined).",
+     'STEP 2: Find the TRUE subject.\n  • Cross out prepositional phrases (of, in, at, by, with...)\n  • Cross out nonrestrictive clauses (between commas)\n  • Cross out appositives\n  • Look past "there is/are" to the real subject\n  • For relative clauses, identify what who/which/that refers to',
+     "STEP 3: Determine if the subject is singular or plural.\n  • Neither/nor, either/or → match the closer subject\n  • Each, every, anyone → always singular\n  • Collective nouns → usually singular",
+     'STEP 4: Check tense.\n  • Look for time markers in the passage\n  • Check for tense consistency with surrounding verbs\n  • "Had + past participle" = before another past event\n  • Subjunctive after demand/suggest/require verbs',
+     "STEP 5: Pick the answer that matches in both NUMBER and TENSE."
+   ],visual:"framework"}
+];
+
+// --- SUBJECT HUNT ---
+const HUNT_ITEMS=[
+  {sentence:"The team of scientists from three universities [VERB] published a groundbreaking study.",
+   words:["The","team","of","scientists","from","three","universities"],subjectIdx:1,
+   verbChoices:["has","have","are","had"],correctVerb:0,
+   explain:'"Team" (singular) is the subject. "Of scientists from three universities" is a prepositional phrase — cross it out. Singular subject = "has."'},
+  {sentence:"Neither the lead author nor her co-researchers [VERB] able to attend the conference.",
+   words:["Neither","the","lead","author","nor","her","co-researchers"],subjectIdx:6,
+   verbChoices:["was","were","is","has been"],correctVerb:1,
+   explain:'With neither/nor, the verb agrees with the CLOSER subject. "Co-researchers" (plural) is closer, so "were" is correct.'},
+  {sentence:"The discovery of ancient tools, along with pottery fragments, [VERB] the timeline of human settlement.",
+   words:["The","discovery","of","ancient","tools","along","with","pottery","fragments"],subjectIdx:1,
+   verbChoices:["challenge","challenges","are challenging","have challenged"],correctVerb:1,
+   explain:'"Discovery" (singular) is the subject. "Along with" does NOT make a compound subject (unlike "and").'},
+  {sentence:"Each of the experiments conducted over the past decade [VERB] yielded consistent results.",
+   words:["Each","of","the","experiments","conducted","over","the","past","decade"],subjectIdx:0,
+   verbChoices:["have","has","are","were"],correctVerb:1,
+   explain:'"Each" is ALWAYS singular. "Each...has yielded."'},
+  {sentence:"The professor who mentored the doctoral students [VERB] now retired.",
+   words:["The","professor","who","mentored","the","doctoral","students"],subjectIdx:1,
+   verbChoices:["are","is","were","have"],correctVerb:1,
+   explain:'Main clause subject is "professor" (singular). "Who mentored the doctoral students" is a relative clause. "Professor...is now retired."'},
+  {sentence:"Among the factors contributing to the decline [VERB] a lack of funding and poor infrastructure.",
+   words:["Among","the","factors","contributing","to","the","decline"],subjectIdx:-1,
+   subjectLabel:"a lack...and poor infrastructure (after verb)",
+   verbChoices:["is","are","was","were"],correctVerb:3,
+   explain:'Inverted order! The subject comes after the verb: "a lack of funding AND poor infrastructure" — compound subject (plural). Past tense context = "were."'},
+  {sentence:"The committee, despite objections from several members, [VERB] voted to approve the proposal.",
+   words:["The","committee","despite","objections","from","several","members"],subjectIdx:1,
+   verbChoices:["have","has","are","were"],correctVerb:1,
+   explain:'"Committee" is a collective noun — singular in American English. "Committee...has voted."'},
+  {sentence:"The data collected from the survey of 2,000 participants [VERB] a significant shift in public opinion.",
+   words:["The","data","collected","from","the","survey","of","2,000","participants"],subjectIdx:1,
+   verbChoices:["reveals","reveal","revealing","are revealing"],correctVerb:1,
+   explain:'"Data" is technically plural (singular: datum), and the SAT treats it as plural. "Data...reveal."'}
+];
+
+// --- TENSE TRACKER ---
+const TENSE_ITEMS=[
+  {passage:"In 2019, Dr. Nakamura [1] a series of experiments on memory consolidation. By the time the results [2] in 2021, her team [3] already begun work on a follow-up study. Today, the original findings [4] considered foundational in the field.",
+   blanks:[
+     {id:1,choices:["conducts","conducted","has conducted","had conducted"],correct:1,explain:"Simple past: specific completed action in 2019."},
+     {id:2,choices:["are published","were published","had been published","have been published"],correct:1,explain:"Simple past: the publishing happened in 2021."},
+     {id:3,choices:["has","have","had","would have"],correct:2,explain:'Past perfect: follow-up work began BEFORE the 2021 publication. "Had" signals the earlier event.'},
+     {id:4,choices:["were","are","had been","have been"],correct:1,explain:'Simple present: "Today" signals current time.'}
+   ]},
+  {passage:"The ancient city of Pompeii [1] buried by volcanic ash in 79 AD. For centuries, it [2] hidden beneath layers of debris. When excavations [3] in the 18th century, researchers [4] that the ash had preserved the city in remarkable detail.",
+   blanks:[
+     {id:1,choices:["is","was","has been","had been"],correct:1,explain:"Simple past: specific historical event in 79 AD."},
+     {id:2,choices:["remained","remains","had remained","has remained"],correct:0,explain:'Simple past: "For centuries" describes a completed duration.'},
+     {id:3,choices:["begin","began","had begun","have begun"],correct:1,explain:"Simple past: the excavations started at a specific time (18th century)."},
+     {id:4,choices:["discover","discovered","had discovered","have discovered"],correct:1,explain:"Simple past: consistent with the passage's past tense narrative."}
+   ]},
+  {passage:"Climate scientists [1] that average global temperatures [2] steadily since the Industrial Revolution. If current trends [3], the consequences for coastal cities [4] devastating within decades.",
+   blanks:[
+     {id:1,choices:["note","noted","had noted","will note"],correct:0,explain:"Simple present: scientists currently note this (general truth)."},
+     {id:2,choices:["rose","rise","have risen","had risen"],correct:2,explain:'Present perfect: "since" is a key trigger for present perfect.'},
+     {id:3,choices:["continue","continued","will continue","had continued"],correct:0,explain:'Simple present in conditional "if" clauses about future possibilities.'},
+     {id:4,choices:["are","were","could be","had been"],correct:2,explain:'"Could be": conditional mood for a possible future outcome.'}
+   ]}
+];
+
+// --- PRACTICE QUIZ ---
+const QUIZ=[
+  {id:1,diff:"easy",
+   passage:"The collection of vintage photographs, which ______ donated to the museum in 1985, remains one of the most popular exhibits.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["was","were","are","have been"],answer:0,
+   explain:'Subject is "collection" (singular). "Of vintage photographs" is a prepositional phrase. Singular = "was."'},
+  {id:2,diff:"easy",
+   passage:"Every one of the candidates ______ required to submit a written statement before the interview.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["are","is","were","have been"],answer:1,
+   explain:'"Every one" is singular. "Of the candidates" is prepositional. Singular = "is."'},
+  {id:3,diff:"medium",
+   passage:"Neither the original hypothesis nor the revised models ______ able to account for the anomalies observed in the data.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["was","were","is","has been"],answer:1,
+   explain:'Neither/nor: verb matches the closer subject. "Models" (plural) is closer = "were."'},
+  {id:4,diff:"medium",
+   passage:"The anthology of poems, essays, and short stories that ______ recently published has already received critical acclaim.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["was","were","are","have been"],answer:0,
+   explain:'"That" refers to "anthology" (singular). Don\'t be tricked by the plural list inside the prepositional phrase.'},
+  {id:5,diff:"medium",
+   passage:"By the time the rescue team arrived at the remote village, the floodwaters ______ already receded, leaving behind a landscape of mud and debris.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["have","has","had","would have"],answer:2,
+   explain:'Past perfect: the receding happened BEFORE the team arrived. "Had already receded."'},
+  {id:6,diff:"medium",
+   passage:"The professor insisted that every student ______ the reading before the next seminar, as the discussion would build directly on the assigned texts.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["completes","complete","completed","has completed"],answer:1,
+   explain:'Subjunctive mood after "insisted that": use the base form "complete."'},
+  {id:7,diff:"hard",
+   passage:"The research team, whose groundbreaking experiments on neuroplasticity ______ them international recognition, announced a new partnership with three major universities.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["has earned","have earned","earning","earns"],answer:1,
+   explain:'"Whose" refers to "team," but the subject of the relative clause is "experiments" (plural). "Have earned."'},
+  {id:8,diff:"hard",
+   passage:"A series of earthquakes that ______ the region over the past decade has prompted officials to reevaluate building codes and emergency response protocols.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["has struck","have struck","striking","struck"],answer:1,
+   explain:'"That" refers to "earthquakes" (plural). "Have struck." Present perfect: "over the past decade" indicates ongoing relevance.'},
+  {id:9,diff:"hard",
+   passage:"Among the many challenges facing the conservation effort ______ the difficulty of coordinating between government agencies, private landowners, and indigenous communities.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["are","is","were","have been"],answer:1,
+   explain:'Inverted order. The subject comes after: "the difficulty" (singular). Among the challenges IS the difficulty.'},
+  {id:10,diff:"hard",
+   passage:"If the proposed regulation ______ implemented as written, it would fundamentally alter the relationship between federal agencies and state governments.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["was","were","is","will be"],answer:1,
+   explain:'Subjunctive in a hypothetical contrary-to-fact condition. "If [subject] were" regardless of singular/plural.'}
+];
+
+// --- CHALLENGE MODE ---
+const CHALLENGE=[
+  {id:1,diff:"770+",
+   passage:"The team of astronomers, each of whom ______ spent years studying the phenomenon independently, convened for the first time to share findings at the international symposium.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["have","has","had","having"],answer:2,
+   explain:'"Each of whom" = singular (each is always singular). But tense matters: they spent years studying BEFORE the symposium (past perfect for the earlier of two past events). "Had spent" — tests both agreement AND tense simultaneously.'},
+  {id:2,diff:"770+",
+   passage:"It is the archaeological sites in the northern highlands, not the widely publicized excavation near the capital, that ______ yielded the most significant artifacts from the Bronze Age.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["has","have","had","having"],answer:1,
+   explain:'"It is X, not Y, that [verb]" — the verb agrees with X. X = "the archaeological sites" (plural) = "have yielded." The singular "excavation" is a red herring between the subject and verb.'},
+  {id:3,diff:"770+",
+   passage:"The council required that the environmental impact report not only ______ the potential risks to local wildlife but also propose specific mitigation strategies for each identified threat.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["addresses","address","addressed","has addressed"],answer:1,
+   explain:'Subjunctive after "required that" — use the base form regardless of subject. "Not only…but also" is a correlative conjunction (parallelism), but the key here is the subjunctive mood triggered by "required." Base form = "address."'},
+  {id:4,diff:"770+",
+   passage:"Neither the lead researcher nor the graduate students who ______ assisting her were available to comment on the preliminary results when journalists contacted the laboratory.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["was","were","is","has been"],answer:1,
+   explain:'Two agreement decisions: (1) The main verb "were available" agrees with "students" (closer in neither/nor = plural). (2) Inside the relative clause, "who" refers to "students" (plural), so "were assisting" is correct. Both verbs must be plural.'},
+  {id:5,diff:"770+",
+   passage:"A comprehensive analysis of the exposed geological strata, together with radiocarbon dating of organic materials found at the site, ______ that human habitation of the valley began at least 2,000 years earlier than previously estimated.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["suggest","suggests","have suggested","are suggesting"],answer:1,
+   explain:'"Together with" (like "along with," "in addition to," "as well as") does NOT create a compound subject. The true subject is "analysis" (singular). Cross out the phrases: "A comprehensive analysis…suggests." This is one of the SAT\'s most deceptive trap constructions.'},
+  {id:6,diff:"770+",
+   passage:"The novelist, whose depictions of rural poverty and systemic inequality in her early trilogy ______ her comparisons to Steinbeck, has since shifted her focus to science fiction exploring post-climate-change societies.",
+   stem:"Which choice completes the text so that it conforms to the conventions of Standard English?",
+   choices:["earned","has earned","have earned","earning"],answer:2,
+   explain:'Inside the "whose" clause, the subject is "depictions" (plural), not "novelist." The depictions earned comparisons. Present perfect "have earned" indicates the comparisons remain relevant (she\'s still compared to Steinbeck). Triple trap: wrong subject (novelist), wrong number (singular verb), wrong tense (simple past).'}
+];
+
+// ══════════ UTILITY COMPONENTS ══════════
+
+function ProgressBar({current,total}){
+  const pct=total>0?Math.round(current/total*100):0;
+  return e("div",{style:{position:"fixed",top:0,left:0,right:0,zIndex:100}},
+    e("div",{style:{height:4,background:`linear-gradient(90deg,${ACCENT} 0%,${ACCENT} 40%,#059669 60%,${ACCENT2} 80%,${BLUE} 100%)`}}),
+    e("div",{style:{height:3,background:BORDER}},
+      e("div",{style:{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${ACCENT},#059669)`,transition:"width .4s ease"}})));
+}
+
+function DiffBadge({diff}){
+  const col=diff==="easy"?ACCENT:diff==="medium"?ACCENT2:diff==="770+"?PURPLE:RED;
+  const bg=diff==="easy"?`${ACCENT}22`:diff==="medium"?`${ACCENT2}22`:diff==="770+"?`${PURPLE}22`:`${RED}22`;
+  return e("span",{style:{fontSize:10,padding:"2px 10px",borderRadius:4,fontWeight:700,background:bg,color:col,textTransform:"uppercase",letterSpacing:1}},diff);
+}
+
+function QuizChoice({letter,text,onClick,disabled,state}){
+  let bg=CARD,bdr=`2px solid ${BORDER}`,tc="#cbd5e1";
+  let letterBg=BORDER,letterColor=MUTED;
+  if(state==="correct"){bg=`${ACCENT}18`;bdr=`2px solid ${ACCENT}`;tc=ACCENT;letterBg=ACCENT;letterColor=DARK;}
+  else if(state==="wrong"){bg=`${RED}18`;bdr=`2px solid ${RED}`;tc=RED;letterBg=RED;letterColor=DARK;}
+  else if(state==="selected"){bg=`${ACCENT2}15`;bdr=`2px solid ${ACCENT2}`;tc=ACCENT2;letterBg=ACCENT2;letterColor=DARK;}
+  return e("button",{onClick,disabled,style:{display:"flex",alignItems:"center",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:disabled?"default":"pointer",textAlign:"left",width:"100%",transition:"all .15s"}},
+    e("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,background:letterBg,color:letterColor}},letter),
+    e("span",{style:{color:tc,fontSize:14,fontFamily:"Georgia, serif"}},text));
+}
+
+function Explain({text,show}){
+  if(!show)return null;
+  return e("div",{style:{background:BORDER,borderRadius:12,padding:20,marginBottom:24,borderLeft:`4px solid ${BLUE}`}},
+    e("div",{style:{color:BLUE,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+    e("div",{style:{color:SUB,fontSize:14,lineHeight:1.6}},text));
+}
+
+// ══════════ SCREEN: WELCOME ══════════
+function Welcome({onNext}){
+  const[show,setShow]=useState(false);
+  useEffect(()=>{setTimeout(()=>setShow(true),100);},[]);
+  const sessions=[
+    {icon:"🔄",title:"Retrieval Warm-Up",desc:"Review Module 1 boundaries",time:"5 min"},
+    {icon:"📖",title:"Learn the Rules",desc:"Agreement traps & tense system",time:"15 min"},
+    {icon:"🎯",title:"Subject Hunt",desc:"Find the true subject, pick the verb",time:"10 min"},
+    {icon:"⏱️",title:"Tense Tracker",desc:"Fill in verbs across full passages",time:"10 min"},
+    {icon:"📝",title:"Practice Quiz",desc:"10 SAT-style questions",time:"15 min"},
+    {icon:"⭐",title:"Challenge Mode",desc:"770+ level questions",time:"5 min"}
+  ];
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    e("div",{style:{background:`${ACCENT}22`,border:`1px solid ${ACCENT}44`,borderRadius:12,padding:"6px 18px",fontSize:13,letterSpacing:1.5,textTransform:"uppercase",color:ACCENT,marginBottom:12,fontWeight:600}},"Unit 1 • Module 2"),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(2rem,5vw,3.5rem)",fontWeight:700,color:ACCENT,lineHeight:1.1,textAlign:"center",marginBottom:16}},"Agreement & Verb Tense"),
+    e("p",{style:{color:SUB,fontSize:18,maxWidth:560,textAlign:"center",lineHeight:1.6,marginBottom:12}},"The SAT hides subjects behind prepositional phrases, relative clauses, and inverted structures. Learn to find the true subject every time — then match it to the right verb form and tense."),
+    e("div",{style:{color:MUTED,fontSize:13,marginBottom:36,display:"flex",gap:20}},
+      e("span",null,"⏱ ~60 minutes"),e("span",null,"📋 6 sessions"),e("span",null,"📐 Standard English Conventions")),
+    e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:14,maxWidth:700,width:"100%",marginBottom:44}},
+      sessions.map((c,i)=>e("div",{key:i,style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:"18px 16px",textAlign:"center"}},
+        e("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        e("div",{style:{color:TEXT,fontWeight:700,fontSize:14,marginBottom:3}},c.title),
+        e("div",{style:{color:MUTED,fontSize:12,lineHeight:1.4}},c.desc),
+        e("div",{style:{color:ACCENT,fontSize:11,fontWeight:600,marginTop:6}},c.time)))),
+    e("button",{onClick:onNext,style:btn(`linear-gradient(135deg,${ACCENT},#059669)`,DARK),
+      onMouseOver:ev=>ev.currentTarget.style.transform="scale(1.04)",
+      onMouseOut:ev=>ev.currentTarget.style.transform="scale(1)"},"Start Learning →"));
+}
+
+// ══════════ SCREEN: WARMUP ══════════
+function WarmupScreen({onComplete}){
+  const[answers,setAnswers]=useState(Array(WARMUP.length).fill(null));
+  const done=answers.every(a=>a!==null);
+  const score=answers.filter((a,i)=>a===WARMUP[i].correct).length;
+  function pick(qi,ci){if(answers[qi]!==null)return;setAnswers(p=>{const n=[...p];n[qi]=ci;return n;});}
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:ACCENT,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 1 • Retrieval Warm-Up (5 min)"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Boundaries Review from Module 1"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7}},"6 boundary questions — keeping your punctuation skills sharp while we shift to agreement and verb tense."),
+    WARMUP.map((q,qi)=>{
+      const answered=answers[qi]!==null;
+      return e("div",{key:qi,style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1,transition:"all .3s"}},
+        e("div",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6,display:"inline-block",padding:"2px 8px",borderRadius:4,background:`${ACCENT2}22`,color:ACCENT2}},q.type," (Review)"),
+        e("div",{style:{background:DARK,border:`1px solid ${BORDER}`,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:12,borderLeft:`3px solid ${MUTED}`}},q.passage),
+        e("div",{style:{fontSize:14,marginBottom:12,color:"#ddd"}},"Which choice completes the text so that it conforms to the conventions of Standard English?"),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+          q.choices.map((c,ci)=>{
+            let st=null;
+            if(answered&&ci===q.correct)st="correct";
+            else if(answered&&answers[qi]===ci)st="wrong";
+            return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:answered,onClick:()=>pick(qi,ci)});
+          })),
+        e(Explain,{text:q.explain,show:answered}));
+    }),
+    done&&e("div",{style:{textAlign:"center",padding:"16px 0"}},
+      e("div",{style:{fontSize:15,fontWeight:700,color:score>=5?ACCENT:score>=3?ACCENT2:RED,marginBottom:12}},
+        score,"/",WARMUP.length," — ",score===6?"Perfect recall!":score>=4?"Solid — boundaries are locked in.":"Review the boundary rules from Module 1 before continuing."),
+      e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${ACCENT},#059669)`,DARK)},"Continue to Lessons →")));
+}
+
+// ══════════ SCREEN: LESSONS ══════════
+function LessonViewer({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const lesson=LESSONS[idx];
+  const total=LESSONS.length;
+  function renderVisual(){
+    if(lesson.visual==="stats")return e(StatsVisual);
+    if(lesson.visual==="cross-out-demo")return e(CrossOutDemo);
+    if(lesson.visual==="special-cases-quiz")return e(SpecialCasesQuiz);
+    if(lesson.visual==="timeline")return e(TenseTimeline);
+    if(lesson.visual==="framework")return e(FrameworkVisual);
+    return null;
+  }
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:ACCENT,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:16}},"Session 2 • Learn the Rules (15 min)"),
+    e("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      LESSONS.map((_,i)=>e("div",{key:i,onClick:()=>setIdx(i),style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?ACCENT:i<idx?`${ACCENT}66`:BORDER,cursor:"pointer",transition:"all .3s"}}))),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      e("div",{style:{padding:"28px 28px 0"}},
+        e("div",{style:{color:ACCENT,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",color:TEXT,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:700,marginBottom:16,lineHeight:1.2}},lesson.title),
+        lesson.body.map((p,i)=>e("p",{key:i,style:{color:SUB,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p))),
+      lesson.visual&&e("div",{style:{padding:"8px 4px 20px"}},renderVisual())),
+    e("div",{style:{display:"flex",justifyContent:"space-between"}},
+      e("button",{onClick:()=>setIdx(Math.max(0,idx-1)),disabled:idx===0,style:{...btn("transparent",idx===0?"#334155":SUB),border:`1px solid ${BORDER}`,padding:"10px 20px",fontSize:14}},"← Back"),
+      idx<total-1?
+        e("button",{onClick:()=>setIdx(idx+1),style:btn(ACCENT,DARK,{fontSize:14,padding:"10px 20px"})},"Next →"):
+        e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${ACCENT},#059669)`,DARK,{fontSize:14,padding:"10px 24px"})},"Start Subject Hunt →")));
+}
+
+function StatsVisual(){
+  return e("div",{style:{display:"flex",justifyContent:"center",gap:16,flexWrap:"wrap",padding:16}},
+    [{n:"~14%",label:"of SAT R&W",sub:"Agreement & tense Qs"},
+     {n:"7-8",label:"questions/test",sub:"Form, Structure & Sense"},
+     {n:"#1",label:"trap type",sub:"Intervening phrases"}
+    ].map((s,i)=>e("div",{key:i,style:{background:`${ACCENT}11`,border:`1px solid ${ACCENT}33`,borderRadius:14,padding:"16px 24px",textAlign:"center",minWidth:140}},
+      e("div",{style:{color:ACCENT,fontWeight:900,fontSize:28}},s.n),
+      e("div",{style:{color:TEXT,fontSize:13,fontWeight:600}},s.label),
+      e("div",{style:{color:MUTED,fontSize:11}},s.sub))));
+}
+
+function CrossOutDemo(){
+  const[step,setStep]=useState(0);
+  const phases=[
+    {text:["The collection"," of rare manuscripts"," was donated to the university."],crossed:[],bold:[]},
+    {text:["The collection"," of rare manuscripts"," was donated to the university."],crossed:[1],bold:[]},
+    {text:["The collection"," of rare manuscripts"," was donated to the university."],crossed:[1],bold:[0,2]}
+  ];
+  const labels=["Full sentence","Cross out prepositional phrase","Subject + verb revealed: singular!"];
+  const p=phases[step];
+  return e("div",{style:{padding:"16px 20px"}},
+    e("div",{style:{color:ACCENT2,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Interactive: Cross-Out Method"),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:12,padding:20,marginBottom:12,fontFamily:"Georgia, serif",fontSize:17,lineHeight:1.8}},
+      p.text.map((t,i)=>e("span",{key:i,style:{textDecoration:p.crossed.includes(i)?"line-through":"none",opacity:p.crossed.includes(i)?.35:1,color:p.bold.includes(i)?ACCENT:TEXT,fontWeight:p.bold.includes(i)?800:400,transition:"all .4s"}},t))),
+    e("div",{style:{color:SUB,fontSize:13,marginBottom:12}},labels[step]),
+    e("div",{style:{display:"flex",gap:8}},
+      phases.map((_,i)=>e("button",{key:i,onClick:()=>setStep(i),style:{padding:"6px 14px",borderRadius:6,border:`1px solid ${i===step?ACCENT:BORDER}`,background:i===step?`${ACCENT}22`:"transparent",color:i===step?ACCENT:MUTED,fontSize:12,fontWeight:600,cursor:"pointer"}},"Step ",i+1))));
+}
+
+function SpecialCasesQuiz(){
+  const items=[
+    {text:"The team of engineers ___",correct:"has",wrong:"have",why:'"Team" = collective noun = singular'},
+    {text:"Neither she nor they ___",correct:"are",wrong:"is",why:'Neither/nor: "they" is closer = plural'},
+    {text:"Every student and teacher ___",correct:"has",wrong:"have",why:'"Every" = always singular'},
+    {text:"The audience ___",correct:"is",wrong:"are",why:'"Audience" = collective = singular (US English)'}
+  ];
+  const[answers,setAnswers]=useState({});
+  return e("div",{style:{padding:"12px 20px"}},
+    e("div",{style:{color:ACCENT2,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Quick Check: Singular or Plural Verb?"),
+    items.map((item,i)=>{
+      const a=answers[i];
+      return e("div",{key:i,style:{display:"flex",alignItems:"center",gap:10,marginBottom:8,padding:"8px 12px",background:a!==undefined?a?`${ACCENT}11`:`${RED}11`:"transparent",borderRadius:8,flexWrap:"wrap"}},
+        e("div",{style:{color:TEXT,fontSize:13,flex:"1 1 200px"}},item.text),
+        e("div",{style:{display:"flex",gap:4}},
+          e("button",{onClick:()=>setAnswers(p=>({...p,[i]:true})),disabled:a!==undefined,
+            style:{padding:"4px 12px",borderRadius:6,border:`1px solid ${a!==undefined&&a?ACCENT:BORDER}`,background:"transparent",color:a!==undefined&&a?ACCENT:MUTED,fontSize:12,fontWeight:700,cursor:a!==undefined?"default":"pointer"}},item.correct),
+          e("button",{onClick:()=>setAnswers(p=>({...p,[i]:false})),disabled:a!==undefined,
+            style:{padding:"4px 12px",borderRadius:6,border:`1px solid ${a!==undefined&&!a?RED:BORDER}`,background:"transparent",color:a!==undefined&&!a?RED:MUTED,fontSize:12,fontWeight:700,cursor:a!==undefined?"default":"pointer"}},item.wrong)),
+        a!==undefined&&e("div",{style:{color:a?ACCENT:RED,fontSize:11,width:"100%",marginTop:2}},a?"Correct!":"Incorrect."," ",item.why));
+    }));
+}
+
+function TenseTimeline(){
+  const tenses=[
+    {name:"Past Perfect",form:"had studied",when:"Before another past event",color:PURPLE},
+    {name:"Simple Past",form:"studied",when:"Completed past action",color:BLUE},
+    {name:"Present Perfect",form:"have/has studied",when:"Past → continuing now",color:ACCENT},
+    {name:"Simple Present",form:"study/studies",when:"Current / general truth",color:ACCENT2},
+    {name:"Future / Conditional",form:"will study / would study",when:"Future or hypothetical",color:RED}
+  ];
+  return e("div",{style:{padding:"12px 20px"}},
+    e("div",{style:{display:"flex",alignItems:"center",gap:0,marginBottom:16}},
+      e("div",{style:{color:MUTED,fontSize:11}},"PAST"),
+      e("div",{style:{flex:1,height:3,background:`linear-gradient(90deg,${PURPLE},${BLUE},${ACCENT},${ACCENT2},${RED})`,margin:"0 8px",borderRadius:2}}),
+      e("div",{style:{color:MUTED,fontSize:11}},"FUTURE")),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+      tenses.map((t,i)=>e("div",{key:i,style:{display:"flex",alignItems:"center",gap:10,padding:"6px 12px",borderLeft:`3px solid ${t.color}`,borderRadius:"0 8px 8px 0",background:`${t.color}08`}},
+        e("div",{style:{color:t.color,fontWeight:800,fontSize:13,minWidth:120}},t.name),
+        e("div",{style:{color:TEXT,fontSize:13,fontFamily:"Georgia, serif",minWidth:120}},t.form),
+        e("div",{style:{color:MUTED,fontSize:11}},t.when)))));
+}
+
+function FrameworkVisual(){
+  return e("div",{style:{padding:"12px 20px"}},
+    [{n:"1",label:"Find the verb",detail:"It's in the blank",color:BLUE},
+     {n:"2",label:"Find the TRUE subject",detail:"Cross out prep phrases, appositives, clauses",color:ACCENT},
+     {n:"3",label:"Singular or plural?",detail:"Check neither/nor, each/every, collectives",color:ACCENT2},
+     {n:"4",label:"Check tense",detail:"Time markers, consistency, past perfect triggers",color:PURPLE},
+     {n:"5",label:"Match both",detail:"Right number AND right tense",color:RED}
+    ].map((s,i)=>e("div",{key:i,style:{display:"flex",alignItems:"center",gap:12,marginBottom:8,padding:"8px 12px",background:`${s.color}08`,borderLeft:`3px solid ${s.color}`,borderRadius:"0 8px 8px 0"}},
+      e("div",{style:{width:28,height:28,borderRadius:14,background:`${s.color}22`,color:s.color,fontWeight:900,fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}},s.n),
+      e("div",null,
+        e("div",{style:{color:TEXT,fontWeight:700,fontSize:13}},s.label),
+        e("div",{style:{color:MUTED,fontSize:11}},s.detail)))));
+}
+
+// ══════════ SCREEN: SUBJECT HUNT ══════════
+function SubjectHunt({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[selectedWord,setSelectedWord]=useState(null);
+  const[selectedVerb,setSelectedVerb]=useState(null);
+  const[phase,setPhase]=useState("subject");
+  const[score,setScore]=useState(0);
+  const[done,setDone]=useState(false);
+  const item=HUNT_ITEMS[idx];
+  function confirmSubject(){if(selectedWord===null)return;setPhase("verb");}
+  function confirmVerb(){
+    if(selectedVerb===null)return;
+    const subRight=selectedWord===item.subjectIdx||(item.subjectIdx===-1&&selectedWord===-1);
+    const verbRight=selectedVerb===item.correctVerb;
+    if(subRight&&verbRight)setScore(s=>s+1);
+    setPhase("revealed");
+  }
+  function next(){
+    if(idx<HUNT_ITEMS.length-1){setIdx(idx+1);setSelectedWord(null);setSelectedVerb(null);setPhase("subject");}
+    else setDone(true);
+  }
+  if(done){
+    return e("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      e("div",{style:{fontSize:48,marginBottom:16}},"🎯"),
+      e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",color:TEXT,fontSize:28,fontWeight:700,marginBottom:8}},"Hunt Complete"),
+      e("div",{style:{color:ACCENT,fontSize:48,fontWeight:900,fontFamily:"'JetBrains Mono',monospace"}},score,"/",HUNT_ITEMS.length),
+      e("p",{style:{color:SUB,fontSize:15,marginTop:8,marginBottom:32}},"subjects found & verbs matched"),
+      e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${ACCENT},#059669)`,DARK)},"Continue to Tense Tracker →"));
+  }
+  const subRight=selectedWord===item.subjectIdx||(item.subjectIdx===-1&&selectedWord===-1);
+  const verbRight=selectedVerb===item.correctVerb;
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:ACCENT,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:16}},"Session 3 • Subject Hunt (10 min)"),
+    e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:24}},
+      e("div",{style:{color:ACCENT2,fontSize:13,fontWeight:700}},"🎯 Subject Hunt"),
+      e("div",{style:{color:MUTED,fontSize:13}},idx+1," of ",HUNT_ITEMS.length," • Score: ",score)),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:20,padding:28,marginBottom:20}},
+      e("div",{style:{color:MUTED,fontSize:12,fontWeight:600,marginBottom:16,textTransform:"uppercase",letterSpacing:1}},
+        phase==="subject"?"Step 1: Tap the TRUE subject":phase==="verb"?"Step 2: Choose the correct verb":"Result"),
+      e("div",{style:{color:TEXT,fontSize:17,fontFamily:"Georgia, serif",lineHeight:2,display:"flex",flexWrap:"wrap",gap:4,alignItems:"center"}},
+        item.words.map((w,wi)=>{
+          const isSubject=wi===item.subjectIdx;
+          const isSelected=selectedWord===wi;
+          let bg="transparent",border="1px solid transparent",color=TEXT;
+          if(phase==="revealed"){
+            if(isSubject){bg=`${ACCENT}22`;border=`2px solid ${ACCENT}`;color=ACCENT;}
+            else if(isSelected&&!isSubject){bg=`${RED}22`;border=`2px solid ${RED}`;color=RED;}
+          }else if(isSelected){bg=`${ACCENT2}22`;border=`2px solid ${ACCENT2}`;color=ACCENT2;}
+          return e("button",{key:wi,onClick:()=>{if(phase==="subject")setSelectedWord(wi);},
+            style:{padding:"4px 10px",borderRadius:6,background:bg,border,color,fontWeight:isSelected||isSubject?700:400,fontSize:17,fontFamily:"Georgia, serif",cursor:phase==="subject"?"pointer":"default",transition:"all .15s"}},w);
+        }),
+        e("span",{style:{color:ACCENT2,fontWeight:800}},"[VERB]"),
+        e("span",{style:{color:MUTED,fontSize:14}},"...")),
+      item.subjectIdx===-1&&phase==="subject"&&e("button",{onClick:()=>setSelectedWord(-1),
+        style:{marginTop:12,padding:"6px 14px",borderRadius:6,border:`1px solid ${selectedWord===-1?ACCENT2:BORDER}`,background:selectedWord===-1?`${ACCENT2}22`:"transparent",color:selectedWord===-1?ACCENT2:MUTED,fontSize:12,fontWeight:600,cursor:"pointer"}},
+        "Subject comes AFTER the verb (inverted)")),
+    phase==="verb"&&e("div",{style:{marginBottom:20}},
+      e("div",{style:{color:TEXT,fontSize:14,fontWeight:600,marginBottom:12}},"Now choose the correct verb:"),
+      e("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}},
+        item.verbChoices.map((v,vi)=>e("button",{key:vi,onClick:()=>setSelectedVerb(vi),
+          style:{padding:"12px 8px",borderRadius:10,border:`1px solid ${selectedVerb===vi?ACCENT2:BORDER}`,background:selectedVerb===vi?`${ACCENT2}22`:CARD,color:selectedVerb===vi?ACCENT2:TEXT,fontWeight:700,fontSize:15,cursor:"pointer"}},v)))),
+    phase==="revealed"&&e("div",{style:{background:subRight&&verbRight?`${ACCENT}11`:`${RED}11`,border:`1px solid ${subRight&&verbRight?ACCENT:RED}44`,borderRadius:12,padding:16,marginBottom:20}},
+      e("div",{style:{color:subRight&&verbRight?ACCENT:RED,fontWeight:700,fontSize:14,marginBottom:6}},subRight&&verbRight?"Correct!":"Not quite."),
+      e("div",{style:{color:SUB,fontSize:13,lineHeight:1.6}},item.explain)),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      phase==="subject"&&e("button",{onClick:confirmSubject,disabled:selectedWord===null,style:btn(selectedWord===null?BORDER:ACCENT,selectedWord===null?"#475569":DARK,{fontSize:14,padding:"10px 24px"})},"Confirm Subject"),
+      phase==="verb"&&e("button",{onClick:confirmVerb,disabled:selectedVerb===null,style:btn(selectedVerb===null?BORDER:ACCENT,selectedVerb===null?"#475569":DARK,{fontSize:14,padding:"10px 24px"})},"Check Answer"),
+      phase==="revealed"&&e("button",{onClick:next,style:btn(ACCENT,DARK,{fontSize:14,padding:"10px 24px"})},idx<HUNT_ITEMS.length-1?"Next →":"See Results →")));
+}
+
+// ══════════ SCREEN: TENSE TRACKER ══════════
+function TenseTracker({onComplete}){
+  const[passageIdx,setPassageIdx]=useState(0);
+  const[answers,setAnswers]=useState({});
+  const[confirmed,setConfirmed]=useState(false);
+  const[score,setScore]=useState(0);
+  const[done,setDone]=useState(false);
+  const item=TENSE_ITEMS[passageIdx];
+  const allFilled=item.blanks.every(b=>answers[b.id]!==undefined);
+  const totalBlanks=TENSE_ITEMS.reduce((a,t)=>a+t.blanks.length,0);
+  function confirm(){
+    setConfirmed(true);
+    let pts=0;item.blanks.forEach(b=>{if(answers[b.id]===b.correct)pts++;});
+    setScore(s=>s+pts);
+  }
+  function next(){
+    if(passageIdx<TENSE_ITEMS.length-1){setPassageIdx(passageIdx+1);setAnswers({});setConfirmed(false);}
+    else setDone(true);
+  }
+  if(done){
+    return e("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      e("div",{style:{fontSize:48,marginBottom:16}},"⏱️"),
+      e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",color:TEXT,fontSize:28,fontWeight:700,marginBottom:8}},"Tense Tracker Complete"),
+      e("div",{style:{color:ACCENT,fontSize:48,fontWeight:900,fontFamily:"'JetBrains Mono',monospace"}},score,"/",totalBlanks),
+      e("p",{style:{color:SUB,fontSize:15,marginTop:8,marginBottom:32}},"correct verb tenses"),
+      e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${ACCENT},#059669)`,DARK)},"Continue to Practice Quiz →"));
+  }
+  const parts=item.passage.split(/\[(\d+)\]/);
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:ACCENT,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:16}},"Session 4 • Tense Tracker (10 min)"),
+    e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:24}},
+      e("div",{style:{color:BLUE,fontSize:13,fontWeight:700}},"⏱️ Tense Tracker"),
+      e("div",{style:{color:MUTED,fontSize:13}},"Passage ",passageIdx+1," of ",TENSE_ITEMS.length)),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:20,padding:28,marginBottom:24}},
+      e("div",{style:{color:TEXT,fontSize:16,fontFamily:"Georgia, serif",lineHeight:2}},
+        parts.map((part,pi)=>{
+          const blankNum=parseInt(part);
+          if(!isNaN(blankNum)){
+            const blank=item.blanks.find(b=>b.id===blankNum);
+            if(!blank)return null;
+            const ans=answers[blankNum];
+            const isCorrect=confirmed&&ans===blank.correct;
+            const isWrong=confirmed&&ans!==undefined&&ans!==blank.correct;
+            return e("span",{key:pi,style:{display:"inline-block",padding:"2px 8px",margin:"0 2px",borderRadius:6,fontWeight:700,
+              background:confirmed?isCorrect?`${ACCENT}22`:isWrong?`${RED}22`:`${ACCENT2}22`:`${ACCENT2}11`,
+              color:confirmed?isCorrect?ACCENT:isWrong?RED:ACCENT2:ACCENT2,
+              borderBottom:`2px solid ${confirmed?isCorrect?ACCENT:RED:ACCENT2}`,fontSize:15}},
+              ans!==undefined?blank.choices[ans]:`[${blankNum}]`);
+          }
+          return e("span",{key:pi},part);
+        }))),
+    !confirmed&&e("div",{style:{display:"flex",flexDirection:"column",gap:16,marginBottom:24}},
+      item.blanks.map(blank=>e("div",{key:blank.id},
+        e("div",{style:{color:TEXT,fontSize:13,fontWeight:600,marginBottom:6}},"Blank [",blank.id,"]:"),
+        e("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}},
+          blank.choices.map((c,ci)=>e("button",{key:ci,onClick:()=>setAnswers(p=>({...p,[blank.id]:ci})),
+            style:{padding:"10px 6px",borderRadius:8,border:`1px solid ${answers[blank.id]===ci?ACCENT2:BORDER}`,background:answers[blank.id]===ci?`${ACCENT2}22`:CARD,color:answers[blank.id]===ci?ACCENT2:TEXT,fontWeight:600,fontSize:13,cursor:"pointer"}},c)))))),
+    confirmed&&e("div",{style:{display:"flex",flexDirection:"column",gap:8,marginBottom:24}},
+      item.blanks.map(blank=>{
+        const isRight=answers[blank.id]===blank.correct;
+        return e("div",{key:blank.id,style:{background:isRight?`${ACCENT}08`:`${RED}08`,border:`1px solid ${isRight?ACCENT:RED}33`,borderRadius:10,padding:12}},
+          e("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:4}},
+            e("span",{style:{fontSize:14}},isRight?"✅":"❌"),
+            e("span",{style:{color:TEXT,fontSize:13,fontWeight:700}},"Blank [",blank.id,"]: ",blank.choices[blank.correct])),
+          e("div",{style:{color:SUB,fontSize:12,lineHeight:1.5}},blank.explain));
+      })),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed?e("button",{onClick:confirm,disabled:!allFilled,style:btn(!allFilled?BORDER:ACCENT,!allFilled?"#475569":DARK,{fontSize:14,padding:"10px 24px"})},"Check All"):
+      e("button",{onClick:next,style:btn(ACCENT,DARK,{fontSize:14,padding:"10px 24px"})},passageIdx<TENSE_ITEMS.length-1?"Next Passage →":"See Results →")));
+}
+
+// ══════════ SCREEN: PRACTICE QUIZ ══════════
+function PracticeQuiz({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[selected,setSelected]=useState(null);
+  const[confirmed,setConfirmed]=useState(false);
+  const[answers,setAnswers]=useState([]);
+  const q=QUIZ[idx];
+  const total=QUIZ.length;
+  function handleConfirm(){
+    if(selected===null)return;
+    setConfirmed(true);
+    setAnswers(p=>[...p,{correct:selected===q.answer,selected}]);
+  }
+  function next(){
+    if(idx<total-1){setIdx(idx+1);setSelected(null);setConfirmed(false);}
+    else onComplete(answers.filter(a=>a.correct).length,total,answers);
+  }
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"32px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:ACCENT,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:16}},"Session 5 • Practice Quiz (15 min)"),
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+      e("div",{style:{color:ACCENT,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:"uppercase"}},"📝 Practice Quiz"),
+      e(DiffBadge,{diff:q.diff})),
+    e("div",{style:{height:4,background:BORDER,borderRadius:2,marginBottom:24,overflow:"hidden"}},
+      e("div",{style:{height:"100%",width:`${(idx+(confirmed?1:0))/total*100}%`,background:`linear-gradient(90deg,${ACCENT},#059669)`,borderRadius:2,transition:"width .4s"}})),
+    e("div",{style:{color:TEXT,fontWeight:800,fontSize:15,marginBottom:16}},"Question ",idx+1," of ",total),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:24,marginBottom:20}},
+      e("div",{style:{color:"#cbd5e1",fontSize:15,lineHeight:1.8,fontFamily:"Georgia, serif"}},q.passage)),
+    e("div",{style:{color:TEXT,fontSize:14,fontWeight:600,marginBottom:16}},q.stem),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      q.choices.map((c,ci)=>{
+        let st=null;
+        if(confirmed&&ci===q.answer)st="correct";
+        else if(confirmed&&selected===ci&&ci!==q.answer)st="wrong";
+        else if(!confirmed&&selected===ci)st="selected";
+        return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:confirmed,onClick:()=>{if(!confirmed)setSelected(ci);}});
+      })),
+    e(Explain,{text:q.explain,show:confirmed}),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed?e("button",{onClick:handleConfirm,disabled:selected===null,style:btn(selected===null?BORDER:ACCENT,selected===null?"#475569":DARK,{fontSize:14,padding:"10px 24px"})},"Confirm Answer"):
+      e("button",{onClick:next,style:btn(`linear-gradient(135deg,${ACCENT},#059669)`,DARK,{fontSize:14,padding:"10px 24px"})},idx<total-1?"Next →":"See Results →")));
+}
+
+// ══════════ SCREEN: CHALLENGE MODE ══════════
+function ChallengeMode({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[selected,setSelected]=useState(null);
+  const[confirmed,setConfirmed]=useState(false);
+  const[answers,setAnswers]=useState([]);
+  const q=CHALLENGE[idx];
+  const total=CHALLENGE.length;
+  function handleConfirm(){
+    if(selected===null)return;
+    setConfirmed(true);
+    setAnswers(p=>[...p,{correct:selected===q.answer}]);
+  }
+  function next(){
+    if(idx<total-1){setIdx(idx+1);setSelected(null);setConfirmed(false);}
+    else onComplete(answers.filter(a=>a.correct).length,total);
+  }
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"32px 20px",minHeight:"100vh"}},
+    e("div",{style:{background:`${PURPLE}15`,border:`2px solid ${PURPLE}44`,borderRadius:14,padding:22,marginBottom:24}},
+      e("div",{style:{display:"inline-block",background:PURPLE,color:"#fff",fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",padding:"4px 12px",borderRadius:12,marginBottom:12}},"⭐ Challenge Mode"),
+      e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.4rem",fontWeight:700,marginBottom:8}},"770+ Agreement Questions"),
+      e("p",{style:{fontSize:14,color:"#ccc",lineHeight:1.7}},"These questions layer multiple traps simultaneously — wrong subject + wrong number + wrong tense in a single sentence. They test whether you can apply the full decision framework under pressure.")),
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+      e("span",{style:{color:TEXT,fontWeight:800,fontSize:15}},"Question ",idx+1," of ",total),
+      e(DiffBadge,{diff:q.diff})),
+    e("div",{style:{height:4,background:BORDER,borderRadius:2,marginBottom:24,overflow:"hidden"}},
+      e("div",{style:{height:"100%",width:`${(idx+(confirmed?1:0))/total*100}%`,background:`linear-gradient(90deg,${PURPLE},#7c3aed)`,borderRadius:2,transition:"width .4s"}})),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:24,marginBottom:20}},
+      e("div",{style:{color:"#cbd5e1",fontSize:15,lineHeight:1.8,fontFamily:"Georgia, serif"}},q.passage)),
+    e("div",{style:{color:TEXT,fontSize:14,fontWeight:600,marginBottom:16}},q.stem),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      q.choices.map((c,ci)=>{
+        let st=null;
+        if(confirmed&&ci===q.answer)st="correct";
+        else if(confirmed&&selected===ci&&ci!==q.answer)st="wrong";
+        else if(!confirmed&&selected===ci)st="selected";
+        return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:confirmed,onClick:()=>{if(!confirmed)setSelected(ci);}});
+      })),
+    e(Explain,{text:q.explain,show:confirmed}),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed?e("button",{onClick:handleConfirm,disabled:selected===null,style:btn(selected===null?BORDER:PURPLE,selected===null?"#475569":DARK,{fontSize:14,padding:"10px 24px"})},"Confirm Answer"):
+      e("button",{onClick:next,style:btn(`linear-gradient(135deg,${PURPLE},#7c3aed)`,DARK,{fontSize:14,padding:"10px 24px"})},idx<total-1?"Next →":"See Results →")));
+}
+
+// ══════════ SCREEN: ERROR PATTERN JOURNAL ══════════
+function ErrorJournal({onComplete,quizScore,quizTotal,quizAnswers,challengeScore,challengeTotal}){
+  const EPJ_KEY='pp_sat_rw_error_patterns';
+  const[entries,setEntries]=useState(()=>{try{return JSON.parse(localStorage.getItem(EPJ_KEY)||'[]');}catch(e2){return[];}});
+  useEffect(()=>{try{localStorage.setItem(EPJ_KEY,JSON.stringify(entries));}catch(e2){}},[entries]);
+  const trapTypes=["Intervening phrase","Relative clause","Inverted order","Neither/nor, either/or","Each/every","Collective noun","Pronoun agreement","Past perfect tense","Subjunctive mood","Tense consistency","Other"];
+  function addEntry(){setEntries(p=>[...p,{trapType:'',sentence:'',mistake:'',rule:''}]);}
+  function updateEntry(i,field,val){setEntries(p=>{const n=[...p];n[i]={...n[i],[field]:val};return n;});}
+  function removeEntry(i){setEntries(p=>p.filter((_,j)=>j!==i));}
+  function exportEntries(){
+    let txt='SAT R&W ERROR PATTERN JOURNAL — PantherPrep\n════════════════════════════════════════\n\n';
+    entries.forEach(en=>{txt+=`Trap: ${en.trapType||'(blank)'}\n  Sentence: ${en.sentence||'—'}\n  My mistake: ${en.mistake||'—'}\n  Rule: ${en.rule||'—'}\n\n`;});
+    navigator.clipboard.writeText(txt).then(()=>alert('Journal copied!')).catch(()=>alert('Copy failed.'));
+  }
+  if(entries.length===0)setTimeout(addEntry,0);
+  const inputStyle={width:"100%",padding:"6px 10px",background:DARK,border:`1px solid ${BORDER}`,borderRadius:6,color:TEXT,fontFamily:"inherit",fontSize:13};
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:ACCENT,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 7 • Error Pattern Journal"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Track Your Weak Spots"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:20,lineHeight:1.7}},"For every question you missed, log the trap type and what fooled you. Over time, this journal reveals your personal error patterns — so you know exactly what to watch for on test day. Data saves in your browser."),
+    e("div",{style:{background:CARD,border:`2px solid ${ACCENT}`,borderRadius:14,padding:22,marginBottom:24}},
+      e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:4,color:ACCENT}},"📋 Error Pattern Journal"),
+      e("div",{style:{fontSize:13,color:MUTED,marginBottom:14}},"One entry per missed question or pattern you want to track"),
+      entries.map((en,i)=>e("div",{key:i,style:{background:DARK,border:`1px solid ${BORDER}`,borderRadius:8,padding:12,marginBottom:8}},
+        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+          e("select",{value:en.trapType,onChange:ev2=>updateEntry(i,'trapType',ev2.target.value),
+            style:{...inputStyle,fontSize:14,fontWeight:700,color:ACCENT,cursor:"pointer"}},
+            e("option",{value:""},"Select trap type…"),
+            trapTypes.map(t=>e("option",{key:t,value:t},t))),
+          e("button",{onClick:()=>removeEntry(i),style:{background:"none",border:"none",color:MUTED,cursor:"pointer",fontSize:13}},"✕")),
+        ["sentence","mistake","rule"].map(field=>
+          e("div",{key:field,style:{display:"grid",gridTemplateColumns:"auto 1fr",gap:"4px 10px",alignItems:"start",fontSize:13,marginBottom:4}},
+            e("div",{style:{fontWeight:700,color:MUTED,fontSize:11,textTransform:"uppercase",letterSpacing:.5,paddingTop:4}},field==="sentence"?"Sentence":field==="mistake"?"My Mistake":"Rule to Remember"),
+            e("input",{value:en[field]||'',onChange:ev2=>updateEntry(i,field,ev2.target.value),
+              placeholder:field==="sentence"?"The sentence that tripped you up…":field==="mistake"?"What I chose wrong and why…":"The rule that applies here…",
+              style:inputStyle}))))),
+      e("div",{style:{display:"flex",gap:8,marginTop:12,flexWrap:"wrap"}},
+        e("button",{onClick:addEntry,style:btnSm(ACCENT,DARK)},"+ Add Entry"),
+        e("button",{onClick:exportEntries,style:btnSm("transparent",ACCENT,{border:`2px solid ${ACCENT}`})},"📋 Export to Clipboard"))),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${ACCENT},#059669)`,DARK)},"Complete Module →")));
+}
+
+// ══════════ SCREEN: MODULE COMPLETE ══════════
+function ModuleComplete({quizScore,quizTotal,challengeScore,challengeTotal}){
+  const qPct=Math.round(quizScore/quizTotal*100);
+  const cPct=challengeTotal>0?Math.round(challengeScore/challengeTotal*100):0;
+  const[show,setShow]=useState(false);
+  useEffect(()=>{setTimeout(()=>setShow(true),100);},[]);
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",textAlign:"center",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    e("div",{style:{fontSize:64,marginBottom:16}},"🎉"),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",color:ACCENT,fontSize:"clamp(1.8rem,4vw,2.8rem)",fontWeight:700,marginBottom:8}},"Module 2 Complete"),
+    e("p",{style:{color:SUB,fontSize:16,marginBottom:32,maxWidth:480}},"You've mastered subject-verb agreement traps and verb tense rules."),
+    e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:16,maxWidth:500,width:"100%",marginBottom:32}},
+      e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:20,padding:28,textAlign:"center"}},
+        e("div",{style:{color:ACCENT,fontSize:48,fontWeight:900,fontFamily:"'JetBrains Mono',monospace"}},quizScore,"/",quizTotal),
+        e("div",{style:{color:SUB,fontSize:13,marginTop:4}},"Practice Quiz (",qPct,"%)"),
+        e("div",{style:{height:6,background:BORDER,borderRadius:3,marginTop:12,overflow:"hidden"}},
+          e("div",{style:{height:"100%",width:`${qPct}%`,background:`linear-gradient(90deg,${ACCENT},${ACCENT2})`,borderRadius:3}}))),
+      e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:20,padding:28,textAlign:"center"}},
+        e("div",{style:{color:PURPLE,fontSize:48,fontWeight:900,fontFamily:"'JetBrains Mono',monospace"}},challengeScore,"/",challengeTotal),
+        e("div",{style:{color:SUB,fontSize:13,marginTop:4}},"Challenge Mode"),
+        e("div",{style:{height:6,background:BORDER,borderRadius:3,marginTop:12,overflow:"hidden"}},
+          e("div",{style:{height:"100%",width:`${cPct}%`,background:`linear-gradient(90deg,${PURPLE},#7c3aed)`,borderRadius:3}})))),
+    // Personalized feedback
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:20,maxWidth:520,marginBottom:16,textAlign:"left"}},
+      e("div",{style:{color:TEXT,fontWeight:700,fontSize:15,marginBottom:8}},"Key Takeaways"),
+      e("div",{style:{color:SUB,fontSize:13,lineHeight:1.7}},
+        qPct>=80?"Strong performance! You're reading past the SAT's intervening phrase traps and handling tense shifts well. Your Error Pattern Journal will help you track any remaining blind spots. Module 3 will cover modifiers and parallelism — the final conventions building blocks before the Boss Battle.":
+        qPct>=60?"Good foundation. Focus on the cross-out method for intervening phrases — that's the single most useful technique for agreement questions. Revisit the Subject Hunt game to build speed, and check your Error Pattern Journal for recurring traps.":
+        "Keep practicing! The cross-out method is your best friend: mentally delete prepositional phrases to reveal the true subject. Replay the Subject Hunt and Tense Tracker before moving forward. Your Error Pattern Journal will show you exactly which traps to focus on.")),
+    // Homework
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:20,maxWidth:520,marginBottom:16,textAlign:"left",borderLeft:`4px solid ${ACCENT2}`}},
+      e("div",{style:{color:ACCENT2,fontWeight:700,fontSize:15,marginBottom:8}},"Homework"),
+      e("div",{style:{color:"#ccc",fontSize:13,lineHeight:1.9}},
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:TEXT}},"1. Error Journal Review")," — Look at your Error Pattern Journal. Which trap type appears most? Write the rule for it on a sticky note and keep it visible while you practice."),
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:TEXT}},"2. Cross-Out Practice")," — Read 3 sentences from any article. For each, identify the main subject and verb. Circle the subject, cross out any intervening material."),
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:TEXT}},"3. Tense Spotting")," — Find one news article and one historical article. Identify the primary tense of each and note any justified shifts."),
+        e("div",null,e("strong",{style:{color:TEXT}},"4. Preview Module 3")," — Next: Modifiers, Parallelism & Structure. Notice how misplaced modifiers create ambiguity in anything you read this week."))),
+    e("div",{style:{color:MUTED,fontSize:13,marginTop:8}},"Next up: Module 3 — Modifiers, Parallelism & Structure"));
+}
+
+// ══════════ APP ══════════
+const SCREENS=["welcome","warmup","lesson","hunt","tense","quiz","challenge","journal","complete"];
+function App(){
+  const[screen,setScreen]=useState("welcome");
+  const[fade,setFade]=useState(true);
+  const[quizScore,setQuizScore]=useState(0);
+  const[quizTotal,setQuizTotal]=useState(10);
+  const[quizAnswers,setQuizAnswers]=useState([]);
+  const[challengeScore,setChallengeScore]=useState(0);
+  const[challengeTotal,setChallengeTotal]=useState(6);
+  const screenIdx=SCREENS.indexOf(screen);
+  const go=useCallback((to)=>{
+    setFade(false);
+    setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},350);
+  },[]);
+  return e("div",{style:{minHeight:"100vh",background:DARK,color:TEXT,fontFamily:"'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}},
+    e(ProgressBar,{current:screenIdx,total:SCREENS.length-1}),
+    e("div",{style:{position:"fixed",inset:0,pointerEvents:"none",opacity:.03,backgroundImage:"linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",backgroundSize:"40px 40px"}}),
+    e("div",{style:{position:"relative",zIndex:1,transition:"opacity .35s,transform .35s",opacity:fade?1:0,transform:fade?"translateY(0)":"translateY(8px)",paddingTop:12}},
+      screen==="welcome"&&e(Welcome,{onNext:()=>go("warmup")}),
+      screen==="warmup"&&e(WarmupScreen,{onComplete:()=>go("lesson")}),
+      screen==="lesson"&&e(LessonViewer,{onComplete:()=>go("hunt")}),
+      screen==="hunt"&&e(SubjectHunt,{onComplete:()=>go("tense")}),
+      screen==="tense"&&e(TenseTracker,{onComplete:()=>go("quiz")}),
+      screen==="quiz"&&e(PracticeQuiz,{onComplete:(s,t,a)=>{setQuizScore(s);setQuizTotal(t);setQuizAnswers(a);go("challenge");}}),
+      screen==="challenge"&&e(ChallengeMode,{onComplete:(s,t)=>{setChallengeScore(s);setChallengeTotal(t);go("journal");}}),
+      screen==="journal"&&e(ErrorJournal,{onComplete:()=>go("complete"),quizScore,quizTotal,quizAnswers,challengeScore,challengeTotal}),
+      screen==="complete"&&e(ModuleComplete,{quizScore,quizTotal,challengeScore,challengeTotal})));
+}
+const{createRoot}=ReactDOM;
+createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4: Words Are Weapons — PSAT/NMSQT R&W — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#0e0e14;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#1e293b;--muted:#64748b;--sub:#94a3b8;--surface:#13131f;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.1);--info:#34d399;--conv:#fbbf24;--conv-bg:rgba(251,191,36,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.1);--expr:#f472b6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+input[type="range"]{width:100%}
+button{font-family:inherit}
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const {useState,useEffect,useCallback,useRef,useMemo}=React;
+const e=React.createElement;
+
+// ══════════ DESIGN TOKENS ══════════
+const C={
+  paper:"#0e0e14",surface:"#13131f",border:"#1e293b",ink:"#f0f0f0",sub:"#94a3b8",muted:"#64748b",
+  craft:"#60a5fa",craftBg:"rgba(96,165,250,.1)",accent:"#0891b2",accentLight:"rgba(8,145,178,.12)",
+  correct:"#22c55e",correctBg:"rgba(34,197,94,.12)",wrong:"#ef4444",wrongBg:"rgba(239,68,68,.12)",
+  conv:"#fbbf24",convBg:"rgba(251,191,36,.1)",nm:"#a78bfa",nmBg:"rgba(167,139,250,.1)",
+  info:"#34d399",expr:"#f472b6"
+};
+const btn=(bg,color,extra)=>({padding:"12px 28px",borderRadius:10,border:"none",background:bg,color,fontWeight:700,fontSize:15,cursor:"pointer",transition:"transform .12s, filter .12s",...extra});
+const btnSm=(bg,color,extra)=>btn(bg,color,{padding:"8px 18px",fontSize:13,...extra});
+
+// ══════════ CONTENT DATA ══════════
+
+// --- WARMUP (Retrieval from Modules 2-3) ---
+const WARMUP=[
+  {passage:'The diversity of marine species found in coral reef ecosystems _______ scientists, who continue to discover new organisms each year.',
+   choices:['astonish','astonishes','have astonished','are astonishing'],correct:1,type:'Agreement',
+   explain:'Subject = "diversity" (singular). "Species" and "ecosystems" are in prepositional phrases — cross them out.'},
+  {passage:'The poet\'s early work reflected the optimism of the postwar _______ her later poems adopted a markedly darker tone.',
+   choices:['era, her','era; her','era her','era, and her'],correct:1,type:'Boundaries',
+   explain:'Two independent clauses — semicolon correctly joins them. (A) = comma splice. (C) = run-on.'},
+  {passage:'_______ the research team identified several compounds that could potentially slow the progression of the disease.',
+   choices:['Analyzing thousands of molecular structures,','Having been analyzed for molecular structures,','Thousands of molecular structures analyzed,','Analyzing, thousands of molecular structures by'],correct:0,type:'Modifier',
+   explain:'The research team is doing the analyzing — the modifier must touch "the research team."'},
+  {passage:'By the time the rescue team arrived at the remote village, the floodwaters _______ most of the bridges connecting the settlement to the main road.',
+   choices:['destroyed','have destroyed','had already destroyed','will have destroyed'],correct:2,type:'Tense',
+   explain:'Destruction happened BEFORE arrival — past perfect "had destroyed" for the earlier of two past events.'},
+  {passage:'The company\'s sustainability report highlighted three key achievements: reducing carbon emissions by 30%, _______ and eliminating single-use plastics from all offices.',
+   choices:['the implementation of renewable energy sources,','implementing renewable energy sources,','to implement renewable energy sources,','renewable energy sources were implemented,'],correct:1,type:'Parallelism',
+   explain:'Gerund series: "reducing…, implementing…, eliminating…" All must match.'},
+  {passage:'Although the initial trials were _______ the pharmaceutical company decided to invest an additional $200 million in the drug\'s development.',
+   choices:['disappointing; the','disappointing. The','disappointing, the','disappointing the'],correct:2,type:'Boundaries',
+   explain:'DC ("Although…disappointing") + IC → comma separates them. Semicolons/periods create fragments from the DC.'}
+];
+
+// --- MORPHOLOGY ---
+const ROOTS_TABLE=[
+  {root:'bene-',meaning:'good, well',examples:'benefit, benevolent, benediction'},
+  {root:'mal-',meaning:'bad, evil',examples:'malfunction, malevolent, malice'},
+  {root:'dict-',meaning:'say, speak',examples:'predict, contradict, dictate'},
+  {root:'vert/vers-',meaning:'turn',examples:'convert, reverse, diversion'},
+  {root:'cred-',meaning:'believe',examples:'credible, incredulous, creed'},
+  {root:'spec/spect-',meaning:'look, see',examples:'inspect, spectacle, perspective'},
+  {root:'duc/duct-',meaning:'lead',examples:'conduct, deduce, induction'},
+  {root:'scrib/script-',meaning:'write',examples:'describe, manuscript, inscription'},
+  {root:'voc/vok-',meaning:'call, voice',examples:'evoke, advocate, provoke'},
+  {root:'mit/mis-',meaning:'send',examples:'transmit, dismiss, emit'}
+];
+const MORPH=[
+  {target:'incredible',meaning:'impossible to believe',parts:[{text:'in-',type:'prefix'},{text:'cred',type:'root'},{text:'-ible',type:'suffix'}],
+   distractors:[{text:'un-',type:'prefix'},{text:'dict',type:'root'},{text:'-tion',type:'suffix'}]},
+  {target:'malevolent',meaning:'wishing evil or harm to others',parts:[{text:'mal-',type:'prefix'},{text:'vol',type:'root'},{text:'-ent',type:'suffix'}],
+   distractors:[{text:'bene-',type:'prefix'},{text:'spec',type:'root'},{text:'-ous',type:'suffix'}]},
+  {target:'contradict',meaning:'to speak against; to deny the truth of',parts:[{text:'contra-',type:'prefix'},{text:'dict',type:'root'}],
+   distractors:[{text:'pre-',type:'prefix'},{text:'scrib',type:'root'},{text:'-ment',type:'suffix'}]},
+  {target:'circumspect',meaning:'careful to consider all circumstances; cautious',parts:[{text:'circum-',type:'prefix'},{text:'spec',type:'root'},{text:'-t',type:'suffix'}],
+   distractors:[{text:'intro-',type:'prefix'},{text:'duc',type:'root'},{text:'-ive',type:'suffix'}]},
+  {target:'revocation',meaning:'the act of calling back or canceling',parts:[{text:'re-',type:'prefix'},{text:'voc',type:'root'},{text:'-ation',type:'suffix'}],
+   distractors:[{text:'de-',type:'prefix'},{text:'mit',type:'root'},{text:'-ment',type:'suffix'}]},
+  {target:'transcription',meaning:'the process of writing across/copying',parts:[{text:'trans-',type:'prefix'},{text:'script',type:'root'},{text:'-ion',type:'suffix'}],
+   distractors:[{text:'sub-',type:'prefix'},{text:'vert',type:'root'},{text:'-ible',type:'suffix'}]}
+];
+
+// --- CONNOTATION SPECTRA ---
+const SPECTRA=[
+  {label:'Describing someone careful with money',words:['thrifty','economical','frugal','cheap','miserly'],order:['thrifty','economical','frugal','cheap','miserly']},
+  {label:'Describing a thin person',words:['slender','lean','skinny','scrawny','gaunt'],order:['slender','lean','skinny','scrawny','gaunt']},
+  {label:'Describing someone who speaks their mind',words:['forthright','candid','blunt','tactless','abrasive'],order:['forthright','candid','blunt','tactless','abrasive']},
+  {label:'Describing an old object',words:['vintage','classic','dated','antiquated','obsolete'],order:['vintage','classic','dated','antiquated','obsolete']}
+];
+
+// --- PREDICTION (with scaffolded bridge) ---
+const PREDICT=[
+  {passage:'The architect\'s design for the new library was anything but conventional. Where most public buildings favor symmetry and uniformity, her plan _______ traditional layouts in favor of irregular, organic forms inspired by natural landscapes.',
+   answer:'rejected',choices:['rejected','accepted','modified','celebrated'],correct:0,
+   clue:'"Anything but conventional" + "where most…favor symmetry, her plan [opposite]" signals rejection of traditional approaches.',
+   clueWords:['anything but conventional','in favor of irregular']},
+  {passage:'Despite decades of research, the origins of the mysterious Nazca Lines in Peru remain _______ . No single theory has been universally accepted by archaeologists.',
+   answer:'unclear/uncertain',choices:['elusive','obvious','controversial','irrelevant'],correct:0,
+   clue:'"No single theory has been universally accepted" means the answer is still uncertain. "Elusive" = difficult to find or achieve.',
+   clueWords:['remain','No single theory','universally accepted']},
+  {passage:'The new evidence did not merely support the researcher\'s hypothesis — it _______ the case for her theory, leaving even her harshest critics unable to find flaws in her reasoning.',
+   answer:'strengthened greatly',choices:['undermined','bolstered','complicated','reiterated'],correct:1,
+   clue:'"Not merely support" signals something stronger. "Leaving critics unable to find flaws" confirms strengthening. "Bolstered" = strengthened.',
+   clueWords:['not merely support','harshest critics unable to find flaws']},
+  {passage:'While the CEO publicly praised the merger, internal documents revealed that she had privately _______ concerns about the deal\'s long-term financial viability.',
+   answer:'expressed/voiced',choices:['dismissed','echoed','voiced','concealed'],correct:2,
+   clue:'"Privately [blank] concerns" — she had concerns (contrast with public praise). "Voiced" = expressed.',
+   clueWords:['While','publicly praised','privately','revealed']},
+  {passage:'The novelist\'s prose style, once celebrated for its _______ and clarity, had grown increasingly dense and self-indulgent in her later works.',
+   answer:'simplicity/directness',choices:['elegance','ambiguity','verbosity','complexity'],correct:0,
+   clue:'"Once celebrated for [blank] and clarity" → paired with "clarity," must be positive. "Had grown dense" = opposite now.',
+   clueWords:['once celebrated','and clarity','had grown increasingly dense']},
+  {passage:'Conservationists warn that the proposed dam would _______ the river ecosystem, disrupting spawning routes for salmon and flooding habitats that support dozens of endangered species.',
+   answer:'damage/destroy',choices:['devastate','preserve','monitor','relocate'],correct:0,
+   clue:'"Disrupting spawning routes" and "flooding habitats" describe severe damage. "Devastate" = destroy or severely damage.',
+   clueWords:['warn','disrupting','flooding habitats','endangered species']}
+];
+
+// --- TIMED PRACTICE ---
+const PRACTICE=[
+  {passage:'The documentary filmmaker spent years earning the trust of the reclusive community. Her patient approach ultimately _______ the residents\' willingness to share their stories on camera.',
+   choices:['secured','demanded','ignored','prevented'],correct:0,diff:'easy',
+   explain:'"Patient approach" + "trust" + "willingness to share" = positive outcome. "Secured" means successfully obtained.'},
+  {passage:'Although the critic\'s review of the novel was largely _______ she acknowledged that the author\'s prose style had improved significantly since his first book.',
+   choices:['favorable','unfavorable','ambiguous','comprehensive'],correct:1,diff:'easy',
+   explain:'"Although…[blank], she acknowledged [positive thing]" — "although" signals contrast. The review was mostly negative, BUT she noted improvement.'},
+  {passage:'The botanist\'s discovery of a high-altitude plant species that _______ in temperatures below negative 40 degrees challenged existing assumptions about the limits of photosynthesis.',
+   choices:['perished','thrived','appeared','fluctuated'],correct:1,diff:'easy',
+   explain:'The discovery "challenged assumptions about limits" — the plant succeeds where it shouldn\'t. "Thrived" = flourished.'},
+  {passage:'The senator\'s speech was designed to _______ concerns about the new trade agreement. Rather than dismissing critics outright, she addressed each objection with specific data and projections.',
+   choices:['amplify','alleviate','ignore','fabricate'],correct:1,diff:'easy',
+   explain:'She "addressed each objection" with data — she\'s reducing worry. "Alleviate" = relieve or lessen.'},
+  {passage:'The invasive vine species spread with alarming speed through the forest, _______ native plants of the sunlight and nutrients they needed to survive.',
+   choices:['depriving','providing','reminding','accusing'],correct:0,diff:'medium',
+   explain:'The vine blocks sunlight and nutrients — it takes away what they need. "Depriving" = taking away from.'},
+  {passage:'Literary scholars note that the author\'s early novels were markedly _______ , featuring simple plots, familiar settings, and predictable character arcs that appealed to a broad readership.',
+   choices:['unconventional','accessible','controversial','obscure'],correct:1,diff:'medium',
+   explain:'"Simple plots, familiar settings, broad readership" signal ease of understanding. "Accessible" = easy to understand.'},
+  {passage:'The negotiations between the two nations had reached an _______ with neither side willing to compromise on the territorial dispute that had sparked the conflict.',
+   choices:['agreement','impasse','acceleration','evolution'],correct:1,diff:'medium',
+   explain:'"Neither side willing to compromise" = deadlock. "Impasse" = a situation with no progress possible.'},
+  {passage:'The choreographer\'s new piece _______ elements of traditional ballet with contemporary street dance, creating a hybrid form that surprised audiences and critics alike.',
+   choices:['eliminated','fused','separated','showcased'],correct:1,diff:'medium',
+   explain:'"Hybrid form" combining "traditional ballet with contemporary street dance" = blending. "Fused" = joined together.'},
+  {passage:'The researcher\'s findings were so _______ that several established journals initially refused to publish them, fearing the conclusions would prove difficult to replicate.',
+   choices:['mundane','provocative','predictable','conventional'],correct:1,diff:'medium',
+   explain:'Journals "refused to publish" because conclusions "would prove difficult to replicate" — startling. "Provocative" = stimulating controversy.'},
+  {passage:'The sculptor\'s work reveals a deep _______ for the natural world; every piece incorporates organic forms drawn from her observations of local wildlife.',
+   choices:['disdain','reverence','indifference','curiosity'],correct:1,diff:'hard',
+   explain:'"Every piece incorporates organic forms from observations of wildlife" — deep admiration. "Reverence" = deep respect.'},
+  {passage:'The app\'s early success was _______ — within six months, user engagement had dropped by 70%, and the company was forced to redesign its entire interface.',
+   choices:['enduring','sustained','fleeting','remarkable'],correct:2,diff:'hard',
+   explain:'Success followed by 70% drop within six months = short-lived. "Fleeting" = lasting only a short time.'},
+  {passage:'The historian argues that the treaty, far from establishing lasting peace, merely _______ the underlying tensions that would eventually erupt into a full-scale conflict.',
+   choices:['resolved','exacerbated','masked','celebrated'],correct:2,diff:'hard',
+   explain:'"Far from establishing peace" + tensions "would eventually erupt" = the treaty hid but didn\'t fix the problems. "Masked" = concealed.'},
+  {passage:'The committee\'s decision to _______ funding for the arts program was met with immediate protest from educators, who argued that creative disciplines are essential to well-rounded education.',
+   choices:['increase','revoke','maintain','publicize'],correct:1,diff:'hard',
+   explain:'Educators "protested" and argued arts are "essential" — funding was taken away. "Revoke" = officially cancel or withdraw.'},
+  {passage:'The geologist described the canyon formation as a testament to the _______ power of water, noting that a small stream had carved through 200 meters of solid limestone over millions of years.',
+   choices:['diminished','persistent','instantaneous','negligible'],correct:1,diff:'hard',
+   explain:'A small stream carving 200m over millions of years = steady, ongoing force. "Persistent" = continuing firmly over a long period.'}
+];
+
+// --- CHALLENGE A: SECONDARY MEANINGS ---
+const CHALL_A=[
+  {passage:'The scientist\'s research _______ a wide range of disciplines, from molecular biology to behavioral psychology, making her uniquely qualified to lead the interdisciplinary initiative.',
+   choices:['commanded','spanned','observed','entertained'],correct:1,
+   explain:'"Wide range of disciplines" = her research covered/extended across many fields. "Spanned" = extended across.'},
+  {passage:'Critics argued that the new regulation would _______ innovation by imposing burdensome reporting requirements on small technology startups.',
+   choices:['channel','stifle','strike','harbor'],correct:1,
+   explain:'"Burdensome requirements" on startups = suppressing innovation. "Stifle" = suppress or restrain.'},
+  {passage:'The CEO\'s resignation letter _______ no mention of the accounting scandal that had dominated headlines for weeks, focusing instead on her personal desire to spend more time with family.',
+   choices:['made','took','bore','struck'],correct:2,
+   explain:'"Bore no mention" = contained/carried no mention. "Bore" (past of "bear") = carried/contained — a secondary meaning.'},
+  {passage:'The young diplomat showed a remarkable ability to _______ the competing interests of the five nations at the negotiating table.',
+   choices:['reconcile','strike','harbor','channel'],correct:0,
+   explain:'"Competing interests" at negotiations = bringing opposing sides into agreement. "Reconcile" = make compatible.'},
+  {passage:'The museum\'s new exhibition _______ the evolution of photography from daguerreotypes to digital imaging, spanning nearly two centuries of technological change.',
+   choices:['arrested','charted','commanded','exercised'],correct:1,
+   explain:'"Evolution…spanning two centuries" = mapped out the progression. "Charted" = mapped or documented systematically.'},
+  {passage:'Local activists have long _______ concerns about the factory\'s impact on air quality, but state regulators have consistently dismissed their complaints as unfounded.',
+   choices:['harbored','channeled','struck','exercised'],correct:3,
+   explain:'"Exercised" in the sense of "exercised their right to raise concerns" = expressed or put into action. "Harbored" = secretly held (contradicts their vocal activism).'},
+  {passage:'The attorney\'s cross-examination was designed to _______ the credibility of the prosecution\'s key witness by revealing inconsistencies in her previous statements.',
+   choices:['channel','undermine','harbor','command'],correct:1,
+   explain:'"Revealing inconsistencies" to damage credibility. "Undermine" = weaken or damage from beneath.'},
+  {passage:'The novel\'s protagonist _______ a deep resentment toward the aristocratic class, a bitterness that drives much of the plot\'s central conflict.',
+   choices:['channeled','struck','harbored','charted'],correct:2,
+   explain:'"Deep resentment" held internally. "Harbored" = kept/held (an emotion) inside — secondary meaning of "harbor."'}
+];
+
+// --- CHALLENGE B: PRECISION ---
+const CHALL_B=[
+  {passage:'The researcher\'s tone throughout the paper was deliberately _______ , presenting findings without any indication of personal opinion or emotional investment.',
+   choices:['objective','impartial','detached','dispassionate'],correct:3,
+   explain:'"Dispassionate" specifically emphasizes ABSENCE OF EMOTION ("without emotional investment"). "Objective" = fact-based. "Impartial" = fair/unbiased. "Detached" = removed (could suggest disinterest, slightly negative).'},
+  {passage:'The ancient temple\'s walls bore _______ carvings that depicted scenes from the empire\'s founding mythology, each figure rendered in extraordinary detail.',
+   choices:['elaborate','intricate','ornate','complex'],correct:1,
+   explain:'"Intricate" specifically means having many fine, carefully arranged details — matching "extraordinary detail." "Elaborate" = detailed and complicated (broader). "Ornate" = highly decorated. "Complex" = structural.'},
+  {passage:'The candidate\'s speech was carefully _______ to avoid alienating either progressive or conservative members of her party while still communicating a clear policy agenda.',
+   choices:['crafted','calibrated','constructed','composed'],correct:1,
+   explain:'"Calibrated" implies careful ADJUSTMENT to achieve specific balance — matching the need to balance two factions. "Crafted" = skillfully made (general).'},
+  {passage:'The playwright\'s dialogue captures the _______ rhythms of everyday speech — the half-finished sentences, the interruptions, the pauses that convey more than words ever could.',
+   choices:['natural','authentic','genuine','organic'],correct:2,
+   explain:'"Genuine" captures sincerity and unaffected quality of real speech patterns — emphasizes truthfulness to human experience rather than just accuracy.'}
+];
+
+// ══════════ UTILITY COMPONENTS ══════════
+
+function ProgressBar({current,total}){
+  const pct=total>0?Math.round(current/total*100):0;
+  return e("div",{style:{position:"fixed",top:0,left:0,right:0,zIndex:100}},
+    e("div",{style:{height:4,background:`linear-gradient(90deg,${C.craft} 0%,${C.craft} 28%,${C.info} 28%,${C.info} 54%,${C.conv} 54%,${C.conv} 80%,${C.expr} 80%)`}}),
+    e("div",{style:{height:3,background:C.border}},
+      e("div",{style:{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${C.craft},${C.accent})`,transition:"width .4s ease"}}))
+  );
+}
+
+function Badge({text,color,bg}){
+  return e("span",{style:{display:"inline-block",background:color||C.craft,color:bg||"#fff",fontSize:11,fontWeight:700,letterSpacing:2,textTransform:"uppercase",padding:"5px 14px",borderRadius:16}},text);
+}
+
+function DiffBadge({diff}){
+  const col=diff==="easy"?C.correct:diff==="medium"?C.conv:C.wrong;
+  const bg=diff==="easy"?C.correctBg:diff==="medium"?C.convBg:C.wrongBg;
+  return e("span",{style:{fontSize:10,padding:"2px 10px",borderRadius:4,fontWeight:700,background:bg,color:col,textTransform:"uppercase",letterSpacing:1}},diff);
+}
+
+function Card({children,accent,style:s}){
+  return e("div",{style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:"18px 20px",marginBottom:12,borderLeft:accent?`3px solid ${accent}`:undefined,...s}},children);
+}
+
+function Callout({children,color,style:s}){
+  const c=color||C.accent;
+  return e("div",{style:{background:`${c}10`,border:`1px solid ${c}44`,borderRadius:10,padding:"14px 18px",marginBottom:16,fontSize:".9rem",...s}},children);
+}
+
+function QuizChoice({letter,text,onClick,disabled,state}){
+  let bg=C.paper,bdr=`2px solid ${C.border}`,tc="#ccc";
+  if(state==="correct"){bg=C.correctBg;bdr=`2px solid ${C.correct}`;tc=C.correct;}
+  else if(state==="wrong"){bg=C.wrongBg;bdr=`2px solid ${C.wrong}`;tc=C.wrong;}
+  else if(state==="selected"){bg=C.craftBg;bdr=`2px solid ${C.craft}`;tc=C.craft;}
+  let letterBg=C.border,letterColor=C.muted;
+  if(state==="correct"){letterBg=C.correct;letterColor=C.paper;}
+  else if(state==="wrong"){letterBg=C.wrong;letterColor=C.paper;}
+  else if(state==="selected"){letterBg=C.craft;letterColor=C.paper;}
+  return e("button",{onClick,disabled,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"12px 16px",borderRadius:10,background:bg,border:bdr,cursor:disabled?"default":"pointer",textAlign:"left",width:"100%",transition:"all .15s"}},
+    e("span",{style:{minWidth:26,height:26,borderRadius:7,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:12,background:letterBg,color:letterColor,flexShrink:0}},letter),
+    e("span",{style:{color:tc,fontSize:14,lineHeight:1.7}},text)
+  );
+}
+
+function Explain({text,show}){
+  if(!show)return null;
+  return e("div",{style:{marginTop:10,padding:12,background:C.paper,borderRadius:8,fontSize:".85rem",color:C.sub,lineHeight:1.65,borderLeft:`3px solid ${C.correct}`}},text);
+}
+
+// ══════════ SCREEN: WELCOME ══════════
+function Welcome({onNext}){
+  const[show,setShow]=useState(false);
+  useEffect(()=>{setTimeout(()=>setShow(true),100);},[]);
+  const sessions=[
+    {icon:"🔄",title:"Retrieval Warm-Up",desc:"Review Modules 2–3",time:"5 min"},
+    {icon:"🧬",title:"Morphology Toolkit",desc:"Build words from roots",time:"12 min"},
+    {icon:"🌈",title:"Connotation Spectrum",desc:"Shade-of-meaning sorting",time:"10 min"},
+    {icon:"🎯",title:"Prediction Method",desc:"Predict before you peek",time:"8 min"},
+    {icon:"⏱️",title:"Timed Practice",desc:"14 PSAT-format questions",time:"20 min"},
+    {icon:"📖",title:"Vocabulary Journal",desc:"Track & export your words",time:"5 min"}
+  ];
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    e(Badge,{text:"Module 4 • Phase 2: Craft & Structure"}),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(2rem,5vw,3.2rem)",fontWeight:700,color:C.ink,lineHeight:1.1,textAlign:"center",marginTop:16,marginBottom:8}},"Words Are Weapons"),
+    e("p",{style:{color:C.sub,fontSize:17,maxWidth:560,textAlign:"center",lineHeight:1.65,marginBottom:12}},"Words in Context — Vocabulary Through Morphology and Precision"),
+    e("div",{style:{color:C.muted,fontSize:13,marginBottom:36,display:"flex",gap:20}},
+      e("span",null,"⏱ ~60 minutes"),e("span",null,"📋 6 sessions"),e("span",null,"🔍 Craft & Structure")),
+    e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:14,maxWidth:700,width:"100%",marginBottom:44}},
+      sessions.map((s,i)=>e("div",{key:i,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:14,padding:"18px 16px",textAlign:"center"}},
+        e("div",{style:{fontSize:28,marginBottom:6}},s.icon),
+        e("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:3}},s.title),
+        e("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},s.desc),
+        e("div",{style:{color:C.craft,fontSize:11,fontWeight:600,marginTop:6}},s.time)))),
+    e("button",{onClick:onNext,style:btn(`linear-gradient(135deg,${C.craft},${C.accent})`,C.paper),
+      onMouseOver:ev=>ev.currentTarget.style.transform="scale(1.04)",
+      onMouseOut:ev=>ev.currentTarget.style.transform="scale(1)"},"Start Module →"));
+}
+
+// ══════════ SCREEN: WARMUP ══════════
+function WarmupScreen({onComplete}){
+  const[answers,setAnswers]=useState(Array(WARMUP.length).fill(null));
+  const done=answers.every(a=>a!==null);
+  const score=answers.filter((a,i)=>a===WARMUP[i].correct).length;
+  function pick(qi,ci){
+    if(answers[qi]!==null)return;
+    setAnswers(p=>{const n=[...p];n[qi]=ci;return n;});
+  }
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 1 • Retrieval Warm-Up (5 min)"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Conventions Review from Modules 2–3"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7}},"6 mixed Boundaries and Form/Structure/Sense questions — keeping your grammar skills sharp while we shift to vocabulary."),
+    WARMUP.map((q,qi)=>{
+      const answered=answers[qi]!==null;
+      return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1,transition:"all .3s"}},
+        e("div",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6,display:"inline-block",padding:"2px 8px",borderRadius:4,background:C.convBg,color:C.conv}},"Conventions — ",q.type," (Review)"),
+        e("div",{style:{background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:12,borderLeft:`3px solid ${C.muted}`}},q.passage),
+        e("div",{style:{fontSize:14,marginBottom:12,color:"#ddd"}},"Which choice completes the text so that it conforms to the conventions of Standard English?"),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+          q.choices.map((c,ci)=>{
+            let st=null;
+            if(answered&&ci===q.correct)st="correct";
+            else if(answered&&answers[qi]===ci)st="wrong";
+            else if(!answered&&answers[qi]===ci)st="selected";
+            return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:answered,onClick:()=>pick(qi,ci)});
+          })),
+        e(Explain,{text:q.explain,show:answered}));
+    }),
+    done&&e("div",{style:{textAlign:"center",padding:"16px 0"}},
+      e("div",{style:{fontSize:15,fontWeight:700,color:score>=5?C.correct:score>=3?C.conv:C.wrong,marginBottom:12}},score,"/",WARMUP.length," — ",score===6?"Perfect recall!":score>=4?"Solid — the conventions rules are working.":"Review the 10 Rules reference from Module 3."),
+      e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${C.craft},${C.accent})`,C.paper)},"Continue to Morphology Toolkit →")));
+}
+
+// ══════════ SCREEN: LESSONS (Morphology + Connotation + Prediction Method) ══════════
+function LessonScreen({onComplete}){
+  const[phase,setPhase]=useState(0); // 0=morphology, 1=connotation, 2=prediction-method
+  const titles=["Session 2: Morphology Toolkit (12 min)","Session 3: Connotation Spectrum (10 min)","Session 4: The Prediction Method (8 min)"];
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"center",gap:8,marginBottom:32}},
+      [0,1,2].map(i=>e("div",{key:i,style:{width:i===phase?28:10,height:8,borderRadius:4,background:i===phase?C.craft:i<phase?`${C.craft}66`:C.border,cursor:"pointer",transition:"all .3s"},onClick:()=>{if(i<=phase)setPhase(i);}}))),
+    phase===0&&e(MorphologySession,{onDone:()=>setPhase(1)}),
+    phase===1&&e(ConnotationSession,{onDone:()=>setPhase(2)}),
+    phase===2&&e(PredictionMethodSession,{onDone:onComplete}));
+}
+
+// --- Morphology Session ---
+function MorphologySession({onDone}){
+  return e("div",null,
+    e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 2 • Morphology Toolkit (12 min)"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Build Words from Parts"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:6,lineHeight:1.7}},"Most English academic vocabulary is built from Latin and Greek roots with prefixes and suffixes. If you know 20 roots and 10 common affixes, you can decode hundreds of unfamiliar words. This is the highest-yield vocabulary strategy for the PSAT."),
+    e(Callout,{color:C.craft},
+      e("strong",{style:{color:C.craft}},"Two question formats: "),"Most WIC questions ask you to \"complete the text with the most logical and precise word.\" A smaller number ask you to interpret a word's meaning in context. Both reward the same skill: reading context carefully and matching meaning precisely."),
+    // Interactive: Inline root explorer
+    e(RootExplorer,null),
+    e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.1rem",margin:"20px 0 10px"}},"Word Assembly Challenge"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"For each prompt, select the correct prefix, root, and/or suffix to build the target word. Click pieces to add them; click placed pieces to remove them."),
+    e(MorphBuilder,null),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onDone,style:btn(C.craft,C.paper)},"Continue to Connotation Spectrum →")));
+}
+
+function RootExplorer(){
+  const[active,setActive]=useState(null);
+  return e("div",{style:{marginBottom:20}},
+    e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:10}},"Interactive: Root Explorer"),
+    e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}},
+      ROOTS_TABLE.map((r,i)=>e("button",{key:i,onClick:()=>setActive(active===i?null:i),style:{padding:"8px 14px",borderRadius:8,border:`2px solid ${active===i?C.craft:C.border}`,background:active===i?C.craftBg:C.surface,color:active===i?C.craft:C.sub,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'JetBrains Mono',monospace",transition:"all .15s"}},r.root))),
+    active!==null&&e("div",{style:{background:C.surface,border:`1px solid ${C.craft}44`,borderRadius:10,padding:16,animation:"fadeIn .3s"}},
+      e("div",{style:{color:C.craft,fontWeight:700,fontSize:16,fontFamily:"'JetBrains Mono',monospace",marginBottom:4}},ROOTS_TABLE[active].root),
+      e("div",{style:{color:C.ink,fontSize:14,marginBottom:6}},"Meaning: ",e("strong",null,ROOTS_TABLE[active].meaning)),
+      e("div",{style:{color:C.sub,fontSize:13}},"Examples: ",ROOTS_TABLE[active].examples)));
+}
+
+function MorphBuilder(){
+  const[states,setStates]=useState(MORPH.map(()=>({placed:[],checked:false})));
+  function addPiece(mi,piece){
+    setStates(p=>{const n=[...p];if(n[mi].checked)return n;n[mi]={...n[mi],placed:[...n[mi].placed,piece]};return n;});
+  }
+  function removePiece(mi,pi){
+    setStates(p=>{const n=[...p];if(n[mi].checked)return n;const pl=[...n[mi].placed];pl.splice(pi,1);n[mi]={...n[mi],placed:pl};return n;});
+  }
+  function check(mi){setStates(p=>{const n=[...p];n[mi]={...n[mi],checked:true};return n;});}
+  function reset(mi){setStates(p=>{const n=[...p];n[mi]={placed:[],checked:false};return n;});}
+  const typeColors={prefix:`${C.craft}66`,root:`${C.conv}66`,suffix:`${C.info}66`};
+  const typeTextColors={prefix:C.craft,root:C.conv,suffix:C.info};
+
+  return e("div",null,states.map((st,mi)=>{
+    const m=MORPH[mi];
+    const allPieces=useMemo(()=>[...m.parts,...m.distractors].sort(()=>.5-Math.random()),[mi]);
+    const isCorrect=st.checked&&st.placed.length===m.parts.length&&m.parts.every((p,j)=>st.placed[j]&&st.placed[j].text===p.text);
+    return e("div",{key:mi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:10}},
+      e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+        e("div",null,e("strong",{style:{color:C.craft}},m.target)," ",e("span",{style:{color:C.muted,fontSize:14}},"— ",m.meaning)),
+        st.checked&&e("span",{style:{fontSize:13,color:isCorrect?C.correct:C.wrong}},isCorrect?"✓ Correct":"✗ Try again")),
+      e("div",{style:{background:C.paper,border:`2px dashed ${C.border}`,borderRadius:10,padding:12,minHeight:48,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",marginBottom:8}},
+        st.placed.length>0?st.placed.map((p,pi)=>e("div",{key:pi,onClick:()=>removePiece(mi,pi),style:{padding:"6px 10px",background:C.surface,borderRadius:6,fontSize:14,cursor:"pointer",border:`1px solid ${typeColors[p.type]}`,color:typeTextColors[p.type]}},p.text)):
+        e("span",{style:{fontSize:13,color:C.muted}},"Click pieces below to build the word…")),
+      e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(120px,1fr))",gap:6,marginBottom:8}},
+        allPieces.map((p,pi)=>{
+          const used=st.placed.some(pl=>pl.text===p.text);
+          return e("button",{key:pi,onClick:()=>addPiece(mi,p),disabled:used||st.checked,style:{padding:"8px 12px",background:C.surface,border:`2px solid ${used?C.border:typeColors[p.type]}`,borderRadius:8,textAlign:"center",cursor:used||st.checked?"default":"pointer",opacity:used?.4:1,fontSize:14,color:typeTextColors[p.type],transition:"all .15s"}},
+            p.text,e("div",{style:{fontSize:11,color:C.muted}},p.type));
+        })),
+      e("div",{style:{display:"flex",gap:6}},
+        e("button",{onClick:()=>check(mi),style:btnSm(C.craft,C.paper)},"Check"),
+        e("button",{onClick:()=>reset(mi),style:btnSm("transparent",C.craft,{border:`2px solid ${C.craft}`})},"Reset")));
+  }));
+}
+
+// --- Connotation Session ---
+function ConnotationSession({onDone}){
+  return e("div",null,
+    e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 3 • Connotation Spectrum (10 min)"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Why Synonyms Aren't Interchangeable"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:12,lineHeight:1.7}},"On the PSAT, all four answer choices often mean roughly the same thing — but they differ in connotation (the emotional shade) and precision (how exactly it fits). The right answer matches both meaning AND tone."),
+    // Interactive inline visual: denotation vs connotation demo
+    e(ConnotationDemo,null),
+    e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.1rem",margin:"20px 0 10px"}},"Spectrum Sorting"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"For each group, place the words in order from most ",e("strong",{style:{color:C.correct}},"positive")," to most ",e("strong",{style:{color:C.wrong}},"negative")," connotation. Click a word, then click the slot to place it."),
+    e(SpectrumExercises,null),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onDone,style:btn(C.craft,C.paper)},"Continue to Prediction Method →")));
+}
+
+function ConnotationDemo(){
+  const[step,setStep]=useState(0);
+  const words=["Thrifty","Economical","Frugal","Cheap","Miserly"];
+  const colors=[C.correct,"#6ee7b7",C.conv,"#fb923c",C.wrong];
+  const descs=["Positive: wise, resourceful","Neutral-positive: practical","Neutral: careful, maybe too much","Negative: unwilling to spend","Very negative: obsessively hoarding"];
+  return e("div",{style:{marginBottom:20}},
+    e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:10}},"Interactive: Denotation vs. Connotation"),
+    e(Card,{accent:C.craft},
+      e("p",{style:{color:"#ccc",fontSize:14,marginBottom:8,lineHeight:1.6}},e("strong",{style:{color:C.craft}},"Denotation")," = dictionary definition. ",e("strong",{style:{color:C.craft}},"Connotation")," = emotional association."),
+      e("p",{style:{color:C.sub,fontSize:13,marginBottom:12}},"All five words below mean \"careful with money\" — but watch how the feeling shifts:"),
+      e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}},
+        words.map((w,i)=>e("button",{key:i,onClick:()=>setStep(i),style:{padding:"8px 16px",borderRadius:20,border:`2px solid ${step===i?colors[i]:C.border}`,background:step===i?`${colors[i]}18`:"transparent",color:step===i?colors[i]:C.sub,fontSize:14,fontWeight:600,cursor:"pointer",transition:"all .2s"}},w))),
+      e("div",{style:{padding:"10px 14px",background:C.paper,borderRadius:8,borderLeft:`3px solid ${colors[step]}`,transition:"all .3s"}},
+        e("span",{style:{color:colors[step],fontWeight:700}},words[step]),": ",
+        e("span",{style:{color:C.sub}},descs[step]))));
+}
+
+function SpectrumExercises(){
+  const[states,setStates]=useState(SPECTRA.map(s=>({placed:Array(s.words.length).fill(null),checked:false,available:[...s.words].sort(()=>.5-Math.random())})));
+  const[selectedWord,setSelectedWord]=useState(null); // {si, word}
+
+  function placeWord(si,slot){
+    if(states[si].placed[slot]||states[si].checked)return;
+    if(!selectedWord||selectedWord.si!==si)return;
+    setStates(p=>{const n=[...p];const ns={...n[si],placed:[...n[si].placed]};ns.placed[slot]=selectedWord.word;n[si]=ns;return n;});
+    setSelectedWord(null);
+  }
+  function removeFromSlot(si,slot){
+    if(states[si].checked)return;
+    setStates(p=>{const n=[...p];const ns={...n[si],placed:[...n[si].placed]};ns.placed[slot]=null;n[si]=ns;return n;});
+  }
+  function checkSpectrum(si){
+    if(states[si].placed.includes(null))return;
+    setStates(p=>{const n=[...p];n[si]={...n[si],checked:true};return n;});
+  }
+  function resetSpectrum(si){
+    setStates(p=>{const n=[...p];n[si]={placed:Array(SPECTRA[si].words.length).fill(null),checked:false,available:[...SPECTRA[si].words].sort(()=>.5-Math.random())};return n;});
+    setSelectedWord(null);
+  }
+
+  return e("div",null,states.map((st,si)=>{
+    const s=SPECTRA[si];
+    const available=st.available.filter(w=>!st.placed.includes(w));
+    return e("div",{key:si,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:14}},
+      e("div",{style:{fontWeight:700,marginBottom:8,fontSize:14}},s.label),
+      e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}},
+        available.map(w=>e("button",{key:w,onClick:()=>setSelectedWord({si,word:w}),style:{padding:"6px 14px",background:selectedWord&&selectedWord.si===si&&selectedWord.word===w?C.craftBg:C.surface,border:`2px solid ${selectedWord&&selectedWord.si===si&&selectedWord.word===w?C.craft:C.border}`,borderRadius:20,cursor:"pointer",fontSize:14,color:selectedWord&&selectedWord.si===si&&selectedWord.word===w?C.craft:C.ink,transition:"all .15s"}},w))),
+      e("div",{style:{display:"flex",justifyContent:"space-between",fontSize:12,color:C.muted,marginBottom:6}},
+        e("span",{style:{color:C.correct}},"← Most Positive"),e("span",{style:{color:C.wrong}},"Most Negative →")),
+      e("div",{style:{display:"flex",gap:4,marginBottom:12}},
+        st.placed.map((w,wi)=>{
+          let slotStyle={flex:1,minHeight:42,background:C.paper,border:`2px dashed ${C.border}`,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,cursor:"pointer",transition:"all .2s"};
+          if(st.checked&&w){
+            const correct=w===s.order[wi];
+            slotStyle={...slotStyle,borderColor:correct?C.correct:C.wrong,background:correct?C.correctBg:C.wrongBg,borderStyle:"solid"};
+          }
+          return e("div",{key:wi,onClick:()=>w?removeFromSlot(si,wi):placeWord(si,wi),style:slotStyle},
+            w?e("span",{style:{padding:"4px 10px",fontSize:13}},w):e("span",{style:{fontSize:11,color:C.muted}},wi+1));
+        })),
+      e("div",{style:{display:"flex",gap:6}},
+        e("button",{onClick:()=>checkSpectrum(si),style:btnSm(C.craft,C.paper)},"Check"),
+        e("button",{onClick:()=>resetSpectrum(si),style:btnSm("transparent",C.craft,{border:`2px solid ${C.craft}`})},"Reset")),
+      st.checked&&e("div",{style:{marginTop:8,fontSize:13,color:C.sub}},"Correct order: ",s.order.join(" → ")));
+  }));
+}
+
+// --- Prediction Method Session ---
+function PredictionMethodSession({onDone}){
+  return e("div",null,
+    e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 4 • The Prediction Method (8 min)"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Predict Before You Peek"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:12,lineHeight:1.7}},"The single most effective strategy for Words in Context: ",e("strong",null,"read the passage, cover the answer choices, and predict your own word")," before looking at the options."),
+    // Interactive inline: animated step-through
+    e(PredictionStepDemo,null),
+    e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.1rem",margin:"20px 0 10px"}},"Prediction Practice"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"For each passage, type your predicted word BEFORE revealing the answer choices. Then compare your prediction."),
+    e(PredictionExercises,null),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onDone,style:btn(`linear-gradient(135deg,${C.craft},${C.accent})`,C.paper)},"Start Timed Practice →")));
+}
+
+function PredictionStepDemo(){
+  const[step,setStep]=useState(0);
+  const steps=[
+    {label:"Read the Passage",desc:"Read the passage. Identify the blank.",icon:"📖"},
+    {label:"Find Context Clues",desc:'Look for signal words — contrast ("but/however"), continuation ("and/moreover"), cause ("because/since").',icon:"🔍"},
+    {label:"Predict Your Word",desc:'Predict a word or phrase that fits. It doesn\'t have to be fancy — "something bad" or "made worse" counts.',icon:"💡"},
+    {label:"Match to Choices",desc:"NOW look at the answer choices. Match your prediction to the closest option.",icon:"🎯"},
+    {label:"Check Precision",desc:'If two choices seem close, re-read the passage to check which one is more precise.',icon:"⚖️"}
+  ];
+  return e("div",{style:{marginBottom:20}},
+    e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:10}},"Interactive: 5-Step Strategy"),
+    e(Card,{accent:C.craft},
+      e("div",{style:{display:"flex",gap:4,marginBottom:16}},
+        steps.map((_,i)=>e("div",{key:i,style:{flex:1,height:4,borderRadius:2,background:i<=step?C.craft:C.border,transition:"all .3s"}}))),
+      e("div",{style:{display:"flex",alignItems:"center",gap:14,marginBottom:12}},
+        e("div",{style:{fontSize:36}},steps[step].icon),
+        e("div",null,
+          e("div",{style:{color:C.craft,fontWeight:700,fontSize:15}},"Step ",step+1,": ",steps[step].label),
+          e("div",{style:{color:C.sub,fontSize:14,lineHeight:1.6,marginTop:4}},steps[step].desc))),
+      e("div",{style:{display:"flex",gap:8}},
+        steps.map((_,i)=>e("button",{key:i,onClick:()=>setStep(i),style:{padding:"6px 14px",borderRadius:6,border:`1px solid ${i===step?C.craft:C.border}`,background:i===step?C.craftBg:"transparent",color:i===step?C.craft:C.muted,fontSize:12,fontWeight:600,cursor:"pointer"}},"Step ",i+1)))));
+}
+
+function PredictionExercises(){
+  const[states,setStates]=useState(PREDICT.map(()=>({typed:"",revealed:false,answer:null})));
+  function setTyped(i,v){setStates(p=>{const n=[...p];n[i]={...n[i],typed:v};return n;});}
+  function reveal(i){setStates(p=>{const n=[...p];n[i]={...n[i],revealed:true};return n;});}
+  function answer(i,ci){
+    if(states[i].answer!==null)return;
+    setStates(p=>{const n=[...p];n[i]={...n[i],answer:ci};return n;});
+  }
+  return e("div",null,states.map((st,i)=>{
+    const p=PREDICT[i];
+    const answered=st.answer!==null;
+    let matchText=null;
+    if(answered&&st.typed){
+      const answers=p.answer.split('/');
+      const isMatch=answers.some(a=>st.typed.toLowerCase().includes(a.toLowerCase()));
+      matchText=e("span",null,e("strong",null,"Your prediction: "),"\"",st.typed,"\" — ",
+        isMatch?e("span",{style:{color:C.correct}},"Great match!"):
+        "Compare your prediction to the correct answer and note the context clues.");
+    }
+    return e("div",{key:i,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:12}},
+      e("div",{style:{fontSize:12,color:C.muted,marginBottom:6}},"Passage ",i+1),
+      e("div",{style:{background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:10,borderLeft:`3px solid ${C.craft}`}},p.passage),
+      e("div",{style:{marginBottom:8}},
+        e("div",{style:{fontSize:12,fontWeight:700,color:C.craft,marginBottom:4}},"Your prediction:"),
+        e("input",{value:st.typed,onChange:ev=>setTyped(i,ev.target.value),disabled:st.revealed,
+          placeholder:"Type your predicted word here…",
+          style:{width:"100%",padding:"8px 12px",background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,color:C.ink,fontFamily:"inherit",fontSize:14}})),
+      !st.revealed&&e("button",{onClick:()=>reveal(i),style:btnSm(C.craft,C.paper)},"Reveal Choices →"),
+      st.revealed&&e("div",{style:{marginTop:10}},
+        e("div",{style:{fontSize:13,color:C.muted,marginBottom:6}},"Now select the best answer:"),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+          p.choices.map((c,ci)=>{
+            let st2=null;
+            if(answered&&ci===p.correct)st2="correct";
+            else if(answered&&st.answer===ci)st2="wrong";
+            return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st2,disabled:answered,onClick:()=>answer(i,ci)});
+          })),
+        answered&&e("div",{style:{marginTop:10,padding:12,background:C.paper,borderRadius:8,fontSize:13,color:C.sub,lineHeight:1.65,borderLeft:`3px solid ${C.correct}`}},
+          e("strong",null,"Context clue: "),p.clue,
+          matchText&&e("div",{style:{marginTop:6}},matchText))));
+  }));
+}
+
+// ══════════ SCREEN: TIMED PRACTICE ══════════
+function TimedPractice({onComplete}){
+  const[started,setStarted]=useState(false);
+  const[current,setCurrent]=useState(0);
+  const[answers,setAnswers]=useState(Array(PRACTICE.length).fill(null));
+  const[timeLeft,setTimeLeft]=useState(16*60+20);
+  const[done,setDone]=useState(false);
+  const timerRef=useRef(null);
+
+  function start(){
+    setStarted(true);
+    timerRef.current=setInterval(()=>{
+      setTimeLeft(t=>{if(t<=1){clearInterval(timerRef.current);return 0;}return t-1;});
+    },1000);
+  }
+  function pick(ci){
+    if(answers[current]!==null||done)return;
+    setAnswers(p=>{const n=[...p];n[current]=ci;return n;});
+  }
+  function next(){
+    if(current<PRACTICE.length-1)setCurrent(current+1);
+    else finish();
+  }
+  function finish(){
+    if(timerRef.current)clearInterval(timerRef.current);
+    setDone(true);
+  }
+  useEffect(()=>{if(timeLeft<=0&&!done)finish();},[timeLeft]);
+  useEffect(()=>()=>{if(timerRef.current)clearInterval(timerRef.current);},[]);
+
+  const score=answers.filter((a,i)=>a===PRACTICE[i].correct).length;
+  const answered=answers[current]!==null;
+  const q=PRACTICE[current];
+  const m=Math.floor(timeLeft/60),s=timeLeft%60;
+  const pct=(timeLeft/(16*60+20))*100;
+
+  if(done){
+    const scorePct=Math.round(score/PRACTICE.length*100);
+    return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+      e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 5 • Results"),
+      e("div",{style:{background:C.surface,border:`2px solid ${C.craft}`,borderRadius:14,padding:28,textAlign:"center",marginBottom:24}},
+        e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"3rem",fontWeight:700,color:scorePct>=75?C.correct:scorePct>=50?C.craft:C.wrong}},score,"/",PRACTICE.length),
+        e("div",{style:{fontSize:14,color:C.muted,marginTop:4}},scorePct,"% correct · Words in Context Practice")),
+      e(Card,{accent:C.craft},
+        e("div",{style:{fontSize:14,color:"#ccc",lineHeight:1.7}},
+          score>=12?"Excellent! Your vocabulary instincts are sharp. Focus on the Challenge Mode for precision at the 700+ level.":
+          score>=9?"Solid foundation. Review the prediction method for any questions where you were drawn to a wrong answer.":
+          "Keep building! Add every missed word to your vocabulary journal and practice the prediction method before each question.")),
+      // Show all questions with answers
+      e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",margin:"24px 0 12px"}},"Review All Questions"),
+      PRACTICE.map((q2,qi)=>{
+        const a=answers[qi];
+        return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:10,opacity:.85}},
+          e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+            e("span",{style:{fontSize:13,fontWeight:700,color:C.ink}},"Q",qi+1),
+            e(DiffBadge,{diff:q2.diff}),
+            e("span",{style:{fontSize:13,fontWeight:700,color:a===q2.correct?C.correct:C.wrong}},a===q2.correct?"✓":"✗")),
+          e("div",{style:{fontSize:13,color:C.sub,lineHeight:1.6}},q2.explain));
+      }),
+      e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+        e("button",{onClick:()=>onComplete(score,PRACTICE.length),style:btn(`linear-gradient(135deg,${C.craft},${C.accent})`,C.paper)},"Continue to Vocabulary Journal →")));
+  }
+
+  if(!started){
+    return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}},
+      e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 5 • Timed Practice (20 min)"),
+      e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8,textAlign:"center"}},"WIC Practice Set"),
+      e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7,textAlign:"center",maxWidth:560}},"14 PSAT-format Words in Context questions across difficulty levels. You have ",e("strong",null,"70 seconds per question")," — the real test pace. After each question, you'll see why every distractor is wrong."),
+      e("button",{onClick:start,style:btn(`linear-gradient(135deg,${C.craft},${C.accent})`,C.paper,{fontSize:17,padding:"14px 36px"})},"Start Timed Practice (16:20) →"));
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    // Timer
+    e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:pct<20?C.wrong:C.muted,textAlign:"right",marginBottom:4}},m,":",String(s).padStart(2,"0")),
+    e("div",{style:{height:6,borderRadius:3,background:C.border,marginBottom:12,overflow:"hidden"}},
+      e("div",{style:{height:"100%",borderRadius:3,background:pct<20?C.wrong:C.craft,width:`${pct}%`,transition:"width .1s linear"}})),
+    // Score dots
+    e("div",{style:{display:"flex",gap:4,marginBottom:16,flexWrap:"wrap"}},
+      PRACTICE.map((_,i)=>{
+        let dotStyle={width:28,height:28,borderRadius:"50%",border:`2px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",transition:"all .2s"};
+        if(answers[i]!==null&&answers[i]===PRACTICE[i].correct)dotStyle={...dotStyle,borderColor:C.correct,background:C.correctBg,color:C.correct};
+        else if(answers[i]!==null)dotStyle={...dotStyle,borderColor:C.wrong,background:C.wrongBg,color:C.wrong};
+        if(i===current)dotStyle={...dotStyle,borderColor:C.craft,boxShadow:`0 0 0 3px ${C.craftBg}`};
+        return e("div",{key:i,style:dotStyle},i+1);
+      })),
+    // Question
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+      e("span",{style:{fontSize:15,fontWeight:700,color:C.ink}},"Question ",current+1," of ",PRACTICE.length),
+      e(DiffBadge,{diff:q.diff})),
+    e("div",{style:{background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:12,borderLeft:`3px solid ${C.muted}`}},q.passage),
+    e("div",{style:{fontSize:14,marginBottom:12,color:"#ddd"}},"Which choice completes the text with the most logical and precise word or phrase?"),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:16}},
+      q.choices.map((c,ci)=>{
+        let st=null;
+        if(answered&&ci===q.correct)st="correct";
+        else if(answered&&answers[current]===ci)st="wrong";
+        return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:answered,onClick:()=>pick(ci)});
+      })),
+    e(Explain,{text:q.explain,show:answered}),
+    answered&&e("div",{style:{textAlign:"center",marginTop:16}},
+      e("button",{onClick:next,style:btn(C.craft,C.paper)},current<PRACTICE.length-1?"Next Question →":"See Results →")));
+}
+
+// ══════════ SCREEN: VOCAB JOURNAL ══════════
+function VocabJournal({onComplete}){
+  const VJ_KEY='pp_psat_nmsqt_rw_vocab';
+  const[entries,setEntries]=useState(()=>{
+    try{return JSON.parse(localStorage.getItem(VJ_KEY)||'[]');}catch(e){return[];}
+  });
+  useEffect(()=>{try{localStorage.setItem(VJ_KEY,JSON.stringify(entries));}catch(e){}},[entries]);
+
+  function addEntry(){setEntries(p=>[...p,{word:'',context:'',morphology:'',definition:'',usage:''}]);}
+  function updateEntry(i,field,val){setEntries(p=>{const n=[...p];n[i]={...n[i],[field]:val};return n;});}
+  function removeEntry(i){setEntries(p=>p.filter((_,j)=>j!==i));}
+  function exportEntries(){
+    let txt='PSAT/NMSQT VOCABULARY JOURNAL — PantherPrep\n════════════════════════════════════════\n\n';
+    entries.forEach(en=>{txt+=`${en.word||'(blank)'}\n  Context: ${en.context||'—'}\n  Morphology: ${en.morphology||'—'}\n  Definition: ${en.definition||'—'}\n  Usage: ${en.usage||'—'}\n\n`;});
+    navigator.clipboard.writeText(txt).then(()=>alert('Journal copied to clipboard!')).catch(()=>alert('Copy failed.'));
+  }
+
+  if(entries.length===0)setTimeout(addEntry,0);
+
+  const inputStyle={width:"100%",padding:"6px 10px",background:C.surface,border:`1px solid ${C.border}`,borderRadius:6,color:C.ink,fontFamily:"inherit",fontSize:13};
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 6 • Vocabulary Journal (5 min)"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Start Your Word Collection"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:20,lineHeight:1.7}},"For every word you miss or find unfamiliar during practice, create an entry below. This running journal becomes your personal study tool — review it before every module. Data saves in your browser."),
+    e("div",{style:{background:C.surface,border:`2px solid ${C.craft}`,borderRadius:14,padding:22,marginBottom:24}},
+      e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:4,color:C.craft}},"📖 Vocabulary Journal"),
+      e("div",{style:{fontSize:13,color:C.muted,marginBottom:14}},"One entry per unfamiliar or missed word"),
+      entries.map((en,i)=>e("div",{key:i,style:{background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,padding:12,marginBottom:8}},
+        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}},
+          e("input",{value:en.word,onChange:ev=>updateEntry(i,'word',ev.target.value),placeholder:"Word…",
+            style:{...inputStyle,fontSize:15,fontWeight:700,color:C.craft,background:"transparent",border:"none",padding:0}}),
+          e("button",{onClick:()=>removeEntry(i),style:{background:"none",border:"none",color:C.muted,cursor:"pointer",fontSize:13}},"✕")),
+        ["context","morphology","definition","usage"].map(field=>
+          e("div",{key:field,style:{display:"grid",gridTemplateColumns:"auto 1fr",gap:"4px 10px",alignItems:"start",fontSize:13,marginBottom:4}},
+            e("div",{style:{fontWeight:700,color:C.muted,fontSize:11,textTransform:"uppercase",letterSpacing:.5,paddingTop:4}},field),
+            e("input",{value:en[field]||'',onChange:ev=>updateEntry(i,field,ev.target.value),
+              placeholder:`${field==='context'?'Sentence where you found it':field==='morphology'?'Root/prefix/suffix breakdown':field==='definition'?'Meaning in your own words':'Your own sentence using this word'}…`,
+              style:inputStyle}))))),
+      e("div",{style:{display:"flex",gap:8,marginTop:12,flexWrap:"wrap"}},
+        e("button",{onClick:addEntry,style:btnSm(C.craft,C.paper)},"+ Add Word"),
+        e("button",{onClick:exportEntries,style:btnSm("transparent",C.craft,{border:`2px solid ${C.craft}`})},"📋 Export to Clipboard"))),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${C.nm},#7c3aed)`,C.paper)},"Enter Challenge Mode ⭐ →")));
+}
+
+// ══════════ SCREEN: CHALLENGE MODE ══════════
+function ChallengeMode({onComplete}){
+  const[phase,setPhase]=useState(0); // 0=A, 1=B
+  const[answersA,setAnswersA]=useState(Array(CHALL_A.length).fill(null));
+  const[answersB,setAnswersB]=useState(Array(CHALL_B.length).fill(null));
+  const doneA=answersA.every(a=>a!==null);
+  const doneB=answersB.every(a=>a!==null);
+  const scoreA=answersA.filter((a,i)=>a===CHALL_A[i].correct).length;
+  const scoreB=answersB.filter((a,i)=>a===CHALL_B[i].correct).length;
+
+  function pickA(qi,ci){if(answersA[qi]!==null)return;setAnswersA(p=>{const n=[...p];n[qi]=ci;return n;});}
+  function pickB(qi,ci){if(answersB[qi]!==null)return;setAnswersB(p=>{const n=[...p];n[qi]=ci;return n;});}
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{background:C.nmBg,border:`2px solid ${C.nm}66`,borderRadius:14,padding:22,marginBottom:24}},
+      e("div",{style:{display:"inline-block",background:C.nm,color:"#fff",fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",padding:"4px 12px",borderRadius:12,marginBottom:12}},"⭐ Challenge Mode"),
+      e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.4rem",fontWeight:700,marginBottom:12}},"Secondary Meanings & Precision Discrimination"),
+      e("p",{style:{fontSize:14,color:"#ccc",lineHeight:1.7}},"The hardest WIC questions don't use obscure vocabulary — they use ",e("strong",null,"common words in uncommon ways"),". The trap is choosing the familiar meaning when the passage demands a secondary one.")),
+    // Phase navigation
+    e("div",{style:{display:"flex",gap:8,marginBottom:24}},
+      e("button",{onClick:()=>setPhase(0),style:{...btnSm(phase===0?C.nm:"transparent",phase===0?C.paper:C.nm),border:`2px solid ${C.nm}`}},"Part A: Secondary Meanings"),
+      e("button",{onClick:()=>setPhase(1),style:{...btnSm(phase===1?C.nm:"transparent",phase===1?C.paper:C.nm),border:`2px solid ${C.nm}`}},"Part B: Precision")),
+
+    phase===0&&e("div",null,
+      e("h3",{style:{fontSize:15,color:C.nm,marginBottom:12}},"Part A: Secondary Meaning Deep-Dive (8 questions)"),
+      CHALL_A.map((q,qi)=>{
+        const answered=answersA[qi]!==null;
+        return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1}},
+          e("div",{style:{background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:12,borderLeft:`3px solid ${C.muted}`}},q.passage),
+          e("div",{style:{fontSize:14,marginBottom:12,color:"#ddd"}},"Which choice completes the text with the most logical and precise word?"),
+          e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+            q.choices.map((c,ci)=>{
+              let st=null;
+              if(answered&&ci===q.correct)st="correct";
+              else if(answered&&answersA[qi]===ci)st="wrong";
+              return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:answered,onClick:()=>pickA(qi,ci)});
+            })),
+          e(Explain,{text:q.explain,show:answered}));
+      }),
+      doneA&&e("div",{style:{textAlign:"center",padding:"16px 0"}},
+        e("div",{style:{fontSize:15,fontWeight:700,color:scoreA>=6?C.correct:scoreA>=4?C.nm:C.wrong}},
+          scoreA,"/",CHALL_A.length," — ",
+          scoreA>=7?"Outstanding! You're reading past common meanings.":
+          scoreA>=5?"Good instincts. The secondary meanings take practice.":
+          "These are tricky by design. The key is context clues, not word familiarity."))),
+
+    phase===1&&e("div",null,
+      e("h3",{style:{fontSize:15,color:C.nm,marginBottom:6}},"Part B: Precision Discrimination (4 questions)"),
+      e("p",{style:{fontSize:13,color:"#ccc",marginBottom:16}},"All four choices are legitimate synonyms. Only one is precisely right. This is what separates 720+ from 680."),
+      CHALL_B.map((q,qi)=>{
+        const answered=answersB[qi]!==null;
+        return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1}},
+          e("div",{style:{background:C.paper,border:`1px solid ${C.border}`,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:12,borderLeft:`3px solid ${C.muted}`}},q.passage),
+          e("div",{style:{fontSize:14,marginBottom:12,color:"#ddd"}},"Which choice completes the text with the most logical and precise word?"),
+          e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+            q.choices.map((c,ci)=>{
+              let st=null;
+              if(answered&&ci===q.correct)st="correct";
+              else if(answered&&answersB[qi]===ci)st="wrong";
+              return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:answered,onClick:()=>pickB(qi,ci)});
+            })),
+          e(Explain,{text:q.explain,show:answered}));
+      }),
+      doneB&&e("div",{style:{textAlign:"center",padding:"16px 0"}},
+        e("div",{style:{fontSize:15,fontWeight:700,color:scoreB>=3?C.correct:scoreB>=2?C.nm:C.wrong}},
+          scoreB,"/",CHALL_B.length," — ",
+          scoreB===4?"Elite precision. This is what 740+ looks like.":
+          scoreB>=2?"Strong — these distinctions are the hardest on the test.":
+          "These are designed to be agonizingly close. Re-read each explanation."))),
+
+    (doneA&&doneB)&&e("div",{style:{textAlign:"center",padding:"20px 0"}},
+      e("button",{onClick:()=>onComplete(scoreA,scoreB),style:btn(`linear-gradient(135deg,${C.nm},#7c3aed)`,C.paper)},"Complete Module →")));
+}
+
+// ══════════ SCREEN: MODULE COMPLETE ══════════
+function ModuleComplete({practiceScore,practiceTotal,challengeA,challengeB}){
+  const practicePct=Math.round(practiceScore/practiceTotal*100);
+  const[show,setShow]=useState(false);
+  useEffect(()=>{setTimeout(()=>setShow(true),100);},[]);
+
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",textAlign:"center",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    e("div",{style:{fontSize:64,marginBottom:16}},"🎉"),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.8rem,4vw,2.8rem)",fontWeight:700,color:C.craft,marginBottom:8}},"Module 4 Complete"),
+    e("p",{style:{color:C.sub,fontSize:16,marginBottom:32,maxWidth:480}},"You've built your vocabulary toolkit: morphology, connotation awareness, and the prediction method."),
+    // Scores
+    e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:16,maxWidth:600,width:"100%",marginBottom:32}},
+      e("div",{style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:16,padding:24,textAlign:"center"}},
+        e("div",{style:{color:C.craft,fontSize:42,fontWeight:900,fontFamily:"'JetBrains Mono',monospace"}},practiceScore,"/",practiceTotal),
+        e("div",{style:{color:C.sub,fontSize:13,marginTop:4}},"Timed Practice (",practicePct,"%)"),
+        e("div",{style:{height:6,background:C.border,borderRadius:3,marginTop:12,overflow:"hidden"}},
+          e("div",{style:{height:"100%",width:`${practicePct}%`,background:`linear-gradient(90deg,${C.craft},${C.accent})`,borderRadius:3}}))),
+      e("div",{style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:16,padding:24,textAlign:"center"}},
+        e("div",{style:{color:C.nm,fontSize:42,fontWeight:900,fontFamily:"'JetBrains Mono',monospace"}},challengeA+challengeB,"/",CHALL_A.length+CHALL_B.length),
+        e("div",{style:{color:C.sub,fontSize:13,marginTop:4}},"Challenge Mode"),
+        e("div",{style:{height:6,background:C.border,borderRadius:3,marginTop:12,overflow:"hidden"}},
+          e("div",{style:{height:"100%",width:`${Math.round((challengeA+challengeB)/(CHALL_A.length+CHALL_B.length)*100)}%`,background:`linear-gradient(90deg,${C.nm},#7c3aed)`,borderRadius:3}})))),
+    // Personalized feedback
+    e(Card,{accent:C.craft,style:{maxWidth:520,textAlign:"left"}},
+      e("div",{style:{color:C.ink,fontWeight:700,fontSize:15,marginBottom:8}},"Key Takeaways"),
+      e("div",{style:{color:C.sub,fontSize:13,lineHeight:1.7}},
+        practicePct>=80?
+          "Strong performance! Your vocabulary instincts are sharp and you're reading context clues effectively. The Challenge Mode will continue to sharpen your eye for secondary meanings and precision — the skills that separate 700+ from 740+.":
+        practicePct>=60?
+          "Good foundation. Focus on the prediction method — always predict before peeking at choices. Add every missed word to your vocabulary journal and revisit the morphology roots daily.":
+          "Keep building! The prediction method is your best weapon: predict a word before looking at choices. Build your root knowledge with the daily root practice, and journal every unfamiliar word you encounter.")),
+    // Homework
+    e(Card,{accent:C.conv,style:{maxWidth:520,textAlign:"left",marginTop:8}},
+      e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:8}},"Homework"),
+      e("div",{style:{color:"#ccc",fontSize:13,lineHeight:1.9}},
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"1. Root-a-Day Practice")," — Pick one root from the table each day. Find 3 words that use it and write a sentence for each."),
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"2. Read One Challenging Article")," — Read an article from The Atlantic, Scientific American, or The Economist. Underline 5 unfamiliar words and add them to your vocabulary journal with context and morphology notes."),
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"3. Connotation Journal")," — Find 2 sets of near-synonyms in your reading and rank them by connotation (positive → negative)."),
+        e("div",null,e("strong",{style:{color:C.ink}},"4. Preview Module 5")," — Next: Central Ideas, Details, and Inferences. Practice identifying the main idea of 3 paragraphs you read this week — state it in one sentence."))),
+    e("div",{style:{color:C.muted,fontSize:13,marginTop:24}},"Next up: Module 5 — What's the Point?"));
+}
+
+// ══════════ APP ══════════
+const SCREENS=["welcome","warmup","lessons","practice","journal","challenge","complete"];
+function App(){
+  const[screen,setScreen]=useState("welcome");
+  const[fade,setFade]=useState(true);
+  const[practiceScore,setPracticeScore]=useState(0);
+  const[practiceTotal,setPracticeTotal]=useState(14);
+  const[challengeA,setChallengeA]=useState(0);
+  const[challengeB,setChallengeB]=useState(0);
+
+  const screenIdx=SCREENS.indexOf(screen);
+  const totalScreens=SCREENS.length;
+
+  const go=useCallback((to)=>{
+    setFade(false);
+    setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},350);
+  },[]);
+
+  return e("div",{style:{minHeight:"100vh",background:C.paper,color:C.ink,fontFamily:"'Source Sans 3',sans-serif"}},
+    e(ProgressBar,{current:screenIdx,total:totalScreens-1}),
+    // Grid background
+    e("div",{style:{position:"fixed",inset:0,pointerEvents:"none",opacity:.02,backgroundImage:"linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",backgroundSize:"40px 40px"}}),
+    e("div",{style:{position:"relative",zIndex:1,transition:"opacity .35s,transform .35s",opacity:fade?1:0,transform:fade?"translateY(0)":"translateY(8px)",paddingTop:12}},
+      screen==="welcome"&&e(Welcome,{onNext:()=>go("warmup")}),
+      screen==="warmup"&&e(WarmupScreen,{onComplete:()=>go("lessons")}),
+      screen==="lessons"&&e(LessonScreen,{onComplete:()=>go("practice")}),
+      screen==="practice"&&e(TimedPractice,{onComplete:(s,t)=>{setPracticeScore(s);setPracticeTotal(t);go("journal");}}),
+      screen==="journal"&&e(VocabJournal,{onComplete:()=>go("challenge")}),
+      screen==="challenge"&&e(ChallengeMode,{onComplete:(a,b)=>{setChallengeA(a);setChallengeB(b);go("complete");}}),
+      screen==="complete"&&e(ModuleComplete,{practiceScore,practiceTotal,challengeA,challengeB})));
+}
+
+const{createRoot}=ReactDOM;
+createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>

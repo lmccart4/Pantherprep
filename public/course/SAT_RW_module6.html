@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6: Advanced Vocabulary & Precision — PantherPrep SAT R&W</title>
+<style>
+:root {
+  --amber: #f59e0b; --amber2: #d97706; --accent: #10b981; --blue: #3b82f6;
+  --purple: #a855f7; --red: #ef4444; --cyan: #06b6d4; --dark: #0a0a0f;
+  --card: #13131f; --border: #1e293b; --muted: #64748b; --text: #e2e8f0; --sub: #94a3b8;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--dark); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback, useRef } = React;
+const e = React.createElement;
+/* ═══ THEME (CSS custom properties read into JS) ═══ */
+const AMBER = "#f59e0b", AMBER2 = "#d97706", ACCENT = "#10b981", BLUE = "#3b82f6";
+const PURPLE = "#a855f7", RED = "#ef4444", CYAN = "#06b6d4", DARK = "#0a0a0f";
+const CARD = "#13131f", BORDER = "#1e293b", MUTED = "#64748b", TEXT = "#e2e8f0", SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({ padding:"12px 28px", borderRadius:10, border:"none", background:bg, color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s", ...extra });
+
+/* ═══ SCREEN ORDER ═══ */
+const SCREEN_NAMES = ["welcome","warmup","lesson","showdown","secondary","quiz","complete"];
+const SCREEN_LABELS = ["Welcome","Warm-Up","Lessons","Showdown","Secondary","Quiz","Complete"];
+
+/* ═══════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════ */
+const WARMUP_ITEMS = [
+  { passage: "The researcher's findings were so ______ that even her most vocal critics acknowledged the strength of her evidence.", choices: ["controversial","compelling","predictable","ambiguous"], answer: 1, explain: '"Even her critics acknowledged" = the evidence was strong enough to convince skeptics. "Compelling" means powerfully convincing.', domain: "WIC", diff: "medium" },
+  { passage: "While the novel's plot follows a fairly conventional structure, the author's prose style is anything but ______: her sentences twist and turn in unexpected ways that keep readers perpetually off-balance.", choices: ["ordinary","eloquent","verbose","innovative"], answer: 0, explain: '"Anything but ______" + "unexpected ways" = her style is NOT ordinary. The blank needs the thing she is NOT. "Ordinary" fits the contrast.', domain: "WIC", diff: "medium" },
+  { passage: "The city council's decision to approve the development project was not ______; rather, it followed eighteen months of public hearings, environmental reviews, and contentious debate among council members.", choices: ["hasty","popular","expensive","transparent"], answer: 0, explain: '"Not ______ ; rather, it followed 18 months of process" = it was NOT rushed. "Hasty" means rushed, done too quickly.', domain: "WIC", diff: "medium" },
+  { passage: "The documentary filmmaker chose to let her subjects speak for themselves, adopting a ______ approach that avoided narration, interviews, or any directorial commentary.", choices: ["hands-off","innovative","traditional","dramatic"], answer: 0, explain: 'No narration, no interviews, no commentary = the filmmaker stepped back. "Hands-off" means not interfering.', domain: "WIC", diff: "medium" },
+  { passage: "Although the two species appear nearly identical to the untrained eye, a trained biologist can readily ______ them by examining the subtle differences in their wing patterns.", choices: ["conflate","distinguish","observe","classify"], answer: 1, explain: '"Appear identical" but can be told apart = "distinguish" means to recognize differences between similar things.', domain: "WIC", diff: "medium" },
+  { passage: "The committee members, who had previously been united in their support for the proposal, found their ______ fracturing as new cost estimates emerged.", choices: ["consensus","enthusiasm","funding","timeline"], answer: 0, explain: '"Previously united" → "fracturing" = their agreement broke down. "Consensus" means general agreement.', domain: "WIC", diff: "medium" }
+];
+
+const LESSONS = [
+  { id:"intro", title:"From Good to Great", subtitle:"The difference between 600 and 700+ on vocabulary",
+    body:["In Module 5, you learned the foundational strategies: tone first, context clues, and basic connotation. Those skills get you to the right neighborhood. This module teaches you to find the exact house.",
+    "At the 600 level, students can usually eliminate 2 wrong answers. At the 700+ level, students consistently pick the BEST answer from the remaining two. The difference? Precision — understanding exactly how near-synonyms differ and which one the passage demands.",
+    "This module builds three advanced skills: distinguishing near-synonyms by their precise meanings, recognizing secondary definitions of familiar words, and developing a mental library of the SAT's most-tested Tier 2 vocabulary."], visual:"stats" },
+  { id:"near-synonyms", title:"Near-Synonym Precision", subtitle:"Why 'almost right' is completely wrong",
+    body:["The SAT's hardest vocabulary questions give you two answer choices that BOTH seem to fit. The difference is precision — one is a closer match than the other.",
+    'EXAMPLE: A passage describes a scientist who questions every assumption and demands rigorous evidence before accepting any claim.\n\nA) skeptical — doubts or questions things\nB) cynical — believes people are motivated by self-interest\n\nBoth suggest doubt, but "skeptical" is about evidence and proof, while "cynical" is about distrusting human motives. The passage describes intellectual rigor, not distrust of people. Answer: skeptical.',
+    "THE KEY DISTINCTION: Near-synonyms share a general meaning but differ in:\n• Scope (broad vs. narrow)\n• Intensity (mild vs. strong)\n• Domain (where the word is typically used)\n• Implication (what the word suggests beyond its definition)"], visual:"distinction-demo" },
+  { id:"scope", title:"Distinction #1: Scope", subtitle:"General vs. specific",
+    body:["Some words are broader, others more specific. The SAT rewards the most PRECISE choice — the one whose scope matches the passage exactly.",
+    'BROAD → NARROW examples:\n• "change" → "transformation" → "metamorphosis"\n• "reduce" → "diminish" → "erode"\n• "disagree" → "object" → "denounce"\n• "help" → "facilitate" → "catalyze"',
+    'STRATEGY: If the passage describes a gradual, slow process, "erode" (implies wearing away over time) is more precise than "reduce" (generic decrease). If the passage describes rapid, complete change, "transformation" beats "change."',
+    "The wrong answer is often the more general word. The right answer is the one that captures the specific flavor of what the passage describes."], visual:null },
+  { id:"intensity", title:"Distinction #2: Intensity", subtitle:"Mild, moderate, or extreme?",
+    body:["Near-synonyms often differ in how strong or extreme they are. The passage's context tells you what intensity level is appropriate.",
+    'MILD → EXTREME:\n• "concerned" → "worried" → "alarmed" → "panicked"\n• "dislike" → "resent" → "despise" → "loathe"\n• "suggest" → "argue" → "insist" → "demand"\n• "good" → "impressive" → "exceptional" → "extraordinary"',
+    `PASSAGE TEST: "The committee expressed ______ about the proposal's environmental provisions, noting several areas that required further study."\n\n"Reservations" (mild concern) fits. "Outrage" (extreme) doesn't match "noting several areas that required further study" — that's calm, measured language, not fury.`,
+    "RULE: Match the intensity of your answer to the intensity of the passage. Formal, measured language = mild/moderate vocabulary. Emotional, dramatic language = stronger vocabulary."], visual:"intensity-scale" },
+  { id:"domain", title:"Distinction #3: Domain", subtitle:"Where is this word normally used?",
+    body:["Words carry associations with the contexts they're normally used in. The SAT expects you to match the word's domain to the passage's domain.",
+    '"Lucrative" vs. "rewarding" — both mean something is beneficial, but:\n• "Lucrative" = specifically financially profitable (business domain)\n• "Rewarding" = satisfying in a broader sense (could be emotional, intellectual, financial)',
+    '"Diagnose" vs. "identify" — both mean to determine what something is, but:\n• "Diagnose" = medical/technical context (identifying a problem or condition)\n• "Identify" = general (works in any context)',
+    '"Volatile" vs. "unpredictable":\n• "Volatile" = chemistry (explosive), finance (price swings), emotions (quick to anger)\n• "Unpredictable" = general, no specific domain association',
+    'STRATEGY: If a passage is about economics, a finance-domain word like "lucrative" or "volatile" may be more precise than a generic synonym.'], visual:null },
+  { id:"secondary-deep", title:"Secondary Meanings Deep Dive", subtitle:"The SAT's favorite vocabulary trick",
+    body:["The hardest vocabulary questions use common words in uncommon ways. You KNOW the word, which makes the trap worse — your brain defaults to the familiar meaning.",
+    'HIGH-FREQUENCY SECONDARY MEANINGS:\n• "Entertain" = to consider (an idea), not just to amuse\n• "Champion" = to advocate for, not just a winner\n• "Appreciate" = to increase in value, not just to be grateful\n• "Commit" = to dedicate/pledge, not just to do something wrong\n• "Table" = to postpone discussion (US) / to bring up for discussion (UK)\n• "Tender" = to formally offer (a resignation), not just soft/gentle\n• "Coin" = to invent (a word/phrase), not just money\n• "Brook" = to tolerate, not just a stream\n• "Flag" = to decline in energy/interest, not just a banner\n• "Sound" = thorough/reliable ("sound reasoning"), not just noise',
+    "STRATEGY: When you see a common word among the choices and the other options are more sophisticated, the SAT may be testing the common word's secondary meaning. Don't automatically dismiss simple words."], visual:"secondary-quiz" },
+  { id:"vocab-bank", title:"High-Value SAT Vocabulary", subtitle:"Words that appear again and again",
+    body:["Analysis of official practice tests reveals vocabulary clusters that the SAT tests repeatedly. Learning these gives you a significant edge.",
+    "DESCRIBING IDEAS/ARGUMENTS:\nCorroborate (confirm), substantiate (provide evidence for), undermine (weaken), refute (disprove), bolster (strengthen), nuanced (subtle/complex), tenuous (weak/thin), cogent (clear and convincing)",
+    "DESCRIBING PEOPLE/APPROACHES:\nMeticulous (extremely careful), pragmatic (practical), audacious (bold/daring), complacent (self-satisfied), reticent (reluctant to speak), candid (honest/direct), dogmatic (rigidly opinionated), judicious (showing good judgment)",
+    "DESCRIBING CHANGE/SCALE:\nPervasive (everywhere), ephemeral (short-lived), unprecedented (never happened before), incremental (gradual), precipitous (sudden/steep), nascent (just beginning), entrenched (firmly established), diminish (reduce)"], visual:"vocab-clusters" },
+  { id:"process-advanced", title:"The Advanced Decision Process", subtitle:"When you're down to two choices",
+    body:["When you've eliminated two choices and are stuck between the final two, use this tiebreaker process:",
+    `STEP 1: Re-read the EXACT sentence with each word plugged in. Don't just check if it "works" — check if it's PRECISE.`,
+    "STEP 2: Check intensity match. Is the passage calm or heated? Academic or emotional? Match the word's intensity to the passage's register.",
+    "STEP 3: Check scope. Is one word too broad? Too narrow? The right answer fits the passage like a key in a lock.",
+    "STEP 4: Check for secondary meanings. Could one of the choices be using a less common definition that actually fits better?",
+    "STEP 5: When truly stuck, choose the more SPECIFIC word. On the SAT, precision beats generality."], visual:"tiebreaker" }
+];
+
+const SHOWDOWN_ITEMS = [
+  { passage:"The committee's ______ investigation into the financial irregularities left no document unexamined and no witness uninterviewed, spanning eighteen months and resulting in a 400-page report.", wordA:"thorough", wordB:"exhaustive", correct:"B", explainA:'"Thorough" means careful and complete — good but general.', explainB:'"Exhaustive" means comprehensive to the point of leaving nothing out. The passage emphasizes totality — exhaustive captures this completeness precisely.' },
+  { passage:"The artist's decision to destroy her early paintings was not impulsive; rather, it reflected a ______ choice to distance herself from work she considered derivative.", wordA:"deliberate", wordB:"calculated", correct:"A", explainA:'"Deliberate" means done consciously and intentionally after careful thought. Neutral/positive, matches "not impulsive" + personal artistic decision.', explainB:'"Calculated" means carefully planned, often with a connotation of strategic manipulation. Too scheming for an artistic/personal choice.' },
+  { passage:"Once hailed as revolutionary, the economic theory has been increasingly ______ by scholars who argue that its core assumptions are fundamentally flawed.", wordA:"questioned", wordB:"challenged", correct:"B", explainA:'"Questioned" means to express doubt — mild, exploratory.', explainB:'"Challenged" means to actively dispute or contest. The scholars "argue" assumptions are "fundamentally flawed" — active opposition, not mere doubt.' },
+  { passage:"The politician's speech was notably ______, avoiding any specific policy commitments while still managing to sound supportive of reform in general terms.", wordA:"vague", wordB:"evasive", correct:"B", explainA:'"Vague" means unclear or imprecise — could be unintentional.', explainB:'"Evasive" means intentionally avoiding directness. The passage shows deliberate avoidance — this is strategic, not accidental.' },
+  { passage:"The discovery of water ice on the lunar surface was not merely surprising — it was ______, overturning decades of scientific consensus about the Moon's composition.", wordA:"remarkable", wordB:"groundbreaking", correct:"B", explainA:'"Remarkable" means worthy of attention — doesn\'t imply it changed anything.', explainB:'"Groundbreaking" means pioneering, fundamentally new. "Overturning decades of consensus" shows this discovery changed the field.' },
+  { passage:"Although the novelist's prose style is often described as minimalist, a closer reading reveals layers of ______ meaning beneath the deceptively simple surface.", wordA:"hidden", wordB:"subtle", correct:"B", explainA:'"Hidden" means concealed — implies deliberately obscured.', explainB:'"Subtle" means delicate, not immediately obvious but present for attentive readers. "Layers" + "deceptively simple" = subtle captures this perfectly.' },
+  { passage:"The refugee crisis has ______ existing tensions between member states, with disagreements over burden-sharing threatening to fracture the alliance.", wordA:"worsened", wordB:"exacerbated", correct:"B", explainA:'"Worsened" means made worse — correct but generic.', explainB:'"Exacerbated" means to make an already-bad situation worse. The tensions are "existing" (already present). Exacerbated is the precise academic term.' },
+  { passage:"Rather than impose a solution, the mediator adopted a ______ approach, guiding the disputing parties toward their own resolution through carefully structured dialogue.", wordA:"patient", wordB:"facilitative", correct:"B", explainA:'"Patient" means tolerant of delay — a personal quality, not a methodology.', explainB:'"Facilitative" means designed to make a process easier. The mediator guided rather than imposed — this describes a facilitative methodology.' }
+];
+
+const SECONDARY_ITEMS = [
+  { passage:"The board of directors refused to ______ the CEO's proposal for expansion, arguing that the company's current resources could not support such an ambitious undertaking.", choices:["entertain","enjoy","accept","support"], answer:0, explain:'"Entertain" here means to consider or give thought to (an idea). Not about amusement.' },
+  { passage:"Environmental activists have long ______ stricter regulations on industrial emissions, citing decades of research linking pollution to respiratory disease.", choices:["defeated","championed","resisted","organized"], answer:1, explain:'"Championed" means to advocate for or support publicly. Not about winning a competition.' },
+  { passage:"The researcher's bold claims, initially dismissed as speculative, were ultimately ______ by a series of independent studies that replicated her findings.", choices:["vindicated","celebrated","explained","discovered"], answer:0, explain:'"Vindicated" means proved right after being doubted. More precise than "celebrated."' },
+  { passage:"The new evidence effectively ______ the defense's primary argument, leaving the legal team scrambling to develop an alternative strategy.", choices:["undermined","questioned","eliminated","complicated"], answer:0, explain:'"Undermined" means to weaken the foundation of something.' },
+  { passage:"Property values in the neighborhood have ______ steadily over the past decade, driven by new transit connections and an influx of restaurants and retail shops.", choices:["appreciated","improved","increased","expanded"], answer:0, explain:'"Appreciated" in a financial context means to increase in value. Domain-specific precision.' },
+  { passage:"The diplomat's ______ remarks about the fragile peace process threatened to derail months of careful negotiation between the two nations.", choices:["intemperate","passionate","honest","detailed"], answer:0, explain:'"Intemperate" means lacking moderation or restraint.' },
+  { passage:"The author ______ the term 'digital nomad' in a 2007 blog post, though the lifestyle it describes didn't become widespread until nearly a decade later.", choices:["coined","invented","created","introduced"], answer:0, explain:'"Coined" specifically means to invent a new word or phrase.' },
+  { passage:"After sixteen hours of continuous debate, the senators' energy began to ______, and several members appeared to struggle to maintain their focus during the final round of amendments.", choices:["flag","disappear","weaken","collapse"], answer:0, explain:'"Flag" as a verb means to decline in energy or enthusiasm. Classic SAT secondary meaning.' }
+];
+
+const QUIZ = [
+  { id:1, diff:"medium", passage:"The architect's design, while aesthetically striking, proved ______ in practice: the building's irregular angles created persistent problems with drainage and insulation that required costly modifications.", choices:["impractical","ugly","ambitious","controversial"], answer:0, explain:'"Aesthetically striking" BUT problems in practice = looks good but doesn\'t function well. "Impractical."' },
+  { id:2, diff:"medium", passage:"The study's conclusions, based on data from only 23 participants over a two-week period, struck many researchers as ______, and several called for larger-scale replication before the findings could be considered reliable.", choices:["definitive","premature","fraudulent","innovative"], answer:1, explain:'Small sample + short period + need for replication = conclusions drawn too early. "Premature."' },
+  { id:3, diff:"medium", passage:"The playwright's dialogue captures the ______ of everyday speech — the hesitations, interruptions, and half-finished thoughts that characterize real conversation — while still maintaining dramatic purpose.", choices:["rhythm","cadence","awkwardness","authenticity"], answer:1, explain:'"Cadence" means the rhythmic flow of sounds/speech — captures both musicality and natural patterns.' },
+  { id:4, diff:"medium", passage:"Once considered a ______ field with limited practical applications, data science has rapidly become one of the most sought-after disciplines in both academia and industry.", choices:["prominent","niche","declining","controversial"], answer:1, explain:'"Niche" means specialized, appealing to a small group. Contrasts with current widespread demand.' },
+  { id:5, diff:"hard", passage:"The biographer resisted the temptation to ______ her subject's flaws, instead presenting a candid portrait that acknowledged both the leader's remarkable achievements and her significant personal failings.", choices:["exaggerate","overlook","sanitize","criticize"], answer:2, explain:'"Sanitize" means to make something seem more acceptable by removing unpleasant elements.' },
+  { id:6, diff:"hard", passage:"The senator's support for the bill was ______ at best: while she voted in favor, she declined to speak on its behalf, refused to lobby undecided colleagues, and publicly expressed reservations about several key provisions.", choices:["enthusiastic","lukewarm","principled","inconsistent"], answer:1, explain:'"Lukewarm" means lacking enthusiasm, halfhearted.' },
+  { id:7, diff:"hard", passage:"The discovery didn't merely add to existing knowledge; it ______ the entire theoretical framework, forcing researchers across multiple disciplines to fundamentally reconsider assumptions that had guided their work for decades.", choices:["expanded","upended","complicated","influenced"], answer:1, explain:'"Upended" means to turn upside down, to completely disrupt.' },
+  { id:8, diff:"hard", passage:"Critics praised the filmmaker's ______ use of silence in the final scene, noting that the absence of dialogue or music created a tension more powerful than any soundtrack could have achieved.", choices:["frequent","deliberate","reluctant","conspicuous"], answer:1, explain:'"Deliberate" means done with careful intent.' },
+  { id:9, diff:"hard", passage:"The historian argued that the revolution was not a sudden rupture but rather the ______ of decades of gradual economic, social, and intellectual changes that had slowly eroded the foundations of the old order.", choices:["result","culmination","repetition","beginning"], answer:1, explain:'"Culmination" means the highest or climactic point of a long development.' },
+  { id:10, diff:"hard", passage:"The ecologist warned that the apparent recovery of the fish population was ______, driven not by genuine ecological improvement but by a temporary influx of juvenile fish from neighboring waterways that would likely migrate back within months.", choices:["unprecedented","illusory","permanent","gradual"], answer:1, explain:'"Illusory" means based on illusion, deceptive. The recovery is a mirage.' }
+];
+
+/* ═══════════════════════════════════════════
+   STEP INDICATOR (fixed top bar)
+   ═══════════════════════════════════════════ */
+function StepBar({ current }) {
+  return e("div", { style:{ position:"fixed", top:0, left:0, right:0, zIndex:100, background:DARK, borderBottom:`1px solid ${BORDER}`, padding:"8px 0" } },
+    e("div", { style:{ display:"flex", alignItems:"center", justifyContent:"center", gap:4, maxWidth:500, margin:"0 auto", padding:"0 16px" } },
+      SCREEN_NAMES.map((s,i) => e("div", { key:i, style:{ width: i===current?28:20, height:5, borderRadius:3, background: i<current?ACCENT : i===current?AMBER : BORDER, transition:"all .3s" } }))
+    ),
+    e("div", { style:{ textAlign:"center", fontSize:10, fontWeight:600, letterSpacing:1.5, textTransform:"uppercase", color:MUTED, marginTop:3 } }, SCREEN_LABELS[current] || "")
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN: WELCOME
+   ═══════════════════════════════════════════ */
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => { setTimeout(() => setShow(true), 100); }, []);
+  return e("div", { style:{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"100vh", padding:"40px 24px 24px", transition:"all .7s", opacity:show?1:0, transform:show?"translateY(0)":"translateY(16px)" } },
+    e("div", { style:{ background:`${AMBER}22`, border:`1px solid ${AMBER}44`, borderRadius:12, padding:"6px 18px", fontSize:13, letterSpacing:1.5, textTransform:"uppercase", color:AMBER, marginBottom:12, fontWeight:600 } }, "Unit 2 · Module 6"),
+    e("h1", { style:{ fontSize:"clamp(1.8rem,5vw,3rem)", fontWeight:800, background:`linear-gradient(135deg,${AMBER},${PURPLE})`, WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", lineHeight:1.1, textAlign:"center", marginBottom:16 } }, "Advanced Vocabulary & Precision"),
+    e("p", { style:{ color:SUB, fontSize:18, maxWidth:560, textAlign:"center", lineHeight:1.6, marginBottom:40 } }, "The difference between a good answer and the best answer. Master near-synonym distinctions, secondary meanings, and the precision that separates 600-level from 700+ performance."),
+    e("div", { style:{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))", gap:12, maxWidth:700, width:"100%", marginBottom:48 } },
+      [{icon:"🔄",title:"Warm-Up",desc:"Retrieval from prior modules"},{icon:"📖",title:"Learn Distinctions",desc:"Scope, intensity, domain, implication"},{icon:"⚔️",title:"Precision Showdown",desc:"Choose between near-synonyms"},{icon:"🔮",title:"Secondary Meanings",desc:"Common words, uncommon definitions"},{icon:"📝",title:"Timed Quiz",desc:"10 hard SAT-style questions"},{icon:"🏁",title:"Results",desc:"Error analysis & homework"}].map((c,i) =>
+        e("div", { key:i, style:{ background:CARD, border:`1px solid ${BORDER}`, borderRadius:14, padding:20, textAlign:"center" } },
+          e("div", { style:{ fontSize:28, marginBottom:6 } }, c.icon),
+          e("div", { style:{ color:TEXT, fontWeight:700, fontSize:14, marginBottom:3 } }, c.title),
+          e("div", { style:{ color:MUTED, fontSize:12, lineHeight:1.5 } }, c.desc)))),
+    e("button", { onClick:onNext, style:btn(`linear-gradient(135deg,${AMBER},${PURPLE})`, TEXT, { fontSize:16, padding:"14px 36px" }), onMouseOver:e=>e.currentTarget.style.transform="scale(1.04)", onMouseOut:e=>e.currentTarget.style.transform="scale(1)" }, "Start Learning →"),
+    e("div", { style:{ color:"#475569", fontSize:13, marginTop:24 } }, "~60 minutes · Craft & Structure")
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN: WARM-UP (Interleaved Retrieval)
+   ═══════════════════════════════════════════ */
+function WarmUp({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+  const item = WARMUP_ITEMS[idx];
+  function confirm() { if(selected===null)return; setConfirmed(true); if(selected===item.answer)setScore(s=>s+1); }
+  function next() { if(idx<WARMUP_ITEMS.length-1){setIdx(idx+1);setSelected(null);setConfirmed(false);}else{setDone(true);} }
+  if(done) return e("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+    e("div",{style:{fontSize:48,marginBottom:16}},"🔄"),
+    e("h2",{style:{color:TEXT,fontSize:28,fontWeight:800,marginBottom:8}},"Warm-Up Complete"),
+    e("div",{style:{color:AMBER,fontSize:48,fontWeight:900}},score,"/",WARMUP_ITEMS.length),
+    e("p",{style:{color:SUB,fontSize:15,marginTop:8,marginBottom:24}},"Prior modules recalled"),
+    e("div",{style:{color:SUB,fontSize:13,lineHeight:1.6,marginBottom:32,maxWidth:400,margin:"0 auto 32px"}},score>=5?"Great recall! Your vocabulary foundations are solid. Let's build on them.":score>=3?"Good baseline. The lessons ahead will sharpen your precision further.":"Don't worry — this warm-up just activates prior knowledge. The lessons ahead will build these skills."),
+    e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${AMBER},${PURPLE})`,TEXT)},"Continue to Lessons →")
+  );
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:8}},
+      e("div",{style:{color:CYAN,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:"uppercase"}},"🔄 Retrieval Warm-Up"),
+      e("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:700,background:`${BLUE}22`,color:BLUE}},item.domain)),
+    e("div",{style:{height:4,background:BORDER,borderRadius:2,marginBottom:24,overflow:"hidden"}},
+      e("div",{style:{height:"100%",width:`${(idx+(confirmed?1:0))/WARMUP_ITEMS.length*100}%`,background:`linear-gradient(90deg,${CYAN},${BLUE})`,borderRadius:2,transition:"width .4s"}})),
+    e("div",{style:{color:TEXT,fontWeight:800,fontSize:15,marginBottom:16}},"Question ",idx+1," of ",WARMUP_ITEMS.length),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:24,marginBottom:20}},
+      e("div",{style:{color:"#cbd5e1",fontSize:15,lineHeight:1.8,fontFamily:"Georgia,serif"}},item.passage)),
+    e("div",{style:{color:TEXT,fontSize:14,fontWeight:600,marginBottom:16}},"Which choice completes the text with the most logical and precise word?"),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},item.choices.map((c,ci)=>{
+      const letter="ABCD"[ci],isSel=selected===ci,isCorr=ci===item.answer;
+      let bg=CARD,bdr=`1px solid ${BORDER}`,tc="#cbd5e1";
+      if(confirmed&&isCorr){bg=`${ACCENT}18`;bdr=`2px solid ${ACCENT}`;tc=ACCENT;}
+      else if(confirmed&&isSel&&!isCorr){bg=`${RED}18`;bdr=`2px solid ${RED}`;tc=RED;}
+      else if(isSel&&!confirmed){bg=`${AMBER}15`;bdr=`2px solid ${AMBER}`;tc=AMBER;}
+      return e("button",{key:ci,onClick:()=>{if(!confirmed)setSelected(ci);},disabled:confirmed,style:{display:"flex",alignItems:"center",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+        e("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,background:confirmed&&isCorr?ACCENT:confirmed&&isSel&&!isCorr?RED:isSel?AMBER:BORDER,color:isSel||confirmed?DARK:MUTED}},letter),
+        e("span",{style:{color:tc,fontSize:14}},c));
+    })),
+    confirmed && e("div",{style:{background:BORDER,borderRadius:12,padding:20,marginBottom:24,borderLeft:`4px solid ${BLUE}`}},
+      e("div",{style:{color:BLUE,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+      e("div",{style:{color:SUB,fontSize:14,lineHeight:1.6}},item.explain)),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed ? e("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?BORDER:AMBER,selected===null?"#475569":DARK,{fontSize:14,padding:"10px 24px"})},"Confirm Answer")
+      : e("button",{onClick:next,style:btn(`linear-gradient(135deg,${CYAN},${BLUE})`,TEXT,{fontSize:14,padding:"10px 24px"})},idx<WARMUP_ITEMS.length-1?"Next →":"See Results →"))
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN: LESSONS (unchanged structure)
+   ═══════════════════════════════════════════ */
+function DistinctionDemo(){
+  const pairs=[{a:"skeptical",b:"cynical",diff:"Implication",note:"Evidence-based doubt vs. distrust of motives"},{a:"frugal",b:"stingy",diff:"Connotation",note:"Positive discipline vs. negative meanness"},{a:"transform",b:"change",diff:"Scope",note:"Complete overhaul vs. any alteration"},{a:"furious",b:"annoyed",diff:"Intensity",note:"Extreme anger vs. mild irritation"}];
+  return e("div",{style:{padding:"12px 20px"}},e("div",{style:{color:AMBER,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Near-Synonym Distinctions"),pairs.map((p,i)=>e("div",{key:i,style:{display:"flex",alignItems:"center",gap:8,marginBottom:8,padding:"8px 12px",background:CARD,border:`1px solid ${BORDER}`,borderRadius:10,flexWrap:"wrap"}},e("span",{style:{color:AMBER,fontWeight:800,fontSize:14,minWidth:80}},p.a),e("span",{style:{color:MUTED,fontSize:12}},"vs"),e("span",{style:{color:PURPLE,fontWeight:800,fontSize:14,minWidth:80}},p.b),e("span",{style:{color:CYAN,fontSize:11,fontWeight:600,padding:"2px 6px",borderRadius:4,background:`${CYAN}15`}},p.diff),e("span",{style:{color:SUB,fontSize:11,flex:1,textAlign:"right"}},p.note))));
+}
+function IntensityScale(){
+  const scales=[{label:"Concern",words:["concerned","worried","alarmed","panicked"],colors:[ACCENT,AMBER,RED,"#dc2626"]},{label:"Dislike",words:["dislike","resent","despise","loathe"],colors:[ACCENT,AMBER,RED,"#dc2626"]},{label:"Suggest",words:["suggest","argue","insist","demand"],colors:[ACCENT,AMBER,RED,"#dc2626"]}];
+  return e("div",{style:{padding:"12px 20px"}},e("div",{style:{color:AMBER,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Intensity Scales: Mild → Extreme"),scales.map((s,i)=>e("div",{key:i,style:{marginBottom:10}},e("div",{style:{color:MUTED,fontSize:11,fontWeight:600,marginBottom:4}},s.label),e("div",{style:{display:"flex",gap:4}},s.words.map((w,wi)=>e("div",{key:wi,style:{flex:1,padding:"6px 4px",borderRadius:6,background:`${s.colors[wi]}15`,border:`1px solid ${s.colors[wi]}33`,textAlign:"center"}},e("div",{style:{color:s.colors[wi],fontSize:12,fontWeight:700}},w),e("div",{style:{color:MUTED,fontSize:9,marginTop:2}},"●".repeat(wi+1))))))));
+}
+function SecondaryMiniQuiz(){
+  const items=[{word:"entertain",common:"to amuse",secondary:"to consider (an idea)"},{word:"champion",common:"a winner",secondary:"to advocate for"},{word:"coin",common:"money (metal disc)",secondary:"to invent a term"},{word:"flag",common:"a banner",secondary:"to decline in energy"},{word:"sound",common:"noise, audio",secondary:"thorough, reliable"}];
+  const [revealed,setRevealed]=useState({});
+  return e("div",{style:{padding:"12px 20px"}},e("div",{style:{color:AMBER,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Tap to reveal secondary meanings"),items.map((item,i)=>e("div",{key:i,onClick:()=>setRevealed(p=>({...p,[i]:true})),style:{display:"flex",alignItems:"center",gap:12,marginBottom:6,padding:"8px 12px",background:CARD,border:`1px solid ${BORDER}`,borderRadius:8,cursor:"pointer",flexWrap:"wrap"}},e("span",{style:{color:AMBER,fontWeight:800,fontSize:14,minWidth:80}},item.word),e("span",{style:{color:MUTED,fontSize:12,minWidth:100}},"Common: ",item.common),revealed[i]?e("span",{style:{color:ACCENT,fontSize:12,fontWeight:600}},"SAT: ",item.secondary):e("span",{style:{color:"#334155",fontSize:11}},"tap to reveal"))));
+}
+function VocabClusters(){
+  const clusters=[{label:"Ideas/Arguments",color:BLUE,words:"corroborate, substantiate, undermine, refute, bolster, nuanced, tenuous, cogent"},{label:"People/Approaches",color:PURPLE,words:"meticulous, pragmatic, audacious, complacent, reticent, candid, dogmatic, judicious"},{label:"Change/Scale",color:ACCENT,words:"pervasive, ephemeral, unprecedented, incremental, precipitous, nascent, entrenched, diminish"}];
+  return e("div",{style:{padding:"12px 20px"}},clusters.map((c,i)=>e("div",{key:i,style:{marginBottom:10,padding:"10px 14px",borderLeft:`3px solid ${c.color}`,borderRadius:"0 8px 8px 0",background:`${c.color}08`}},e("div",{style:{color:c.color,fontWeight:700,fontSize:13,marginBottom:4}},c.label),e("div",{style:{color:SUB,fontSize:12,lineHeight:1.6}},c.words))));
+}
+function TiebreakerVisual(){
+  return e("div",{style:{padding:"12px 20px"}},e("div",{style:{color:AMBER,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"Down to 2 choices? Use these tiebreakers:"),[{n:"1",label:"Plug in & re-read",detail:"Does it fit the EXACT sentence?",color:AMBER},{n:"2",label:"Match intensity",detail:"Calm passage = mild word",color:RED},{n:"3",label:"Check scope",detail:"Too broad? Too narrow?",color:BLUE},{n:"4",label:"Secondary meaning?",detail:"Less-obvious definition?",color:PURPLE},{n:"5",label:"When stuck: go specific",detail:"Precision beats generality",color:ACCENT}].map((s,i)=>e("div",{key:i,style:{display:"flex",alignItems:"center",gap:10,marginBottom:6,padding:"6px 10px",background:`${s.color}08`,borderLeft:`3px solid ${s.color}`,borderRadius:"0 6px 6px 0"}},e("div",{style:{width:22,height:22,borderRadius:11,background:`${s.color}22`,color:s.color,fontWeight:900,fontSize:11,display:"flex",alignItems:"center",justifyContent:"center"}},s.n),e("div",null,e("span",{style:{color:TEXT,fontWeight:700,fontSize:12}},s.label),e("span",{style:{color:MUTED,fontSize:11}}," — ",s.detail)))));
+}
+function LessonViewer({ onComplete }){
+  const [idx,setIdx]=useState(0);const lesson=LESSONS[idx];const total=LESSONS.length;
+  function renderVisual(){
+    if(lesson.visual==="stats") return e("div",{style:{display:"flex",justifyContent:"center",gap:16,flexWrap:"wrap",padding:16}},[{n:"600→700+",label:"score unlock",sub:"Precision is the lever"},{n:"4",label:"distinction types",sub:"Scope, intensity, domain, implication"},{n:"10+",label:"secondary meanings",sub:"Common words, uncommon uses"}].map((s,i)=>e("div",{key:i,style:{background:`${AMBER}11`,border:`1px solid ${AMBER}33`,borderRadius:14,padding:"16px 24px",textAlign:"center",minWidth:140}},e("div",{style:{color:AMBER,fontWeight:900,fontSize:22}},s.n),e("div",{style:{color:TEXT,fontSize:13,fontWeight:600}},s.label),e("div",{style:{color:MUTED,fontSize:11}},s.sub))));
+    if(lesson.visual==="distinction-demo") return e(DistinctionDemo);
+    if(lesson.visual==="intensity-scale") return e(IntensityScale);
+    if(lesson.visual==="secondary-quiz") return e(SecondaryMiniQuiz);
+    if(lesson.visual==="vocab-clusters") return e(VocabClusters);
+    if(lesson.visual==="tiebreaker") return e(TiebreakerVisual);
+    return null;
+  }
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},LESSONS.map((_,i)=>e("div",{key:i,onClick:()=>setIdx(i),style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?AMBER:i<idx?`${AMBER}66`:BORDER,cursor:"pointer",transition:"all .3s"}}))),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      e("div",{style:{padding:"28px 28px 0"}},
+        e("div",{style:{color:AMBER,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        e("h2",{style:{color:TEXT,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:16,lineHeight:1.2}},lesson.title),
+        lesson.body.map((p,i)=>e("p",{key:i,style:{color:SUB,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p))),
+      lesson.visual && e("div",{style:{padding:"8px 4px 20px"}},renderVisual())),
+    e("div",{style:{display:"flex",justifyContent:"space-between"}},
+      e("button",{onClick:()=>setIdx(Math.max(0,idx-1)),disabled:idx===0,style:{...btn("transparent",idx===0?"#334155":SUB),border:`1px solid ${BORDER}`,padding:"10px 20px",fontSize:14}},"← Back"),
+      idx<total-1 ? e("button",{onClick:()=>setIdx(idx+1),style:btn(AMBER,DARK,{fontSize:14,padding:"10px 20px"})},"Next →")
+      : e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${AMBER},${PURPLE})`,TEXT,{fontSize:14,padding:"10px 24px"})},"Start Precision Showdown →")));
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN: PRECISION SHOWDOWN (unchanged)
+   ═══════════════════════════════════════════ */
+function PrecisionShowdown({ onComplete }){
+  const [idx,setIdx]=useState(0);const [selected,setSelected]=useState(null);const [confirmed,setConfirmed]=useState(false);const [score,setScore]=useState(0);const [done,setDone]=useState(false);
+  const item=SHOWDOWN_ITEMS[idx];
+  function confirm(){if(!selected)return;setConfirmed(true);if(selected===item.correct)setScore(s=>s+1);}
+  function next(){if(idx<SHOWDOWN_ITEMS.length-1){setIdx(idx+1);setSelected(null);setConfirmed(false);}else{setDone(true);}}
+  if(done) return e("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},e("div",{style:{fontSize:48,marginBottom:16}},"⚔️"),e("h2",{style:{color:TEXT,fontSize:28,fontWeight:800,marginBottom:8}},"Showdown Complete"),e("div",{style:{color:AMBER,fontSize:48,fontWeight:900}},score,"/",SHOWDOWN_ITEMS.length),e("p",{style:{color:SUB,fontSize:15,marginTop:8,marginBottom:32}},"precision picks correct"),e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${AMBER},${PURPLE})`,TEXT)},"Continue to Secondary Meanings →"));
+  const isRight=confirmed&&selected===item.correct;
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:24}},e("div",{style:{color:PURPLE,fontSize:13,fontWeight:700}},"⚔️ Precision Showdown"),e("div",{style:{color:MUTED,fontSize:13}},idx+1," of ",SHOWDOWN_ITEMS.length," · Score: ",score)),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:20,padding:28,marginBottom:20}},e("div",{style:{color:MUTED,fontSize:12,fontWeight:600,marginBottom:12,textTransform:"uppercase",letterSpacing:1}},"Which word is MORE PRECISE for this passage?"),e("div",{style:{color:TEXT,fontSize:16,fontFamily:"Georgia,serif",lineHeight:1.8}},item.passage)),
+    e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:24}},[["A",item.wordA],["B",item.wordB]].map(([letter,word])=>{
+      const isSel=selected===letter,isCorr=confirmed&&letter===item.correct,isWrong=confirmed&&isSel&&letter!==item.correct;
+      return e("button",{key:letter,onClick:()=>{if(!confirmed)setSelected(letter);},disabled:confirmed,style:{padding:"24px 20px",borderRadius:16,textAlign:"center",cursor:confirmed?"default":"pointer",background:isCorr?`${ACCENT}18`:isWrong?`${RED}18`:isSel?`${AMBER}15`:CARD,border:isCorr?`2px solid ${ACCENT}`:isWrong?`2px solid ${RED}`:isSel?`2px solid ${AMBER}`:`1px solid ${BORDER}`}},
+        e("div",{style:{color:MUTED,fontSize:12,fontWeight:600,marginBottom:4}},"Choice ",letter),
+        e("div",{style:{color:isCorr?ACCENT:isWrong?RED:isSel?AMBER:TEXT,fontWeight:800,fontSize:22}},word));
+    })),
+    confirmed && e("div",{style:{background:BORDER,borderRadius:12,padding:16,marginBottom:20}},e("div",{style:{color:AMBER,fontWeight:700,fontSize:13,marginBottom:8}},"A: ",item.wordA),e("div",{style:{color:SUB,fontSize:13,lineHeight:1.5,marginBottom:12}},item.explainA),e("div",{style:{color:PURPLE,fontWeight:700,fontSize:13,marginBottom:8}},"B: ",item.wordB),e("div",{style:{color:SUB,fontSize:13,lineHeight:1.5}},item.explainB)),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},!confirmed?e("button",{onClick:confirm,disabled:!selected,style:btn(!selected?BORDER:AMBER,!selected?"#475569":DARK,{fontSize:14,padding:"10px 24px"})},"Lock In"):e("button",{onClick:next,style:btn(AMBER,DARK,{fontSize:14,padding:"10px 24px"})},idx<SHOWDOWN_ITEMS.length-1?"Next →":"See Results →")));
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN: SECONDARY MEANINGS (unchanged)
+   ═══════════════════════════════════════════ */
+function SecondaryGame({ onComplete }){
+  const [idx,setIdx]=useState(0);const [selected,setSelected]=useState(null);const [confirmed,setConfirmed]=useState(false);const [score,setScore]=useState(0);const [done,setDone]=useState(false);
+  const item=SECONDARY_ITEMS[idx];
+  function confirm(){if(selected===null)return;setConfirmed(true);if(selected===item.answer)setScore(s=>s+1);}
+  function next(){if(idx<SECONDARY_ITEMS.length-1){setIdx(idx+1);setSelected(null);setConfirmed(false);}else{setDone(true);}}
+  if(done) return e("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},e("div",{style:{fontSize:48,marginBottom:16}},"🔮"),e("h2",{style:{color:TEXT,fontSize:28,fontWeight:800,marginBottom:8}},"Secondary Meanings Complete"),e("div",{style:{color:AMBER,fontSize:48,fontWeight:900}},score,"/",SECONDARY_ITEMS.length),e("p",{style:{color:SUB,fontSize:15,marginTop:8,marginBottom:32}},"correct answers"),e("button",{onClick:onComplete,style:btn(`linear-gradient(135deg,${AMBER},${PURPLE})`,TEXT)},"Continue to Timed Quiz →"));
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:24}},e("div",{style:{color:CYAN,fontSize:13,fontWeight:700}},"🔮 Secondary Meanings Challenge"),e("div",{style:{color:MUTED,fontSize:13}},idx+1," of ",SECONDARY_ITEMS.length," · Score: ",score)),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:20,padding:28,marginBottom:20}},e("div",{style:{color:TEXT,fontSize:16,fontFamily:"Georgia,serif",lineHeight:1.8}},item.passage)),
+    e("div",{style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10,marginBottom:24}},item.choices.map((c,ci)=>{
+      const isSel=selected===ci,isCorr=ci===item.answer;
+      let bg=CARD,bdr=`1px solid ${BORDER}`,tc=TEXT;
+      if(confirmed&&isCorr){bg=`${ACCENT}18`;bdr=`2px solid ${ACCENT}`;tc=ACCENT;}else if(confirmed&&isSel&&!isCorr){bg=`${RED}18`;bdr=`2px solid ${RED}`;tc=RED;}else if(isSel&&!confirmed){bg=`${AMBER}15`;bdr=`2px solid ${AMBER}`;tc=AMBER;}
+      return e("button",{key:ci,onClick:()=>{if(!confirmed)setSelected(ci);},disabled:confirmed,style:{padding:"14px 16px",borderRadius:12,background:bg,border:bdr,color:tc,fontWeight:700,fontSize:15,cursor:confirmed?"default":"pointer",textAlign:"center"}},c);
+    })),
+    confirmed && e("div",{style:{background:BORDER,borderRadius:12,padding:16,marginBottom:20,borderLeft:`4px solid ${BLUE}`}},e("div",{style:{color:BLUE,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),e("div",{style:{color:SUB,fontSize:13,lineHeight:1.6}},item.explain)),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},!confirmed?e("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?BORDER:AMBER,selected===null?"#475569":DARK,{fontSize:14,padding:"10px 24px"})},"Check"):e("button",{onClick:next,style:btn(AMBER,DARK,{fontSize:14,padding:"10px 24px"})},idx<SECONDARY_ITEMS.length-1?"Next →":"See Results →")));
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN: TIMED PRACTICE QUIZ (NEW: timer added)
+   ═══════════════════════════════════════════ */
+function PracticeQuiz({ onComplete }){
+  const [idx,setIdx]=useState(0);const [selected,setSelected]=useState(null);const [confirmed,setConfirmed]=useState(false);const [answers,setAnswers]=useState([]);
+  const [timeLeft,setTimeLeft]=useState(12*60+30); /* 75s × 10 = 12:30 */
+  const timerRef=useRef(null);
+  const q=QUIZ[idx];const total=QUIZ.length;
+  useEffect(()=>{
+    timerRef.current=setInterval(()=>{setTimeLeft(t=>{if(t<=1){clearInterval(timerRef.current);return 0;}return t-1;});},1000);
+    return ()=>clearInterval(timerRef.current);
+  },[]);
+  function handleConfirm(){if(selected===null)return;setConfirmed(true);setAnswers(p=>[...p,{correct:selected===q.answer,diff:q.diff}]);}
+  function next(){if(idx<total-1){setIdx(idx+1);setSelected(null);setConfirmed(false);}else{clearInterval(timerRef.current);onComplete(answers.filter(a=>a.correct).length,total,answers);}}
+  const mins=Math.floor(timeLeft/60),secs=timeLeft%60;
+  const timerPct=timeLeft/(12*60+30)*100;
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"32px 20px",minHeight:"100vh"}},
+    /* Timer bar */
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}},
+      e("div",{style:{color:AMBER,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:"uppercase"}},"📝 Timed Quiz"),
+      e("div",{style:{display:"flex",alignItems:"center",gap:12}},
+        e("span",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:13,fontWeight:700,color:timeLeft<120?RED:timeLeft<300?AMBER:SUB}},mins,":",(secs<10?"0":"")+secs),
+        e("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:700,background:q.diff==="medium"?`${AMBER}22`:`${RED}22`,color:q.diff==="medium"?AMBER:RED}},q.diff))),
+    e("div",{style:{height:4,background:BORDER,borderRadius:2,marginBottom:4,overflow:"hidden"}},
+      e("div",{style:{height:"100%",width:`${timerPct}%`,background:timeLeft<120?RED:timeLeft<300?AMBER:`linear-gradient(90deg,${ACCENT},${BLUE})`,borderRadius:2,transition:"width 1s linear"}})),
+    e("div",{style:{height:4,background:BORDER,borderRadius:2,marginBottom:24,overflow:"hidden"}},
+      e("div",{style:{height:"100%",width:`${(idx+(confirmed?1:0))/total*100}%`,background:`linear-gradient(90deg,${AMBER},${PURPLE})`,borderRadius:2,transition:"width .4s"}})),
+    e("div",{style:{color:TEXT,fontWeight:800,fontSize:15,marginBottom:16}},"Question ",idx+1," of ",total),
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:24,marginBottom:20}},
+      e("div",{style:{color:"#cbd5e1",fontSize:15,lineHeight:1.8,fontFamily:"Georgia,serif"}},q.passage)),
+    e("div",{style:{color:TEXT,fontSize:14,fontWeight:600,marginBottom:16}},"Which choice completes the text with the most logical and precise word?"),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},q.choices.map((c,ci)=>{
+      const letter="ABCD"[ci],isSel=selected===ci,isCorr=ci===q.answer;
+      let bg=CARD,bdr=`1px solid ${BORDER}`,tc="#cbd5e1";
+      if(confirmed&&isCorr){bg=`${ACCENT}18`;bdr=`2px solid ${ACCENT}`;tc=ACCENT;}else if(confirmed&&isSel&&!isCorr){bg=`${RED}18`;bdr=`2px solid ${RED}`;tc=RED;}else if(isSel&&!confirmed){bg=`${AMBER}15`;bdr=`2px solid ${AMBER}`;tc=AMBER;}
+      return e("button",{key:ci,onClick:()=>{if(!confirmed)setSelected(ci);},disabled:confirmed,style:{display:"flex",alignItems:"center",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+        e("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,background:confirmed&&isCorr?ACCENT:confirmed&&isSel&&!isCorr?RED:isSel?AMBER:BORDER,color:isSel||confirmed?DARK:MUTED}},letter),
+        e("span",{style:{color:tc,fontSize:14}},c));
+    })),
+    confirmed && e("div",{style:{background:BORDER,borderRadius:12,padding:20,marginBottom:24,borderLeft:`4px solid ${BLUE}`}},e("div",{style:{color:BLUE,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),e("div",{style:{color:SUB,fontSize:14,lineHeight:1.6}},q.explain)),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},!confirmed?e("button",{onClick:handleConfirm,disabled:selected===null,style:btn(selected===null?BORDER:AMBER,selected===null?"#475569":DARK,{fontSize:14,padding:"10px 24px"})},"Confirm Answer"):e("button",{onClick:next,style:btn(`linear-gradient(135deg,${AMBER},${PURPLE})`,TEXT,{fontSize:14,padding:"10px 24px"})},idx<total-1?"Next →":"See Results →")));
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN: MODULE COMPLETE (NEW: error breakdown, homework, nav)
+   ═══════════════════════════════════════════ */
+function ModuleComplete({ quizScore, quizTotal, quizAnswers }){
+  const pct=Math.round(quizScore/quizTotal*100);
+  const medCorr=quizAnswers.filter(a=>a.diff==="medium"&&a.correct).length;
+  const medTotal=quizAnswers.filter(a=>a.diff==="medium").length;
+  const hardCorr=quizAnswers.filter(a=>a.diff==="hard"&&a.correct).length;
+  const hardTotal=quizAnswers.filter(a=>a.diff==="hard").length;
+  const medPct=medTotal?Math.round(medCorr/medTotal*100):0;
+  const hardPct=hardTotal?Math.round(hardCorr/hardTotal*100):0;
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 24px",minHeight:"100vh"}},
+    e("div",{style:{fontSize:64,marginBottom:16}},"🎉"),
+    e("h1",{style:{color:AMBER,fontSize:"clamp(1.8rem,4vw,2.8rem)",fontWeight:800,marginBottom:8}},"Module 6 Complete"),
+    e("p",{style:{color:SUB,fontSize:16,marginBottom:32,maxWidth:480,textAlign:"center"}},"You've sharpened your precision and expanded your Tier 2 vocabulary."),
+    /* Score card */
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:20,padding:32,marginBottom:24,minWidth:280,textAlign:"center"}},
+      e("div",{style:{color:AMBER,fontSize:56,fontWeight:900}},quizScore,"/",quizTotal),
+      e("div",{style:{color:SUB,fontSize:14,marginTop:4}},"Advanced Quiz Score (",pct,"%)"),
+      e("div",{style:{height:8,background:BORDER,borderRadius:4,marginTop:16,overflow:"hidden"}},
+        e("div",{style:{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${AMBER},${PURPLE})`,borderRadius:4}}))),
+    /* Difficulty breakdown */
+    e("div",{style:{display:"flex",gap:12,marginBottom:24}},
+      e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:14,padding:"16px 24px",textAlign:"center",minWidth:120}},
+        e("div",{style:{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:AMBER,marginBottom:4}},"Medium"),
+        e("div",{style:{fontSize:24,fontWeight:900,color:medPct>=75?ACCENT:AMBER}},medCorr,"/",medTotal)),
+      e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:14,padding:"16px 24px",textAlign:"center",minWidth:120}},
+        e("div",{style:{fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color:RED,marginBottom:4}},"Hard"),
+        e("div",{style:{fontSize:24,fontWeight:900,color:hardPct>=75?ACCENT:RED}},hardCorr,"/",hardTotal))),
+    /* Tiered feedback */
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:20,maxWidth:520,marginBottom:24}},
+      e("div",{style:{color:TEXT,fontWeight:700,fontSize:15,marginBottom:8}},pct>=80?"🎯 Key Takeaways":pct>=60?"📈 Key Takeaways":"🔧 Key Takeaways"),
+      e("div",{style:{color:SUB,fontSize:13,lineHeight:1.7,textAlign:"left"}},
+        pct>=80 ? (medPct>=100&&hardPct>=83
+          ? "Outstanding precision across the board! You're making fine distinctions at 700+ level. Module 7 shifts to Text Structure & Purpose and Cross-Text Connections."
+          : "Outstanding overall! "+((hardPct<67)?"Your medium-level precision is strong but the hard questions reveal room to grow. Focus on the tiebreaker process (Step 5: go specific) for the trickiest pairs.":"Module 7 shifts to Text Structure & Purpose and Cross-Text Connections — the analytical side of Craft & Structure."))
+        : pct>=60 ? "Good progress. "+(medPct>=75?"Your foundation is solid — you're getting medium-difficulty questions right. ":"Focus on the foundational distinctions (scope, intensity, domain) before tackling the harder pairs. ")+"Keep building your mental library of near-synonym pairs. The Precision Showdown format mirrors exactly how the SAT tests this at the hard level."
+        : "These are genuinely difficult distinctions. Focus on the tiebreaker process: when stuck between two words, check intensity match, scope, and whether a secondary meaning applies. Review the vocabulary clusters and secondary meanings list.")),
+    /* Homework */
+    e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:20,maxWidth:520,marginBottom:24}},
+      e("div",{style:{color:AMBER,fontWeight:700,fontSize:15,marginBottom:10}},"📋 Homework"),
+      e("div",{style:{color:SUB,fontSize:13,lineHeight:1.8,textAlign:"left"}},
+        e("div",{style:{marginBottom:8}},e("strong",{style:{color:TEXT}},"1. Flashcard Review")," — Make cards for the 8 vocabulary clusters (Ideas/Arguments, People/Approaches, Change/Scale). Test yourself on definitions AND example sentences."),
+        e("div",{style:{marginBottom:8}},e("strong",{style:{color:TEXT}},"2. Secondary Meaning Hunt")," — Find 5 words in your daily reading that have secondary meanings. Write both the common and uncommon definitions."),
+        e("div",{style:{marginBottom:8}},e("strong",{style:{color:TEXT}},"3. Precision Pairs")," — For each pair below, write a sentence where ONLY one word works: thorough/exhaustive, deliberate/calculated, vague/evasive, hidden/subtle."),
+        e("div",null,e("strong",{style:{color:TEXT}},"4. Preview Module 7")," — Next: Text Structure & Cross-Text Connections. Start noticing how authors organize arguments in what you read."))),
+    /* Navigation */
+    e("div",{style:{display:"flex",justifyContent:"space-between",width:"100%",maxWidth:520,padding:"20px 0",borderTop:`1px solid ${BORDER}`}},
+      e("a",{href:"module-5.html",style:{color:BLUE,textDecoration:"none",fontSize:14}},"← Module 5: Foundations"),
+      e("a",{href:"module-7.html",style:{color:BLUE,textDecoration:"none",fontSize:14}},"Module 7: Text Structure →")),
+    e("div",{style:{marginTop:8}},e("a",{href:"index.html",style:{color:MUTED,textDecoration:"none",fontSize:13}},"← Back to SAT R&W Course"))
+  );
+}
+
+/* ═══════════════════════════════════════════
+   APP (updated screen flow)
+   ═══════════════════════════════════════════ */
+function App(){
+  const [screen,setScreen]=useState("welcome");
+  const [fade,setFade]=useState(true);
+  const [quizScore,setQuizScore]=useState(0);
+  const [quizTotal,setQuizTotal]=useState(10);
+  const [quizAnswers,setQuizAnswers]=useState([]);
+  const screenIdx=SCREEN_NAMES.indexOf(screen);
+  const go=useCallback((to)=>{setFade(false);setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},350);},[]);
+  return e("div",{style:{minHeight:"100vh",background:DARK,color:TEXT,fontFamily:"'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}},
+    e(StepBar,{current:screenIdx}),
+    e("div",{style:{position:"fixed",inset:0,pointerEvents:"none",opacity:.03,backgroundImage:"linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",backgroundSize:"40px 40px"}}),
+    e("div",{style:{position:"relative",zIndex:1,transition:"opacity .35s,transform .35s",opacity:fade?1:0,transform:fade?"translateY(0)":"translateY(8px)",paddingTop:24}},
+      screen==="welcome" && e(Welcome,{onNext:()=>go("warmup")}),
+      screen==="warmup" && e(WarmUp,{onComplete:()=>go("lesson")}),
+      screen==="lesson" && e(LessonViewer,{onComplete:()=>go("showdown")}),
+      screen==="showdown" && e(PrecisionShowdown,{onComplete:()=>go("secondary")}),
+      screen==="secondary" && e(SecondaryGame,{onComplete:()=>go("quiz")}),
+      screen==="quiz" && e(PracticeQuiz,{onComplete:(s,t,a)=>{setQuizScore(s);setQuizTotal(t);setQuizAnswers(a);go("complete");}}),
+      screen==="complete" && e(ModuleComplete,{quizScore,quizTotal,quizAnswers})));
+}
+const {createRoot}=ReactDOM;
+createRoot(document.getElementById("root")).render(e(App));
+</script></body></html>

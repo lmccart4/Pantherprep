@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 11: Logical Reasoning & Synthesis — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback, useRef } = React;
+const BLUE = "#3b82f6";
+const ACCENT = "#10b981";
+const AMBER = "#f59e0b";
+const PURPLE = "#a855f7";
+const RED = "#ef4444";
+const CYAN = "#06b6d4";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px",
+  borderRadius: 10,
+  border: "none",
+  background: bg,
+  color,
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: "pointer",
+  transition: "transform .12s",
+  ...extra
+});
+const NAV = { prev: { label: "Module 10: Evidence & Data", file: "SAT RW module10.html" }, next: { label: "Module 12: Boss Battle", file: "SAT RW module12.html" } };
+const HOMEWORK = [
+  { icon: "\uD83D\uDCF0", task: "Read one op-ed and identify the hidden assumption", detail: "NYT, WSJ, or Atlantic opinion section. Write the assumption in one sentence.", color: BLUE },
+  { icon: "\u2696\uFE0F", task: "Practice 5 strengthen/weaken questions", detail: "Use Khan Academy SAT prep or College Board Question Bank.", color: PURPLE },
+  { icon: "\uD83E\uDDE9", task: "Write 3 logical completion sentences", detail: "Take any paragraph ending and write the most logical concluding sentence.", color: CYAN },
+  { icon: "\uD83D\uDCDD", task: "Review your Module 11 quiz misses", detail: "For each miss: did you misread the passage, miss the assumption, or pick an extreme answer?", color: RED }
+];
+function NavLinks() {
+  return React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12, marginTop: 32, paddingTop: 24, borderTop: "1px solid " + BORDER } },
+    NAV.prev && React.createElement("a", { href: NAV.prev.file, style: { ...btn("transparent", SUB), border: "1px solid " + BORDER, textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, "\u2190 " + NAV.prev.label),
+    NAV.next && React.createElement("a", { href: NAV.next.file, style: { ...btn("linear-gradient(135deg," + BLUE + "," + PURPLE + ")", TEXT), textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, NAV.next.label + " \u2192")
+  );
+}
+function Homework() {
+  return React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 24, maxWidth: 520, width: "100%", marginBottom: 32, textAlign: "left" } },
+    React.createElement("div", { style: { color: AMBER, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "\uD83D\uDCDD Homework & Action Items"),
+    HOMEWORK.map(function(h, i) {
+      return React.createElement("div", { key: i, style: { display: "flex", gap: 10, marginBottom: 10, padding: "8px 12px", background: h.color + "08", borderLeft: "3px solid " + h.color, borderRadius: "0 8px 8px 0" } },
+        React.createElement("span", { style: { color: h.color, fontSize: 13 } }, h.icon),
+        React.createElement("div", null,
+          React.createElement("div", { style: { color: TEXT, fontWeight: 600, fontSize: 13 } }, h.task),
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, marginTop: 2 } }, h.detail)
+        )
+      );
+    })
+  );
+}
+const WARMUP_ITEMS = [
+  {
+    id: "w1", priorModule: "M9", type: "central",
+    passage: "Recent studies of coral reef recovery in the Philippines have shown that marine protected areas where fishing is strictly prohibited recover biodiversity approximately four times faster than areas where limited fishing is permitted. Researchers attribute this to the cascading ecological effects of allowing top predators to reestablish, which restores natural competition and predation patterns throughout the food web.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["Fishing should be banned worldwide to protect coral reefs", "Strict fishing prohibitions in marine protected areas accelerate reef recovery by allowing natural predator-prey dynamics to reestablish", "Most people have a high tolerance for pain", "Marine biologists disagree about the best way to protect coral reefs"],
+    answer: 1,
+    explain: "The passage links strict prohibition \u2192 faster recovery \u2192 predator reestablishment \u2192 restored food web. B captures this causal chain."
+  },
+  {
+    id: "w2", priorModule: "M10", type: "evidence",
+    passage: "Psychologist Dr. Chen argues that workplace open-plan offices reduce employee productivity because constant visual and auditory distractions prevent sustained deep focus.",
+    stem: "Which finding, if true, would most directly support Dr. Chen\u2019s argument?",
+    choices: ["Many companies have adopted open-plan offices to reduce real estate costs", "A controlled study found that employees in open offices spent 73% less time in face-to-face interactions than those in private offices", "Employees moved from private offices to open plans showed a 32% decline in tasks requiring sustained concentration, with self-reported distraction as the primary cause", "Some employees prefer open offices because they enjoy social interaction"],
+    answer: 2,
+    explain: "Chen\u2019s claim: open offices \u2192 distractions \u2192 reduced productivity. C provides direct evidence: concentration tasks declined 32% with distraction cited as the cause."
+  },
+  {
+    id: "w3", priorModule: "M5", type: "vocabulary",
+    passage: "The novelist\u2019s latest work has been described by critics as ______: its intricate plot, layered symbolism, and demanding vocabulary require careful, repeated reading to fully appreciate.",
+    stem: "Which choice completes the text with the most logical and precise word?",
+    choices: ["accessible", "formulaic", "exacting", "superficial"],
+    answer: 2,
+    explain: "\u2018Intricate,\u2019 \u2018layered,\u2019 \u2018demanding\u2019 = requires significant effort. \u2018Exacting\u2019 means demanding great care and effort."
+  },
+  {
+    id: "w4", priorModule: "M3", type: "conventions",
+    passage: "The researchers who conducted the longitudinal study ______ that early childhood nutrition has a measurable impact on academic achievement through adolescence.",
+    stem: "Which choice conforms to Standard English conventions?",
+    choices: ["has concluded", "concludes", "concluded", "concluding"],
+    answer: 2,
+    explain: "Subject: \u2018researchers\u2019 (plural). Past tense context (longitudinal study = completed). Plural + past = \u2018concluded.\u2019"
+  }
+];
+function Warmup({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+  const item = WARMUP_ITEMS[idx];
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s) { return s + 1; });
+  }
+  function next() {
+    if (idx < WARMUP_ITEMS.length - 1) { setIdx(idx + 1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+  if (done) return React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "80px 20px", textAlign: "center" } },
+    React.createElement("div", { style: { fontSize: 48, marginBottom: 16 } }, "\uD83E\uDDE0"),
+    React.createElement("h2", { style: { color: TEXT, fontSize: 24, fontWeight: 800, marginBottom: 8 } }, "Warm-up Complete"),
+    React.createElement("div", { style: { color: BLUE, fontSize: 48, fontWeight: 900 } }, score, "/", WARMUP_ITEMS.length),
+    React.createElement("p", { style: { color: SUB, fontSize: 14, marginTop: 8, marginBottom: 32 } }, score === WARMUP_ITEMS.length ? "Perfect! Your prior knowledge is solid." : score >= 3 ? "Good recall! Let\u2019s build on that foundation." : "Time to refresh \u2014 today\u2019s lesson will help."),
+    React.createElement("button", { onClick: onComplete, style: btn("linear-gradient(135deg," + BLUE + "," + PURPLE + ")", TEXT) }, "Continue to Lesson \u2192")
+  );
+  return React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } },
+    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } },
+      React.createElement("div", { style: { color: BLUE, fontSize: 13, fontWeight: 700 } }, "\uD83E\uDDE0 Retrieval Warm-up"),
+      React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+        React.createElement("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 600, background: BLUE + "22", color: BLUE } }, "from " + item.priorModule),
+        React.createElement("span", { style: { color: MUTED, fontSize: 13 } }, idx + 1, "/", WARMUP_ITEMS.length)
+      )
+    ),
+    React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 20, overflow: "hidden" } },
+      React.createElement("div", { style: { height: "100%", width: ((idx + (confirmed ? 1 : 0)) / WARMUP_ITEMS.length * 100) + "%", background: "linear-gradient(90deg," + BLUE + "," + PURPLE + ")", borderRadius: 2, transition: "width .4s" } })
+    ),
+    React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 24, marginBottom: 16 } },
+      React.createElement("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, item.passage)
+    ),
+    React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, item.stem),
+    React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } },
+      item.choices.map(function(c, ci) {
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = CARD, bdr = "1px solid " + BORDER, tc = "#cbd5e1";
+        if (confirmed && isCorr) { bg = ACCENT + "18"; bdr = "2px solid " + ACCENT; tc = ACCENT; }
+        else if (confirmed && isSel && !isCorr) { bg = RED + "18"; bdr = "2px solid " + RED; tc = RED; }
+        else if (isSel && !confirmed) { bg = BLUE + "15"; bdr = "2px solid " + BLUE; tc = BLUE; }
+        return React.createElement("button", { key: ci, onClick: function() { if (!confirmed) setSelected(ci); }, disabled: confirmed, style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" } },
+          React.createElement("span", { style: { minWidth: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, flexShrink: 0, marginTop: 1, background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? BLUE : BORDER, color: isSel || confirmed ? DARK : MUTED } }, letter),
+          React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+        );
+      })
+    ),
+    confirmed && React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: "4px solid " + BLUE } },
+      React.createElement("div", { style: { color: BLUE, fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "Explanation"),
+      React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 } }, item.explain)
+    ),
+    React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } },
+      !confirmed ? React.createElement("button", { onClick: confirm, disabled: selected === null, style: btn(selected === null ? BORDER : BLUE, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Confirm") :
+      React.createElement("button", { onClick: next, style: btn(BLUE, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < WARMUP_ITEMS.length - 1 ? "Next \u2192" : "See Results \u2192")
+    )
+  );
+}
+const LESSONS = [
+  {
+    id: "intro",
+    title: "Thinking Like a Logician",
+    subtitle: "The SAT's highest-order reasoning questions",
+    body: [
+      "Logical reasoning questions are the most challenging on the SAT R&W. They test whether you can evaluate the LOGIC of an argument, not just understand its content.",
+      "These questions come in several forms:\n• Which finding would strengthen/weaken the claim? (~2-3 per test)\n• Which conclusion logically follows from the information? (~1-2 per test)\n• What assumption underlies the argument? (occasional)\n• Which statement best completes the passage's logical structure? (~1-2 per test)",
+      "Together with synthesis questions (combining information from multiple parts of a passage), these represent the analytical ceiling of the SAT. Master them, and you can handle anything the test throws at you."
+    ],
+    visual: "stats"
+  },
+  {
+    id: "argument-parts",
+    title: "Anatomy of an Argument",
+    subtitle: "Claim, evidence, reasoning, assumption",
+    body: [
+      "Every argument has parts. The SAT tests whether you can identify them:",
+      'CLAIM: The main point the argument is trying to establish.\n"Urban gardens improve community health."',
+      'EVIDENCE: Facts, data, or observations offered in support of the claim.\n"Neighborhoods with community gardens show 15% lower rates of depression."',
+      'REASONING: The logical connection between evidence and claim — HOW the evidence supports the claim.\n"Access to green space and social interaction through gardening reduces stress."',
+      `ASSUMPTION: An unstated belief that the argument requires to work. Every argument has hidden assumptions.
+"The gardens caused the health improvement, not the other way around (i.e., healthier communities didn't simply build more gardens)."`,
+      "The SAT tests all of these, but the most important skill is identifying ASSUMPTIONS — the invisible logical bridges that hold arguments together."
+    ],
+    visual: "anatomy-visual"
+  },
+  {
+    id: "strengthen",
+    title: "Strengthen/Weaken Questions",
+    subtitle: "The most common logical reasoning format",
+    body: [
+      "These questions present a passage with a claim and evidence, then ask which additional piece of information would STRENGTHEN or WEAKEN the argument.",
+      "TO STRENGTHEN: Find information that:\n• Eliminates an alternative explanation\n• Provides additional supporting evidence\n• Confirms a key assumption\n• Shows the pattern holds in new contexts",
+      "TO WEAKEN: Find information that:\n• Introduces a plausible alternative explanation\n• Contradicts the evidence or shows exceptions\n• Undermines a key assumption\n• Reveals a confounding variable",
+      "CRITICAL INSIGHT: Strengthen/weaken questions are really about ASSUMPTIONS. The best way to strengthen an argument is to confirm its hidden assumption. The best way to weaken it is to attack that assumption."
+    ],
+    visual: "strengthen-examples"
+  },
+  {
+    id: "assumptions",
+    title: "Finding Hidden Assumptions",
+    subtitle: "The invisible bridges in every argument",
+    body: [
+      "An assumption is something the argument MUST be true for the conclusion to follow from the evidence, but that the argument doesn't explicitly state.",
+      "TECHNIQUE: The Negation Test\n1. Identify what you think the assumption is.\n2. Negate it (imagine it's false).\n3. If the argument falls apart when the assumption is negated, you've found a real assumption.",
+      'EXAMPLE:\nClaim: "Students who take music lessons perform better academically."\nEvidence: "Students in the school orchestra have higher GPAs than non-musicians."\n\nAssumption: Musical training causes the academic improvement (not: high-achieving students are simply more likely to choose music).\n\nNegate it: "High-achieving students are more likely to choose music lessons regardless of any effect on academics."\n\nDoes the argument collapse? Yes — the correlation would exist even without causation. So this IS a key assumption.',
+      "The SAT won't ask you to formally identify assumptions, but this thinking underlies every strengthen/weaken question."
+    ],
+    visual: null
+  },
+  {
+    id: "logical-completion",
+    title: "Logical Completion Questions",
+    subtitle: "Which conclusion follows from the evidence?",
+    body: [
+      "Some questions present a passage with evidence and ask which conclusion logically follows. These are like inference questions but more focused on logical structure than reading comprehension.",
+      "THE KEY PRINCIPLE: The correct conclusion must follow NECESSARILY from the stated evidence. It cannot require additional assumptions or outside knowledge.",
+      "COMMON TRAPS:\n• Conclusions that are TRUE but don't follow from THIS evidence\n• Conclusions that go beyond what the evidence can support (overgeneralization)\n• Conclusions that reverse a causal relationship\n• Conclusions about ALL cases when evidence covers only SOME",
+      `EXAMPLE:
+Evidence: "In a study of 500 companies, those with diverse leadership teams reported 19% higher revenue growth than those with homogeneous teams."
+
+Valid conclusion: "The data suggests a positive association between leadership diversity and revenue growth."
+
+Invalid conclusion: "Leadership diversity causes higher revenue growth." (Correlation study — can't prove causation.)`
+    ],
+    visual: null
+  },
+  {
+    id: "synthesis",
+    title: "Synthesis Questions",
+    subtitle: "Combining information from multiple sources",
+    body: [
+      "Synthesis questions ask you to combine information from different parts of a passage — or from a passage and a data display — to reach a conclusion that neither source alone supports.",
+      "EXAMPLE: A passage discusses how deforestation reduces rainfall (Part A), and a table shows declining crop yields in deforested regions (Part B). The synthesis conclusion: deforestation may be indirectly reducing crop yields through its effect on rainfall.",
+      "STRATEGY:\n1. Identify what each source contributes.\n2. Look for the LOGICAL CONNECTION between them.\n3. The correct answer combines both sources — reject answers that only use one.",
+      "TRAP: Answers that accurately describe one source but ignore the other. The whole point of synthesis is combining information, so the answer must require BOTH sources."
+    ],
+    visual: null
+  },
+  {
+    id: "causal-reasoning",
+    title: "Causal Reasoning Traps",
+    subtitle: "The SAT's favorite logical pitfalls",
+    body: [
+      "The SAT loves testing whether you can spot flawed causal reasoning. Here are the most common patterns:",
+      "CORRELATION ≠ CAUSATION: Two things happening together doesn't mean one caused the other. Ice cream sales and drowning deaths both increase in summer — ice cream doesn't cause drowning. The hidden variable: hot weather.",
+      'REVERSE CAUSATION: Maybe B causes A, not A causes B. "Happy people exercise more" could mean exercise causes happiness OR happiness causes exercise motivation.',
+      'CONFOUNDING VARIABLE: A third factor might cause both. "Coffee drinkers live longer" — but coffee drinkers might also have higher incomes and better healthcare access.',
+      `SELECTION BIAS: The sample isn't representative. "Our customers love our product" — of course; unhappy customers already left.`,
+      "On the SAT, these appear as:\n• Strengthen: answers that rule out alternative explanations\n• Weaken: answers that introduce confounding variables\n• Completion: choosing the appropriately cautious conclusion"
+    ],
+    visual: "causal-traps"
+  },
+  {
+    id: "framework",
+    title: "The Reasoning Framework",
+    subtitle: "Your approach for every logical question",
+    body: [
+      "STEP 1: Identify the argument structure. What is the CLAIM? What EVIDENCE supports it? What is the logical REASONING connecting them?",
+      "STEP 2: Find the gap. What ASSUMPTION does the argument make? What could go wrong between the evidence and the conclusion?",
+      "STEP 3: For strengthen questions, find the answer that fills the gap — confirms the assumption or eliminates an alternative explanation.",
+      "STEP 4: For weaken questions, find the answer that exposes the gap — introduces an alternative explanation or attacks the assumption.",
+      "STEP 5: For completion questions, choose the conclusion that follows from the evidence WITHOUT requiring additional unstated information. The most cautious, well-supported conclusion is usually correct.",
+      "GOLDEN RULE: The correct answer in logical reasoning is almost always the most MODERATE one. Extreme, absolute, or sweeping conclusions are almost always wrong."
+    ],
+    visual: "framework-visual"
+  }
+];
+const STRWEAKEN_ITEMS = [
+  {
+    passage: "A recent study found that employees who work from home report higher job satisfaction than those who work in offices. The researchers concluded that remote work environments inherently produce greater job satisfaction.",
+    direction: "weaken",
+    question: "Which finding, if true, would most WEAKEN the researchers' conclusion?",
+    choices: [
+      "Remote workers in the study were primarily senior employees who had chosen remote work, while office workers included many new hires who had not been given a choice",
+      "The study was conducted across multiple industries",
+      "Some remote workers reported missing social interactions with colleagues",
+      "The study included over 5,000 participants"
+    ],
+    answer: 0,
+    explain: 'The conclusion claims remote work INHERENTLY produces satisfaction. A reveals selection bias — remote workers CHOSE their arrangement (self-selection) and are more senior. The satisfaction might come from having choice and seniority, not from working remotely itself. This undermines the "inherently" claim.'
+  },
+  {
+    passage: "Archaeologists discovered that ancient settlements near coastlines had significantly more diverse diets than inland settlements, based on analysis of food residue in pottery. They concluded that coastal access provided nutritional advantages to ancient populations.",
+    direction: "strengthen",
+    question: "Which finding, if true, would most STRENGTHEN the archaeologists' conclusion?",
+    choices: [
+      "The pottery was made using similar techniques at both types of settlements",
+      "Skeletal analysis showed that coastal populations had fewer nutritional deficiency markers and lower infant mortality rates than inland populations of the same period",
+      "Some inland settlements were located near freshwater lakes",
+      "Coastal settlements were generally larger than inland settlements"
+    ],
+    answer: 1,
+    explain: "The conclusion links coastal diet diversity to nutritional advantages. B provides independent evidence — actual health outcomes (fewer deficiencies, lower infant mortality) — confirming that the diverse diet translated into real nutritional benefits. This connects the dietary evidence to the advantage claim."
+  },
+  {
+    passage: "A city implemented a new after-school tutoring program. Test scores in participating schools rose by an average of 12% the following year. Education officials credited the tutoring program for the improvement.",
+    direction: "weaken",
+    question: "Which finding, if true, would most WEAKEN the officials' conclusion?",
+    choices: [
+      "The tutoring program was staffed by certified teachers",
+      "Test scores rose by an average of 11% in non-participating schools in the same district during the same period, due to a new district-wide curriculum adopted the previous year",
+      "The program cost $2 million to implement",
+      "Student attendance in participating schools also improved"
+    ],
+    answer: 1,
+    explain: "The officials credit the tutoring program for the 12% increase. B reveals that non-participating schools saw an 11% increase from a different cause (new curriculum). The tutoring program may have added only ~1% beyond what the curriculum change alone achieved. The alternative explanation dramatically weakens the causal claim."
+  },
+  {
+    passage: "Researchers found that children who ate breakfast daily scored an average of 15 points higher on standardized math tests than children who skipped breakfast. The study authors suggested that schools should provide free breakfast programs to boost academic performance.",
+    direction: "weaken",
+    question: "Which finding, if true, would most WEAKEN the recommendation?",
+    choices: [
+      "The breakfast-eating children came predominantly from higher-income families that also provided more educational resources, private tutoring, and stable home environments",
+      "Breakfast is considered the most important meal of the day by many nutritionists",
+      "The study controlled for the quality of food consumed at breakfast",
+      "Some children preferred to eat lunch instead of breakfast"
+    ],
+    answer: 0,
+    explain: "The recommendation assumes breakfast CAUSES better scores. A identifies a massive confounding variable: income/resources. Wealthier families provide both breakfast AND educational advantages. The math score difference might be entirely due to income-related factors, not breakfast itself."
+  },
+  {
+    passage: "A pharmaceutical company reported that patients taking their new pain medication experienced a 40% reduction in pain scores compared to their pre-treatment baseline. The company claimed the drug was highly effective.",
+    direction: "weaken",
+    question: "Which finding, if true, would most WEAKEN the company's claim?",
+    choices: [
+      "Patients in a placebo control group experienced a 35% reduction in pain scores during the same period, suggesting that most of the improvement was not due to the drug's active ingredients",
+      "The medication had minor side effects in some patients",
+      "The study was conducted at multiple hospitals",
+      "Pain scores were measured using a validated clinical instrument"
+    ],
+    answer: 0,
+    explain: `If the placebo group improved by 35% and the drug group by 40%, the drug's actual effect beyond placebo is only 5% — far from "highly effective." The placebo comparison reveals that most of the improvement would have happened without the drug. This dramatically weakens the effectiveness claim.`
+  },
+  {
+    passage: "Cities that have invested in bicycle infrastructure (dedicated bike lanes, bike-sharing programs) have seen a 25-40% decrease in traffic-related injuries. Urban planners have cited this as evidence that bicycle infrastructure directly improves traffic safety.",
+    direction: "strengthen",
+    question: "Which finding, if true, would most STRENGTHEN the planners' conclusion?",
+    choices: [
+      "Bicycle infrastructure is popular with urban residents",
+      "Cities that invested in bicycle infrastructure but saw no increase in actual bicycle usage still experienced similar decreases in traffic injuries, suggesting the infrastructure design itself — not just fewer cars — contributes to safety",
+      "Several cities have recently announced plans to expand bicycle infrastructure",
+      "Traffic injuries have been declining nationwide due to improved vehicle safety features"
+    ],
+    answer: 1,
+    explain: "The claim is that bike infrastructure DIRECTLY improves safety. An alternative explanation: maybe more bikes just means fewer cars, which means fewer injuries. B eliminates this alternative — even without more cyclists, the infrastructure itself reduced injuries (perhaps through slower traffic, better road design). This confirms a direct causal link."
+  }
+];
+const COMPLETION_ITEMS = [
+  {
+    passage: "A longitudinal study tracked 2,000 adults who began meditation practice and 2,000 matched controls over five years. The meditation group showed significant reductions in stress hormones, blood pressure, and inflammatory markers. However, the meditation group also made other lifestyle changes during the study period: 68% adopted healthier diets and 54% increased their exercise frequency. The control group showed no significant lifestyle changes. Given these findings, the researchers concluded that ______",
+    choices: [
+      "meditation alone is responsible for the observed health improvements",
+      "while meditation may contribute to health improvements, the concurrent lifestyle changes make it impossible to attribute the benefits solely to meditation practice",
+      "diet and exercise are more important than meditation for health",
+      "the study proves that meditation has no independent health effects"
+    ],
+    answer: 1,
+    explain: "The meditation group improved BUT also changed diet and exercise. We can't separate meditation's effect from lifestyle changes. B is the appropriately cautious conclusion. A ignores the confound. C goes too far. D goes too far in the other direction."
+  },
+  {
+    passage: "Paleontologists discovered fossilized pollen from tropical flowering plants in rock formations in present-day Antarctica dated to approximately 90 million years ago. Modern Antarctica's average temperature is -49°C, far too cold to support tropical vegetation. Based on this evidence, the researchers concluded that ______",
+    choices: [
+      "Antarctica was located at the equator 90 million years ago",
+      "tropical plants can survive in extremely cold temperatures",
+      "Antarctica's climate 90 million years ago was dramatically warmer than it is today, warm enough to support tropical plant life",
+      "the fossilized pollen was transported to Antarctica by ocean currents"
+    ],
+    answer: 2,
+    explain: "Tropical pollen in Antarctica + tropical plants need warm temperatures = Antarctica was warmer then. C is the most direct logical conclusion. A goes too far (warmer doesn't require equatorial). B contradicts known botany. D introduces an unsubstantiated alternative."
+  },
+  {
+    passage: "An analysis of 10,000 published scientific papers found that studies funded by pharmaceutical companies were 3.6 times more likely to report results favorable to the funder's product than independently funded studies examining the same drugs. The studies' methodological quality, as rated by independent reviewers, did not significantly differ between the two groups. The researchers concluded that ______",
+    choices: [
+      "all pharmaceutical company research is fraudulent",
+      "funding source appears to influence the reporting of research outcomes through mechanisms other than methodological quality, such as selective publication or outcome framing",
+      "independently funded studies are always more accurate than industry-funded studies",
+      "pharmaceutical companies should not be allowed to fund research"
+    ],
+    answer: 1,
+    explain: `3.6x more favorable results + same methodological quality = the bias isn't from bad methods but from something else (selective reporting, publication bias, framing). B captures this nuance. A ("fraudulent") and C ("always") are too extreme. D is a policy recommendation the data doesn't support.`
+  },
+  {
+    passage: "Economists studying minimum wage effects compared employment rates in adjacent counties straddling state borders where one state raised its minimum wage and the other did not. They found no statistically significant difference in employment rates between the higher-wage and lower-wage counties over a three-year period. The economists concluded that ______",
+    choices: [
+      "minimum wage increases have no economic effects of any kind",
+      "the minimum wage should be raised to $50 per hour since there are no negative effects",
+      "in the cases studied, moderate minimum wage increases did not produce the job losses that traditional economic models predict",
+      "all economic models predicting job losses from minimum wages are fundamentally wrong"
+    ],
+    answer: 2,
+    explain: 'No employment difference in these specific border counties. C is appropriately scoped: "in the cases studied" and "moderate increases" (not all increases). A overgeneralizes ("any kind"). B is absurd extrapolation. D is too sweeping ("all models").'
+  },
+  {
+    passage: "A team of marine biologists tagged and tracked 200 great white sharks over four years and discovered that individual sharks returned to the same feeding grounds at the same time each year, following routes that varied by no more than 15 kilometers between years. Younger sharks, however, showed significantly more variable routes, converging on the same paths as they matured. The researchers concluded that ______",
+    choices: [
+      "great white sharks have the best navigation abilities of any marine animal",
+      "the navigational routes appear to be LEARNED rather than innate, since younger sharks gradually adopt the consistent patterns displayed by mature adults",
+      "great white sharks always travel in groups",
+      "shark populations are declining due to changes in feeding ground locations"
+    ],
+    answer: 1,
+    explain: "Adults: consistent routes. Young sharks: variable routes that converge with maturity. If routes were innate (genetic), young sharks would show them too. The gradual adoption suggests LEARNING. B captures this logical inference. A, C, D aren't supported."
+  }
+];
+const QUIZ = [
+  {
+    id: 0,
+    diff: "easy",
+    type: "conventions",
+    passage: "The ecologist, along with her team of graduate students, ______ conducting field research in the Amazon basin when the unexpected flooding began.",
+    stem: "Which choice conforms to Standard English?",
+    choices: ["were", "was", "have been", "are"],
+    answer: 1,
+    explain: "\u2018The ecologist\u2019 is the subject (singular). \u2018Along with her team\u2019 is a parenthetical phrase that does not change the subject number. Singular subject \u2192 \u2018was.\u2019"
+  },
+  {
+    id: 1,
+    diff: "medium",
+    type: "strengthen",
+    passage: "Historians have long attributed the fall of the Roman Empire partly to lead poisoning from the empire's extensive use of lead pipes for water distribution. Critics of this theory note that lead pipes were used throughout the empire's 500-year history, not just during its decline.",
+    stem: "Which finding, if true, would most strengthen the lead poisoning theory against the critics' objection?",
+    choices: [
+      "Roman elites used lead-lined vessels for wine storage, which would have increased their lead exposure far beyond what pipes alone produced, and this practice became significantly more widespread during the later imperial period",
+      "Modern cities also use lead pipes in some older neighborhoods",
+      "The Roman Empire faced military threats from multiple foreign groups",
+      "Lead poisoning affects the nervous system and can impair cognitive function"
+    ],
+    answer: 0,
+    explain: "The critics say: pipes existed throughout, so why only decline at the end? A answers this by showing a SECOND, escalating source of lead exposure (wine vessels) that became more common in the later period. This explains why lead effects would worsen during the decline specifically."
+  },
+  {
+    id: 2,
+    diff: "medium",
+    type: "weaken",
+    passage: "A technology company found that teams using their new AI-powered project management software completed projects an average of 22% faster than teams using traditional methods. The company concluded that AI project management tools significantly improve team productivity.",
+    stem: "Which finding, if true, would most weaken the company's conclusion?",
+    choices: [
+      "The AI software costs more than traditional project management tools",
+      "The teams assigned to use the AI software were selected from the company's highest-performing departments, while traditional-method teams were drawn from average-performing departments",
+      "Some team members found the AI software difficult to learn initially",
+      "Project management is an important function in most organizations"
+    ],
+    answer: 1,
+    explain: "Selection bias: the AI teams were already high-performers. The 22% speed advantage might reflect pre-existing team quality, not the software. B undermines the causal claim by revealing that the groups weren't comparable from the start."
+  },
+  {
+    id: 3,
+    diff: "medium",
+    type: "completion",
+    passage: "A survey of 3,000 adults found that those who reported reading fiction regularly scored significantly higher on tests of empathy and social perception than non-fiction readers or non-readers. However, the survey also found that individuals who scored higher on baseline empathy measures were significantly more likely to choose fiction as their preferred reading material. Taken together, these findings suggest that ______",
+    stem: "Which choice most logically completes the text?",
+    choices: [
+      "reading fiction is the most effective way to develop empathy",
+      "the relationship between fiction reading and empathy may be bidirectional — fiction may enhance empathy, but empathetic individuals may also be drawn to fiction, making it difficult to establish a clear causal direction",
+      "empathetic people are better readers than non-empathetic people",
+      "non-fiction reading has no cognitive benefits"
+    ],
+    answer: 1,
+    explain: "Finding 1: fiction readers → higher empathy. Finding 2: high-empathy people → choose fiction. This is a classic reverse causation scenario — the arrow could go either way. B captures this bidirectional possibility appropriately."
+  },
+  {
+    id: 4,
+    diff: "hard",
+    type: "strengthen",
+    passage: "Ecologist Dr. Rivera found that forests managed by indigenous communities in the Amazon showed 35% greater biodiversity than adjacent government-managed conservation areas. Dr. Rivera argues that indigenous management practices, particularly controlled burning and selective harvesting, actively promote biodiversity rather than merely preserving it.",
+    stem: "Which finding, if true, would most strengthen Dr. Rivera's argument?",
+    choices: [
+      "Indigenous communities have managed these forests for hundreds of years",
+      "Satellite imagery confirmed that the indigenous-managed forests had a more heterogeneous canopy structure — varying tree heights, gaps, and clearings — that creates diverse microhabitats, and this structural diversity directly correlated with species counts",
+      "Government conservation areas receive more funding than indigenous territories",
+      "Some indigenous communities have expressed interest in eco-tourism"
+    ],
+    answer: 1,
+    explain: "Rivera claims indigenous practices ACTIVELY promote biodiversity. B provides the mechanism: their management creates structural diversity (varying heights, gaps) that creates diverse habitats, which directly correlates with species counts. This connects specific practices to specific biodiversity outcomes."
+  },
+  {
+    id: 5,
+    diff: "hard",
+    type: "weaken",
+    passage: "A study found that students who participated in a school garden program showed improved science test scores compared to students who did not participate. The school district concluded that hands-on gardening experience improved scientific understanding.",
+    stem: "Which finding, if true, would most weaken the district's conclusion?",
+    choices: [
+      "The garden program was implemented in schools with the most experienced science teachers, who had volunteered to lead the program, while non-participating schools had higher teacher turnover rates",
+      "Students enjoyed participating in the garden program",
+      "The garden program included both indoor and outdoor activities",
+      "Science test scores have been rising nationally over the past decade"
+    ],
+    answer: 0,
+    explain: "The district credits gardens for score improvement. A reveals a confound: garden schools had the BEST teachers (experienced volunteers), while non-garden schools had high turnover. The score difference could be due to teacher quality, not gardening. The self-selection of enthusiastic experienced teachers is the real variable."
+  },
+  {
+    id: "v1",
+    diff: "easy",
+    type: "vocabulary",
+    passage: "The diplomat\u2019s speech was carefully ______: every phrase was calibrated to acknowledge the concerns of both parties without committing to a specific policy position.",
+    stem: "Which choice completes the text with the most logical and precise word?",
+    choices: ["inflammatory", "equivocal", "decisive", "transparent"],
+    answer: 1,
+    explain: "\u2018Acknowledge both sides without committing\u2019 = deliberately vague. \u2018Equivocal\u2019 means open to multiple interpretations, deliberately ambiguous."
+  },
+  {
+    id: 6,
+    diff: "hard",
+    type: "completion",
+    passage: "Neuroscientists compared brain scans of professional musicians and non-musicians. Musicians showed significantly larger volume in the auditory cortex, motor cortex, and corpus callosum compared to matched controls. Critically, the differences were proportional to the age at which musicians began training: those who started before age seven showed the largest structural differences, while those who started after age twelve showed differences barely distinguishable from non-musicians. These findings suggest that ______",
+    stem: "Which choice most logically completes the text?",
+    choices: [
+      "musical training has no effect on brain structure after age twelve",
+      "the brain's structural response to musical training is strongest during early developmental periods, indicating a critical window during which the brain is most responsive to this type of intensive practice",
+      "professional musicians are born with larger brains than non-musicians",
+      "all children should begin musical training before age seven"
+    ],
+    answer: 1,
+    explain: "Largest differences = earliest training. Smallest = latest training. Proportional relationship suggests a developmental window where the brain responds most. B captures this: critical period + responsiveness. C (born with) is contradicted by the training-age correlation. D is a recommendation the data doesn't make."
+  },
+  {
+    id: 7,
+    diff: "hard",
+    type: "strengthen",
+    passage: "Climate scientist Dr. Tanaka proposes that the dramatic greening of the Sahara approximately 11,000 years ago was triggered by subtle changes in Earth's orbital parameters that increased summer solar radiation in the Northern Hemisphere. Critics argue that orbital changes alone were too gradual to explain the rapid ecological transformation observed in the geological record.",
+    stem: "Which finding, if true, would most strengthen Dr. Tanaka's proposal against the critics?",
+    choices: [
+      "The Sahara region was dry for millions of years before the greening event",
+      "Climate modeling shows that even small increases in monsoon rainfall can trigger a positive feedback loop: more vegetation → more moisture retention → more rainfall → more vegetation — meaning a gradual orbital trigger could produce a rapid ecological response through amplification",
+      "Other regions of Africa did not experience greening during the same period",
+      "Dr. Tanaka has studied the Sahara for over twenty years"
+    ],
+    answer: 1,
+    explain: "The critics say orbital changes are too gradual for rapid greening. B provides the missing mechanism: a positive feedback loop can AMPLIFY a gradual trigger into a rapid response. This directly answers how slow orbital change → fast ecological transformation."
+  },
+  {
+    id: 8,
+    diff: "hard",
+    type: "weaken",
+    passage: "A national report found that counties with higher rates of gun ownership had lower rates of burglary. Gun-rights advocates cited this as evidence that gun ownership deters property crime.",
+    stem: "Which finding, if true, would most weaken the advocates' argument?",
+    choices: [
+      "Gun ownership rates vary significantly across the United States",
+      "Counties with higher gun ownership were predominantly rural with low population density and fewer valuable targets per square mile, while low-ownership counties were predominantly urban — suggesting that population density and urbanization, not gun ownership, account for the burglary rate differences",
+      "Some counties had both high gun ownership and high burglary rates",
+      "Burglary rates have been declining nationwide over the past two decades"
+    ],
+    answer: 1,
+    explain: "The argument claims gun ownership → less burglary. B identifies a massive confounding variable: rural vs. urban. Rural areas naturally have both more guns AND less burglary (fewer targets, less density). The correlation might be entirely driven by rural/urban differences rather than any deterrent effect."
+  },
+  {
+    id: 9,
+    diff: "hard",
+    type: "completion",
+    passage: "Researchers studying language acquisition found that children raised in bilingual households reached vocabulary milestones in each individual language approximately 3-4 months later than monolingual peers. However, when the bilingual children's TOTAL vocabulary across both languages was measured, it consistently exceeded the monolingual children's single-language vocabulary by 10-15%. Furthermore, by age five, the bilingual children had caught up to monolingual peers in each individual language while maintaining their combined vocabulary advantage. These findings suggest that ______",
+    choices: [
+      "bilingual children are linguistically disadvantaged compared to monolingual peers",
+      "the initial per-language delay in bilingual children reflects the cognitive challenge of managing two linguistic systems simultaneously, not a deficit, since their total linguistic knowledge exceeds that of monolingual children and the delay is temporary",
+      "parents should avoid raising children in bilingual households",
+      "monolingual children have superior language abilities"
+    ],
+    answer: 1,
+    explain: "Per-language: slight delay. Total vocabulary: EXCEEDS monolingual. By age 5: caught up in each AND maintained total advantage. The delay is temporary and the overall capacity is greater. B captures all three findings and the logical conclusion that it's a challenge, not a deficit."
+  },
+  {
+    id: 10,
+    diff: "hard",
+    type: "synthesis",
+    passage: "Text:\nOrnithologist Dr. Park's decade-long study found that migratory songbird populations in the eastern United States declined by an average of 29% between 2013 and 2023. Dr. Park identified habitat loss at wintering grounds in Central America as the primary driver, noting that 40% of the forest area used by these species for overwintering had been converted to agriculture during the same period.\n\nHowever, Dr. Park also found that bird populations in the western United States declined by only 8% during the same period, despite western species wintering in the same Central American regions affected by deforestation. Dr. Park noted that western migratory routes pass through fewer urban areas and agricultural zones than eastern routes.",
+    stem: "Taken together, what do these findings most strongly suggest?",
+    choices: [
+      "Central American deforestation is not a significant factor in songbird decline",
+      "While wintering ground habitat loss contributes to decline, conditions along the migration route itself — particularly exposure to urban and agricultural areas — appear to be an important additional factor explaining the disparity between eastern and western population trends",
+      "Western bird species are more resilient to habitat loss than eastern species",
+      "Urban development should be halted along all migratory routes"
+    ],
+    answer: 1,
+    explain: "Both east and west use the same wintering grounds, but east declined much more (29% vs 8%). The KEY difference: eastern routes pass through more urban/agricultural areas. SYNTHESIS: wintering habitat loss affects both, but route conditions explain the gap. B combines both findings correctly."
+  }
+];
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${BLUE}22`, border: `1px solid ${BLUE}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: BLUE, marginBottom: 12, fontWeight: 600 } }, "Unit 3 · Module 11"), /* @__PURE__ */ React.createElement("h1", { style: { fontSize: "clamp(1.7rem,4.5vw,3rem)", fontWeight: 800, background: `linear-gradient(135deg,${BLUE},${PURPLE})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 } }, "Logical Reasoning & Synthesis"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 40 } }, "Evaluate arguments, identify hidden assumptions, and synthesize evidence. The SAT's highest-order analytical questions."), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 16, maxWidth: 750, width: "100%", marginBottom: 48 } }, [
+    { icon: "📖", title: "Learn the Logic", desc: "Arguments, assumptions, causal traps" },
+    { icon: "⚖️", title: "Strengthen / Weaken", desc: "Evaluate what helps or hurts a claim" },
+    { icon: "🧩", title: "Logical Completion", desc: "Draw the right conclusion" },
+    { icon: "📝", title: "Practice Quiz", desc: "10 hard reasoning questions" }
+  ].map((c, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 32, marginBottom: 8 } }, c.icon), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 4 } }, c.title), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13, lineHeight: 1.5 } }, c.desc)))), /* @__PURE__ */ React.createElement("button", { onClick: onNext, style: btn(`linear-gradient(135deg,${BLUE},${PURPLE})`, TEXT), onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.04)", onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)" }, "Start Learning →"), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 13, marginTop: 24 } }, "~60 minutes · Information & Ideas"));
+}
+function LessonViewer({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const lesson = LESSONS[idx];
+  const total = LESSONS.length;
+  function renderVisual() {
+    if (lesson.visual === "stats") return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", padding: 16 } }, [{ n: "2-3", label: "per test", sub: "Strengthen/Weaken" }, { n: "1-2", label: "per test", sub: "Logical Completion" }, { n: "~1", label: "per test", sub: "Synthesis" }].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: `${BLUE}11`, border: `1px solid ${BLUE}33`, borderRadius: 14, padding: "16px 24px", textAlign: "center", minWidth: 140 } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontWeight: 900, fontSize: 24 } }, s.n), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13, fontWeight: 600 } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, s.sub))));
+    if (lesson.visual === "anatomy-visual") return /* @__PURE__ */ React.createElement(AnatomyVisual, null);
+    if (lesson.visual === "strengthen-examples") return /* @__PURE__ */ React.createElement(StrengthenExamples, null);
+    if (lesson.visual === "causal-traps") return /* @__PURE__ */ React.createElement(CausalTraps, null);
+    if (lesson.visual === "framework-visual") return /* @__PURE__ */ React.createElement(FrameworkVis, null);
+    return null;
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 6, marginBottom: 32 } }, LESSONS.map((_, i) => /* @__PURE__ */ React.createElement("div", { key: i, onClick: () => setIdx(i), style: { width: i === idx ? 24 : 8, height: 8, borderRadius: 4, background: i === idx ? BLUE : i < idx ? `${BLUE}66` : BORDER, cursor: "pointer", transition: "all .3s" } }))), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "28px 28px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 } }, lesson.subtitle), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: "clamp(1.2rem,3vw,1.6rem)", fontWeight: 800, marginBottom: 16, lineHeight: 1.2 } }, lesson.title), lesson.body.map((p, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { color: SUB, fontSize: 14, lineHeight: 1.75, marginBottom: 14, whiteSpace: "pre-line" } }, p))), lesson.visual && /* @__PURE__ */ React.createElement("div", { style: { padding: "8px 4px 20px" } }, renderVisual())), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setIdx(Math.max(0, idx - 1)), disabled: idx === 0, style: { ...btn("transparent", idx === 0 ? "#334155" : SUB), border: `1px solid ${BORDER}`, padding: "10px 20px", fontSize: 14 } }, "← Back"), idx < total - 1 ? /* @__PURE__ */ React.createElement("button", { onClick: () => setIdx(idx + 1), style: btn(BLUE, TEXT, { fontSize: 14, padding: "10px 20px" }) }, "Next →") : /* @__PURE__ */ React.createElement("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${BLUE},${PURPLE})`, TEXT, { fontSize: 14, padding: "10px 24px" }) }, "Start Strengthen/Weaken →")));
+}
+function AnatomyVisual() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Parts of an argument"), [
+    { part: "Claim", example: "Urban gardens improve community health", color: RED, icon: "📌" },
+    { part: "Evidence", example: "15% lower depression in garden neighborhoods", color: BLUE, icon: "📊" },
+    { part: "Reasoning", example: "Green space + social interaction reduces stress", color: ACCENT, icon: "🔗" },
+    { part: "Assumption", example: "Gardens caused the improvement (not reverse)", color: AMBER, icon: "🔍" }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6, padding: "8px 12px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 8px 8px 0" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 16 } }, s.icon), /* @__PURE__ */ React.createElement("div", { style: { minWidth: 75 } }, /* @__PURE__ */ React.createElement("span", { style: { color: s.color, fontWeight: 800, fontSize: 12 } }, s.part)), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 12 } }, s.example))));
+}
+function StrengthenExamples() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${ACCENT}08`, border: `1px solid ${ACCENT}22`, borderRadius: 10, padding: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontWeight: 700, fontSize: 12, marginBottom: 6 } }, "STRENGTHEN by:"), ["Eliminating alternatives", "Additional supporting evidence", "Confirming an assumption", "Pattern holds in new contexts"].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { color: SUB, fontSize: 11, marginBottom: 3 } }, "+ ", s))), /* @__PURE__ */ React.createElement("div", { style: { background: `${RED}08`, border: `1px solid ${RED}22`, borderRadius: 10, padding: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: RED, fontWeight: 700, fontSize: 12, marginBottom: 6 } }, "WEAKEN by:"), ["Alternative explanation", "Contradicting evidence", "Undermining assumption", "Confounding variable"].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { color: SUB, fontSize: 11, marginBottom: 3 } }, "- ", s)))));
+}
+function CausalTraps() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: RED, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Causal reasoning traps"), [
+    { trap: "Correlation ≠ Causation", example: "Ice cream sales + drowning both rise in summer", color: RED },
+    { trap: "Reverse Causation", example: "Happy people exercise OR exercise makes people happy?", color: AMBER },
+    { trap: "Confounding Variable", example: "Coffee drinkers live longer... or richer people do?", color: PURPLE },
+    { trap: "Selection Bias", example: '"Our customers love us" — unhappy ones already left', color: CYAN }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", gap: 10, marginBottom: 6, padding: "8px 12px", borderLeft: `3px solid ${s.color}`, borderRadius: "0 8px 8px 0", background: `${s.color}08` } }, /* @__PURE__ */ React.createElement("div", { style: { minWidth: 120 } }, /* @__PURE__ */ React.createElement("span", { style: { color: s.color, fontWeight: 700, fontSize: 12 } }, s.trap)), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 11 } }, s.example))));
+}
+function FrameworkVis() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, [
+    { n: "1", label: "Identify claim, evidence, reasoning", color: BLUE },
+    { n: "2", label: "Find the gap / hidden assumption", color: PURPLE },
+    { n: "3", label: "Strengthen: fill the gap", color: ACCENT },
+    { n: "4", label: "Weaken: expose the gap", color: RED },
+    { n: "5", label: "Completion: choose the most moderate conclusion", color: AMBER },
+    { n: "★", label: "Extreme/absolute conclusions are almost always wrong", color: RED }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6, padding: "6px 10px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 6px 6px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 22, height: 22, borderRadius: 11, background: `${s.color}22`, color: s.color, fontWeight: 900, fontSize: 11, display: "flex", alignItems: "center", justifyContent: "center" } }, s.n), /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontSize: 12, fontWeight: 600 } }, s.label))));
+}
+function QuizEngine({ items, label, icon, accentColor, onComplete, showTypeTag, timed, timePerQuestion }) {
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+  const [results, setResults] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(timePerQuestion || 75);
+  const timerRef = useRef(null);
+  const startRef = useRef(Date.now());
+  const timingsRef = useRef([]);
+  const item = items[idx];
+  useEffect(() => {
+    if (!timed || confirmed || done) return;
+    setTimeLeft(timePerQuestion || 75);
+    startRef.current = Date.now();
+    timerRef.current = setInterval(() => {
+      const e = Math.floor((Date.now() - startRef.current) / 1000);
+      setTimeLeft(Math.max(0, (timePerQuestion || 75) - e));
+    }, 250);
+    return () => clearInterval(timerRef.current);
+  }, [idx, confirmed, done, timed, timePerQuestion]);
+  function confirm() {
+    if (selected === null) return;
+    if (timed) clearInterval(timerRef.current);
+    const elapsed = timed ? Math.floor((Date.now() - startRef.current) / 1000) : 0;
+    if (timed) timingsRef.current.push(elapsed);
+    setConfirmed(true);
+    const correct = selected === item.answer;
+    if (correct) setScore((s) => s + 1);
+    setResults((r) => [...r, { type: item.type, correct }]);
+  }
+  function next() {
+    if (idx < items.length - 1) {
+      setIdx(idx + 1);
+      setSelected(null);
+      setConfirmed(false);
+    } else {
+      setDone(true);
+    }
+  }
+  if (done) {
+    const avgTime = timed && timingsRef.current.length > 0 ? Math.round(timingsRef.current.reduce((a, b) => a + b, 0) / timingsRef.current.length) : 0;
+    const onPace = timed ? timingsRef.current.filter((t) => t <= (timePerQuestion || 75)).length : 0;
+    return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "80px 20px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 48, marginBottom: 16 } }, icon), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, label, " Complete"), /* @__PURE__ */ React.createElement("div", { style: { color: accentColor, fontSize: 48, fontWeight: 900 } }, score, "/", items.length), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 15, marginTop: 8, marginBottom: 32 } }, "correct answers"),
+    timed && React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(120px,1fr))", gap: 12, marginBottom: 32, maxWidth: 400, margin: "0 auto 32px" } },
+      React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 14, textAlign: "center" } }, React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, "Avg Time"), React.createElement("div", { style: { color: avgTime <= (timePerQuestion || 75) ? ACCENT : RED, fontWeight: 900, fontSize: 22, marginTop: 4 } }, avgTime, "s")),
+      React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 14, textAlign: "center" } }, React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, "On Pace"), React.createElement("div", { style: { color: onPace >= items.length * 0.7 ? ACCENT : AMBER, fontWeight: 900, fontSize: 22, marginTop: 4 } }, onPace, "/", items.length))
+    ),
+    /* @__PURE__ */ React.createElement("button", { onClick: () => onComplete(score, items.length, results), style: btn(`linear-gradient(135deg,${BLUE},${PURPLE})`, TEXT) }, "Continue \u2192"));
+  }
+  const questionText = item.question || item.stem;
+  const dirColor = item.direction === "strengthen" ? ACCENT : item.direction === "weaken" ? RED : BLUE;
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: accentColor, fontSize: 13, fontWeight: 700 } }, icon, " ", label), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, showTypeTag && item.type && /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 600,
+    background: item.type === "strengthen" ? `${ACCENT}22` : item.type === "weaken" ? `${RED}22` : item.type === "completion" ? `${PURPLE}22` : `${CYAN}22`,
+    color: item.type === "strengthen" ? ACCENT : item.type === "weaken" ? RED : item.type === "completion" ? PURPLE : CYAN
+  } }, item.type), item.direction && !showTypeTag && /* @__PURE__ */ React.createElement("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 600, background: `${dirColor}22`, color: dirColor } }, item.direction), item.diff && /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 700,
+    background: item.diff === "medium" ? `${AMBER}22` : `${RED}22`,
+    color: item.diff === "medium" ? AMBER : RED
+  } }, item.diff), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 13 } }, idx + 1, "/", items.length))), /* @__PURE__ */ React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: timed ? 12 : 20, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${(idx + (confirmed ? 1 : 0)) / items.length * 100}%`, background: `linear-gradient(90deg,${BLUE},${PURPLE})`, borderRadius: 2, transition: "width .4s" } })),
+  timed && React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 12 } },
+    React.createElement("div", { style: { flex: 1, height: 6, background: BORDER, borderRadius: 3, overflow: "hidden" } },
+      React.createElement("div", { style: { height: "100%", width: (timeLeft / (timePerQuestion || 75) * 100) + "%", background: timeLeft / (timePerQuestion || 75) > 0.5 ? ACCENT : timeLeft / (timePerQuestion || 75) > 0.2 ? AMBER : RED, borderRadius: 3, transition: "width .25s linear" } })
+    ),
+    React.createElement("span", { style: { color: timeLeft / (timePerQuestion || 75) > 0.5 ? ACCENT : timeLeft / (timePerQuestion || 75) > 0.2 ? AMBER : RED, fontWeight: 900, fontSize: 14, minWidth: 30, textAlign: "right", fontFamily: "monospace" } }, timeLeft, "s")
+  ),
+  timed && React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 12, flexWrap: "wrap" } },
+    items.map(function(_, i) { return React.createElement("div", { key: i, style: { width: 10, height: 10, borderRadius: 5, background: i < idx ? (results[i] && results[i].correct ? ACCENT : RED) : BORDER, border: i === idx ? "2px solid " + accentColor : "none", boxSizing: "border-box" } }); })
+  ),
+  /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, item.passage)), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, questionText), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } }, item.choices.map((c, ci) => {
+    const letter = "ABCD"[ci];
+    const isSel = selected === ci;
+    const isCorr = ci === item.answer;
+    let bg = CARD, bdr = `1px solid ${BORDER}`, tc = "#cbd5e1";
+    if (confirmed && isCorr) {
+      bg = `${ACCENT}18`;
+      bdr = `2px solid ${ACCENT}`;
+      tc = ACCENT;
+    } else if (confirmed && isSel && !isCorr) {
+      bg = `${RED}18`;
+      bdr = `2px solid ${RED}`;
+      tc = RED;
+    } else if (isSel && !confirmed) {
+      bg = `${accentColor}15`;
+      bdr = `2px solid ${accentColor}`;
+      tc = accentColor;
+    }
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: ci,
+        onClick: () => {
+          if (!confirmed) setSelected(ci);
+        },
+        disabled: confirmed,
+        style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: {
+        minWidth: 28,
+        height: 28,
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 800,
+        fontSize: 13,
+        flexShrink: 0,
+        marginTop: 1,
+        background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? accentColor : BORDER,
+        color: isSel || confirmed ? DARK : MUTED
+      } }, letter),
+      /* @__PURE__ */ React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+    );
+  })), confirmed && /* @__PURE__ */ React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: `4px solid ${BLUE}` } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "Explanation"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 } }, item.explain)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } }, !confirmed ? /* @__PURE__ */ React.createElement("button", { onClick: confirm, disabled: selected === null, style: btn(selected === null ? BORDER : accentColor, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Confirm") : /* @__PURE__ */ React.createElement("button", { onClick: next, style: btn(accentColor, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < items.length - 1 ? "Next →" : "See Results →")));
+}
+function ErrorBreakdown({ results, accentColor, tips }) {
+  if (!results || results.length === 0) return null;
+  var types = {};
+  results.forEach(function(r) {
+    if (!types[r.type]) types[r.type] = { correct: 0, total: 0 };
+    types[r.type].total++;
+    if (r.correct) types[r.type].correct++;
+  });
+  var entries = Object.keys(types).map(function(t) {
+    var d = types[t];
+    return { type: t, correct: d.correct, total: d.total, pct: Math.round(d.correct / d.total * 100) };
+  });
+  var typeColors = { strengthen: ACCENT, weaken: RED, completion: PURPLE, synthesis: CYAN, conventions: AMBER, vocabulary: BLUE, evidence: BLUE, inference: PURPLE, transition: CYAN, expression: AMBER };
+  return React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 20, maxWidth: 480, marginBottom: 32, width: "100%" } },
+    React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "Error Pattern Analysis"),
+    entries.map(function(e, i) {
+      var c = typeColors[e.type] || accentColor;
+      return React.createElement("div", { key: i, style: { marginBottom: 10 } },
+        React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 4 } },
+          React.createElement("span", { style: { color: c, fontWeight: 700, fontSize: 13, textTransform: "capitalize" } }, e.type),
+          React.createElement("span", { style: { color: e.pct >= 75 ? ACCENT : e.pct >= 50 ? AMBER : RED, fontWeight: 700, fontSize: 13 } }, e.correct, "/", e.total, " (", e.pct, "%)")
+        ),
+        React.createElement("div", { style: { height: 6, background: BORDER, borderRadius: 3, overflow: "hidden" } },
+          React.createElement("div", { style: { height: "100%", width: e.pct + "%", background: e.pct >= 75 ? ACCENT : e.pct >= 50 ? AMBER : RED, borderRadius: 3, transition: "width .4s" } })
+        ),
+        e.pct < 75 && tips[e.type] && React.createElement("div", { style: { color: SUB, fontSize: 12, marginTop: 4, paddingLeft: 8, borderLeft: "2px solid " + BORDER } }, tips[e.type])
+      );
+    })
+  );
+}
+var M11_ERROR_TIPS = {
+  strengthen: "Focus on finding evidence that FILLS THE GAP in the argument. Look for choices that eliminate alternative explanations or confirm hidden assumptions.",
+  weaken: "Look for alternative explanations, confounding variables, or evidence that undermines the argument's hidden assumption. The best weakeners attack the logic, not the conclusion.",
+  completion: "Choose the most moderate, well-supported conclusion. Extreme or absolute language is almost always wrong. The correct answer follows logically without overreaching.",
+  synthesis: "Read the GOAL first, then identify which notes are relevant. The correct answer uses the right notes for the right purpose.",
+  conventions: "Review grammar rules: subject-verb agreement, pronoun clarity, punctuation, and parallel structure. Identify what rule is being tested before choosing.",
+  vocabulary: "Use context clues and tone to narrow choices. Watch for secondary meanings of common words — the SAT loves testing less obvious definitions."
+};
+var CHALLENGE_ITEMS = [
+  { id: "c1", type: "strengthen", passage: "Researchers studying coral bleaching events hypothesized that corals in warmer equatorial waters would show greater heat tolerance than temperate corals, since long-term exposure to higher temperatures should select for heat-resistant genotypes.", stem: "Which finding would most strengthen this hypothesis?", choices: ["Some coral species are found in both equatorial and temperate waters", "When equatorial and temperate corals of the same species were exposed to identical heat stress in a lab, equatorial corals retained their symbiotic algae 40% longer — and genetic analysis revealed they carried three heat-shock protein variants absent in their temperate counterparts", "Coral bleaching has increased in frequency over the past 30 years", "Marine biologists have difficulty measuring water temperature precisely"], answer: 1, explain: "The hypothesis predicts equatorial corals are more heat-tolerant due to genetic adaptation. B directly demonstrates both the functional advantage (40% longer algae retention) AND the genetic mechanism (heat-shock protein variants), providing the strongest possible support." },
+  { id: "c2", type: "weaken", passage: "A tech company reported that employees who used their new AI writing assistant produced 35% more documents per week than those who didn't. The company concluded that AI tools significantly boost workplace productivity.", stem: "Which finding would most weaken this conclusion?", choices: ["The AI tool was expensive to develop", "The employees who chose to use the AI tool were already the company's highest-output workers before the tool was introduced, and their productivity had been trending upward for months prior to its release", "Some employees preferred to write without AI assistance", "Other companies have also developed AI writing tools"], answer: 1, explain: "The conclusion assumes the AI tool CAUSED the productivity increase. B reveals a fatal selection bias: high-output workers self-selected into using the tool, and they were already trending upward. The 35% difference likely reflects pre-existing differences, not the tool's effect." },
+  { id: "c3", type: "strengthen", passage: "Archaeologists discovered that ancient Polynesian navigators could voyage thousands of miles across open ocean without instruments. Scholars proposed they used a mental model called a 'star compass' — memorizing the rising and setting positions of over 200 stars to maintain directional awareness.", stem: "Which finding would most strengthen this proposal?", choices: ["Ancient Polynesians built large ocean-going canoes", "Modern navigators from the Carolinian Islands, trained in the same oral tradition, successfully sailed 2,500 miles from Hawaii to Tahiti using only star positions, wave patterns, and bird flight paths — arriving within 15 miles of their target without any instruments", "Some stars are brighter than others in the Southern Hemisphere", "Ancient Polynesian pottery has been found on distant islands"], answer: 1, explain: "The proposal claims star-compass navigation works for long-distance voyaging. B provides direct empirical proof: practitioners of the same tradition achieved a 2,500-mile voyage with remarkable precision. This eliminates the objection that such navigation is theoretically impossible." },
+  { id: "c4", type: "weaken", passage: "A study of 500 schools found that those with later start times (8:30 AM or later) had 15% higher average test scores than those starting before 8:00 AM. Researchers concluded that later start times improve academic performance by allowing adolescents more sleep.", stem: "Which finding would most weaken this conclusion?", choices: ["Adolescents need 8-10 hours of sleep per night", "Districts that shifted to later start times were predominantly affluent communities that simultaneously increased per-pupil spending by an average of $2,400 and hired additional support staff — while early-start districts were primarily underfunded rural schools with declining budgets", "Some students at early-start schools reported feeling tired", "The study used standardized test scores as its measure"], answer: 1, explain: "The conclusion assumes later start times caused the score difference via better sleep. B reveals a devastating confounding variable: the late-start districts were wealthier, spent more per pupil, and had more staff. The 15% difference could be explained by funding, not sleep." },
+  { id: "c5", type: "completion", passage: "While machine learning models have achieved superhuman performance on specific, well-defined tasks like chess and image classification, they consistently struggle with tasks requiring common-sense reasoning about everyday physical interactions — such as predicting that a ball will roll off a tilted table or that water will spill from an inverted cup. This discrepancy suggests that ________.", stem: "Which choice most logically completes the text?", choices: ["Machine learning will eventually surpass human intelligence in all domains", "Pattern recognition in structured domains requires fundamentally different cognitive mechanisms than intuitive physical reasoning, which likely depends on embodied experience that current AI architectures cannot replicate through data alone", "Researchers should abandon machine learning research", "Chess is an easier game than most people realize"], answer: 1, explain: "The passage describes a specific gap: good at structured pattern recognition, bad at physical common sense. B precisely addresses this gap — identifying the distinction (different cognitive mechanisms) and the likely cause (embodied experience). A is too extreme, C is absurd, D is irrelevant." },
+  { id: "c6", type: "synthesis", passage: "Notes on the development of synthetic biology:\n- Researchers at the J. Craig Venter Institute created the first self-replicating synthetic cell (Mycoplasma mycoides JCVI-syn1.0) in 2010\n- The minimal genome project later reduced this to 473 genes — the smallest known genome capable of independent growth\n- Applications include engineered bacteria that produce biofuels, pharmaceuticals, and biodegradable plastics\n- Critics raise concerns about biosecurity and ecological risks of releasing synthetic organisms", stem: "A science writer wants to highlight the tension between synthetic biology's practical promise and its ethical challenges. Which choice most effectively achieves this goal?", choices: ["The J. Craig Venter Institute created the first synthetic cell in 2010, which was an important scientific achievement.", "While synthetic biology has advanced from creating the first self-replicating synthetic cell to engineering bacteria that produce biofuels and medicines, the prospect of releasing organisms with artificial genomes into ecosystems has intensified debates over biosecurity and the boundaries of human intervention in nature.", "Synthetic biology is a field that involves creating artificial organisms, and some people are concerned about it.", "The minimal genome project showed that only 473 genes are needed for independent cell growth."], answer: 1, explain: "The goal requires BOTH practical promise AND ethical tension. B delivers both: it names concrete applications (biofuels, medicines) showing promise, then pivots to the ethical concern (releasing artificial genomes, biosecurity debates). A/D are factual but miss the tension. C is too vague." }
+];
+function ChallengeMode({ onComplete }) {
+  var timePerQ = 60;
+  var items = CHALLENGE_ITEMS;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var _s6 = useState(timePerQ), timeLeft = _s6[0], setTimeLeft = _s6[1];
+  var timerRef = useRef(null);
+  var startRef = useRef(Date.now());
+  var timingsRef = useRef([]);
+  var item = items[idx];
+  useEffect(function() {
+    if (confirmed || done) return;
+    setTimeLeft(timePerQ);
+    startRef.current = Date.now();
+    timerRef.current = setInterval(function() {
+      var e = Math.floor((Date.now() - startRef.current) / 1000);
+      setTimeLeft(Math.max(0, timePerQ - e));
+    }, 250);
+    return function() { clearInterval(timerRef.current); };
+  }, [idx, confirmed, done]);
+  function handleConfirm() {
+    if (selected === null) return;
+    clearInterval(timerRef.current);
+    var elapsed = Math.floor((Date.now() - startRef.current) / 1000);
+    timingsRef.current.push(elapsed);
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s) { return s + 1; });
+  }
+  function handleNext() {
+    if (idx < items.length - 1) { setIdx(idx + 1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+  if (done) {
+    var total = items.length;
+    var avgTime = timingsRef.current.length > 0 ? Math.round(timingsRef.current.reduce(function(a, b) { return a + b; }, 0) / timingsRef.current.length) : 0;
+    var accPct = Math.round(score / total * 100);
+    var medal = accPct >= 83 && avgTime <= 60 ? "gold" : accPct >= 67 && avgTime <= 75 ? "silver" : accPct >= 50 ? "bronze" : "none";
+    var medalEmoji = medal === "gold" ? "🥇" : medal === "silver" ? "🥈" : medal === "bronze" ? "🥉" : "🔄";
+    var medalLabel = medal === "gold" ? "Gold — Speed Demon!" : medal === "silver" ? "Silver — Strong Work!" : medal === "bronze" ? "Bronze — Solid Effort" : "Keep Practicing!";
+    var medalColor = medal === "gold" ? "#fbbf24" : medal === "silver" ? "#94a3b8" : medal === "bronze" ? "#d97706" : MUTED;
+    return React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "60px 20px", textAlign: "center" } },
+      React.createElement("div", { style: { fontSize: 64, marginBottom: 12 } }, medalEmoji),
+      React.createElement("h2", { style: { color: medalColor, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, medalLabel),
+      React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 32, maxWidth: 400, margin: "0 auto 32px" } },
+        React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 14 } },
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, "Accuracy"),
+          React.createElement("div", { style: { color: accPct >= 83 ? ACCENT : accPct >= 50 ? AMBER : RED, fontWeight: 900, fontSize: 22, marginTop: 4 } }, score, "/", total)
+        ),
+        React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 14 } },
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, "Avg Time"),
+          React.createElement("div", { style: { color: avgTime <= 60 ? ACCENT : avgTime <= 75 ? AMBER : RED, fontWeight: 900, fontSize: 22, marginTop: 4 } }, avgTime, "s")
+        ),
+        React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 14 } },
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase" } }, "Medal"),
+          React.createElement("div", { style: { fontSize: 28, marginTop: 4 } }, medalEmoji)
+        )
+      ),
+      React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 14, padding: 16, marginBottom: 32, maxWidth: 400, margin: "0 auto 32px" } },
+        React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 13, marginBottom: 8 } }, "Challenge Requirements"),
+        React.createElement("div", { style: { display: "flex", justifyContent: "space-around" } },
+          React.createElement("div", null,
+            React.createElement("div", { style: { color: accPct >= 83 ? ACCENT : RED, fontSize: 13 } }, accPct >= 83 ? "✅" : "❌", " 83%+ accuracy"),
+            React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, "You: ", accPct, "%")
+          ),
+          React.createElement("div", null,
+            React.createElement("div", { style: { color: avgTime <= 60 ? ACCENT : RED, fontSize: 13 } }, avgTime <= 60 ? "✅" : "❌", " ≤60s avg time"),
+            React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, "You: ", avgTime, "s")
+          )
+        )
+      ),
+      React.createElement("div", { style: { display: "flex", gap: 12, justifyContent: "center" } },
+        React.createElement("button", { onClick: function() { setIdx(0); setSelected(null); setConfirmed(false); setScore(0); setDone(false); timingsRef.current = []; }, style: btn(BORDER, TEXT, { fontSize: 14, padding: "10px 24px" }) }, "Retry Challenge"),
+        React.createElement("button", { onClick: function() { onComplete(medal); }, style: btn("linear-gradient(135deg," + BLUE + "," + PURPLE + ")", TEXT, { fontSize: 14, padding: "10px 24px" }) }, "Back to Results")
+      )
+    );
+  }
+  var pctTime = timeLeft / timePerQ;
+  var timerColor = pctTime > 0.5 ? ACCENT : pctTime > 0.2 ? AMBER : RED;
+  var questionText = item.stem;
+  return React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } },
+    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } },
+      React.createElement("div", { style: { color: "#fbbf24", fontSize: 13, fontWeight: 700 } }, "🏆 Challenge Mode"),
+      React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+        React.createElement("span", { style: { fontSize: 10, padding: "2px 8px", borderRadius: 4, fontWeight: 600, background: item.type === "strengthen" ? ACCENT + "22" : item.type === "weaken" ? RED + "22" : item.type === "completion" ? PURPLE + "22" : CYAN + "22", color: item.type === "strengthen" ? ACCENT : item.type === "weaken" ? RED : item.type === "completion" ? PURPLE : CYAN } }, item.type),
+        React.createElement("span", { style: { color: MUTED, fontSize: 13 } }, idx + 1, "/", items.length)
+      )
+    ),
+    React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 12, overflow: "hidden" } },
+      React.createElement("div", { style: { height: "100%", width: ((idx + (confirmed ? 1 : 0)) / items.length * 100) + "%", background: "linear-gradient(90deg,#fbbf24," + RED + ")", borderRadius: 2, transition: "width .4s" } })
+    ),
+    React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 12 } },
+      React.createElement("div", { style: { flex: 1, height: 6, background: BORDER, borderRadius: 3, overflow: "hidden" } },
+        React.createElement("div", { style: { height: "100%", width: (pctTime * 100) + "%", background: timerColor, borderRadius: 3, transition: "width .25s linear" } })
+      ),
+      React.createElement("span", { style: { color: timerColor, fontWeight: 900, fontSize: 14, minWidth: 30, textAlign: "right", fontFamily: "monospace" } }, timeLeft, "s")
+    ),
+    React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 12, flexWrap: "wrap" } },
+      items.map(function(_, i) { return React.createElement("div", { key: i, style: { width: 10, height: 10, borderRadius: 5, background: i < idx ? (i < timingsRef.current.length && items[i] ? ACCENT : RED) : BORDER, border: i === idx ? "2px solid #fbbf24" : "none", boxSizing: "border-box" } }); })
+    ),
+    React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 24, marginBottom: 16 } },
+      React.createElement("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif", whiteSpace: "pre-line" } }, item.passage)
+    ),
+    React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, questionText),
+    React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } },
+      item.choices.map(function(c, ci) {
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = CARD, bdr = "1px solid " + BORDER, tc = "#cbd5e1";
+        if (confirmed && isCorr) { bg = ACCENT + "18"; bdr = "2px solid " + ACCENT; tc = ACCENT; }
+        else if (confirmed && isSel && !isCorr) { bg = RED + "18"; bdr = "2px solid " + RED; tc = RED; }
+        else if (isSel && !confirmed) { bg = "#fbbf2415"; bdr = "2px solid #fbbf24"; tc = "#fbbf24"; }
+        return React.createElement("button", { key: ci, onClick: function() { if (!confirmed) setSelected(ci); }, disabled: confirmed, style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" } },
+          React.createElement("span", { style: { minWidth: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, flexShrink: 0, marginTop: 1, background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? "#fbbf24" : BORDER, color: isSel || confirmed ? DARK : MUTED } }, letter),
+          React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+        );
+      })
+    ),
+    confirmed && React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: "4px solid #fbbf24" } },
+      React.createElement("div", { style: { color: "#fbbf24", fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "Explanation"),
+      React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 } }, item.explain)
+    ),
+    React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } },
+      !confirmed ? React.createElement("button", { onClick: handleConfirm, disabled: selected === null, style: btn(selected === null ? BORDER : "#fbbf24", selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Lock In ⏱️") :
+      React.createElement("button", { onClick: handleNext, style: btn("#fbbf24", DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < items.length - 1 ? "Next →" : "See Results →")
+    )
+  );
+}
+function ModuleComplete({ quizScore, quizTotal, quizResults, onChallenge, challengeResult }) {
+  const pct = Math.round(quizScore / quizTotal * 100);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 64, marginBottom: 16 } }, "🎉"), /* @__PURE__ */ React.createElement("h1", { style: { color: BLUE, fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 800, marginBottom: 8 } }, "Module 11 Complete"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 16, marginBottom: 32, maxWidth: 480 } }, "You've mastered the art of logical reasoning and synthesis."), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 32, marginBottom: 32, minWidth: 280 } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 56, fontWeight: 900 } }, quizScore, "/", quizTotal), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 14, marginTop: 4 } }, "Practice Quiz Score (", pct, "%)"), /* @__PURE__ */ React.createElement("div", { style: { height: 8, background: BORDER, borderRadius: 4, marginTop: 16, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${pct}%`, background: `linear-gradient(90deg,${BLUE},${PURPLE})`, borderRadius: 4 } }))),
+  React.createElement(ErrorBreakdown, { results: quizResults, accentColor: BLUE, tips: M11_ERROR_TIPS }),
+  /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, maxWidth: 480, marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 } }, "Key Takeaways"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.7, textAlign: "left" } }, pct >= 80 ? "Exceptional logical reasoning! You can identify hidden assumptions, evaluate arguments, and choose appropriately scoped conclusions. Module 12 is the Information & Ideas Boss Battle — the final challenge before the full practice tests." : pct >= 60 ? "Good analytical thinking. Remember: strengthen = confirm assumption / eliminate alternatives. Weaken = introduce alternatives / attack assumption. For completion questions, the most moderate conclusion is almost always correct." : "Logical reasoning is the hardest skill on the SAT, and it takes practice. Focus on identifying the GAP in every argument — the hidden assumption. Once you see the gap, strengthen and weaken questions become much clearer.")),
+  challengeResult && React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 16, maxWidth: 480, marginBottom: 16 } },
+    React.createElement("div", { style: { fontSize: 28, marginBottom: 4 } }, challengeResult === "gold" ? "🥇" : challengeResult === "silver" ? "🥈" : challengeResult === "bronze" ? "🥉" : "🔄"),
+    React.createElement("div", { style: { color: challengeResult === "gold" ? "#fbbf24" : challengeResult === "silver" ? "#94a3b8" : challengeResult === "bronze" ? "#d97706" : MUTED, fontWeight: 700, fontSize: 14 } }, challengeResult === "gold" ? "Challenge Gold!" : challengeResult === "silver" ? "Challenge Silver" : challengeResult === "bronze" ? "Challenge Bronze" : "Challenge attempted")
+  ),
+  React.createElement("button", { onClick: onChallenge, style: btn("linear-gradient(135deg,#fbbf24," + RED + ")", DARK, { fontSize: 14, padding: "10px 24px", marginBottom: 24 }) }, challengeResult ? "Retry Challenge Mode 🏆" : "Challenge Mode 🏆"),
+  /* @__PURE__ */ React.createElement(Homework, null), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13 } }, "Next up: Module 12 — Information & Ideas Boss Battle ⚔️"), /* @__PURE__ */ React.createElement(NavLinks, null));
+}
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [quizScore, setQuizScore] = useState(0);
+  const [quizTotal, setQuizTotal] = useState(12);
+  const [quizResults, setQuizResults] = useState([]);
+  const [challengeResult, setChallengeResult] = useState(null);
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    inset: 0,
+    pointerEvents: "none",
+    opacity: 0.03,
+    backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",
+    backgroundSize: "40px 40px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } }, screen === "welcome" && /* @__PURE__ */ React.createElement(Welcome, { onNext: () => go("warmup") }), screen === "warmup" && /* @__PURE__ */ React.createElement(Warmup, { onComplete: () => go("lesson") }), screen === "lesson" && /* @__PURE__ */ React.createElement(LessonViewer, { onComplete: () => go("strweaken") }), screen === "strweaken" && /* @__PURE__ */ React.createElement(QuizEngine, { items: STRWEAKEN_ITEMS, label: "Strengthen / Weaken", icon: "⚖️", accentColor: PURPLE, onComplete: () => go("completion") }), screen === "completion" && /* @__PURE__ */ React.createElement(QuizEngine, { items: COMPLETION_ITEMS, label: "Logical Completion", icon: "🧩", accentColor: CYAN, onComplete: () => go("quiz") }), screen === "quiz" && /* @__PURE__ */ React.createElement(QuizEngine, { items: QUIZ, label: "Practice Quiz", icon: "📝", accentColor: BLUE, showTypeTag: true, timed: true, timePerQuestion: 75, onComplete: (s, t, r) => {
+    setQuizScore(s);
+    setQuizTotal(t);
+    setQuizResults(r || []);
+    go("complete");
+  } }), screen === "challenge" && React.createElement(ChallengeMode, { onComplete: function(medal) { setChallengeResult(medal); go("complete"); } }), screen === "complete" && /* @__PURE__ */ React.createElement(ModuleComplete, { quizScore, quizTotal, quizResults, onChallenge: function() { go("challenge"); }, challengeResult })));
+}
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>

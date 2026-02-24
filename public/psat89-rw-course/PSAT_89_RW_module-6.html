@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6: Sentence Boundaries & Punctuation — PSAT 8/9 R&W — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback, useRef } = React;
+
+/* ── design tokens ── */
+const C = {
+  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
+  sub:"#999", muted:"#666", accent:"#0891b2",
+  mod:"#f97316", modBg:"rgba(249,115,22,.12)",
+  craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
+  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+};
+const btn = (bg, color, extra) => ({
+  padding:"12px 28px", borderRadius:10, border:"none", background:bg,
+  color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s", ...extra
+});
+const NAV = {
+  prev:{ label:"Module 5: Command of Evidence", file:"PSAT_89_RW_module-5.html" },
+  next:{ label:"Module 7: Verb & Pronoun Agreement", file:"PSAT_89_RW_module-7.html" }
+};
+
+/* ── LESSONS ── */
+const LESSONS = [
+  {
+    id:"6a", title:"Independent vs. Dependent Clauses",
+    subtitle:"Topic 6A — Clause Types & the Independence Test",
+    body:[
+      "Before you can fix sentence boundaries, you need to tell the difference between clauses that can stand alone and clauses that can't.",
+      "An independent clause has a subject, a verb, and expresses a complete thought. It could be its own sentence. A dependent clause starts with a subordinating word and cannot stand alone.",
+      "Common Subordinating Words (Make Clauses Dependent):\n• Time: after, before, when, while, until, since, as\n• Cause/condition: because, since, if, unless, although, even though, whereas\n• Relative: who, which, that, where, whose",
+      "Quick test: Read the clause out loud. If it sounds complete — like something you'd text a friend — it's independent. If it sounds like someone stopped mid-sentence, it's dependent."
+    ],
+    visual:"clause-examples"
+  },
+  {
+    id:"6b", title:"The Three Errors: Run-ons, Comma Splices & Fragments",
+    subtitle:"Topic 6B — Recognizing Boundary Errors",
+    body:[
+      "These are the three sentence boundary errors the PSAT tests. Learn to spot them and you're halfway to the right answer.",
+      "Run-on (fused sentence): Two independent clauses with NO punctuation between them.\n✗ The study was groundbreaking it changed the field forever.",
+      "Comma splice: Two independent clauses joined by ONLY a comma (no conjunction).\n✗ The study was groundbreaking, it changed the field forever.",
+      "Fragment: A dependent clause or phrase punctuated as a complete sentence.\n✗ Because the study was groundbreaking.",
+      "The PSAT's Favorite: Comma Splices — Comma splices are the #1 tested error. The PSAT loves to put a comma between two independent clauses and see if you'll accept it. Remember: a comma alone CANNOT join two independent clauses.",
+      "Tricky case — transitional words: Words like however, therefore, moreover, consequently, furthermore are NOT conjunctions. They cannot join clauses with just a comma. \"The results were clear, however the team wanted more data\" is a comma splice. You need a semicolon: \"The results were clear; however, the team wanted more data.\""
+    ],
+    visual:"error-types"
+  },
+  {
+    id:"6c", title:"The Five Legal Joins",
+    subtitle:"Topic 6C — Five Ways to Join Independent Clauses",
+    body:[
+      "There are exactly five correct ways to join two independent clauses. Memorize these and you can solve every sentence boundary question.",
+      "1. Period: The study was groundbreaking. It changed the field forever.\n2. Semicolon: The study was groundbreaking; it changed the field forever.\n3. Comma + FANBOYS: The study was groundbreaking, and it changed the field forever.\n4. Colon: The study had one clear result: it changed the field forever.\n5. Em dash: The study was groundbreaking—it changed the field forever.",
+      "When to Use Each:\n• Period: Default choice. Always correct between two independent clauses.\n• Semicolon: When the ideas are closely related and you want to show the connection.\n• Comma + FANBOYS: When you want to show a specific relationship (contrast with \"but,\" addition with \"and,\" cause with \"so\").\n• Colon: When the second clause explains, illustrates, or elaborates on the first. The first clause MUST be independent.\n• Em dash: For dramatic emphasis or an abrupt addition. Creates a stronger pause than a comma.",
+      "FANBOYS Memory Aid: For · And · Nor · But · Or · Yet · So\n\nOnly these seven words are coordinating conjunctions. Only these can follow a comma to join two independent clauses. Words like \"however,\" \"therefore,\" and \"moreover\" are NOT FANBOYS and cannot be used with just a comma.",
+      "The colon rule: What comes BEFORE a colon must be an independent clause. What comes AFTER can be anything: a clause, a list, a phrase, even a single word. If the part before the colon isn't a complete sentence, the colon is wrong."
+    ],
+    visual:"punc-grid"
+  }
+];
+
+/* ── EXERCISE DATA ── */
+const CLC = [
+  {text:"The researchers published their findings in a peer-reviewed journal.",c:0,fb:"Has a subject (researchers), a verb (published), and expresses a complete thought. Independent."},
+  {text:"Although the researchers published their findings in a peer-reviewed journal",c:1,fb:"\"Although\" makes this dependent \u2014 it leaves you hanging. Although they published... what happened?"},
+  {text:"When the temperature dropped below freezing",c:1,fb:"\"When\" signals a dependent clause. When the temperature dropped... then what?"},
+  {text:"The temperature dropped below freezing overnight.",c:0,fb:"Subject (temperature), verb (dropped), complete thought. Independent."},
+  {text:"Which was the largest study of its kind",c:1,fb:"\"Which\" makes this a relative clause \u2014 dependent. It describes something but can\u2019t stand alone."},
+  {text:"The experiment failed because of contaminated samples.",c:0,fb:"This IS independent. \"Because of contaminated samples\" is a prepositional phrase (not a clause), modifying why it failed. The main clause is complete."},
+  {text:"Because the experiment failed",c:1,fb:"\"Because\" makes this dependent. Because it failed... what happened next?"},
+  {text:"However, the results were inconclusive.",c:0,fb:"\"However\" is a transitional adverb, NOT a subordinating conjunction. The clause \"the results were inconclusive\" is independent. The \"however\" just adds contrast."}
+];
+const COPTS = ["Independent","Dependent"];
+
+const ERR = [
+  {text:"The volcano erupted without warning thousands of residents were evacuated within hours.",c:0,fb:"Two independent clauses with NO punctuation between \"warning\" and \"thousands.\" This is a run-on (fused sentence)."},
+  {text:"The volcano erupted without warning, thousands of residents were evacuated within hours.",c:1,fb:"Two independent clauses joined by ONLY a comma. This is a comma splice. Needs a period, semicolon, or comma + conjunction."},
+  {text:"Because the volcano erupted without warning.",c:2,fb:"\"Because\" makes this dependent. It can\u2019t stand alone as a sentence. This is a fragment."},
+  {text:"The volcano erupted without warning; thousands of residents were evacuated within hours.",c:3,fb:"Semicolon correctly joins two closely related independent clauses. This is correct."},
+  {text:"Marine biologists study coral reefs, they are concerned about rising ocean temperatures.",c:1,fb:"Two independent clauses joined by only a comma after \"reefs.\" Comma splice. Fix: \"reefs; they\" or \"reefs, and they.\""},
+  {text:"Marine biologists study coral reefs. They are concerned about rising ocean temperatures.",c:3,fb:"Period correctly separates two independent clauses. Each sentence is complete. Correct."},
+  {text:"The artist completed the mural, however the city council refused to pay for it.",c:1,fb:"\"However\" is NOT a FANBOYS conjunction. A comma before \"however\" between two independent clauses creates a comma splice. Needs: \"mural; however, the city...\""},
+  {text:"Although the experiment was controversial, the results were widely cited.",c:3,fb:"Dependent clause (\"Although...controversial\") followed by a comma and independent clause (\"the results...cited\"). This is the correct structure for a dependent + independent clause combination."}
+];
+const EOPTS = ["Run-on","Comma Splice","Fragment","Correct"];
+
+const PNC = [
+  {left:"The city invested heavily in public transportation",right:"ridership increased by 40% within two years.",
+   ch:["No punctuation (run together)","Comma only: ,","Semicolon: ;","Comma + and: , and"],c:2,
+   fb:"Both sides are independent clauses. A semicolon correctly joins them. A comma alone would be a splice; no punctuation is a run-on."},
+  {left:"The scientists had one primary goal",right:"to determine whether the new treatment was safe for human trials.",
+   ch:["Period: .","Semicolon: ;","Colon: :","Comma only: ,"],c:2,
+   fb:"The second part explains/elaborates on \"one primary goal.\" A colon is perfect here: independent clause + explanation. The part after the colon doesn\u2019t need to be independent."},
+  {left:"The hurricane damaged over 500 homes",right:"but emergency responders arrived within hours to begin rescue operations.",
+   ch:["Comma + but: , but","Semicolon: ;","Period: .","Comma only: ,"],c:0,
+   fb:"\"But\" is a FANBOYS conjunction showing contrast. Comma + but correctly joins two independent clauses. A semicolon before \"but\" would be incorrect."},
+  {left:"The museum\u2019s newest exhibit",right:"a collection of ancient Egyptian artifacts\u2014opened to record crowds on Saturday.",
+   ch:["Em dashes around the aside: \u2014 ... \u2014","Semicolon: ;","Period: .","Colon: :"],c:0,
+   fb:"The phrase \"a collection of ancient Egyptian artifacts\" is a parenthetical aside interrupting the main clause. Em dashes correctly set off this interruption."},
+  {left:"The author wrote over twenty novels",right:"she never achieved widespread recognition during her lifetime.",
+   ch:["Comma only: ,","Semicolon: ;","Comma + yet: , yet","Both B and C work"],c:3,
+   fb:"Both work! A semicolon joins two related independent clauses. \"Comma + yet\" uses a FANBOYS conjunction to show contrast. Either is grammatically correct."},
+  {left:"Although the evidence was compelling",right:"the jury deliberated for three days before reaching a verdict.",
+   ch:["Comma: ,","Semicolon: ;","Period: .","No punctuation needed"],c:0,
+   fb:"The first part is a DEPENDENT clause (\"Although...\"). A comma correctly separates a leading dependent clause from the independent clause that follows. A semicolon is wrong here \u2014 semicolons join two INDEPENDENT clauses."}
+];
+
+const CMB = [
+  {s1:"The discovery was unexpected.",s2:"It transformed our understanding of the disease.",
+   ch:["The discovery was unexpected, it transformed our understanding of the disease.",
+       "The discovery was unexpected; it transformed our understanding of the disease.",
+       "The discovery was unexpected it transformed our understanding of the disease.",
+       "The discovery was unexpected, however it transformed our understanding of the disease."],c:1,
+   fb:"B uses a semicolon \u2014 legal join #2. A is a comma splice. C is a run-on. D uses \"however\" with only a comma, creating another comma splice."},
+  {s1:"The architect designed the building.",s2:"The building won an international award.",
+   ch:["The architect designed the building, and it won an international award.",
+       "The architect designed the building, it won an international award.",
+       "The architect designed the building it won an international award.",
+       "The architect designed the building, winning an international award it was designed by."],c:0,
+   fb:"A uses comma + \"and\" (FANBOYS) \u2014 legal join #3. B is a comma splice. C is a run-on. D is awkwardly restructured and creates a fragment."},
+  {s1:"The team had a clear objective.",s2:"They wanted to finish the prototype before the deadline.",
+   ch:["The team had a clear objective, they wanted to finish the prototype before the deadline.",
+       "The team had a clear objective; they wanted to finish the prototype before the deadline.",
+       "The team had a clear objective: they wanted to finish the prototype before the deadline.",
+       "Both B and C are correct."],c:3,
+   fb:"Both work! The semicolon (B) joins two related independent clauses. The colon (C) also works because the second clause EXPLAINS what the objective was. A is a comma splice."},
+  {s1:"The temperature dropped rapidly overnight.",s2:"The pipes in the building froze.",
+   ch:["The temperature dropped rapidly overnight, so the pipes in the building froze.",
+       "The temperature dropped rapidly overnight, the pipes in the building froze.",
+       "The temperature dropped rapidly overnight the pipes in the building froze.",
+       "The temperature dropped rapidly overnight, therefore the pipes in the building froze."],c:0,
+   fb:"A uses comma + \"so\" (FANBOYS) to show cause/effect \u2014 correct. B is a comma splice. C is a run-on. D uses \"therefore\" (NOT a FANBOYS) with only a comma \u2014 comma splice."}
+];
+
+const FAN = [
+  {word:"and",c:0,fb:"\"And\" is a FANBOYS conjunction. Comma + and legally joins two independent clauses."},
+  {word:"however",c:1,fb:"\"However\" is a transitional adverb, NOT a conjunction. It CANNOT follow a comma to join two independent clauses. Use: semicolon + however + comma."},
+  {word:"but",c:0,fb:"\"But\" is a FANBOYS conjunction. Comma + but legally joins two independent clauses."},
+  {word:"therefore",c:1,fb:"\"Therefore\" is a transitional adverb. \"Clause, therefore clause\" is a comma splice. Correct: \"Clause; therefore, clause.\""},
+  {word:"so",c:0,fb:"\"So\" is the S in FANBOYS. Comma + so correctly joins two independent clauses showing cause/effect."},
+  {word:"moreover",c:1,fb:"\"Moreover\" is a transitional adverb. \"Clause, moreover clause\" is a comma splice. Needs a semicolon."},
+  {word:"yet",c:0,fb:"\"Yet\" is the Y in FANBOYS. Comma + yet correctly joins two independent clauses showing contrast."},
+  {word:"consequently",c:1,fb:"\"Consequently\" is a transitional adverb. Cannot join clauses with just a comma. Use a semicolon."},
+  {word:"for",c:0,fb:"\"For\" (meaning \"because\") is the F in FANBOYS. Comma + for correctly joins two independent clauses."},
+  {word:"furthermore",c:1,fb:"\"Furthermore\" is a transitional adverb. Not a conjunction. Comma + furthermore = comma splice."}
+];
+const FOPTS = ["FANBOYS (legal with comma)","NOT FANBOYS (comma splice!)"];
+
+/* ── PRACTICE QUESTIONS ── */
+const QUIZ = [
+  {id:0,t:1,passage:"The Great Wall of China stretches over 13,000 miles ___ it was built over several centuries by multiple dynasties.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["across China, it","across China. It","across China it","across China, and, it"],answer:1,
+   explain:"Two independent clauses need a legal join. A period (B) correctly separates them. A is a comma splice. C is a run-on. D has an extra comma after \"and.\""},
+  {id:1,t:1,passage:"The musician practiced for hours every day ___ dedication eventually earned her a spot in the national orchestra.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:[", her","; her","her",", and her"],answer:1,
+   explain:"Two independent clauses. A semicolon (B) correctly joins them. A is a comma splice. C is a run-on. D works too, but B is the best match for the blank structure shown."},
+  {id:2,t:1,passage:"Because the river flooded the surrounding farmland ___",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["the crops were destroyed.","which was unusual for the season.",", the crops were destroyed.",", and the crops were destroyed."],answer:2,
+   explain:"\"Because the river flooded...\" is a dependent clause. When a dependent clause starts the sentence, follow it with a comma, then the independent clause. C is correct: comma + independent clause."},
+  {id:3,t:2,passage:"Dr. Patel\u2019s research has focused on one persistent question ___ whether early childhood nutrition affects cognitive development decades later.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:[", which is",": whether","; whether",". Whether"],answer:1,
+   explain:"The second part explains/elaborates on \"one persistent question.\" A colon (B) is perfect after an independent clause to introduce an explanation. D creates a fragment (\"Whether...\" can\u2019t stand alone)."},
+  {id:4,t:2,passage:"The archaeological team discovered pottery fragments ___ however, they were unable to determine the artifacts\u2019 exact age.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:[", however,","; however,",". However","; however"],answer:1,
+   explain:"\"However\" is NOT a FANBOYS conjunction. Between two independent clauses, use a semicolon before \"however\" and a comma after. B is correct. A is a comma splice."},
+  {id:5,t:2,passage:"Monarch butterflies migrate thousands of miles each year ___ a journey that takes multiple generations to complete.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:[", a journey","\u2014a journey","; a journey",". A journey"],answer:1,
+   explain:"The phrase \"a journey that takes...\" is an appositive renaming/explaining the migration. An em dash (B) dramatically introduces this elaboration. D creates a fragment. A works grammatically but B is stronger for the PSAT\u2019s preferred style."},
+  {id:6,t:2,passage:"The chef sources all ingredients locally ___ supporting nearby farms and reducing the restaurant\u2019s carbon footprint.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:[", supporting","; supporting",". Supporting",", and supporting"],answer:0,
+   explain:"\"Supporting...\" is a participial phrase (NOT an independent clause). A comma correctly attaches it to the main clause. B is wrong because a semicolon requires an independent clause on both sides. C creates a fragment."},
+  {id:7,t:3,passage:"The study\u2019s findings were significant, ___ they suggested that sleep quality, not just sleep duration, was the critical factor in cognitive performance.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["for they","for, they","they","so, they"],answer:0,
+   explain:"\"For\" (meaning \"because\") is a FANBOYS conjunction. Comma + for correctly joins two independent clauses. B has an extra comma. C creates a comma splice (no conjunction). D has an unnecessary comma after \"so.\""},
+  {id:8,t:3,passage:"Although wind power has become increasingly cost-effective ___ some communities resist the installation of wind turbines due to aesthetic concerns and potential effects on local wildlife.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["; some",", some","some",". Some"],answer:1,
+   explain:"\"Although...\" is a dependent clause. When it opens the sentence, follow it with a comma + independent clause. B is correct. A is wrong (semicolons join two INDEPENDENT clauses). C has no punctuation. D would make \"Although...\" a fragment."},
+  {id:9,t:3,passage:"The novelist completed her manuscript in just three months ___ a pace that astonished her editor ___ who had expected the project to take at least a year.",
+   stem:"Which choice correctly completes the sentence?",
+   choices:["\u2014a pace that astonished her editor, who",", a pace that astonished her editor; who","; a pace that astonished her editor, who","\u2014a pace that astonished her editor\u2014who"],answer:0,
+   explain:"An em dash introduces the dramatic aside \"a pace that astonished her editor.\" Then \"who had expected...\" is a relative clause modifying \"editor\" \u2014 attached with a comma. A correctly uses em dash + comma."}
+];
+
+const KEY_TAKEAWAYS = [
+  "Independent clause = subject + verb + complete thought. Can stand alone as a sentence.",
+  "Dependent clause = starts with a subordinating word (because, although, when, etc.). Cannot stand alone.",
+  "Three errors: Run-on (no punctuation), comma splice (comma only), fragment (incomplete sentence).",
+  "Comma splices are the #1 tested error. A comma alone CANNOT join two independent clauses.",
+  "Five legal joins: period, semicolon, comma + FANBOYS, colon, em dash.",
+  "FANBOYS only: for, and, nor, but, or, yet, so. Words like \"however\" and \"therefore\" are NOT conjunctions.",
+  "Colon rule: What comes BEFORE a colon must be an independent clause.",
+  "When in doubt, a period is always a safe choice between two independent clauses."
+];
+
+/* ========== COMPONENTS ========== */
+
+/* ── Welcome ── */
+function Welcome({ onNext }) {
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  return React.createElement("div", { style:{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"100vh", padding:"0 24px", transition:"all .7s", opacity:show?1:0, transform:show?"translateY(0)":"translateY(16px)" } },
+    React.createElement("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"44", borderRadius:12, padding:"6px 18px", fontSize:13, letterSpacing:1.5, textTransform:"uppercase", color:C.mod, marginBottom:12, fontWeight:600 } }, "Phase 2 \u00B7 Module 6"),
+    React.createElement("h1", { style:{ fontSize:"clamp(1.7rem,4.5vw,3rem)", fontWeight:800, background:"linear-gradient(135deg,"+C.mod+","+C.rw+")", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", lineHeight:1.1, textAlign:"center", marginBottom:16, fontFamily:"'Cormorant Garamond',serif" } }, "Sentence Boundaries & Punctuation"),
+    React.createElement("p", { style:{ color:C.sub, fontSize:18, maxWidth:560, textAlign:"center", lineHeight:1.6, marginBottom:12 } }, "The single most-tested conventions skill \u2014 about 5\u20136 questions per test. Master the rules for joining and separating clauses."),
+    React.createElement("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"33", borderRadius:12, padding:"14px 22px", maxWidth:540, marginBottom:40, fontSize:14, color:C.sub, lineHeight:1.6, textAlign:"center" } },
+      React.createElement("strong", { style:{ color:C.mod } }, "Highest-ROI Grammar Skill: "),
+      "Sentence boundary questions appear on every single PSAT. Learn the five legal joins and you can answer these in under 30 seconds each."
+    ),
+    React.createElement("div", { style:{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:16, maxWidth:700, width:"100%", marginBottom:48 } },
+      [{icon:"\uD83D\uDD0D",title:"Clause Types",desc:"Independent vs. dependent"},{icon:"\u26A0\uFE0F",title:"Three Errors",desc:"Run-ons, splices, fragments"},{icon:"\u2702\uFE0F",title:"Five Legal Joins",desc:"Period, semicolon, FANBOYS..."},{icon:"\uD83C\uDF1F",title:"5 Exercises",desc:"Classify, spot, combine"},{icon:"\uD83D\uDCDD",title:"10 Practice Qs",desc:"PSAT-format questions"}
+      ].map(function(c,i){ return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
+        React.createElement("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        React.createElement("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
+        React.createElement("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      );})
+    ),
+    React.createElement("button", { onClick:onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")", "#fff"), onMouseOver:function(e){e.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";} }, "Start Learning \u2192"),
+    React.createElement("div", { style:{ color:C.muted, fontSize:13, marginTop:24 } }, "\u23F1 ~55 min \u00B7 Standard English Conventions")
+  );
+}
+
+/* ── LessonViewer ── */
+function LessonViewer({ onComplete }) {
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var lesson = LESSONS[idx];
+  var total = LESSONS.length;
+
+  function renderVisual() {
+    if (lesson.visual === "clause-examples") {
+      var examples = [
+        {label:"Independent",text:"\"The experiment produced unexpected results.\" \u2713",color:C.sec},
+        {label:"Dependent",text:"\"Because the experiment produced unexpected results\" \u2717",color:C.wrong},
+        {label:"Independent",text:"\"She revised her hypothesis.\" \u2713",color:C.sec},
+        {label:"Dependent",text:"\"Although she revised her hypothesis\" \u2717",color:C.wrong}
+      ];
+      return React.createElement("div",{style:{padding:"12px 20px"}},
+        examples.map(function(ex,i){
+          return React.createElement("div",{key:i,style:{display:"flex",alignItems:"center",gap:10,marginBottom:6,padding:"8px 12px",background:ex.color+"08",borderLeft:"3px solid "+ex.color,borderRadius:"0 8px 8px 0"}},
+            React.createElement("span",{style:{color:ex.color,fontWeight:700,fontSize:12,minWidth:80}},ex.label),
+            React.createElement("span",{style:{color:C.sub,fontSize:13,fontFamily:"'JetBrains Mono',monospace"}},ex.text)
+          );
+        })
+      );
+    }
+    if (lesson.visual === "error-types") {
+      var errors = [
+        {label:"Run-on",example:"Two ICs with NO punctuation",color:C.wrong,icon:"\u26D4"},
+        {label:"Comma Splice",example:"Two ICs joined by ONLY a comma",color:C.mod,icon:"\u26A0\uFE0F"},
+        {label:"Fragment",example:"Dependent clause punctuated as a sentence",color:C.rw,icon:"\u2702\uFE0F"}
+      ];
+      return React.createElement("div",{style:{padding:"12px 20px"}},
+        React.createElement("div",{style:{color:C.wrong,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"The Three Boundary Errors"),
+        errors.map(function(e,i){
+          return React.createElement("div",{key:i,style:{display:"flex",alignItems:"center",gap:10,marginBottom:8,padding:"10px 14px",background:e.color+"08",borderLeft:"3px solid "+e.color,borderRadius:"0 8px 8px 0"}},
+            React.createElement("span",{style:{fontSize:18}},e.icon),
+            React.createElement("div",{style:{minWidth:100}},React.createElement("span",{style:{color:e.color,fontWeight:700,fontSize:13}},e.label)),
+            React.createElement("span",{style:{color:C.sub,fontSize:12}},e.example)
+          );
+        }),
+        React.createElement("div",{style:{marginTop:10,padding:"8px 12px",background:C.mod+"08",borderLeft:"3px solid "+C.mod,borderRadius:"0 8px 8px 0"}},
+          React.createElement("span",{style:{color:C.mod,fontSize:12,fontWeight:700}},"#1 Tested: "),
+          React.createElement("span",{style:{color:C.sub,fontSize:12}},"Comma splices appear on every PSAT")
+        )
+      );
+    }
+    if (lesson.visual === "punc-grid") {
+      var puncs = [
+        {sym:".",name:"Period",use:"Full stop between two independent clauses",color:C.sec},
+        {sym:";",name:"Semicolon",use:"Joins two related independent clauses (no conjunction)",color:C.info},
+        {sym:":",name:"Colon",use:"After an IC to introduce a list, explanation, or elaboration",color:C.rw},
+        {sym:"\u2014",name:"Em Dash",use:"Sets off an interruption, aside, or dramatic emphasis",color:C.mod},
+        {sym:", +",name:"Comma + FANBOYS",use:"Comma before for/and/nor/but/or/yet/so joining two ICs",color:C.expr}
+      ];
+      return React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:8,padding:"12px 20px"}},
+        puncs.map(function(p,i){
+          return React.createElement("div",{key:i,style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:12,textAlign:"center"}},
+            React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.4rem",fontWeight:700,color:p.color,marginBottom:4}},p.sym),
+            React.createElement("div",{style:{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted,marginBottom:4}},p.name),
+            React.createElement("div",{style:{fontSize:11,color:C.sub,lineHeight:1.4}},p.use)
+          );
+        })
+      );
+    }
+    return null;
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      LESSONS.map(function(_,i){
+        return React.createElement("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+      })
+    ),
+    React.createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      React.createElement("div",{style:{padding:"28px 28px 0"}},
+        React.createElement("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        React.createElement("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:16,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},lesson.title),
+        lesson.body.map(function(p,i){
+          return React.createElement("p",{key:i,style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p);
+        })
+      ),
+      lesson.visual && React.createElement("div",{style:{padding:"8px 4px 20px"}},renderVisual())
+    ),
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between"}},
+      React.createElement("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:{...btn("transparent",idx===0?"#444":C.sub),border:"1px solid "+C.border,padding:"10px 20px",fontSize:14}},"\u2190 Back"),
+      idx < total-1
+        ? React.createElement("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
+        : React.createElement("button",{onClick:onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Exercises \u2192")
+    )
+  );
+}
+
+/* ── Classify Exercise (reusable for CLC, ERR, FAN) ── */
+function ClassifyExercise({ title, icon, subtitle, items, options, renderStimulus, borderColor, onComplete }) {
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus ? renderStimulus(q,i) : React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+(borderColor||C.mod),fontFamily:"'JetBrains Mono',monospace"}},q.text),
+        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          options.map(function(o,oi){
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return React.createElement("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===q.c?C.correctBg:C.wrongBg,color:a===q.c?C.correct:C.wrong}},(a===q.c?"\u2713 ":"\u2717 ")+q.fb)
+      );
+    }),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      React.createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      React.createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        React.createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── MC Exercise (for PNC, CMB) ── */
+function MCExercise({ title, icon, subtitle, items, renderStimulus, borderColor, onComplete }) {
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus(q,i),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return React.createElement("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              React.createElement("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              React.createElement("span",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:12}},ch)
+            );
+          })
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      React.createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      React.createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        React.createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(borderColor||C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── QuizEngine ── */
+function QuizEngine({ onComplete }) {
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var item = QUIZ[idx];
+
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s){ return s+1; });
+  }
+  function next() {
+    if (idx < QUIZ.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+
+  if (done) {
+    return React.createElement("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      React.createElement("div",{style:{fontSize:48,marginBottom:16}},"\uD83D\uDCDD"),
+      React.createElement("h2",{style:{color:C.ink,fontSize:28,fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Practice Complete"),
+      React.createElement("div",{style:{color:C.mod,fontSize:48,fontWeight:900}},score,"/",QUIZ.length),
+      React.createElement("p",{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},
+        score >= 9 ? "Outstanding! You've mastered sentence boundaries." :
+        score >= 7 ? "Great work! A few more practice rounds and you'll own this topic." :
+        score >= 5 ? "Solid foundation. Review the errors you made and try again." :
+        "Keep practicing! Focus on the five legal joins and FANBOYS."
+      ),
+      React.createElement("button",{onClick:function(){onComplete(score,QUIZ.length);},style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff")},"Continue \u2192")
+    );
+  }
+
+  var tierColors = {1:C.sec, 2:C.info, 3:C.rw};
+  var tierLabels = {1:"Easy", 2:"Medium", 3:"Hard"};
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
+      React.createElement("div",{style:{color:C.mod,fontSize:13,fontWeight:700}},"\uD83D\uDCDD PSAT Practice"),
+      React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        React.createElement("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:600,background:tierColors[item.t]+"22",color:tierColors[item.t]}},tierLabels[item.t]),
+        React.createElement("span",{style:{color:C.muted,fontSize:13}},idx+1,"/",QUIZ.length)
+      )
+    ),
+    React.createElement("div",{style:{height:4,background:C.border,borderRadius:2,marginBottom:20,overflow:"hidden"}},
+      React.createElement("div",{style:{height:"100%",width:((idx+(confirmed?1:0))/QUIZ.length*100)+"%",background:"linear-gradient(90deg,"+C.mod+","+C.rw+")",borderRadius:2,transition:"width .4s"}})
+    ),
+    React.createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,marginBottom:16}},
+      React.createElement("div",{style:{color:"#ddd",fontSize:15,lineHeight:1.8,fontFamily:"Georgia,serif"}},item.passage)
+    ),
+    React.createElement("div",{style:{color:C.ink,fontSize:14,fontWeight:600,marginBottom:16}},item.stem),
+    React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      item.choices.map(function(c,ci){
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = C.surface, bdr = "1px solid "+C.border, tc = "#ddd";
+        if (confirmed && isCorr) { bg = C.correct+"18"; bdr = "2px solid "+C.correct; tc = C.correct; }
+        else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
+        else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
+        return React.createElement("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+          React.createElement("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          React.createElement("span",{style:{color:tc,fontSize:14,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace"}},c)
+        );
+      })
+    ),
+    confirmed && React.createElement("div",{style:{background:C.border,borderRadius:12,padding:20,marginBottom:24,borderLeft:"4px solid "+C.mod}},
+      React.createElement("div",{style:{color:C.mod,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+      React.createElement("div",{style:{color:C.sub,fontSize:14,lineHeight:1.6}},item.explain)
+    ),
+    React.createElement("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed
+        ? React.createElement("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?C.border:C.mod,selected===null?"#555":"#fff",{fontSize:14,padding:"10px 24px"})},"Confirm")
+        : React.createElement("button",{onClick:next,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},idx<QUIZ.length-1?"Next \u2192":"See Results \u2192")
+    )
+  );
+}
+
+/* ── NavLinks ── */
+function NavLinks() {
+  return React.createElement("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border}},
+    NAV.prev && React.createElement("a",{href:NAV.prev.file,style:{...btn("transparent",C.sub),border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"}},"\u2190 "+NAV.prev.label),
+    NAV.next && React.createElement("a",{href:NAV.next.file,style:{...btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),textDecoration:"none",fontSize:13,padding:"10px 20px"}},NAV.next.label+" \u2192")
+  );
+}
+
+/* ── ModuleComplete ── */
+function ModuleComplete({ quizScore, quizTotal }) {
+  var pct = Math.round(quizScore/quizTotal*100);
+  return React.createElement("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{fontSize:64,marginBottom:16}},pct>=90?"\uD83C\uDFC6":pct>=70?"\uD83C\uDF1F":"\uD83D\uDCAA"),
+    React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 6 Complete!"),
+    React.createElement("div",{style:{color:C.mod,fontSize:48,fontWeight:900,marginBottom:8}},quizScore,"/",quizTotal),
+    React.createElement("p",{style:{color:C.sub,fontSize:15,marginBottom:32}},"on PSAT-format practice questions"),
+    React.createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
+      React.createElement("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+      KEY_TAKEAWAYS.map(function(t,i){
+        return React.createElement("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
+          React.createElement("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+          React.createElement("span",null,t)
+        );
+      })
+    ),
+    React.createElement(NavLinks, null)
+  );
+}
+
+/* ── Exercises Router ── */
+function Exercises({ onComplete }) {
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+
+  if (step === 0) {
+    return React.createElement(ClassifyExercise, {
+      title:"Clause Classifier", icon:"\uD83D\uDD0D",
+      subtitle:"Is each clause independent or dependent? Apply the independence test.",
+      items:CLC, options:COPTS, borderColor:C.mod,
+      onComplete:function(){ setStep(1); }
+    });
+  }
+  if (step === 1) {
+    return React.createElement(ClassifyExercise, {
+      title:"Error Spotter", icon:"\u26A0\uFE0F",
+      subtitle:"Classify each sentence: run-on, comma splice, fragment, or correct?",
+      items:ERR, options:EOPTS, borderColor:C.rw,
+      onComplete:function(){ setStep(2); }
+    });
+  }
+  if (step === 2) {
+    return React.createElement(MCExercise, {
+      title:"Pick the Punctuation", icon:"\u2702\uFE0F",
+      subtitle:"What should go between the two parts?",
+      items:PNC, borderColor:C.accent,
+      renderStimulus:function(q){
+        return React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.mod,fontFamily:"'JetBrains Mono',monospace"}},
+          React.createElement("span",{style:{color:C.ink}},q.left),
+          " ",
+          React.createElement("span",{style:{color:C.mod,fontSize:"1.1rem",fontWeight:700}},"___"),
+          " ",
+          React.createElement("span",{style:{color:C.ink}},q.right)
+        );
+      },
+      onComplete:function(){ setStep(3); }
+    });
+  }
+  if (step === 3) {
+    return React.createElement(MCExercise, {
+      title:"Sentence Combiner", icon:"\uD83D\uDD17",
+      subtitle:"Which version correctly joins the two sentences?",
+      items:CMB, borderColor:C.info,
+      renderStimulus:function(q){
+        return React.createElement("div",{style:{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}},
+          React.createElement("div",{style:{flex:1,minWidth:200,fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,borderLeft:"3px solid "+C.info,fontFamily:"'JetBrains Mono',monospace"}},
+            React.createElement("strong",null,"S1: "),q.s1
+          ),
+          React.createElement("div",{style:{flex:1,minWidth:200,fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,borderLeft:"3px solid "+C.info,fontFamily:"'JetBrains Mono',monospace"}},
+            React.createElement("strong",null,"S2: "),q.s2
+          )
+        );
+      },
+      onComplete:function(){ setStep(4); }
+    });
+  }
+  if (step === 4) {
+    return React.createElement(ClassifyExercise, {
+      title:"FANBOYS or Not?", icon:"\uD83C\uDF1F",
+      subtitle:"Can this word follow a comma to legally join two independent clauses?",
+      items:FAN, options:FOPTS, borderColor:C.expr,
+      renderStimulus:function(q){
+        return React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.1rem",color:C.mod,fontWeight:700,marginBottom:8,textAlign:"center",padding:"10px 0"}},q.word);
+      },
+      onComplete:function(){ onComplete(); }
+    });
+  }
+  return null;
+}
+
+/* ── App Shell ── */
+function App() {
+  var _s = useState("welcome"), screen = _s[0], setScreen = _s[1];
+  var _s2 = useState(true), vis = _s2[0], setVis = _s2[1];
+  var _s3 = useState(0), quizScore = _s3[0], setQuizScore = _s3[1];
+  var _s4 = useState(10), quizTotal = _s4[0], setQuizTotal = _s4[1];
+
+  function go(next) {
+    setVis(false);
+    setTimeout(function(){ setScreen(next); setVis(true); window.scrollTo(0,0); }, 350);
+  }
+
+  var content = null;
+  if (screen === "welcome") content = React.createElement(Welcome,{onNext:function(){go("lesson");}});
+  else if (screen === "lesson") content = React.createElement(LessonViewer,{onComplete:function(){go("exercises");}});
+  else if (screen === "exercises") content = React.createElement(Exercises,{onComplete:function(){go("practice");}});
+  else if (screen === "practice") content = React.createElement(QuizEngine,{onComplete:function(s,t){setQuizScore(s);setQuizTotal(t);go("complete");}});
+  else if (screen === "complete") content = React.createElement(ModuleComplete,{quizScore:quizScore,quizTotal:quizTotal});
+
+  return React.createElement("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

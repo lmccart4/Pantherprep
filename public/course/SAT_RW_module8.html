@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 8: Craft & Structure Boss Battle — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback } = React;
+const AMBER = "#f59e0b";
+const AMBER2 = "#d97706";
+const ACCENT = "#10b981";
+const BLUE = "#3b82f6";
+const PURPLE = "#a855f7";
+const RED = "#ef4444";
+const CYAN = "#06b6d4";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px",
+  borderRadius: 10,
+  border: "none",
+  background: bg,
+  color,
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: "pointer",
+  transition: "transform .12s",
+  ...extra
+});
+const SKILL_META = {
+  vocab: { label: "Vocabulary", color: AMBER, icon: "📚" },
+  precision: { label: "Precision", color: PURPLE, icon: "🎯" },
+  secondary: { label: "Secondary Meaning", color: CYAN, icon: "🔮" },
+  purpose: { label: "Purpose", color: BLUE, icon: "🔬" },
+  function: { label: "Function", color: ACCENT, icon: "⚙️" },
+  crosstext: { label: "Cross-Text", color: RED, icon: "🔗" }
+};
+const BATTLE_QUESTIONS = [
+  // ═══ PHASE 1: WARM-UP (8 Qs) ═══
+  {
+    id: 1,
+    phase: 1,
+    skill: "vocab",
+    diff: "easy",
+    passage: "The documentary offers a ______ look at the challenges facing migrant workers, presenting their stories without sentimentality or political bias.",
+    choices: ["sympathetic", "candid", "superficial", "provocative"],
+    answer: 1,
+    explain: '"Without sentimentality or political bias" = honest, direct, unfiltered. "Candid" means frank and open. "Sympathetic" implies emotional leaning, which contradicts "without sentimentality."'
+  },
+  {
+    id: 2,
+    phase: 1,
+    skill: "vocab",
+    diff: "easy",
+    passage: "Although the new treatment showed promise in early trials, the researchers cautioned that the results were ______ and that larger studies were needed before any conclusions could be drawn.",
+    choices: ["definitive", "preliminary", "controversial", "negligible"],
+    answer: 1,
+    explain: '"Early trials" + "larger studies needed" + "before conclusions" = initial, not yet confirmed. "Preliminary" means coming before the main part. "Definitive" is the opposite.'
+  },
+  {
+    id: 3,
+    phase: 1,
+    skill: "purpose",
+    diff: "easy",
+    passage: "The honeybee's waggle dance, first decoded by ethologist Karl von Frisch in the 1940s, is one of the most sophisticated communication systems in the animal kingdom. Through precise movements that encode both distance and direction, a foraging bee can guide its hivemates to a food source with remarkable accuracy.",
+    stem: "What is the main purpose of this text?",
+    choices: ["To argue that honeybees are more intelligent than other insects", "To describe a notable animal communication behavior and its discoverer", "To compare different navigation methods used by social insects", "To explain why Karl von Frisch won the Nobel Prize"],
+    answer: 1,
+    explain: "The passage describes the waggle dance and credits von Frisch. Straightforward inform/describe purpose."
+  },
+  {
+    id: 4,
+    phase: 1,
+    skill: "precision",
+    diff: "medium",
+    passage: "The architect's renovation preserved the building's historic facade while ______ transforming the interior into a modern, light-filled workspace that bore almost no resemblance to its former configuration.",
+    choices: ["slightly", "radically", "carefully", "gradually"],
+    answer: 1,
+    explain: '"Almost no resemblance to its former configuration" = complete, dramatic transformation. "Radically" means in a thorough, fundamental way. "Carefully" might seem right (preservation requires care) but the blank modifies the interior transformation, which was dramatic.'
+  },
+  {
+    id: 5,
+    phase: 1,
+    skill: "function",
+    diff: "medium",
+    passage: "Marine plastic pollution has reached crisis proportions, with an estimated 8 million metric tons entering the oceans annually. However, recent innovations in biodegradable materials suggest that the tide may be turning. Researchers at several universities have developed plant-based polymers that decompose fully within months of exposure to seawater.",
+    stem: "What is the function of the second sentence ('However, recent innovations...')?",
+    choices: ["It provides evidence supporting the claim in the first sentence", "It introduces a hopeful counterpoint to the problem established in the first sentence", "It questions the accuracy of the statistics cited in the first sentence", "It shifts the discussion to a completely unrelated topic"],
+    answer: 1,
+    explain: '"However" signals contrast. The first sentence establishes a problem (crisis); the second introduces potential solutions (innovations). Function: hopeful counterpoint.'
+  },
+  {
+    id: 6,
+    phase: 1,
+    skill: "vocab",
+    diff: "medium",
+    passage: "The novelist's early works were praised for their emotional intensity, but critics often noted that her plots relied on ______ coincidences that strained the reader's willingness to suspend disbelief.",
+    choices: ["plausible", "improbable", "subtle", "deliberate"],
+    answer: 1,
+    explain: `"Strained the reader's willingness to suspend disbelief" = the coincidences were hard to believe. "Improbable" means unlikely to happen. "Plausible" is the opposite.`
+  },
+  {
+    id: 7,
+    phase: 1,
+    skill: "secondary",
+    diff: "medium",
+    passage: "The senator attempted to ______ the growing controversy by issuing a carefully worded statement that acknowledged mistakes without assigning blame to any specific individual.",
+    choices: ["temper", "increase", "ignore", "publicize"],
+    answer: 0,
+    explain: '"Temper" here means to moderate or soften — not anger. The senator is trying to soften the controversy with a careful statement. Secondary meaning: temper = to reduce the intensity of.'
+  },
+  {
+    id: 8,
+    phase: 1,
+    skill: "crosstext",
+    diff: "medium",
+    passage: "Text 1:\nSociologist Dr. Park argues that remote work has fundamentally improved work-life balance, allowing employees to reclaim hours previously lost to commuting and to structure their days around personal needs and peak productivity periods.\n\nText 2:\nOrganizational psychologist Dr. Reeves contends that while remote work offers scheduling flexibility, it has also eroded the boundary between professional and personal life. Reeves's research shows that remote workers log an average of 2.5 additional hours per day and report higher rates of burnout than their in-office counterparts.",
+    stem: "Based on the texts, how would Reeves (Text 2) most likely respond to Park's argument?",
+    choices: ["By agreeing that remote work improves work-life balance", "By arguing that the flexibility Park describes comes with hidden costs that undermine the benefits", "By proposing that all companies should return to in-office work", "By questioning Park's qualifications as a researcher"],
+    answer: 1,
+    explain: "Reeves acknowledges flexibility but shows it comes with longer hours and burnout — hidden costs. Qualification: the benefit is real but incomplete."
+  },
+  // ═══ PHASE 2: ESCALATION (8 Qs) ═══
+  {
+    id: 9,
+    phase: 2,
+    skill: "precision",
+    diff: "medium",
+    passage: "Far from the ______ figure portrayed in popular culture, the historical Cleopatra was a multilingual diplomat, naval commander, and economic strategist whose political acumen kept Egypt independent for two decades despite the overwhelming military power of Rome.",
+    choices: ["powerful", "glamorous", "controversial", "passive"],
+    answer: 3,
+    explain: '"Far from the ______ figure" contrasts with the real active Cleopatra (diplomat, commander, strategist). Popular culture often portrays her as decorative/romantic rather than active. "Passive" is what she was NOT — the passage corrects this misconception.'
+  },
+  {
+    id: 10,
+    phase: 2,
+    skill: "vocab",
+    diff: "hard",
+    passage: "The poet's use of antiquated diction — words drawn from 17th-century religious texts — lends her contemporary verse an air of ______ that contrasts sharply with the mundane suburban settings she describes.",
+    choices: ["nostalgia", "solemnity", "confusion", "simplicity"],
+    answer: 1,
+    explain: '17th-century religious language creates a serious, sacred tone. "Solemnity" means dignified seriousness. This contrasts with "mundane suburban settings." "Nostalgia" is about longing for the past, not gravitas.'
+  },
+  {
+    id: 11,
+    phase: 2,
+    skill: "function",
+    diff: "hard",
+    passage: "Economist Raj Chetty's research has demonstrated that a child's zip code is among the strongest predictors of their future income — more predictive, in fact, than either parental education or individual test scores. This finding has been widely cited by advocates of place-based investment policies. Chetty himself, however, has cautioned against interpreting the data as evidence that geography alone determines outcomes, noting that the correlation reflects a complex web of institutional, social, and economic factors that happen to cluster geographically.",
+    stem: "What is the function of the last sentence?",
+    choices: ["It contradicts Chetty's original research findings", "It qualifies how Chetty's data should be interpreted, warning against an oversimplified conclusion", "It proposes an alternative explanation unrelated to geography", "It provides additional statistical evidence supporting the zip code finding"],
+    answer: 1,
+    explain: `Chetty "cautioned against" oversimplification — the data is real but the interpretation shouldn't be simplistic. The sentence's function is to QUALIFY the finding against misuse.`
+  },
+  {
+    id: 12,
+    phase: 2,
+    skill: "secondary",
+    diff: "hard",
+    passage: "The startup's rapid growth initially ______ investor confidence, but the company's inability to translate user engagement into sustainable revenue eventually raised serious concerns about its long-term viability.",
+    choices: ["arrested", "bolstered", "undermined", "complicated"],
+    answer: 1,
+    explain: `"Initially ______ confidence" BUT "eventually raised concerns" = the growth first built up confidence, then problems emerged. "Bolstered" means to strengthen or support. "Arrested" (stopped) is a trap secondary meaning that doesn't fit the contrast.`
+  },
+  {
+    id: 13,
+    phase: 2,
+    skill: "purpose",
+    diff: "hard",
+    passage: "The assumption that ancient civilizations developed agriculture independently in response to similar environmental pressures has been challenged by geneticist Dr. Lydia Okafor. By analyzing DNA from 12,000-year-old grain samples across three continents, Okafor has shown that early domesticated crops share genetic markers suggesting a single origin point from which agricultural knowledge — and the crops themselves — were gradually disseminated through trade networks and migration.",
+    stem: "What is the main purpose of this text?",
+    choices: ["To describe the process by which ancient crops were genetically modified", "To present research that challenges the independent-origin model of agricultural development", "To argue that ancient trade networks were more extensive than previously believed", "To compare agricultural techniques across three continents"],
+    answer: 1,
+    explain: '"Has been challenged" by research showing a "single origin point" vs. the "independent development" assumption. Purpose: present challenging research.'
+  },
+  {
+    id: 14,
+    phase: 2,
+    skill: "crosstext",
+    diff: "hard",
+    passage: "Text 1:\nArt historian Dr. Miriam Jacobs argues that the primary value of public art lies in its capacity to provoke dialogue and challenge assumptions. The most successful public artworks, Jacobs contends, are those that generate debate — even heated controversy — because this engagement demonstrates that art is actively shaping public consciousness rather than merely decorating public spaces.\n\nText 2:\nUrban planner Carlos Mendez maintains that public art's value should be measured by its capacity to foster community cohesion rather than controversy. Mendez points to studies showing that murals, sculptures, and installations that reflect local identity and heritage strengthen residents' sense of belonging and correlate with reduced vandalism and increased civic participation.",
+    stem: "Which choice best describes the relationship between the two texts?",
+    choices: ["Text 2 supports Text 1's argument with additional evidence", "Both texts agree that public art should be controversial", "The texts advocate for different criteria by which to evaluate public art's success", "Text 2 argues that public art has no meaningful social impact"],
+    answer: 2,
+    explain: "Jacobs measures success by dialogue/controversy. Mendez measures by community cohesion/belonging. Same subject (public art's value) but fundamentally different evaluation criteria."
+  },
+  {
+    id: 15,
+    phase: 2,
+    skill: "precision",
+    diff: "hard",
+    passage: "The committee's report was notable less for its conclusions — which largely echoed previous findings — than for the ______ with which it documented the agency's systematic failures, naming specific officials and detailing exact dates and decisions that led to the crisis.",
+    choices: ["brevity", "specificity", "objectivity", "urgency"],
+    answer: 1,
+    explain: `"Naming specific officials," "detailing exact dates and decisions" = precise, detailed documentation. "Specificity" means the quality of being detailed and exact. "Objectivity" (neutrality) doesn't capture the detailed naming.`
+  },
+  {
+    id: 16,
+    phase: 2,
+    skill: "vocab",
+    diff: "hard",
+    passage: "While the orchestra's technical execution was flawless, the performance felt ______ — mechanically precise but lacking the spontaneous energy and emotional risk-taking that transforms a competent rendition into a memorable one.",
+    choices: ["uninspired", "chaotic", "innovative", "controversial"],
+    answer: 0,
+    explain: '"Mechanically precise but lacking spontaneous energy and emotional risk-taking" = technically good but flat/lifeless. "Uninspired" means lacking imagination or excitement. Perfect contrast with flawless but emotionally empty.'
+  },
+  // ═══ PHASE 3: FINAL STAND (9 Qs) ═══
+  {
+    id: 17,
+    phase: 3,
+    skill: "crosstext",
+    diff: "hard",
+    passage: "Text 1:\nPhysicist Dr. Amari contends that the search for extraterrestrial intelligence should focus primarily on detecting technological signatures — radio signals, laser pulses, or atmospheric pollutants that would indicate an industrialized civilization. These signatures, Amari argues, are the most detectable and the most unambiguous evidence of intelligent life.\n\nText 2:\nAstrobiologist Dr. Chen argues that Amari's approach suffers from anthropocentric bias — the assumption that alien civilizations would develop along technological pathways similar to humanity's. Chen advocates instead for a broader search framework that includes biosignatures (chemical indicators of any biological activity), arguing that limiting the search to technological markers risks overlooking the vast majority of life that may exist in non-technological forms.",
+    stem: "Based on the texts, how does Chen's position relate to Amari's?",
+    choices: ["Chen rejects the possibility of detecting extraterrestrial technology", "Chen supports Amari's approach but recommends additional funding", "Chen argues that Amari's framework is too narrow and proposes a more inclusive alternative", "Chen agrees with Amari on methods but disagrees on the likelihood of finding intelligent life"],
+    answer: 2,
+    explain: `Chen says Amari's approach is anthropocentric and "too narrow" — risks "overlooking the vast majority of life." Proposes broader framework. This is a challenge to scope with an alternative.`
+  },
+  {
+    id: 18,
+    phase: 3,
+    skill: "function",
+    diff: "hard",
+    passage: "The decline of pollinator populations has been attributed to a constellation of factors: pesticide exposure, habitat loss, climate change, and disease. Of these, neonicotinoid pesticides have received the most public attention, largely due to several high-profile studies linking them to colony collapse in honeybees. Yet some entomologists argue that this focus on a single chemical class has obscured the more fundamental threat: the wholesale conversion of diverse ecosystems into agricultural monocultures that eliminate the varied floral resources pollinators need to survive.",
+    stem: "What is the function of the last sentence?",
+    choices: ["It dismisses pesticide exposure as irrelevant to pollinator decline", "It redirects attention from a widely discussed factor to what some scientists consider a more fundamental one", "It summarizes the previous sentences' main points", "It provides statistical evidence about monoculture farming"],
+    answer: 1,
+    explain: `"Yet some argue this focus has obscured the more fundamental threat" — the sentence doesn't dismiss pesticides but REDIRECTS attention to habitat loss via monoculture. Function: refocusing the analysis.`
+  },
+  {
+    id: 19,
+    phase: 3,
+    skill: "precision",
+    diff: "hard",
+    passage: "The CEO's public apology was widely regarded as ______, not because observers doubted her sincerity but because the carefully vetted, legally reviewed statement felt more like corporate crisis management than genuine accountability.",
+    choices: ["dishonest", "performative", "insufficient", "premature"],
+    answer: 1,
+    explain: '"Not because observers doubted her sincerity" eliminates "dishonest." The issue is it FELT like a performance — "carefully vetted, legally reviewed, crisis management." "Performative" means done for show, going through the motions. She may be sincere, but the format undermines it.'
+  },
+  {
+    id: 20,
+    phase: 3,
+    skill: "secondary",
+    diff: "hard",
+    passage: "Although the initial findings were promising, the research team was careful not to ______ the significance of their results, acknowledging that their small sample size and limited geographic scope meant that broader claims would be premature.",
+    choices: ["overstate", "dismiss", "verify", "publicize"],
+    answer: 0,
+    explain: 'Small sample + limited scope + "broader claims premature" = they were careful not to exaggerate. "Overstate" means to express too strongly. The team showed appropriate intellectual humility about their findings.'
+  },
+  {
+    id: 21,
+    phase: 3,
+    skill: "purpose",
+    diff: "hard",
+    passage: "Literary critic Amelia Thornton has proposed that the resurgence of interest in Octavia Butler's science fiction reflects not merely a belated recognition of Butler's literary merit but a broader cultural shift. In an era marked by climate anxiety, pandemic experience, and debates over systemic inequality, Thornton argues, Butler's speculative explorations of adaptation, community resilience, and power feel less like fiction and less like prophecy — and more like a practical framework for navigating an uncertain present.",
+    stem: "What is the main purpose of this text?",
+    choices: ["To provide a biography of science fiction writer Octavia Butler", "To argue that Butler's renewed popularity reflects contemporary cultural anxieties rather than purely literary reassessment", "To compare Butler's work with that of other science fiction writers", "To criticize the publishing industry for overlooking Butler's work"],
+    answer: 1,
+    explain: 'Thornton argues the resurgence reflects "a broader cultural shift" — climate, pandemic, inequality make Butler feel relevant NOW. Purpose: connecting literary revival to cultural moment.'
+  },
+  {
+    id: 22,
+    phase: 3,
+    skill: "crosstext",
+    diff: "hard",
+    passage: "Text 1:\nNeurologist Dr. Singh argues that screen time limits for children are essential, citing studies showing that excessive screen exposure correlates with reduced attention spans, disrupted sleep patterns, and delayed language development in children under five.\n\nText 2:\nDevelopmental psychologist Dr. Torres contends that the screen time debate oversimplifies a nuanced issue. Torres argues that the CONTENT of screen engagement matters far more than duration — interactive educational programs and video calls with family members produce measurably different cognitive effects than passive consumption of entertainment content. Blanket time limits, Torres suggests, conflate fundamentally different activities under a single misleading metric.",
+    stem: "Which choice best describes the relationship between the two texts?",
+    choices: ["Text 2 entirely agrees with Text 1's recommendation for screen time limits", "Text 2 argues that Text 1's approach is too simplistic because it treats all screen time as equivalent", "Text 2 provides additional evidence supporting the correlations described in Text 1", "Text 2 denies that screen exposure has any negative effects on children"],
+    answer: 1,
+    explain: `Torres says the debate "oversimplifies" and "conflates fundamentally different activities." The issue isn't WHETHER screens affect kids but that a blanket time-based approach ignores the crucial content variable.`
+  },
+  {
+    id: 23,
+    phase: 3,
+    skill: "vocab",
+    diff: "hard",
+    passage: "The restoration of the 16th-century fresco required extraordinary patience: conservators worked in sessions of no more than thirty minutes, using single-hair brushes under magnification to remove centuries of accumulated grime without disturbing the ______ pigments beneath.",
+    choices: ["vibrant", "fragile", "original", "faded"],
+    answer: 1,
+    explain: `"Extraordinary patience," "30-minute sessions," "single-hair brushes," "without disturbing" = the pigments are extremely delicate. "Fragile" captures why such extreme care is needed. "Original" and "faded" describe the pigments but don't explain the caution.`
+  },
+  {
+    id: 24,
+    phase: 3,
+    skill: "function",
+    diff: "hard",
+    passage: "Philosopher Martha Nussbaum has argued that a liberal arts education serves not merely as career preparation but as training in democratic citizenship. By exposing students to diverse perspectives through literature, history, and philosophy, Nussbaum contends, universities cultivate the empathetic imagination and critical thinking skills that democratic self-governance requires. Without citizens capable of reasoning through complex moral and political questions, she warns, democracy degrades into mere majoritarianism.",
+    stem: "What is the function of the last sentence?",
+    choices: ["It introduces a new argument unrelated to education", "It provides a concrete example of Nussbaum's educational philosophy", "It articulates the stakes of Nussbaum's argument — what is at risk if education fails in its broader purpose", "It presents a counterargument to Nussbaum's position"],
+    answer: 2,
+    explain: '"Without citizens capable of reasoning... democracy degrades" = this is what happens if the education Nussbaum advocates for fails. The sentence raises the stakes by showing the consequence of NOT doing what she proposes.'
+  },
+  {
+    id: 25,
+    phase: 3,
+    skill: "precision",
+    diff: "hard",
+    passage: "The journalist's investigation did not merely reveal isolated instances of misconduct; it exposed a ______ pattern of abuse that implicated officials at every level of the organization, from entry-level supervisors to the executive board.",
+    choices: ["minor", "systemic", "recent", "surprising"],
+    answer: 1,
+    explain: `"Not isolated instances" + "every level" + "entry-level to executive board" = the pattern was embedded throughout the system. "Systemic" means relating to or affecting an entire system. It's the precise word for organization-wide, structural problems.`
+  }
+];
+const PHASES = [
+  { name: "Phase 1: Warm-Up", subtitle: "The Lexicon Wraith stirs...", hp: 8, color: AMBER, icon: "🛡️" },
+  { name: "Phase 2: Escalation", subtitle: "The Wraith sharpens its focus!", hp: 8, color: PURPLE, icon: "⚔️" },
+  { name: "Phase 3: Final Stand", subtitle: "The Wraith enters overdrive!", hp: 9, color: RED, icon: "🔥" }
+];
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${AMBER}22`, border: `1px solid ${AMBER}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: AMBER, marginBottom: 12, fontWeight: 600 } }, "Unit 2 · Module 8"), /* @__PURE__ */ React.createElement("h1", { style: { fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 900, background: `linear-gradient(135deg,${AMBER},${RED},${PURPLE})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 } }, "Craft & Structure Boss Battle"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 32 } }, "The Lexicon Wraith guards the gate to Unit 3. Defeat it by answering 25 questions testing vocabulary, precision, text structure, and cross-text connections."), /* @__PURE__ */ React.createElement("div", { style: { background: `linear-gradient(135deg,${CARD},#1a1a2e)`, border: `1px solid ${AMBER}33`, borderRadius: 20, padding: 32, marginBottom: 32, maxWidth: 500, width: "100%", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 64, marginBottom: 12 } }, "👁️"), /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontWeight: 900, fontSize: 22, marginBottom: 4 } }, "The Lexicon Wraith"), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13, marginBottom: 20 } }, "Level 8 Boss · 25 HP"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 8, flexWrap: "wrap" } }, Object.values(SKILL_META).map((s, i) => /* @__PURE__ */ React.createElement("span", { key: i, style: { background: `${s.color}15`, color: s.color, padding: "4px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600 } }, s.icon, " ", s.label)))), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 12, maxWidth: 650, width: "100%", marginBottom: 40 } }, [
+    { icon: "❤️", title: "3 Phases", desc: "8 + 8 + 9 questions, escalating difficulty" },
+    { icon: "🔥", title: "Combo System", desc: "Consecutive correct answers build your combo" },
+    { icon: "⭐", title: "Bonus XP", desc: "Speed and accuracy earn bonus points" }
+  ].map((c, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 28, marginBottom: 6 } }, c.icon), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 14, marginBottom: 2 } }, c.title), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 12, lineHeight: 1.4 } }, c.desc)))), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: onNext,
+      style: { ...btn(`linear-gradient(135deg,${AMBER},${RED})`, TEXT), fontSize: 17, padding: "16px 40px", letterSpacing: 0.5 },
+      onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.04)",
+      onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)"
+    },
+    "Begin Battle ⚔️"
+  ));
+}
+function BattleArena({ onComplete }) {
+  const [qIdx, setQIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [combo, setCombo] = useState(0);
+  const [maxCombo, setMaxCombo] = useState(0);
+  const [bossHP, setBossHP] = useState(25);
+  const [playerHP, setPlayerHP] = useState(25);
+  const [shake, setShake] = useState(false);
+  const [flashG, setFlashG] = useState(false);
+  const [flashR, setFlashR] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
+  const q = BATTLE_QUESTIONS[qIdx];
+  const total = BATTLE_QUESTIONS.length;
+  const phase = PHASES[q.phase - 1];
+  const skill = SKILL_META[q.skill];
+  const hasTexts = !!q.passage && q.passage.includes("Text 1:");
+  function handleConfirm() {
+    if (selected === null) return;
+    const correct = selected === q.answer;
+    const ms = Date.now() - startTime;
+    setConfirmed(true);
+    setAnswers((p) => [...p, { qid: q.id, correct, skill: q.skill, ms }]);
+    if (correct) {
+      const nc = combo + 1;
+      setCombo(nc);
+      if (nc > maxCombo) setMaxCombo(nc);
+      setBossHP((hp) => Math.max(0, hp - 1));
+      setFlashG(true);
+      setTimeout(() => setFlashG(false), 400);
+    } else {
+      setCombo(0);
+      setPlayerHP((hp) => Math.max(0, hp - 1));
+      setShake(true);
+      setFlashR(true);
+      setTimeout(() => {
+        setShake(false);
+        setFlashR(false);
+      }, 400);
+    }
+  }
+  function handleNext() {
+    if (qIdx < total - 1) {
+      setQIdx(qIdx + 1);
+      setSelected(null);
+      setConfirmed(false);
+      setStartTime(Date.now());
+    } else {
+      onComplete({ answers, bossHP, playerHP, combo: maxCombo, totalTime: answers.reduce((a, x) => a + x.ms, 0) });
+    }
+  }
+  const HealthBar = ({ current, max, color, label, reverse }) => /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: reverse ? "flex-end" : "flex-start", alignItems: "center", gap: 6, marginBottom: 4 } }, /* @__PURE__ */ React.createElement("span", { style: { color, fontWeight: 700, fontSize: 12 } }, label), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 11 } }, current, "/", max)), /* @__PURE__ */ React.createElement("div", { style: { height: 10, background: BORDER, borderRadius: 5, overflow: "hidden", direction: reverse ? "rtl" : "ltr" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${current / max * 100}%`, background: color, borderRadius: 5, transition: "width .5s ease" } })));
+  let text1 = null, text2 = null, passageBody = null;
+  if (hasTexts) {
+    const parts = q.passage.split("Text 2:");
+    text1 = parts[0].replace("Text 1:", "").trim();
+    text2 = parts[1] ? parts[1].trim() : "";
+  } else {
+    passageBody = q.passage;
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "24px 20px", minHeight: "100vh", animation: shake ? "shake .3s" : "none" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `linear-gradient(135deg,${CARD},#1a1a2e)`, border: `1px solid ${phase.color}33`, borderRadius: 16, padding: 16, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: phase.color, fontSize: 12, fontWeight: 700, letterSpacing: 1 } }, phase.icon, " ", phase.name), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6 } }, combo > 0 && /* @__PURE__ */ React.createElement("span", { style: { background: `${AMBER}22`, color: AMBER, padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 800, animation: "pulse 1s infinite" } }, combo, "x COMBO"), /* @__PURE__ */ React.createElement("span", { style: { color: skill.color, fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 6, background: `${skill.color}15` } }, skill.icon, " ", skill.label))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 16, alignItems: "center" } }, /* @__PURE__ */ React.createElement(HealthBar, { current: playerHP, max: 25, color: ACCENT, label: "YOU" }), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 16, fontWeight: 900 } }, "VS"), /* @__PURE__ */ React.createElement(HealthBar, { current: bossHP, max: 25, color: RED, label: "BOSS", reverse: true }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 800, fontSize: 15 } }, "Q", qIdx + 1, " of ", total), /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 700,
+    background: q.diff === "easy" ? `${ACCENT}22` : q.diff === "medium" ? `${AMBER}22` : `${RED}22`,
+    color: q.diff === "easy" ? ACCENT : q.diff === "medium" ? AMBER : RED
+  } }, q.diff)), /* @__PURE__ */ React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 20, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${(qIdx + (confirmed ? 1 : 0)) / total * 100}%`, background: `linear-gradient(90deg,${ACCENT},${AMBER},${RED})`, borderRadius: 2, transition: "width .4s" } })), /* @__PURE__ */ React.createElement("div", { style: {
+    background: CARD,
+    border: `1px solid ${BORDER}`,
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 16,
+    boxShadow: flashG ? `0 0 20px ${ACCENT}33` : flashR ? `0 0 20px ${RED}33` : "none",
+    transition: "box-shadow .3s"
+  } }, hasTexts ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: { color: CYAN, fontSize: 12, fontWeight: 700, marginBottom: 8 } }, "Text 1"), /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif", marginBottom: 16 } }, text1), /* @__PURE__ */ React.createElement("div", { style: { borderTop: `1px solid ${BORDER}`, paddingTop: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontSize: 12, fontWeight: 700, marginBottom: 8 } }, "Text 2"), /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, text2))) : /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, passageBody)), q.stem && /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, q.stem), !q.stem && /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, "Which choice completes the text with the most logical and precise word or phrase?"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } }, q.choices.map((c, ci) => {
+    const letter = "ABCD"[ci];
+    const isSel = selected === ci;
+    const isCorr = ci === q.answer;
+    let bg = CARD, bdr = `1px solid ${BORDER}`, tc = "#cbd5e1";
+    if (confirmed && isCorr) {
+      bg = `${ACCENT}18`;
+      bdr = `2px solid ${ACCENT}`;
+      tc = ACCENT;
+    } else if (confirmed && isSel && !isCorr) {
+      bg = `${RED}18`;
+      bdr = `2px solid ${RED}`;
+      tc = RED;
+    } else if (isSel && !confirmed) {
+      bg = `${phase.color}15`;
+      bdr = `2px solid ${phase.color}`;
+      tc = phase.color;
+    }
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: ci,
+        onClick: () => {
+          if (!confirmed) setSelected(ci);
+        },
+        disabled: confirmed,
+        style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: {
+        minWidth: 28,
+        height: 28,
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 800,
+        fontSize: 13,
+        flexShrink: 0,
+        marginTop: 1,
+        background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? phase.color : BORDER,
+        color: isSel || confirmed ? DARK : MUTED
+      } }, letter),
+      /* @__PURE__ */ React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+    );
+  })), confirmed && /* @__PURE__ */ React.createElement("div", { style: { background: selected === q.answer ? `${ACCENT}11` : `${RED}11`, border: `1px solid ${selected === q.answer ? ACCENT : RED}44`, borderRadius: 12, padding: 16, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 18 } }, selected === q.answer ? "✅" : "❌"), /* @__PURE__ */ React.createElement("span", { style: { color: selected === q.answer ? ACCENT : RED, fontWeight: 800, fontSize: 15 } }, selected === q.answer ? combo >= 3 ? "COMBO HIT! " + combo + "x" : "Correct!" : "Miss!")), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, q.explain)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } }, !confirmed ? /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: handleConfirm,
+      disabled: selected === null,
+      style: btn(selected === null ? BORDER : phase.color, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" })
+    },
+    "Attack ⚔️"
+  ) : /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: handleNext,
+      style: btn(`linear-gradient(135deg,${phase.color},${DARK})`, TEXT, { fontSize: 14, padding: "10px 24px" })
+    },
+    qIdx < total - 1 ? "Next →" : "Final Results →"
+  )), /* @__PURE__ */ React.createElement("style", null, `
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 50%{transform:translateX(6px)} 75%{transform:translateX(-4px)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+      `));
+}
+function Results({ data }) {
+  const [show, setShow] = useState(false);
+  const [tab, setTab] = useState("overview");
+  useEffect(() => {
+    setTimeout(() => setShow(true), 200);
+  }, []);
+  const { answers, bossHP, playerHP, combo, totalTime } = data;
+  const correct = answers.filter((a) => a.correct).length;
+  const total = answers.length;
+  const pct = Math.round(correct / total * 100);
+  const defeated = bossHP <= 0;
+  const mins = Math.floor(totalTime / 6e4);
+  const secs = Math.round(totalTime % 6e4 / 1e3);
+  const skillBreakdown = {};
+  Object.keys(SKILL_META).forEach((s) => {
+    const qs = answers.filter((a) => a.skill === s);
+    if (qs.length > 0) skillBreakdown[s] = { total: qs.length, correct: qs.filter((a) => a.correct).length };
+  });
+  const baseXP = correct * 100;
+  const comboXP = combo * 50;
+  const speedBonus = pct >= 80 && totalTime < 15 * 60 * 1e3 ? 500 : pct >= 60 && totalTime < 20 * 60 * 1e3 ? 250 : 0;
+  const perfectBonus = pct === 100 ? 1e3 : 0;
+  const totalXP = baseXP + comboXP + speedBonus + perfectBonus;
+  return /* @__PURE__ */ React.createElement("div", { style: { transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)", maxWidth: 800, margin: "0 auto", padding: "40px 20px 80px" } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 40 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 72, marginBottom: 8 } }, defeated ? "🏆" : "🛡️"), /* @__PURE__ */ React.createElement("h1", { style: {
+    fontSize: "clamp(2rem,5vw,3rem)",
+    fontWeight: 900,
+    background: defeated ? `linear-gradient(135deg,${AMBER},${ACCENT})` : `linear-gradient(135deg,${RED},${AMBER})`,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    marginBottom: 8
+  } }, defeated ? "VICTORY!" : "Defeated..."), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 16 } }, defeated ? "The Lexicon Wraith has been banished!" : "The Wraith survives with " + bossHP + " HP. Sharpen your vocabulary and try again!")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(120px,1fr))", gap: 12, marginBottom: 32 } }, [
+    { label: "Score", value: `${correct}/${total}`, sub: `${pct}%`, color: pct >= 80 ? ACCENT : pct >= 60 ? AMBER : RED },
+    { label: "Max Combo", value: `${combo}x`, sub: combo >= 5 ? "Unstoppable!" : combo >= 3 ? "Nice streak!" : "Keep trying", color: AMBER },
+    { label: "Time", value: `${mins}m ${secs}s`, sub: `${Math.round(totalTime / total / 1e3)}s avg`, color: BLUE },
+    { label: "XP Earned", value: totalXP.toLocaleString(), sub: "total points", color: PURPLE }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: s.color, fontWeight: 900, fontSize: 22 } }, s.value), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 11, marginTop: 2 } }, s.sub)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 24, background: CARD, borderRadius: 10, padding: 4 } }, [["overview", "Skill Breakdown"], ["detail", "Question Log"], ["next", "What's Next"]].map(([k, l]) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: k,
+      onClick: () => setTab(k),
+      style: {
+        flex: 1,
+        padding: "10px 12px",
+        borderRadius: 8,
+        border: "none",
+        fontWeight: 600,
+        fontSize: 13,
+        cursor: "pointer",
+        background: tab === k ? BORDER : "transparent",
+        color: tab === k ? TEXT : MUTED
+      }
+    },
+    l
+  ))), tab === "overview" && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 12 } }, Object.entries(skillBreakdown).map(([s, d]) => {
+    const meta = SKILL_META[s];
+    const sp = Math.round(d.correct / d.total * 100);
+    return /* @__PURE__ */ React.createElement("div", { key: s, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 16 } }, meta.icon), /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontWeight: 700, fontSize: 14 } }, meta.label)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { color: meta.color, fontWeight: 800, fontSize: 18 } }, sp, "%"), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 12 } }, "(", d.correct, "/", d.total, ")"))), /* @__PURE__ */ React.createElement("div", { style: { height: 8, background: BORDER, borderRadius: 4, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${sp}%`, background: meta.color, borderRadius: 4, transition: "width 1s" } })));
+  })), tab === "detail" && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6 } }, answers.map((a, i) => {
+    const bq = BATTLE_QUESTIONS.find((q) => q.id === a.qid);
+    const meta = SKILL_META[a.skill];
+    return /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("div", { style: {
+      width: 28,
+      height: 28,
+      borderRadius: 7,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: 800,
+      fontSize: 12,
+      background: a.correct ? `${ACCENT}22` : `${RED}22`,
+      color: a.correct ? ACCENT : RED
+    } }, i + 1), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 12, fontWeight: 600 } }, meta.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, "Phase ", bq?.phase, " · ", bq?.diff)), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 11 } }, Math.round(a.ms / 1e3), "s"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 14 } }, a.correct ? "✅" : "❌"));
+  })), tab === "next" && /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { background: `linear-gradient(135deg,${ACCENT}11,${CARD})`, border: `1px solid ${ACCENT}33`, borderRadius: 16, padding: 24, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontWeight: 800, fontSize: 16, marginBottom: 8 } }, defeated ? "🌟 Unit 2 Complete!" : "💪 Keep Training"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 14, lineHeight: 1.7 } }, defeated ? "You've conquered Craft & Structure! You now have vocabulary precision, text analysis, and cross-text skills covering roughly half the SAT R&W section. Unit 3 opens up Information & Ideas — the comprehension and evidence domain." : pct >= 60 ? "You're close! Review the skills where you struggled most. Vocabulary precision and cross-text relationships are often the deciding questions at higher difficulty levels." : "Focus on building your core skills. Vocabulary precision comes from learning near-synonym distinctions. Structure questions require asking WHAT a passage does, not what it says. Revisit Modules 5-7 to strengthen these foundations.")), (() => {
+    const weakest = Object.entries(skillBreakdown).sort((a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total)[0];
+    if (!weakest) return null;
+    const [sk, d] = weakest;
+    const meta = SKILL_META[sk];
+    const wPct = Math.round(d.correct / d.total * 100);
+    if (wPct >= 80) return null;
+    const tips = {
+      vocab: "Review Module 5: Words in Context. Use the 4-step process: tone first, find clues, eliminate, choose precision.",
+      precision: "Review Module 6: Near-synonym distinctions. Focus on scope, intensity, and domain differences.",
+      secondary: "Review Module 6: Secondary meanings. Common words with uncommon definitions are the SAT's favorite trap.",
+      purpose: "Review Module 7: Text Structure. Ask 'What is the author trying to DO?' not 'What does it say?'",
+      function: "Review Module 7: Sentence Function. Identify each sentence's JOB: claim, evidence, counterpoint, concession.",
+      crosstext: "Review Module 7: Cross-Text. Summarize each text's main claim before looking at answers."
+    };
+    return /* @__PURE__ */ React.createElement("div", { style: { background: `${meta.color}11`, border: `1px solid ${meta.color}33`, borderRadius: 14, padding: 20, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: meta.color, fontWeight: 700, fontSize: 14, marginBottom: 6 } }, meta.icon, " Weakest Skill: ", meta.label, " (", wPct, "%)"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, tips[sk]));
+  })(), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "Module Roadmap"), [
+    { n: "1-4", label: "Conventions (Complete!)", note: "Boundaries, Agreement, Structure, Boss", color: ACCENT, done: true },
+    { n: "5-7", label: "Craft & Structure (Complete!)", note: "Vocabulary, Precision, Text Structure", color: AMBER, done: true },
+    { n: "8", label: "Boss Battle", note: defeated ? "Defeated!" : "In progress...", color: RED, done: defeated },
+    { n: "9-11", label: "Information & Ideas", note: "Comprehension, evidence, inference", color: BLUE, done: false },
+    { n: "12", label: "Info & Ideas Boss Battle", note: "Coming soon", color: BLUE, done: false }
+  ].map((m, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: i < 4 ? `1px solid ${BORDER}` : "none" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 24, height: 24, borderRadius: 12, background: m.done ? `${m.color}22` : BORDER, border: `2px solid ${m.done ? m.color : BORDER}`, display: "flex", alignItems: "center", justifyContent: "center" } }, m.done && /* @__PURE__ */ React.createElement("span", { style: { color: m.color, fontSize: 12 } }, "✓")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: m.done ? TEXT : MUTED, fontSize: 13, fontWeight: 600 } }, "M", m.n, ": ", m.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, m.note)))))));
+}
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [battleData, setBattleData] = useState(null);
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    inset: 0,
+    pointerEvents: "none",
+    opacity: 0.03,
+    backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",
+    backgroundSize: "40px 40px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } }, screen === "welcome" && /* @__PURE__ */ React.createElement(Welcome, { onNext: () => go("battle") }), screen === "battle" && /* @__PURE__ */ React.createElement(BattleArena, { onComplete: (d) => {
+    setBattleData(d);
+    go("results");
+  } }), screen === "results" && battleData && /* @__PURE__ */ React.createElement(Results, { data: battleData })));
+}
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>

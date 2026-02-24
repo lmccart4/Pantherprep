@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 8: Connecting the Dots — PSAT/NMSQT R&W — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.1);--info:#34d399;--info-bg:rgba(52,211,153,.1);--conv:#fbbf24;--conv-bg:rgba(251,191,36,.1);--expr:#f472b6;--expr-bg:rgba(244,114,182,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
+/* Top stripe */
+.top-stripe{height:4px;background:linear-gradient(90deg,var(--craft) 0%,var(--craft) 28%,var(--info) 28%,var(--info) 54%,var(--conv) 54%,var(--conv) 80%,var(--expr) 80%);position:fixed;top:0;left:0;right:0;z-index:100}
+/* Step indicator */
+.step-bar{position:fixed;top:4px;left:0;right:0;z-index:99;background:var(--paper);border-bottom:1px solid var(--border);padding:8px 0}
+.step-track{display:flex;align-items:center;justify-content:center;gap:4px;max-width:600px;margin:0 auto;padding:0 16px}
+.step-dot{width:28px;height:5px;border-radius:3px;background:var(--border);transition:all .3s ease}
+.step-dot.active{background:var(--expr)}
+.step-dot.done{background:var(--correct)}
+.step-label{position:fixed;top:28px;left:0;right:0;text-align:center;font-size:.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);z-index:99;padding:2px 0;background:var(--paper)}
+/* Screen transition */
+.screen{max-width:800px;margin:0 auto;padding:56px 20px 60px;min-height:100vh;transition:opacity .35s ease,transform .35s ease}
+.screen.fade-out{opacity:0;transform:translateY(8px)}
+.screen.fade-in{opacity:1;transform:translateY(0)}
+/* Typography */
+h1,.mod-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:10px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--expr);margin-bottom:6px}
+.subtitle{color:var(--muted);font-size:1rem}
+p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+/* Badges */
+.mod-badge{display:inline-block;background:var(--expr);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.nm-badge{display:inline-block;background:var(--nm);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--expr)}
+.callout{border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout-expr{background:var(--expr-bg);border:1px solid rgba(244,114,182,.3)}.callout-expr strong{color:var(--expr)}
+.callout-red{background:var(--wrong-bg);border:1px solid rgba(239,68,68,.3)}.callout-red strong{color:var(--wrong)}
+.rule-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;border-left:3px solid var(--expr)}
+.rule-card h4{font-family:'Cormorant Garamond',serif;font-size:1.05rem;margin-bottom:6px;color:var(--expr)}
+.rule-card p{font-size:.88rem;color:#ccc;margin-bottom:0;line-height:1.6}
+/* Interactive visuals */
+.iv-container{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin:16px 0}
+.iv-label{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;color:var(--expr)}
+.iv-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--paper);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;font-size:.88rem;cursor:pointer;transition:all .15s}
+.iv-row:hover{border-color:var(--expr)}
+.iv-reveal{color:var(--correct);font-weight:600;font-size:.84rem}
+.iv-hidden{color:#333;font-size:.78rem;font-style:italic}
+/* Intensity scale */
+.is-track{display:flex;gap:3px;margin-bottom:10px}
+.is-step{flex:1;padding:6px 4px;border-radius:6px;text-align:center;transition:transform .15s}
+.is-step:hover{transform:scale(1.05)}
+.is-step-word{font-weight:700;font-size:.78rem}
+.is-step-dots{font-size:.6rem;margin-top:2px}
+/* Binary showdown */
+.showdown-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.showdown-btn{padding:20px 16px;border-radius:14px;text-align:center;cursor:pointer;background:var(--surface);border:2px solid var(--border);transition:all .15s;user-select:none}
+.showdown-btn:hover:not(.sd-disabled){border-color:var(--expr);background:var(--expr-bg)}
+.showdown-btn.sd-selected{border-color:var(--expr);background:var(--expr-bg)}
+.showdown-btn.sd-correct{border-color:var(--correct);background:var(--correct-bg)}
+.showdown-btn.sd-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.showdown-btn.sd-disabled{cursor:default;opacity:.85}
+.showdown-btn .sd-letter{font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.showdown-btn .sd-word{font-weight:800;font-size:1.2rem}
+.showdown-btn.sd-correct .sd-word{color:var(--correct)}
+.showdown-btn.sd-wrong .sd-word{color:var(--wrong)}
+.showdown-btn.sd-selected .sd-word{color:var(--expr)}
+.sd-explain{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;font-size:.85rem;line-height:1.6;color:var(--muted);border-left:3px solid var(--correct)}
+.sd-explain strong{color:var(--ink)}
+/* Taxonomy drag/sort */
+.tx-cat{background:var(--paper);border:2px solid var(--border);border-radius:10px;padding:8px;min-height:44px;margin-bottom:8px;transition:border-color .2s}
+.tx-cat.over{border-color:var(--expr)}
+.tx-cat-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.tx-word{display:inline-block;padding:4px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.82rem;margin:2px;cursor:grab;user-select:none;transition:all .15s}
+.tx-word:hover{border-color:var(--expr)}.tx-word.correct{border-color:var(--correct);background:var(--correct-bg)}.tx-word.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.tx-bank{display:flex;flex-wrap:wrap;gap:4px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;min-height:42px}
+/* Quiz / questions */
+.diag-q{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px}.diag-q.answered{opacity:.85}
+.diag-domain{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;display:inline-block;padding:2px 8px;border-radius:4px}
+.diag-diff{font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;display:inline-block;margin-left:6px}
+.diag-diff-medium{background:rgba(251,191,36,.12);color:var(--conv)}
+.diag-diff-hard{background:var(--wrong-bg);color:var(--wrong)}
+.diag-passage{background:var(--paper);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.88rem;color:#ddd;line-height:1.75;margin-bottom:12px;border-left:3px solid var(--muted)}
+.diag-stem{font-size:.93rem;margin-bottom:12px;color:#ddd;line-height:1.7}
+.diag-choices{display:flex;flex-direction:column;gap:6px}
+.diag-choice{padding:10px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s;display:flex;align-items:flex-start;gap:10px}
+.diag-choice:hover:not(.dc-dis){border-color:var(--expr);background:var(--expr-bg)}
+.diag-choice .letter{font-weight:700;color:var(--muted);min-width:20px;flex-shrink:0}
+.diag-choice.dc-correct{border-color:var(--correct);background:var(--correct-bg)}.diag-choice.dc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.diag-choice.dc-dis{pointer-events:none;opacity:.7}.diag-choice.dc-correct .letter{color:var(--correct)}.diag-choice.dc-wrong .letter{color:var(--wrong)}
+.diag-explain{margin-top:10px;padding:12px;background:var(--paper);border-radius:8px;font-size:.85rem;color:var(--muted);line-height:1.6;display:none;border-left:3px solid var(--correct)}.diag-explain.show{display:block}
+.diag-rule{margin-top:6px;padding:8px 12px;background:var(--expr-bg);border-radius:6px;font-size:.82rem;color:var(--expr);font-weight:600}
+/* Timer */
+.timer-bar{height:6px;border-radius:3px;background:var(--border);margin-bottom:12px;overflow:hidden}
+.timer-fill{height:100%;border-radius:3px;background:var(--expr);transition:width .1s linear}.timer-fill.warning{background:var(--wrong)}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--muted);text-align:right;margin-bottom:8px}
+/* Score tracking */
+.score-track{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.score-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.score-dot.c{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.score-dot.w{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.score-dot.current{border-color:var(--expr);box-shadow:0 0 0 3px var(--expr-bg)}
+/* Results */
+.results{background:var(--surface);border:2px solid var(--expr);border-radius:14px;padding:22px;margin-bottom:16px}
+.results-big{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:700}.results-sub{font-size:.88rem;color:var(--muted)}
+.results-domains{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.results-domain{padding:12px;background:var(--paper);border-radius:8px;text-align:center}
+.results-domain-name{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.results-domain-score{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700}
+.results-tier{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:14px;font-size:.88rem;color:#ccc;line-height:1.7}
+.results-tier strong{color:var(--ink)}
+.error-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.error-item{background:var(--paper);border-radius:8px;padding:10px;border:1px solid var(--border)}
+.error-item-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.error-item-score{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700}
+/* Buttons */
+.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}.btn:hover{filter:brightness(1.15);transform:scale(1.02)}
+.btn-sm{padding:8px 16px;font-size:.82rem}.btn-expr{background:var(--expr)}.btn-nm{background:var(--nm)}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.btn-lg{padding:14px 32px;font-size:1rem;border-radius:10px}
+/* Welcome screen */
+.welcome-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:32px 0}
+.welcome-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
+.welcome-card .wc-icon{font-size:28px;margin-bottom:8px}
+.welcome-card .wc-title{font-weight:700;font-size:.9rem;margin-bottom:4px}
+.welcome-card .wc-sub{color:var(--muted);font-size:.78rem;line-height:1.5}
+/* Nav */
+.mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
+.mod-nav a{color:var(--accent);text-decoration:none}.mod-nav a:hover{text-decoration:underline}
+/* Challenge section */
+.nm-section{background:var(--nm-bg);border:2px solid rgba(167,139,250,.4);border-radius:14px;padding:22px;margin-bottom:16px}
+@media(max-width:600px){.results-domains{grid-template-columns:1fr}.showdown-pair{grid-template-columns:1fr}.error-breakdown{grid-template-columns:1fr}.welcome-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="step-bar"><div class="step-track" id="stepTrack"></div></div>
+<div class="step-label" id="stepLabel"></div>
+<div id="app"></div>
+
+<script>
+/* ═══════════════════════════════════════════
+   SCREEN-BASED PROGRESSION ENGINE
+   ═══════════════════════════════════════════ */
+var SCREENS=['welcome','warmup','taxonomy','method','showdown','traps','practice','challenge','complete'];
+var SCREEN_LABELS=['Welcome','Warm-Up','Taxonomy','Method','Showdown','Traps','Practice','Challenge','Complete'];
+var currentScreen=0;
+
+function goScreen(idx){
+  var app=document.getElementById('app');
+  app.classList.remove('fade-in');
+  app.classList.add('fade-out');
+  app.style.opacity='0';app.style.transform='translateY(8px)';
+  setTimeout(function(){
+    currentScreen=idx;
+    renderScreen();
+    window.scrollTo(0,0);
+    app.style.opacity='1';app.style.transform='translateY(0)';
+  },350);
+}
+function nextScreen(){goScreen(currentScreen+1);}
+function renderSteps(){
+  var h='';
+  for(var i=0;i<SCREENS.length;i++){
+    var cls='step-dot';
+    if(i<currentScreen)cls+=' done';
+    else if(i===currentScreen)cls+=' active';
+    h+='<div class="'+cls+'"></div>';
+  }
+  document.getElementById('stepTrack').innerHTML=h;
+  document.getElementById('stepLabel').textContent=SCREEN_LABELS[currentScreen];
+}
+function renderScreen(){
+  renderSteps();
+  var s=SCREENS[currentScreen];
+  if(s==='welcome')renderWelcome();
+  else if(s==='warmup')renderWarmupScreen();
+  else if(s==='taxonomy')renderTaxonomyScreen();
+  else if(s==='method')renderMethodScreen();
+  else if(s==='showdown')renderShowdownScreen();
+  else if(s==='traps')renderTrapsScreen();
+  else if(s==='practice')renderPracticeScreen();
+  else if(s==='challenge')renderChallengeScreen();
+  else if(s==='complete')renderCompleteScreen();
+}
+
+/* ═══ SHARED RENDER Q ═══ */
+function renderQ(q,idx,ans,prefix,domColor,domLabel){
+  var cH='';
+  for(var ci=0;ci<q.choices.length;ci++){
+    var cls='diag-choice';
+    if(ans!==undefined){if(ci===q.correct)cls+=' dc-correct';else if(ans===ci)cls+=' dc-wrong';cls+=' dc-dis';}
+    cH+='<div class="'+cls+'" onclick="'+prefix+'_click('+idx+','+ci+')"><span class="letter">'+'ABCD'[ci]+'</span><span>'+q.choices[ci]+'</span></div>';
+  }
+  var pH=q.passage?'<div class="diag-passage">'+q.passage+'</div>':'';
+  var eH=ans!==undefined?(q.explain||''):'';
+  if(ans!==undefined&&q.rule)eH+='<div class="diag-rule">'+q.rule+'</div>';
+  var diffH='';
+  if(q.diff){var dc=q.diff==='hard'?'diag-diff-hard':'diag-diff-medium';diffH='<span class="diag-diff '+dc+'">'+q.diff+'</span>';}
+  return '<div class="diag-q '+(ans!==undefined?'answered':'')+'"><div class="diag-domain" style="background:'+domColor+'20;color:'+domColor+'">'+domLabel+'</div>'+diffH+pH+'<div class="diag-stem">'+q.stem+'</div><div class="diag-choices">'+cH+'</div><div class="diag-explain '+(ans!==undefined?'show':'')+'">'+eH+'</div></div>';
+}
+function shuffleArr(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+
+/* ═══════════════════════════════════════════
+   SCREEN 0: WELCOME
+   ═══════════════════════════════════════════ */
+function renderWelcome(){
+  document.getElementById('app').innerHTML=
+  '<div class="screen fade-in">'+
+  '<a class="back-link" href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;text-decoration:none">← Back to PSAT/NMSQT R&W Course</a>'+
+  '<div style="padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px">'+
+    '<div class="mod-badge">Module 8</div>'+
+    '<h1>Connecting the Dots</h1>'+
+    '<p class="subtitle">Transitions — Logical Flow Between and Within Sentences</p>'+
+    '<div style="display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)"><span>⏱ ~60 min</span><span>📋 8 sessions</span><span>🔍 Phase 5: Expression of Ideas</span></div>'+
+  '</div>'+
+  '<p>Transition questions are the <strong>most common Expression of Ideas question type</strong> — about <strong>7–8 of your 54 questions</strong>. They\'re also among the fastest to answer once you learn the system.</p>'+
+  '<p>The trap: many transitions <em>sound</em> right because they\'re smooth and natural. But the PSAT tests whether the transition is <strong>logically accurate</strong>, not just pleasant-sounding.</p>'+
+  '<div class="callout callout-expr"><strong>The One Rule:</strong> Identify the RELATIONSHIP between the ideas first. Then find the transition that matches that relationship. Never pick a transition just because it "sounds good."</div>'+
+  '<div class="welcome-grid">'+
+    '<div class="welcome-card"><div class="wc-icon">🔄</div><div class="wc-title">Warm-Up</div><div class="wc-sub">Interleaved review from prior modules</div></div>'+
+    '<div class="welcome-card"><div class="wc-icon">🗂️</div><div class="wc-title">Taxonomy</div><div class="wc-sub">Six relationships, one system</div></div>'+
+    '<div class="welcome-card"><div class="wc-icon">🎯</div><div class="wc-title">Method</div><div class="wc-sub">Name the relationship first</div></div>'+
+    '<div class="welcome-card"><div class="wc-icon">⚔️</div><div class="wc-title">Showdown</div><div class="wc-sub">Binary precision picks</div></div>'+
+    '<div class="welcome-card"><div class="wc-icon">🪤</div><div class="wc-title">Traps</div><div class="wc-sub">Sounds right ≠ is right</div></div>'+
+    '<div class="welcome-card"><div class="wc-icon">📝</div><div class="wc-title">Practice</div><div class="wc-sub">14 timed questions</div></div>'+
+    '<div class="welcome-card"><div class="wc-icon">⭐</div><div class="wc-title">Challenge</div><div class="wc-sub">Subtle contrasts + speed</div></div>'+
+    '<div class="welcome-card"><div class="wc-icon">🏁</div><div class="wc-title">Complete</div><div class="wc-sub">Results & homework</div></div>'+
+  '</div>'+
+  '<div style="text-align:center;padding:20px 0"><button class="btn btn-expr btn-lg" onclick="nextScreen()">Start Learning →</button></div>'+
+  '</div>';
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN 1: WARM-UP
+   ═══════════════════════════════════════════ */
+var WU=[
+{passage:'The violinist\'s technique was _______ — her bow barely seemed to touch the strings, yet the sound filled the entire concert hall.',stem:'Which word best completes the text?',choices:['labored','effortless','hesitant','crude'],correct:1,explain:'"Barely seemed to touch" yet "filled the hall" = mastery without visible effort.',diff:'medium'},
+{passage:'The painting, which depicts a woman standing beside a window in a sparsely furnished _______ is widely considered the artist\'s masterpiece.',stem:'Which choice conforms to Standard English?',choices:['room, is','room is','room; is','room. Is'],correct:0,explain:'The "which" clause is nonessential. Comma after "room" closes the clause; "is" continues the main sentence.',diff:'medium'},
+{passage:'The experiment demonstrated that plants exposed to classical music grew 15% taller than the control group. _______ plants exposed to heavy metal music showed no significant difference from the control.',stem:'Which transition best connects these sentences?',choices:['Similarly,','In contrast,','Therefore,','For example,'],correct:1,explain:'Music helped → different music didn\'t = contrast between two conditions.',diff:'medium'},
+{passage:'Although the author is best known for her novels, her early _______ reveal a writer still experimenting with voice and form.',stem:'Which choice conforms to Standard English?',choices:['short stories, which were published posthumously,','short stories which were published posthumously','short stories, which were published posthumously','short stories; which were published posthumously,'],correct:0,explain:'Nonessential "which" clause requires commas on both sides. (A) has both.',diff:'medium'},
+{passage:'<strong>Text 1:</strong> Dr. Liu argues that homework reinforces classroom learning and builds self-discipline.<br><strong>Text 2:</strong> Dr. Patel agrees homework builds discipline but argues that excessive amounts correlate with increased student stress without proportional academic gains.',stem:'How would Patel respond to Liu?',choices:['Complete rejection of homework\'s value.','Agreement on discipline but qualification on amount.','Extension of Liu\'s argument with new evidence.','Indifference to the topic.'],correct:1,explain:'Patel agrees (discipline) but qualifies (too much = stress). Classic qualification.',diff:'medium'},
+{passage:'The algorithm\'s predictions were remarkably _______ , matching actual outcomes in 94% of test cases.',stem:'Which word best completes the text?',choices:['erratic','accurate','ambiguous','unreliable'],correct:1,explain:'94% match = highly precise. "Accurate" fits.',diff:'medium'}
+];
+var wuAns=new Array(WU.length).fill(undefined);
+var wuT=['WIC','Conventions','Transitions','Conventions','Cross-Text','WIC'];
+var wuC=['var(--craft)','var(--conv)','var(--expr)','var(--conv)','var(--craft)','var(--craft)'];
+function renderWarmupScreen(){
+  var h='<div class="screen fade-in"><div class="section-label">Session 1: Retrieval Warm-Up (5 min)</div><h2>Interleaved Review</h2>';
+  h+='<p>Before we learn new material, let\'s activate what you already know. These questions pull from prior modules — WIC, Conventions, and Cross-Text.</p>';
+  for(var i=0;i<WU.length;i++)h+=renderQ(WU[i],i,wuAns[i],'wu',wuC[i],wuT[i]+' (Review)');
+  var a=0,c=0;for(var j=0;j<wuAns.length;j++){if(wuAns[j]!==undefined){a++;if(wuAns[j]===WU[j].correct)c++;}}
+  if(a===WU.length){
+    h+='<div style="text-align:center;padding:16px 0"><div style="font-size:1.2rem;font-weight:700;color:'+(c>=5?'var(--correct)':c>=3?'var(--expr)':'var(--wrong)')+'">'+c+'/'+WU.length+' correct</div>';
+    h+='<div style="margin-top:16px"><button class="btn btn-expr btn-lg" onclick="nextScreen()">Continue to Taxonomy →</button></div></div>';
+  }
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+}
+function wu_click(i,v){if(wuAns[i]!==undefined)return;wuAns[i]=v;renderWarmupScreen();}
+
+/* ═══════════════════════════════════════════
+   SCREEN 2: TAXONOMY
+   ═══════════════════════════════════════════ */
+var TAX_CATS=['Addition','Contrast','Cause/Effect','Example','Sequence','Summary'];
+var TAX_COLORS=['var(--info)','var(--wrong)','var(--conv)','var(--craft)','var(--accent)','var(--expr)'];
+var TAX_WORDS=[
+{w:'moreover',cat:'Addition'},{w:'however',cat:'Contrast'},{w:'therefore',cat:'Cause/Effect'},{w:'for instance',cat:'Example'},{w:'subsequently',cat:'Sequence'},{w:'in fact',cat:'Summary'},
+{w:'furthermore',cat:'Addition'},{w:'nevertheless',cat:'Contrast'},{w:'consequently',cat:'Cause/Effect'},{w:'specifically',cat:'Example'},{w:'meanwhile',cat:'Sequence'},{w:'in other words',cat:'Summary'},
+{w:'additionally',cat:'Addition'},{w:'conversely',cat:'Contrast'},{w:'as a result',cat:'Cause/Effect'},{w:'for example',cat:'Example'},{w:'finally',cat:'Sequence'},{w:'indeed',cat:'Summary'},
+{w:'likewise',cat:'Addition'},{w:'in contrast',cat:'Contrast'},{w:'thus',cat:'Cause/Effect'},{w:'in particular',cat:'Example'},{w:'previously',cat:'Sequence'},{w:'essentially',cat:'Summary'}
+];
+var taxState={};TAX_CATS.forEach(function(c){taxState[c]=[];});
+var taxChecked=false;
+var taxShuffled=shuffleArr(TAX_WORDS);
+/* Relationship reveal data */
+var REV_ITEMS=[
+  {before:'The population of monarch butterflies has declined by 80% since the 1990s.',after:'Conservation groups have launched emergency habitat restoration programs.',relationship:'Cause / Effect',color:'var(--conv)',explain:'Decline → groups acted because of the decline'},
+  {before:'The northern hemisphere experiences summer in June.',after:'The southern hemisphere experiences winter at the same time.',relationship:'Contrast',color:'var(--wrong)',explain:'Opposite conditions at the same time'},
+  {before:'Several studies have linked sleep deprivation to memory impairment.',after:'One experiment showed participants who slept only 4 hours recalled 40% fewer words.',relationship:'Example / Illustration',color:'var(--craft)',explain:'General finding → specific study'},
+  {before:'The new highway reduced commute times by 25%.',after:'It also attracted new businesses to previously isolated suburbs.',relationship:'Addition',color:'var(--info)',explain:'Two benefits of the same cause'},
+  {before:'The novelist first published short stories in literary magazines.',after:'She released her debut novel to critical acclaim.',relationship:'Sequence / Time',color:'var(--accent)',explain:'First → then = chronological sequence'},
+  {before:'The chemical reaction produces intense heat and bright light.',after:'The reaction is exothermic and luminescent.',relationship:'Summary / Restatement',color:'var(--expr)',explain:'Technical restatement of the same idea'}
+];
+var revRevealed={};
+
+function renderTaxonomyScreen(){
+  var h='<div class="screen fade-in"><div class="section-label">Session 2: Transition Taxonomy (10 min)</div><h2>Six Relationships, One System</h2>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px">';
+  var rCards=[
+    ['Addition / Continuation','Adds a similar or supporting idea.','moreover, furthermore, additionally, similarly, likewise, also, in addition'],
+    ['Contrast / Opposition','Introduces a conflicting or unexpected idea.','however, nevertheless, on the other hand, conversely, in contrast, yet, still'],
+    ['Cause / Effect','Shows one idea resulting from another.','therefore, consequently, as a result, thus, accordingly, hence'],
+    ['Example / Illustration','Introduces a specific instance of a general point.','for example, for instance, specifically, in particular, namely'],
+    ['Sequence / Time','Shows chronological or procedural order.','first, then, next, subsequently, finally, meanwhile, previously'],
+    ['Summary / Emphasis','Restates, concludes, or intensifies a point.','in other words, in fact, indeed, ultimately, in short, essentially']
+  ];
+  for(var r=0;r<rCards.length;r++){h+='<div class="rule-card"><h4>'+rCards[r][0]+'</h4><p>'+rCards[r][1]+'<br><em>'+rCards[r][2]+'</em></p></div>';}
+  h+='</div>';
+  /* Interactive reveal */
+  h+='<div class="iv-container"><div class="iv-label">🔍 Interactive — Tap to reveal the relationship type</div><div id="relReveal"></div></div>';
+  /* Taxonomy sort */
+  h+='<p>Now sort each transition word into its correct category.</p><div id="taxExercise"></div>';
+  h+='<div id="taxAdvance" style="text-align:center;padding:16px 0"></div>';
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+  renderRevInteractive();
+  renderTax();
+}
+function renderRevInteractive(){
+  var el=document.getElementById('relReveal');if(!el)return;
+  var h='';
+  for(var i=0;i<REV_ITEMS.length;i++){
+    var r=REV_ITEMS[i];
+    h+='<div class="iv-row" onclick="revealRev('+i+')" style="flex-direction:column;align-items:stretch;gap:6px">';
+    h+='<div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--muted);font-weight:700;min-width:14px">'+(i+1)+'.</span><div style="flex:1"><span style="color:#ccc">'+r.before+'</span> <span style="color:var(--expr);font-weight:700">______</span> <span style="color:#ccc">'+r.after+'</span></div></div>';
+    if(revRevealed[i]){
+      h+='<div style="display:flex;gap:8px;align-items:center;padding:6px 0 2px 22px"><span class="iv-reveal" style="color:'+r.color+';padding:2px 10px;background:'+r.color+'15;border-radius:4px">'+r.relationship+'</span><span style="font-size:.78rem;color:var(--muted)">— '+r.explain+'</span></div>';
+    }else{
+      h+='<div style="padding-left:22px"><span class="iv-hidden">tap to reveal relationship</span></div>';
+    }
+    h+='</div>';
+  }
+  el.innerHTML=h;
+}
+function revealRev(i){revRevealed[i]=true;renderRevInteractive();}
+function renderTax(){
+  var el=document.getElementById('taxExercise');if(!el)return;
+  var placed=[];TAX_CATS.forEach(function(c){taxState[c].forEach(function(w){placed.push(w);});});
+  var remaining=taxShuffled.filter(function(tw){return placed.indexOf(tw.w)===-1;});
+  var h='<div class="tx-bank" id="txBank">';
+  remaining.forEach(function(tw){h+='<div class="tx-word" draggable="true" ondragstart="txDS(event,\''+tw.w+'\')">'+tw.w+'</div>';});
+  if(!remaining.length&&!taxChecked)h+='<span style="font-size:.82rem;color:var(--muted)">All sorted!</span>';
+  h+='</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  for(var ci=0;ci<TAX_CATS.length;ci++){var cat=TAX_CATS[ci];
+  h+='<div><div class="tx-cat-label" style="color:'+TAX_COLORS[ci]+'">'+cat+'</div>';
+  h+='<div class="tx-cat" ondragover="event.preventDefault();this.classList.add(\'over\')" ondragleave="this.classList.remove(\'over\')" ondrop="txDrop(event,\''+cat+'\')">';
+  taxState[cat].forEach(function(w){var item=TAX_WORDS.find(function(tw){return tw.w===w;});var ok=item&&item.cat===cat;
+  var cls='tx-word'+(taxChecked?(ok?' correct':' wrong'):'');
+  h+='<div class="'+cls+'">'+w+(taxChecked&&!ok?' ✗':'')+'</div>';});
+  if(!taxState[cat].length)h+='<span style="font-size:.76rem;color:var(--muted)">Drop here</span>';
+  h+='</div></div>';}
+  h+='</div><div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-sm btn-expr" onclick="txCheck()">Check</button><button class="btn btn-sm btn-outline" onclick="txReset()">Reset</button></div>';
+  if(taxChecked){var cc=0;TAX_CATS.forEach(function(c){taxState[c].forEach(function(w){var item=TAX_WORDS.find(function(tw){return tw.w===w;});if(item&&item.cat===c)cc++;});});
+  h+='<div style="margin-top:8px;font-size:.88rem;color:'+(cc>=20?'var(--correct)':cc>=14?'var(--expr)':'var(--wrong)')+'">'+cc+'/'+TAX_WORDS.length+' correct</div>';
+  document.getElementById('taxAdvance').innerHTML='<button class="btn btn-expr btn-lg" onclick="nextScreen()">Continue to Method →</button>';}
+  el.innerHTML=h;
+}
+function txDS(e,w){e.dataTransfer.setData('text',w);}
+function txDrop(e,cat){e.preventDefault();e.target.closest('.tx-cat').classList.remove('over');var w=e.dataTransfer.getData('text');var already=false;TAX_CATS.forEach(function(c){if(taxState[c].indexOf(w)!==-1)already=true;});if(already)return;taxState[cat].push(w);taxChecked=false;renderTax();}
+function txCheck(){var total=0;TAX_CATS.forEach(function(c){total+=taxState[c].length;});if(total<TAX_WORDS.length)return;taxChecked=true;renderTax();}
+function txReset(){TAX_CATS.forEach(function(c){taxState[c]=[];});taxChecked=false;taxShuffled=shuffleArr(TAX_WORDS);renderTax();}
+
+/* ═══════════════════════════════════════════
+   SCREEN 3: METHOD (Relationship-First)
+   ═══════════════════════════════════════════ */
+var REL=[
+{passage:'The new drug reduced symptoms in 80% of patients during clinical trials. _______ the FDA fast-tracked its approval process.',stem:'Which transition best connects these sentences?',choices:['In contrast,','For example,','Accordingly,','Nevertheless,'],correct:2,rel:'Cause/Effect',explain:'Strong trial results → FDA acted. Cause/effect. "Accordingly" = as a logical result.',diff:'medium'},
+{passage:'The city invested $50 million in its public transit system, adding new bus routes and extending subway hours. _______ ridership increased by only 3% — far below the projected 15%.',stem:'Which transition best connects these sentences?',choices:['Moreover,','As a result,','However,','In other words,'],correct:2,rel:'Contrast',explain:'Large investment → small result (unexpected). Contrast. "However" signals the unexpected outcome.',diff:'medium'},
+{passage:'Dr. Yamamoto\'s model accurately predicted earthquake patterns in Japan and Chile. _______ it correctly forecasted the 2023 Turkey-Syria earthquake three months before it occurred.',stem:'Which transition best connects these sentences?',choices:['In contrast,','Moreover,','Nevertheless,','Therefore,'],correct:1,rel:'Addition',explain:'Predicted Japan/Chile + predicted Turkey-Syria = additional supporting evidence. "Moreover" adds to the same point.',diff:'medium'},
+{passage:'The novelist spent eight years on her second book, revising it extensively before publication. _______ critics praised the prose but noted that the plot felt overworked and labored.',stem:'Which transition best connects these sentences?',choices:['Similarly,','In fact,','For instance,','Ultimately,'],correct:3,rel:'Summary/Conclusion',explain:'Years of work → final verdict from critics. "Ultimately" signals the conclusion/outcome of the process.',diff:'hard'},
+{passage:'Honeybees communicate the location of food sources through complex dances. _______ a forager that discovers a rich flower patch will perform a waggle dance indicating the direction and distance.',stem:'Which transition best connects these sentences?',choices:['However,','For instance,','Therefore,','In contrast,'],correct:1,rel:'Example',explain:'General statement (complex dances) → specific instance (waggle dance). "For instance" introduces an example.',diff:'medium'},
+{passage:'The committee had initially voted to approve the construction project. _______ after receiving 2,000 public comments opposing it, the committee reversed its decision.',stem:'Which transition best connects these sentences?',choices:['Similarly,','Furthermore,','Nevertheless,','However,'],correct:3,rel:'Contrast',explain:'Voted to approve → reversed. Unexpected change. "However" signals the contrast.',diff:'medium'}
+];
+var relAns=new Array(REL.length).fill(undefined);
+
+function renderMethodScreen(){
+  var h='<div class="screen fade-in"><div class="section-label">Session 3: Relationship-First Method (10 min)</div><h2>Name the Relationship Before You Choose</h2>';
+  h+='<div class="card card-accent" style="font-size:.9rem;color:#ccc;line-height:1.8">'+
+  '<strong style="color:var(--expr)">Step 1:</strong> Read the sentence BEFORE the blank. What idea does it express?<br>'+
+  '<strong style="color:var(--expr)">Step 2:</strong> Read the sentence AFTER the blank. What idea does it express?<br>'+
+  '<strong style="color:var(--expr)">Step 3:</strong> Name the relationship: addition? contrast? cause/effect? example?<br>'+
+  '<strong style="color:var(--expr)">Step 4:</strong> THEN look at the choices. Pick the one matching your identified relationship.</div>';
+  /* Contrast intensity scale */
+  h+='<div class="iv-container"><div class="iv-label">📊 Interactive — Contrast Intensity Scale</div>'+
+  '<p style="font-size:.85rem;color:#aaa;margin-bottom:10px">Even within a category, transitions differ in intensity and nuance:</p><div id="contrastScale"></div></div>';
+  /* Exercises */
+  h+='<div id="relExercises"></div>';
+  h+='<div id="relAdvance" style="text-align:center;padding:16px 0"></div>';
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+  renderContrastScale();
+  renderRelExercises();
+}
+function renderContrastScale(){
+  var el=document.getElementById('contrastScale');if(!el)return;
+  var scales=[
+    {label:'Contrast strength',words:['yet','however','nevertheless','on the other hand','conversely'],notes:['mild, brief','general unexpected','despite-relationship','balanced comparison','direct reversal'],colors:['var(--info)','var(--conv)','var(--expr)','var(--craft)','var(--wrong)']},
+    {label:'Cause/effect certainty',words:['accordingly','thus','therefore','consequently','as a result'],notes:['fitting response','logical step','direct logic','natural outcome','strong causation'],colors:['var(--info)','var(--info)','var(--conv)','var(--conv)','var(--expr)']},
+    {label:'Addition emphasis',words:['also','moreover','furthermore','in addition','indeed'],notes:['simple add','builds on','intensifies','stacks','emphatic'],colors:['var(--info)','var(--info)','var(--conv)','var(--conv)','var(--expr)']}
+  ];
+  var sh='';
+  for(var i=0;i<scales.length;i++){var s=scales[i];
+  sh+='<div style="margin-bottom:12px"><div style="font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">'+s.label+'</div><div class="is-track">';
+  for(var w=0;w<s.words.length;w++){sh+='<div class="is-step" style="background:'+s.colors[w]+'15;border:1px solid '+s.colors[w]+'33" title="'+s.notes[w]+'"><div class="is-step-word" style="color:'+s.colors[w]+'">'+s.words[w]+'</div><div class="is-step-dots" style="color:'+s.colors[w]+'">'+'●'.repeat(w+1)+'</div></div>';}
+  sh+='</div></div>';}
+  el.innerHTML=sh;
+}
+function renderRelExercises(){
+  var el=document.getElementById('relExercises');if(!el)return;
+  var h='';for(var i=0;i<REL.length;i++)h+=renderQ(REL[i],i,relAns[i],'rel','var(--expr)','Expression of Ideas — Transitions');
+  el.innerHTML=h;
+  var done=true;for(var j=0;j<relAns.length;j++){if(relAns[j]===undefined)done=false;}
+  if(done)document.getElementById('relAdvance').innerHTML='<button class="btn btn-expr btn-lg" onclick="nextScreen()">Continue to Showdown →</button>';
+}
+function rel_click(i,v){if(relAns[i]!==undefined)return;relAns[i]=v;renderRelExercises();}
+
+/* ═══════════════════════════════════════════
+   SCREEN 4: BINARY SHOWDOWN
+   ═══════════════════════════════════════════ */
+var SHOWDOWN=[
+  {passage:'The medication\'s side effects were severe, including nausea, dizziness, and fatigue. _______ the majority of patients chose to continue treatment.',wordA:'However,',wordB:'Nevertheless,',correct:'B',explainA:'"However" signals general unexpected contrast. It works grammatically but misses the key nuance: patients continued DESPITE the negatives.',explainB:'"Nevertheless" = despite the preceding negative, this positive followed anyway. The side effects were acknowledged but didn\'t prevent continued treatment. This "despite that" nuance is precisely what the passage describes.',diff:'hard'},
+  {passage:'Urban residents reported significantly higher stress levels. _______ rural residents reported higher rates of social isolation.',wordA:'However,',wordB:'Conversely,',correct:'B',explainA:'"However" signals general contrast. It would work but is imprecise — it doesn\'t capture the direct mirror relationship.',explainB:'"Conversely" signals a direct reversal: urban = more stress, rural = more isolation. The two findings are symmetric opposites on the same axis.',diff:'hard'},
+  {passage:'Traditional farming methods had sustained the community for generations. _______ climate change disrupted rainfall patterns, forcing adaptation.',wordA:'However,',wordB:'Subsequently,',correct:'A',explainA:'"However" signals an unexpected disruption: farming worked → but climate change broke the pattern. This is genuine contrast, not just time sequence.',explainB:'"Subsequently" only marks time sequence. While climate change came later, the key relationship is that it DISRUPTED what was working — an unexpected complication, not just a next event.',diff:'medium'},
+  {passage:'The bridge was originally designed to last 50 years. _______ it has now been in continuous use for over 80 years.',wordA:'However,',wordB:'In fact,',correct:'B',explainA:'"However" implies the second sentence contradicts the first. But lasting longer isn\'t really a contradiction — it\'s exceeding expectations.',explainB:'"In fact" emphasizes or intensifies: not just 50 years as designed — actually 80+ years. The second sentence amplifies the first rather than opposing it.',diff:'medium'},
+  {passage:'Several studies linked screen time to sleep disruption in teenagers. _______ the American Academy of Pediatrics recommends limiting recreational screen use.',wordA:'Therefore,',wordB:'For this reason,',correct:'B',explainA:'"Therefore" implies strict logical deduction. The AAP recommendation is based on the evidence, but it\'s a policy response, not a logical proof.',explainB:'"For this reason" = because of the preceding finding. It connects evidence to a practical response more naturally than the strictly logical "therefore."',diff:'hard'},
+  {passage:'The experiment successfully demonstrated that the compound could neutralize the virus in laboratory conditions. _______ the compound proved toxic when administered to living organisms.',wordA:'However,',wordB:'Nevertheless,',correct:'A',explainA:'"However" = general unexpected contrast. Lab success → real-world failure is an unexpected complication. The toxicity undermines the initial success.',explainB:'"Nevertheless" would mean "despite the toxicity, something positive followed." But the second sentence IS the bad news — nothing positive follows the toxicity.',diff:'hard'}
+];
+var sdAns=new Array(SHOWDOWN.length).fill(undefined);
+var sdConfirmed=new Array(SHOWDOWN.length).fill(false);
+var sdIdx=0;
+
+function renderShowdownScreen(){
+  var h='<div class="screen fade-in"><div class="section-label">Session 3.5: Binary Showdown (8 min)</div><h2>⚔️ Precision Picks — Two Choices, One Answer</h2>';
+  h+='<p>Both transitions will "work" grammatically. Your job is to identify which captures the <em>exact</em> logical relationship.</p>';
+  /* Progress dots */
+  h+='<div style="display:flex;justify-content:center;gap:6px;margin:16px 0">';
+  for(var d=0;d<SHOWDOWN.length;d++){
+    var dc='score-dot';
+    if(sdConfirmed[d]&&sdAns[d]===SHOWDOWN[d].correct)dc+=' c';
+    else if(sdConfirmed[d])dc+=' w';
+    if(d===sdIdx&&!sdConfirmed[d])dc+=' current';
+    h+='<div class="'+dc+'">'+(d+1)+'</div>';
+  }
+  h+='</div>';
+  /* Current question */
+  var s=SHOWDOWN[sdIdx];
+  var ans=sdAns[sdIdx];var conf=sdConfirmed[sdIdx];
+  var diffCls=s.diff==='hard'?'diag-diff-hard':'diag-diff-medium';
+  h+='<div style="margin-bottom:8px"><span class="diag-domain" style="background:var(--nm)20;color:var(--nm)">Precision Showdown</span><span class="diag-diff '+diffCls+'">'+s.diff+'</span></div>';
+  h+='<div class="diag-passage">'+s.passage+'</div>';
+  h+='<div class="showdown-pair">';
+  var clsA='showdown-btn',clsB='showdown-btn';
+  if(conf&&s.correct==='A')clsA+=' sd-correct sd-disabled';
+  else if(conf&&ans==='A')clsA+=' sd-wrong sd-disabled';
+  else if(conf)clsA+=' sd-disabled';
+  else if(ans==='A')clsA+=' sd-selected';
+  if(conf&&s.correct==='B')clsB+=' sd-correct sd-disabled';
+  else if(conf&&ans==='B')clsB+=' sd-wrong sd-disabled';
+  else if(conf)clsB+=' sd-disabled';
+  else if(ans==='B')clsB+=' sd-selected';
+  h+='<div class="'+clsA+'" onclick="sd_select(\'A\')"><div class="sd-letter">Choice A</div><div class="sd-word">'+s.wordA+'</div></div>';
+  h+='<div class="'+clsB+'" onclick="sd_select(\'B\')"><div class="sd-letter">Choice B</div><div class="sd-word">'+s.wordB+'</div></div>';
+  h+='</div>';
+  if(!conf&&ans){h+='<div style="text-align:center;margin-bottom:12px"><button class="btn btn-sm btn-expr" onclick="sd_confirm()">Lock In</button></div>';}
+  if(conf){
+    h+='<div class="sd-explain"><strong>A: '+s.wordA+'</strong> '+s.explainA+'</div>';
+    h+='<div class="sd-explain" style="border-left-color:var(--correct)"><strong>B: '+s.wordB+'</strong> '+s.explainB+'</div>';
+    if(sdIdx<SHOWDOWN.length-1){h+='<div style="text-align:center;margin-top:12px"><button class="btn btn-expr" onclick="sd_next()">Next →</button></div>';}
+    else{
+      /* Check if all done */
+      var allDone=true;for(var k=0;k<sdConfirmed.length;k++){if(!sdConfirmed[k])allDone=false;}
+      if(allDone){
+        var right=0;for(var m=0;m<SHOWDOWN.length;m++){if(sdAns[m]===SHOWDOWN[m].correct)right++;}
+        var pct=Math.round((right/SHOWDOWN.length)*100);
+        var tier='';
+        if(pct>=83)tier='<div class="results-tier"><strong>Outstanding precision.</strong> You\'re making the fine distinctions that separate top scorers. These "however vs. nevertheless" picks are exactly what the hardest PSAT questions test.</div>';
+        else if(pct>=50)tier='<div class="results-tier"><strong>Good instincts, needs refinement.</strong> Review the ones you missed. "However" = unexpected complication. "Nevertheless" = despite that, this still happened. "Conversely" = direct mirror reversal.</div>';
+        else tier='<div class="results-tier"><strong>These are the hardest distinctions on the test.</strong> Re-read each explanation. The key: does the second sentence <em>undermine</em> the first (however), happen <em>despite</em> it (nevertheless), or <em>reverse</em> it (conversely)?</div>';
+        h+='<div class="results" style="margin-top:20px"><div style="text-align:center"><div class="results-big" style="color:'+(pct>=83?'var(--correct)':pct>=50?'var(--nm)':'var(--wrong)')+'">'+right+'/'+SHOWDOWN.length+'</div><div class="results-sub">Precision Picks</div></div>'+tier+'</div>';
+        h+='<div style="text-align:center;margin-top:16px"><button class="btn btn-expr btn-lg" onclick="nextScreen()">Continue to Traps →</button></div>';
+      }
+    }
+  }
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+}
+function sd_select(v){if(sdConfirmed[sdIdx])return;sdAns[sdIdx]=v;renderShowdownScreen();}
+function sd_confirm(){sdConfirmed[sdIdx]=true;renderShowdownScreen();}
+function sd_next(){sdIdx++;renderShowdownScreen();window.scrollTo(0,0);}
+
+/* ═══════════════════════════════════════════
+   SCREEN 5: TRAPS
+   ═══════════════════════════════════════════ */
+var TRAPS=[
+{passage:'The study found that students who slept 8+ hours performed better on exams. _______ students who exercised regularly also showed improved academic performance.',stem:'Which transition is correct? (The intuitive "Similarly" feels right — but is it?)',choices:['Similarly,','Therefore,','However,','For example,'],correct:0,explain:'Both sentences describe factors linked to better performance. They\'re parallel findings = addition. "Similarly" IS correct here — but students often second-guess it because the sentences describe different variables.',rule:'When two findings point in the same direction, it\'s Addition — even if the variables are different.',diff:'hard'},
+{passage:'The volcano had been dormant for over 300 years. _______ seismologists detected a sharp increase in underground tremors beginning in early 2024.',stem:'Many students pick "However" because the two facts feel different. What\'s the actual relationship?',choices:['However,','Moreover,','In fact,','Subsequently,'],correct:0,explain:'300 years of dormancy → tremors is genuinely unexpected and surprising. "However" IS correct here. The trap is the reverse: sometimes "however" is right, and students have been trained to distrust it.',rule:'Don\'t over-correct. "However" is sometimes exactly right.',diff:'hard'},
+{passage:'The company\'s revenue increased by 40% in Q3. _______ the CEO announced plans to expand into three new international markets.',stem:'Students often pick "Therefore" — but is the expansion a logical result of revenue, or a separate event?',choices:['Therefore,','In addition,','However,','Subsequently,'],correct:3,explain:'Revenue up in Q3 → expansion announced AFTER. "Subsequently" = happening after in time. "Therefore" implies the revenue directly caused the decision, but the passage only establishes sequence, not causation.',rule:'Don\'t assume cause/effect when the passage only shows sequence.',diff:'hard'},
+{passage:'Organic farming produces lower yields than conventional farming. _______ organic produce commands significantly higher market prices, which can offset the reduced output.',stem:'The intuitive pick is "However" — but check: does the second sentence truly oppose the first?',choices:['However,','Therefore,','Similarly,','In other words,'],correct:0,explain:'"However" IS correct. Lower yields (negative) → higher prices offset it (mitigating the negative). The second sentence introduces information that works against the first. This is genuine contrast.',diff:'hard'}
+];
+var trAns=new Array(TRAPS.length).fill(undefined);
+function renderTrapsScreen(){
+  var h='<div class="screen fade-in"><div class="section-label">Session 4: Trap Transitions (10 min)</div><h2>🪤 Sounds Right ≠ Is Right</h2>';
+  h+='<div class="callout callout-red"><strong>The #1 trap:</strong> "However" and "Therefore" are the two most commonly tested transitions. Students default to "however" whenever two sentences feel different, even when the relationship is actually cause/effect or concession. Always verify the LOGIC, not the vibe.</div>';
+  h+='<div id="trapExercises"></div>';
+  h+='<div id="trapAdvance" style="text-align:center;padding:16px 0"></div>';
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+  renderTrapExercises();
+}
+function renderTrapExercises(){
+  var el=document.getElementById('trapExercises');if(!el)return;
+  var h='';for(var i=0;i<TRAPS.length;i++)h+=renderQ(TRAPS[i],i,trAns[i],'tr','var(--wrong)','Trap Analysis');
+  el.innerHTML=h;
+  var done=true;for(var j=0;j<trAns.length;j++){if(trAns[j]===undefined)done=false;}
+  if(done)document.getElementById('trapAdvance').innerHTML='<button class="btn btn-expr btn-lg" onclick="nextScreen()">Continue to Timed Practice →</button>';
+}
+function tr_click(i,v){if(trAns[i]!==undefined)return;trAns[i]=v;renderTrapExercises();}
+
+/* ═══════════════════════════════════════════
+   SCREEN 6: TIMED MIXED PRACTICE
+   ═══════════════════════════════════════════ */
+var PR=[
+{passage:'The coral reef had been severely damaged by a 2022 bleaching event. _______ marine biologists were surprised to find that by 2024, nearly 60% of the coral had regenerated.',stem:'Which transition best completes the text?',choices:['Therefore,','Similarly,','Nevertheless,','For instance,'],correct:2,subtype:'Transitions',explain:'Severe damage → surprising recovery. "Nevertheless" = despite what was just stated.',diff:'medium'},
+{passage:'Researchers at MIT developed a new solar panel that converts 40% of sunlight into electricity — nearly double the efficiency of standard panels. _______ the manufacturing cost per unit is currently five times higher than conventional panels.',stem:'Which transition best completes the text?',choices:['Moreover,','However,','As a result,','In other words,'],correct:1,subtype:'Transitions',explain:'Great efficiency + terrible cost = contrasting aspects.',diff:'medium'},
+{passage:'The novelist\'s latest work was her most _______ yet, tackling themes of displacement, generational trauma, and political exile across three continents and four decades.',stem:'Which word best completes the text?',choices:['modest','ambitious','predictable','superficial'],correct:1,subtype:'WIC',explain:'Three continents, four decades, heavy themes = large scope. "Ambitious."',diff:'medium'},
+{passage:'The study found that bilingual children outperformed monolingual children on cognitive flexibility tasks. _______ children who spoke three or more languages showed even greater advantages.',stem:'Which transition best completes the text?',choices:['In contrast,','However,','Furthermore,','In other words,'],correct:2,subtype:'Transitions',explain:'Bilingual = better → trilingual = even better. "Furthermore" adds to the point.',diff:'medium'},
+{passage:'The orchestra performed the symphony flawlessly _______ the lead violinist had joined the ensemble only three days before the concert.',stem:'Which choice conforms to Standard English?',choices:['flawlessly, even though','flawlessly. Even though','flawlessly; even though','flawlessly even though'],correct:0,subtype:'Conventions',explain:'"Even though" introduces a dependent clause. Comma separates it.',diff:'medium'},
+{passage:'Ancient Roman engineers built aqueducts that transported water across vast distances using only gravity. _______ the Pont du Gard in southern France carried water 50 kilometers from its source to the city of Nimes.',stem:'Which transition best completes the text?',choices:['However,','Therefore,','For example,','In contrast,'],correct:2,subtype:'Transitions',explain:'General fact → specific instance. "For example."',diff:'medium'},
+{passage:'<strong>Text 1:</strong> Economist Reyes argues raising minimum wage boosts consumer spending. <strong>Text 2:</strong> Economist Nakamura agrees spending increases but notes that small businesses may reduce staff to absorb costs.',stem:'How would Nakamura respond to Reyes?',choices:['Complete disagreement.','Acceptance of the spending claim but qualification about small business impact.','Extension with new supporting data.','Irrelevant response.'],correct:1,subtype:'Cross-Text',explain:'Agrees on spending but adds negative effect on small businesses (qualification).',diff:'hard'},
+{passage:'The algorithm initially produced results that were both fast and accurate. _______ as the dataset grew from thousands to millions of entries, processing speed declined by 70% while accuracy remained unchanged.',stem:'Which transition best completes the text?',choices:['Similarly,','Moreover,','However,','In other words,'],correct:2,subtype:'Transitions',explain:'Fast+accurate initially → speed dropped later. Unexpected change = contrast.',diff:'medium'},
+{passage:'Dr. Chen\'s research demonstrated that the treatment was effective for patients under 50. _______ it showed no significant benefit for patients over 65.',stem:'Which transition best completes the text?',choices:['Moreover,','For instance,','In contrast,','Therefore,'],correct:2,subtype:'Transitions',explain:'Effective for one group, not for another = direct contrast.',diff:'medium'},
+{passage:'The architect designed the building to maximize natural light _______ reducing energy costs by eliminating the need for artificial lighting during daytime hours.',stem:'Which choice conforms to Standard English?',choices:['light, thereby','light; thereby','light thereby','light. Thereby'],correct:0,subtype:'Conventions',explain:'"Thereby reducing" is a participial phrase. Comma separates it.',diff:'medium'},
+{passage:'Several studies have linked excessive screen time to sleep disruption in teenagers. _______ the American Academy of Pediatrics recommends limiting recreational screen use to two hours per day.',stem:'Which transition best completes the text?',choices:['In contrast,','For this reason,','Nevertheless,','Similarly,'],correct:1,subtype:'Transitions',explain:'Studies show harm → organization recommends. "For this reason."',diff:'medium'},
+{passage:'The discovery of water ice on the Moon\'s south pole was significant not for its scientific novelty — scientists had long theorized it existed — but for its practical implications. _______ the ice could potentially be converted into drinking water, oxygen, and rocket fuel for future lunar missions.',stem:'Which transition best completes the text?',choices:['However,','In contrast,','Specifically,','Nevertheless,'],correct:2,subtype:'Transitions',explain:'"Practical implications" (general) → specific details. "Specifically."',diff:'hard'},
+{passage:'The poet\'s early work was characterized by rigid formal structures and traditional rhyme schemes. Her later collections, _______ embraced free verse and experimental typography.',stem:'Which word or phrase best completes the text?',choices:['in addition,','by contrast,','for example,','as a result,'],correct:1,subtype:'Transitions',explain:'Rigid → free verse. Direct opposition. "By contrast."',diff:'medium'},
+{passage:'The historian argues that the decline of the Ottoman Empire was not the result of a single catastrophic event but rather a gradual accumulation of territorial losses, economic pressures, and internal political _______ that weakened the state over centuries.',stem:'Which word best completes the text?',choices:['harmony','fragmentation','unification','consistency'],correct:1,subtype:'WIC',explain:'"Decline," "weakened," "losses" — all negative. "Fragmentation" fits.',diff:'hard'}
+];
+var pAns=new Array(PR.length).fill(undefined);var pScored=false;var pTimer=null;var pTimeLeft=17*60+30;var pCurrent=0;var pStarted=false;
+
+function renderPracticeScreen(){
+  var h='<div class="screen fade-in"><div class="section-label">Session 5: Mixed Practice (20 min)</div><h2>📝 Transitions + Prior Domains</h2>';
+  h+='<p>14 questions: ~8 Transitions + ~6 interleaved. <strong>75 seconds each.</strong></p>';
+  if(!pStarted&&!pScored){
+    h+='<div style="text-align:center;padding:32px 0"><button class="btn btn-expr btn-lg" onclick="startPractice()">Start Timed Practice (17:30) →</button></div>';
+  } else if(!pScored){
+    h+='<div id="practiceTimer"><div class="timer-display" id="pTimerDisplay">17:30</div><div class="timer-bar"><div class="timer-fill" id="pTimerFill"></div></div><div class="score-track" id="scoreTrack"></div></div>';
+    h+='<div id="practiceQs"></div>';
+  } else {
+    h+='<div id="practiceResults"></div>';
+    h+='<div style="text-align:center;padding:16px 0"><button class="btn btn-expr btn-lg" onclick="nextScreen()">Continue to Challenge →</button></div>';
+  }
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+  if(pStarted&&!pScored)renderPracticeQ();
+  if(pScored)showPracticeResults();
+}
+function startPractice(){
+  pStarted=true;renderPracticeScreen();
+  pTimer=setInterval(function(){
+    pTimeLeft--;if(pTimeLeft<=0){clearInterval(pTimer);scoreP();}
+    var m=Math.floor(pTimeLeft/60),s=pTimeLeft%60;
+    var td=document.getElementById('pTimerDisplay');if(td)td.textContent=m+':'+(s<10?'0':'')+s;
+    var pct=(pTimeLeft/(17*60+30))*100;
+    var f=document.getElementById('pTimerFill');if(f){f.style.width=pct+'%';f.className='timer-fill'+(pct<20?' warning':'');}
+  },1000);
+}
+function renderPracticeQ(){
+  var qEl=document.getElementById('practiceQs');if(!qEl)return;
+  var q=PR[pCurrent];var ans=pAns[pCurrent];
+  var h='<div style="font-size:.82rem;color:var(--muted);margin-bottom:8px">Question '+(pCurrent+1)+'/'+PR.length+'</div>';
+  h+=renderQ(q,pCurrent,ans,'p','var(--expr)','Expression of Ideas — '+q.subtype);
+  if(ans!==undefined){h+='<div style="text-align:center;margin-top:12px">';
+  if(pCurrent<PR.length-1)h+='<button class="btn btn-expr" onclick="nextP()">Next →</button>';
+  else h+='<button class="btn btn-expr" onclick="scoreP()">Results →</button>';h+='</div>';}
+  qEl.innerHTML=h;
+  var stEl=document.getElementById('scoreTrack');if(stEl){
+  var d='';for(var i=0;i<PR.length;i++){var cls='score-dot';if(pAns[i]!==undefined)cls+=pAns[i]===PR[i].correct?' c':' w';if(i===pCurrent&&!pScored)cls+=' current';d+='<div class="'+cls+'">'+(i+1)+'</div>';}stEl.innerHTML=d;}
+}
+function p_click(i,v){if(pAns[i]!==undefined||pScored)return;pAns[i]=v;renderPracticeQ();}
+function nextP(){pCurrent++;renderPracticeQ();window.scrollTo(0,0);}
+function scoreP(){
+  if(pTimer)clearInterval(pTimer);pScored=true;renderPracticeScreen();
+}
+function showPracticeResults(){
+  var el=document.getElementById('practiceResults');if(!el)return;
+  var total=0;var byT={};var byD={'medium':{c:0,t:0},'hard':{c:0,t:0}};
+  for(var i=0;i<PR.length;i++){
+    var st=PR[i].subtype||'Other';if(!byT[st])byT[st]={c:0,t:0};byT[st].t++;
+    var dif=PR[i].diff||'medium';byD[dif].t++;
+    if(pAns[i]===PR[i].correct){total++;byT[st].c++;byD[dif].c++;}
+  }
+  var pct=Math.round((total/PR.length)*100);
+  var colors={'Transitions':'var(--expr)','WIC':'var(--craft)','Conventions':'var(--conv)','Cross-Text':'var(--info)'};
+  var dH='';for(var nm in byT){var d=byT[nm];var dp=d.t>0?Math.round((d.c/d.t)*100):0;dH+='<div class="results-domain"><div class="results-domain-name" style="color:'+colors[nm]+'">'+nm+'</div><div class="results-domain-score" style="color:'+(dp>=75?'var(--correct)':dp>=50?'var(--expr)':'var(--wrong)')+'">'+d.c+'/'+d.t+'</div></div>';}
+  var diffH='<div style="display:flex;gap:10px;justify-content:center;margin:10px 0">';
+  diffH+='<div style="text-align:center;padding:8px 16px;background:var(--paper);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.68rem;color:var(--conv);text-transform:uppercase;letter-spacing:1px">Medium</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:1rem;font-weight:700;color:'+(byD.medium.t>0&&byD.medium.c/byD.medium.t>=.75?'var(--correct)':'var(--conv)')+'">'+byD.medium.c+'/'+byD.medium.t+'</div></div>';
+  diffH+='<div style="text-align:center;padding:8px 16px;background:var(--paper);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.68rem;color:var(--wrong);text-transform:uppercase;letter-spacing:1px">Hard</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:1rem;font-weight:700;color:'+(byD.hard.t>0&&byD.hard.c/byD.hard.t>=.75?'var(--correct)':'var(--wrong)')+'">'+byD.hard.c+'/'+byD.hard.t+'</div></div></div>';
+  var tier='';
+  if(pct>=85)tier='<div class="results-tier"><strong>🎯 Outstanding.</strong> You\'ve internalized the relationship-first system. Transition questions will be among your fastest points on test day. Focus remaining energy on the domains where you lost points above.</div>';
+  else if(pct>=64)tier='<div class="results-tier"><strong>📈 Solid progress.</strong> Look at the breakdown: are misses concentrated in one subtype? For transition misses, review the distinction between "however" (unexpected contrast) and "nevertheless" (despite the preceding point).</div>';
+  else tier='<div class="results-tier"><strong>🔧 Building foundations.</strong> Before looking at ANY answer choices, say the relationship out loud. If you can name the relationship correctly, the right answer almost picks itself. Review Sessions 2 and 3.</div>';
+  /* Error log */
+  var errs={};var errDetails={};
+  for(var j=0;j<PR.length;j++){if(pAns[j]!==PR[j].correct){var eSt=PR[j].subtype||'Other';errs[eSt]=(errs[eSt]||0)+1;if(!errDetails[eSt])errDetails[eSt]=[];errDetails[eSt].push({q:j+1,diff:PR[j].diff||'medium'});}}
+  var elogH='';
+  if(Object.keys(errs).length>0){
+    elogH+='<div style="font-size:.88rem;color:var(--ink);font-weight:700;margin:16px 0 10px">Error Breakdown</div><div class="error-breakdown">';
+    for(var st in errs){var dets=errDetails[st];var detStr=dets.map(function(d){return 'Q'+d.q+' <span style="font-size:.68rem;color:'+(d.diff==='hard'?'var(--wrong)':'var(--conv)')+'">'+d.diff+'</span>';}).join(', ');
+    elogH+='<div class="error-item"><div class="error-item-label" style="color:'+(colors[st]||'var(--muted)')+'">'+st+'</div><div class="error-item-score" style="color:var(--wrong)">'+errs[st]+' missed</div><div style="font-size:.78rem;color:var(--muted);margin-top:4px">'+detStr+'</div></div>';}
+    elogH+='</div>';
+  }else{elogH='<div style="text-align:center;padding:12px;color:var(--correct);font-weight:700">🎯 Perfect! No errors.</div>';}
+  el.innerHTML='<div class="results"><div style="text-align:center;margin-bottom:16px"><div class="results-big" style="color:'+(pct>=75?'var(--correct)':pct>=50?'var(--expr)':'var(--wrong)')+'">'+total+'/'+PR.length+'</div><div class="results-sub">'+pct+'% · Transitions + Interleaved</div></div><div class="results-domains">'+dH+'</div>'+diffH+tier+'</div>'+elogH;
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN 7: CHALLENGE MODE
+   ═══════════════════════════════════════════ */
+var CHA=[
+{passage:'The experiment successfully demonstrated that the compound could neutralize the virus in laboratory conditions. _______ the compound proved toxic when administered to living organisms at the required dosage.',stem:'All four options signal contrast — which is most precise?',choices:['However,','Nevertheless,','Conversely,','In contrast,'],correct:0,explain:'"However" = unexpected contrast (lab success → real-world failure). "Nevertheless" would mean "despite the toxicity, something positive followed." "Conversely" implies a direct logical reversal. "In contrast" works for comparing two parallel things.',rule:'However = unexpected complication. Conversely = direct opposite. Nevertheless = despite that.',diff:'hard'},
+{passage:'Urban residents reported significantly higher stress levels than their rural counterparts. _______ rural residents reported higher rates of social isolation and loneliness.',stem:'Which contrast transition is most precise?',choices:['However,','Nevertheless,','Conversely,','In contrast,'],correct:2,explain:'"Conversely" — the two findings are direct opposites on the urban-rural axis: urban = more stress, rural = more isolation. Symmetric and reversed.',rule:'Conversely = when the second point is the direct mirror/reverse of the first.',diff:'hard'},
+{passage:'The medication\'s side effects were severe, including nausea, dizziness, and fatigue. _______ the majority of patients chose to continue treatment because the medication effectively managed their chronic pain.',stem:'Which contrast transition is most precise?',choices:['However,','Nevertheless,','Conversely,','In contrast,'],correct:1,explain:'"Nevertheless" = despite the preceding negative, this positive is also true. Patients continued DESPITE the side effects.',rule:'Nevertheless = the preceding point didn\'t prevent the following point. "Despite that."',diff:'hard'},
+{passage:'The northern region receives an average of 120 cm of rainfall annually and supports dense tropical forests. _______ the southern region receives only 15 cm and consists primarily of arid desert.',stem:'Which contrast transition is most precise?',choices:['However,','Nevertheless,','Conversely,','In contrast,'],correct:3,explain:'"In contrast" — side-by-side comparison of two parallel items. No surprise, no "despite," no reversal — just comparison.',rule:'In contrast = side-by-side comparison of two parallel items.',diff:'hard'}
+];
+var chaAns=new Array(CHA.length).fill(undefined);
+var CHB=[
+{passage:'The bridge was originally designed to last 50 years. _______ it has now been in continuous use for over 80 years with no structural issues.',stem:'Transition?',choices:['Therefore,','In fact,','However,','For instance,'],correct:1,subtype:'Transitions',explain:'"In fact" emphasizes/intensifies.',diff:'medium'},
+{passage:'The playwright\'s first three works were comedies. _______ she shifted to writing tragedies that explored themes of loss and isolation.',stem:'Transition?',choices:['Similarly,','Subsequently,','Moreover,','For example,'],correct:1,subtype:'Transitions',explain:'Time sequence. "Subsequently" = happening after.',diff:'medium'},
+{passage:'The vaccine was effective at preventing infection. _______ it significantly reduced the severity of symptoms in those who did contract the virus.',stem:'Transition?',choices:['However,','In addition,','In contrast,','Therefore,'],correct:1,subtype:'Transitions',explain:'Two benefits. Addition. "In addition."',diff:'medium'},
+{passage:'The river had flooded three times in the past decade, destroying homes and crops each time. _______ the county government approved a $200 million flood control project.',stem:'Transition?',choices:['In contrast,','Consequently,','Similarly,','For instance,'],correct:1,subtype:'Transitions',explain:'Cause/effect. "Consequently" = as a result.',diff:'medium'},
+{passage:'The novel\'s protagonist makes a series of increasingly reckless decisions. _______ she gambles away her family\'s savings, quits her job without notice, and drives cross-country on impulse.',stem:'Transition?',choices:['However,','Therefore,','Specifically,','Nevertheless,'],correct:2,subtype:'Transitions',explain:'"Specifically" introduces the details.',diff:'medium'},
+{passage:'Traditional farming methods had sustained the community for generations. _______ climate change disrupted rainfall patterns, forcing farmers to adopt irrigation systems they could barely afford.',stem:'Transition?',choices:['Moreover,','For instance,','However,','In other words,'],correct:2,subtype:'Transitions',explain:'Unexpected disruption = contrast. "However."',diff:'medium'}
+];
+var chbAns=new Array(CHB.length).fill(undefined);var chbStarted=false;var chbTimer=null;var chbTime=5*60;
+
+function renderChallengeScreen(){
+  var h='<div class="screen fade-in"><div class="nm-section"><div class="nm-badge">⭐ Challenge Mode</div>'+
+  '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;margin-bottom:6px">Subtle Contrasts & Speed Round</h2>'+
+  '<p style="font-size:.9rem;color:#ccc;margin-bottom:4px"><strong>Part A:</strong> 4 questions where "however," "nevertheless," "conversely," and "in contrast" are ALL options but only one is precise.</p>'+
+  '<p style="font-size:.9rem;color:#ccc;margin-bottom:16px"><strong>Part B:</strong> 6 rapid-fire transitions. Beat the 5-minute clock.</p></div>';
+  /* Part A */
+  h+='<h3 style="color:var(--nm);margin-bottom:10px">Part A: Subtle Contrast Precision</h3>';
+  for(var i=0;i<CHA.length;i++)h+=renderQ(CHA[i],i,chaAns[i],'cha','var(--nm)','Challenge — Contrast Precision');
+  /* Part B */
+  h+='<h3 style="color:var(--nm);margin:20px 0 10px">Part B: Speed Round (5 min)</h3>';
+  if(!chbStarted){
+    h+='<div style="text-align:center"><button class="btn btn-nm" onclick="startCHB()">Start Speed Round →</button></div>';
+  } else {
+    h+='<div id="challengeTimer"><div class="timer-display" id="cTimerDisplay">5:00</div><div class="timer-bar"><div class="timer-fill" id="cTimerFill"></div></div></div>';
+    for(var j=0;j<CHB.length;j++)h+=renderQ(CHB[j],j,chbAns[j],'chb','var(--nm)','Speed Round '+(j+1));
+  }
+  h+='<div id="challengeScore" style="text-align:center;padding:10px 0"></div>';
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+  checkAllChallenge();
+}
+function cha_click(i,v){if(chaAns[i]!==undefined)return;chaAns[i]=v;renderChallengeScreen();}
+function startCHB(){chbStarted=true;renderChallengeScreen();chbTimer=setInterval(function(){chbTime--;if(chbTime<=0){clearInterval(chbTimer);checkAllChallenge();}var m=Math.floor(chbTime/60),s=chbTime%60;var td=document.getElementById('cTimerDisplay');if(td)td.textContent=m+':'+(s<10?'0':'')+s;var pct=(chbTime/300)*100;var f=document.getElementById('cTimerFill');if(f){f.style.width=pct+'%';f.className='timer-fill'+(pct<20?' warning':'');}},1000);}
+function chb_click(i,v){if(chbAns[i]!==undefined)return;chbAns[i]=v;renderChallengeScreen();}
+function checkAllChallenge(){
+  var aa=0,ac=0;for(var i=0;i<chaAns.length;i++){if(chaAns[i]!==undefined){aa++;if(chaAns[i]===CHA[i].correct)ac++;}}
+  var ba=0,bc=0;for(var j=0;j<chbAns.length;j++){if(chbAns[j]!==undefined){ba++;if(chbAns[j]===CHB[j].correct)bc++;}}
+  if(aa===CHA.length&&ba===CHB.length){
+    if(chbTimer)clearInterval(chbTimer);
+    var t=ac+bc;var tot=CHA.length+CHB.length;var pct=Math.round((t/tot)*100);
+    var tier='';
+    if(pct>=80)tier='<div class="results-tier"><strong>🏆 Outstanding precision</strong> on contrast types AND speed! You\'re distinguishing however/nevertheless/conversely/in contrast at a level most students never reach.</div>';
+    else if(pct>=50)tier='<div class="results-tier"><strong>📊 Good foundation.</strong> Review: <em>however</em> = unexpected complication, <em>nevertheless</em> = despite that, <em>conversely</em> = direct reversal, <em>in contrast</em> = side-by-side comparison.</div>';
+    else tier='<div class="results-tier"><strong>🔧 Focus on the rule cards.</strong> Each contrast word has a specific logical meaning. Go back to Session 2 and re-read the Contrast card.</div>';
+    var el=document.getElementById('challengeScore');
+    if(el)el.innerHTML='<div class="results"><div style="text-align:center"><div class="results-big" style="color:'+(pct>=80?'var(--correct)':pct>=50?'var(--nm)':'var(--wrong)')+'">'+t+'/'+tot+'</div><div class="results-sub">Challenge Score</div></div><div style="display:flex;gap:10px;justify-content:center;margin:10px 0"><div style="text-align:center;padding:8px 16px;background:var(--paper);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.68rem;color:var(--nm);text-transform:uppercase;letter-spacing:1px">Part A</div><div style="font-family:\'JetBrains Mono\',monospace;font-weight:700;color:var(--nm)">'+ac+'/'+CHA.length+'</div></div><div style="text-align:center;padding:8px 16px;background:var(--paper);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.68rem;color:var(--nm);text-transform:uppercase;letter-spacing:1px">Part B</div><div style="font-family:\'JetBrains Mono\',monospace;font-weight:700;color:var(--nm)">'+bc+'/'+CHB.length+'</div></div></div>'+tier+'</div><div style="margin-top:16px"><button class="btn btn-expr btn-lg" onclick="nextScreen()">Finish Module →</button></div>';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN 8: COMPLETE
+   ═══════════════════════════════════════════ */
+function renderCompleteScreen(){
+  var h='<div class="screen fade-in" style="text-align:center;padding-top:80px">';
+  h+='<div style="font-size:64px;margin-bottom:16px">🎉</div>';
+  h+='<h1 style="color:var(--expr);font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:8px">Module 8 Complete</h1>';
+  h+='<p style="max-width:500px;margin:0 auto 32px;font-size:1rem">You\'ve mastered the transition system — six relationships, one method, and the precision to distinguish even the trickiest contrast words.</p>';
+  /* Summary */
+  h+='<div style="text-align:left;max-width:600px;margin:0 auto"><div class="section-label">Key Takeaways</div>';
+  h+='<div class="card card-accent"><ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">';
+  h+='<li>Every transition expresses one of six relationships: <strong>addition, contrast, cause/effect, example, sequence, summary</strong>.</li>';
+  h+='<li>Always identify the <strong>relationship FIRST</strong>, then match the transition.</li>';
+  h+='<li><strong>"However"</strong> = unexpected contrast. <strong>"Therefore"</strong> = logical result. <strong>"For example"</strong> = specific instance. <strong>"Moreover"</strong> = additional similar point.</li>';
+  h+='<li>The hardest questions test distinctions within a category: "however" vs. "conversely" vs. "nevertheless" vs. "in contrast."</li>';
+  h+='<li>Target under 60 seconds per transition question on test day.</li></ol></div>';
+  /* Homework */
+  h+='<div class="section-label" style="margin-top:24px">Homework</div>';
+  h+='<div class="card card-accent" style="font-size:.93rem;color:#ccc">';
+  h+='<p><strong style="color:var(--ink)">1. Transition Audit</strong> — Read an article and circle every transition word. Label its category.</p>';
+  h+='<p><strong style="color:var(--ink)">2. Relationship-First Drill</strong> — For 5 transition practice questions, write the relationship type BEFORE looking at choices.</p>';
+  h+='<p><strong style="color:var(--ink)">3. Contrast Precision</strong> — Write 4 sentence pairs that use however, nevertheless, conversely, and in contrast correctly.</p>';
+  h+='<p style="margin:0"><strong style="color:var(--ink)">4. Preview Module 9</strong> — Next: Rhetorical Synthesis (Research Notes). Start noticing bullet-point formatting in research.</p></div>';
+  h+='</div>';
+  /* Nav */
+  h+='<div class="mod-nav" style="max-width:600px;margin:16px auto 0"><a href="module-7.html">← Module 7: How It\'s Built</a><a href="module-9.html">Module 9: The Research Brief →</a></div>';
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+}
+
+/* ═══ INIT ═══ */
+renderScreen();
+</script>
+</body></html>

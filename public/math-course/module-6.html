@@ -10,6 +10,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--geo));width:0%;transition:width .3s ease}
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
@@ -104,7 +106,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .sat-choice:hover:not(.sc-dis){border-color:var(--geo);background:var(--geo-bg)}
 .sat-choice.sc-correct{border-color:var(--correct);background:var(--correct-bg)}
 .sat-choice.sc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.sat-choice.sc-dis{pointer-events:none;opacity:.6}
+.sat-choice.sc-dis{pointer-events:none;opacity:.6}.sat-choice.sc-dis.sc-correct{opacity:1}
 .sc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
 .sat-choice.sc-correct .sc-letter{background:var(--correct);color:#fff}
 .sat-choice.sc-wrong .sc-letter{background:var(--wrong);color:#fff}
@@ -126,6 +128,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </head>
 <body>
 <div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div class="container">
 <a class="back-link" href="index.html">← Back to Math Course</a>
 
@@ -202,7 +205,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- INTERACTIVE: ANGLE RELATIONSHIPS -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 1</div>
   <h2>Angle Relationship Solver</h2>
   <p>Find the missing angle in each scenario.</p>
   <div class="exercise" id="angleExercise"></div>
@@ -250,11 +253,20 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- INTERACTIVE: CIRCLE EQUATIONS -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 2</div>
   <h2>Circle Equation Workshop</h2>
   <p>Identify the center and radius from each equation, or find the arc/area.</p>
   <div class="exercise" id="circleExercise"></div>
   <div id="circleScore" class="ex-score"></div>
+</div>
+
+<!-- NEW EXERCISE: FORMULA PICKER -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 3</div>
+  <h2>Which Formula Do I Need?</h2>
+  <p>On the real SAT, nobody tells you which formula to use. Given each problem description, pick the correct formula. This skill separates high scorers from mid-range.</p>
+  <div class="exercise" style="border-color:var(--psda)" id="formulaExercise"></div>
+  <div id="formulaScore" class="ex-score"></div>
 </div>
 
 <!-- TOPIC 6C: AREA & VOLUME -->
@@ -276,8 +288,40 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- TOPIC 6D: TRIG -->
+
+<!-- TOPIC: Coordinate Geometry -->
 <div class="section">
   <div class="section-label">Topic 6D</div>
+  <h2>Coordinate Geometry</h2>
+</div>
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--geo)">6D</div>
+    <div class="topic-info"><div class="topic-title">Distance & Midpoint Formulas</div><div class="topic-sub">Finding lengths and midpoints on the coordinate plane</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <div class="formula-box">
+      <div><span class="fn">Distance:</span> d = √[(x₂−x₁)² + (y₂−y₁)²]</div>
+      <div style="color:var(--muted);font-size:.82rem;margin-bottom:4px">This IS the Pythagorean theorem on the coordinate plane!</div>
+      <div><span class="fn">Midpoint:</span> M = ((x₁+x₂)/2, (y₁+y₂)/2)</div>
+      <div style="color:var(--muted);font-size:.82rem">Average the x’s and average the y’s</div>
+    </div>
+    <p><strong>Example:</strong> Distance from (1, 2) to (4, 6) = √[(4−1)² + (6−2)²] = √[9 + 16] = √25 = 5. That’s a 3-4-5 right triangle!</p>
+    <div class="callout"><strong>Don’t memorize the distance formula separately.</strong> Just draw a right triangle on the coordinate plane. The horizontal and vertical distances are the legs. Use a² + b² = c².</div>
+    <h4>Key SAT Patterns</h4>
+    <ul>
+      <li><strong>Distance between two points:</strong> Draw the right triangle. Recognize Pythagorean triples (3-4-5, 5-12-13, 8-15-17).</li>
+      <li><strong>Midpoint of a segment:</strong> Average x-coordinates and y-coordinates separately.</li>
+      <li><strong>Perimeter of a polygon on a grid:</strong> Find each side length with the distance formula, then sum.</li>
+      <li><strong>Endpoint given midpoint:</strong> If M is the midpoint of AB, and you know A and M, then B = (2Mₓ − Aₓ, 2Mᵧ − Aᵧ).</li>
+      <li><strong>Desmos shortcut:</strong> Plot both points. The distance tool or a simple right-triangle sketch gives the answer fast.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Topic 6E</div>
   <h2>Trigonometry</h2>
 
   <div class="tri-grid">
@@ -320,7 +364,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- INTERACTIVE: SPECIAL TRIANGLES DRILL -->
 <div class="section">
-  <div class="section-label">Interactive Exercise</div>
+  <div class="section-label">Interactive Exercise 4</div>
   <h2>Special Right Triangles Drill</h2>
   <p>Find the missing side length. These patterns appear on almost every SAT.</p>
   <div class="exercise" id="triExercise"></div>
@@ -344,9 +388,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- SAT PRACTICE -->
+
+<!-- COMPOSITE SHAPE CALCULATOR -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 6</div>
+  <h2>Composite Shape Calculator</h2>
+  <p>Find the shaded or remaining area in each problem. These multi-step geometry problems appear regularly on the SAT. Leave answers in terms of π where appropriate.</p>
+  <div class="exercise" style="border-color:var(--geo)" id="cmpEx"></div>
+</div>
+
 <div class="section">
   <div class="section-label">SAT-Style Practice</div>
   <h2>Practice Questions</h2>
+  <p>10 questions covering all topics. 3 foundational, 4 intermediate, 3 advanced — including composite shapes.</p>
   <div id="satQuestions"></div>
   <div id="satScore" class="ex-score"></div>
 </div>
@@ -360,10 +414,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <li>Triangle angles sum to 180°. Supplementary = 180°. Complementary = 90°.</li>
       <li>Memorize the 30-60-90 (1:√3:2) and 45-45-90 (1:1:√2) ratios cold.</li>
       <li>Know common Pythagorean triples: 3-4-5, 5-12-13, 8-15-17, and their multiples.</li>
+      <li><strong>Choose the right formula</strong> — on the real SAT, nobody tells you which to use. Practice picking formulas from problem descriptions.</li>
       <li>Circle standard form: (x−h)²+(y−k)²=r². Center=(h,k), Radius=r. Complete the square if needed.</li>
       <li>Arc and sector formulas use the fraction θ/360 (what portion of the full circle).</li>
       <li>SOH-CAH-TOA. sin(x) = cos(90°−x). 180° = π radians.</li>
       <li>Cones and pyramids = ⅓ of the corresponding full shape (cylinder/prism).</li>
+      <li>Composite shapes: break them into simpler shapes, then add or subtract areas/volumes.</li>
     </ol>
   </div>
 </div>
@@ -375,157 +431,142 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <script>
-// ============ ANGLE RELATIONSHIPS ============
-const ANGLES=[
-  {prompt:'Two angles are supplementary. One measures 65°. What is the other?',answer:'115°',opts:['25°','65°','115°','180°'],fb:'Supplementary = 180°. 180 − 65 = 115°.'},
-  {prompt:'In a triangle, two angles measure 45° and 70°. What is the third angle?',answer:'65°',opts:['65°','45°','75°','115°'],fb:'Triangle sum = 180°. 180 − 45 − 70 = 65°.'},
-  {prompt:'Two parallel lines are cut by a transversal. One angle is 130°. What is the alternate interior angle?',answer:'130°',opts:['50°','130°','180°','90°'],fb:'Alternate interior angles are EQUAL when lines are parallel. Both are 130°.'},
-  {prompt:'An exterior angle of a triangle measures 120°. The two remote interior angles are equal. What does each measure?',answer:'60°',opts:['30°','40°','60°','120°'],fb:'Exterior angle = sum of remote interiors. 120 = x + x = 2x. x = 60°.'},
-  {prompt:'Two vertical angles are formed. One is (3x + 10)° and the other is (5x − 20)°. Find x.',answer:'15',opts:['10','15','20','30'],fb:'Vertical angles are equal: 3x + 10 = 5x − 20 → 30 = 2x → x = 15.'},
-  {prompt:'In a 30-60-90 triangle, the side opposite the 30° angle is 5. What is the hypotenuse?',answer:'10',opts:['5√2','5√3','10','15'],fb:'30-60-90 ratio is 1:√3:2. Short leg = 5, so hypotenuse = 5 × 2 = 10.'},
-  {prompt:'In a 45-45-90 triangle, each leg is 7. What is the hypotenuse?',answer:'7√2',opts:['7','14','7√2','7√3'],fb:'45-45-90 ratio is 1:1:√2. Legs = 7, so hypotenuse = 7√2.'},
-  {prompt:'A right triangle has legs 6 and 8. What is the hypotenuse?',answer:'10',opts:['10','12','14','√100'],fb:'6-8-10 is a multiple of the 3-4-5 triple (×2). Or: √(36+64) = √100 = 10.'},
+// ============ PROGRESS BAR ============
+window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;var pct=h>0?(window.scrollY/h)*100:0;document.getElementById('progressFill').style.width=pct+'%';});
+
+// ============ HELPERS ============
+function showScore(id,ans,items,key){var t=items.length,a=Object.keys(ans).length,c=0;Object.entries(ans).forEach(function(p){var i=parseInt(p[0]),v=p[1];if(v===items[i][key||'answer'])c++;});document.getElementById(id).innerHTML=a===t?'<strong style="color:'+(c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';}
+
+// ============ EXERCISE 1: ANGLES ============
+var ANGLES=[
+  {prompt:'Two supplementary angles. One is 65°. Other?',answer:'115°',opts:['25°','65°','115°','180°'],fb:'180−65=115°.'},
+  {prompt:'Triangle angles: 45° and 70°. Third?',answer:'65°',opts:['65°','45°','75°','115°'],fb:'180−45−70=65°.'},
+  {prompt:'Parallel lines + transversal. One angle 130°. Alt interior?',answer:'130°',opts:['50°','130°','180°','90°'],fb:'Alternate interior angles are EQUAL.'},
+  {prompt:'Exterior angle = 120°. Two equal remote interior angles. Each?',answer:'60°',opts:['30°','40°','60°','120°'],fb:'120=2x → x=60°.'},
+  {prompt:'Vertical angles: (3x+10)° and (5x−20)°. Find x.',answer:'15',opts:['10','15','20','30'],fb:'3x+10=5x−20 → x=15.'},
+  {prompt:'30-60-90: side opposite 30° is 5. Hypotenuse?',answer:'10',opts:['5√2','5√3','10','15'],fb:'Ratio 1:√3:2. Hyp=10.'},
+  {prompt:'45-45-90: each leg is 7. Hypotenuse?',answer:'7√2',opts:['7','14','7√2','7√3'],fb:'Ratio 1:1:√2. Hyp=7√2.'},
+  {prompt:'Right triangle: legs 6 and 8. Hypotenuse?',answer:'10',opts:['10','12','14','√100'],fb:'6-8-10 = 3-4-5 ×2.'},
 ];
-let angleAns={};
+var angleAns={};
+function ansAngle(i,oi){if(angleAns[i]!==undefined)return;angleAns[i]=ANGLES[i].opts[oi];renderAngles();}
 function renderAngles(){
-  document.getElementById('angleExercise').innerHTML=`<h3>📐 Find the Missing Angle/Side</h3><div class="exercise-sub">Apply angle relationships and triangle rules.</div>`+
-    ANGLES.map((a,i)=>{
-      const ans=angleAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Problem ${i+1}</div>
-        <div class="ex-prompt">${a.prompt}</div>
-        <div class="ex-options">${a.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===a.answer)cls+=' ex-correct';else if(o===ans&&o!==a.answer)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="angleAns[${i}]='${o}';renderAngles()">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===a.answer?'✓ Correct! ':'✗ Incorrect. ')+a.fb:''}</div></div>`;
-    }).join('');
-  const t=ANGLES.length,a=Object.keys(angleAns).length,c=Object.entries(angleAns).filter(([i,v])=>v===ANGLES[i].answer).length;
-  document.getElementById('angleScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('angleExercise').innerHTML='<h3>📐 Find the Missing Angle/Side</h3><div class="exercise-sub">Apply angle relationships and triangle rules.</div>'+ANGLES.map(function(a,i){var ans=angleAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">'+a.prompt+'</div><div class="ex-options">'+a.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===a.answer)cls+=' ex-correct';else if(o===ans&&o!==a.answer)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansAngle('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===a.answer?'✓ Correct! ':'✗ Incorrect. ')+a.fb:'')+'</div></div>';}).join('');
+  showScore('angleScore',angleAns,ANGLES);
 }
 renderAngles();
 
-// ============ CIRCLE EQUATIONS ============
-const CIRCLES=[
-  {prompt:'(x − 3)² + (y + 2)² = 49. What is the center?',answer:'(3, −2)',opts:['(3, −2)','(−3, 2)','(3, 2)','(−3, −2)'],fb:'Standard form (x−h)²+(y−k)²=r². h=3, k=−2 (note the +2 means k=−2). Center: (3, −2).'},
-  {prompt:'(x − 3)² + (y + 2)² = 49. What is the radius?',answer:'7',opts:['49','7','14','√49'],fb:'r² = 49, so r = 7. Common trap: the equation gives r², not r!'},
-  {prompt:'A circle has center (0, 5) and radius 3. What is its equation?',answer:'x² + (y−5)² = 9',opts:['x² + (y−5)² = 9','x² + (y+5)² = 9','x² + (y−5)² = 3','(x−5)² + y² = 9'],fb:'Center (0,5) → h=0, k=5. Radius 3 → r²=9. Equation: x² + (y−5)² = 9.'},
-  {prompt:'A circle has radius 10 and a central angle of 90°. What is the arc length?',answer:'5π',opts:['5π','10π','20π','25π'],fb:'Arc = (90/360) × 2π(10) = ¼ × 20π = 5π.'},
-  {prompt:'A circle has radius 6. What is the area of a 60° sector?',answer:'6π',opts:['6π','12π','36π','2π'],fb:'Sector area = (60/360) × π(6²) = ⅙ × 36π = 6π.'},
-  {prompt:'x² + y² − 10x + 6y + 18 = 0. What is the radius?',answer:'4',opts:['4','16','√18','6'],fb:'Complete the square: (x²−10x+25)+(y²+6y+9) = −18+25+9 = 16. So (x−5)²+(y+3)² = 16. Radius = √16 = 4.'},
+// ============ EXERCISE 2: CIRCLES ============
+var CIRCLES=[
+  {prompt:'(x−3)²+(y+2)²=49. Center?',answer:'(3, −2)',opts:['(3, −2)','(−3, 2)','(3, 2)','(−3, −2)'],fb:'h=3, k=−2. Center: (3,−2).'},
+  {prompt:'(x−3)²+(y+2)²=49. Radius?',answer:'7',opts:['49','7','14','√49'],fb:'r²=49 → r=7.'},
+  {prompt:'Center (0,5), radius 3. Equation?',answer:'x²+(y−5)²=9',opts:['x²+(y−5)²=9','x²+(y+5)²=9','x²+(y−5)²=3','(x−5)²+y²=9'],fb:'h=0,k=5,r²=9.'},
+  {prompt:'Radius 10, central angle 90°. Arc length?',answer:'5π',opts:['5π','10π','20π','25π'],fb:'(90/360)×2π(10)=5π.'},
+  {prompt:'Radius 6. Area of 60° sector?',answer:'6π',opts:['6π','12π','36π','2π'],fb:'(60/360)×π(36)=6π.'},
+  {prompt:'x²+y²−10x+6y+18=0. Radius?',answer:'4',opts:['4','16','√18','6'],fb:'Complete square: (x−5)²+(y+3)²=16. r=4.'},
 ];
-let circleAns={};
+var circleAns={};
+function ansCircle(i,oi){if(circleAns[i]!==undefined)return;circleAns[i]=CIRCLES[i].opts[oi];renderCircles();}
 function renderCircles(){
-  document.getElementById('circleExercise').innerHTML=`<h3>⭕ Circle Equations & Properties</h3><div class="exercise-sub">Identify centers, radii, arcs, and sectors.</div>`+
-    CIRCLES.map((c,i)=>{
-      const ans=circleAns[i];const has=ans!==undefined;
-      return `<div class="ex-item"><div class="ex-num">Problem ${i+1}</div>
-        <div class="ex-prompt">${c.prompt}</div>
-        <div class="ex-options">${c.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===c.answer)cls+=' ex-correct';else if(o===ans&&o!==c.answer)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="circleAns[${i}]='${o.replace(/'/g,"\\'")}';renderCircles()">${o}</div>`;
-        }).join('')}</div>
-        <div class="ex-fb${has?' show':''}">${has?(ans===c.answer?'✓ Correct! ':'✗ Incorrect. ')+c.fb:''}</div></div>`;
-    }).join('');
-  const t=CIRCLES.length,a=Object.keys(circleAns).length,cc=Object.entries(circleAns).filter(([i,v])=>v===CIRCLES[i].answer).length;
-  document.getElementById('circleScore').innerHTML=a===t?`<strong style="color:${cc>=5?'var(--correct)':cc>=3?'var(--psda)':'var(--wrong)'}">${cc}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('circleExercise').innerHTML='<h3>⭕ Circle Equations & Properties</h3><div class="exercise-sub">Centers, radii, arcs, and sectors.</div>'+CIRCLES.map(function(c,i){var ans=circleAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">'+c.prompt+'</div><div class="ex-options">'+c.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===c.answer)cls+=' ex-correct';else if(o===ans&&o!==c.answer)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansCircle('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===c.answer?'✓ Correct! ':'✗ Incorrect. ')+c.fb:'')+'</div></div>';}).join('');
+  showScore('circleScore',circleAns,CIRCLES);
 }
 renderCircles();
 
-// ============ SPECIAL TRIANGLES DRILL ============
-const TRIS=[
-  {prompt:'30-60-90: short leg = 4. Hypotenuse = ?',answer:'8',opts:['4√2','4√3','8','12'],fb:'Ratio 1:√3:2. Short=4, Hyp = 4×2 = 8.'},
-  {prompt:'30-60-90: hypotenuse = 14. Long leg = ?',answer:'7√3',opts:['7','7√2','7√3','14√3'],fb:'Short leg = 14/2 = 7. Long leg = 7√3.'},
-  {prompt:'45-45-90: hypotenuse = 10. Each leg = ?',answer:'5√2',opts:['5','5√2','10√2','10'],fb:'Leg = hyp/√2 = 10/√2 = 10√2/2 = 5√2.'},
-  {prompt:'45-45-90: each leg = 3. Hypotenuse = ?',answer:'3√2',opts:['6','3√2','3√3','9'],fb:'Ratio 1:1:√2. Hyp = 3√2.'},
-  {prompt:'Right triangle: legs 5 and 12. Hypotenuse = ?',answer:'13',opts:['13','17','√17','15'],fb:'5-12-13 is a Pythagorean triple!'},
-  {prompt:'Right triangle: leg = 9, hypotenuse = 15. Other leg = ?',answer:'12',opts:['6','10','12','√144'],fb:'9² + x² = 15² → 81 + x² = 225 → x² = 144 → x = 12. (This is 3-4-5 × 3.)'},
-  {prompt:'30-60-90: long leg = 6√3. Short leg = ?',answer:'6',opts:['3','6','6√2','12'],fb:'Long leg = short × √3. So short = 6√3/√3 = 6.'},
-  {prompt:'Right triangle: both legs = 1. Hypotenuse = ?',answer:'√2',opts:['1','√2','2','√3'],fb:'1² + 1² = 2 → hyp = √2. This is the 45-45-90 base case.'},
+// ============ EXERCISE 3: FORMULA PICKER ============
+var FORMULAS=[
+  {q:'Shaded region between a circle and inscribed square.',correct:'A = πr² − s²',opts:['A = πr²','A = πr² − s²','A = s² − πr²','A = 2πr + 4s'],fb:'Circle minus square. Composite: subtract inner from outer.'},
+  {q:'Hypotenuse of right triangle with legs 7 and 24.',correct:'a² + b² = c²',opts:['A = ½bh','a² + b² = c²','SOH-CAH-TOA','(θ/360)×2πr'],fb:'Pythagorean theorem: 7²+24²=625 → c=25.'},
+  {q:'Arc length, central angle 120°, radius 9.',correct:'(θ/360) × 2πr',opts:['πr²','(θ/360) × πr²','(θ/360) × 2πr','2πr'],fb:'Arc LENGTH uses circumference: (120/360)×18π=6π.'},
+  {q:'Volume of a cone, radius 5, height 12.',correct:'V = ⅓πr²h',opts:['V = πr²h','V = ⅓πr²h','V = ⁴⁄₃πr³','V = ⅓Bh'],fb:'Cone=⅓ cylinder. V=⅓π(25)(12)=100π.'},
+  {q:'Know angle and adjacent side. Find opposite.',correct:'tan(θ) = opp/adj',opts:['sin(θ) = opp/hyp','cos(θ) = adj/hyp','tan(θ) = opp/adj','a² + b² = c²'],fb:'Have angle+adjacent, need opposite → tangent.'},
+  {q:'Area of sector, 45°, radius 8.',correct:'(θ/360) × πr²',opts:['(θ/360) × 2πr','(θ/360) × πr²','πr²','½r²θ'],fb:'Sector AREA: (45/360)×64π=8π.'},
+  {q:'Square (side 3) cut from rectangle (12×8). Remaining area?',correct:'A = lw − s²',opts:['A = lw','A = lw − s²','A = lw + s²','A = 2(l+w) − 4s'],fb:'Rectangle minus square = 96−9=87.'},
+  {q:'sin(x°) = cos(32°). Find x.',correct:'sin(x) = cos(90−x)',opts:['a² + b² = c²','sin(x) = cos(90−x)','sin²+cos²=1','tan = sin/cos'],fb:'Complementary: x=90−32=58°.'},
 ];
-let triAns={};
+var formulaAns={};
+function ansFormula(i,oi){if(formulaAns[i]!==undefined)return;formulaAns[i]=FORMULAS[i].opts[oi];renderFormulas();}
+function renderFormulas(){
+  document.getElementById('formulaExercise').innerHTML='<h3>🧰 Pick the Right Formula</h3><div class="exercise-sub">Which formula do you reach for first?</div>'+FORMULAS.map(function(q,i){var ans=formulaAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="ex-options">'+q.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===q.correct)cls+=' ex-correct';else if(o===ans&&o!==q.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansFormula('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+  showScore('formulaScore',formulaAns,FORMULAS,'correct');
+}
+renderFormulas();
+
+// ============ EXERCISE 4: SPECIAL TRIANGLES ============
+var TRIS=[
+  {prompt:'30-60-90: short=4. Hyp?',answer:'8',opts:['4√2','4√3','8','12'],fb:'Hyp=4×2=8.'},
+  {prompt:'30-60-90: hyp=14. Long leg?',answer:'7√3',opts:['7','7√2','7√3','14√3'],fb:'Short=7. Long=7√3.'},
+  {prompt:'45-45-90: hyp=10. Leg?',answer:'5√2',opts:['5','5√2','10√2','10'],fb:'Leg=10√2/2=5√2.'},
+  {prompt:'45-45-90: leg=3. Hyp?',answer:'3√2',opts:['6','3√2','3√3','9'],fb:'Hyp=3√2.'},
+  {prompt:'Legs 5 and 12. Hyp?',answer:'13',opts:['13','17','√17','15'],fb:'5-12-13 triple!'},
+  {prompt:'Leg=9, hyp=15. Other leg?',answer:'12',opts:['6','10','12','√144'],fb:'9²+x²=225 → x=12.'},
+  {prompt:'30-60-90: long=6√3. Short?',answer:'6',opts:['3','6','6√2','12'],fb:'Short=6√3/√3=6.'},
+  {prompt:'Both legs=1. Hyp?',answer:'√2',opts:['1','√2','2','√3'],fb:'1²+1²=2 → √2.'},
+];
+var triAns={};
+function ansTri(i,oi){if(triAns[i]!==undefined)return;triAns[i]=TRIS[i].opts[oi];renderTris();}
 function renderTris(){
-  document.getElementById('triExercise').innerHTML=`<h3>📏 Special Triangles Speed Drill</h3><div class="exercise-sub">Find the missing side using special triangle ratios or Pythagorean triples.</div>`+
-    TRIS.map((t,i)=>{
-      const ans=triAns[i];const has=ans!==undefined;
-      return `<div class="ex-item" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <div style="flex:1;min-width:200px;font-size:.9rem">${t.prompt}</div>
-        <div class="ex-options" style="flex:1">${t.opts.map(o=>{
-          let cls='ex-opt';if(has){cls+=' ex-dis';if(o===t.answer)cls+=' ex-correct';else if(o===ans&&o!==t.answer)cls+=' ex-wrong';}
-          return `<div class="${cls}" onclick="triAns[${i}]='${o.replace(/'/g,"\\'")}';renderTris()">${o}</div>`;
-        }).join('')}</div>
-        ${has?`<div style="width:100%;font-size:.82rem;color:var(--muted)">${ans===t.answer?'✓ ':('✗ ')}${t.fb}</div>`:''}</div>`;
-    }).join('');
-  const total=TRIS.length,a=Object.keys(triAns).length,c=Object.entries(triAns).filter(([i,v])=>v===TRIS[i].answer).length;
-  document.getElementById('triScore').innerHTML=a===total?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)'}">${c}/${total} correct</strong>`:a>0?`${a}/${total} completed`:'';
+  document.getElementById('triExercise').innerHTML='<h3>📏 Special Triangles Speed Drill</h3><div class="exercise-sub">Find the missing side.</div>'+TRIS.map(function(t,i){var ans=triAns[i];var has=ans!==undefined;return '<div class="ex-item" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:200px;font-size:.9rem">'+t.prompt+'</div><div class="ex-options" style="flex:1">'+t.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===t.answer)cls+=' ex-correct';else if(o===ans&&o!==t.answer)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansTri('+i+','+oi+')">'+o+'</div>';}).join('')+'</div>'+(has?'<div style="width:100%;font-size:.82rem;color:var(--muted)">'+(ans===t.answer?'✓ ':'✗ ')+t.fb+'</div>':'')+'</div>';}).join('');
+  showScore('triScore',triAns,TRIS);
 }
 renderTris();
 
 // ============ TRIG CALCULATOR ============
 function calcTrig(){
-  const o=parseFloat(document.getElementById('trigOpp').value);
-  const a=parseFloat(document.getElementById('trigAdj').value);
-  const h=parseFloat(document.getElementById('trigHyp').value);
-  const has=[!isNaN(o),!isNaN(a),!isNaN(h)];const count=has.filter(v=>v).length;
-  if(count<2){document.getElementById('trigResults').innerHTML='<div style="color:var(--muted);font-size:.88rem;text-align:center;grid-column:1/-1">Enter any two sides to calculate.</div>';document.getElementById('trigNote').innerHTML='';return;}
-  let opp=o,adj=a,hyp=h;
-  if(!has[0])opp=Math.sqrt(hyp*hyp-adj*adj);
-  if(!has[1])adj=Math.sqrt(hyp*hyp-opp*opp);
-  if(!has[2])hyp=Math.sqrt(opp*opp+adj*adj);
-  if(isNaN(opp)||isNaN(adj)||isNaN(hyp)||hyp<=0){document.getElementById('trigResults').innerHTML='<div style="color:var(--wrong);font-size:.88rem;text-align:center;grid-column:1/-1">Invalid triangle. Hypotenuse must be the longest side.</div>';return;}
-  const sin=opp/hyp,cos=adj/hyp,tan=opp/adj;
-  const angle=Math.atan(opp/adj)*180/Math.PI;
-  const r=(v)=>Math.round(v*10000)/10000;
-  document.getElementById('trigResults').innerHTML=[
-    {l:'Sin θ',v:r(sin),c:'var(--geo)'},{l:'Cos θ',v:r(cos),c:'var(--adv)'},{l:'Tan θ',v:r(tan),c:'var(--psda)'},
-    {l:'Angle θ',v:r(angle)+'°',c:'var(--algebra)'},{l:'Opp',v:r(opp),c:'var(--ink)'},{l:'Adj',v:r(adj),c:'var(--ink)'},{l:'Hyp',v:r(hyp),c:'var(--ink)'},
-  ].map(s=>`<div class="trig-result"><div class="trig-val" style="color:${s.c}">${s.v}</div><div class="trig-label">${s.l}</div></div>`).join('');
-  document.getElementById('trigNote').innerHTML=`Complementary angle: ${r(90-angle)}° · sin(${r(angle)}°) = cos(${r(90-angle)}°)`;
+  var o=parseFloat(document.getElementById('trigOpp').value),a=parseFloat(document.getElementById('trigAdj').value),h=parseFloat(document.getElementById('trigHyp').value);
+  var has=[!isNaN(o),!isNaN(a),!isNaN(h)],count=0;has.forEach(function(v){if(v)count++;});
+  if(count<2){document.getElementById('trigResults').innerHTML='<div style="color:var(--muted);font-size:.88rem;text-align:center;grid-column:1/-1">Enter any two sides.</div>';document.getElementById('trigNote').innerHTML='';return;}
+  var opp=o,adj=a,hyp=h;
+  if(!has[0])opp=Math.sqrt(hyp*hyp-adj*adj);if(!has[1])adj=Math.sqrt(hyp*hyp-opp*opp);if(!has[2])hyp=Math.sqrt(opp*opp+adj*adj);
+  if(isNaN(opp)||isNaN(adj)||isNaN(hyp)||hyp<=0){document.getElementById('trigResults').innerHTML='<div style="color:var(--wrong)">Invalid triangle.</div>';return;}
+  var sin=opp/hyp,cos=adj/hyp,tan=opp/adj,angle=Math.atan(opp/adj)*180/Math.PI;
+  var r=function(v){return Math.round(v*10000)/10000;};
+  document.getElementById('trigResults').innerHTML=[{l:'Sin θ',v:r(sin),c:'var(--geo)'},{l:'Cos θ',v:r(cos),c:'var(--adv)'},{l:'Tan θ',v:r(tan),c:'var(--psda)'},{l:'Angle θ',v:r(angle)+'°',c:'var(--algebra)'},{l:'Opp',v:r(opp),c:'var(--ink)'},{l:'Adj',v:r(adj),c:'var(--ink)'},{l:'Hyp',v:r(hyp),c:'var(--ink)'}].map(function(s){return '<div class="trig-result"><div class="trig-val" style="color:'+s.c+'">'+s.v+'</div><div class="trig-label">'+s.l+'</div></div>';}).join('');
+  document.getElementById('trigNote').innerHTML='Complementary angle: '+r(90-angle)+'°';
 }
 calcTrig();
 
 // ============ SAT PRACTICE ============
-const SAT_QS=[
-  {tier:'Tier 1',q:'What is the area of a circle with diameter 10?',
-   choices:['25π','50π','100π','10π'],correct:0,
-   fb:'Diameter = 10, so radius = 5. Area = π(5²) = 25π.'},
-  {tier:'Tier 1',q:'In a right triangle, sin(A) = 3/5. What is cos(A)?',
-   choices:['3/5','4/5','5/3','3/4'],correct:1,
-   fb:'If sin = opp/hyp = 3/5, then opp=3, hyp=5. Adjacent = √(25−9) = 4. cos = adj/hyp = 4/5.'},
-  {tier:'Tier 2',q:'A cylinder has radius 4 and height 10. What is its volume?',
-   choices:['40π','80π','160π','640π'],correct:2,
-   fb:'V = πr²h = π(16)(10) = 160π.'},
-  {tier:'Tier 2',q:'If sin(x) = cos(40°), what is x?',
-   choices:['40°','50°','60°','90°'],correct:1,
-   fb:'sin(x) = cos(90°−x). So cos(40°) = sin(50°). Therefore x = 50°.'},
-  {tier:'Tier 2',q:'A circle has equation (x+1)² + (y−4)² = 36. A point on the circle is (−1, y). Find the positive value of y.',
-   choices:['10','4','6','8'],correct:0,
-   fb:'Plug in x=−1: (0)² + (y−4)² = 36 → (y−4)² = 36 → y−4 = ±6 → y = 10 or y = −2. Positive: y = 10.'},
-  {tier:'Tier 2',q:'Convert 240° to radians.',
-   choices:['4π/3','3π/4','2π/3','4π'],correct:0,
-   fb:'240 × π/180 = 240π/180 = 4π/3.'},
-  {tier:'Tier 3',q:'A cone and a cylinder have the same radius and height. If the cylinder\'s volume is 90π, what is the cone\'s volume?',
-   choices:['30π','45π','270π','90π'],correct:0,
-   fb:'Cone = ⅓ × cylinder. ⅓ × 90π = 30π.'},
-  {tier:'Tier 3',q:'In the xy-plane, a circle has center (2, −3) and passes through (6, 0). What is the equation?',
-   choices:['(x−2)²+(y+3)²=25','(x+2)²+(y−3)²=25','(x−2)²+(y+3)²=5','(x−6)²+(y)²=25'],correct:0,
-   fb:'Radius = distance from (2,−3) to (6,0) = √((4)²+(3)²) = √25 = 5. So r²=25. Equation: (x−2)²+(y+3)²=25.'},
+var SAT_QS=[
+  {tier:'Tier 1',q:'Area of circle with diameter 10?',choices:['25π','50π','100π','10π'],correct:0,fb:'r=5. A=25π.'},
+  {tier:'Tier 1',q:'sin(A)=3/5 in right triangle. cos(A)?',choices:['3/5','4/5','5/3','3/4'],correct:1,fb:'opp=3,hyp=5,adj=4. cos=4/5.'},
+  {tier:'Tier 1',q:'Triangle angles: 35° and 75°. Third angle?',choices:['70°','90°','110°','80°'],correct:0,fb:'180−35−75=70°.'},
+  {tier:'Tier 2',q:'Cylinder: r=4, h=10. Volume?',choices:['40π','80π','160π','640π'],correct:2,fb:'V=π(16)(10)=160π.'},
+  {tier:'Tier 2',q:'sin(x)=cos(40°). Find x.',choices:['40°','50°','60°','90°'],correct:1,fb:'x=90−40=50°.'},
+  {tier:'Tier 2',q:'(x+1)²+(y−4)²=36. Point (−1,y). Positive y?',choices:['10','4','6','8'],correct:0,fb:'(y−4)²=36 → y=10 or −2.'},
+  {tier:'Tier 2',q:'Convert 240° to radians.',choices:['4π/3','3π/4','2π/3','4π'],correct:0,fb:'240×π/180=4π/3.'},
+  {tier:'Tier 3',q:'Cone and cylinder same r,h. Cylinder=90π. Cone?',choices:['30π','45π','270π','90π'],correct:0,fb:'Cone=⅓×90π=30π.'},
+  {tier:'Tier 3',q:'Circle center (2,−3) through (6,0). Equation?',choices:['(x−2)²+(y+3)²=25','(x+2)²+(y−3)²=25','(x−2)²+(y+3)²=5','(x−6)²+y²=25'],correct:0,fb:'r=√(16+9)=5. (x−2)²+(y+3)²=25.'},
+  {tier:'Tier 3',q:'Square side 10 with inscribed circle. Shaded area outside circle, inside square?',choices:['100−25π','100−100π','25π−100','400−100π'],correct:0,fb:'Square=100. Circle r=5, area=25π. Shaded=100−25π. Composite shape!'},
 ];
-let satAns={};
+var satAns={};
 function renderSAT(){
-  document.getElementById('satQuestions').innerHTML=SAT_QS.map((q,i)=>{
-    const ans=satAns[i];const has=ans!==undefined;
-    return `<div class="sat-q"><div class="ex-num">${q.tier} · Question ${i+1}</div>
-      <div class="ex-prompt">${q.q}</div>
-      <div class="sat-choices">${q.choices.map((ch,ci)=>{
-        let cls='sat-choice';if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}
-        return `<div class="${cls}" onclick="satAns[${i}]=${ci};renderSAT()"><div class="sc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
-      }).join('')}</div>
-      <div class="sat-fb${has?' show':''}${has?(ans===q.correct?' sfb-correct':' sfb-wrong'):''}">${has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
-  }).join('');
-  const t=SAT_QS.length,a=Object.keys(satAns).length,c=Object.entries(satAns).filter(([i,v])=>v===SAT_QS[i].correct).length;
-  document.getElementById('satScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong>`:a>0?`${a}/${t} completed`:'';
+  document.getElementById('satQuestions').innerHTML=SAT_QS.map(function(q,i){var ans=satAns[i];var has=ans!==undefined;return '<div class="sat-q"><div class="ex-num">'+q.tier+' · Question '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="sat-choices">'+q.choices.map(function(ch,ci){var cls='sat-choice';if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}return '<div class="'+cls+'" onclick="satAns['+i+']='+ci+';renderSAT()"><div class="sc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="sat-fb'+(has?' show':'')+(has?(ans===q.correct?' sfb-correct':' sfb-wrong'):'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+  var t=SAT_QS.length,a=Object.keys(satAns).length,c=0;Object.entries(satAns).forEach(function(p){if(parseInt(p[1])===SAT_QS[parseInt(p[0])].correct)c++;});
+  document.getElementById('satScore').innerHTML=a===t?'<strong style="color:'+(c>=7?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
 }
 renderSAT();
+
+// ============ COMPOSITE SHAPES ============
+var CMP_QS=[
+  {p:'A square with side 10 has a circle of radius 5 inscribed inside it. Find the shaded area (square minus circle). Leave in terms of \u03c0.',acc:['100-25\u03c0','100-25pi','100 - 25\u03c0','100 - 25pi'],s:'Square: 10\u00b2 = 100. Circle: \u03c0(5\u00b2) = 25\u03c0. Shaded: 100 \u2212 25\u03c0.'},
+  {p:'A circle with radius 8 has a square inscribed inside it (corners touch the circle). The square diagonal = 16. Find the square\'s area.',acc:['128'],s:'Diagonal = 16. Side = 16/\u221a2 = 8\u221a2. Area = (8\u221a2)\u00b2 = 128. Or: \u00bdd\u00b2 = \u00bd(16\u00b2) = 128.'},
+  {p:'A rectangle is 12 \u00d7 8. A semicircle with diameter 8 is cut from one end. Find the remaining area in terms of \u03c0.',acc:['96-8\u03c0','96-8pi','96 - 8\u03c0','96 - 8pi'],s:'Rectangle: 96. Semicircle: \u00bd\u03c0(4\u00b2) = 8\u03c0. Remaining: 96 \u2212 8\u03c0.'},
+  {p:'Two concentric circles have radii 10 and 6. Find the area of the ring (annulus) between them in terms of \u03c0.',acc:['64\u03c0','64pi'],s:'Outer: \u03c0(100). Inner: \u03c0(36). Ring: 100\u03c0 \u2212 36\u03c0 = 64\u03c0.'},
+  {p:'An equilateral triangle with side 6 is inscribed in a circle. The circle has radius 2\u221a3. Find the area of the circle minus the triangle, in terms of \u03c0 and \u221a3.',acc:['12\u03c0-9\u221a3','12pi-9\u221a3','12\u03c0 - 9\u221a3','12pi - 9sqrt3'],s:'Circle: \u03c0(2\u221a3)\u00b2 = 12\u03c0. Triangle: (\u221a3/4)(6\u00b2) = 9\u221a3. Shaded: 12\u03c0 \u2212 9\u221a3.'},
+];
+function renderCmp(){
+  document.getElementById('cmpEx').innerHTML='<h3>\ud83d\udd32 Composite Shapes</h3><div class="exercise-sub">Find the shaded or remaining area. Type \u03c0 or \"pi\" for \u03c0.</div>'+
+    CMP_QS.map(function(q,i){return '<div class="ex-item"><div class="ex-prompt">'+q.p+'</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">= </span><input class="ex-input" type="text" id="cmp'+i+'" placeholder="?" style="width:160px"><button class="ex-btn" style="background:var(--geo)" onclick="chkCmp('+i+')">Check</button></div><div class="ex-fb" id="cmpFb'+i+'"></div></div>';}).join('');
+}
+function chkCmp(i){
+  var v=document.getElementById('cmp'+i).value.trim().replace(/\s/g,'').toLowerCase(),fb=document.getElementById('cmpFb'+i),q=CMP_QS[i];
+  if(!v){fb.className='ex-fb show wrong';fb.textContent='Enter an answer.';return;}
+  var ok=q.acc.some(function(a){return v===a.replace(/\s/g,'').toLowerCase();});
+  fb.className='ex-fb show '+(ok?'correct':'wrong');
+  fb.textContent=(ok?'\u2713 Correct! ':'\u2717 Answer: '+q.acc[0]+'. ')+q.s;
+}
+renderCmp();
 </script>
 <script src="/translate.js"></script></body>
 </html>

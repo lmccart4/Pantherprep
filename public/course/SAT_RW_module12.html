@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 12: Information & Ideas Boss Battle — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+table { border-collapse: collapse; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback } = React;
+const BLUE = "#3b82f6";
+const ACCENT = "#10b981";
+const AMBER = "#f59e0b";
+const PURPLE = "#a855f7";
+const RED = "#ef4444";
+const CYAN = "#06b6d4";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px",
+  borderRadius: 10,
+  border: "none",
+  background: bg,
+  color,
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: "pointer",
+  transition: "transform .12s",
+  ...extra
+});
+const NAV = { prev: { label: "Module 11: Logical Reasoning", file: "SAT RW module11.html" }, next: { label: "Module 13: Expression", file: "SAT RW module13.html" } };
+function NavLinks() {
+  return React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12, marginTop: 32, paddingTop: 24, borderTop: "1px solid " + BORDER } },
+    NAV.prev && React.createElement("a", { href: NAV.prev.file, style: { ...btn("transparent", SUB), border: "1px solid " + BORDER, textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, "\u2190 " + NAV.prev.label),
+    NAV.next && React.createElement("a", { href: NAV.next.file, style: { ...btn("linear-gradient(135deg," + BLUE + "," + PURPLE + ")", TEXT), textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, NAV.next.label + " \u2192")
+  );
+}
+const HOMEWORK = [
+  { icon: "\uD83D\uDCD6", task: "Re-read the lesson for your weakest skill area", detail: "Go back to Module 9, 10, or 11 lessons for your lowest-scoring skill.", color: BLUE },
+  { icon: "\uD83D\uDD04", task: "Practice 10 mixed Information & Ideas questions", detail: "College Board Question Bank: filter for Information & Ideas domain.", color: PURPLE },
+  { icon: "\uD83D\uDCCA", task: "Find a real data table and write 2 claims about it", detail: "Use any news article with charts. Practice matching claims to evidence.", color: AMBER },
+  { icon: "\uD83C\uDFAF", task: "Redo the battle if you scored below 70%", detail: "Spaced retrieval: retry in 2-3 days for maximum learning benefit.", color: RED }
+];
+function Homework() {
+  return React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 24, maxWidth: 520, width: "100%", marginBottom: 32, textAlign: "left" } },
+    React.createElement("div", { style: { color: AMBER, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "\uD83D\uDCDD Homework & Action Items"),
+    HOMEWORK.map(function(h, i) {
+      return React.createElement("div", { key: i, style: { display: "flex", gap: 10, marginBottom: 10, padding: "8px 12px", background: h.color + "08", borderLeft: "3px solid " + h.color, borderRadius: "0 8px 8px 0" } },
+        React.createElement("span", { style: { color: h.color, fontSize: 13 } }, h.icon),
+        React.createElement("div", null,
+          React.createElement("div", { style: { color: TEXT, fontWeight: 600, fontSize: 13 } }, h.task),
+          React.createElement("div", { style: { color: MUTED, fontSize: 11, marginTop: 2 } }, h.detail)
+        )
+      );
+    })
+  );
+}
+const SKILL_META = {
+  central: { label: "Central Idea", color: BLUE, icon: "📖" },
+  detail: { label: "Detail", color: CYAN, icon: "🔎" },
+  inference: { label: "Inference", color: PURPLE, icon: "💡" },
+  evidence: { label: "Evidence", color: ACCENT, icon: "📜" },
+  data: { label: "Data", color: AMBER, icon: "📊" },
+  strengthen: { label: "Strengthen", color: "#22c55e", icon: "💪" },
+  weaken: { label: "Weaken", color: RED, icon: "⚡" },
+  completion: { label: "Completion", color: "#8b5cf6", icon: "🧩" },
+  synthesis: { label: "Synthesis", color: "#ec4899", icon: "🔗" }
+};
+const BATTLE_QUESTIONS = [
+  // ═══ PHASE 1: WARM-UP (8 Qs) ═══
+  {
+    id: 1,
+    phase: 1,
+    skill: "central",
+    diff: "easy",
+    passage: "Researchers at the University of Edinburgh have identified a gene variant carried by roughly 20% of the population that appears to confer a higher tolerance for pain. Individuals with this variant produce elevated levels of a naturally occurring opioid-like compound in the brain, effectively raising their pain threshold. The discovery may explain why pain perception varies so dramatically between individuals and could eventually inform the development of non-addictive pain medications modeled on the body's own chemistry.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["Edinburgh researchers have studied pain for many years", "A genetic variant that raises pain tolerance has been identified, potentially explaining individual differences and opening new paths for pain medication", "Most people have a high tolerance for pain", "Non-addictive pain medications are currently available"],
+    answer: 1,
+    explain: "The passage describes discovery of a gene variant → explains pain variation → possible medication applications. B captures all three elements."
+  },
+  {
+    id: 2,
+    phase: 1,
+    skill: "detail",
+    diff: "easy",
+    passage: "The Voyager 1 spacecraft, launched in 1977, crossed the heliopause — the boundary where the sun's solar wind gives way to interstellar space — in August 2012, making it the first human-made object to enter interstellar space. As of 2024, Voyager 1 was more than 15 billion miles from Earth, still transmitting data back to NASA via a 23-watt radio signal that takes over 22 hours to reach ground stations.",
+    stem: "According to the passage, what makes Voyager 1's radio communication remarkable?",
+    choices: ["It uses advanced quantum communication technology", "Its 23-watt signal — roughly the power of a refrigerator light bulb — still transmits data from over 15 billion miles away, with a 22-hour travel time", "It communicates using lasers rather than radio waves", "It can only transmit data once per year"],
+    answer: 1,
+    explain: "The passage specifically states: 23-watt signal, over 15 billion miles, 22 hours to reach ground stations. B matches these exact details."
+  },
+  {
+    id: 3,
+    phase: 1,
+    skill: "inference",
+    diff: "easy",
+    passage: "Between 2010 and 2020, the number of independent bookstores in the United States increased by 35%, reversing decades of decline. Industry analysts attribute this resurgence to bookstores repositioning themselves as community gathering spaces — hosting author events, book clubs, and children's story hours — rather than competing on price or selection with online retailers.",
+    stem: "Which inference is best supported by the text?",
+    choices: ["Online retailers have gone out of business due to bookstore competition", "Independent bookstores survived by offering experiential value that online retail cannot replicate", "All retail businesses should convert to community gathering spaces", "The number of independent bookstores will continue to increase indefinitely"],
+    answer: 1,
+    explain: "Bookstores grew by becoming community spaces, not by competing on price/selection with online. B captures this: they survived through experiential value (events, community) that online can't offer."
+  },
+  {
+    id: 4,
+    phase: 1,
+    skill: "evidence",
+    diff: "medium",
+    passage: "Sociologist Dr. Mendez argues that public libraries have become essential social infrastructure for low-income communities, serving functions far beyond lending books.",
+    claim: "Dr. Mendez argues that libraries serve as critical community support systems for vulnerable populations.",
+    stem: "Which finding would most effectively support this claim?",
+    choices: ["Libraries have operated in the United States since the 18th century", "In a survey of 5,000 library patrons in low-income neighborhoods, 62% reported using the library primarily for internet access for job applications, 41% for free tax preparation assistance, and 28% for English language classes — services they could not afford elsewhere", "Many libraries have modernized their buildings in recent years", "Dr. Mendez has published extensively on urban sociology"],
+    answer: 1,
+    explain: "The claim is about libraries as SUPPORT SYSTEMS for VULNERABLE populations. B provides specific data showing library use for essential services (jobs, taxes, language) by people who can't afford alternatives. Direct, specific, measurable."
+  },
+  {
+    id: 5,
+    phase: 1,
+    skill: "data",
+    diff: "medium",
+    passage: "A health department tracked vaccination rates and disease incidence across four counties.",
+    table: [
+      ["County", "Vaccination rate", "Flu cases per 1,000", "Hospitalization rate"],
+      ["Maple", "89%", "42", "2.1%"],
+      ["Cedar", "76%", "68", "3.8%"],
+      ["Birch", "61%", "95", "5.7%"],
+      ["Pine", "45%", "131", "8.4%"]
+    ],
+    stem: "Which claim is best supported by the data in the table?",
+    choices: ["Vaccination has no effect on flu incidence", "There is a consistent inverse relationship between vaccination rates and both flu incidence and hospitalization rates across all four counties", "Maple County has the best healthcare system of the four counties", "All counties should mandate vaccination to eliminate the flu entirely"],
+    answer: 1,
+    explain: "As vaccination goes up (45→61→76→89%), flu cases go down (131→95→68→42) and hospitalizations go down (8.4→5.7→3.8→2.1%). B accurately describes this consistent inverse relationship."
+  },
+  {
+    id: 6,
+    phase: 1,
+    skill: "strengthen",
+    diff: "medium",
+    passage: "Marine biologists have observed that coral reefs near marine protected areas (MPAs) where fishing is prohibited show significantly higher biodiversity than reefs in unprotected waters. They conclude that fishing restrictions are the primary driver of reef biodiversity recovery.",
+    stem: "Which finding, if true, would most strengthen this conclusion?",
+    choices: ["Marine protected areas are expensive to enforce", "Reefs that were recently granted MPA status but where enforcement has not yet begun show biodiversity levels similar to unprotected reefs, suggesting that the designation alone does not confer benefits — actual fishing reduction is necessary", "Some fishers have relocated to other areas since the MPAs were established", "Coral reefs are among the most biodiverse ecosystems on Earth"],
+    answer: 1,
+    explain: "The conclusion claims fishing RESTRICTIONS drive recovery. B provides a natural control: areas with MPA status but no actual enforcement show NO benefit. This confirms that the actual reduction in fishing (not just the designation) is what matters."
+  },
+  {
+    id: 7,
+    phase: 1,
+    skill: "completion",
+    diff: "medium",
+    passage: "A study compared two groups of elderly patients recovering from hip replacement surgery. Group A received standard physical therapy. Group B received identical physical therapy supplemented by weekly visits from a therapy dog. After eight weeks, Group B showed 30% faster improvement in mobility scores and reported significantly lower pain levels than Group A. Notably, Group B also showed 40% lower rates of post-surgical depression. The researchers concluded that ______",
+    stem: "Which choice most logically completes the text?",
+    choices: ["therapy dogs are more effective than physical therapy", "animal-assisted therapy may provide both physical and psychological benefits that enhance surgical recovery outcomes beyond what physical therapy alone achieves", "all hospitals should replace physical therapists with therapy dogs", "depression is the primary barrier to surgical recovery"],
+    answer: 1,
+    explain: `Better mobility + lower pain + lower depression in the dog group = benefits were both physical and psychological. B is appropriately cautious ("may provide") and captures both dimensions. A and C overstate. D isn't supported.`
+  },
+  {
+    id: 8,
+    phase: 1,
+    skill: "central",
+    diff: "medium",
+    passage: "The traditional model of scientific discovery — a lone genius experiencing a sudden eureka moment — has been largely debunked by historians of science. Studies of major breakthroughs consistently reveal that innovation emerges from collaborative networks, incremental advances, and the cross-pollination of ideas across disciplines. Even discoveries attributed to individual scientists, such as Darwin's theory of evolution, were shaped by decades of correspondence, debate, and collective knowledge-building within scientific communities.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["Darwin did not really discover evolution on his own", "Scientific breakthroughs result from collaborative, incremental processes rather than isolated moments of individual genius", "The history of science is poorly understood by the general public", "Scientific communities are larger today than in the 19th century"],
+    answer: 1,
+    explain: 'The passage dismantles the "lone genius" model and replaces it with collaborative, incremental processes. Darwin is one example supporting this broader point, not the central idea itself.'
+  },
+  // ═══ PHASE 2: ESCALATION (8 Qs) ═══
+  {
+    id: 9,
+    phase: 2,
+    skill: "inference",
+    diff: "medium",
+    passage: "When Pixar Animation Studios was struggling in its early years, Steve Jobs considered selling it on multiple occasions. The company's first purely commercial product — a high-end graphics computer called the Pixar Image Computer — sold poorly, and the company lost money every year for its first decade. It was only when the team pivoted fully to animated storytelling, releasing Toy Story in 1995, that Pixar became profitable. Jobs later described keeping Pixar alive during those lean years as 'the best decision I ever made — and the luckiest.'",
+    stem: "Which inference is best supported by the text?",
+    choices: ["Steve Jobs was primarily responsible for Pixar's creative output", "Pixar's eventual success was not a foregone conclusion and could easily have been prevented by early business decisions", "The Pixar Image Computer was technologically inferior to competitors", "Toy Story was the most profitable animated film ever made"],
+    answer: 1,
+    explain: `Jobs considered selling, the company lost money for a decade, and he called keeping it both his best decision AND "luckiest" — implying it could have gone differently. B captures the contingency: success wasn't guaranteed.`
+  },
+  {
+    id: 10,
+    phase: 2,
+    skill: "weaken",
+    diff: "hard",
+    passage: "A school district found that students who participated in chess club scored an average of 18% higher on math standardized tests than non-participants. The district superintendent cited this as evidence that chess improves mathematical reasoning and proposed expanding the chess program to all schools.",
+    stem: "Which finding, if true, would most weaken the superintendent's conclusion?",
+    choices: ["Chess is a complex strategic game that requires analytical thinking", "Students who joined chess club had scored 16% higher on math tests BEFORE joining the club, suggesting that pre-existing mathematical aptitude attracted students to chess rather than chess improving math skills", "Some students in chess club also participated in other extracurricular activities", "The chess program was led by a popular and engaging teacher"],
+    answer: 1,
+    explain: "If chess students already scored 16% higher BEFORE joining, the 18% gap is almost entirely pre-existing. This is classic REVERSE CAUSATION: math talent → chess interest, not chess → math improvement. Only a 2% difference remains after accounting for pre-existing ability."
+  },
+  {
+    id: 11,
+    phase: 2,
+    skill: "data",
+    diff: "hard",
+    passage: "Researchers studied the effect of class size on student achievement across 200 elementary schools.",
+    table: [
+      ["Class size", "Avg. reading score", "Avg. math score", "Teacher satisfaction", "Cost per student"],
+      ["15-18 students", "87", "84", "91%", "$14,200"],
+      ["19-22 students", "84", "82", "78%", "$11,500"],
+      ["23-26 students", "81", "80", "62%", "$9,800"],
+      ["27-30 students", "78", "77", "44%", "$8,200"]
+    ],
+    tableNote: "Scores out of 100. All schools matched for socioeconomic factors and teacher experience.",
+    stem: "A school board member argues that reducing class sizes to 15-18 students would dramatically improve student outcomes enough to justify the increased cost. Does the data support this claim?",
+    choices: ["Yes, because smaller classes always produce better results", "The data shows a consistent but modest association between smaller classes and higher scores — roughly 3 points per tier reduction — suggesting meaningful but not dramatic improvement. Whether the $6,000 per-student cost increase justifies a 9-point gain requires a value judgment the data alone cannot make", "No, because the test score differences are too small to measure", "Yes, because teacher satisfaction is much higher in smaller classes"],
+    answer: 1,
+    explain: "Scores improve ~3 points per size reduction (78→81→84→87). Cost increases from $8,200 to $14,200 (+$6,000). B accurately describes the trade-off: real but modest improvement, with the cost-benefit judgment being a policy question, not a data question."
+  },
+  {
+    id: 12,
+    phase: 2,
+    skill: "evidence",
+    diff: "hard",
+    passage: "Archaeologist Dr. Okonkwo argues that the ancient city of Great Zimbabwe, which flourished between 1100-1450 CE in present-day Zimbabwe, was a major center of international trade, not merely a regional power.",
+    claim: "Dr. Okonkwo argues that Great Zimbabwe participated in a global trading network extending far beyond Africa.",
+    stem: "Which finding would most effectively support this claim?",
+    choices: ["Great Zimbabwe's stone walls are among the largest ancient structures in sub-Saharan Africa", "Excavations at the site recovered Chinese ceramics from the Ming dynasty, glass beads manufactured in medieval India, and coins from the Arabian Peninsula — artifacts that could only have arrived through extensive trade networks spanning the Indian Ocean", "The site was home to an estimated 18,000 people at its peak", "Great Zimbabwe was declared a UNESCO World Heritage Site in 1986"],
+    answer: 1,
+    explain: "The claim is about GLOBAL trade beyond Africa. B provides physical evidence of goods from China, India, and Arabia — three continents reached through Indian Ocean trade networks. Specific, international, and directly demonstrates the claimed trade connections."
+  },
+  {
+    id: 13,
+    phase: 2,
+    skill: "central",
+    diff: "hard",
+    passage: "The widespread assumption that creativity is primarily a right-brain function has been thoroughly undermined by neuroimaging research. Studies using fMRI consistently show that creative tasks — whether composing music, writing poetry, or solving novel problems — activate distributed networks spanning BOTH hemispheres, with the degree of inter-hemispheric communication being a stronger predictor of creative output than activation in any single region. Neuroscientist Dr. Beaty's research suggests that creativity depends not on one side of the brain but on the brain's ability to dynamically integrate multiple, often competing, neural networks.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["The right brain is responsible for artistic creativity while the left brain handles logic", "Neuroimaging research has revealed that creativity involves coordinated activity across both brain hemispheres rather than being localized to one side", "fMRI technology has revolutionized the study of the brain", "Dr. Beaty is the leading researcher in the field of creative neuroscience"],
+    answer: 1,
+    explain: "The passage debunks right-brain creativity and replaces it with: both hemispheres, distributed networks, inter-hemispheric communication. B captures the core finding."
+  },
+  {
+    id: 14,
+    phase: 2,
+    skill: "synthesis",
+    diff: "hard",
+    passage: "Text:\nEcologist Dr. Navarro's field research found that bee populations within 2 kilometers of organic farms were 40% larger than populations near conventional farms. Dr. Navarro attributed this difference to the absence of neonicotinoid pesticides on organic farms.\n\nHowever, Dr. Navarro also noted that organic farms in the study had significantly more diverse crop plantings (averaging 12 crop varieties versus 3 for conventional farms) and maintained unplowed hedgerows and wildflower margins that conventional farms lacked.",
+    stem: "Taken together, what do these findings most strongly suggest?",
+    choices: ["Neonicotinoid pesticides are the sole cause of bee population decline", "While pesticide absence may contribute to larger bee populations near organic farms, the greater habitat diversity — varied crops and preserved wild margins — represents a confounding variable that makes it impossible to attribute the difference solely to pesticide use", "Organic farming is always better for the environment than conventional farming", "Bee populations are increasing worldwide due to organic farming"],
+    answer: 1,
+    explain: "Larger bee populations near organic farms, but organic farms ALSO have more crop diversity and wild margins. The synthesis: we can't isolate the pesticide effect because habitat diversity is a confound. B captures this nuance — both factors could contribute."
+  },
+  {
+    id: 15,
+    phase: 2,
+    skill: "strengthen",
+    diff: "hard",
+    passage: "Political scientist Dr. Osei has proposed that ranked-choice voting (RCV) reduces negative campaigning because candidates benefit from being voters' second or third choice and therefore have an incentive to avoid alienating supporters of rival candidates.",
+    stem: "Which finding, if true, would most strengthen Dr. Osei's proposal?",
+    choices: ["Ranked-choice voting is used in several countries around the world", "An analysis of 400 elections found that campaigns in RCV jurisdictions used 35% fewer attack ads than campaigns in traditional plurality elections, and post-election surveys showed that candidates in RCV elections were significantly more likely to publicly praise opponents and seek policy common ground", "Some voters find ranked-choice ballots confusing", "Dr. Osei has studied voting systems for two decades"],
+    answer: 1,
+    explain: "The claim is RCV reduces negative campaigning. B provides both behavioral data (35% fewer attack ads) AND a mechanism (candidates praising opponents, seeking common ground). The evidence matches the claim's direction and explains WHY."
+  },
+  {
+    id: 16,
+    phase: 2,
+    skill: "inference",
+    diff: "hard",
+    passage: "In 1848, Hungarian physician Ignaz Semmelweis discovered that mortality rates in maternity wards dropped from 18% to 2% when doctors washed their hands with a chlorine solution between performing autopsies and delivering babies. Despite this dramatic evidence, Semmelweis's findings were rejected by the medical establishment, which considered the suggestion that doctors' hands could transmit disease to be insulting to the profession. Semmelweis was dismissed from his hospital position and eventually committed to a mental institution, where he died at age 47. His work was only vindicated decades later when germ theory became accepted.",
+    stem: "Which inference is best supported by the text?",
+    choices: ["Semmelweis invented modern antiseptic techniques", "Scientific evidence alone may be insufficient to change established practices when it conflicts with the professional identity or institutional interests of those who must adopt it", "Handwashing is the most important medical practice ever discovered", "The medical establishment of the 1800s was entirely incompetent"],
+    answer: 1,
+    explain: 'Dramatic evidence (18%→2%) was rejected because it was "insulting to the profession." This shows evidence can fail against institutional/identity resistance. B captures this broader principle about evidence vs. institutional inertia.'
+  },
+  // ═══ PHASE 3: FINAL STAND (9 Qs) ═══
+  {
+    id: 17,
+    phase: 3,
+    skill: "weaken",
+    diff: "hard",
+    passage: "A tech company's internal study found that employees who used standing desks reported 25% fewer back pain complaints than employees who used traditional sitting desks. The company's wellness director concluded that standing desks reduce back pain and recommended purchasing standing desks for all employees.",
+    stem: "Which finding, if true, would most weaken the wellness director's conclusion?",
+    choices: ["Standing desks cost more than traditional desks", "Employees who chose standing desks were significantly younger (average age 31) and more physically active (exercising 4+ times per week) than those who kept sitting desks (average age 47, exercising 1-2 times per week), and younger, more active individuals generally experience less back pain regardless of desk type", "Some employees preferred sitting desks for ergonomic reasons", "The study was conducted over a six-month period"],
+    answer: 1,
+    explain: "Classic self-selection + confounding variables: standing desk users were younger AND more active — both independently associated with less back pain. The 25% reduction might be entirely explained by age and activity differences, not the desks themselves."
+  },
+  {
+    id: 18,
+    phase: 3,
+    skill: "completion",
+    diff: "hard",
+    passage: "A team of linguists analyzed 3,000 hours of recorded conversation across 12 languages and found that, despite enormous variation in grammar, vocabulary, and phonology, speakers in all 12 languages transmitted information at remarkably similar rates — approximately 39 bits per second. Languages with simpler syllable structures (like Japanese, which uses fewer sounds per syllable) compensated by using faster speech rates, while languages with more complex syllables (like Vietnamese with its tonal system) were spoken more slowly but packed more information into each syllable. The researchers concluded that ______",
+    stem: "Which choice most logically completes the text?",
+    choices: ["Japanese is a simpler language than Vietnamese", "there appears to be a universal cognitive bottleneck that constrains the rate at which the human brain can produce and process linguistic information, and languages have evolved different structural strategies to optimize transmission within this constraint", "all languages are equally difficult to learn", "speech rate is more important than vocabulary size"],
+    answer: 1,
+    explain: "Same information rate across all languages + different structural strategies to achieve it = a universal cognitive constraint that languages adapt to differently. B captures both the universal rate AND the compensatory strategies."
+  },
+  {
+    id: 19,
+    phase: 3,
+    skill: "data",
+    diff: "hard",
+    passage: "A city evaluated four different approaches to reducing homelessness over a three-year period.",
+    table: [
+      ["Program", "Participants", "Housing rate at 3 years", "Cost per participant", "Emergency room visits (change)"],
+      ["Housing First", "450", "82%", "$22,000", "-64%"],
+      ["Transitional shelters", "600", "41%", "$15,000", "-18%"],
+      ["Job training", "380", "28%", "$8,500", "-12%"],
+      ["Emergency shelters only", "1,200", "9%", "$4,500", "+8%"]
+    ],
+    tableNote: "Housing rate = % in stable housing after 3 years. ER visit change = compared to pre-program baseline.",
+    stem: "Which claim is best supported by the data in the table?",
+    choices: ["Emergency shelters are the most effective approach to reducing homelessness", "Housing First achieved the highest stable housing rate and largest reduction in emergency room usage, suggesting that despite higher per-participant costs, it may produce greater long-term value through reduced healthcare utilization", "Job training programs should be eliminated because they had the lowest housing rate", "All homeless individuals should be placed in Housing First programs immediately"],
+    answer: 1,
+    explain: "Housing First: 82% housed, -64% ER visits (highest on both). Higher cost ($22K) but dramatic ER reduction suggests downstream savings. B accurately captures the data pattern and the cost-effectiveness implication without overstating."
+  },
+  {
+    id: 20,
+    phase: 3,
+    skill: "evidence",
+    diff: "hard",
+    passage: "Evolutionary biologist Dr. Tanaka argues that the human preference for sweet tastes, once adaptive in environments where calorie-dense foods were scarce, has become maladaptive in modern food environments where sugar is abundant and cheap.",
+    claim: "Dr. Tanaka argues that an evolutionary trait that was once beneficial has become harmful in a changed environment.",
+    stem: "Which finding would most effectively illustrate this concept?",
+    choices: ["Humans have taste receptors for five basic flavors: sweet, sour, salty, bitter, and umami", "In controlled experiments, human subjects consistently chose sweeter options even when informed that the less sweet option was nutritionally superior, and this preference persisted even among subjects with diabetes who understood that excess sugar directly harmed their health — demonstrating the power of the evolved preference to override conscious knowledge of its harmful effects", "Sugar consumption has increased over the past century", "Some people prefer salty foods to sweet foods"],
+    answer: 1,
+    explain: "The claim is about an adaptive trait becoming maladaptive. B shows the preference overriding CONSCIOUS KNOWLEDGE of harm — even diabetics who KNOW sugar hurts them still choose it. This powerfully demonstrates the mismatch between evolved preference and modern consequences."
+  },
+  {
+    id: 21,
+    phase: 3,
+    skill: "central",
+    diff: "hard",
+    passage: "Philosopher Kwame Anthony Appiah has argued that identity categories — race, nationality, religion — are not fixed, natural kinds but 'labels' that gain meaning through social practice and that can be contested, revised, or abandoned as societies change. This does not mean identities are unreal or unimportant, Appiah emphasizes; rather, understanding their constructed nature is precisely what allows marginalized groups to challenge the definitions imposed on them and assert new ones. The danger, he suggests, lies not in having identities but in treating them as though they were eternal and unchangeable — a mistake that empowers those who would use identity to exclude rather than include.",
+    stem: "Which choice best states the main idea of the text?",
+    choices: ["Appiah believes that all identity categories should be abolished", "Understanding identities as socially constructed rather than fixed is empowering because it reveals that definitions can be challenged and revised, particularly by those who have been marginalized", "Identity categories are unimportant in modern society", "Appiah argues that race is the most important identity category"],
+    answer: 1,
+    explain: "Appiah: identities are constructed (not fixed) → understanding this is empowering → marginalized groups can challenge imposed definitions. B captures the full argument: constructed nature + empowerment through revision."
+  },
+  {
+    id: 22,
+    phase: 3,
+    skill: "synthesis",
+    diff: "hard",
+    passage: "Text:\nA neuroscience study found that when subjects listened to their preferred music genre, activity in the brain's reward center (nucleus accumbens) increased by an average of 45% compared to silence. The same study found that listening to non-preferred genres produced only a 12% increase.\n\nA separate psychology study found that workers who listened to self-selected music while performing repetitive tasks completed 31% more units and reported 40% higher job satisfaction than workers in silent conditions. However, workers who listened to researcher-selected music showed no productivity benefit and reported the experience as distracting.",
+    stem: "Taken together, what do these findings most strongly suggest?",
+    choices: ["All workplaces should play music to increase productivity", "Music's cognitive and motivational benefits appear to depend critically on personal preference and choice — self-selected music activates reward pathways and enhances performance, while imposed music does not, suggesting that autonomy in music selection is the key variable", "Classical music is better for productivity than other genres", "Music only benefits people who enjoy listening to music"],
+    answer: 1,
+    explain: "Study 1: preferred music → strong reward response, non-preferred → weak response. Study 2: self-selected → productivity gains, researcher-selected → no benefit. SYNTHESIS: the CHOICE/preference is the key variable, not music itself. B combines both findings around this insight."
+  },
+  {
+    id: 23,
+    phase: 3,
+    skill: "weaken",
+    diff: "hard",
+    passage: "A study found that neighborhoods with more street trees had 15% lower crime rates than similar neighborhoods without trees. Urban planners concluded that planting trees reduces crime by creating a more pleasant, watched-over environment that discourages criminal activity.",
+    stem: "Which finding, if true, would most weaken the planners' conclusion?",
+    choices: ["Trees provide environmental benefits such as shade and air filtration", "Neighborhoods with more street trees were found to have significantly higher property values, median household incomes, and rates of homeownership — all factors independently associated with lower crime — suggesting that tree presence may be a proxy for neighborhood wealth rather than a direct crime deterrent", "Some neighborhoods with many trees still had high crime rates", "The study controlled for population density"],
+    answer: 1,
+    explain: "Trees correlate with crime reduction, but B reveals trees also correlate with wealth indicators (property values, income, homeownership) that independently reduce crime. The trees might be a PROXY for wealth, not a cause of safety. Classic confounding variable."
+  },
+  {
+    id: 24,
+    phase: 3,
+    skill: "completion",
+    diff: "hard",
+    passage: "Astronomers have discovered that roughly 70% of sun-like stars in the Milky Way have at least one planet in the habitable zone — the orbital region where liquid water could theoretically exist on a planet's surface. Given that the galaxy contains approximately 100 billion sun-like stars, this means there are roughly 70 billion potentially habitable worlds in our galaxy alone. Yet despite decades of searching using increasingly sensitive instruments, no confirmed evidence of extraterrestrial life has been detected. This discrepancy — known as the Fermi Paradox — suggests that ______",
+    stem: "Which choice most logically completes the text?",
+    choices: ["extraterrestrial life definitely does not exist anywhere in the universe", "either the conditions required for life to arise and persist are far more restrictive than the habitable zone criterion alone implies, or there are other barriers to the development or detection of life that current models do not fully account for", "the Milky Way is the only galaxy that could harbor life", "human technology is too primitive to detect any form of extraterrestrial life"],
+    answer: 1,
+    explain: "Many potentially habitable planets + no detected life = something is preventing, constraining, or hiding life. B captures this logically: either habitability requirements are stricter than we think, or other unknown barriers exist. Appropriately cautious and covers multiple possibilities."
+  },
+  {
+    id: 25,
+    phase: 3,
+    skill: "inference",
+    diff: "hard",
+    passage: "In the 1960s, psychologist Walter Mischel conducted the famous 'marshmallow test,' in which preschoolers were offered one marshmallow immediately or two if they waited fifteen minutes. Follow-up studies found that children who waited scored higher on SATs and had better life outcomes decades later. The study was widely cited as proof that self-control is a key predictor of success. However, a 2018 replication with a larger, more diverse sample found that the correlation between waiting and later outcomes largely disappeared once researchers controlled for family socioeconomic status. Children from wealthier families were more likely both to wait (having learned that promised rewards typically materialize) and to have better outcomes (due to the advantages wealth provides).",
+    stem: "Which inference is best supported by the text?",
+    choices: ["The original marshmallow test was fraudulent", "What appeared to be a measure of individual self-control may have actually been measuring socioeconomic advantage — children's willingness to wait reflected their prior experience with reliability of promises rather than an innate character trait", "Self-control has no effect on life outcomes", "All psychological studies from the 1960s are invalid"],
+    answer: 1,
+    explain: "Once SES was controlled, the effect disappeared. Wealthier kids both waited more (trusted promises) and had better outcomes (wealth advantages). B captures the reinterpretation: the test measured economic background, not innate self-control."
+  }
+];
+const PHASES = [
+  { name: "Phase 1: Warm-Up", subtitle: "The Data Specter materializes...", hp: 8, color: BLUE, icon: "🛡️" },
+  { name: "Phase 2: Escalation", subtitle: "The Specter intensifies!", hp: 8, color: PURPLE, icon: "⚔️" },
+  { name: "Phase 3: Final Stand", subtitle: "The Specter unleashes its full power!", hp: 9, color: RED, icon: "🔥" }
+];
+function DataTable({ data, note }) {
+  if (!data) return null;
+  return /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { overflowX: "auto" } }, /* @__PURE__ */ React.createElement("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 12 } }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", null, data[0].map((h, i) => /* @__PURE__ */ React.createElement("th", { key: i, style: { padding: "7px 10px", borderBottom: `2px solid ${BLUE}`, color: BLUE, fontWeight: 700, textAlign: "left", whiteSpace: "nowrap" } }, h)))), /* @__PURE__ */ React.createElement("tbody", null, data.slice(1).map((row, ri) => /* @__PURE__ */ React.createElement("tr", { key: ri }, row.map((cell, ci) => /* @__PURE__ */ React.createElement("td", { key: ci, style: { padding: "7px 10px", borderBottom: `1px solid ${BORDER}`, color: ci === 0 ? TEXT : SUB, whiteSpace: "nowrap" } }, cell))))))), note && /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 10, marginTop: 6, fontStyle: "italic" } }, note));
+}
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${BLUE}22`, border: `1px solid ${BLUE}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: BLUE, marginBottom: 12, fontWeight: 600 } }, "Unit 3 · Module 12"), /* @__PURE__ */ React.createElement("h1", { style: { fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 900, background: `linear-gradient(135deg,${BLUE},${RED},${PURPLE})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 } }, "Information & Ideas Boss Battle"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 32 } }, "The Data Specter guards the gate to the final units. Defeat it with comprehension, evidence, data interpretation, and logical reasoning."), /* @__PURE__ */ React.createElement("div", { style: { background: `linear-gradient(135deg,${CARD},#1a1a2e)`, border: `1px solid ${BLUE}33`, borderRadius: 20, padding: 32, marginBottom: 32, maxWidth: 500, width: "100%", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 64, marginBottom: 12 } }, "👻"), /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontWeight: 900, fontSize: 22, marginBottom: 4 } }, "The Data Specter"), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13, marginBottom: 20 } }, "Level 12 Boss · 25 HP"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" } }, Object.values(SKILL_META).map((s, i) => /* @__PURE__ */ React.createElement("span", { key: i, style: { background: `${s.color}15`, color: s.color, padding: "3px 8px", borderRadius: 6, fontSize: 10, fontWeight: 600 } }, s.icon, " ", s.label)))), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 12, maxWidth: 650, width: "100%", marginBottom: 40 } }, [
+    { icon: "❤️", title: "3 Phases", desc: "8 + 8 + 9, escalating difficulty" },
+    { icon: "🔥", title: "Combo System", desc: "Consecutive correct answers build combo" },
+    { icon: "⭐", title: "Bonus XP", desc: "Speed and accuracy earn extra points" }
+  ].map((c, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 28, marginBottom: 6 } }, c.icon), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 14, marginBottom: 2 } }, c.title), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 12 } }, c.desc)))), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: onNext,
+      style: { ...btn(`linear-gradient(135deg,${BLUE},${RED})`, TEXT), fontSize: 17, padding: "16px 40px" },
+      onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.04)",
+      onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)"
+    },
+    "Begin Battle ⚔️"
+  ));
+}
+function BattleArena({ onComplete }) {
+  const [qIdx, setQIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [combo, setCombo] = useState(0);
+  const [maxCombo, setMaxCombo] = useState(0);
+  const [bossHP, setBossHP] = useState(25);
+  const [playerHP, setPlayerHP] = useState(25);
+  const [shake, setShake] = useState(false);
+  const [flashG, setFlashG] = useState(false);
+  const [flashR, setFlashR] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
+  const q = BATTLE_QUESTIONS[qIdx];
+  const total = BATTLE_QUESTIONS.length;
+  const phase = PHASES[q.phase - 1];
+  const skill = SKILL_META[q.skill];
+  function handleConfirm() {
+    if (selected === null) return;
+    const correct = selected === q.answer;
+    const ms = Date.now() - startTime;
+    setConfirmed(true);
+    setAnswers((p) => [...p, { qid: q.id, correct, skill: q.skill, ms }]);
+    if (correct) {
+      const nc = combo + 1;
+      setCombo(nc);
+      if (nc > maxCombo) setMaxCombo(nc);
+      setBossHP((hp) => Math.max(0, hp - 1));
+      setFlashG(true);
+      setTimeout(() => setFlashG(false), 400);
+    } else {
+      setCombo(0);
+      setPlayerHP((hp) => Math.max(0, hp - 1));
+      setShake(true);
+      setFlashR(true);
+      setTimeout(() => {
+        setShake(false);
+        setFlashR(false);
+      }, 400);
+    }
+  }
+  function handleNext() {
+    if (qIdx < total - 1) {
+      setQIdx(qIdx + 1);
+      setSelected(null);
+      setConfirmed(false);
+      setStartTime(Date.now());
+    } else {
+      onComplete({ answers, bossHP, playerHP, combo: maxCombo, totalTime: answers.reduce((a, x) => a + x.ms, 0) });
+    }
+  }
+  const HealthBar = ({ current, max, color, label, reverse }) => /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: reverse ? "flex-end" : "flex-start", alignItems: "center", gap: 6, marginBottom: 4 } }, /* @__PURE__ */ React.createElement("span", { style: { color, fontWeight: 700, fontSize: 12 } }, label), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 11 } }, current, "/", max)), /* @__PURE__ */ React.createElement("div", { style: { height: 10, background: BORDER, borderRadius: 5, overflow: "hidden", direction: reverse ? "rtl" : "ltr" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${current / max * 100}%`, background: color, borderRadius: 5, transition: "width .5s ease" } })));
+  const hasTable = !!q.table;
+  const questionText = q.stem || "Which choice best answers the question?";
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "24px 20px", minHeight: "100vh", animation: shake ? "shake .3s" : "none" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `linear-gradient(135deg,${CARD},#1a1a2e)`, border: `1px solid ${phase.color}33`, borderRadius: 16, padding: 16, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: phase.color, fontSize: 12, fontWeight: 700, letterSpacing: 1 } }, phase.icon, " ", phase.name), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6 } }, combo > 0 && /* @__PURE__ */ React.createElement("span", { style: { background: `${AMBER}22`, color: AMBER, padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 800, animation: "pulse 1s infinite" } }, combo, "x COMBO"), /* @__PURE__ */ React.createElement("span", { style: { color: skill.color, fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 6, background: `${skill.color}15` } }, skill.icon, " ", skill.label))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 16, alignItems: "center" } }, /* @__PURE__ */ React.createElement(HealthBar, { current: playerHP, max: 25, color: ACCENT, label: "YOU" }), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 16, fontWeight: 900 } }, "VS"), /* @__PURE__ */ React.createElement(HealthBar, { current: bossHP, max: 25, color: RED, label: "BOSS", reverse: true }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 800, fontSize: 15 } }, "Q", qIdx + 1, " of ", total), /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 700,
+    background: q.diff === "easy" ? `${ACCENT}22` : q.diff === "medium" ? `${AMBER}22` : `${RED}22`,
+    color: q.diff === "easy" ? ACCENT : q.diff === "medium" ? AMBER : RED
+  } }, q.diff)), /* @__PURE__ */ React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 20, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${(qIdx + (confirmed ? 1 : 0)) / total * 100}%`, background: `linear-gradient(90deg,${ACCENT},${AMBER},${RED})`, borderRadius: 2, transition: "width .4s" } })), /* @__PURE__ */ React.createElement("div", { style: {
+    background: CARD,
+    border: `1px solid ${BORDER}`,
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 16,
+    boxShadow: flashG ? `0 0 20px ${ACCENT}33` : flashR ? `0 0 20px ${RED}33` : "none",
+    transition: "box-shadow .3s"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, q.passage), q.claim && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12, padding: "10px 14px", borderRadius: 10, background: `${AMBER}11`, border: `1px solid ${AMBER}33` } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 11, fontWeight: 700, marginBottom: 4 } }, "CLAIM"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13, lineHeight: 1.6 } }, q.claim)), hasTable && /* @__PURE__ */ React.createElement(DataTable, { data: q.table, note: q.tableNote })), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, questionText), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } }, q.choices.map((c, ci) => {
+    const letter = "ABCD"[ci];
+    const isSel = selected === ci;
+    const isCorr = ci === q.answer;
+    let bg = CARD, bdr = `1px solid ${BORDER}`, tc = "#cbd5e1";
+    if (confirmed && isCorr) {
+      bg = `${ACCENT}18`;
+      bdr = `2px solid ${ACCENT}`;
+      tc = ACCENT;
+    } else if (confirmed && isSel && !isCorr) {
+      bg = `${RED}18`;
+      bdr = `2px solid ${RED}`;
+      tc = RED;
+    } else if (isSel && !confirmed) {
+      bg = `${phase.color}15`;
+      bdr = `2px solid ${phase.color}`;
+      tc = phase.color;
+    }
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: ci,
+        onClick: () => {
+          if (!confirmed) setSelected(ci);
+        },
+        disabled: confirmed,
+        style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: {
+        minWidth: 28,
+        height: 28,
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 800,
+        fontSize: 13,
+        flexShrink: 0,
+        marginTop: 1,
+        background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? phase.color : BORDER,
+        color: isSel || confirmed ? DARK : MUTED
+      } }, letter),
+      /* @__PURE__ */ React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+    );
+  })), confirmed && /* @__PURE__ */ React.createElement("div", { style: { background: selected === q.answer ? `${ACCENT}11` : `${RED}11`, border: `1px solid ${selected === q.answer ? ACCENT : RED}44`, borderRadius: 12, padding: 16, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 18 } }, selected === q.answer ? "✅" : "❌"), /* @__PURE__ */ React.createElement("span", { style: { color: selected === q.answer ? ACCENT : RED, fontWeight: 800, fontSize: 15 } }, selected === q.answer ? combo >= 3 ? "COMBO HIT! " + combo + "x" : "Correct!" : "Miss!")), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, q.explain)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } }, !confirmed ? /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: handleConfirm,
+      disabled: selected === null,
+      style: btn(selected === null ? BORDER : phase.color, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" })
+    },
+    "Attack ⚔️"
+  ) : /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: handleNext,
+      style: btn(`linear-gradient(135deg,${phase.color},${DARK})`, TEXT, { fontSize: 14, padding: "10px 24px" })
+    },
+    qIdx < total - 1 ? "Next →" : "Final Results →"
+  )), /* @__PURE__ */ React.createElement("style", null, `
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 50%{transform:translateX(6px)} 75%{transform:translateX(-4px)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+      `));
+}
+function Results({ data }) {
+  const [show, setShow] = useState(false);
+  const [tab, setTab] = useState("overview");
+  useEffect(() => {
+    setTimeout(() => setShow(true), 200);
+  }, []);
+  const { answers, bossHP, playerHP, combo, totalTime } = data;
+  const correct = answers.filter((a) => a.correct).length;
+  const total = answers.length;
+  const pct = Math.round(correct / total * 100);
+  const defeated = bossHP <= 0;
+  const mins = Math.floor(totalTime / 6e4);
+  const secs = Math.round(totalTime % 6e4 / 1e3);
+  const skillBreakdown = {};
+  Object.keys(SKILL_META).forEach((s) => {
+    const qs = answers.filter((a) => a.skill === s);
+    if (qs.length > 0) skillBreakdown[s] = { total: qs.length, correct: qs.filter((a) => a.correct).length };
+  });
+  const baseXP = correct * 100;
+  const comboXP = combo * 50;
+  const speedBonus = pct >= 80 && totalTime < 20 * 60 * 1e3 ? 500 : pct >= 60 && totalTime < 25 * 60 * 1e3 ? 250 : 0;
+  const perfectBonus = pct === 100 ? 1e3 : 0;
+  const totalXP = baseXP + comboXP + speedBonus + perfectBonus;
+  return /* @__PURE__ */ React.createElement("div", { style: { transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)", maxWidth: 800, margin: "0 auto", padding: "40px 20px 80px" } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 40 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 72, marginBottom: 8 } }, defeated ? "🏆" : "🛡️"), /* @__PURE__ */ React.createElement("h1", { style: {
+    fontSize: "clamp(2rem,5vw,3rem)",
+    fontWeight: 900,
+    background: defeated ? `linear-gradient(135deg,${BLUE},${ACCENT})` : `linear-gradient(135deg,${RED},${AMBER})`,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    marginBottom: 8
+  } }, defeated ? "VICTORY!" : "Defeated..."), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 16 } }, defeated ? "The Data Specter has been banished!" : "The Specter survives with " + bossHP + " HP. Strengthen your reasoning and try again!")), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(120px,1fr))", gap: 12, marginBottom: 32 } }, [
+    { label: "Score", value: `${correct}/${total}`, sub: `${pct}%`, color: pct >= 80 ? ACCENT : pct >= 60 ? AMBER : RED },
+    { label: "Max Combo", value: `${combo}x`, sub: combo >= 5 ? "Unstoppable!" : combo >= 3 ? "Nice streak!" : "Keep trying", color: AMBER },
+    { label: "Time", value: `${mins}m ${secs}s`, sub: `${Math.round(totalTime / total / 1e3)}s avg`, color: BLUE },
+    { label: "XP Earned", value: totalXP.toLocaleString(), sub: "total points", color: PURPLE }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: s.color, fontWeight: 900, fontSize: 22 } }, s.value), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 11, marginTop: 2 } }, s.sub)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 4, marginBottom: 24, background: CARD, borderRadius: 10, padding: 4 } }, [["overview", "Skill Breakdown"], ["detail", "Question Log"], ["next", "What's Next"]].map(([k, l]) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: k,
+      onClick: () => setTab(k),
+      style: {
+        flex: 1,
+        padding: "10px 12px",
+        borderRadius: 8,
+        border: "none",
+        fontWeight: 600,
+        fontSize: 13,
+        cursor: "pointer",
+        background: tab === k ? BORDER : "transparent",
+        color: tab === k ? TEXT : MUTED
+      }
+    },
+    l
+  ))), tab === "overview" && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 12 } }, Object.entries(skillBreakdown).map(([s, d]) => {
+    const meta = SKILL_META[s];
+    const sp = Math.round(d.correct / d.total * 100);
+    return /* @__PURE__ */ React.createElement("div", { key: s, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 16 } }, meta.icon), /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontWeight: 700, fontSize: 14 } }, meta.label)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { color: meta.color, fontWeight: 800, fontSize: 18 } }, sp, "%"), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 12 } }, "(", d.correct, "/", d.total, ")"))), /* @__PURE__ */ React.createElement("div", { style: { height: 8, background: BORDER, borderRadius: 4, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${sp}%`, background: meta.color, borderRadius: 4, transition: "width 1s" } })));
+  })), tab === "detail" && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6 } }, answers.map((a, i) => {
+    const bq = BATTLE_QUESTIONS.find((q) => q.id === a.qid);
+    const meta = SKILL_META[a.skill];
+    return /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 10, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("div", { style: {
+      width: 28,
+      height: 28,
+      borderRadius: 7,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: 800,
+      fontSize: 12,
+      background: a.correct ? `${ACCENT}22` : `${RED}22`,
+      color: a.correct ? ACCENT : RED
+    } }, i + 1), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 12, fontWeight: 600 } }, meta.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, "Phase ", bq?.phase, " · ", bq?.diff)), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 11 } }, Math.round(a.ms / 1e3), "s"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 14 } }, a.correct ? "✅" : "❌"));
+  })), tab === "next" && /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { background: `linear-gradient(135deg,${ACCENT}11,${CARD})`, border: `1px solid ${ACCENT}33`, borderRadius: 16, padding: 24, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: ACCENT, fontWeight: 800, fontSize: 16, marginBottom: 8 } }, defeated ? "🌟 Unit 3 Complete!" : "💪 Keep Training"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 14, lineHeight: 1.7 } }, defeated ? "You've conquered Information & Ideas! You now have comprehension, evidence evaluation, data interpretation, and logical reasoning — covering the full SAT R&W analytical toolkit. The remaining modules cover strategy, pacing, and full practice tests." : pct >= 60 ? "You're close! Focus on the skills where you struggled most. Logical reasoning and data interpretation are often the questions that separate 700+ scorers from the rest." : "Review Modules 9-11 to strengthen your foundations. For evidence questions: SUPPORTS ≠ RELATES. For logical reasoning: find the hidden assumption. For data: read labels first, then trends.")), (() => {
+    const weakest = Object.entries(skillBreakdown).sort((a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total)[0];
+    if (!weakest) return null;
+    const [sk, d] = weakest;
+    const meta = SKILL_META[sk];
+    const wPct = Math.round(d.correct / d.total * 100);
+    if (wPct >= 80) return null;
+    const tips = {
+      central: "Review Module 9: Central Ideas. Summarize each passage in one sentence before looking at choices.",
+      detail: "Review Module 9: Detail questions require going back to the passage. Find the exact sentence.",
+      inference: "Review Module 9: The correct inference requires the SMALLEST logical leap from evidence.",
+      evidence: "Review Module 10: Evidence must SUPPORT the claim, not just relate to the same topic.",
+      data: "Review Module 10: Read labels first, identify trends, then match to claim. Watch for causation traps.",
+      strengthen: "Review Module 11: Strengthen = confirm assumption or eliminate alternatives.",
+      weaken: "Review Module 11: Weaken = introduce alternative explanations or attack assumptions.",
+      completion: "Review Module 11: Choose the most moderate, well-supported conclusion.",
+      synthesis: "Review Module 11: Combine information from both sources — reject answers using only one."
+    };
+    return /* @__PURE__ */ React.createElement("div", { style: { background: `${meta.color}11`, border: `1px solid ${meta.color}33`, borderRadius: 14, padding: 20, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: meta.color, fontWeight: 700, fontSize: 14, marginBottom: 6 } }, meta.icon, " Weakest Skill: ", meta.label, " (", wPct, "%)"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.6 } }, tips[sk]));
+  })(), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, padding: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 12 } }, "Course Progress"), [
+    { n: "1-4", label: "Conventions", note: "Complete!", color: ACCENT, done: true },
+    { n: "5-8", label: "Craft & Structure", note: "Complete!", color: AMBER, done: true },
+    { n: "9-11", label: "Information & Ideas", note: "Complete!", color: BLUE, done: true },
+    { n: "12", label: "Boss Battle", note: defeated ? "Defeated!" : "In progress...", color: RED, done: defeated },
+    { n: "13-14", label: "Expression & Strategy", note: "Coming soon", color: PURPLE, done: false },
+    { n: "15-17", label: "Full Practice & Review", note: "Coming soon", color: CYAN, done: false }
+  ].map((m, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: i < 5 ? `1px solid ${BORDER}` : "none" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 24, height: 24, borderRadius: 12, background: m.done ? `${m.color}22` : BORDER, border: `2px solid ${m.done ? m.color : BORDER}`, display: "flex", alignItems: "center", justifyContent: "center" } }, m.done && /* @__PURE__ */ React.createElement("span", { style: { color: m.color, fontSize: 12 } }, "✓")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: m.done ? TEXT : MUTED, fontSize: 13, fontWeight: 600 } }, "M", m.n, ": ", m.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, m.note))))), React.createElement(Homework, null), React.createElement(NavLinks, null)));
+}
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [battleData, setBattleData] = useState(null);
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    inset: 0,
+    pointerEvents: "none",
+    opacity: 0.03,
+    backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",
+    backgroundSize: "40px 40px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } }, screen === "welcome" && /* @__PURE__ */ React.createElement(Welcome, { onNext: () => go("battle") }), screen === "battle" && /* @__PURE__ */ React.createElement(BattleArena, { onComplete: (d) => {
+    setBattleData(d);
+    go("results");
+  } }), screen === "results" && battleData && /* @__PURE__ */ React.createElement(Results, { data: battleData })));
+}
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>

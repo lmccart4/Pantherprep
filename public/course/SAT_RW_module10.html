@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 10: Command of Evidence & Data — PantherPrep SAT R&W</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+table { border-collapse: collapse; }
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const { useState, useEffect, useCallback } = React;
+const BLUE = "#3b82f6";
+const BLUE2 = "#2563eb";
+const ACCENT = "#10b981";
+const AMBER = "#f59e0b";
+const PURPLE = "#a855f7";
+const RED = "#ef4444";
+const CYAN = "#06b6d4";
+const DARK = "#0a0a0f";
+const CARD = "#13131f";
+const BORDER = "#1e293b";
+const MUTED = "#64748b";
+const TEXT = "#e2e8f0";
+const SUB = "#94a3b8";
+const btn = (bg, color, extra) => ({
+  padding: "12px 28px",
+  borderRadius: 10,
+  border: "none",
+  background: bg,
+  color,
+  fontWeight: 700,
+  fontSize: 15,
+  cursor: "pointer",
+  transition: "transform .12s",
+  ...extra
+});
+const LESSONS = [
+  {
+    id: "intro",
+    title: "Evidence Is Everything",
+    subtitle: "The SAT's most analytical question types",
+    body: [
+      "Command of Evidence questions test your ability to evaluate HOW well evidence supports a claim. This isn't about reading comprehension — it's about logical reasoning applied to text and data.",
+      "Two main subtypes appear on the SAT:\n• Textual Evidence (~2-3 per test): Which quote/detail best supports a given claim?\n• Quantitative Evidence (~2 per test): What does the data in a table, graph, or chart support?",
+      "Together these represent about 7-8% of the section. They're among the most analytical questions on the test and reward careful, logical thinking over reading speed."
+    ],
+    visual: "stats"
+  },
+  {
+    id: "textual-evidence",
+    title: "Textual Evidence Questions",
+    subtitle: "Which detail BEST supports the claim?",
+    body: [
+      'These questions give you a passage, a claim about the passage, and ask which piece of textual evidence best supports that claim. The format is typically: "Which quotation from the text most effectively illustrates [claim]?"',
+      "STRATEGY: Don't just find evidence that RELATES to the claim — find evidence that SUPPORTS it. There's a crucial difference:\n• Related evidence: Discusses the same topic as the claim.\n• Supporting evidence: Actually demonstrates, proves, or illustrates the claim.",
+      `EXAMPLE CLAIM: "The author suggests that the traditional approach had significant limitations."
+• Related but weak: "The traditional approach was developed in the 1950s." (Discusses the approach but doesn't mention limitations)
+• Strong support: "Despite decades of use, the method consistently failed to account for environmental variables." (Directly shows a limitation)`,
+      `TRAP: Answer choices that mention the right topic but don't actually support the specific claim. Always ask: "Does this evidence PROVE the claim, or just touch on the same subject?"`
+    ],
+    visual: null
+  },
+  {
+    id: "evidence-strength",
+    title: "Evaluating Evidence Strength",
+    subtitle: "Not all evidence is created equal",
+    body: [
+      "The SAT expects you to distinguish between strong and weak evidence. Here's the hierarchy:",
+      "STRONGEST:\n• Direct examples that demonstrate the claim\n• Specific data, statistics, or research findings\n• Expert testimony directly addressing the claim\n• Logical reasoning with explicit connection to the claim",
+      "WEAKEST:\n• Vague or general statements on the topic\n• Anecdotal evidence without clear connection\n• Tangentially related information\n• Evidence that merely restates the claim without supporting it",
+      'KEY INSIGHT: Specificity matters. "The program reduced dropout rates by 34%" is stronger evidence than "The program showed positive results." Both support the claim that the program worked, but the first is far more compelling.'
+    ],
+    visual: "strength-scale"
+  },
+  {
+    id: "data-intro",
+    title: "Quantitative Evidence: Tables & Graphs",
+    subtitle: "Reading data the SAT way",
+    body: [
+      "About 2 questions per test include a table, graph, or chart. You'll need to read the data accurately and determine what claims it does (and doesn't) support.",
+      "STEP 1: Read the title, axis labels, and units FIRST. Before looking at any data points, understand what's being measured and how.",
+      "STEP 2: Identify trends. Is the data increasing, decreasing, or stable? Are there exceptions or outliers?",
+      "STEP 3: Match the data to the claim. The question will present a claim and ask whether the data supports, contradicts, or is irrelevant to it.",
+      "CRITICAL SKILL: The SAT tests whether you can distinguish between what the data SHOWS and what it SUGGESTS. Data showing a correlation (X and Y increase together) does NOT prove causation (X causes Y)."
+    ],
+    visual: "data-reading"
+  },
+  {
+    id: "table-skills",
+    title: "Reading Tables",
+    subtitle: "Rows, columns, and comparisons",
+    body: [
+      "Tables are the most common data format on the SAT. Here's how to read them efficiently:",
+      "ROWS represent individual items, groups, or time periods.\nCOLUMNS represent different measurements or categories.\nThe INTERSECTION of a row and column gives you a specific data point.",
+      "COMPARISON QUESTIONS ask you to identify patterns:\n• Which group had the highest/lowest value?\n• How did values change over time?\n• What's the relationship between two columns?",
+      "WATCH FOR:\n• Units (percentages vs. raw numbers — a 50% increase from 10 is just 5 more)\n• Missing data or footnotes\n• Whether the table shows ALL groups or just a selection\n• Whether numbers are approximate or exact"
+    ],
+    visual: "sample-table"
+  },
+  {
+    id: "graph-skills",
+    title: "Reading Graphs",
+    subtitle: "Bars, lines, and scatter plots",
+    body: [
+      "BAR GRAPHS: Compare quantities across categories. Look for which bars are tallest/shortest and by how much.",
+      "LINE GRAPHS: Show change over time. Look for overall trend (up/down/flat), rate of change (steep vs. gradual), and turning points.",
+      "SCATTER PLOTS: Show relationship between two variables. Look for positive correlation (both increase), negative correlation (one increases, other decreases), or no correlation (random pattern).",
+      "SAT TRAP: Graphs that show correlation between variables — the SAT will often include an answer choice that claims causation. Remember: correlation does NOT prove causation. Two things can increase together without one causing the other."
+    ],
+    visual: null
+  },
+  {
+    id: "data-claims",
+    title: "Connecting Data to Claims",
+    subtitle: "Support, weaken, or irrelevant?",
+    body: [
+      'The most common quantitative evidence question format: "Which claim is best supported by the data in the table?"',
+      'SUPPORTS: The data directly demonstrates the claim. If the claim says "X increased," the data should show X increasing.',
+      'WEAKENS: The data contradicts the claim. If the claim says "X increased," but the data shows X decreased or remained stable.',
+      "IRRELEVANT: The data doesn't address the claim at all. This is a common trap — an answer choice about topic Y when the table only measures topics X and Z.",
+      "STRATEGY: For each answer choice, ask:\n1. Does the table contain data relevant to this claim?\n2. Does the data point in the direction the claim requires?\n3. Is the match specific (exact numbers/trends) or vague (just same topic)?"
+    ],
+    visual: null
+  },
+  {
+    id: "framework",
+    title: "The Evidence Framework",
+    subtitle: "Your approach for every evidence question",
+    body: [
+      "FOR TEXTUAL EVIDENCE:\n1. Read the claim carefully. What EXACTLY does it say?\n2. For each answer choice, ask: Does this evidence SUPPORT the claim, or just RELATE to the same topic?\n3. Choose the evidence that most DIRECTLY demonstrates the claim.\n4. Specificity wins — concrete examples beat vague statements.",
+      "FOR QUANTITATIVE EVIDENCE:\n1. Read table/graph title, labels, and units.\n2. Read the claim or question.\n3. Find the relevant data points.\n4. Check: Does the data match the claim's direction and magnitude?\n5. Watch for correlation vs. causation traps.",
+      "GOLDEN RULES:\n• The best evidence is the most SPECIFIC and DIRECT.\n• Data can SUPPORT or WEAKEN — it doesn't have to do either.\n• Never assume causation from correlation.\n• Read every answer choice — the best evidence may not be the first one you find."
+    ],
+    visual: "framework-visual"
+  }
+];
+const TEXTUAL_ITEMS = [
+  {
+    claim: "The study suggests that exposure to nature has measurable cognitive benefits.",
+    passage: "Psychologist Dr. Ahn conducted a controlled experiment in which participants were randomly assigned to spend 90 minutes walking in either a natural setting (a tree-lined park) or an urban setting (a busy commercial street). Before and after the walk, all participants completed standardized tests of working memory and attention.",
+    choices: [
+      "Dr. Ahn has published extensively on the relationship between environment and psychology.",
+      "Participants who walked in the natural setting showed a 20% improvement in working memory scores and a 15% improvement in sustained attention, while urban walkers showed no significant change.",
+      "The study was conducted in Portland, Oregon, during the summer months.",
+      "Previous research has suggested that natural environments may reduce stress levels."
+    ],
+    answer: 1,
+    explain: `The claim is about "measurable cognitive benefits." B provides SPECIFIC measurements (20% working memory, 15% attention) directly demonstrating cognitive benefits. A is about the researcher's credentials, C is location/timing, D is about stress (not cognition). B is the only choice that MEASURES cognitive benefits.`
+  },
+  {
+    claim: "The novelist's work challenges conventional expectations of the genre.",
+    passage: "Elena Ferrante's Neapolitan Quartet, while classified as literary fiction, incorporates elements drawn from soap opera, domestic melodrama, and coming-of-age narratives. The tetralogy follows two women from childhood in 1950s Naples through old age, embedding their personal drama within a panoramic portrayal of Italian political and social upheaval.",
+    choices: [
+      "The Neapolitan Quartet consists of four novels published between 2011 and 2014.",
+      "By blending elements traditionally associated with popular entertainment — soap opera dynamics, melodramatic plot turns — into a work of serious literary ambition, Ferrante dismantles the boundary between 'high' and 'low' fiction.",
+      "Elena Ferrante is a pseudonym; the author's true identity has been the subject of extensive speculation.",
+      "The novels have been translated into more than 40 languages and adapted into an HBO television series."
+    ],
+    answer: 1,
+    explain: 'The claim is about "challenging conventional expectations." B explicitly describes HOW Ferrante challenges genre boundaries — blending popular entertainment with literary ambition, dismantling high/low distinctions. A is publication info, C is about identity, D is about commercial success.'
+  },
+  {
+    claim: "The data indicate that the economic effects of automation are more complex than simple job displacement.",
+    passage: "A comprehensive study of 750 manufacturing firms that adopted robotic automation between 2010 and 2020 yielded unexpected findings. While overall employment at these firms decreased by an average of 12%, the composition of the workforce shifted dramatically.",
+    choices: [
+      "Automation technologies have become significantly cheaper over the past decade.",
+      "The study found that while low-skill production roles declined by 35%, firms simultaneously created new positions in robot maintenance, data analysis, and process optimization — roles that paid an average of 47% more than the displaced positions.",
+      "Several labor unions have opposed the adoption of automation in manufacturing.",
+      "The firms in the study ranged in size from 50 to 10,000 employees."
+    ],
+    answer: 1,
+    explain: "The claim is about COMPLEXITY — not simple job loss. B shows that complexity: jobs were lost (35% decline in low-skill) BUT new, higher-paying jobs were created. This demonstrates the two-sided effect the claim describes. A, C, D don't address the complexity argument."
+  },
+  {
+    claim: "The restoration project prioritized historical accuracy over modern convenience.",
+    passage: "When the city undertook the restoration of the 18th-century Merchant's Hall, the architectural team faced repeated decisions about whether to maintain original features or adapt the building for contemporary use.",
+    choices: [
+      "The restoration took three years and cost $12 million.",
+      "The team chose to retain the building's original hand-blown window glass — which distorts light and provides no insulation — rather than replace it with modern energy-efficient alternatives, despite projected annual heating costs of $40,000 above what insulated windows would require.",
+      "The Merchant's Hall was originally built in 1742 by a prominent local family.",
+      "Several other historic buildings in the city have been restored in recent years."
+    ],
+    answer: 1,
+    explain: "The claim is about prioritizing accuracy OVER convenience. B provides a concrete example: keeping original glass DESPITE $40,000/year in extra heating costs. This directly shows choosing historical authenticity at the expense of modern efficiency. Highly specific and directly supports the claim."
+  },
+  {
+    claim: "Dr. Kim's research suggests that bilingual children develop stronger executive function skills than monolingual peers.",
+    passage: "Developmental psychologist Dr. Kim designed a study comparing cognitive performance in 200 bilingual and 200 monolingual children aged 6-10. All participants were matched for socioeconomic status, parental education, and school quality to control for confounding variables.",
+    choices: [
+      "Dr. Kim's study was funded by the National Science Foundation and published in the journal Developmental Psychology.",
+      "Executive function refers to a set of cognitive processes including working memory, cognitive flexibility, and inhibitory control.",
+      "Bilingual children in the study scored an average of 23% higher on tasks requiring cognitive flexibility and 18% higher on inhibitory control tasks, differences that remained statistically significant after controlling for all matched variables.",
+      "Several previous studies had produced conflicting results on the relationship between bilingualism and cognition."
+    ],
+    answer: 2,
+    explain: "The claim is about bilingual children having STRONGER executive function. C provides specific data — 23% higher on flexibility, 18% higher on inhibitory control, statistically significant after controls. This is the most direct, specific, measurable support. A is funding info, B is a definition, D is about prior research."
+  }
+];
+const DATA_ITEMS = [
+  {
+    title: "Annual Revenue by Department (in millions)",
+    tableData: [
+      ["Department", "2020", "2021", "2022", "2023"],
+      ["Software", "$45", "$52", "$61", "$73"],
+      ["Hardware", "$38", "$36", "$33", "$29"],
+      ["Services", "$22", "$28", "$35", "$42"],
+      ["Total", "$105", "$116", "$129", "$144"]
+    ],
+    question: "Which claim is best supported by the data in the table?",
+    choices: [
+      "The company's total revenue has remained stable over the four-year period",
+      "The hardware department has been the company's largest revenue source since 2020",
+      "The company's revenue growth has been driven primarily by software and services, while hardware revenue has steadily declined",
+      "Services revenue will surpass software revenue by 2025"
+    ],
+    answer: 2,
+    explain: "Software: $45→$73 (growing). Services: $22→$42 (growing). Hardware: $38→$29 (declining). Total is growing. C accurately describes the pattern. A is wrong (revenue grew). B is wrong (software was largest). D predicts the future — the table only shows through 2023."
+  },
+  {
+    title: "Average Test Scores by Study Method",
+    tableData: [
+      ["Study Method", "Pre-Test", "Post-Test", "Improvement"],
+      ["Traditional lecture", "62", "71", "+9"],
+      ["Active recall", "61", "84", "+23"],
+      ["Spaced repetition", "63", "86", "+23"],
+      ["Mixed (recall + spacing)", "62", "91", "+29"]
+    ],
+    tableNote: "Scores out of 100. Groups of 50 students each, matched for prior achievement.",
+    question: "Which claim is best supported by the data in the table?",
+    choices: [
+      "Traditional lecture is an ineffective teaching method that should be abandoned",
+      "Combining active recall with spaced repetition produced greater improvement than either technique alone",
+      "Students using spaced repetition scored higher on the pre-test than all other groups",
+      "Active recall is more effective than spaced repetition"
+    ],
+    answer: 1,
+    explain: "Mixed method improved by 29, while active recall alone (+23) and spaced repetition alone (+23) improved less. B accurately describes this pattern. A overstates (lecture showed some improvement). C is wrong (pre-test scores were nearly identical). D is wrong (both improved by +23)."
+  },
+  {
+    title: "Coral Reef Health Index by Region (2015 vs. 2023)",
+    tableData: [
+      ["Region", "2015 Index", "2023 Index", "Change"],
+      ["Caribbean", "72", "58", "-14"],
+      ["Indo-Pacific", "81", "74", "-7"],
+      ["Red Sea", "85", "83", "-2"],
+      ["Great Barrier Reef", "76", "61", "-15"],
+      ["Global Average", "78.5", "69", "-9.5"]
+    ],
+    tableNote: "Health Index scored 0-100, where 100 = pristine condition.",
+    question: "Which claim is best supported by the data in the table?",
+    choices: [
+      "The Red Sea has the healthiest coral reefs because it has the warmest water temperatures",
+      "While all regions experienced decline, the rate of decline varied significantly, with the Red Sea showing the greatest resilience",
+      "Coral reef decline is caused primarily by ocean acidification",
+      "The Great Barrier Reef will be completely destroyed within the next decade"
+    ],
+    answer: 1,
+    explain: "All regions declined (universal trend) but Red Sea declined only -2 vs. Great Barrier Reef at -15. B accurately captures both the universal decline AND the variation. A introduces temperature (not in data). C claims causation (not in data). D predicts future destruction (not supported)."
+  },
+  {
+    title: "Startup Survival Rates by Founding Team Size",
+    tableData: [
+      ["Team Size", "Year 1", "Year 3", "Year 5"],
+      ["Solo founder", "78%", "42%", "19%"],
+      ["2 founders", "85%", "58%", "34%"],
+      ["3 founders", "82%", "55%", "31%"],
+      ["4+ founders", "80%", "48%", "24%"]
+    ],
+    tableNote: "Percentage of startups still operating. Sample: 5,000 startups founded 2015-2018.",
+    question: "Which claim is best supported by the data in the table?",
+    choices: [
+      "Solo-founded startups are doomed to fail because they lack diverse perspectives",
+      "Two-founder teams consistently showed the highest survival rates across all measured time periods",
+      "Adding more founders always improves a startup's chances of survival",
+      "Most startups fail regardless of team size, but Year 1 survival rates vary little across team sizes"
+    ],
+    answer: 1,
+    explain: 'Two founders had the highest rate at Year 1 (85%), Year 3 (58%), and Year 5 (34%) — consistently highest. B captures this. A overstates ("doomed"). C is wrong (4+ did worse than 2-3). D — while most fail long-term is true, the claim about Year 1 varying little is also true (78-85%), but B is MORE directly supported.'
+  },
+  {
+    title: "Public Library Usage by Age Group (2018 vs. 2023)",
+    tableData: [
+      ["Age Group", "2018 Visits/Year", "2023 Visits/Year", "2018 Digital", "2023 Digital"],
+      ["18-29", "4.2", "2.1", "12%", "58%"],
+      ["30-44", "6.8", "5.5", "8%", "41%"],
+      ["45-59", "7.1", "6.9", "5%", "22%"],
+      ["60+", "9.4", "8.8", "3%", "11%"]
+    ],
+    tableNote: "Visits = average annual in-person visits. Digital = % using library's digital services.",
+    question: "Which claim is best supported by the data in the table?",
+    choices: [
+      "Young adults have abandoned libraries entirely in favor of digital alternatives",
+      "In-person library visits declined across all age groups while digital service usage increased substantially, with younger users showing the most dramatic shift toward digital",
+      "Digital services are of higher quality than in-person library services",
+      "The 60+ age group visits the library more because they have more free time"
+    ],
+    answer: 1,
+    explain: 'Every age group shows declining in-person visits AND increasing digital usage. The 18-29 group shows the most dramatic shift (visits halved, digital went from 12%→58%). B accurately captures all three trends. A overstates ("entirely" — they still visit 2.1 times). C and D introduce reasons not in the data.'
+  }
+];
+const QUIZ = [
+  {
+    id: 1,
+    diff: "medium",
+    type: "textual",
+    passage: "Ecologist Dr. Patel's long-term study of urban wildlife corridors has documented how green spaces connected by tree-lined pathways function as migration routes for birds, insects, and small mammals in otherwise fragmented urban environments.",
+    claim: "Dr. Patel's research demonstrates that connected green spaces support urban biodiversity more effectively than isolated parks.",
+    stem: "Which finding, if true, would most effectively support the claim above?",
+    choices: [
+      "Dr. Patel's study lasted fifteen years and covered twelve cities",
+      "Connected corridor networks hosted 3.5 times more bird species and 2.8 times more pollinator species than equivalently sized isolated parks in the same metropolitan areas",
+      "Urban green spaces have become increasingly popular with city residents for recreational purposes",
+      "Several cities have recently announced plans to expand their park systems"
+    ],
+    answer: 1,
+    explain: "The claim is about connected spaces being MORE effective than isolated parks for biodiversity. B provides direct comparative data — 3.5x more bird species, 2.8x more pollinators in connected vs. isolated. Specific, comparative, and directly on-claim."
+  },
+  {
+    id: 2,
+    diff: "medium",
+    type: "textual",
+    passage: "Historian Dr. Okafor argues that the Library of Alexandria's significance in the ancient world has been substantially overstated by modern scholars. While acknowledging its importance as a center of learning, Okafor notes that multiple rival institutions — including libraries at Pergamon, Antioch, and Athens — held comparable collections and attracted scholars of equal distinction.",
+    claim: "Dr. Okafor argues that the Library of Alexandria's historical reputation exceeds its actual uniqueness among ancient institutions.",
+    stem: "Which quotation from the text most effectively illustrates this claim?",
+    choices: [
+      "The Library of Alexandria was an important center of learning in the ancient world.",
+      "Modern scholars have written extensively about the Library of Alexandria's destruction.",
+      "Multiple rival institutions — including libraries at Pergamon, Antioch, and Athens — held comparable collections and attracted scholars of equal distinction.",
+      "Dr. Okafor has studied ancient libraries for over two decades."
+    ],
+    answer: 2,
+    explain: `The claim is about reputation EXCEEDING uniqueness — Alexandria wasn't as unique as people think. C directly shows why: other libraries had "comparable collections" and "equal distinction" scholars. This evidence demonstrates Alexandria wasn't the singular institution its reputation suggests.`
+  },
+  {
+    id: 3,
+    diff: "medium",
+    type: "data",
+    passage: "A research team studying the effectiveness of different conservation strategies tracked populations of an endangered bird species across four protected areas using different management approaches over a ten-year period.",
+    table: [
+      ["Strategy", "2013 Pop.", "2023 Pop.", "Change"],
+      ["Habitat restoration", "120", "310", "+158%"],
+      ["Predator control", "135", "195", "+44%"],
+      ["Captive breeding", "90", "180", "+100%"],
+      ["No intervention (control)", "140", "115", "-18%"]
+    ],
+    stem: "Which claim is best supported by the data in the table?",
+    choices: [
+      "Predator control is an ineffective conservation strategy that should be discontinued",
+      "All active conservation strategies produced population increases, with habitat restoration yielding the largest gains",
+      "Captive breeding is the most cost-effective conservation approach",
+      "The endangered bird population will be fully recovered within five more years"
+    ],
+    answer: 1,
+    explain: "All three active strategies showed population growth (habitat +158%, captive +100%, predator +44%), while the control declined (-18%). Habitat restoration produced the largest increase. B accurately captures this. A overstates (predator control DID increase pop). C introduces cost (not in data). D predicts future (unsupported)."
+  },
+  {
+    id: 4,
+    diff: "hard",
+    type: "textual",
+    passage: "Neuroscientist Dr. Yamamoto has proposed that the human brain's default mode network — the neural system active during daydreaming and mind-wandering — is not, as previously assumed, merely a passive resting state but rather an active process essential for creative problem-solving and future planning.",
+    claim: "Dr. Yamamoto's research challenges the prevailing view that mind-wandering represents unproductive brain activity.",
+    stem: "Which finding would most directly support Dr. Yamamoto's challenge to the prevailing view?",
+    choices: [
+      "The default mode network was first identified through brain imaging studies in the early 2000s",
+      "Participants whose mind-wandering was experimentally suppressed scored 40% lower on subsequent creative problem-solving tasks than those allowed to daydream freely, despite showing no difference on routine analytical tasks",
+      "Many successful artists and scientists report that their best ideas come during periods of relaxation",
+      "Brain imaging technology has become significantly more precise over the past decade"
+    ],
+    answer: 1,
+    explain: "The claim is that mind-wandering ISN'T unproductive — it helps creativity. B provides an experiment directly testing this: suppressing mind-wandering hurt creative performance but not analytical performance. This is specific, controlled, and directly demonstrates the productive role of daydreaming."
+  },
+  {
+    id: 5,
+    diff: "hard",
+    type: "data",
+    passage: "A longitudinal study examined the relationship between early childhood reading exposure and academic outcomes at age 15.",
+    table: [
+      ["Reading exposure (ages 0-5)", "Avg. reading score (age 15)", "Avg. math score (age 15)", "College enrollment rate"],
+      ["Daily (30+ min)", "92", "84", "78%"],
+      ["Regular (3-5x/week)", "85", "81", "65%"],
+      ["Occasional (1-2x/week)", "76", "79", "52%"],
+      ["Rare (<1x/week)", "68", "77", "41%"]
+    ],
+    tableNote: "Scores normalized to 100-point scale. Sample: 8,000 children, controlled for family income.",
+    stem: "Which claim is best supported by the data in the table?",
+    choices: [
+      "Early reading exposure has a strong association with later reading achievement and college enrollment, but a much weaker association with math achievement",
+      "Children who are not read to daily will not succeed academically",
+      "Reading to children directly causes them to score higher on reading tests",
+      "Family income is the primary determinant of academic success"
+    ],
+    answer: 0,
+    explain: "Reading scores range widely (68-92, a 24-point spread) and college enrollment varies greatly (41-78%). But math scores barely change (77-84, only 7 points). A accurately captures this pattern: strong reading/enrollment association, weak math association. B overstates. C claims causation (the study shows correlation). D — income was controlled for, so it's held constant."
+  },
+  {
+    id: 6,
+    diff: "medium",
+    type: "textual",
+    passage: "The African elephant's complex social structure, led by a matriarch whose decades of accumulated knowledge guides the herd's decisions about migration routes, water sources, and threat responses, has been described by primatologist Dr. Moss as 'a living database of ecological intelligence.'",
+    claim: "The passage suggests that elephant herds benefit from the accumulated experience of their oldest members.",
+    stem: "Which detail from the text most directly supports this claim?",
+    choices: [
+      "African elephants are social animals that live in herds",
+      "The matriarch's decades of accumulated knowledge guides the herd's decisions about migration routes, water sources, and threat responses",
+      "Dr. Moss is a primatologist who studies elephant behavior",
+      "Elephants have complex social structures"
+    ],
+    answer: 1,
+    explain: `The claim is about benefiting from the OLDEST member's experience. B specifically names the matriarch's "decades of accumulated knowledge" and lists concrete ways it helps: migration, water, threats. Direct and specific. A, C, D are related but don't demonstrate the benefit.`
+  },
+  {
+    id: 7,
+    diff: "hard",
+    type: "data",
+    passage: "Researchers measured air quality improvements after three cities implemented different traffic reduction policies.",
+    table: [
+      ["City", "Policy", "PM2.5 before", "PM2.5 after", "Change", "Cost (annual)"],
+      ["Oslo", "Congestion pricing", "18.2", "12.4", "-32%", "$45M"],
+      ["Bogotá", "Car-free days (weekly)", "31.5", "26.1", "-17%", "$8M"],
+      ["Singapore", "Electronic road pricing", "14.1", "9.8", "-31%", "$120M"]
+    ],
+    tableNote: "PM2.5 measured in µg/m³. Lower = better air quality.",
+    stem: "Which claim is best supported by the data in the table?",
+    choices: [
+      "Oslo's congestion pricing achieved the greatest air quality improvement of any policy tested",
+      "While congestion pricing and electronic road pricing achieved similar percentage reductions in PM2.5 levels, Bogotá's lower-cost car-free day approach achieved a meaningful improvement at a fraction of the cost",
+      "Singapore has the best air quality because it spends the most on traffic management",
+      "Car-free days are more effective than congestion pricing at reducing air pollution"
+    ],
+    answer: 1,
+    explain: "Oslo (-32%) and Singapore (-31%) had similar reductions. Bogotá achieved -17% at only $8M vs. Oslo's $45M and Singapore's $120M. B accurately describes all three comparisons. A is technically true (32% vs 31%) but only barely. C confuses spending with quality. D is contradicted by the data (-17% < -32%)."
+  },
+  {
+    id: 8,
+    diff: "hard",
+    type: "textual",
+    passage: "Linguist Dr. Everett's controversial study of the Pirahã people of the Amazon documented a language that appears to lack several features previously considered universal in human language, including number words beyond 'one' and 'many,' color terms, and recursive clause embedding — the ability to nest one sentence inside another.",
+    claim: "Dr. Everett's findings, if confirmed, would challenge fundamental assumptions in linguistics about the universal properties of human language.",
+    stem: "Which aspect of the research most directly supports this claim?",
+    choices: [
+      "The Pirahã people live in a remote region of the Amazon",
+      "Dr. Everett's study was considered controversial by other linguists",
+      "The absence of recursive embedding directly contradicts Noam Chomsky's influential theory that recursion is the one feature shared by all human languages",
+      "The Pirahã language has a relatively small number of phonemes"
+    ],
+    answer: 2,
+    explain: "The claim is about challenging UNIVERSAL assumptions. C identifies the most fundamental challenge: Chomsky's theory says recursion is universal, but Pirahã may lack it. This directly contradicts a core claim about language universals. A is geography, B is reception, D is about phonemes (not presented as a universal feature)."
+  },
+  {
+    id: 9,
+    diff: "hard",
+    type: "data",
+    passage: "A school district compared standardized test scores across schools that adopted different technology integration approaches.",
+    table: [
+      ["Approach", "Schools", "Avg. score before", "Avg. score after", "Teacher satisfaction"],
+      ["1:1 laptops", "12", "72.3", "74.1", "61%"],
+      ["Blended learning", "8", "71.8", "78.5", "82%"],
+      ["Flipped classroom", "6", "73.1", "77.2", "74%"],
+      ["No technology", "10", "72.0", "72.8", "68%"]
+    ],
+    tableNote: "Scores are district standardized assessment averages. Implementation period: 2 years.",
+    stem: "A district administrator claims that providing every student with a laptop is the most effective way to improve academic outcomes. Does the data support this claim?",
+    choices: [
+      "Yes, because the 1:1 laptop schools showed improvement in test scores",
+      "No, because while 1:1 laptops produced some improvement (+1.8 points), blended learning (+6.7) and flipped classrooms (+4.1) produced substantially larger gains, suggesting that HOW technology is used matters more than simply providing devices",
+      "Yes, because 1:1 laptop schools had the most schools participating in the study",
+      "No, because technology has no effect on learning"
+    ],
+    answer: 1,
+    explain: "1:1 laptops improved by only 1.8 points. Blended learning gained 6.7 and flipped classroom gained 4.1 — both far more. Teacher satisfaction was also lowest for 1:1 laptops (61%). B accurately identifies that 1:1 laptops were the LEAST effective technology approach, not the most. A is technically true but misses the comparison."
+  },
+  {
+    id: 10,
+    diff: "hard",
+    type: "textual",
+    passage: "Marine biologist Dr. Sala's Project Pristine studied remote coral reefs that had never been exposed to human activity. Surprisingly, these pristine reefs were dominated by large predators — sharks, groupers, and jacks — which comprised up to 85% of the total fish biomass. This inverted the 'biomass pyramid' observed in human-impacted reefs, where small fish vastly outnumber predators.",
+    claim: "Dr. Sala's findings suggest that many existing models of marine ecosystems are based on degraded baselines rather than natural conditions.",
+    stem: "Which aspect of the research most effectively supports this claim?",
+    choices: [
+      "Dr. Sala studied coral reefs in remote locations around the world",
+      "The pristine reefs had an inverted biomass pyramid — dominated by predators rather than prey — which contradicts the pyramid structure that marine ecologists had long considered normal, indicating that the 'normal' model was based on ecosystems already altered by human activity",
+      "Large predatory fish are important for maintaining reef health",
+      "Climate change threatens coral reefs worldwide"
+    ],
+    answer: 1,
+    explain: 'The claim is about models being based on degraded baselines. B provides the specific evidence: pristine reefs look fundamentally DIFFERENT from what was considered normal, implying that "normal" was actually "degraded." The inverted pyramid directly demonstrates that existing models reflect human-impacted, not natural, conditions.'
+  }
+];
+function Welcome({ onNext }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => setShow(true), 100);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", transition: "all .7s", opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(16px)" } }, /* @__PURE__ */ React.createElement("div", { style: { background: `${BLUE}22`, border: `1px solid ${BLUE}44`, borderRadius: 12, padding: "6px 18px", fontSize: 13, letterSpacing: 1.5, textTransform: "uppercase", color: BLUE, marginBottom: 12, fontWeight: 600 } }, "Unit 3 · Module 10"), /* @__PURE__ */ React.createElement("h1", { style: { fontSize: "clamp(1.7rem,4.5vw,3rem)", fontWeight: 800, background: `linear-gradient(135deg,${BLUE},${ACCENT})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.1, textAlign: "center", marginBottom: 16 } }, "Command of Evidence & Data"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 18, maxWidth: 560, textAlign: "center", lineHeight: 1.6, marginBottom: 40 } }, "Evaluate evidence strength, interpret tables and graphs, and determine what data actually supports. The SAT's most analytical question types."), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 16, maxWidth: 750, width: "100%", marginBottom: 48 } }, [
+    { icon: "📖", title: "Learn the Skills", desc: "Evidence types, data reading, claims" },
+    { icon: "📜", title: "Textual Evidence", desc: "Match evidence to claims" },
+    { icon: "📊", title: "Data Interpretation", desc: "Read tables and evaluate claims" },
+    { icon: "📝", title: "Practice Quiz", desc: "10 mixed evidence & data questions" }
+  ].map((c, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 32, marginBottom: 8 } }, c.icon), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 4 } }, c.title), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13, lineHeight: 1.5 } }, c.desc)))), /* @__PURE__ */ React.createElement("button", { onClick: onNext, style: btn(`linear-gradient(135deg,${BLUE},${ACCENT})`, DARK), onMouseOver: (e) => e.currentTarget.style.transform = "scale(1.04)", onMouseOut: (e) => e.currentTarget.style.transform = "scale(1)" }, "Start Learning →"), /* @__PURE__ */ React.createElement("div", { style: { color: "#475569", fontSize: 13, marginTop: 24 } }, "~60 minutes · Information & Ideas"));
+}
+function LessonViewer({ onComplete }) {
+  const [idx, setIdx] = useState(0);
+  const lesson = LESSONS[idx];
+  const total = LESSONS.length;
+  function renderVisual() {
+    if (lesson.visual === "stats") return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", padding: 16 } }, [{ n: "2-3", label: "per test", sub: "Textual Evidence" }, { n: "~2", label: "per test", sub: "Quantitative/Data" }, { n: "≠", label: "correlation ≠ causation", sub: "The #1 data trap" }].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { background: `${BLUE}11`, border: `1px solid ${BLUE}33`, borderRadius: 14, padding: "16px 24px", textAlign: "center", minWidth: 140 } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontWeight: 900, fontSize: 24 } }, s.n), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13, fontWeight: 600 } }, s.label), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11 } }, s.sub))));
+    if (lesson.visual === "strength-scale") return /* @__PURE__ */ React.createElement(StrengthScale, null);
+    if (lesson.visual === "data-reading") return /* @__PURE__ */ React.createElement(DataReading, null);
+    if (lesson.visual === "sample-table") return /* @__PURE__ */ React.createElement(SampleTable, null);
+    if (lesson.visual === "framework-visual") return /* @__PURE__ */ React.createElement(FrameworkVis, null);
+    return null;
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "48px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 6, marginBottom: 32 } }, LESSONS.map((_, i) => /* @__PURE__ */ React.createElement("div", { key: i, onClick: () => setIdx(i), style: { width: i === idx ? 24 : 8, height: 8, borderRadius: 4, background: i === idx ? BLUE : i < idx ? `${BLUE}66` : BORDER, cursor: "pointer", transition: "all .3s" } }))), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "28px 28px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 } }, lesson.subtitle), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: "clamp(1.2rem,3vw,1.6rem)", fontWeight: 800, marginBottom: 16, lineHeight: 1.2 } }, lesson.title), lesson.body.map((p, i) => /* @__PURE__ */ React.createElement("p", { key: i, style: { color: SUB, fontSize: 14, lineHeight: 1.75, marginBottom: 14, whiteSpace: "pre-line" } }, p))), lesson.visual && /* @__PURE__ */ React.createElement("div", { style: { padding: "8px 4px 20px" } }, renderVisual())), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setIdx(Math.max(0, idx - 1)), disabled: idx === 0, style: { ...btn("transparent", idx === 0 ? "#334155" : SUB), border: `1px solid ${BORDER}`, padding: "10px 20px", fontSize: 14 } }, "← Back"), idx < total - 1 ? /* @__PURE__ */ React.createElement("button", { onClick: () => setIdx(idx + 1), style: btn(BLUE, TEXT, { fontSize: 14, padding: "10px 20px" }) }, "Next →") : /* @__PURE__ */ React.createElement("button", { onClick: onComplete, style: btn(`linear-gradient(135deg,${BLUE},${ACCENT})`, DARK, { fontSize: 14, padding: "10px 24px" }) }, "Start Textual Evidence →")));
+}
+function StrengthScale() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "Evidence strength hierarchy"), [
+    { label: "Specific data/stats", strength: 100, color: ACCENT, example: '"reduced by 34%"' },
+    { label: "Direct examples", strength: 85, color: BLUE, example: "concrete case demonstrating claim" },
+    { label: "Expert testimony", strength: 70, color: CYAN, example: "specialist directly addresses claim" },
+    { label: "General statements", strength: 35, color: AMBER, example: '"showed positive results"' },
+    { label: "Tangential info", strength: 15, color: RED, example: "same topic but doesn't support claim" }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { marginBottom: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 3 } }, /* @__PURE__ */ React.createElement("span", { style: { color: s.color, fontWeight: 700, fontSize: 12 } }, s.label), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 10, fontStyle: "italic" } }, s.example)), /* @__PURE__ */ React.createElement("div", { style: { height: 7, background: BORDER, borderRadius: 3, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${s.strength}%`, background: s.color, borderRadius: 3 } })))));
+}
+function DataReading() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 700, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 } }, "3-step data reading process"), [
+    { n: "1", label: "Read labels first", detail: "Title, axes, units — BEFORE data", color: BLUE },
+    { n: "2", label: "Identify trends", detail: "Increasing? Decreasing? Exceptions?", color: ACCENT },
+    { n: "3", label: "Match to claim", detail: "Does the data support the direction & magnitude?", color: AMBER }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6, padding: "6px 10px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 6px 6px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 22, height: 22, borderRadius: 11, background: `${s.color}22`, color: s.color, fontWeight: 900, fontSize: 11, display: "flex", alignItems: "center", justifyContent: "center" } }, s.n), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontWeight: 700, fontSize: 12 } }, s.label), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 11 } }, " — ", s.detail)))));
+}
+function SampleTable() {
+  const data = [
+    ["Country", "GDP Growth", "Unemployment", "Inflation"],
+    ["Country A", "3.2%", "4.1%", "2.8%"],
+    ["Country B", "1.1%", "7.3%", "1.2%"],
+    ["Country C", "4.7%", "3.5%", "5.1%"]
+  ];
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 12, fontWeight: 700, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 } }, "Practice: Read this table"), /* @__PURE__ */ React.createElement("div", { style: { overflowX: "auto" } }, /* @__PURE__ */ React.createElement("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 12 } }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", null, data[0].map((h, i) => /* @__PURE__ */ React.createElement("th", { key: i, style: { padding: "8px 12px", borderBottom: `2px solid ${BLUE}`, color: BLUE, fontWeight: 700, textAlign: "left" } }, h)))), /* @__PURE__ */ React.createElement("tbody", null, data.slice(1).map((row, ri) => /* @__PURE__ */ React.createElement("tr", { key: ri }, row.map((cell, ci) => /* @__PURE__ */ React.createElement("td", { key: ci, style: { padding: "8px 12px", borderBottom: `1px solid ${BORDER}`, color: ci === 0 ? TEXT : SUB } }, cell))))))), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 10, marginTop: 8 } }, "Key: Rows = countries. Columns = metrics. Each cell = one data point. Country C has highest GDP growth but also highest inflation."));
+}
+function FrameworkVis() {
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 20px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: CYAN, fontSize: 11, fontWeight: 700, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 } }, "Textual Evidence"), [
+    { n: "1", label: "Read the claim exactly", color: BLUE },
+    { n: "2", label: "Does evidence SUPPORT or just RELATE?", color: ACCENT },
+    { n: "3", label: "Choose most direct & specific", color: AMBER }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 4, padding: "4px 8px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 6px 6px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 20, height: 20, borderRadius: 10, background: `${s.color}22`, color: s.color, fontWeight: 900, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center" } }, s.n), /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontSize: 12, fontWeight: 600 } }, s.label))), /* @__PURE__ */ React.createElement("div", { style: { color: PURPLE, fontSize: 11, fontWeight: 700, marginTop: 12, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 } }, "Quantitative Evidence"), [
+    { n: "1", label: "Read labels, title, units", color: PURPLE },
+    { n: "2", label: "Find relevant data for the claim", color: CYAN },
+    { n: "3", label: "Check direction & magnitude", color: RED },
+    { n: "!", label: "Correlation ≠ Causation", color: RED }
+  ].map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 4, padding: "4px 8px", background: `${s.color}08`, borderLeft: `3px solid ${s.color}`, borderRadius: "0 6px 6px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 20, height: 20, borderRadius: 10, background: `${s.color}22`, color: s.color, fontWeight: 900, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center" } }, s.n), /* @__PURE__ */ React.createElement("span", { style: { color: TEXT, fontSize: 12, fontWeight: 600 } }, s.label))));
+}
+function DataTable({ data, note }) {
+  if (!data) return null;
+  return /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { overflowX: "auto" } }, /* @__PURE__ */ React.createElement("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 13 } }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", null, data[0].map((h, i) => /* @__PURE__ */ React.createElement("th", { key: i, style: { padding: "8px 12px", borderBottom: `2px solid ${BLUE}`, color: BLUE, fontWeight: 700, textAlign: "left", whiteSpace: "nowrap" } }, h)))), /* @__PURE__ */ React.createElement("tbody", null, data.slice(1).map((row, ri) => /* @__PURE__ */ React.createElement("tr", { key: ri }, row.map((cell, ci) => /* @__PURE__ */ React.createElement("td", { key: ci, style: { padding: "8px 12px", borderBottom: `1px solid ${BORDER}`, color: ci === 0 ? TEXT : SUB, whiteSpace: "nowrap" } }, cell))))))), note && /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 11, marginTop: 6, fontStyle: "italic" } }, note));
+}
+function QuizEngine({ items, label, icon, accentColor, onComplete, showTypeTag }) {
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+  const item = items[idx];
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.answer) setScore((s) => s + 1);
+  }
+  function next() {
+    if (idx < items.length - 1) {
+      setIdx(idx + 1);
+      setSelected(null);
+      setConfirmed(false);
+    } else {
+      setDone(true);
+    }
+  }
+  if (done) return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "80px 20px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 48, marginBottom: 16 } }, icon), /* @__PURE__ */ React.createElement("h2", { style: { color: TEXT, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, label, " Complete"), /* @__PURE__ */ React.createElement("div", { style: { color: accentColor, fontSize: 48, fontWeight: 900 } }, score, "/", items.length), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 15, marginTop: 8, marginBottom: 32 } }, "correct answers"), /* @__PURE__ */ React.createElement("button", { onClick: () => onComplete(score, items.length), style: btn(`linear-gradient(135deg,${BLUE},${ACCENT})`, DARK) }, "Continue →"));
+  const questionText = item.question || item.stem;
+  const hasTable = !!item.tableData || !!item.table;
+  const tableArr = item.tableData || item.table;
+  return /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 700, margin: "0 auto", padding: "40px 20px", minHeight: "100vh" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } }, /* @__PURE__ */ React.createElement("div", { style: { color: accentColor, fontSize: 13, fontWeight: 700 } }, icon, " ", label), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, showTypeTag && item.type && /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 600,
+    background: item.type === "textual" ? `${BLUE}22` : `${ACCENT}22`,
+    color: item.type === "textual" ? BLUE : ACCENT
+  } }, item.type === "textual" ? "textual" : "data"), item.diff && /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 10,
+    padding: "2px 8px",
+    borderRadius: 4,
+    fontWeight: 700,
+    background: item.diff === "easy" ? `${ACCENT}22` : item.diff === "medium" ? `${AMBER}22` : `${RED}22`,
+    color: item.diff === "easy" ? ACCENT : item.diff === "medium" ? AMBER : RED
+  } }, item.diff), /* @__PURE__ */ React.createElement("span", { style: { color: MUTED, fontSize: 13 } }, idx + 1, "/", items.length))), /* @__PURE__ */ React.createElement("div", { style: { height: 4, background: BORDER, borderRadius: 2, marginBottom: 20, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${(idx + (confirmed ? 1 : 0)) / items.length * 100}%`, background: `linear-gradient(90deg,${BLUE},${ACCENT})`, borderRadius: 2, transition: "width .4s" } })), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 24, marginBottom: 16 } }, item.passage && /* @__PURE__ */ React.createElement("div", { style: { color: "#cbd5e1", fontSize: 14, lineHeight: 1.8, fontFamily: "Georgia, serif" } }, item.passage), item.claim && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 12, padding: "10px 14px", borderRadius: 10, background: `${AMBER}11`, border: `1px solid ${AMBER}33` } }, /* @__PURE__ */ React.createElement("div", { style: { color: AMBER, fontSize: 11, fontWeight: 700, marginBottom: 4 } }, "CLAIM"), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 13, lineHeight: 1.6 } }, item.claim)), hasTable && /* @__PURE__ */ React.createElement("div", { style: { marginTop: item.passage ? 12 : 0 } }, item.title && /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 13, fontWeight: 700, marginBottom: 4 } }, item.title), /* @__PURE__ */ React.createElement(DataTable, { data: tableArr, note: item.tableNote }))), /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontSize: 14, fontWeight: 600, marginBottom: 16 } }, questionText), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 } }, item.choices.map((c, ci) => {
+    const letter = "ABCD"[ci];
+    const isSel = selected === ci;
+    const isCorr = ci === item.answer;
+    let bg = CARD, bdr = `1px solid ${BORDER}`, tc = "#cbd5e1";
+    if (confirmed && isCorr) {
+      bg = `${ACCENT}18`;
+      bdr = `2px solid ${ACCENT}`;
+      tc = ACCENT;
+    } else if (confirmed && isSel && !isCorr) {
+      bg = `${RED}18`;
+      bdr = `2px solid ${RED}`;
+      tc = RED;
+    } else if (isSel && !confirmed) {
+      bg = `${accentColor}15`;
+      bdr = `2px solid ${accentColor}`;
+      tc = accentColor;
+    }
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: ci,
+        onClick: () => {
+          if (!confirmed) setSelected(ci);
+        },
+        disabled: confirmed,
+        style: { display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", borderRadius: 12, background: bg, border: bdr, cursor: confirmed ? "default" : "pointer", textAlign: "left", width: "100%" }
+      },
+      /* @__PURE__ */ React.createElement("span", { style: {
+        minWidth: 28,
+        height: 28,
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 800,
+        fontSize: 13,
+        flexShrink: 0,
+        marginTop: 1,
+        background: confirmed && isCorr ? ACCENT : confirmed && isSel && !isCorr ? RED : isSel ? accentColor : BORDER,
+        color: isSel || confirmed ? DARK : MUTED
+      } }, letter),
+      /* @__PURE__ */ React.createElement("span", { style: { color: tc, fontSize: 14, lineHeight: 1.5 } }, c)
+    );
+  })), confirmed && /* @__PURE__ */ React.createElement("div", { style: { background: BORDER, borderRadius: 12, padding: 20, marginBottom: 24, borderLeft: `4px solid ${BLUE}` } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontWeight: 700, fontSize: 13, marginBottom: 6 } }, "Explanation"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 14, lineHeight: 1.6 } }, item.explain)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end" } }, !confirmed ? /* @__PURE__ */ React.createElement("button", { onClick: confirm, disabled: selected === null, style: btn(selected === null ? BORDER : accentColor, selected === null ? "#475569" : DARK, { fontSize: 14, padding: "10px 24px" }) }, "Confirm") : /* @__PURE__ */ React.createElement("button", { onClick: next, style: btn(accentColor, DARK, { fontSize: 14, padding: "10px 24px" }) }, idx < items.length - 1 ? "Next →" : "See Results →")));
+}
+function ModuleComplete({ quizScore, quizTotal }) {
+  const pct = Math.round(quizScore / quizTotal * 100);
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 64, marginBottom: 16 } }, "🎉"), /* @__PURE__ */ React.createElement("h1", { style: { color: BLUE, fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 800, marginBottom: 8 } }, "Module 10 Complete"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 16, marginBottom: 32, maxWidth: 480 } }, "You can now evaluate evidence strength and interpret data like an analyst."), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 32, marginBottom: 32, minWidth: 280 } }, /* @__PURE__ */ React.createElement("div", { style: { color: BLUE, fontSize: 56, fontWeight: 900 } }, quizScore, "/", quizTotal), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 14, marginTop: 4 } }, "Practice Quiz Score (", pct, "%)"), /* @__PURE__ */ React.createElement("div", { style: { height: 8, background: BORDER, borderRadius: 4, marginTop: 16, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${pct}%`, background: `linear-gradient(90deg,${BLUE},${ACCENT})`, borderRadius: 4 } }))), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, maxWidth: 480, marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 } }, "Key Takeaways"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.7, textAlign: "left" } }, pct >= 80 ? "Excellent evidence analysis! You're distinguishing strong from weak evidence and reading data accurately. Module 11 covers Logical Reasoning — the final skill before the Info & Ideas Boss Battle." : pct >= 60 ? "Good progress on evidence evaluation. For textual evidence, remember: SUPPORTS is not the same as RELATES TO. For data, always read labels first and watch for correlation vs. causation traps." : "Focus on the core distinction: evidence must SUPPORT the specific claim, not just discuss the same topic. For data questions, practice the 3-step process: labels first, then trends, then match to claim.")), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13 } }, "Next up: Module 11 — Logical Reasoning & Synthesis"));
+}
+function App() {
+  const [screen, setScreen] = useState("welcome");
+  const [fade, setFade] = useState(true);
+  const [quizScore, setQuizScore] = useState(0);
+  const [quizTotal, setQuizTotal] = useState(10);
+  const go = useCallback((to) => {
+    setFade(false);
+    setTimeout(() => {
+      setScreen(to);
+      window.scrollTo(0, 0);
+      setFade(true);
+    }, 350);
+  }, []);
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    inset: 0,
+    pointerEvents: "none",
+    opacity: 0.03,
+    backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",
+    backgroundSize: "40px 40px"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" } }, screen === "welcome" && /* @__PURE__ */ React.createElement(Welcome, { onNext: () => go("lesson") }), screen === "lesson" && /* @__PURE__ */ React.createElement(LessonViewer, { onComplete: () => go("textual") }), screen === "textual" && /* @__PURE__ */ React.createElement(QuizEngine, { items: TEXTUAL_ITEMS, label: "Textual Evidence", icon: "📜", accentColor: BLUE, onComplete: () => go("data") }), screen === "data" && /* @__PURE__ */ React.createElement(QuizEngine, { items: DATA_ITEMS, label: "Data Interpretation", icon: "📊", accentColor: ACCENT, onComplete: () => go("quiz") }), screen === "quiz" && /* @__PURE__ */ React.createElement(QuizEngine, { items: QUIZ, label: "Practice Quiz", icon: "📝", accentColor: BLUE, showTypeTag: true, onComplete: (s, t) => {
+    setQuizScore(s);
+    setQuizTotal(t);
+    go("complete");
+  } }), screen === "complete" && /* @__PURE__ */ React.createElement(ModuleComplete, { quizScore, quizTotal })));
+}
+const { createRoot } = ReactDOM;
+createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>

@@ -189,6 +189,15 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- ==================== TOPIC 4B ==================== -->
+
+<!-- PERCENT TRAP SPOTTER -->
+<div class="section">
+  <div class="section-label">Interactive Exercise 2</div>
+  <h2>Percent Trap Spotter</h2>
+  <p>Percent traps are among the most frequently missed questions on the PSAT/NMSQT. Identify the correct answer — don’t fall for the trap.</p>
+  <div class="exercise" style="border-color:var(--psda)" id="pctTrapEx"></div>
+</div>
+
 <div class="section">
   <div class="section-label">Topic 4B</div>
   <h2>Statistics: Center, Spread & Shape</h2>
@@ -274,7 +283,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- ==================== EXERCISE 3: TWO-WAY TABLE ==================== -->
 <div class="section">
-  <div class="section-label">Interactive Exercise 2</div>
+  <div class="section-label">Interactive Exercise 3</div>
   <h2>Two-Way Table & Probability</h2>
   <p>Use the table below to answer probability questions.</p>
   <div class="exercise">
@@ -292,7 +301,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- ==================== EXERCISE 4: SPOT THE MISLEADING STATISTIC ==================== -->
 <div class="section">
-  <div class="section-label">Interactive Exercise 3 — New!</div>
+  <div class="section-label">Interactive Exercise 4</div>
   <h2>Spot the Misleading Statistic</h2>
   <p>The PSAT tests whether you can identify flaws in statistical reasoning. For each claim, identify why it's misleading or invalid.</p>
   <div class="exercise" style="border-color:var(--accent)" id="misleadEx"></div>
@@ -330,7 +339,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <!-- ==================== EXERCISE 5: STUDY DESIGN ==================== -->
 <div class="section">
-  <div class="section-label">Interactive Exercise 4</div>
+  <div class="section-label">Interactive Exercise 5</div>
   <h2>Study Design Classifier</h2>
   <p>For each scenario, decide what valid conclusions can be drawn.</p>
   <div class="exercise" style="border-color:var(--advanced)" id="studyEx"></div>
@@ -591,6 +600,24 @@ function renderPSAT(){
 }
 function ansPSAT(i,ci){if(psatAns[i]!==undefined)return;psatAns[i]=ci;renderPSAT();}
 renderPSAT();
+
+// ============ PERCENT TRAP SPOTTER ============
+var PCT_QS=[
+  {q:'A price goes up 20%, then down 20%. Is the final price equal to the original?',opts:['Yes, they cancel out','No, it\'s 4% less','No, it\'s 4% more','Depends on the price'],c:1,fb:'Start $100: +20% = $120. \u221220% of $120 = $24 off = $96. That\'s 4% less. The second percent applies to the NEW amount.'},
+  {q:'A store advertises "50% off, then an additional 20% off." Is that the same as 70% off?',opts:['Yes, 50+20=70','No, it\'s only 60% off total','No, it\'s 56% off total','Depends on original price'],c:1,fb:'Start $100: 50% off = $50. Then 20% off $50 = $10 off = $40. Total discount = 60%, not 70%.'},
+  {q:'"Sales increased 200%." If original sales were $1,000, what are they now?',opts:['$2,000','$3,000','$200,000','$1,200'],c:1,fb:'200% INCREASE means the increase is $2,000. New total = $1,000 + $2,000 = $3,000. A 200% increase triples the original.'},
+  {q:'A student got 80% on Test 1 and 90% on Test 2. Is their overall average 85%?',opts:['Yes, always','Only if both tests have the same number of questions','Only if Test 2 was harder','Never'],c:1,fb:'Only if tests have equal weight (same number of questions/points). If Test 1 had 50 Qs and Test 2 had 10, the average is much closer to 80%.'},
+  {q:'A town\'s population drops 10% one year, then grows 10% the next. Is it back to the original?',opts:['Yes, they cancel out','No, it\'s 1% less','No, it\'s 1% more','Depends on the population'],c:1,fb:'Start 1000: \u221210% = 900. +10% of 900 = 90 = 990. That\'s 1% less. Successive percent changes NEVER cancel.'},
+];
+var pctA={};
+function renderPct(){
+  document.getElementById('pctTrapEx').innerHTML='<h3>\ud83c\udfaf Percent Traps</h3><div class="exercise-sub">Identify the correct answer \u2014 these are the traps PSAT loves.</div>'+
+    PCT_QS.map(function(q,i){var a=pctA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+q.opts.map(function(o,oi){var c='classify-opt';if(h){c+=' cl-dis';if(oi===q.c)c+=' cl-correct';else if(oi===a)c+=' cl-wrong';}return '<div class="'+c+'" onclick="aPct('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(h?' show':'')+(h?(a===q.c?' correct':' wrong'):'')+'">'+((h)?((a===q.c?'\u2713 ':'\u2717 ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aPct(i,v){if(pctA[i]!==undefined)return;pctA[i]=v;renderPct();}
+renderPct();
 </script>
 <script src="/translate.js"></script>
 </body>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 0: Know Your Battlefield — PantherPrep SAT R&W</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#0e0e14;--accent:#f59e0b;--accent-light:rgba(245,158,11,.12);--border:#1e293b;--muted:#64748b;--sub:#94a3b8;--surface:#13131f;--sat:#a855f7;--sat-bg:rgba(168,85,247,.12);--conv:#10b981;--conv-bg:rgba(16,185,129,.12);--craft:#f59e0b;--craft-bg:rgba(245,158,11,.12);--info:#3b82f6;--info-bg:rgba(59,130,246,.12);--expr:#a855f7;--expr-bg:rgba(168,85,247,.12);--correct:#10b981;--correct-bg:rgba(16,185,129,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--sim:#06b6d4;--sim-bg:rgba(6,182,212,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+input[type="range"]{width:100%}
+button{font-family:inherit}
+@media(max-width:600px){.domain-grid-r{grid-template-columns:1fr!important}.irt-grid-r{grid-template-columns:1fr!important}.irt-vs-r{display:none!important}.stats-grid-r{grid-template-columns:repeat(2,1fr)!important}}
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const {useState,useEffect,useCallback,useRef,useMemo}=React;
+const e=React.createElement;
+
+// ══════════ DESIGN TOKENS ══════════
+const C={paper:"#0e0e14",surface:"#13131f",border:"#1e293b",ink:"#f0f0f0",sub:"#94a3b8",muted:"#64748b",accent:"#f59e0b",accentLight:"rgba(245,158,11,.12)",craft:"#f59e0b",craftBg:"rgba(245,158,11,.12)",info:"#3b82f6",infoBg:"rgba(59,130,246,.12)",conv:"#10b981",convBg:"rgba(16,185,129,.12)",expr:"#a855f7",exprBg:"rgba(168,85,247,.12)",sat:"#a855f7",satBg:"rgba(168,85,247,.12)",correct:"#10b981",correctBg:"rgba(16,185,129,.12)",wrong:"#ef4444",wrongBg:"rgba(239,68,68,.12)",sim:"#06b6d4",simBg:"rgba(6,182,212,.12)"};
+const sBtn=(bg,color,extra)=>({padding:"12px 28px",borderRadius:10,border:"none",background:bg,color,fontWeight:700,fontSize:15,cursor:"pointer",transition:"transform .12s, filter .12s",...(extra||{})});
+const sBtnSm=(bg,color,extra)=>sBtn(bg,color,{padding:"8px 18px",fontSize:13,...(extra||{})});
+
+// ══════════ CONTENT DATA ══════════
+const DOMAINS=[
+  {name:"Craft & Structure",pct:"~28%",qs:"~15 Qs",color:C.craft,front:"Words in Context, Text Structure & Purpose, Cross-Text Connections",back:"Words in Context (~5 Qs): Select the most precise word. Text Structure & Purpose (~3 Qs): Identify function/organization. Cross-Text Connections (~2 Qs): Analyze how two texts relate."},
+  {name:"Information & Ideas",pct:"~26%",qs:"~14 Qs",color:C.info,front:"Central Ideas, Evidence (Textual & Quantitative), Inferences",back:"Central Ideas (~3 Qs): Main idea, key details. Evidence \u2014 Textual (~3 Qs): Select supporting quotations. Evidence \u2014 Quantitative (~3 Qs): Interpret tables/graphs. Inferences (~3 Qs): Draw logical conclusions."},
+  {name:"Standard English Conventions",pct:"~26%",qs:"~14 Qs",color:C.conv,front:"Boundaries, Subject-Verb Agreement, Verb Tense, Modifiers, Parallelism",back:"Boundaries (~4 Qs): Comma splices, run-ons, semicolons, colons. Form, Structure & Sense (~6 Qs): SVA, tense, pronouns, modifiers, parallelism."},
+  {name:"Expression of Ideas",pct:"~20%",qs:"~11 Qs",color:C.expr,front:"Transitions, Rhetorical Synthesis",back:"Transitions (~5 Qs): Most logical connecting word. Rhetorical Synthesis (~6 Qs): Use notes to achieve a rhetorical goal."}
+];
+const DOG_CORRECT=["Craft & Structure","Information & Ideas","Standard English Conventions","Expression of Ideas"];
+const DM={craft:{label:"Craft & Structure",color:C.craft},information:{label:"Information & Ideas",color:C.info},conventions:{label:"Std. English Conventions",color:C.conv},expression:{label:"Expression of Ideas",color:C.expr}};
+
+const DQ=[
+{d:"craft",t:"Words in Context",p:"The architect\u2019s latest design was praised for its ______ approach, combining traditional materials with cutting-edge technology in ways no one had attempted before.",s:"Which choice completes the text with the most logical and precise word?",c:["innovative","conventional","methodical","prudent"],a:0,x:"\"No one had attempted before\" signals novelty. \"Innovative\" means introducing new methods or ideas."},
+{d:"craft",t:"Words in Context",p:"Marine biologists found that coral reefs near urban coastlines show signs of ______, with once-vibrant ecosystems now appearing bleached and lifeless.",s:"Which choice completes the text with the most logical and precise word?",c:["surge","decline","stagnation","fluctuation"],a:1,x:"\"Bleached and lifeless\" from \"once-vibrant\" = deterioration. \"Decline\" = gradual decrease in vitality."},
+{d:"craft",t:"Words in Context",p:"While the senator publicly expressed full support for the bill, her private correspondence revealed a more ______ stance, raising concerns about specific provisions she found problematic.",s:"Which choice completes the text with the most logical and precise word?",c:["decisive","indifferent","ambivalent","enthusiastic"],a:2,x:"Public support vs. private concerns = mixed feelings. \"Ambivalent\" = simultaneous conflicting emotions."},
+{d:"craft",t:"Words in Context",p:"The historian argued that the treaty, far from being spontaneous goodwill, was actually a ______ maneuver designed to buy time while the nation rebuilt its military forces.",s:"Which choice completes the text with the most logical and precise word?",c:["impulsive","calculated","reluctant","spontaneous"],a:1,x:"\"Designed to buy time\" and \"far from spontaneous\" = deliberate planning. \"Calculated\" = done with full awareness."},
+{d:"craft",t:"Words in Context",p:"Critics contend the new development plan would ______ the very community identity residents spent decades cultivating, replacing locally owned shops with corporate chains.",s:"Which choice completes the text with the most logical and precise word?",c:["strengthen","reveal","erode","displace"],a:2,x:"Gradual destruction of identity through replacement = \"erode,\" to gradually wear away."},
+{d:"craft",t:"Text Structure & Purpose",p:"Honeybees perform a \"waggle dance\" to communicate food source locations. The dancing bee moves in a figure-eight: the angle relative to the sun indicates direction, while the waggle duration indicates distance. This remarkable behavior allows a single scout to guide thousands of foragers to a precise location.",s:"Which choice best describes the function of the last sentence?",c:["It introduces a phenomenon the rest of the text will explain.","It provides a specific example supporting a general claim.","It presents a finding that challenges a previous assumption.","It summarizes the overall significance of the process described above."],a:3,x:"The final sentence wraps up by stating the overall effect \u2014 one scout guiding thousands."},
+{d:"craft",t:"Cross-Text Connections",p:"Text 1: Psychologist Carol Dweck argues that praising children for effort rather than innate ability fosters a \"growth mindset\" that leads to greater resilience.\n\nText 2: Researcher Li Zhao found that in collectivist cultures, students praised for natural talent showed increased motivation, suggesting the praise-mindset relationship may be more culturally dependent than assumed.",s:"How would Zhao most likely respond to Dweck\u2019s argument?",c:["By agreeing effort-based praise is always superior.","By arguing Dweck\u2019s findings may not apply universally across cultural contexts.","By rejecting the concept of growth mindset entirely.","By suggesting neither type of praise significantly affects achievement."],a:1,x:"Zhao\u2019s research shows cultural dependence, which qualifies Dweck\u2019s broader claim without rejecting it."},
+{d:"information",t:"Central Ideas",p:"In the 1960s, the Green Revolution introduced high-yield crop varieties to developing nations, dramatically increasing food production. However, these crops required expensive fertilizers that many small-scale farmers could not afford. While national output rose, rural inequality often worsened as wealthier farmers benefited disproportionately.",s:"Which choice best states the main idea?",c:["The Green Revolution failed to increase food production.","The Green Revolution increased production but also contributed to greater rural inequality.","Small-scale farmers benefited most from new crop varieties.","High-yield crops require significantly more water than traditional crops."],a:1,x:"The passage presents both increased production AND unequal distribution. Only B captures both."},
+{d:"information",t:"Central Ideas",p:"Lichen, often overlooked as mere patches on rocks, are remarkable symbiotic organisms consisting of a fungus and a photosynthetic partner. This partnership allows lichen to thrive in harsh environments, from Antarctic rocks to volcanic fields. Scientists now use lichen as air quality indicators because they absorb pollutants directly from the atmosphere.",s:"Which choice best states the main idea?",c:["Lichen are composed of two organisms living together.","Scientists recently discovered lichen can survive in extreme environments.","Lichen are deceptively complex organisms whose biology makes them both resilient and scientifically useful.","Air pollution is the primary threat to lichen worldwide."],a:2,x:"Only C captures all three aspects: symbiotic nature, resilience, and scientific utility."},
+{d:"information",t:"Command of Evidence (Textual)",p:"A team studying elephant communication proposed that elephants use low-frequency infrasound rumbles to coordinate group movements across hundreds of square miles. They recorded distinct rumble patterns that preceded group directional changes by 30\u201345 minutes.",s:"Which finding would most directly support the claim?",c:["Captive elephants produce fewer rumbles than wild ones.","Separate groups changed direction simultaneously after one group produced a specific rumble.","Infrasound can travel through the ground as well as the air.","Elephants have larger ear structures than most land mammals."],a:1,x:"Separate groups coordinating after a specific rumble directly demonstrates the coordination function."},
+{d:"information",t:"Command of Evidence (Textual)",p:"Literary scholar Priya Nair argues that fragmented narrative structures in contemporary fiction reflect a shift in how authors conceptualize memory \u2014 as inherently reconstructive, assembled from fragments rather than retrieved as complete episodes.",s:"Which quotation would best illustrate Nair\u2019s claim?",c:["\"She remembered that Tuesday perfectly \u2014 every detail as clear as glass.\"","\"The past returned to him not as a story but as shards \u2014 a color, a sound \u2014 that he arranged and rearranged, never sure of the order.\"","\"He had always prided himself on his excellent memory.\"","\"The novel followed strict chronological structure from childhood to old age.\""],a:1,x:"\"Shards\" that are \"arranged and rearranged, never sure of the order\" directly depicts memory as reconstructive fragments."},
+{d:"information",t:"Command of Evidence (Quantitative)",p:"A study tracked 500 students\u2019 reading habits and test scores over two years.\n\nWeekly Reading \u2192 Avg. R&W Improvement:\n0 hours \u2192 +5 points\n1\u20133 hours \u2192 +22 points\n4\u20137 hours \u2192 +41 points\n8+ hours \u2192 +38 points",s:"Which choice most accurately describes the data?",c:["Improvements increased consistently proportional to reading time.","Students who did no reading showed no improvement.","Improvement generally increased with reading time, though the highest group did not show the greatest gains.","Reading 8+ hours produced double the improvement of 1\u20133 hours."],a:2,x:"The 8+ group (+38) trails the 4\u20137 group (+41). Only C captures this nuance."},
+{d:"information",t:"Inferences",p:"Deep-sea anglerfish have evolved a bioluminescent lure dangling above their mouths. In the perpetual darkness where food is scarce and encounters infrequent, this lure attracts prey directly toward the anglerfish\u2019s jaws. This adaptation suggests that ______",s:"Which choice most logically completes the text?",c:["anglerfish expend significant energy swimming to hunt.","active pursuit would be an inefficient survival strategy in this environment.","anglerfish are the most common deep-sea species.","all deep-sea fish have developed bioluminescence."],a:1,x:"A passive lure in a dark, scarce environment implies active pursuit would waste energy."},
+{d:"information",t:"Inferences",p:"Sociologist Maria Reyes studied civic engagement before and after community gardens were installed in three low-income areas. While only 12% of residents actively gardened, trust in neighbors rose 34% and meeting attendance rose 28%. These findings imply that ______",s:"Which choice most logically completes the text?",c:["gardens are ineffective because so few residents participate.","the gardens\u2019 impact extended well beyond direct participants.","gardens should be replaced with larger meeting spaces.","the low rate shows residents were not interested in improvement."],a:1,x:"12% participated but trust rose 34% \u2014 this gap shows spillover effects beyond participants."},
+{d:"conventions",t:"Form, Structure & Sense",p:"The collection of rare manuscripts, which ______ donated to the university library in 1952, remains one of the most valuable holdings in the institution\u2019s history.",s:"Which choice conforms to Standard English?",c:["was","were","are","have been"],a:0,x:"Subject is \"collection\" (singular), not \"manuscripts.\" Singular = \"was.\""},
+{d:"conventions",t:"Form, Structure & Sense",p:"When the documentary crew arrived at the remote village, they discovered that the elder who ______ the oral history tradition for six decades had just agreed to be filmed.",s:"Which choice conforms to Standard English?",c:["maintains","maintained","had maintained","would maintain"],a:2,x:"Maintaining happened before two past events. Past perfect \"had maintained\" shows prior completion."},
+{d:"conventions",t:"Form, Structure & Sense",p:"Neither the lead researcher nor her graduate ______ able to replicate the results of the initial experiment.",s:"Which choice conforms to Standard English?",c:["assistants were","assistants was","assistant were","assistant are"],a:0,x:"With \"neither...nor,\" verb agrees with nearer subject. \"Assistants\" (plural) = \"were.\""},
+{d:"conventions",t:"Form, Structure & Sense",p:"The artist, whose murals depicting scenes of community resilience ______ her national acclaim, has announced a new series on environmental justice.",s:"Which choice conforms to Standard English?",c:["has earned","have earned","earning","earns"],a:1,x:"Subject of relative clause is \"murals\" (plural). \"Have earned\" is correct."},
+{d:"conventions",t:"Boundaries",p:"The museum\u2019s new exhibit features artifacts from ancient Mesopotamia ______ visitors can interact with holographic reconstructions of the original sites.",s:"Which choice conforms to Standard English?",c:["Mesopotamia,","Mesopotamia;","Mesopotamia, and","Mesopotamia"],a:1,x:"Two independent clauses need proper separation. A semicolon correctly joins them."},
+{d:"conventions",t:"Boundaries",p:"Dr. Alvarez, who has studied volcanic activity for over thirty ______ that the region faces a significant eruption risk within the next decade.",s:"Which choice conforms to Standard English?",c:["years, believes","years believes","years; believes","years. Believes"],a:0,x:"The nonrestrictive clause needs a closing comma. Then the main clause resumes."},
+{d:"conventions",t:"Boundaries",p:"The company announced three major changes ______ a complete restructuring, a $500 million investment in renewable energy, and the closure of its least profitable plants.",s:"Which choice conforms to Standard English?",c:["changes,","changes:","changes;","changes\u2014"],a:1,x:"A colon introduces a list that specifies the preceding clause."},
+{d:"expression",t:"Transitions",p:"Early solar panels in the 1970s converted less than 10% of sunlight into electricity. ______, modern cells routinely achieve above 20%, with some prototypes exceeding 40%.",s:"Which transition is most logical?",c:["Similarly,","In contrast,","For instance,","In other words,"],a:1,x:"Low then vs. high now = contrast. \"In contrast\" signals the shift."},
+{d:"expression",t:"Transitions",p:"The city council approved funding for a new transit line. ______, several members expressed concern that the eight-year timeline was unrealistic.",s:"Which transition is most logical?",c:["Therefore,","In addition,","However,","Specifically,"],a:2,x:"Approval followed by concerns = concession/contrast. \"However\" signals that."},
+{d:"expression",t:"Transitions",p:"Researchers found meditation participants showed reduced cortisol, improved sleep, and reduced anxiety. ______, the small sample size of 30 and lack of control group mean these findings should be interpreted cautiously.",s:"Which transition is most logical?",c:["Furthermore,","As a result,","That said,","Similarly,"],a:2,x:"\"That said\" acknowledges positives while pivoting to a qualification."},
+{d:"expression",t:"Rhetorical Synthesis",p:"Notes on the JWST:\n\u2022 Launched December 25, 2021\n\u2022 Primary mirror 6.5 meters \u2014 nearly 3x larger than Hubble\u2019s\n\u2022 Positioned ~1 million miles from Earth\n\u2022 Observes primarily in infrared\n\u2022 Infrared lets it see through cosmic dust that blocks visible light",s:"The student wants to emphasize the JWST\u2019s advantage over Hubble. Which choice best accomplishes this?",c:["Launched in 2021 at L2, the JWST observes in infrared wavelengths.","With a mirror nearly 3x larger than Hubble\u2019s, the JWST can also peer through cosmic dust invisible to its predecessor by observing in infrared.","On Dec 25, 2021, the JWST was launched to observe in infrared light.","The JWST\u2019s 6.5-meter mirror collects infrared light from distant objects."],a:1,x:"Only B directly compares to Hubble (mirror size) AND highlights a unique capability (infrared dust penetration)."},
+{d:"expression",t:"Rhetorical Synthesis",p:"Notes on monarch migration:\n\u2022 Monarchs travel up to 3,000 miles from Canada/US to Mexico each fall\n\u2022 Millions overwinter in oyamel fir forests in Michoac\u00e1n\n\u2022 Logging and climate change have reduced these forests ~70% since 1971\n\u2022 Conservation organizations have established protected biosphere reserves",s:"The student wants to present the threat and the response. Which choice best accomplishes this?",c:["Monarchs travel 3,000 miles each fall to reach Michoac\u00e1n, Mexico.","Since 1971, logging and climate change have destroyed ~70% of the forests where millions of monarchs overwinter, prompting organizations to establish protected reserves.","Millions of monarchs overwinter in Michoac\u00e1n, and organizations have worked to protect these areas.","Monarchs use the sun to navigate 3,000 miles, but their destination forests have been reduced."],a:1,x:"B specifies the threat (70% loss), the species affected, and the response (reserves)."},
+{d:"expression",t:"Rhetorical Synthesis",p:"Notes on space economics:\n\u2022 Apollo cost ~$257 billion (2023 dollars)\n\u2022 SpaceX developed Falcon 9 for ~$390 million\n\u2022 Falcon 9\u2019s reusable first stage cuts launch costs ~30%\n\u2022 NASA now contracts with SpaceX for ISS missions\n\u2022 Private space companies have attracted $10B+ in VC since 2010",s:"The student wants to argue private companies fundamentally changed space economics. Which choice best accomplishes this?",c:["Private companies have attracted $10B+ in VC, and NASA now contracts with SpaceX.","Apollo cost $257B vs. Falcon 9\u2019s $390M \u2014 and reusable tech cuts launch costs 30%, showing how private companies transformed space economics.","The Falcon 9 cost $390M to develop and features a reusable first stage.","NASA spent $257B on Apollo, and private companies have attracted $10B in VC."],a:1,x:"B makes the strongest argument by directly comparing costs AND citing reusability savings."}
+];
+
+const SCORE_TABLE=[
+  {range:"720\u2013800",pctile:"96th\u201399th+",context:"Ivy League / Top-20 competitive"},
+  {range:"620\u2013710",pctile:"85th\u201395th",context:"Selective colleges \u00b7 Merit scholarship range"},
+  {range:"530\u2013610",pctile:"65th\u201384th",context:"State flagships \u00b7 Solid foundation"},
+  {range:"480\u2013520",pctile:"50th\u201364th",context:"College ready \u00b7 Above benchmark"},
+  {range:"200\u2013470",pctile:"Below 50th",context:"Focus on Conventions first"}
+];
+const MODULE_PATH=[
+  {n:"1\u20133",l:"Standard English Conventions",note:"Grammar, punctuation, advanced rules",co:C.conv},
+  {n:"4",l:"Boss Battle: Grammar Golem",note:"25-question conventions boss fight",co:C.conv},
+  {n:"5\u20137",l:"Vocabulary & Craft",note:"Words in Context, precision, text structure",co:C.craft},
+  {n:"8",l:"Boss Battle: Syntax Serpent",note:"25-question craft boss fight",co:C.craft},
+  {n:"9\u201311",l:"Information & Ideas",note:"Central ideas, evidence, logical reasoning",co:C.info},
+  {n:"12",l:"Boss Battle: Data Specter",note:"25-question information boss fight",co:C.info},
+  {n:"13\u201315",l:"Expression & Strategy",note:"Synthesis, transitions, test strategy + boss",co:C.expr},
+  {n:"16\u201318",l:"Practice & Finale",note:"Full tests, diagnostics, study plan",co:C.sim}
+];
+const CHECKLIST=["Bluebook app installed","Quiet testing environment identified","Phone silenced and out of reach","Scratch paper and pencil ready","64 uninterrupted minutes available","Water bottle nearby","Know your target RW score"];
+
+// ══════════ UTILITY COMPONENTS ══════════
+function ProgressBar({current,total}){
+  var pct=total>0?Math.round(current/total*100):0;
+  return e("div",{style:{position:"fixed",top:0,left:0,right:0,zIndex:100}},
+    e("div",{style:{height:4,background:"linear-gradient(90deg,"+C.conv+" 0%,"+C.conv+" 25%,"+C.craft+" 25%,"+C.craft+" 50%,"+C.info+" 50%,"+C.info+" 75%,"+C.expr+" 75%)"}}),
+    e("div",{style:{height:3,background:C.border}},
+      e("div",{style:{height:"100%",width:pct+"%",background:"linear-gradient(90deg,"+C.accent+","+C.sat+")",transition:"width .4s ease"}})));
+}
+function Badge(p){return e("span",{style:{display:"inline-block",background:p.color||C.accent,color:p.bg||C.paper,fontSize:11,fontWeight:700,letterSpacing:2,textTransform:"uppercase",padding:"5px 14px",borderRadius:16}},p.text);}
+function Card(p){return e("div",{style:Object.assign({background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:"18px 20px",marginBottom:12},p.accent?{borderLeft:"3px solid "+p.accent}:{},p.style||{})},p.children);}
+function Callout(p){var c=p.color||C.accent;return e("div",{style:Object.assign({background:c+"10",border:"1px solid "+c+"44",borderRadius:10,padding:"14px 18px",marginBottom:16,fontSize:14},p.style||{})},p.children);}
+function QuizChoice(p){
+  var bg=C.paper,bdr="2px solid "+C.border;
+  if(p.state==="correct"){bg=C.correctBg;bdr="2px solid "+C.correct;}
+  else if(p.state==="wrong"){bg=C.wrongBg;bdr="2px solid "+C.wrong;}
+  var lBg=C.border,lC=C.muted;
+  if(p.state==="correct"){lBg=C.correct;lC=C.paper;}
+  else if(p.state==="wrong"){lBg=C.wrong;lC=C.paper;}
+  return e("button",{onClick:p.onClick,disabled:p.disabled,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"12px 16px",borderRadius:10,background:bg,border:bdr,cursor:p.disabled?"default":"pointer",textAlign:"left",width:"100%",transition:"all .15s"}},
+    e("span",{style:{minWidth:26,height:26,borderRadius:7,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:12,background:lBg,color:lC,flexShrink:0}},p.letter),
+    e("span",{style:{color:p.state==="correct"?C.correct:p.state==="wrong"?C.wrong:"#ccc",fontSize:14,lineHeight:1.7}},p.text));
+}
+function Explain(p){if(!p.show)return null;return e("div",{style:{marginTop:10,padding:12,background:C.paper,borderRadius:8,fontSize:14,color:C.sub,lineHeight:1.65,borderLeft:"3px solid "+C.correct}},p.text);}
+
+// ══════════ SCREEN: WELCOME ══════════
+function Welcome(p){
+  var _s=useState(false),show=_s[0],setShow=_s[1];
+  useEffect(function(){setTimeout(function(){setShow(true);},100);},[]);
+  var sessions=[
+    {icon:"\ud83d\udcd6",title:"Know Your Test",desc:"Structure, domains, adaptive engine",time:"15 min"},
+    {icon:"\u2694\ufe0f",title:"The Baseline Gauntlet",desc:"27-question diagnostic",time:"36 min"},
+    {icon:"\ud83c\udfaf",title:"Goal Setting",desc:"Score interpretation & targets",time:"5 min"},
+    {icon:"\u2705",title:"Action Items",desc:"Homework & pre-test checklist",time:"5 min"}
+  ];
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    e(Badge,{text:"Module 0 \u00b7 Start Here"}),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(2rem,5vw,3.2rem)",fontWeight:700,color:C.ink,lineHeight:1.1,textAlign:"center",marginTop:16,marginBottom:8}},"Know Your Battlefield"),
+    e("p",{style:{color:C.sub,fontSize:17,maxWidth:560,textAlign:"center",lineHeight:1.65,marginBottom:12}},"Understand the test structure, experience the adaptive engine, establish your baseline, and set your target score."),
+    e("div",{style:{color:C.muted,fontSize:13,marginBottom:36,display:"flex",gap:20,flexWrap:"wrap",justifyContent:"center"}},
+      e("span",null,"\u23f1 ~60 minutes"),e("span",null,"\ud83d\udccb 4 sessions"),e("span",null,"\ud83d\udd0d Orientation")),
+    e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:14,maxWidth:700,width:"100%",marginBottom:44}},
+      sessions.map(function(s,i){return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:"18px 16px",textAlign:"center"}},
+        e("div",{style:{fontSize:28,marginBottom:6}},s.icon),
+        e("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:3}},s.title),
+        e("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},s.desc),
+        e("div",{style:{color:C.accent,fontSize:11,fontWeight:600,marginTop:6}},s.time));})),
+    e("button",{onClick:p.onNext,style:sBtn("linear-gradient(135deg,"+C.accent+",#d97706)",C.paper)},"Start Module \u2192"));
+}
+
+// ══════════ SCREEN: LESSONS ══════════
+function LessonScreen(p){
+  var _s=useState(0),phase=_s[0],setPhase=_s[1];
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"center",gap:8,marginBottom:32}},
+      [0,1,2,3].map(function(i){return e("div",{key:i,style:{width:i===phase?28:10,height:8,borderRadius:4,background:i===phase?C.accent:i<phase?C.accent+"66":C.border,cursor:i<=phase?"pointer":"default",transition:"all .3s"},onClick:function(){if(i<=phase)setPhase(i);}});})),
+    phase===0&&e(TestStructure,{onDone:function(){setPhase(1);window.scrollTo(0,0);}}),
+    phase===1&&e(DomainCards,{onDone:function(){setPhase(2);window.scrollTo(0,0);}}),
+    phase===2&&e(AdaptiveEngine,{onDone:function(){setPhase(3);window.scrollTo(0,0);}}),
+    phase===3&&e(IRTInsight,{onDone:p.onComplete}));
+}
+
+function TestStructure(p){
+  var rows=[["Total Questions","54 (27 per module)"],["Total Time","64 minutes (32 per module)"],["Time per Question","~71 seconds average"],["Adaptive Format","Module 2 difficulty adjusts based on Module 1"],["Scoring","200\u2013800 section score (no penalty for wrong answers)"],["Total Test","R&W (64 min) + Break (10 min) + Math (70 min) = 2 hr 14 min"]];
+  return e("div",null,
+    e("div",{style:{color:C.accent,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 1 \u2022 Know Your Test"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Digital SAT: Reading & Writing Structure"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"The SAT Reading & Writing section is a ",e("strong",null,"single combined section"),". Every question pairs a short passage (25\u2013150 words) with a single multiple-choice question. You\u2019ll face 54 of these mini-tasks across two adaptive modules."),
+    e("div",{style:{overflowX:"auto",marginBottom:16}},
+      e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:14}},
+        e("thead",null,e("tr",null,["Feature","Details"].map(function(h){return e("th",{key:h,style:{padding:"10px 12px",border:"1px solid "+C.border,background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted,textAlign:"left"}},h);}))),
+        e("tbody",null,rows.map(function(r,i){return e("tr",{key:i},e("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc"}},e("strong",null,r[0])),e("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc",fontFamily:"'JetBrains Mono',monospace",fontSize:13}},r[1]));})))),
+    e(Callout,{color:C.accent},e("strong",{style:{color:C.accent}},"No wrong-answer penalty")," means you should ",e("strong",null,"answer every single question")," \u2014 even if you have to guess. Never leave anything blank."),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},e("button",{onClick:p.onDone,style:sBtn(C.accent,C.paper)},"Continue to Domains \u2192")));
+}
+
+function DomainCards(p){
+  var _f=useState({}),flipped=_f[0],setFlipped=_f[1];
+  var shuffled=useMemo(function(){return DOG_CORRECT.slice().sort(function(){return .5-Math.random();});},[]);
+  var _p=useState([null,null,null,null]),placed=_p[0],setPlaced=_p[1];
+  var _c=useState(false),checked=_c[0],setChecked=_c[1];
+  var _sel=useState(null),selected=_sel[0],setSelected=_sel[1];
+  var avail=shuffled.filter(function(d){return !placed.includes(d);});
+  function place(slot){if(!selected||placed[slot])return;setPlaced(function(pr){var n=pr.slice();n[slot]=selected;return n;});setSelected(null);setChecked(false);}
+  function remove(slot){setPlaced(function(pr){var n=pr.slice();n[slot]=null;return n;});setChecked(false);}
+  function check(){if(placed.includes(null))return;setChecked(true);}
+  function reset(){setPlaced([null,null,null,null]);setChecked(false);setSelected(null);}
+  var allRight=checked&&placed.every(function(d,i){return d===DOG_CORRECT[i];});
+
+  return e("div",null,
+    e("div",{style:{color:C.accent,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Content Breakdown"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"The Four Content Domains"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"The RW section tests four domains in a ",e("strong",null,"fixed, predictable order")," within every module. Tap each card to see details."),
+    e("div",{className:"domain-grid-r",style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12,marginBottom:16}},
+      DOMAINS.map(function(d,i){return e("div",{key:i,onClick:function(){setFlipped(function(pr){var n=Object.assign({},pr);n[i]=!n[i];return n;});},style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,cursor:"pointer",transition:"all .3s"}},
+        !flipped[i]?e("div",null,
+          e("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
+            e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.3rem",fontWeight:700,color:d.color}},d.pct),
+            e("div",{style:{fontWeight:700,fontSize:14}},d.name)),
+          e("div",{style:{fontSize:13,color:C.muted}},d.qs),
+          e("div",{style:{fontSize:13,color:C.muted,lineHeight:1.5,marginTop:4}},d.front),
+          e("div",{style:{fontSize:11,color:C.muted,textAlign:"right",marginTop:6}},"tap to see details \u2192")):
+        e("div",null,e("div",{style:{fontSize:14,color:"#ccc",lineHeight:1.6}},d.back),e("div",{style:{fontSize:11,color:C.muted,textAlign:"right",marginTop:6}},"\u2190 tap to flip back")));})),
+    e(Callout,{color:C.sat},e("strong",{style:{color:C.sat}},"Key insight: "),"Questions within each domain are ordered easy \u2192 hard. Plan your time accordingly."),
+    e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",margin:"20px 0 10px"}},"Domain Order Challenge"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:12,lineHeight:1.7}},"Click a domain, then click the slot to place it in order \u2014 first to last."),
+    e("div",{style:{background:C.surface,border:"2px solid "+C.sat,borderRadius:14,padding:22,marginBottom:16}},
+      e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}},avail.map(function(d){var dc=DOMAINS.find(function(dd){return dd.name===d;});return e("div",{key:d,onClick:function(){setSelected(d);},style:{display:"inline-block",padding:"6px 14px",background:selected===d?dc.color+"18":C.surface,border:"2px solid "+(selected===d?dc.color:C.border),borderRadius:8,cursor:"pointer",fontSize:14,fontWeight:600,color:dc.color,transition:"all .15s"}},d);})),
+      placed.map(function(d,i){
+        var dc=d?DOMAINS.find(function(dd){return dd.name===d;}):null;
+        var isRight=checked&&d===DOG_CORRECT[i],isWrong=checked&&d&&d!==DOG_CORRECT[i];
+        return e("div",{key:i,onClick:function(){if(!d)place(i);},style:{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",background:isRight?C.correctBg:isWrong?C.wrongBg:C.paper,border:"2px "+(d?"solid":"dashed")+" "+(isRight?C.correct:isWrong?C.wrong:C.border),borderRadius:10,marginBottom:8,minHeight:52,cursor:d?"default":"pointer",transition:"all .2s"}},
+          e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.1rem",fontWeight:700,color:C.muted,minWidth:24}},i+1),
+          d?e("div",{style:{fontSize:14,fontWeight:600,color:dc.color}},d," ",!checked&&e("span",{onClick:function(ev){ev.stopPropagation();remove(i);},style:{cursor:"pointer",color:C.muted,fontSize:12}},"\u2715")):e("span",{style:{fontSize:14,color:C.muted}},"Click to place here\u2026"));}),
+      e("div",{style:{display:"flex",gap:8,marginTop:12}},
+        e("button",{onClick:check,style:sBtnSm(C.sat,"#fff")},"Check Order"),
+        e("button",{onClick:reset,style:sBtnSm("transparent",C.sat,{border:"2px solid "+C.sat})},"Reset")),
+      checked&&e("div",{style:{marginTop:10,fontSize:14,fontWeight:700,color:allRight?C.correct:C.wrong}},allRight?"\u2713 Perfect! Craft & Structure \u2192 Information & Ideas \u2192 Conventions \u2192 Expression of Ideas.":"\u2717 The order is always: Craft & Structure \u2192 Information & Ideas \u2192 Standard English Conventions \u2192 Expression of Ideas.")),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},e("button",{onClick:p.onDone,style:sBtn(C.accent,C.paper)},"Continue to Adaptive Engine \u2192")));
+}
+
+function AdaptiveEngine(p){
+  var _s=useState(14),simVal=_s[0],setSimVal=_s[1];
+  var pr=simVal/27,route,rColor,floor,ceil;
+  if(pr>=.70){route="Harder Module 2";rColor=C.correct;floor=450;ceil=800;}
+  else if(pr>=.56){route="Borderline";rColor=C.craft;floor=380;ceil=640;}
+  else{route="Easier Module 2";rColor=C.wrong;floor=200;ceil=Math.min(520+simVal*7,600);}
+  return e("div",null,
+    e("div",{style:{color:C.accent,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"How It Works"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"The Adaptive Module System"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"The SAT uses ",e("strong",null,"multistage adaptive testing"),". Your Module 1 performance determines which Module 2 you receive \u2014 and your ",e("strong",null,"maximum possible score"),"."),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:20,marginBottom:16}},
+      e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:8}},
+        e("div",{style:{padding:"12px 20px",borderRadius:10,textAlign:"center",fontSize:14,fontWeight:600,background:C.accentLight,border:"2px solid "+C.accent}},"Module 1: Mixed Difficulty",e("br"),e("span",{style:{fontSize:12,color:C.muted}},"27 questions \u00b7 32 minutes")),
+        e("div",{style:{color:C.muted,fontSize:"1.2rem"}},"\u2193 Your performance determines\u2026"),
+        e("div",{style:{display:"flex",gap:16,width:"100%"}},
+          e("div",{style:{flex:1,textAlign:"center"}},e("div",{style:{padding:"12px 20px",borderRadius:10,background:C.correctBg,border:"2px solid "+C.correct,fontSize:14,fontWeight:600}},"Module 2: ",e("strong",null,"Harder"),e("br"),e("span",{style:{fontSize:12,color:C.muted}},"Scores up to 800"))),
+          e("div",{style:{flex:1,textAlign:"center"}},e("div",{style:{padding:"12px 20px",borderRadius:10,background:C.wrongBg,border:"2px solid "+C.wrong,fontSize:14,fontWeight:600}},"Module 2: ",e("strong",null,"Easier"),e("br"),e("span",{style:{fontSize:12,color:C.muted}},"Ceiling ~590\u2013600")))))),
+    e(Callout,{color:C.wrong},e("strong",{style:{color:C.wrong}},"This is the single most important fact about the test. "),"If you make too many careless errors on Module 1, your score is permanently capped. Accuracy beats speed."),
+    e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",margin:"20px 0 10px"}},"Routing Simulator"),
+    e("div",{style:{background:C.surface,border:"2px solid "+C.accent,borderRadius:14,padding:22,marginBottom:16}},
+      e("div",{style:{display:"flex",alignItems:"center",gap:14,marginBottom:16}},
+        e("span",{style:{fontSize:13,color:C.muted,flexShrink:0}},"Module 1 Correct:"),
+        e("input",{type:"range",min:0,max:27,value:simVal,onChange:function(ev){setSimVal(parseInt(ev.target.value));},style:{flex:1}}),
+        e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.4rem",fontWeight:700,minWidth:40,textAlign:"center"}},simVal)),
+      e("div",{style:{textAlign:"center",padding:16,borderRadius:10,background:rColor+"10"}},
+        e("div",{style:{fontSize:16,fontWeight:700,color:rColor,marginBottom:4}},simVal,"/27 \u2192 ",route),
+        e("div",{style:{fontSize:14,color:C.muted}},"Score range: ",floor,"\u2013",ceil)),
+      e("div",{style:{marginTop:12}},
+        e("div",{style:{display:"flex",justifyContent:"space-between",fontSize:12,color:C.muted,marginBottom:4}},e("span",null,"Score Floor"),e("span",null,floor,"\u2013",ceil),e("span",null,"Score Ceiling")),
+        e("div",{style:{height:12,borderRadius:6,background:C.border,overflow:"hidden"}},
+          e("div",{style:{height:"100%",borderRadius:6,width:((ceil-200)/600)*100+"%",background:rColor,transition:"width .4s ease"}})))),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},e("button",{onClick:p.onDone,style:sBtn(C.accent,C.paper)},"Continue \u2192")));
+}
+
+function IRTInsight(p){
+  return e("div",null,
+    e("div",{style:{color:C.accent,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"The Counterintuitive Secret"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Not All Missed Questions Cost the Same"),
+    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"Because the SAT uses Item Response Theory, missing an ",e("strong",null,"easy question costs MORE points")," than missing a hard one."),
+    e("div",{className:"irt-grid-r",style:{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:16,alignItems:"center",marginBottom:16}},
+      e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:20,textAlign:"center"}},
+        e("div",{style:{fontSize:"2rem",marginBottom:6}},"\ud83d\ude30"),
+        e("div",{style:{color:C.wrong,fontWeight:800,fontSize:"1.4rem"}},"\u221250 pts"),
+        e("div",{style:{color:C.muted,fontSize:14,marginTop:4}},"Missing an ",e("strong",{style:{color:C.ink}},"easy")," question")),
+      e("div",{className:"irt-vs-r",style:{color:C.muted,fontWeight:800,fontSize:"1.2rem"}},"vs."),
+      e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:20,textAlign:"center"}},
+        e("div",{style:{fontSize:"2rem",marginBottom:6}},"\ud83e\udd14"),
+        e("div",{style:{color:C.accent,fontWeight:800,fontSize:"1.4rem"}},"\u221220 pts"),
+        e("div",{style:{color:C.muted,fontSize:14,marginTop:4}},"Missing a ",e("strong",{style:{color:C.ink}},"hard")," question"))),
+    e(Callout,{color:C.accent},e("strong",{style:{color:C.accent}},"Takeaway: "),"Protect your easy points first. Careful accuracy matters more than heroic attempts on the hardest questions."),
+    e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",margin:"20px 0 10px"}},"Your Growth Trajectory"),
+    e("div",{style:{background:C.surface,border:"2px solid "+C.sim,borderRadius:14,padding:22,marginBottom:16}},
+      e("div",{style:{display:"flex",height:40,borderRadius:8,overflow:"hidden",marginBottom:8}},
+        e("div",{style:{flex:1,background:C.sim,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:"#fff"}},"PSAT 8/9"),
+        e("div",{style:{flex:1.2,background:C.sat,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:"#fff"}},"PSAT/NMSQT"),
+        e("div",{style:{flex:1.3,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:"#fff"}},"SAT")),
+      e("div",{style:{display:"flex",justifyContent:"space-between",fontSize:12,color:C.muted}},e("span",null,"8th\u20139th"),e("span",null,"10th\u201311th"),e("span",null,"11th\u201312th")),
+      e("div",{style:{marginTop:14,textAlign:"center",fontSize:14,color:"#ccc"}},e("strong",{style:{color:C.correct}},"College Readiness Benchmark (RW): 480"))),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},e("button",{onClick:p.onDone,style:sBtn("linear-gradient(135deg,"+C.accent+",#d97706)",C.paper)},"Start Diagnostic \u2192")));
+}
+
+// ══════════ SCREEN: DIAGNOSTIC ══════════
+function DiagnosticScreen(p){
+  var _st=useState(false),started=_st[0],setStarted=_st[1];
+  var _a=useState(function(){return Array(DQ.length).fill(null);}),answers=_a[0],setAnswers=_a[1];
+  var _t=useState(36*60),timeLeft=_t[0],setTimeLeft=_t[1];
+  var _d=useState(false),done=_d[0],setDone=_d[1];
+  var timerRef=useRef(null);
+
+  function start(){setStarted(true);timerRef.current=setInterval(function(){setTimeLeft(function(t){if(t<=1){clearInterval(timerRef.current);return 0;}return t-1;});},1000);}
+  function pick(qi,ci){if(answers[qi]!==null||done)return;setAnswers(function(pr){var n=pr.slice();n[qi]=ci;return n;});}
+  function finish(){if(timerRef.current)clearInterval(timerRef.current);setDone(true);}
+  useEffect(function(){if(timeLeft<=0&&!done)finish();},[timeLeft]);
+  useEffect(function(){return function(){if(timerRef.current)clearInterval(timerRef.current);};},[]);
+
+  var allAnswered=answers.every(function(a){return a!==null;});
+  var m=Math.floor(timeLeft/60),s=timeLeft%60;
+  var pct=(timeLeft/(36*60))*100;
+
+  // Scoring
+  var doms={craft:{c:0,t:0,color:C.craft,label:"Craft & Structure"},information:{c:0,t:0,color:C.info,label:"Information & Ideas"},conventions:{c:0,t:0,color:C.conv,label:"Conventions"},expression:{c:0,t:0,color:C.expr,label:"Expression"}};
+  var total=0;
+  DQ.forEach(function(q,i){doms[q.d].t++;if(answers[i]===q.a){total++;doms[q.d].c++;}});
+  var scorePct=Math.round((total/DQ.length)*100);
+  var lo,hi;
+  if(scorePct>=92){lo=720;hi=800;}else if(scorePct>=85){lo=660;hi=740;}else if(scorePct>=74){lo=590;hi=670;}else if(scorePct>=63){lo=520;hi=600;}else if(scorePct>=52){lo=450;hi=540;}else if(scorePct>=40){lo=380;hi=470;}else if(scorePct>=30){lo=320;hi=400;}else{lo=200;hi=350;}
+
+  var weak="",strong="",wp=101,sp=-1;
+  Object.entries(doms).forEach(function(entry){var k=entry[0],d=entry[1];var dp=d.t>0?Math.round((d.c/d.t)*100):0;if(dp<wp){wp=dp;weak=k;}if(dp>sp){sp=dp;strong=k;}});
+
+  if(done){
+    return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+      e("div",{style:{color:C.accent,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 2 \u2022 Results"),
+      e("div",{style:{background:C.surface,border:"2px solid "+C.accent,borderRadius:14,padding:28,marginBottom:24}},
+        e("div",{style:{textAlign:"center",marginBottom:16}},
+          e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"3rem",fontWeight:700,color:scorePct>=75?C.correct:scorePct>=50?C.accent:C.wrong}},total,"/",DQ.length),
+          e("div",{style:{fontSize:14,color:C.muted}},scorePct,"% correct \u00b7 Est. RW range: ",lo,"\u2013",hi)),
+        e("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:16}},
+          [{label:"Score",val:scorePct+"%",col:scorePct>=75?C.correct:scorePct>=50?C.accent:C.wrong},{label:"Strongest",val:doms[strong].label.split(" ")[0],col:doms[strong].color},{label:"Weakest",val:doms[weak].label.split(" ")[0],col:doms[weak].color}].map(function(s,i){return e("div",{key:i,style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:12,textAlign:"center"}},
+            e("div",{style:{color:C.muted,fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:4}},s.label),
+            e("div",{style:{color:s.col,fontWeight:800,fontSize:s.label==="Score"?"1.2rem":".85rem"}},s.val));})),
+        e("div",{style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10}},
+          Object.entries(doms).map(function(entry){var k=entry[0],d=entry[1];var dp=d.t>0?Math.round((d.c/d.t)*100):0;return e("div",{key:k,style:{padding:12,background:C.paper,borderRadius:8,textAlign:"center"}},
+            e("div",{style:{fontSize:11,color:d.color,textTransform:"uppercase",letterSpacing:1,marginBottom:4}},d.label),
+            e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.2rem",fontWeight:700,color:dp>=75?C.correct:dp>=50?C.accent:C.wrong}},d.c,"/",d.t),
+            e("div",{style:{height:6,borderRadius:3,background:C.border,marginTop:6,overflow:"hidden"}},e("div",{style:{height:"100%",width:dp+"%",background:d.color,borderRadius:3}})));}))),
+      e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",margin:"0 0 12px"}},"Review All Questions"),
+      DQ.map(function(q,qi){var a=answers[qi];return e("div",{key:qi,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10,opacity:.85}},
+        e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+          e("span",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",padding:"2px 8px",borderRadius:4,background:DM[q.d].color+"20",color:DM[q.d].color}},DM[q.d].label," \u2014 ",q.t),
+          e("span",{style:{fontSize:13,fontWeight:700,color:a===q.a?C.correct:C.wrong}},a===q.a?"\u2713":"\u2717")),
+        e("div",{style:{fontSize:13,color:C.sub,lineHeight:1.6}},q.x));}),
+      e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+        e("button",{onClick:function(){p.onComplete(total,scorePct,doms,weak,strong,lo,hi);},style:sBtn("linear-gradient(135deg,"+C.accent+",#d97706)",C.paper)},"Continue to Goal Setting \u2192")));
+  }
+
+  if(!started){
+    return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}},
+      e("div",{style:{border:"2px solid "+C.accent,borderRadius:14,overflow:"hidden",maxWidth:600,width:"100%"}},
+        e("div",{style:{height:3,background:"linear-gradient(90deg,"+C.conv+","+C.craft+","+C.info+","+C.expr+")"}}),
+        e("div",{style:{background:"linear-gradient(135deg,"+C.accentLight+","+C.surface+")",padding:"20px 22px",borderBottom:"1px solid "+C.border,display:"flex",alignItems:"center",gap:16}},
+          e("div",{style:{fontSize:"2.2rem",filter:"drop-shadow(0 0 8px rgba(245,158,11,.4))"}},"\u2694\ufe0f"),
+          e("div",null,
+            e("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.3rem",fontWeight:700,color:C.accent}},"The Baseline Gauntlet"),
+            e("div",{style:{fontSize:13,color:C.muted,marginTop:2}},"27 questions \u00b7 36 minutes \u00b7 All four domains \u00b7 Timed"))),
+        e("div",{style:{padding:22,textAlign:"center"}},
+          e("p",{style:{color:"#ccc",fontSize:14,marginBottom:20,lineHeight:1.7}},"27 questions spanning all four domains. ~80 seconds per question. This mirrors the real distribution."),
+          e("button",{onClick:start,style:sBtn("linear-gradient(135deg,"+C.accent+",#d97706)",C.paper,{fontSize:17,padding:"14px 36px"})},"Begin the Gauntlet \u2192"))));
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:pct<20?C.wrong:C.muted,textAlign:"right",marginBottom:4}},m,":",String(s).padStart(2,"0")),
+    e("div",{style:{height:6,borderRadius:3,background:C.border,marginBottom:16,overflow:"hidden"}},
+      e("div",{style:{height:"100%",borderRadius:3,background:pct<20?C.wrong:pct<40?C.craft:C.accent,width:pct+"%",transition:"width .1s linear"}})),
+    DQ.map(function(q,qi){
+      var answered=answers[qi]!==null;
+      return e("div",{key:qi,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1}},
+        e("div",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6,display:"inline-block",padding:"2px 8px",borderRadius:4,background:DM[q.d].color+"20",color:DM[q.d].color}},DM[q.d].label," \u2014 ",q.t),
+        e("div",{style:{background:C.paper,border:"1px solid "+C.border,borderRadius:8,padding:"12px 14px",fontSize:14,color:"#ddd",lineHeight:1.75,marginBottom:12,borderLeft:"3px solid "+C.muted,whiteSpace:"pre-line"}},q.p),
+        e("div",{style:{fontSize:14,marginBottom:12,color:"#ddd"}},q.s),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+          q.c.map(function(c,ci){
+            var st=null;if(answered&&ci===q.a)st="correct";else if(answered&&answers[qi]===ci)st="wrong";
+            return e(QuizChoice,{key:ci,letter:"ABCD"[ci],text:c,state:st,disabled:answered,onClick:function(){pick(qi,ci);}});
+          })),
+        e(Explain,{text:q.x,show:answered}));
+    }),
+    allAnswered&&!done&&e("div",{style:{textAlign:"center",padding:"20px 0"}},
+      e("button",{onClick:finish,style:sBtn(C.sat,"#fff",{fontSize:17,padding:"14px 36px"})},"Score My Diagnostic \u2192")));
+}
+
+// ══════════ SCREEN: GOAL SETTING ══════════
+function GoalScreen(p){
+  var d=p.diagData;
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{color:C.accent,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 3 \u2022 Plan"),
+    e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:12}},"Score Interpretation & Goal Setting"),
+    e("div",{style:{background:C.surface,border:"2px solid "+C.accent,borderRadius:14,overflow:"hidden",marginBottom:16}},
+      e("div",{style:{background:C.accent,color:C.paper,padding:"12px 20px",fontWeight:700,fontSize:15}},"Goal-Setting Protocol"),
+      [{n:1,t:"Review your domain breakdown. Which domain had the most errors?"},{n:2,t:"Classify each error: Content Gap, Trap Answer, Misread, or Time Pressure."},{n:3,t:"Set a specific target RW score using the table below."},{n:4,t:"Write down your target score and top 2 priority domains. Bring these to Module 1."}].map(function(s){return e("div",{key:s.n,style:{display:"flex",gap:14,padding:"14px 20px",borderBottom:"1px solid "+C.border,fontSize:14,color:"#ccc",alignItems:"flex-start"}},
+        e("div",{style:{flexShrink:0,width:28,height:28,borderRadius:"50%",background:C.accentLight,border:"1px solid "+C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:13,color:C.accent,fontFamily:"'JetBrains Mono',monospace"}},s.n),
+        e("div",null,s.t));})),
+    e("div",{style:{overflowX:"auto",marginBottom:16}},
+      e("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:14}},
+        e("thead",null,e("tr",null,["RW Score","Percentile","College Context"].map(function(h){return e("th",{key:h,style:{padding:"10px 12px",border:"1px solid "+C.border,background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted,textAlign:"left"}},h);}))),
+        e("tbody",null,SCORE_TABLE.map(function(r,i){return e("tr",{key:i},
+          e("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:C.accent}},r.range),
+          e("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc"}},r.pctile),
+          e("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc"}},r.context));})))),
+    e("div",{style:{background:d.doms[d.weak].color+"15",border:"1px solid "+d.doms[d.weak].color+"44",borderRadius:12,padding:18,marginBottom:12}},
+      e("div",{style:{color:d.doms[d.weak].color,fontWeight:800,fontSize:15,marginBottom:6}},"\ud83c\udfaf Priority Focus: ",d.doms[d.weak].label),
+      e("div",{style:{fontSize:14,color:C.muted,lineHeight:1.6}},"Your lowest-scoring domain. This is where you\u2019ll see the fastest improvement.")),
+    e(Card,{accent:C.accent,children:e("div",null,
+      e("div",{style:{color:C.ink,fontWeight:800,fontSize:15,marginBottom:12}},"\ud83d\uddfa\ufe0f Recommended Module Order"),
+      MODULE_PATH.map(function(m,i){return e("div",{key:i,style:{display:"flex",alignItems:"center",gap:12,padding:"6px 10px",borderLeft:"3px solid "+m.co,marginBottom:4}},
+        e("div",{style:{color:m.co,fontWeight:800,fontSize:13,minWidth:36,fontFamily:"'JetBrains Mono',monospace"}},"M",m.n),
+        e("div",null,
+          e("div",{style:{color:C.ink,fontSize:14,fontWeight:600}},m.l),
+          e("div",{style:{color:C.muted,fontSize:12}},m.note)));}))}),
+    e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:p.onComplete,style:sBtn("linear-gradient(135deg,"+C.accent+",#d97706)",C.paper)},"Continue to Action Items \u2192")));
+}
+
+// ══════════ SCREEN: COMPLETE ══════════
+function CompleteScreen(p){
+  var _sh=useState(false),show=_sh[0],setShow=_sh[1];
+  var _cl=useState(function(){try{var v=JSON.parse(localStorage.getItem("pp_sat_rw_m0_cl")||"[]");return v.length===CHECKLIST.length?v:CHECKLIST.map(function(){return false;});}catch(e){return CHECKLIST.map(function(){return false;});}}),cls=_cl[0],setCls=_cl[1];
+  useEffect(function(){setTimeout(function(){setShow(true);},100);},[]);
+  useEffect(function(){try{localStorage.setItem("pp_sat_rw_m0_cl",JSON.stringify(cls));}catch(e){}},[cls]);
+  function toggle(i){setCls(function(pr){var n=pr.slice();n[i]=!n[i];return n;});}
+  var clDone=cls.filter(Boolean).length;
+  var takeaways=["54 questions in 64 minutes, two 27-question adaptive modules.","Every question pairs one short passage with one question.","Domain order: Craft \u2192 Info \u2192 Conventions \u2192 Expression, easy to hard within each.","Module 1 accuracy determines your score ceiling.","Missing easy questions costs more points than missing hard ones.","No penalty for wrong answers \u2014 never leave a blank.","Conventions tests learnable rules \u2014 fastest path to gains."];
+
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"40px 24px",textAlign:"center",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
+    e("div",{style:{fontSize:64,marginBottom:16}},"\ud83c\udf89"),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.8rem,4vw,2.8rem)",fontWeight:700,color:C.accent,marginBottom:8}},"Module 0 Complete"),
+    e("p",{style:{color:C.sub,fontSize:16,marginBottom:32,maxWidth:520}},"You know the battlefield. You have your baseline. Now it\u2019s time to train."),
+    e(Card,{accent:C.accent,style:{maxWidth:560,textAlign:"left"},children:e("div",null,
+      e("div",{style:{color:C.ink,fontWeight:700,fontSize:15,marginBottom:8}},"Key Takeaways"),
+      e("ol",{style:{paddingLeft:18,fontSize:14,color:"#ccc",lineHeight:2}},takeaways.map(function(t,i){return e("li",{key:i},t);})))}),
+    e(Card,{accent:C.craft,style:{maxWidth:560,textAlign:"left",marginTop:8},children:e("div",null,
+      e("div",{style:{color:C.craft,fontWeight:700,fontSize:15,marginBottom:8}},"Homework"),
+      e("div",{style:{color:"#ccc",fontSize:13,lineHeight:1.9}},
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"1. Download Bluebook")," \u2014 Install the Bluebook app from College Board."),
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"2. Take a Full RW Section")," \u2014 54 questions, 64 minutes, test conditions."),
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"3. Record Domain Scores")," \u2014 Note performance in each of the four domains."),
+        e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"4. Classify Every Error")," \u2014 Content Gap, Trap Answer, Misread, or Time Pressure."),
+        e("div",null,e("strong",{style:{color:C.ink}},"5. Identify Top 2 Priorities")," \u2014 Bring these to Module 1.")))}),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:20,maxWidth:560,width:"100%",textAlign:"left",marginTop:16}},
+      e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:12}},"\u2705 Before Your Full Baseline Test"),
+      CHECKLIST.map(function(item,i){return e("div",{key:i,onClick:function(){toggle(i);},style:{display:"flex",alignItems:"flex-start",gap:10,padding:"7px 0",borderBottom:"1px solid "+C.border,fontSize:14,color:cls[i]?"#666":"#ccc",cursor:"pointer",transition:"all .2s",textDecoration:cls[i]?"line-through":"none"}},
+        e("div",{style:{flexShrink:0,width:22,height:22,border:"2px solid "+(cls[i]?C.correct:C.border),borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,background:cls[i]?C.correct:"transparent",color:cls[i]?"#fff":"transparent",transition:"all .15s"}},cls[i]?"\u2713":""),
+        e("div",null,item));}),
+      e("div",{style:{fontSize:13,color:C.muted,marginTop:8,textAlign:"right"}},clDone,"/",CHECKLIST.length," complete")),
+    e("div",{style:{color:C.muted,fontSize:13,marginTop:24}},"Next up: Module 1 \u2014 Sentence Structure & Boundaries"));
+}
+
+// ══════════ APP ══════════
+var SCREENS=["welcome","lessons","diagnostic","goals","complete"];
+function App(){
+  var _sc=useState("welcome"),screen=_sc[0],setScreen=_sc[1];
+  var _f=useState(true),fade=_f[0],setFade=_f[1];
+  var _dd=useState(null),diagData=_dd[0],setDiagData=_dd[1];
+  var screenIdx=SCREENS.indexOf(screen);
+
+  var go=useCallback(function(to){
+    setFade(false);
+    setTimeout(function(){setScreen(to);window.scrollTo(0,0);setFade(true);},350);
+  },[]);
+
+  return e("div",{style:{minHeight:"100vh",background:C.paper,color:C.ink,fontFamily:"'Source Sans 3',sans-serif"}},
+    e(ProgressBar,{current:screenIdx,total:SCREENS.length-1}),
+    e("div",{style:{position:"fixed",inset:0,pointerEvents:"none",opacity:.02,backgroundImage:"linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",backgroundSize:"40px 40px"}}),
+    e("div",{style:{position:"relative",zIndex:1,transition:"opacity .35s,transform .35s",opacity:fade?1:0,transform:fade?"translateY(0)":"translateY(8px)",paddingTop:12}},
+      screen==="welcome"&&e(Welcome,{onNext:function(){go("lessons");}}),
+      screen==="lessons"&&e(LessonScreen,{onComplete:function(){go("diagnostic");}}),
+      screen==="diagnostic"&&e(DiagnosticScreen,{onComplete:function(total,scorePct,doms,weak,strong,lo,hi){setDiagData({total:total,scorePct:scorePct,doms:doms,weak:weak,strong:strong,lo:lo,hi:hi});go("goals");}}),
+      screen==="goals"&&diagData&&e(GoalScreen,{diagData:diagData,onComplete:function(){go("complete");}}),
+      screen==="complete"&&e(CompleteScreen,{diagData:diagData})));
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>

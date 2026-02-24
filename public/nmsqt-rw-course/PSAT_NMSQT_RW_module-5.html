@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5: What's the Point? — PSAT/NMSQT Reading & Writing — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#121212;color:#f0f0f0;font-family:'Source Sans 3',sans-serif;line-height:1.65}
+input[type="range"]{width:100%}
+button{font-family:inherit}
+a{color:#0891b2;text-decoration:none}
+a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#1a1a1a}
+::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+</style>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const{useState,useEffect,useCallback,useRef,useMemo}=React;
+const e=React.createElement;
+
+// ══════════════════════════════════════════
+// DESIGN TOKENS
+// ══════════════════════════════════════════
+const T={
+  paper:'#121212',surface:'#1a1a1a',card:'#1e1e1e',border:'#2a2a2a',
+  ink:'#f0f0f0',sub:'#ccc',muted:'#999',dim:'#666',
+  accent:'#0891b2',accentBg:'rgba(8,145,178,.12)',
+  info:'#34d399',infoBg:'rgba(52,211,153,.1)',
+  craft:'#60a5fa',craftBg:'rgba(96,165,250,.1)',
+  conv:'#fbbf24',convBg:'rgba(251,191,36,.1)',
+  expr:'#f472b6',
+  correct:'#22c55e',correctBg:'rgba(34,197,94,.12)',
+  wrong:'#ef4444',wrongBg:'rgba(239,68,68,.12)',
+  nm:'#a78bfa',nmBg:'rgba(167,139,250,.1)',
+};
+
+// ══════════════════════════════════════════
+// SHARED STYLES
+// ══════════════════════════════════════════
+const btn=(bg,color,extra)=>({
+  padding:'12px 28px',borderRadius:10,border:'none',background:bg,
+  color,fontWeight:700,fontSize:15,cursor:'pointer',transition:'transform .12s,filter .12s',
+  ...extra
+});
+const card=(extra)=>({
+  background:T.surface,border:`1px solid ${T.border}`,borderRadius:14,
+  padding:'20px 22px',...extra
+});
+const passage={
+  background:T.paper,border:`1px solid ${T.border}`,borderRadius:10,
+  padding:'14px 16px',fontSize:15,color:'#ddd',lineHeight:1.8,
+  marginBottom:14,borderLeft:`3px solid ${T.muted}`,fontFamily:"'Cormorant Garamond',Georgia,serif"
+};
+const sectionTitle={
+  fontFamily:"'Cormorant Garamond',serif",fontWeight:700,color:T.ink,
+  fontSize:'clamp(1.3rem,3vw,1.7rem)',marginBottom:14,lineHeight:1.2
+};
+const labelTag=(color)=>({
+  display:'inline-block',fontSize:11,fontWeight:700,letterSpacing:1.5,
+  textTransform:'uppercase',padding:'3px 10px',borderRadius:6,
+  background:`${color}20`,color
+});
+
+// ══════════════════════════════════════════
+// ALL MODULE DATA
+// ══════════════════════════════════════════
+
+// --- RETRIEVAL WARM-UP ---
+const WARMUP=[
+  {passage:'The documentary revealed that the company had systematically _______ evidence of contamination, concealing test results from regulators for over a decade.',
+   stem:'Which choice completes the text with the most logical and precise word?',
+   choices:['suppressed','generated','distributed','analyzed'],correct:0,type:'wic',
+   explain:'"Concealing test results from regulators" = hiding evidence. "Suppressed" = forcibly put an end to or prevented from being seen. The other choices contradict the concealment described.'},
+  {passage:'The committee, along with several external advisors and two former board _______ unanimously approved the revised charter.',
+   stem:'Which choice completes the text so that it conforms to the conventions of Standard English?',
+   choices:['members, have','members, has','members have','members; has'],correct:1,type:'conv',
+   explain:'"Committee" (singular) is the subject. "Along with…members" is parenthetical and doesn\'t change the subject\'s number. The comma after "members" closes the parenthetical.'},
+  {passage:'The playwright\'s early comedies were lighthearted and _______ , relying on physical humor and simple misunderstandings to entertain audiences.',
+   stem:'Which choice completes the text with the most logical and precise word?',
+   choices:['whimsical','somber','provocative','austere'],correct:0,type:'wic',
+   explain:'"Lighthearted," "physical humor," "simple misunderstandings" — all signal playful, fanciful content. "Whimsical" = playfully quaint or fanciful. "Somber" and "austere" are opposite in tone.'},
+  {passage:'Because the telescope\'s primary mirror had been ground to the wrong _______ NASA engineers designed corrective optics that could be installed during a spacewalk.',
+   stem:'Which choice completes the text so that it conforms to the conventions of Standard English?',
+   choices:['specifications; NASA','specifications. NASA','specifications, NASA','specifications NASA'],correct:2,type:'conv',
+   explain:'"Because…specifications" is a dependent clause. A comma separates it from the IC that follows. Period (B) creates a fragment. Semicolon (A) needs ICs on both sides.'},
+  {passage:'The negotiations between the two corporations had stalled for months, with each side _______ to make the first concession on the revenue-sharing arrangement.',
+   stem:'Which choice completes the text with the most logical and precise word?',
+   choices:['eager','reluctant','prepared','obligated'],correct:1,type:'wic',
+   explain:'"Stalled for months" signals no progress. "Reluctant" = unwilling. "Eager" and "prepared" would lead to progress, not stalling.'},
+  {passage:'Neither the original hypothesis nor the two alternative explanations proposed by the research _______ consistent with the experimental data.',
+   stem:'Which choice completes the text so that it conforms to the conventions of Standard English?',
+   choices:['team was','team were','team, was','team, were'],correct:1,type:'conv',
+   explain:'With "neither…nor," the verb agrees with the nearer subject: "explanations" (plural) → "were." No comma needed between subject and verb.'},
+  {passage:'The city\'s decision to convert abandoned railway lines into elevated parks _______ both its commitment to green space and its creative approach to urban renewal.',
+   stem:'Which choice completes the text with the most logical and precise word?',
+   choices:['obscured','undermined','exemplified','questioned'],correct:2,type:'wic',
+   explain:'Converting railways into parks shows commitment and creativity. "Exemplified" = served as a typical example of. "Obscured" and "undermined" are negative. "Questioned" doesn\'t fit.'},
+  {passage:'The orchestra performed the symphony with technical precision _______ the emotional depth of the interpretation left many audience members visibly moved.',
+   stem:'Which choice completes the text so that it conforms to the conventions of Standard English?',
+   choices:['and, the','and the','and; the',', and the'],correct:3,type:'conv',
+   explain:'Two ICs joined by comma + "and" (FANBOYS). The comma goes before "and," not after it. (A) wrong comma placement. (B) missing comma before FANBOYS joining ICs. (C) semicolon before "and" is wrong.'}
+];
+
+// --- SORTER ---
+const SORTER=[
+  {passage:'Researchers at MIT have developed an algorithm that can predict protein structures with unprecedented accuracy. The algorithm, called AlphaFold3, analyzed over 200 million known protein sequences to build its predictive model. In tests, it correctly predicted the 3D shape of proteins that had taken human researchers years to determine experimentally. However, the algorithm struggles with proteins that undergo significant shape changes when binding to other molecules.',
+   statements:[
+     {text:'A new algorithm can predict protein structures far more accurately than previous methods.',cat:'Main Idea'},
+     {text:'The algorithm analyzed over 200 million known protein sequences.',cat:'Supporting Detail'},
+     {text:'It correctly predicted structures that took human researchers years.',cat:'Supporting Detail'},
+     {text:'The algorithm struggles with proteins that change shape during binding.',cat:'Supporting Detail'},
+     {text:'Traditional experimental methods for determining protein structure may become less necessary.',cat:'Inference'},
+     {text:'The algorithm will replace all human researchers in biology.',cat:'Not in Passage'}
+   ]},
+  {passage:'A study published in Nature examined the effects of urbanization on bird song across 72 cities worldwide. Researchers found that birds in urban environments consistently sang at higher pitches than their rural counterparts. The pitch shift was most pronounced in species that naturally sing at lower frequencies, suggesting these species face the greatest pressure to adapt their communication. Interestingly, the researchers observed that the pitch adjustment occurred within individual birds\' lifetimes rather than across generations.',
+   statements:[
+     {text:'Urban birds sing at higher pitches than rural birds, likely as an adaptation to city noise.',cat:'Main Idea'},
+     {text:'The study examined birds across 72 cities worldwide.',cat:'Supporting Detail'},
+     {text:'Low-frequency singers showed the greatest pitch shift.',cat:'Supporting Detail'},
+     {text:'The pitch change occurs within individual birds\' lifetimes.',cat:'Supporting Detail'},
+     {text:'Low-frequency urban noise is likely the environmental pressure driving the pitch shift.',cat:'Inference'},
+     {text:'All bird species will eventually adapt to urban environments.',cat:'Not in Passage'}
+   ]},
+  {passage:'The Dead Sea Scrolls, discovered between 1947 and 1956 in caves near the Dead Sea, represent one of the most significant archaeological finds of the 20th century. The approximately 900 manuscripts include the oldest known copies of Hebrew Bible texts, predating previously known manuscripts by roughly 1,000 years. Analysis of the scrolls has revealed that ancient scribes used multiple textual traditions rather than a single standardized version, fundamentally changing scholarly understanding of how biblical texts were transmitted.',
+   statements:[
+     {text:'The Dead Sea Scrolls transformed understanding of ancient biblical textual transmission.',cat:'Main Idea'},
+     {text:'The scrolls were discovered between 1947 and 1956.',cat:'Supporting Detail'},
+     {text:'Ancient scribes used multiple textual traditions.',cat:'Supporting Detail'},
+     {text:'The scrolls predate previously known manuscripts by about 1,000 years.',cat:'Supporting Detail'},
+     {text:'Before the scrolls\' discovery, scholars assumed a more uniform textual tradition.',cat:'Inference'},
+     {text:'The scrolls prove that modern Bible translations are inaccurate.',cat:'Not in Passage'}
+   ]}
+];
+const SORT_CATS=['Main Idea','Supporting Detail','Inference','Not in Passage'];
+const SORT_COLORS={'Main Idea':T.info,'Supporting Detail':T.craft,'Inference':T.conv,'Not in Passage':T.muted};
+
+// --- SCOPE TRAINING ---
+const SCOPE=[
+  {passage:'Neuroscientist Dr. Maria Chen has found that bilingual individuals show significantly greater gray matter density in regions of the brain associated with executive function. Her longitudinal study of 500 adults revealed that those who actively used two languages daily outperformed monolinguals on tasks requiring cognitive flexibility, even when controlling for education level and socioeconomic status.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['Bilingualism provides significant cognitive advantages through increased brain density in areas linked to executive function.','Learning a second language is the most effective way to improve cognitive abilities.','Dr. Chen has conducted the largest study of bilingualism ever undertaken.','Education level has no effect on cognitive flexibility.'],
+   correct:0,
+   explain:'(A) ✓ Correct scope — captures the study\'s finding without overstating.\n(B) ✗ Too Broad + Unsupported — "most effective way" is not claimed.\n(C) ✗ Off-Topic — "largest study ever" is not stated.\n(D) ✗ Contradicts — the study controlled for education, not dismissed it.',
+   tags:['Correct','Too Broad','Off-Topic','Contradicts']},
+  {passage:'The James Webb Space Telescope\'s first deep-field image revealed thousands of galaxies in a patch of sky roughly the size of a grain of sand held at arm\'s length. Among these, astronomers identified several galaxies that appear to have formed within 300 million years of the Big Bang — far earlier than existing models predicted was possible. The discovery has prompted a reexamination of current theories about the rate of galaxy formation in the early universe.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['The JWST has discovered galaxies that formed earlier than expected, challenging existing models of early galaxy formation.','The JWST is the most powerful telescope ever built.','The Big Bang theory is now considered incorrect by most astronomers.','JWST images show galaxies in a very small area of sky.'],
+   correct:0,
+   explain:'(A) ✓ Correct — captures the discovery and its significance precisely.\n(B) ✗ Off-Topic — telescope capability isn\'t the passage\'s point.\n(C) ✗ Too Broad / Contradicts — the passage says models need reexamination, not that the Big Bang theory is wrong.\n(D) ✗ Too Narrow — this is one detail, not the main point.',
+   tags:['Correct','Off-Topic','Too Broad','Too Narrow']},
+  {passage:'In a clinical trial involving 3,200 participants with chronic insomnia, researchers found that cognitive behavioral therapy for insomnia (CBT-I) produced sleep improvements that persisted for at least 12 months after treatment ended. By contrast, participants who received sleep medication showed initial improvements but returned to baseline levels within three months of discontinuing the drugs. The researchers noted that CBT-I addresses the underlying thought patterns and behaviors that perpetuate insomnia rather than merely treating symptoms.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['CBT-I produces more durable improvements in chronic insomnia than medication because it addresses root causes rather than symptoms.','Sleep medication is completely ineffective for treating insomnia.','A study of 3,200 participants compared CBT-I with medication.','All people with insomnia should stop taking medication immediately.'],
+   correct:0,
+   explain:'(A) ✓ Correct — captures the comparison and the mechanism.\n(B) ✗ Too Broad / Contradicts — medication showed "initial improvements," so it\'s not completely ineffective.\n(C) ✗ Too Narrow — restates the study design, not the finding.\n(D) ✗ Off-Topic / Unsupported — the passage makes no such recommendation.',
+   tags:['Correct','Contradicts','Too Narrow','Off-Topic']}
+];
+
+// --- INFERENCE LAB ---
+const INFER=[
+  {passage:'Arctic foxes undergo a dramatic seasonal color change, shifting from brown in summer to white in winter. Researchers studying a population in Iceland, however, have noticed that an increasing number of foxes retain their brown coats through the winter months. The trend correlates closely with rising average winter temperatures in the region over the past two decades. Based on these observations, the researchers suggest that _______',
+   answer:'climate change is reducing the survival advantage of white winter coats',
+   choices:['white fur is no longer useful for Arctic foxes in any environment.','reduced snow cover is making brown coats more advantageous for winter camouflage in some regions.','Arctic foxes are evolving to become a different species.','temperature directly controls fur color through a simple genetic switch.'],
+   correct:1,
+   explain:'The passage links rising temperatures → less snow cover (implied) → brown coats persist. (B) connects all three elements precisely. (A) "any environment" is too absolute. (C) speciation is unsupported. (D) the passage shows correlation, not a direct genetic mechanism.'},
+  {passage:'A team of economists studied the impact of remote work policies on urban commercial real estate in 15 major cities between 2020 and 2024. They found that office vacancy rates rose by an average of 18 percentage points, while residential rents in suburban areas within commuting distance increased by 12%. Meanwhile, commercial property values in downtown cores declined by 24% on average. The economists concluded that _______',
+   answer:'remote work is reshaping urban geography by shifting demand from downtown commercial to suburban residential',
+   choices:['remote work has created a permanent shift in demand from urban commercial spaces to suburban residential areas.','all downtown commercial real estate will eventually become worthless.','remote work policies have had no meaningful impact on the housing market.','the pandemic caused temporary disruptions that will reverse within five years.'],
+   correct:0,
+   explain:'The data shows office vacancies up + suburban rents up + downtown values down = demand shift. (A) matches this precisely. (B) "worthless" is extreme. (C) contradicts the 12% suburban rent increase. (D) "temporary" and "five years" are unsupported.'},
+  {passage:'Paleontologists studying fossilized dinosaur footprints in a Colorado river bed discovered something unexpected: alongside the massive sauropod tracks, they found numerous parallel trackways of smaller theropods moving in the same direction at consistent spacing. The smaller tracks showed no signs of pursuit behavior — no sudden acceleration, no diverging paths. The researchers propose that _______',
+   answer:'the theropods may have been traveling alongside the sauropods cooperatively or in a mixed herd',
+   choices:['some theropod species may have moved in coordinated groups alongside larger dinosaurs rather than hunting them.','all dinosaurs were social animals that traveled in herds.','theropods were always peaceful herbivores despite their predatory anatomy.','the footprints were made at different times and only appear to be contemporaneous.'],
+   correct:0,
+   explain:'Parallel tracks + same direction + consistent spacing + no pursuit behavior = coordinated movement. (A) captures this with appropriate hedging ("may have"). (B) "all dinosaurs" is far too broad. (C) "always peaceful herbivores" contradicts known science and goes beyond the passage. (D) contradicts the researchers\' interpretation.'},
+  {passage:'Marine biologists monitoring coral reefs in the Maldives observed that while most coral species experienced severe bleaching during the 2023 heat wave, colonies of Porites lobata showed minimal stress responses. Genetic analysis revealed that these colonies carried a heat-resistant variant of a symbiotic algae species that most other coral types lack. The biologists suggest that _______',
+   answer:'certain coral-algae partnerships may provide natural heat resistance',
+   choices:['the presence of heat-resistant algae variants may determine which coral species survive warming ocean temperatures.','coral bleaching is no longer a significant threat to marine ecosystems.','Porites lobata will be the only coral species to survive climate change.','the heat wave had no negative effects on coral reefs in the Maldives.'],
+   correct:0,
+   explain:'Heat-resistant algae → specific corals survived bleaching. (A) logically extends this finding. (B) contradicts "severe bleaching" in most species. (C) "only species" is unsupported extreme. (D) contradicts "severe bleaching" in most species.'}
+];
+
+// --- MIXED PRACTICE SET (14 questions) ---
+const PRACTICE=[
+  {passage:'Archaeologist Dr. Yolanda Rivera has spent a decade excavating a pre-Columbian settlement in central Mexico. Her team discovered an elaborate system of raised garden beds connected by canals — a technique previously thought to have been used only in the Valley of Mexico. The garden system at Rivera\'s site is 200 years older than any previously documented example, suggesting that the agricultural innovation originated outside the Aztec heartland.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['Rivera\'s discovery of an earlier raised garden system suggests the technique did not originate where scholars previously believed.','Rivera has spent ten years working at a site in central Mexico.','The Aztecs invented the raised garden bed system used throughout Mesoamerica.','Agricultural practices in pre-Columbian Mexico were highly advanced.'],
+   correct:0,subtype:'Central Ideas',
+   explain:'(A) captures the discovery and its significance. (B) Too Narrow — a detail. (C) Contradicts — the passage suggests it WASN\'T an Aztec invention. (D) Too Broad — doesn\'t address the specific finding.'},
+  {passage:'A longitudinal study of identical twins separated at birth found that twins raised in different socioeconomic environments showed remarkably similar personality traits, including openness and conscientiousness, despite having very different life experiences. However, the twins diverged significantly in their political views and religious practices, traits that the researchers classified as more strongly shaped by environmental factors. The researchers concluded that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['genetic factors play a larger role in fundamental personality traits than in beliefs and practices shaped by social context.','identical twins are always similar regardless of their environment.','environment has no meaningful effect on human development.','personality is entirely determined by genetics.'],
+   correct:0,subtype:'Inferences',
+   explain:'Similar personality traits + different beliefs = genetics > environment for personality, environment > genetics for beliefs. (A) captures this precisely. (B) "always similar" contradicts the divergence in views. (C) and (D) ignore the environmental effects the passage documents.'},
+  {passage:'Music therapist Kenji Yamada works with patients recovering from traumatic brain injuries. He has observed that patients who lost the ability to speak can often still sing familiar songs from before their injury. This phenomenon, Yamada explains, occurs because melody and language are processed in different brain regions — damage to the left hemisphere\'s speech centers leaves the right hemisphere\'s musical processing largely intact.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['Brain injury patients can sometimes sing but not speak because music and language use different neural pathways.','Kenji Yamada is a music therapist who works with brain injury patients.','The left hemisphere of the brain controls all language functions.','Music therapy is the most effective treatment for traumatic brain injuries.'],
+   correct:0,subtype:'Central Ideas',
+   explain:'(A) main idea — the phenomenon and its explanation. (B) Too Narrow — biographical detail. (C) Too Broad / Off-Topic — the passage discusses speech centers specifically. (D) Unsupported — effectiveness comparison isn\'t made.'},
+  {passage:'Ecologists studying a restored prairie in Iowa found that plots where they had planted 16 different native grass and wildflower species produced 240% more biomass than plots with only one species. The diverse plots also showed greater resistance to drought and required no fertilizer, while the monoculture plots needed regular nutrient supplements to maintain productivity. The ecologists concluded that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['species diversity increases ecosystem productivity and resilience, reducing the need for artificial inputs.','monoculture farming should be immediately banned in all agricultural regions.','prairie ecosystems are more productive than forests.','planting exactly 16 species is optimal for all ecosystems.'],
+   correct:0,subtype:'Inferences',
+   explain:'More species → more biomass + drought resistance + no fertilizer. (A) captures this. (B) policy recommendation unsupported. (C) forest comparison not made. (D) "exactly 16" and "all ecosystems" are unsupported.'},
+  {passage:'Literary critic Amara Osei argues that the novels of Chimamanda Ngozi Adichie deliberately resist classification within a single literary tradition. While Western reviewers frequently categorize Adichie\'s work as "postcolonial literature," Osei notes that Adichie\'s narrative techniques draw equally from the Igbo oral storytelling tradition and 19th-century European realism, creating a hybrid form that defies simple categorization.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['Adichie\'s novels blend multiple literary traditions in a way that resists single-category classification.','Adichie is the most important African novelist writing today.','Western literary categories are always inadequate for non-Western literature.','Igbo oral tradition is the primary influence on Adichie\'s writing.'],
+   correct:0,subtype:'Central Ideas',
+   explain:'(A) captures Osei\'s argument precisely. (B) superlative unsupported. (C) "always inadequate" is too broad — the argument is about Adichie specifically. (D) Too Narrow — the passage says she draws "equally" from Igbo and European traditions.'},
+  {passage:'A team of material scientists developed a new type of concrete that incorporates graphene nanotubes, making it 35% stronger than conventional concrete while using 30% less cement. Since cement production accounts for approximately 8% of global carbon dioxide emissions, the researchers suggest that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['widespread adoption of graphene-enhanced concrete could significantly reduce the construction industry\'s carbon footprint.','graphene concrete will completely eliminate carbon emissions from construction.','cement production is the leading cause of climate change.','the new concrete is too expensive for practical use.'],
+   correct:0,subtype:'Inferences',
+   explain:'Less cement needed → less CO₂ from cement production. (A) logically follows with appropriate hedging ("could significantly"). (B) "completely eliminate" is extreme. (C) "leading cause" overstates 8%. (D) cost not discussed.'},
+  {passage:'Historian Dr. James Whitfield has reexamined primary sources from the American Constitutional Convention of 1787, focusing on private correspondence between delegates that was previously overlooked. His analysis reveals that several prominent Framers expressed deep reservations about the Electoral College even as they voted to adopt it, viewing it as a necessary compromise rather than an ideal system. Whitfield argues that the conventional narrative of the Framers as unified champions of the Electoral College oversimplifies their actual positions.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['Newly examined private letters show that the Framers were more divided on the Electoral College than the standard historical account suggests.','The Electoral College should be abolished because the Framers didn\'t really support it.','Dr. Whitfield has examined letters from the Constitutional Convention.','All of the Framers secretly opposed the Electoral College.'],
+   correct:0,subtype:'Central Ideas',
+   explain:'(A) captures the finding and its significance. (B) Off-Topic — policy recommendation not made. (C) Too Narrow — method, not finding. (D) Contradicts — "several," not "all," and they voted FOR it.'},
+  {passage:'Studies of deep-sea hydrothermal vents have revealed ecosystems that thrive without any sunlight, supported entirely by chemosynthetic bacteria that derive energy from hydrogen sulfide. These ecosystems support complex food webs including tube worms, shrimp, and crabs. The discovery challenged the long-held assumption that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['all complex ecosystems ultimately depend on solar energy as their primary energy source.','deep-sea environments are completely devoid of life.','hydrothermal vents are common features of the ocean floor.','chemosynthetic bacteria are more efficient than photosynthetic organisms.'],
+   correct:0,subtype:'Inferences',
+   explain:'"Thrive without sunlight" challenged an assumption — that assumption must be about sunlight being necessary. (A) fits. (B) too broad — scientists knew deep-sea life existed. (C) and (D) aren\'t assumptions the passage challenges.'},
+  {passage:'Transportation engineers analyzing traffic patterns in Barcelona found that the city\'s "superblock" design — which restricts car traffic in clusters of nine city blocks while prioritizing pedestrians and cyclists — reduced vehicle emissions in affected areas by 25% and increased retail foot traffic by 30%. However, traffic volume on streets bordering the superblocks increased by 15%.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['Barcelona\'s superblock design successfully reduces emissions and increases foot traffic within the blocks but displaces some vehicle traffic to surrounding streets.','Superblocks are the best urban design strategy for all cities worldwide.','Reducing car traffic always increases retail activity.','The superblock design has only negative effects on surrounding neighborhoods.'],
+   correct:0,subtype:'Central Ideas',
+   explain:'(A) captures both the benefits AND the trade-off. (B) "best" and "all cities" are unsupported. (C) "always" is too absolute. (D) Contradicts — the passage shows positive effects within blocks.'},
+  {passage:'Geneticist Dr. Elena Vasquez studies epigenetic changes — modifications to gene expression that don\'t alter the DNA sequence itself — in children of parents who experienced severe famine. Her research has found that these children show distinct metabolic patterns, including heightened fat storage and altered insulin sensitivity, even when raised with adequate nutrition. Vasquez proposes that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['parental experiences of famine can trigger epigenetic changes that affect offspring metabolism independently of the offspring\'s own nutritional environment.','DNA mutations caused by famine are passed to the next generation.','all children of famine survivors will develop metabolic disorders.','epigenetic changes are always harmful to offspring.'],
+   correct:0,subtype:'Inferences',
+   explain:'Parents\' famine → children\'s metabolism changed despite adequate nutrition = experience transmitted epigenetically. (A) captures this. (B) Contradicts — "don\'t alter the DNA sequence." (C) "all" is too absolute. (D) "always harmful" unsupported — altered metabolism isn\'t necessarily a disorder.'},
+  {passage:'A survey of 2,000 American adults found that 73% reported feeling overwhelmed by the volume of news available through digital platforms. The same respondents, however, spent an average of 4.2 hours daily consuming digital news — more than double the time spent a decade ago. Researchers described this pattern as a "news paradox" in which _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['people consume more news despite finding the experience increasingly stressful.','Americans are better informed than ever before.','digital news platforms are deliberately designed to cause anxiety.','people should limit their news consumption to reduce stress.'],
+   correct:0,subtype:'Inferences',
+   explain:'Feel overwhelmed + consume more than ever = paradox of increased consumption despite negative experience. (A) captures the paradox. (B) "better informed" isn\'t established. (C) platform design not discussed. (D) recommendation not made.'},
+  {passage:'Architect Maya Lin, best known for designing the Vietnam Veterans Memorial, approaches public spaces with the philosophy that the landscape itself should dictate the design. Her Wave Field installations — undulating earthwork sculptures — emerge from careful study of the natural topography rather than imposing a predetermined form. Lin describes her process as "listening to the land" before making any design decisions.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['Lin\'s design philosophy centers on responding to natural landscapes rather than imposing external forms on them.','Maya Lin designed the Vietnam Veterans Memorial.','Wave Field installations are the most innovative public art of the 21st century.','All architects should follow Lin\'s approach to landscape design.'],
+   correct:0,subtype:'Central Ideas',
+   explain:'(A) captures the philosophy. (B) Too Narrow — biographical detail. (C) superlative unsupported. (D) prescriptive recommendation not made.'},
+  {passage:'Psychologists studying the "testing effect" found that students who took practice tests on material they had studied retained 50% more information one week later than students who spent the same amount of time re-reading the material. Crucially, the benefit held even when the practice tests were taken without feedback — simply the act of retrieving information from memory strengthened the memory itself. The researchers concluded that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['the cognitive act of retrieval, not the correction of errors, is the primary mechanism by which practice testing improves long-term retention.','practice tests are only useful when followed by immediate feedback.','re-reading is a completely worthless study strategy.','all students should replace all studying with practice tests.'],
+   correct:0,subtype:'Inferences',
+   explain:'Benefit held WITHOUT feedback → retrieval itself (not error correction) drives the effect. (A) matches precisely. (B) Contradicts — benefit held without feedback. (C) "completely worthless" is extreme. (D) "all" and "replace all studying" are unsupported.'},
+  {passage:'Marine archaeologist Dr. Fatima Al-Hassan uses satellite imagery to locate ancient shipwrecks in shallow coastal waters. Her technique identifies the distinctive discoloration patterns that wooden ship timbers create in surrounding sediment after centuries of decomposition. In the past three years, Al-Hassan has identified 47 potential wreck sites in the Mediterranean — 12 of which have been confirmed through underwater excavation.',
+   stem:'Which choice best states the main idea of the text?',
+   choices:['Satellite-based detection of sediment patterns offers a productive new method for locating ancient shipwrecks.','Dr. Al-Hassan has found 47 potential shipwreck sites.','Underwater excavation is the only reliable way to confirm shipwreck locations.','The Mediterranean contains more shipwrecks than any other body of water.'],
+   correct:0,subtype:'Central Ideas',
+   explain:'(A) captures the method and its success. (B) Too Narrow — a detail, not the significance. (C) Off-Topic — the passage is about detection, not confirmation methods. (D) Unsupported comparison.'}
+];
+
+// --- CHALLENGE ---
+const CHALLENGE=[
+  {passage:'Physicists studying superconducting materials have long searched for compounds that exhibit zero electrical resistance at room temperature. A team at the University of Rochester reported achieving superconductivity in a hydrogen-rich compound at 15°C — warm enough for practical applications — but only under pressures of 267 gigapascals, roughly 2.6 million times atmospheric pressure. Subsequent attempts by independent laboratories to replicate the results at the reported pressure and temperature conditions have produced inconsistent outcomes, with some teams observing partial superconductivity and others observing none. The researchers maintain that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['the inconsistent replication results are likely due to subtle differences in sample preparation rather than flaws in the original findings.','room-temperature superconductivity has been definitively achieved and is ready for commercial applications.','superconductivity is impossible at temperatures above absolute zero.','the extreme pressures required make the discovery irrelevant to practical applications.'],
+   correct:0,
+   explain:'The researchers "maintain" (defend) their results despite replication issues. (A) is what researchers would logically argue — methodology differences explain inconsistency. (B) "definitively achieved" contradicts the replication failures. (C) contradicts the reported 15°C result. (D) the researchers wouldn\'t call their own work "irrelevant."',
+   traps:['—','Unsupported Extreme','Contradicts Passage','Wrong Perspective']},
+  {passage:'Economist Dr. Sarah Park analyzed wage data from 12 countries that implemented national minimum wage increases of 15% or more between 2015 and 2023. In 9 of the 12 countries, employment in low-wage sectors declined by an average of 2.3% in the year following the increase. However, median income among workers who retained their jobs rose by an average of 11%, and consumer spending in affected communities increased by 4.7%. Park argues that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['minimum wage increases create a trade-off in which some job losses are offset by significant income and spending gains among remaining workers.','minimum wage increases always lead to net positive economic outcomes.','the employment declines were entirely caused by automation rather than wage increases.','governments should never raise the minimum wage because it causes unemployment.'],
+   correct:0,
+   explain:'Job losses (2.3%) + income gains (11%) + spending gains (4.7%) = mixed results, best described as a trade-off. (A) captures this nuance. (B) "always" and "net positive" ignore the 3 countries without job losses pattern. (C) automation not discussed. (D) prescriptive recommendation not supported by the data\'s mixed results.',
+   traps:['—','Too Broad/Absolute','Off-Topic','Unsupported Prescription']},
+  {passage:'Anthropologist Dr. Kenji Matsumoto studied food-sharing practices among three indigenous communities in the Amazon Basin. He found that families who shared food most frequently with non-relatives were not the wealthiest or most food-secure families, as predicted by standard reciprocity models. Instead, the most generous sharers were families of intermediate wealth. Matsumoto observed that these families received the most social invitations, were consulted most often in community decisions, and had the highest rates of receiving help during personal crises. He proposes that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['food sharing among intermediate-wealth families functions primarily as a social investment that yields returns in influence and community support.','all food sharing in indigenous communities is motivated by self-interest.','wealthy families refuse to share food with their communities.','intermediate-wealth families share food because they have more than they need.'],
+   correct:0,
+   explain:'Intermediate wealth families share most → receive social invitations + consultation + crisis help = sharing yields social capital. (A) connects these precisely. (B) "all" and "self-interest" are oversimplifications. (C) "refuse" is unsupported — they share less, not not at all. (D) the passage says they\'re NOT the most food-secure, contradicting "more than they need."',
+   traps:['—','Too Broad','Contradicts/Extreme','Contradicts Passage']},
+  {passage:'Geologists analyzing ice cores from Antarctica discovered that atmospheric CO₂ levels and global temperatures have risen and fallen in close synchronization over the past 800,000 years. However, detailed analysis of the timing reveals that temperature increases consistently precede CO₂ increases by approximately 200 to 800 years during natural climate cycles. Climate scientists note that this lag does not undermine the role of CO₂ in climate change because _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['the initial temperature rise from orbital changes triggers CO₂ release, which then amplifies warming in a feedback cycle.','CO₂ has no effect on global temperature.','the ice core data is unreliable and should be disregarded.','temperature always causes CO₂ changes, never the reverse.'],
+   correct:0,
+   explain:'Scientists say the lag "does not undermine" CO₂\'s role — so CO₂ still matters despite not being the initial trigger. (A) explains this: orbital warming → CO₂ release → MORE warming (feedback). (B) contradicts "does not undermine the role of CO₂." (C) contradicts the scientists\' acceptance of the data. (D) "never the reverse" contradicts the feedback mechanism implied.',
+   traps:['—','Contradicts','Contradicts','Too Absolute']},
+  {passage:'Researchers studying the placebo effect in clinical pain trials made a surprising discovery: patients who were openly told they were receiving a placebo — with no deception whatsoever — still reported 30% greater pain relief than patients who received no treatment. Brain imaging confirmed that the open-label placebo activated the same neural pain-modulation pathways as genuine analgesic medications. The researchers suggest that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['the therapeutic ritual of taking a pill may activate pain-relief mechanisms regardless of the patient\'s knowledge of its contents.','the placebo effect is entirely a product of deception and expectation.','patients who reported pain relief were likely lying about their symptoms.','all pain medication is no more effective than a placebo.'],
+   correct:0,
+   explain:'Open placebo + still worked + same brain pathways = the ACT of treatment (ritual) matters, not belief. (A) captures this. (B) directly contradicts the finding (no deception, still worked). (C) brain imaging confirmed real neural activation. (D) unsupported extreme generalization.',
+   traps:['—','Contradicts','Contradicts Evidence','Unsupported Extreme']},
+  {passage:'Urban planners in Singapore implemented a congestion pricing system that charges drivers variable fees based on real-time traffic density. In the first year, peak-hour traffic volume decreased by 22%, average commute times dropped by 15 minutes, and public transit ridership increased by 18%. However, analysis of demographic data revealed that the reduction in driving was concentrated almost entirely among lower- and middle-income commuters, while high-income drivers continued using roads at pre-implementation rates. Critics argue that _______',
+   stem:'Which choice most logically completes the text?',
+   choices:['congestion pricing effectively functions as a regressive tax that prices lower-income drivers off the road while leaving wealthy drivers\' behavior unchanged.','congestion pricing has no effect on traffic volume.','Singapore should eliminate all road fees to promote equity.','public transit is inherently inferior to private car transportation.'],
+   correct:0,
+   explain:'Traffic reduction only from lower/middle income + wealthy unchanged = system disproportionately affects less wealthy. Critics would call this regressive. (A) captures the critique. (B) contradicts the 22% reduction. (C) policy prescription beyond the critique. (D) off-topic value judgment.',
+   traps:['—','Contradicts','Unsupported Prescription','Off-Topic']}
+];
+
+// ══════════════════════════════════════════
+// GENERIC QUIZ QUESTION COMPONENT
+// (with Confirm → Reveal pattern)
+// ══════════════════════════════════════════
+function QuizQ({q,index,selected,confirmed,onSelect,onConfirm,tagLabel,tagColor,showTrapTags,showScopeTags}){
+  const letters='ABCD';
+  return e('div',{style:{...card(),marginBottom:16}},
+    tagLabel&&e('div',{style:labelTag(tagColor||T.info)},tagLabel),
+    e('div',{style:{...passage,marginTop:10}},q.passage),
+    e('div',{style:{fontSize:15,color:'#ddd',lineHeight:1.7,marginBottom:14}},q.stem),
+    e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
+      q.choices.map((c,ci)=>{
+        const isSel=selected===ci;
+        const isCorr=ci===q.correct;
+        let bg=T.paper,bdr=`2px solid ${T.border}`,tc='#ccc';
+        if(confirmed&&isCorr){bg=T.correctBg;bdr=`2px solid ${T.correct}`;tc=T.correct;}
+        else if(confirmed&&isSel&&!isCorr){bg=T.wrongBg;bdr=`2px solid ${T.wrong}`;tc=T.wrong;}
+        else if(isSel&&!confirmed){bg=T.infoBg;bdr=`2px solid ${T.info}`;tc=T.info;}
+        const trapTag=confirmed&&showTrapTags&&q.traps&&q.traps[ci]!=='—'?
+          e('span',{style:{...labelTag(isCorr?T.correct:T.wrong),marginRight:8,fontSize:10}},q.traps[ci]):null;
+        const scopeTag=confirmed&&showScopeTags&&q.tags&&q.tags[ci]?
+          e('span',{style:{...labelTag(q.tags[ci]==='Correct'?T.correct:T.wrong),marginRight:8,fontSize:10}},q.tags[ci]):null;
+        return e('button',{key:ci,onClick:()=>{if(!confirmed)onSelect(ci);},disabled:confirmed,
+          style:{display:'flex',alignItems:'flex-start',gap:10,padding:'12px 14px',borderRadius:10,
+            background:bg,border:bdr,cursor:confirmed?'default':'pointer',textAlign:'left',width:'100%',transition:'all .15s'}},
+          e('span',{style:{minWidth:24,height:24,borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',
+            fontWeight:800,fontSize:12,flexShrink:0,
+            background:confirmed&&isCorr?T.correct:confirmed&&isSel&&!isCorr?T.wrong:isSel?T.info:T.border,
+            color:isSel||confirmed?T.paper:T.muted}},letters[ci]),
+          e('span',{style:{color:tc,fontSize:14,lineHeight:1.6}},scopeTag,trapTag,c)
+        );
+      })
+    ),
+    !confirmed&&e('div',{style:{marginTop:12,display:'flex',justifyContent:'flex-end'}},
+      e('button',{onClick:onConfirm,disabled:selected===null,
+        style:btn(selected===null?T.border:T.info,selected===null?'#475569':'#000',{fontSize:14,padding:'10px 22px'})},'Confirm Answer')
+    ),
+    confirmed&&e('div',{style:{marginTop:12,padding:14,background:T.paper,borderRadius:10,borderLeft:`3px solid ${T.correct}`,fontSize:14,color:T.muted,lineHeight:1.7,whiteSpace:'pre-line'}},q.explain)
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: WELCOME
+// ══════════════════════════════════════════
+function Welcome({onNext}){
+  const[show,setShow]=useState(false);
+  useEffect(()=>{setTimeout(()=>setShow(true),100);},[]);
+  const activities=[
+    {icon:'🔄',title:'Retrieval Warm-Up',desc:'8 interleaved review questions from Modules 1–4'},
+    {icon:'📂',title:'Main Idea vs Detail',desc:'Drag-and-drop sorting across 3 passages'},
+    {icon:'🎯',title:'Scope Training',desc:'Identify Too Broad, Too Narrow, and Off-Topic traps'},
+    {icon:'🔮',title:'Inference Lab',desc:'Predict conclusions before seeing choices'},
+    {icon:'⏱',title:'Timed Practice',desc:'14 mixed questions, 80 sec each'},
+    {icon:'⭐',title:'Challenge Mode',desc:'6 hard passages with Trap Autopsy'}
+  ];
+  return e('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',
+    minHeight:'100vh',padding:'0 24px',transition:'all .7s',opacity:show?1:0,transform:show?'translateY(0)':'translateY(16px)'}},
+    e('div',{style:{height:4,background:`linear-gradient(90deg,${T.craft} 0%,${T.craft} 28%,${T.info} 28%,${T.info} 54%,${T.conv} 54%,${T.conv} 80%,${T.expr} 80%)`,
+      position:'fixed',top:0,left:0,right:0,zIndex:100}}),
+    e('div',{style:{background:`${T.info}22`,border:`1px solid ${T.info}44`,borderRadius:12,padding:'6px 18px',
+      fontSize:13,letterSpacing:1.5,textTransform:'uppercase',color:T.info,marginBottom:12,fontWeight:600}},'Phase 3 • Module 5'),
+    e('h1',{style:{fontSize:'clamp(1.8rem,5vw,3rem)',fontWeight:800,color:T.info,lineHeight:1.1,textAlign:'center',
+      marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"What's the Point?"),
+    e('p',{style:{color:T.sub,fontSize:16,textAlign:'center',marginBottom:6}},'Central Ideas, Details, and Making Inferences'),
+    e('p',{style:{color:T.muted,fontSize:14,maxWidth:520,textAlign:'center',lineHeight:1.6,marginBottom:40}},
+      '~9 of your 54 questions test pure comprehension. The challenge isn\'t understanding — it\'s avoiding scope traps that make wrong answers look right.'),
+    e('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:14,maxWidth:720,width:'100%',marginBottom:48}},
+      activities.map((a,i)=>e('div',{key:i,style:{...card({padding:'20px 16px',textAlign:'center'})}},
+        e('div',{style:{fontSize:28,marginBottom:6}},a.icon),
+        e('div',{style:{color:T.ink,fontWeight:700,fontSize:14,marginBottom:4}},a.title),
+        e('div',{style:{color:T.muted,fontSize:12,lineHeight:1.5}},a.desc)
+      ))
+    ),
+    e('button',{onClick:onNext,
+      style:btn(`linear-gradient(135deg,${T.info},#059669)`,'#000'),
+      onMouseOver:ev=>ev.currentTarget.style.transform='scale(1.04)',
+      onMouseOut:ev=>ev.currentTarget.style.transform='scale(1)'},'Start Module →'),
+    e('div',{style:{color:T.dim,fontSize:13,marginTop:20}},'⏱ ~60 minutes • 📋 6 sessions • 🔍 Information & Ideas')
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: RETRIEVAL WARM-UP
+// ══════════════════════════════════════════
+function RetrievalWarmUp({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[sel,setSel]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[results,setResults]=useState([]);
+  const q=WARMUP[idx];
+  const total=WARMUP.length;
+
+  function handleConfirm(){
+    if(sel===null)return;
+    setConf(true);
+    setResults(p=>[...p,{correct:sel===q.correct,type:q.type}]);
+  }
+  function next(){
+    if(idx<total-1){setIdx(idx+1);setSel(null);setConf(false);}
+    else{
+      const score=results.filter(r=>r.correct).length+(sel===q.correct?1:0);
+      onComplete(score,total);
+    }
+  }
+  const typeLabel=q.type==='wic'?'Craft & Structure (Review)':'Conventions (Review)';
+  const typeColor=q.type==='wic'?T.craft:T.conv;
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}},
+      e('div',{style:{color:T.info,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase'}},'🔄 Session 1: Retrieval Warm-Up'),
+      e('span',{style:{color:T.muted,fontSize:13}},`${idx+1} of ${total}`)
+    ),
+    e('p',{style:{color:T.sub,fontSize:14,marginBottom:20,lineHeight:1.6}},'Interleaved review — 4 Words in Context + 4 Conventions questions from prior modules. Keeping all skills sharp.'),
+    e('div',{style:{height:4,background:T.border,borderRadius:2,marginBottom:24,overflow:'hidden'}},
+      e('div',{style:{height:'100%',width:`${((idx+(conf?1:0))/total)*100}%`,background:`linear-gradient(90deg,${T.info},#059669)`,borderRadius:2,transition:'width .4s'}})
+    ),
+    e(QuizQ,{q,index:idx,selected:sel,confirmed:conf,onSelect:setSel,onConfirm:handleConfirm,tagLabel:typeLabel,tagColor:typeColor}),
+    conf&&e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:8}},
+      e('button',{onClick:next,style:btn(T.info,'#000',{fontSize:14,padding:'10px 22px'})},idx<total-1?'Next →':'Continue to Lessons →')
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: CONCEPT LESSONS (with micro-interactives)
+// ══════════════════════════════════════════
+function ConceptLessons({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const lessons=[
+    {title:'Central Idea',subtitle:'The big picture',
+      body:['The one big claim the whole passage supports. If you deleted every detail, this statement would still capture what the passage is about.','Ask yourself: "What is the author\'s main point?"'],
+      demo:'central'},
+    {title:'Supporting Detail',subtitle:'The evidence underneath',
+      body:['A specific fact, example, or piece of evidence the passage uses to support the central idea. Important, but not the main point itself.','Details answer "how?" or "what specifically?" — they don\'t capture the whole argument.']},
+    {title:'Inference',subtitle:'Reading between the lines',
+      body:['A conclusion that is strongly implied but not directly stated in the passage. It must be logically supported by the text — not just plausible.','The PSAT tests whether you can identify what the passage strongly suggests without overreaching.']},
+    {title:'The Three Scope Traps',subtitle:'Why wrong answers look right',
+      body:['The #1 mistake isn\'t misunderstanding the passage — it\'s falling for a scope trap. An answer that\'s too broad, too narrow, or slightly off-topic can look very appealing.'],
+      demo:'traps'},
+    {title:'The Prediction Method',subtitle:'Your most powerful tool',
+      body:['For inference questions, the PSAT presents a passage with a blank at the end and asks you to complete it logically.',
+        'Step 1: Read the passage. What direction is it heading?\nStep 2: Identify the logical relationship — is the conclusion a result? A contrast? A specification?\nStep 3: Write your own completion BEFORE looking at choices.\nStep 4: Match your prediction. The correct answer will be the most directly supported conclusion — not the most interesting.'],
+      demo:'predict'}
+  ];
+  const L=lessons[idx];
+
+  function ScopeTrapsDemo(){
+    const[active,setActive]=useState(0);
+    const traps=[
+      {name:'Too Broad',color:T.wrong,example:'"Scientists are making important discoveries."',why:'True but vague. The passage is about a specific discovery.'},
+      {name:'Too Narrow',color:T.conv,example:'"The enzyme breaks down cellulose at pH 7."',why:'A detail, not the main idea of the passage.'},
+      {name:'Off-Topic',color:T.nm,example:'"The study has implications for agriculture."',why:'Might be true, but the passage never discusses agriculture.'}
+    ];
+    return e('div',{style:{background:T.paper,border:`1px solid ${T.border}`,borderRadius:12,padding:16,marginTop:12}},
+      e('div',{style:{color:T.wrong,fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:1,marginBottom:10}},'Interactive: The Three Scope Traps'),
+      e('div',{style:{display:'flex',gap:8,marginBottom:12}},
+        traps.map((t,i)=>e('button',{key:i,onClick:()=>setActive(i),
+          style:{padding:'6px 14px',borderRadius:8,border:`1px solid ${i===active?t.color:T.border}`,
+            background:i===active?`${t.color}22`:'transparent',color:i===active?t.color:T.muted,
+            fontSize:12,fontWeight:700,cursor:'pointer'}},t.name))
+      ),
+      e('div',{style:{fontFamily:"'Cormorant Garamond',Georgia,serif",fontSize:16,color:T.ink,padding:12,background:T.surface,borderRadius:8,borderLeft:`3px solid ${traps[active].color}`,marginBottom:8}},traps[active].example),
+      e('div',{style:{color:T.muted,fontSize:13}},traps[active].why)
+    );
+  }
+
+  function CentralIdeaDemo(){
+    const[showDetail,setShowDetail]=useState(true);
+    return e('div',{style:{background:T.paper,border:`1px solid ${T.border}`,borderRadius:12,padding:16,marginTop:12}},
+      e('div',{style:{color:T.info,fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:1,marginBottom:10}},'Interactive: Central Idea vs Detail'),
+      e('div',{style:{fontFamily:"'Cormorant Garamond',Georgia,serif",fontSize:15,color:T.ink,lineHeight:1.8}},
+        e('span',{style:{background:showDetail?'transparent':T.infoBg,padding:showDetail?0:'2px 4px',borderRadius:4,transition:'all .3s'}},'A new algorithm predicts protein structures with unprecedented accuracy. '),
+        showDetail&&e('span',{style:{color:T.muted,fontStyle:'italic'}},'It analyzed 200 million sequences to build its model and correctly predicted shapes that took researchers years to determine.')
+      ),
+      e('div',{style:{display:'flex',gap:8,marginTop:10,alignItems:'center'}},
+        e('button',{onClick:()=>setShowDetail(!showDetail),
+          style:{padding:'6px 14px',borderRadius:6,border:`1px solid ${T.info}`,background:showDetail?'transparent':`${T.info}22`,
+            color:T.info,fontSize:12,fontWeight:600,cursor:'pointer'}},showDetail?'Strip to Main Idea':'Show Details'),
+        e('span',{style:{color:T.muted,fontSize:12}},showDetail?'Full passage with details':'Just the central idea — everything else is evidence')
+      )
+    );
+  }
+
+  function PredictionDemo(){
+    const[pred,setPred]=useState('');
+    const[revealed,setRevealed]=useState(false);
+    return e('div',{style:{background:T.paper,border:`1px solid ${T.border}`,borderRadius:12,padding:16,marginTop:12}},
+      e('div',{style:{color:T.conv,fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:1,marginBottom:10}},'Try it: Prediction Method'),
+      e('div',{style:{...passage,marginTop:0,marginBottom:12}},'Researchers found that students who explained concepts to a rubber duck retained 40% more information than students who simply re-read their notes. The researchers concluded that _______'),
+      e('input',{value:pred,onChange:ev=>setPred(ev.target.value),disabled:revealed,
+        placeholder:'Type your prediction...',
+        style:{width:'100%',padding:'10px 14px',background:T.surface,border:`1px solid ${T.border}`,borderRadius:8,color:T.ink,fontFamily:'inherit',fontSize:14,marginBottom:8}}),
+      !revealed&&e('button',{onClick:()=>setRevealed(true),disabled:!pred.trim(),
+        style:btn(pred.trim()?T.info:T.border,pred.trim()?'#000':'#475569',{fontSize:13,padding:'8px 16px'})},'Reveal Answer'),
+      revealed&&e('div',{style:{background:T.correctBg,border:`1px solid ${T.correct}44`,borderRadius:8,padding:12,fontSize:13,color:T.correct}},
+        '✓ The act of verbally explaining (even to a non-responsive listener) forces active retrieval and organization of knowledge, which strengthens memory.')
+    );
+  }
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'48px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'center',gap:6,marginBottom:32}},
+      lessons.map((_,i)=>e('div',{key:i,onClick:()=>setIdx(i),
+        style:{width:i===idx?24:8,height:8,borderRadius:4,cursor:'pointer',transition:'all .3s',
+          background:i===idx?T.info:i<idx?`${T.info}66`:T.border}}))),
+    e('div',{style:{...card({overflow:'hidden',marginBottom:32})}},
+      e('div',{style:{padding:'0 0 0'}},
+        e('div',{style:{color:T.info,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:'uppercase',marginBottom:4}},L.subtitle),
+        e('h2',{style:sectionTitle},L.title),
+        L.body.map((p,i)=>e('p',{key:i,style:{color:T.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:'pre-line'}},p))
+      ),
+      L.demo==='traps'&&e(ScopeTrapsDemo),
+      L.demo==='central'&&e(CentralIdeaDemo),
+      L.demo==='predict'&&e(PredictionDemo)
+    ),
+    e('div',{style:{display:'flex',justifyContent:'space-between'}},
+      e('button',{onClick:()=>setIdx(Math.max(0,idx-1)),disabled:idx===0,
+        style:{...btn('transparent',idx===0?'#334155':T.sub),border:`1px solid ${T.border}`,padding:'10px 20px',fontSize:14}},'← Back'),
+      idx<lessons.length-1?
+        e('button',{onClick:()=>setIdx(idx+1),style:btn(T.info,'#000',{fontSize:14,padding:'10px 20px'})},'Next →'):
+        e('button',{onClick:onComplete,style:btn(`linear-gradient(135deg,${T.info},#059669)`,'#000',{fontSize:14,padding:'10px 24px'})},'Start Sorting Exercise →')
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: MAIN IDEA VS DETAIL SORTER
+// ══════════════════════════════════════════
+function SorterExercise({onComplete}){
+  const[pIdx,setPIdx]=useState(0);
+  const[placements,setPlacements]=useState(()=>SORT_CATS.reduce((a,c)=>({...a,[c]:[]}),{}));
+  const[checked,setChecked]=useState(false);
+  const[dragItem,setDragItem]=useState(null);
+  const[scores,setScores]=useState([]);
+  const P=SORTER[pIdx];
+
+  const placed=Object.values(placements).flat();
+  const remaining=P.statements.filter(s=>!placed.includes(s.text));
+
+  function drop(cat){
+    if(!dragItem||placed.includes(dragItem))return;
+    setPlacements(p=>({...p,[cat]:[...p[cat],dragItem]}));
+    setDragItem(null);
+  }
+  function remove(cat,txt){
+    setPlacements(p=>({...p,[cat]:p[cat].filter(t=>t!==txt)}));
+    setChecked(false);
+  }
+  function check(){
+    if(remaining.length>0)return;
+    setChecked(true);
+    let correct=0;
+    SORT_CATS.forEach(cat=>{
+      placements[cat].forEach(txt=>{
+        const st=P.statements.find(s=>s.text===txt);
+        if(st&&st.cat===cat)correct++;
+      });
+    });
+    setScores(s=>[...s,{correct,total:P.statements.length}]);
+  }
+  function nextPassage(){
+    if(pIdx<SORTER.length-1){
+      setPIdx(pIdx+1);
+      setPlacements(SORT_CATS.reduce((a,c)=>({...a,[c]:[]}),{}));
+      setChecked(false);
+    }else{
+      onComplete(scores);
+    }
+  }
+  function reset(){
+    setPlacements(SORT_CATS.reduce((a,c)=>({...a,[c]:[]}),{}));
+    setChecked(false);
+  }
+
+  return e('div',{style:{maxWidth:720,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'space-between',marginBottom:8}},
+      e('div',{style:{color:T.info,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase'}},'📂 Session 2: Main Idea vs Detail Sorter'),
+      e('span',{style:{color:T.muted,fontSize:13}},`Passage ${pIdx+1} of ${SORTER.length}`)
+    ),
+    e('p',{style:{color:T.sub,fontSize:14,marginBottom:16}},'Tap a statement, then tap the category to place it. Sort all statements before checking.'),
+    e('div',{style:passage},P.passage),
+    // Statement bank
+    e('div',{style:{...card({padding:12,marginBottom:14,minHeight:50})}},
+      e('div',{style:{fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:1,color:T.muted,marginBottom:6}},'Statements to Sort'),
+      remaining.length===0&&!checked?e('span',{style:{fontSize:13,color:T.muted}},'All sorted — click Check!'):
+      remaining.map((s,i)=>e('button',{key:i,onClick:()=>setDragItem(dragItem===s.text?null:s.text),
+        style:{display:'inline-block',margin:4,padding:'6px 12px',borderRadius:8,fontSize:13,lineHeight:1.5,cursor:'pointer',textAlign:'left',
+          background:dragItem===s.text?T.infoBg:T.surface,
+          border:`2px solid ${dragItem===s.text?T.info:T.border}`,
+          color:dragItem===s.text?T.info:T.sub,transition:'all .15s'}},s.text))
+    ),
+    // Category zones
+    e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}},
+      SORT_CATS.map(cat=>e('div',{key:cat,onClick:()=>{if(dragItem)drop(cat);},
+        style:{background:dragItem?`${SORT_COLORS[cat]}11`:T.paper,border:`2px dashed ${dragItem?SORT_COLORS[cat]+'66':T.border}`,
+          borderRadius:10,padding:10,minHeight:80,cursor:dragItem?'pointer':'default',transition:'all .2s'}},
+        e('div',{style:{fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:1,color:SORT_COLORS[cat],marginBottom:6}},cat),
+        placements[cat].map((txt,i)=>{
+          const st=P.statements.find(s=>s.text===txt);
+          const ok=st&&st.cat===cat;
+          return e('div',{key:i,style:{padding:'5px 10px',marginBottom:4,borderRadius:6,fontSize:12,lineHeight:1.5,
+            background:checked?(ok?T.correctBg:T.wrongBg):T.surface,
+            border:`1px solid ${checked?(ok?T.correct:T.wrong):T.border}`,
+            color:checked?(ok?T.correct:T.wrong):T.sub}},
+            txt,
+            !checked&&e('span',{onClick:(ev)=>{ev.stopPropagation();remove(cat,txt);},
+              style:{cursor:'pointer',color:T.muted,fontSize:11,marginLeft:8}},' ✕'),
+            checked&&!ok&&e('div',{style:{fontSize:11,color:T.muted,marginTop:2}},`→ ${st.cat}`)
+          );
+        }),
+        placements[cat].length===0&&e('div',{style:{fontSize:12,color:T.dim}},'Tap to place here')
+      ))
+    ),
+    e('div',{style:{display:'flex',gap:10}},
+      !checked&&e('button',{onClick:check,disabled:remaining.length>0,
+        style:btn(remaining.length>0?T.border:T.info,remaining.length>0?'#475569':'#000',{fontSize:14,padding:'10px 20px'})},'Check'),
+      !checked&&e('button',{onClick:reset,style:{...btn('transparent',T.muted),border:`1px solid ${T.border}`,fontSize:14,padding:'10px 20px'}},'Reset'),
+      checked&&e('button',{onClick:nextPassage,
+        style:btn(T.info,'#000',{fontSize:14,padding:'10px 22px'})},pIdx<SORTER.length-1?'Next Passage →':'Continue to Scope Training →')
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: SCOPE TRAINING
+// ══════════════════════════════════════════
+function ScopeTraining({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[sel,setSel]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[score,setScore]=useState(0);
+  const q=SCOPE[idx];
+
+  function handleConfirm(){
+    if(sel===null)return;
+    setConf(true);
+    if(sel===q.correct)setScore(s=>s+1);
+  }
+  function next(){
+    if(idx<SCOPE.length-1){setIdx(idx+1);setSel(null);setConf(false);}
+    else onComplete(score+(sel===q.correct?1:0),SCOPE.length);
+  }
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'space-between',marginBottom:8}},
+      e('div',{style:{color:T.info,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase'}},'🎯 Session 3: Scope Training'),
+      e('span',{style:{color:T.muted,fontSize:13}},`${idx+1} of ${SCOPE.length}`)
+    ),
+    e('p',{style:{color:T.sub,fontSize:14,marginBottom:16}},'Identify the scope problem in each wrong answer before selecting the correct one. After confirming, you\'ll see each answer labeled.'),
+    e(QuizQ,{q,index:idx,selected:sel,confirmed:conf,onSelect:setSel,onConfirm:handleConfirm,
+      tagLabel:'Information & Ideas — Central Ideas',tagColor:T.info,showScopeTags:true}),
+    conf&&e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:8}},
+      e('button',{onClick:next,style:btn(T.info,'#000',{fontSize:14,padding:'10px 22px'})},idx<SCOPE.length-1?'Next →':'Continue to Inference Lab →')
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: INFERENCE COMPLETION LAB
+// ══════════════════════════════════════════
+function InferenceLab({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[pred,setPred]=useState('');
+  const[revealed,setRevealed]=useState(false);
+  const[sel,setSel]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[score,setScore]=useState(0);
+  const q=INFER[idx];
+
+  function handleConfirm(){
+    if(sel===null)return;
+    setConf(true);
+    if(sel===q.correct)setScore(s=>s+1);
+  }
+  function next(){
+    if(idx<INFER.length-1){setIdx(idx+1);setPred('');setRevealed(false);setSel(null);setConf(false);}
+    else onComplete(score+(sel===q.correct?1:0),INFER.length);
+  }
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{display:'flex',justifyContent:'space-between',marginBottom:8}},
+      e('div',{style:{color:T.conv,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase'}},'🔮 Session 4: Inference Completion Lab'),
+      e('span',{style:{color:T.muted,fontSize:13}},`${idx+1} of ${INFER.length}`)
+    ),
+    e('p',{style:{color:T.sub,fontSize:14,marginBottom:16}},'Write your own completion before seeing the choices. The prediction method trains your brain to think like the test.'),
+    e('div',{style:card()},
+      e('div',{style:labelTag(T.conv)},'Information & Ideas — Inference'),
+      e('div',{style:{...passage,marginTop:10}},q.passage),
+      e('div',{style:{marginBottom:10}},
+        e('div',{style:{fontSize:13,fontWeight:700,color:T.conv,marginBottom:4}},'Your predicted completion:'),
+        e('input',{value:pred,onChange:ev=>setPred(ev.target.value),disabled:revealed,placeholder:'Type your prediction here…',
+          style:{width:'100%',padding:'10px 14px',background:T.paper,border:`1px solid ${T.border}`,borderRadius:8,color:T.ink,fontFamily:'inherit',fontSize:14}})
+      ),
+      !revealed&&e('button',{onClick:()=>setRevealed(true),disabled:!pred.trim(),
+        style:btn(pred.trim()?T.conv:T.border,pred.trim()?'#000':'#475569',{fontSize:14,padding:'10px 20px'})},'Reveal Choices →'),
+      revealed&&e('div',{style:{marginTop:12}},
+        e('div',{style:{fontSize:14,color:T.muted,marginBottom:8}},'Which choice most logically completes the text?'),
+        e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
+          q.choices.map((c,ci)=>{
+            const isSel=sel===ci;const isCorr=ci===q.correct;
+            let bg=T.paper,bdr=`2px solid ${T.border}`,tc='#ccc';
+            if(conf&&isCorr){bg=T.correctBg;bdr=`2px solid ${T.correct}`;tc=T.correct;}
+            else if(conf&&isSel&&!isCorr){bg=T.wrongBg;bdr=`2px solid ${T.wrong}`;tc=T.wrong;}
+            else if(isSel&&!conf){bg=T.infoBg;bdr=`2px solid ${T.info}`;tc=T.info;}
+            return e('button',{key:ci,onClick:()=>{if(!conf)setSel(ci);},disabled:conf,
+              style:{display:'flex',alignItems:'flex-start',gap:10,padding:'12px 14px',borderRadius:10,
+                background:bg,border:bdr,cursor:conf?'default':'pointer',textAlign:'left',width:'100%'}},
+              e('span',{style:{minWidth:24,height:24,borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',
+                fontWeight:800,fontSize:12,flexShrink:0,
+                background:conf&&isCorr?T.correct:conf&&isSel&&!isCorr?T.wrong:isSel?T.info:T.border,
+                color:isSel||conf?T.paper:T.muted}},'ABCD'[ci]),
+              e('span',{style:{color:tc,fontSize:14,lineHeight:1.6}},c)
+            );
+          })
+        ),
+        !conf&&e('div',{style:{marginTop:12,display:'flex',justifyContent:'flex-end'}},
+          e('button',{onClick:handleConfirm,disabled:sel===null,
+            style:btn(sel===null?T.border:T.info,sel===null?'#475569':'#000',{fontSize:14,padding:'10px 22px'})},'Confirm Answer')
+        ),
+        conf&&e('div',{style:{marginTop:12,padding:14,background:T.paper,borderRadius:10,borderLeft:`3px solid ${T.correct}`,fontSize:14,color:T.muted,lineHeight:1.7}},q.explain)
+      )
+    ),
+    conf&&e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:12}},
+      e('button',{onClick:next,style:btn(T.info,'#000',{fontSize:14,padding:'10px 22px'})},idx<INFER.length-1?'Next →':'Continue to Timed Practice →')
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: TIMED MIXED PRACTICE (14 questions)
+// ══════════════════════════════════════════
+function TimedPractice({onComplete}){
+  const[started,setStarted]=useState(false);
+  const[idx,setIdx]=useState(0);
+  const[sel,setSel]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[answers,setAnswers]=useState([]);
+  const[timeLeft,setTimeLeft]=useState(14*80); // 80 sec per question
+  const timerRef=useRef(null);
+  const q=PRACTICE[idx];
+  const total=PRACTICE.length;
+
+  useEffect(()=>{
+    if(started&&!timerRef.current){
+      timerRef.current=setInterval(()=>{
+        setTimeLeft(t=>{
+          if(t<=1){clearInterval(timerRef.current);return 0;}
+          return t-1;
+        });
+      },1000);
+    }
+    return()=>{if(timerRef.current)clearInterval(timerRef.current);};
+  },[started]);
+
+  useEffect(()=>{
+    if(timeLeft===0&&started)finish();
+  },[timeLeft]);
+
+  function handleConfirm(){
+    if(sel===null)return;
+    setConf(true);
+    setAnswers(p=>[...p,{selected:sel,correct:sel===q.correct,subtype:q.subtype}]);
+  }
+  function next(){
+    if(idx<total-1){setIdx(idx+1);setSel(null);setConf(false);}
+    else finish();
+  }
+  function finish(){
+    if(timerRef.current)clearInterval(timerRef.current);
+    const finalAnswers=[...answers];
+    if(conf&&answers.length===idx+1){}// already added
+    else if(sel!==null&&!conf){finalAnswers.push({selected:sel,correct:sel===q.correct,subtype:q.subtype});}
+    onComplete(finalAnswers);
+  }
+
+  const m=Math.floor(timeLeft/60),s=timeLeft%60;
+  const pct=(timeLeft/(14*80))*100;
+
+  if(!started){
+    return e('div',{style:{maxWidth:600,margin:'0 auto',padding:'80px 20px',textAlign:'center'}},
+      e('div',{style:{fontSize:48,marginBottom:16}},'⏱'),
+      e('h2',{style:{...sectionTitle,textAlign:'center'}},'Timed Practice Set'),
+      e('p',{style:{color:T.sub,fontSize:15,marginBottom:8}},'14 PSAT-format questions mixing Central Ideas + Inferences'),
+      e('p',{style:{color:T.muted,fontSize:14,marginBottom:32}},'80 seconds per question • 18:40 total'),
+      e('button',{onClick:()=>setStarted(true),style:btn(`linear-gradient(135deg,${T.info},#059669)`,'#000')},'Start Timed Practice →')
+    );
+  }
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    // Timer
+    e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}},
+      e('div',{style:{color:T.info,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase'}},'⏱ Session 5: Timed Practice'),
+      e('div',{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,color:pct<20?T.wrong:T.muted}},`${m}:${s<10?'0':''}${s}`)
+    ),
+    e('div',{style:{height:4,background:T.border,borderRadius:2,marginBottom:8,overflow:'hidden'}},
+      e('div',{style:{height:'100%',width:`${pct}%`,background:pct<20?T.wrong:`linear-gradient(90deg,${T.info},#059669)`,borderRadius:2,transition:'width .1s linear'}})
+    ),
+    // Score dots
+    e('div',{style:{display:'flex',gap:4,marginBottom:16,flexWrap:'wrap'}},
+      Array.from({length:total}).map((_,i)=>{
+        let bg=T.border,c=T.muted,bdr=T.border;
+        if(answers[i]){bg=answers[i].correct?T.correctBg:T.wrongBg;c=answers[i].correct?T.correct:T.wrong;bdr=c;}
+        if(i===idx&&!conf){bdr=T.info;}
+        return e('div',{key:i,style:{width:26,height:26,borderRadius:'50%',border:`2px solid ${bdr}`,
+          display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,
+          fontFamily:"'JetBrains Mono',monospace",background:bg,color:c}},i+1);
+      })
+    ),
+    e(QuizQ,{q,index:idx,selected:sel,confirmed:conf,onSelect:setSel,onConfirm:handleConfirm,
+      tagLabel:`Information & Ideas — ${q.subtype}`,tagColor:q.subtype==='Central Ideas'?T.info:T.conv}),
+    conf&&e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:8}},
+      e('button',{onClick:next,style:btn(T.info,'#000',{fontSize:14,padding:'10px 22px'})},idx<total-1?'Next Question →':'See Results →')
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: ERROR LOG + RESULTS
+// ══════════════════════════════════════════
+function ErrorLog({answers,onContinue}){
+  const[classifications,setClassifications]=useState({});
+  const errors=answers.map((a,i)=>({...a,idx:i})).filter(a=>!a.correct);
+  const total=answers.length;
+  const correct=answers.filter(a=>a.correct).length;
+  const pct=Math.round((correct/total)*100);
+  const byType={};
+  answers.forEach(a=>{
+    if(!byType[a.subtype])byType[a.subtype]={c:0,t:0};
+    byType[a.subtype].t++;
+    if(a.correct)byType[a.subtype].c++;
+  });
+  const typeColors={'Central Ideas':T.info,'Inferences':T.conv};
+  const allClassified=errors.every((_,i)=>classifications[i]);
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{color:T.info,fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase',marginBottom:16}},'📊 Session 6: Results & Error Classification'),
+    // Score
+    e('div',{style:{...card({padding:24,textAlign:'center',marginBottom:20,border:`2px solid ${T.info}`})}},
+      e('div',{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:48,fontWeight:900,
+        color:pct>=75?T.correct:pct>=50?T.info:T.wrong}},`${correct}/${total}`),
+      e('div',{style:{color:T.muted,fontSize:14,marginBottom:16}},`${pct}% correct`),
+      e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
+        Object.entries(byType).map(([name,d])=>{
+          const dp=d.t>0?Math.round((d.c/d.t)*100):0;
+          return e('div',{key:name,style:{background:T.paper,borderRadius:10,padding:14,textAlign:'center'}},
+            e('div',{style:{fontSize:11,color:typeColors[name],textTransform:'uppercase',letterSpacing:1,marginBottom:4}},name),
+            e('div',{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:22,fontWeight:700,
+              color:dp>=75?T.correct:dp>=50?T.info:T.wrong}},`${d.c}/${d.t}`),
+            e('div',{style:{height:5,background:T.border,borderRadius:3,marginTop:6,overflow:'hidden'}},
+              e('div',{style:{height:'100%',width:`${dp}%`,background:typeColors[name],borderRadius:3,transition:'width .6s'}}))
+          );
+        })
+      )
+    ),
+    // Error classification
+    errors.length>0?e('div',null,
+      e('h3',{style:{...sectionTitle,fontSize:'1.2rem',marginBottom:8}},'Classify Your Mistakes'),
+      e('p',{style:{color:T.sub,fontSize:14,marginBottom:16,lineHeight:1.6}},'For each error, identify the root cause. This is the most important step — knowing WHY you missed is more valuable than your score.'),
+      errors.map((err,i)=>e('div',{key:i,style:{...card({marginBottom:12,borderLeft:`3px solid ${T.wrong}`})}},
+        e('div',{style:{fontSize:13,color:T.wrong,fontWeight:600,marginBottom:8}},`Q${err.idx+1} — ${err.subtype}`),
+        e('div',{style:{display:'flex',gap:8,flexWrap:'wrap'}},
+          ['Content Gap','Trap Answer','Misread / Careless'].map(cat=>
+            e('button',{key:cat,onClick:()=>setClassifications(p=>({...p,[i]:cat})),
+              style:{padding:'8px 14px',borderRadius:8,fontSize:13,fontWeight:600,cursor:'pointer',
+                background:classifications[i]===cat?`${T.info}22`:'transparent',
+                border:`1px solid ${classifications[i]===cat?T.info:T.border}`,
+                color:classifications[i]===cat?T.info:T.muted}},cat)
+          )
+        ),
+        classifications[i]&&e('div',{style:{marginTop:8,fontSize:12,color:T.dim}},
+          classifications[i]==='Content Gap'?'→ Re-read the passage type. Focus on understanding before answering.':
+          classifications[i]==='Trap Answer'?'→ This is the most common and most fixable. Practice labeling scope traps.':
+          '→ Slow down. Re-read the stem and underline key words before looking at choices.')
+      )),
+      allClassified&&e('div',{style:{...card({background:T.infoBg,border:`1px solid ${T.info}44`,marginTop:16})}},
+        e('div',{style:{fontSize:14,color:T.info,fontWeight:700,marginBottom:6}},'Error Pattern Summary'),
+        e('div',{style:{fontSize:13,color:T.sub,lineHeight:1.6}},
+          (()=>{
+            const counts={};Object.values(classifications).forEach(c=>{counts[c]=(counts[c]||0)+1;});
+            const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+            if(!top)return '';
+            return `Your most common error type: ${top[0]} (${top[1]}×). ${
+              top[0]==='Trap Answer'?'Great news — trap answers are the most fixable error type. The Scope Training and Challenge Mode exercises target this directly.':
+              top[0]==='Content Gap'?'Consider spending more time with the passage before looking at choices. The prediction method helps.':
+              'Try covering the choices and re-reading the stem carefully before looking at options.'
+            }`;
+          })()
+        )
+      )
+    ):
+    e('div',{style:{...card({background:T.correctBg,border:`1px solid ${T.correct}44`,textAlign:'center'})}},
+      e('div',{style:{fontSize:32,marginBottom:8}},'🎯'),
+      e('div',{style:{color:T.correct,fontSize:16,fontWeight:700}},'Zero errors! Perfect comprehension.')
+    ),
+    e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:20}},
+      e('button',{onClick:onContinue,style:btn(`linear-gradient(135deg,${T.nm},#7c3aed)`,'#fff',{fontSize:14,padding:'10px 24px'})},'Continue to Challenge Mode →')
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: CHALLENGE MODE
+// ══════════════════════════════════════════
+function ChallengeMode({onComplete}){
+  const[idx,setIdx]=useState(0);
+  const[sel,setSel]=useState(null);
+  const[conf,setConf]=useState(false);
+  const[score,setScore]=useState(0);
+  const q=CHALLENGE[idx];
+  const total=CHALLENGE.length;
+
+  function handleConfirm(){
+    if(sel===null)return;
+    setConf(true);
+    if(sel===q.correct)setScore(s=>s+1);
+  }
+  function next(){
+    if(idx<total-1){setIdx(idx+1);setSel(null);setConf(false);}
+    else onComplete(score+(sel===q.correct?1:0),total);
+  }
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{background:T.nmBg,border:`2px solid ${T.nm}44`,borderRadius:16,padding:24}},
+      e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}},
+        e('div',{style:labelTag(T.nm)},'⭐ Challenge Mode'),
+        e('span',{style:{color:T.muted,fontSize:13}},`${idx+1} of ${total}`)
+      ),
+      idx===0&&e('p',{style:{color:T.sub,fontSize:14,marginBottom:16,lineHeight:1.6}},
+        'The hardest inference questions use dense scientific or historical passages where every answer seems plausible. After answering, review the "Trap Autopsy" — a breakdown of which scope trap each wrong answer represents.'),
+      e(QuizQ,{q,index:idx,selected:sel,confirmed:conf,onSelect:setSel,onConfirm:handleConfirm,
+        tagLabel:`Challenge ${idx+1} — Hard Inference`,tagColor:T.nm,showTrapTags:true}),
+      conf&&e('div',{style:{display:'flex',justifyContent:'flex-end',marginTop:8}},
+        e('button',{onClick:next,style:btn(T.nm,'#fff',{fontSize:14,padding:'10px 22px'})},idx<total-1?'Next →':'See Final Summary →')
+      )
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// SCREEN: MODULE COMPLETE (Summary + Homework)
+// ══════════════════════════════════════════
+function ModuleComplete({warmupScore,practiceAnswers,challengeScore,challengeTotal}){
+  const practiceCorrect=practiceAnswers.filter(a=>a.correct).length;
+  const practicePct=Math.round((practiceCorrect/practiceAnswers.length)*100);
+  const challengePct=Math.round((challengeScore/challengeTotal)*100);
+
+  const takeaways=[
+    'The central idea is the one claim the entire passage supports. Details, examples, and data are evidence — not the main point.',
+    'The three scope traps are too broad (vague generalization), too narrow (one detail presented as the whole idea), and off-topic (plausible but unsupported by the passage).',
+    'For inference questions, the correct answer is always the most directly supported conclusion — not the most interesting, surprising, or extreme.',
+    'The prediction method works here too: predict the answer before looking at choices. If your prediction matches one option closely, that\'s almost always correct.',
+    'When two answers seem equally good, check the qualifying words — "some" vs. "all," "may" vs. "will," "primarily" vs. "exclusively." The PSAT rewards precision.'
+  ];
+  const homework=[
+    {title:'Main Idea Practice',desc:'Read 3 paragraphs from a textbook or news article. For each, write the main idea in one sentence. Then check: is your sentence too broad? Too narrow?'},
+    {title:'Scope Trap Spotter',desc:'For any practice question you do this week, write down why each wrong answer is wrong. Label each as Too Broad, Too Narrow, Off-Topic, or Contradicts.'},
+    {title:'Inference Journal',desc:'Find 2 passages in your reading where the author implies something without stating it directly. Write down the inference and the evidence that supports it.'},
+    {title:'Preview Module 6',desc:'Next: Command of Evidence (Textual and Quantitative). Start noticing when articles use data, quotes, or findings to support claims.'}
+  ];
+
+  return e('div',{style:{maxWidth:700,margin:'0 auto',padding:'40px 20px',minHeight:'100vh'}},
+    e('div',{style:{textAlign:'center',marginBottom:32}},
+      e('div',{style:{fontSize:56,marginBottom:12}},'🎉'),
+      e('h1',{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:'clamp(1.8rem,4vw,2.8rem)',fontWeight:800,color:T.info,marginBottom:8}},'Module 5 Complete'),
+      e('p',{style:{color:T.sub,fontSize:15}},'Central Ideas, Details, and Making Inferences')
+    ),
+    // Score summary
+    e('div',{style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12,marginBottom:28}},
+      [{label:'Warm-Up',score:`${warmupScore}/8`,color:T.craft},
+       {label:'Practice',score:`${practiceCorrect}/${practiceAnswers.length}`,color:T.info},
+       {label:'Challenge',score:`${challengeScore}/${challengeTotal}`,color:T.nm}
+      ].map((s,i)=>e('div',{key:i,style:{...card({textAlign:'center',padding:16})}},
+        e('div',{style:{fontSize:11,color:s.color,textTransform:'uppercase',letterSpacing:1,marginBottom:4}},s.label),
+        e('div',{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:24,fontWeight:900,color:T.ink}},s.score)
+      ))
+    ),
+    // Key Takeaways
+    e('div',{style:{...card({marginBottom:20,borderLeft:`3px solid ${T.info}`})}},
+      e('h3',{style:{...sectionTitle,fontSize:'1.2rem'}},'Key Takeaways'),
+      takeaways.map((t,i)=>e('div',{key:i,style:{display:'flex',gap:10,marginBottom:i<takeaways.length-1?12:0}},
+        e('span',{style:{color:T.info,fontWeight:700,fontSize:14,flexShrink:0}},`${i+1}.`),
+        e('span',{style:{color:T.sub,fontSize:14,lineHeight:1.7}},t)
+      ))
+    ),
+    // Homework
+    e('div',{style:{...card({marginBottom:20,borderLeft:`3px solid ${T.conv}`})}},
+      e('h3',{style:{...sectionTitle,fontSize:'1.2rem'}},'Homework'),
+      homework.map((h,i)=>e('div',{key:i,style:{marginBottom:i<homework.length-1?14:0}},
+        e('div',{style:{color:T.ink,fontWeight:700,fontSize:14,marginBottom:2}},`${i+1}. ${h.title}`),
+        e('div',{style:{color:T.sub,fontSize:14,lineHeight:1.6}},h.desc)
+      ))
+    ),
+    // Navigation
+    e('div',{style:{display:'flex',justifyContent:'space-between',paddingTop:20,borderTop:`1px solid ${T.border}`}},
+      e('a',{href:'module-4.html',style:{color:T.accent,fontSize:14}},'← Module 4: Words Are Weapons'),
+      e('a',{href:'module-6.html',style:{color:T.accent,fontSize:14}},'Module 6: Show Me the Evidence →')
+    )
+  );
+}
+
+// ══════════════════════════════════════════
+// APP: State machine
+// ══════════════════════════════════════════
+function App(){
+  const[screen,setScreen]=useState('welcome');
+  const[fade,setFade]=useState(true);
+  const[warmupScore,setWarmupScore]=useState(0);
+  const[practiceAnswers,setPracticeAnswers]=useState([]);
+  const[challengeScore,setChallengeScore]=useState(0);
+  const[challengeTotal,setChallengeTotal]=useState(6);
+
+  const go=useCallback((to)=>{
+    setFade(false);
+    setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},300);
+  },[]);
+
+  // Top stripe
+  const stripe=e('div',{style:{height:4,
+    background:`linear-gradient(90deg,${T.craft} 0%,${T.craft} 28%,${T.info} 28%,${T.info} 54%,${T.conv} 54%,${T.conv} 80%,${T.expr} 80%)`,
+    position:'fixed',top:0,left:0,right:0,zIndex:100}});
+
+  return e('div',{style:{minHeight:'100vh',background:T.paper,color:T.ink,fontFamily:"'Source Sans 3',sans-serif"}},
+    stripe,
+    e('div',{style:{position:'relative',zIndex:1,transition:'opacity .3s,transform .3s',
+      opacity:fade?1:0,transform:fade?'translateY(0)':'translateY(8px)'}},
+
+      screen==='welcome'&&e(Welcome,{onNext:()=>go('warmup')}),
+
+      screen==='warmup'&&e(RetrievalWarmUp,{onComplete:(score)=>{setWarmupScore(score);go('lessons');}}),
+
+      screen==='lessons'&&e(ConceptLessons,{onComplete:()=>go('sorter')}),
+
+      screen==='sorter'&&e(SorterExercise,{onComplete:()=>go('scope')}),
+
+      screen==='scope'&&e(ScopeTraining,{onComplete:()=>go('inference')}),
+
+      screen==='inference'&&e(InferenceLab,{onComplete:()=>go('practice')}),
+
+      screen==='practice'&&e(TimedPractice,{onComplete:(ans)=>{setPracticeAnswers(ans);go('errorlog');}}),
+
+      screen==='errorlog'&&e(ErrorLog,{answers:practiceAnswers,onContinue:()=>go('challenge')}),
+
+      screen==='challenge'&&e(ChallengeMode,{onComplete:(score,total)=>{setChallengeScore(score);setChallengeTotal(total);go('complete');}}),
+
+      screen==='complete'&&e(ModuleComplete,{warmupScore,practiceAnswers,challengeScore,challengeTotal})
+    )
+  );
+}
+
+const{createRoot}=ReactDOM;
+createRoot(document.getElementById('root')).render(e(App));
+</script>
+</body>
+</html>

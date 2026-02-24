@@ -109,6 +109,10 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .mod-nav a:hover{text-decoration:underline}
 
 @media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{flex-direction:column}.time-bar{font-size:.65rem}.gi-grid{grid-template-columns:1fr}}
+.trap-card{background:var(--paper);border:1px solid var(--border);border-left:3px solid var(--wrong);border-radius:10px;padding:14px;margin-bottom:10px}
+.trap-title{font-weight:700;color:var(--wrong);font-size:.9rem;margin-bottom:4px}
+.trap-body{font-size:.85rem;color:#ccc;line-height:1.5}
+.trap-fix{font-size:.82rem;color:var(--correct);margin-top:6px;font-weight:600}
 </style>
 </head>
 <body>
@@ -293,8 +297,57 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- ==================== EXERCISE 5: GRID-IN TRAPS ==================== -->
+
+<!-- TOP MISREADING TRAPS -->
 <div class="section">
-  <div class="section-label">Interactive Exercise 5</div>
+  <div class="section-label">Common Traps</div>
+  <h2>The Top 8 Preventable Mistakes</h2>
+  <p>These mistakes have nothing to do with math ability — they’re about careful reading and attention. Fixing them alone can be worth 3–5 questions per test.</p>
+</div>
+
+<div class="trap-card">
+  <div class="trap-title">Trap 1: Solving for the Wrong Variable</div>
+  <div class="trap-body">The question asks for <code>6x − 14</code>, not x. You solve for x = 9 and pick 9. The answer was 40.</div>
+  <div class="trap-fix">✓ Fix: Underline exactly what the question asks for BEFORE solving.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 2: Intermediate vs. Final Answer</div>
+  <div class="trap-body">“A shirt is 20% off, then taxed 8%. What is the total cost?” You find the discount ($32) and pick that — but the question asks for the final price after tax ($34.56).</div>
+  <div class="trap-fix">✓ Fix: Make sure your answer addresses the FINAL part of the question.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 3: “At Least” vs. “More Than”</div>
+  <div class="trap-body">“At least 5” means ≥ 5 (includes 5). “More than 5” means > 5 (does NOT include 5). Mixing these up changes the answer.</div>
+  <div class="trap-fix">✓ Fix: “At least” = ≥. “More than” = >. “No more than” = ≤. “Fewer than” = <.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 4: Negation Words</div>
+  <div class="trap-body">“Which is NOT a solution?” or “Which CANNOT be true?” Your brain skips the NOT and you pick a valid answer. Wrong.</div>
+  <div class="trap-fix">✓ Fix: Circle negative words (NOT, CANNOT, EXCEPT, LEAST) when you see them.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 5: Axis Scale / Units</div>
+  <div class="trap-body">A graph’s y-axis is labeled “in thousands.” You read a point as y = 45 instead of y = 45,000. Or x-axis is months but the question asks about years.</div>
+  <div class="trap-fix">✓ Fix: Always read axis labels AND the scale before reading any data.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 6: Positive vs. Negative in Context</div>
+  <div class="trap-body">You solve correctly and get x = −3, but enter 3 in the grid-in. Or the question says “what is the DECREASE” and you give a negative value instead of the positive magnitude.</div>
+  <div class="trap-fix">✓ Fix: For grid-ins, double-check the sign. For “increase/decrease” questions, give positive values.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 7: Wrong Denominator for Percent Change</div>
+  <div class="trap-body">Price goes from $50 to $60. You calculate 10/60 = 16.7% instead of 10/50 = 20%. The denominator is always the ORIGINAL value.</div>
+  <div class="trap-fix">✓ Fix: % change = (new − old) / OLD × 100. Denominator = starting value.</div>
+</div>
+<div class="trap-card">
+  <div class="trap-title">Trap 8: f(x) Value vs. x Value</div>
+  <div class="trap-body">“For what value of x is f(x) at its minimum?” You correctly find the minimum is −1, but the x-value is 2. You enter −1. Wrong.</div>
+  <div class="trap-fix">✓ Fix: “Value of x” means the input. “Value of f(x)” means the output. Read which one.</div>
+</div>
+
+<div class="section">
+  <div class="section-label">Interactive Exercise 6</div>
   <h2>Grid-In Trap Detector</h2>
   <p>Did the student answer correctly, or fall for a trap?</p>
   <div class="exercise" style="border-color:var(--wrong)" id="giEx"></div>

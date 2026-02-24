@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3: Text Structure & Cross-Text — PSAT 8/9 R&W — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var e = React.createElement;
+var useState = React.useState, useEffect = React.useEffect, useCallback = React.useCallback, useRef = React.useRef;
+
+/* ── design tokens ── */
+var C = {
+  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
+  sub:"#999", muted:"#666", accent:"#0891b2",
+  mod:"#f472b6", modBg:"rgba(244,114,182,.12)",
+  craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
+  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+};
+var btn = function(bg, color, extra) {
+  return Object.assign({
+    padding:"12px 28px", borderRadius:10, border:"none", background:bg,
+    color:color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s"
+  }, extra || {});
+};
+var NAV = {
+  prev:{ label:"Module 2: Words in Context", file:"PSAT_89_RW_module-2.html" },
+  next:{ label:"Module 4: Central Ideas & Inferences", file:"PSAT_89_RW_module-4.html" }
+};
+
+/* ── LESSONS ── */
+var LESSONS = [
+  {
+    id:"3a", title:"Text Structure",
+    subtitle:"Topic 3A \u2014 Recognizing Text Structures",
+    body:[
+      "Text Structure questions ask how a passage is organized. The answer isn\u2019t about what the passage says \u2014 it\u2019s about the organizational pattern the author chose.",
+      "The Six Structures:\n\u2022 Cause/Effect: Explains WHY something happens or its results. Signal: because, therefore, as a result, consequently, led to\n\u2022 Compare/Contrast: Shows similarities and/or differences. Signal: similarly, in contrast, whereas, unlike, on the other hand\n\u2022 Problem/Solution: Identifies a problem and proposes or evaluates solutions. Signal: the challenge, to address this, one approach\n\u2022 Chronological/Sequence: Events or steps in time order. Signal: first, then, subsequently, after, finally, in 1923\n\u2022 Claim/Evidence: States a position and supports it with facts, data, or examples. Signal: argues, evidence suggests, studies show\n\u2022 Description/Classification: Describes characteristics or groups items into categories. Signal: is characterized by, includes, types of",
+      "Strategy: When you see a text structure question, ask yourself: \u201cWhat is the relationship between the sentences?\u201d Don\u2019t summarize \u2014 identify the pattern.",
+      "Common Question Stems:\n\u2022 \u201cWhich choice best describes the overall structure of the text?\u201d\n\u2022 \u201cWhich choice best describes the function of the underlined sentence?\u201d\n\u2022 \u201cThe text is primarily organized by...\u201d"
+    ],
+    visual:"six-structures"
+  },
+  {
+    id:"3b", title:"Author\u2019s Purpose",
+    subtitle:"Topic 3B \u2014 Identifying Author\u2019s Purpose",
+    body:[
+      "Purpose questions ask why the author wrote the passage. Don\u2019t confuse this with what the passage says \u2014 purpose is about the author\u2019s goal.",
+      "Eight Common Purposes:\n\u2022 Argue/Persuade: Convince the reader of a position. Uses evidence, logic, appeals.\n\u2022 Inform/Explain: Teach the reader about a topic. Neutral tone, factual.\n\u2022 Describe: Paint a picture using sensory details or vivid language.\n\u2022 Compare: Show similarities and differences between two or more things.\n\u2022 Challenge: Question or push back against a common belief or existing claim.\n\u2022 Qualify: Add nuance or limitations to a claim. \u201cThis is true, but only under certain conditions.\u201d\n\u2022 Illustrate: Provide a concrete example of an abstract idea.\n\u2022 Contextualize: Provide background that helps the reader understand something.",
+      "Purpose \u2260 Topic. If a passage is about coral reefs, the topic is coral reefs. But the purpose might be to argue for stronger protections, to explain how bleaching works, or to challenge a common misconception. The answer choices will use purpose verbs, not topic nouns.",
+      "The \u201cMain Purpose\u201d vs. \u201cFunction of a Sentence\u201d:\n\u2022 Main purpose: Why did the author write the entire passage? Look at the big picture.\n\u2022 Function of a sentence: What role does this specific sentence play within the passage? (Introduces a claim, provides evidence, offers a counterexample, transitions to a new idea, etc.)"
+    ],
+    visual:"purpose-vs-topic"
+  },
+  {
+    id:"3c", title:"Cross-Text Connections",
+    subtitle:"Topic 3C \u2014 Analyzing Paired Passages",
+    body:[
+      "These questions give you two short texts (Text 1 and Text 2) and ask how they relate. This is the most challenging Craft & Structure skill \u2014 but also the rarest (only 1\u20132 questions per test).",
+      "Five Relationship Types:\n\u2022 Agree: Both authors support the same claim or reach similar conclusions.\n\u2022 Disagree: Authors take opposing positions on the same issue.\n\u2022 Extend: Text 2 builds on Text 1 by adding new evidence, applications, or implications.\n\u2022 Qualify: Text 2 adds limitations or conditions to Text 1\u2019s claim. (\u201cYes, but only when...\u201d)\n\u2022 Apply: Text 2 applies Text 1\u2019s general principle to a specific case (or vice versa).",
+      "Strategy for Paired Passages:\n\u2022 Step 1: Read Text 1. Summarize its main claim in one sentence.\n\u2022 Step 2: Read Text 2. Summarize its main claim in one sentence.\n\u2022 Step 3: Ask: \u201cDoes Text 2 agree, disagree, extend, qualify, or apply Text 1?\u201d\n\u2022 Step 4: Read the question stem carefully. It often specifies the direction: \u201cHow would Author 2 respond to Author 1?\u201d",
+      "Common question stems: \u201cBased on the texts, how would [Author 2] most likely respond to [Author 1\u2019s claim]?\u201d \u00b7 \u201cWhich choice best describes the relationship between the two texts?\u201d \u00b7 \u201cBoth authors would most likely agree that...\u201d"
+    ],
+    visual:"five-relationships"
+  }
+];
+
+/* ── EXERCISE DATA ── */
+
+/* Exercise 1: Structure Identifier (string matching) */
+var STRUCT = [
+  {passage:"The population of monarch butterflies has declined by 80% since the 1990s. Scientists attribute this decline primarily to habitat loss, as the milkweed plants monarchs depend on have been eliminated by agricultural herbicides across the Midwest.",
+   c:"Cause/Effect", opts:["Cause/Effect","Compare/Contrast","Problem/Solution","Chronological"],
+   fb:"The passage explains WHY monarchs declined (cause: herbicides eliminated milkweed) and the RESULT (effect: 80% population drop)."},
+  {passage:"While traditional museums display objects behind glass and expect quiet observation, interactive science centers encourage visitors to touch exhibits, conduct experiments, and make noise. Both approaches aim to educate, but they differ fundamentally in how they engage their audiences.",
+   c:"Compare/Contrast", opts:["Cause/Effect","Compare/Contrast","Problem/Solution","Claim/Evidence"],
+   fb:"\u201cWhile...both...but they differ\u201d \u2014 classic comparison structure contrasting two approaches to museum education."},
+  {passage:"Urban flooding has become increasingly severe as cities expand impervious surfaces like roads and parking lots. To address this, several cities have adopted \u201cgreen infrastructure\u201d \u2014 rain gardens, permeable pavement, and rooftop gardens that absorb stormwater naturally.",
+   c:"Problem/Solution", opts:["Cause/Effect","Compare/Contrast","Problem/Solution","Description"],
+   fb:"Sentence 1 = problem (flooding from impervious surfaces). Sentence 2 = solution (\u201cTo address this\u201d + green infrastructure examples)."},
+  {passage:"In 1928, Alexander Fleming noticed that a mold had contaminated one of his bacterial cultures. He observed that bacteria near the mold had died. Over the next decade, researchers Howard Florey and Ernst Chain developed Fleming\u2019s observation into penicillin, which was first used to treat patients in 1941.",
+   c:"Chronological", opts:["Cause/Effect","Compare/Contrast","Problem/Solution","Chronological"],
+   fb:"Dates and sequence markers (1928, \u201cOver the next decade,\u201d 1941) signal chronological order tracing the discovery of penicillin."},
+  {passage:"Linguist Noam Chomsky argues that humans are born with an innate capacity for language, a \u201cuniversal grammar\u201d hardwired into the brain. Evidence for this claim includes the observation that children worldwide acquire language at similar developmental stages, regardless of the complexity of their native language.",
+   c:"Claim/Evidence", opts:["Cause/Effect","Compare/Contrast","Claim/Evidence","Chronological"],
+   fb:"\u201cArgues that\u201d = claim. \u201cEvidence for this claim includes\u201d = evidence. Classic claim/evidence structure."},
+  {passage:"The axolotl is a remarkable amphibian native to Lake Xochimilco in Mexico City. Unlike most salamanders, it retains its larval features throughout adulthood, including external gills and a wide, flat tail. This phenomenon, known as neoteny, makes the axolotl one of the most studied organisms in regenerative biology.",
+   c:"Description", opts:["Cause/Effect","Problem/Solution","Claim/Evidence","Description"],
+   fb:"The passage describes characteristics of the axolotl (features, habitat, classification). It describes WHAT it is, not arguing a claim or solving a problem."}
+];
+
+/* Exercise 2: Purpose vs Topic (string matching) */
+var PVST = [
+  {text:"To explain how coral bleaching occurs", c:"Purpose", fb:"This describes what the author is DOING (explaining a process). Purpose verbs: explain, argue, describe, challenge."},
+  {text:"Coral reef ecosystems in the Pacific Ocean", c:"Topic", fb:"This is WHAT the passage is about (a subject), not WHY the author wrote it. No purpose verb."},
+  {text:"To argue that current conservation policies are insufficient", c:"Purpose", fb:"\u201cTo argue\u201d is a purpose verb. The author is trying to convince the reader of a position."},
+  {text:"The history of the space program in the 1960s", c:"Topic", fb:"This names a subject area. It doesn\u2019t say what the author is DOING with that subject."},
+  {text:"To challenge the assumption that bilingualism always provides cognitive advantages", c:"Purpose", fb:"\u201cTo challenge\u201d is a purpose verb. The author is pushing back against a common belief."},
+  {text:"Recent developments in renewable energy technology", c:"Topic", fb:"This describes subject matter. A purpose statement would say what the author DOES with this topic (e.g., \u201cto evaluate recent developments...\u201d)."},
+  {text:"To qualify earlier findings by noting important limitations", c:"Purpose", fb:"\u201cTo qualify\u201d is a purpose verb. The author is adding nuance to existing claims."},
+  {text:"To illustrate how a general ecological principle applies to urban environments", c:"Purpose", fb:"\u201cTo illustrate\u201d is a purpose verb. The author provides a concrete example of an abstract concept."}
+];
+
+/* Exercise 3: Sentence Function (index matching) */
+var SFUNC = [
+  {passage:'Many educators have embraced project-based learning as a way to increase student engagement. <strong style="color:#f472b6">However, a 2022 study of 15,000 students found no significant difference in test scores between project-based and traditional classrooms.</strong> The researchers suggested that the benefits of project-based learning may lie in skills not measured by standardized tests.',
+   c:0, opts:["Introduces a complication/counterpoint","Provides supporting evidence","States the main claim","Offers a solution"],
+   fb:"The highlighted sentence begins with \u201cHowever\u201d and presents data that COMPLICATES the initial claim. It functions as a counterpoint."},
+  {passage:'<strong style="color:#f472b6">The city of Barcelona has transformed its urban planning approach by creating \u201csuperblocks\u201d \u2014 clusters of streets closed to through-traffic and redesigned as pedestrian-friendly public spaces.</strong> Since the program began in 2016, air pollution in superblock areas has dropped by 25%, and pedestrian activity has increased by 10%.',
+   c:0, opts:["Introduces the main topic/claim","Provides an example","Summarizes the conclusion","Transitions to a new idea"],
+   fb:"The first sentence introduces the subject (superblocks) and the main claim (Barcelona transformed its approach). The rest provides supporting data."},
+  {passage:'Dr. Elena Vasquez has spent two decades studying the migration patterns of gray whales along the Pacific coast. Her team tracks individual whales using photo identification of natural markings. <strong style="color:#f472b6">In one remarkable case, her team identified a whale that had traveled over 14,000 miles in a single season \u2014 the longest recorded migration of any mammal.</strong>',
+   c:1, opts:["States the main argument","Provides a specific example to illustrate","Introduces a counterargument","Defines a key term"],
+   fb:"The highlighted sentence gives a SPECIFIC, concrete example (one whale, 14,000 miles) that illustrates the broader research. This is the \u201cillustrate\u201d function."},
+  {passage:'Traditional theories of language acquisition emphasize the role of imitation \u2014 children learn by copying what they hear. <strong style="color:#f472b6">Chomsky challenged this view, arguing that children produce sentences they have never heard before, suggesting an innate language capacity.</strong> This debate between \u201cnurture\u201d and \u201cnature\u201d continues to shape linguistic research today.',
+   c:1, opts:["Summarizes the passage","Presents an opposing viewpoint","Provides supporting evidence","Defines technical terminology"],
+   fb:"\u201cChallenged this view\u201d explicitly signals that Chomsky\u2019s position OPPOSES the traditional theory. The highlighted sentence introduces a contrasting perspective."}
+];
+
+/* Exercise 4: Cross-Text Classifier (string matching, dual passage) */
+var CROSS = [
+  {t1:"Economist Lisa Park argues that raising the minimum wage to $15/hour would significantly reduce poverty rates, as millions of workers would see their annual income rise above the federal poverty line.",
+   t2:"Economist James Reed cautions that a sharp minimum wage increase could lead to job losses, as small businesses may not be able to absorb the higher labor costs and could reduce their workforce.",
+   c:"Disagree", opts:["Agree","Disagree","Extend","Qualify","Apply"],
+   fb:"Park says raising the wage helps (reduces poverty). Reed says it hurts (causes job losses). They take opposing positions on the same policy."},
+  {t1:"Marine biologist Dr. Tanaka has documented that coral reefs exposed to rising ocean temperatures lose their symbiotic algae, resulting in bleaching events that can kill entire reef systems within months.",
+   t2:"Building on Tanaka\u2019s findings, researcher Dr. Osei has identified three coral species that appear resistant to temperature-induced bleaching, suggesting that targeted conservation of these resilient species could help preserve reef biodiversity.",
+   c:"Extend", opts:["Agree","Disagree","Extend","Qualify","Apply"],
+   fb:"\u201cBuilding on Tanaka\u2019s findings\u201d = Text 2 accepts Text 1 and adds NEW information (resistant species). This extends the research."},
+  {t1:"Psychologist Dr. Rivera claims that social media use among teenagers leads to increased rates of anxiety and depression, citing a longitudinal study of 5,000 adolescents over three years.",
+   t2:"Dr. Chen acknowledges the correlation Rivera identified but notes that teenagers who already experienced anxiety were significantly more likely to use social media heavily, making it unclear whether social media causes anxiety or anxious teens simply use it more.",
+   c:"Qualify", opts:["Agree","Disagree","Extend","Qualify","Apply"],
+   fb:"\u201cAcknowledges...but notes\u201d = Text 2 accepts the data but adds a limitation (correlation vs. causation). This qualifies the original claim."},
+  {t1:"Historian Maria Santos has argued that the development of the printing press was the most transformative technological innovation of the second millennium, as it democratized access to information and enabled the rapid spread of new ideas.",
+   t2:"Digital media scholar Amir Hassan contends that the internet has replicated and amplified every effect Santos attributes to the printing press, but on a global scale and at a speed that Gutenberg could never have imagined.",
+   c:"Apply", opts:["Agree","Disagree","Extend","Qualify","Apply"],
+   fb:"Text 2 takes Text 1\u2019s framework (transformative technology that democratizes information) and APPLIES it to a different case (the internet). The structure of the argument is the same, applied to a new subject."},
+  {t1:"Research on urban green spaces consistently shows that access to parks and gardens improves mental health outcomes, with residents living near green spaces reporting lower levels of stress and anxiety.",
+   t2:"A comprehensive review of 47 studies confirms that proximity to nature is associated with measurable reductions in cortisol levels, blood pressure, and self-reported anxiety, with effects observed across age groups, income levels, and geographic regions.",
+   c:"Agree", opts:["Agree","Disagree","Extend","Qualify","Apply"],
+   fb:"Both texts support the same conclusion: green spaces/nature improve mental health. Text 2 provides additional supporting evidence from a broader review."}
+];
+
+/* Exercise 5: Trap Spotter */
+var TRAPS = [
+  {passage:"A recent study found that students who eat breakfast perform better on standardized tests than students who skip it. The researchers controlled for socioeconomic status, sleep quality, and prior academic achievement.",
+   q:"Which choice best describes the main purpose of the text?",
+   wrong:"To describe the eating habits of students", right:"To present evidence linking breakfast to test performance", trap:"Topic disguised as purpose",
+   fb:"The wrong answer describes the TOPIC (eating habits) but not the PURPOSE. The passage isn\u2019t just describing habits \u2014 it\u2019s presenting evidence for a specific claim (breakfast \u2192 performance)."},
+  {passage:"Traditional farming relies heavily on chemical pesticides that kill both harmful insects and beneficial pollinators. Organic farming, by contrast, uses natural pest management techniques that target specific pests while preserving pollinator populations.",
+   q:"Which choice best describes the structure of the text?",
+   wrong:"It explains the causes of pollinator decline", right:"It contrasts two farming approaches and their effects on pollinators", trap:"Partial match (only half the passage)",
+   fb:"The wrong answer only describes the FIRST sentence (traditional farming\u2019s effects). The passage is structured as a COMPARISON between two approaches. Always account for the WHOLE passage."},
+  {passage:"<strong>Text 1:</strong> Professor Lin argues that artificial intelligence will create more jobs than it eliminates by spawning entirely new industries. <strong>Text 2:</strong> Dr. Torres agrees that AI will create new industries but emphasizes that displaced workers may lack the skills to fill these new roles without significant retraining.",
+   q:"How would Torres most likely respond to Lin?",
+   wrong:"By disagreeing with Lin\u2019s central claim", right:"By accepting Lin\u2019s premise while identifying a complication", trap:"Oversimplifying the relationship",
+   fb:"Torres doesn\u2019t DISAGREE \u2014 she \u201cagrees that AI will create new industries.\u201d She QUALIFIES Lin\u2019s claim by adding a complication (skills gap). \u201cDisagree\u201d oversimplifies what\u2019s actually a qualify relationship."},
+  {passage:"The documentary explores the lives of three families in different countries who have adopted completely plant-based diets. Through intimate interviews, the filmmaker reveals both the health benefits and social challenges these families face.",
+   q:"Which choice best describes the main purpose of the text?",
+   wrong:"To argue that plant-based diets are healthier than traditional diets", right:"To examine the experiences of families who have adopted plant-based diets", trap:"Assuming a position the author doesn\u2019t take",
+   fb:"The passage presents BOTH benefits and challenges neutrally \u2014 it doesn\u2019t argue for plant-based diets. The wrong answer assumes the author is advocating a position when the purpose is actually to examine/explore."}
+];
+
+/* ── PRACTICE QUESTIONS ── */
+var PST = [
+  {id:0, t:1, passage:"Honeybees perform a sophisticated \u201cwaggle dance\u201d to communicate the location of food sources to other bees in the hive. The direction of the dance indicates the angle relative to the sun, while the duration indicates distance. This allows an entire colony to efficiently exploit food sources that a single scout bee has discovered.",
+   q:"Which choice best describes the overall structure of the text?",
+   ch:["It presents a problem and proposes a solution.","It describes a process and explains its function.","It compares two competing theories.","It makes a claim and then challenges it."], c:1,
+   fb:"The passage describes HOW bees communicate (waggle dance process) and explains WHY it matters (allows efficient food exploitation). This is describe process + explain function."},
+  {id:1, t:1, passage:"The ancient city of Petra, carved into sandstone cliffs in modern-day Jordan, served as a major trading hub for the Nabataean civilization. Its elaborate water management system, including dams, cisterns, and aqueducts, allowed a population of 20,000 to thrive in a desert environment.",
+   q:"Which choice best states the main purpose of the text?",
+   ch:["To argue that Petra was the most advanced ancient city","To describe Petra\u2019s significance as a trading center and its engineering achievements","To explain why the Nabataean civilization eventually declined","To compare Petra\u2019s water system to modern infrastructure"], c:1,
+   fb:"The passage describes two things about Petra: its role as a trading hub and its water system. No argument, no comparison, no decline mentioned. Purpose = describe significance."},
+  {id:2, t:1, passage:"<strong>Text 1:</strong> Food scientist Dr. Patel argues that lab-grown meat could solve the environmental problems caused by traditional livestock farming, including greenhouse gas emissions and land use.<br><br><strong>Text 2:</strong> Nutritionist Dr. Williams supports reducing livestock farming\u2019s environmental impact but contends that promoting plant-based diets would be more practical and affordable than developing lab-grown alternatives.",
+   q:"Based on the texts, how would Williams most likely respond to Patel?",
+   ch:["By rejecting the idea that livestock farming has environmental consequences","By agreeing with the goal but proposing a different solution","By arguing that lab-grown meat is more nutritious than plant-based options","By questioning whether any dietary changes can address climate change"], c:1,
+   fb:"Williams \u201csupports reducing...impact\u201d (agrees with the goal) \u201cbut contends that...plant-based diets\u201d (proposes a different solution). They share the goal but disagree on the method."},
+  {id:3, t:2, passage:'Researchers studying sleep patterns in adolescents have long recommended that high schools delay their start times to align with teenagers\u2019 naturally later sleep cycles. <strong style="color:#f472b6">A 2019 California law requiring public high schools to start no earlier than 8:30 a.m. provided the first large-scale test of this recommendation.</strong> Preliminary results show a measurable increase in average sleep duration among affected students.',
+   q:"Which choice best describes the function of the highlighted sentence?",
+   ch:["It challenges the researchers\u2019 recommendation.","It transitions from a general recommendation to a specific real-world application.","It provides the study\u2019s conclusion.","It introduces a counterargument to the opening claim."], c:1,
+   fb:"Sentence 1 = general recommendation. Highlighted sentence = the law that TESTED the recommendation (transitions from theory to practice). Sentence 3 = result. The highlighted sentence bridges the gap."},
+  {id:4, t:2, passage:"While many assume that creative thinking is an innate talent, psychologist Dr. Sarah Chen\u2019s research suggests otherwise. In a study of 1,200 adults, participants who completed a 10-week course in divergent thinking techniques showed a 35% improvement in creative problem-solving scores compared to a control group.",
+   q:"Which choice best describes the main purpose of the text?",
+   ch:["To describe the steps in Dr. Chen\u2019s divergent thinking course","To challenge the assumption that creativity cannot be developed","To argue that all adults should take creativity courses","To compare innate creativity with learned creativity"], c:1,
+   fb:"\u201cWhile many assume...suggests otherwise\u201d = the text CHALLENGES a common assumption. The study is evidence FOR the challenge, not the purpose itself. The purpose verb is \u201cchallenge.\u201d"},
+  {id:5, t:2, passage:"<strong>Text 1:</strong> Historian David Kim contends that the printing press was revolutionary primarily because it made religious texts widely available, enabling individuals to interpret scripture independently and fueling the Protestant Reformation.<br><br><strong>Text 2:</strong> Historian Ana Reyes acknowledges the press\u2019s role in religious reform but argues its most significant impact was on scientific communication, as it allowed researchers across Europe to share, verify, and build upon each other\u2019s findings.",
+   q:"Which choice best describes the relationship between the two texts?",
+   ch:["Text 2 contradicts Text 1\u2019s claim that the printing press was important.","Text 2 provides additional evidence supporting Text 1\u2019s argument.","Both texts agree on the printing press\u2019s impact but emphasize different aspects of it.","Text 2 argues that Text 1\u2019s claim is historically inaccurate."], c:2,
+   fb:"Both agree the press was revolutionary (not contradicting). But Kim emphasizes religious impact while Reyes emphasizes scientific impact. They agree on the big picture, disagree on which impact was most significant."},
+  {id:6, t:2, passage:"The octopus possesses a remarkably distributed nervous system: two-thirds of its neurons reside in its eight arms rather than its brain. This arrangement allows each arm to operate with a degree of autonomy, independently exploring objects and solving simple problems even when severed from the central brain.",
+   q:"Which choice best describes the structure of the text?",
+   ch:["It presents a claim and then provides a counter-example.","It describes an unusual biological feature and explains its functional implications.","It compares the octopus\u2019s nervous system to that of other animals.","It traces the evolutionary development of octopus intelligence."], c:1,
+   fb:"Sentence 1 = unusual feature (neurons in arms, not brain). Sentence 2 = what this enables (autonomous arm movement). Structure = describe feature + explain implication."},
+  {id:7, t:3, passage:"<strong>Text 1:</strong> Education researcher Dr. Nakamura argues that homework in elementary school develops self-discipline and study habits that benefit students throughout their academic careers, even if the direct academic impact is modest.<br><br><strong>Text 2:</strong> Dr. Okafor\u2019s meta-analysis of 60 studies found that homework in elementary school has minimal effect on academic outcomes and may increase student stress and reduce family time. However, she notes that homework involving parental interaction, such as reading together, does show positive effects.",
+   q:"Based on the texts, how would Okafor most likely characterize Nakamura\u2019s argument?",
+   ch:["As fundamentally correct in its conclusions","As overly broad, since only certain types of homework show benefits","As based on outdated research methods","As irrelevant to current educational debates"], c:1,
+   fb:"Okafor\u2019s data challenges the general benefit of homework BUT she notes an exception (parental interaction homework). She would say Nakamura\u2019s claim is too broad \u2014 it applies only to specific types. This is a QUALIFY relationship."},
+  {id:8, t:3, passage:'In her 1962 book <em>Silent Spring</em>, Rachel Carson documented the devastating effects of pesticide use on wildlife populations. <strong style="color:#f472b6">Rather than presenting her findings in the dry language of scientific reports, Carson employed vivid narrative techniques, opening with a fable about a town where all life had been silenced by chemical contamination.</strong> This literary approach made her scientific arguments accessible to a broad public audience and helped launch the modern environmental movement.',
+   q:"Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+   ch:["It provides the central scientific evidence for Carson\u2019s claims.","It explains the rhetorical strategy that made Carson\u2019s work broadly influential.","It criticizes Carson\u2019s departure from standard scientific writing.","It compares Carson\u2019s book to other environmental publications."], c:1,
+   fb:"Sentence 1 = what Carson did (documented pesticide effects). Highlighted sentence = HOW she did it differently (narrative techniques). Sentence 3 = why that approach mattered (broad impact). The function is explaining the strategy."},
+  {id:9, t:3, passage:"Researchers at the Salk Institute discovered that exercise stimulates the production of a protein called BDNF (brain-derived neurotrophic factor), which promotes the growth of new neurons in the hippocampus \u2014 the brain region associated with memory and learning. This finding has prompted some educators to advocate for increased physical activity during the school day, arguing that exercise breaks could enhance academic performance.",
+   q:"Which choice best describes the overall structure of the text?",
+   ch:["It describes a scientific finding and then discusses its potential application.","It presents two competing theories about brain development.","It argues against current educational practices.","It traces the history of research on exercise and cognition."], c:0,
+   fb:"Sentence 1 = scientific finding (exercise \u2192 BDNF \u2192 neuron growth). Sentence 2 = application to education (exercise breaks in schools). The passage moves from discovery to potential real-world use."}
+];
+
+var KEY_TAKEAWAYS = [
+  "Text Structure asks how the passage is organized \u2014 not what it says. Look for the pattern (cause/effect, compare/contrast, problem/solution, etc.).",
+  "Purpose asks why the author wrote it. Purpose \u2260 topic. Look for purpose verbs: argue, explain, challenge, qualify, illustrate.",
+  "\u201cFunction of a sentence\u201d asks what role ONE sentence plays within the whole passage (introduces, supports, qualifies, transitions, etc.).",
+  "Cross-Text questions give you two texts. Summarize each in one sentence, then classify: agree, disagree, extend, qualify, or apply.",
+  "Wrong answers on purpose questions often describe the topic accurately but the purpose incorrectly (e.g., \u201cdescribes coral reefs\u201d when the purpose is to \u201cargue for their protection\u201d).",
+  "These questions are rare (~3\u20135 per test) but highly strategic \u2014 they\u2019re questions many students get wrong, so getting them right gives you an edge."
+];
+
+/* ========== COMPONENTS ========== */
+
+/* ── DualPassage display ── */
+function DualPassage(props) {
+  return e("div", {style:{display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:12}},
+    e("div", {style:{padding:"12px 16px", background:C.mod+"06", borderRadius:8, borderLeft:"3px solid "+C.mod, fontSize:13, color:"#bbb", lineHeight:1.7, fontStyle:"italic"}},
+      e("span", {style:{fontStyle:"normal", fontWeight:700, fontSize:11, textTransform:"uppercase", letterSpacing:1, marginBottom:6, display:"block", color:C.mod}}, "Text 1"),
+      props.t1
+    ),
+    e("div", {style:{padding:"12px 16px", background:C.info+"06", borderRadius:8, borderLeft:"3px solid "+C.info, fontSize:13, color:"#bbb", lineHeight:1.7, fontStyle:"italic"}},
+      e("span", {style:{fontStyle:"normal", fontWeight:700, fontSize:11, textTransform:"uppercase", letterSpacing:1, marginBottom:6, display:"block", color:C.info}}, "Text 2"),
+      props.t2
+    )
+  );
+}
+
+/* ── Welcome ── */
+function Welcome(props) {
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  return e("div", {style:{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"100vh", padding:"0 24px", transition:"all .7s", opacity:show?1:0, transform:show?"translateY(0)":"translateY(16px)"}},
+    e("div", {style:{background:C.modBg, border:"1px solid "+C.mod+"44", borderRadius:12, padding:"6px 18px", fontSize:13, letterSpacing:1.5, textTransform:"uppercase", color:C.mod, marginBottom:12, fontWeight:600}}, "Phase 2 \u00B7 Module 3"),
+    e("h1", {style:{fontSize:"clamp(1.7rem,4.5vw,3rem)", fontWeight:800, background:"linear-gradient(135deg,"+C.mod+","+C.rw+")", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", lineHeight:1.1, textAlign:"center", marginBottom:16, fontFamily:"'Cormorant Garamond',serif"}}, "Text Structure, Purpose & Cross-Text Connections"),
+    e("p", {style:{color:C.sub, fontSize:18, maxWidth:560, textAlign:"center", lineHeight:1.6, marginBottom:12}}, "The remaining Craft & Structure skills \u2014 about 4\u20136 questions per test. Learn to read like a writer: what is the author doing and why?"),
+    e("div", {style:{background:C.modBg, border:"1px solid "+C.mod+"33", borderRadius:12, padding:"14px 22px", maxWidth:540, marginBottom:40, fontSize:14, color:C.sub, lineHeight:1.6, textAlign:"center"}},
+      e("strong", {style:{color:C.mod}}, "Completing Craft & Structure: "),
+      "Module 2 covered Words in Context (~10\u201311 questions). This module covers the remaining Craft & Structure skills: Text Structure & Purpose (~2 questions) and Cross-Text Connections (~1\u20132 questions). Together with Module 2, you\u2019ll own the entire ~28% Craft & Structure domain."
+    ),
+    e("div", {style:{display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:16, maxWidth:700, width:"100%", marginBottom:48}},
+      [{icon:"\uD83C\uDFE7",title:"Text Structure",desc:"6 organizational patterns"},{icon:"\uD83C\uDFAF",title:"Author\u2019s Purpose",desc:"Purpose vs. topic"},{icon:"\uD83D\uDD17",title:"Cross-Text",desc:"5 relationship types"},{icon:"\uD83C\uDF1F",title:"5 Exercises",desc:"Classify, sort, analyze"},{icon:"\uD83D\uDCDD",title:"10 Practice Qs",desc:"PSAT-format questions"}
+      ].map(function(c,i){ return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
+        e("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        e("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
+        e("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      );})
+    ),
+    e("button", {onClick:props.onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")", "#fff"), onMouseOver:function(ev){ev.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(ev){ev.currentTarget.style.transform="scale(1)";}}, "Start Learning \u2192"),
+    e("div", {style:{color:C.muted, fontSize:13, marginTop:24}}, "\u23F1 ~60 min \u00B7 Craft & Structure")
+  );
+}
+
+/* ── LessonViewer ── */
+function LessonViewer(props) {
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var lesson = LESSONS[idx];
+  var total = LESSONS.length;
+
+  function renderVisual() {
+    if (lesson.visual === "six-structures") {
+      var structs = [
+        {name:"Cause/Effect", signal:"because, therefore, as a result, led to", color:C.wrong},
+        {name:"Compare/Contrast", signal:"similarly, in contrast, whereas, unlike", color:C.info},
+        {name:"Problem/Solution", signal:"the challenge, to address this, one approach", color:C.sec},
+        {name:"Chronological", signal:"first, then, subsequently, in 1923, finally", color:C.expr},
+        {name:"Claim/Evidence", signal:"argues, evidence suggests, studies show", color:C.rw},
+        {name:"Description", signal:"is characterized by, includes, types of", color:C.muted}
+      ];
+      return e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:8,padding:"12px 20px"}},
+        structs.map(function(s,i){
+          return e("div",{key:i,style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:12,textAlign:"center"}},
+            e("div",{style:{fontSize:13,fontWeight:700,color:s.color,marginBottom:6}},s.name),
+            e("div",{style:{fontSize:10,color:C.sub,lineHeight:1.4,fontStyle:"italic"}},s.signal)
+          );
+        })
+      );
+    }
+    if (lesson.visual === "purpose-vs-topic") {
+      return e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,padding:"12px 20px"}},
+        e("div",{style:{background:C.paper,border:"1px solid "+C.mod,borderRadius:10,padding:14,textAlign:"center"}},
+          e("div",{style:{fontSize:13,fontWeight:700,color:C.mod,marginBottom:6}},"\uD83C\uDFAF Purpose"),
+          e("div",{style:{fontSize:11,color:C.sub,lineHeight:1.5}},"WHY the author wrote it"),
+          e("div",{style:{fontSize:10,color:C.muted,marginTop:6,fontStyle:"italic"}},"Uses verbs: argue, explain, challenge, describe, qualify")
+        ),
+        e("div",{style:{background:C.paper,border:"1px solid "+C.info,borderRadius:10,padding:14,textAlign:"center"}},
+          e("div",{style:{fontSize:13,fontWeight:700,color:C.info,marginBottom:6}},"\uD83D\uDCCB Topic"),
+          e("div",{style:{fontSize:11,color:C.sub,lineHeight:1.5}},"WHAT the passage is about"),
+          e("div",{style:{fontSize:10,color:C.muted,marginTop:6,fontStyle:"italic"}},"Uses nouns: coral reefs, the space program, renewable energy")
+        )
+      );
+    }
+    if (lesson.visual === "five-relationships") {
+      var rels = [
+        {name:"Agree",desc:"Both support the same claim",color:C.sec},
+        {name:"Disagree",desc:"Opposing positions on same issue",color:C.wrong},
+        {name:"Extend",desc:"Text 2 builds on Text 1",color:C.info},
+        {name:"Qualify",desc:"Text 2 adds limitations",color:C.expr},
+        {name:"Apply",desc:"Applies principle to new case",color:C.rw}
+      ];
+      return e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(110px,1fr))",gap:8,padding:"12px 20px"}},
+        rels.map(function(r,i){
+          return e("div",{key:i,style:{background:C.paper,border:"1px solid "+r.color+"66",borderRadius:10,padding:12,textAlign:"center"}},
+            e("div",{style:{fontSize:14,fontWeight:700,color:r.color,marginBottom:4}},r.name),
+            e("div",{style:{fontSize:10,color:C.sub,lineHeight:1.4}},r.desc)
+          );
+        })
+      );
+    }
+    return null;
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      LESSONS.map(function(_,i){
+        return e("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+      })
+    ),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      e("div",{style:{padding:"28px 28px 0"}},
+        e("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        e("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:16,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},lesson.title),
+        lesson.body.map(function(p,i){
+          return e("p",{key:i,style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p);
+        })
+      ),
+      lesson.visual && e("div",{style:{padding:"8px 4px 20px"}},renderVisual())
+    ),
+    e("div",{style:{display:"flex",justifyContent:"space-between"}},
+      e("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#444":C.sub),{border:"1px solid "+C.border,padding:"10px 20px",fontSize:14})},"\u2190 Back"),
+      idx < total-1
+        ? e("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
+        : e("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Exercises \u2192")
+    )
+  );
+}
+
+/* ── ClassifyExercise (reusable) ── */
+function ClassifyExercise(props) {
+  var title = props.title, icon = props.icon, subtitle = props.subtitle, items = props.items, options = props.options, renderStimulus = props.renderStimulus, borderColor = props.borderColor, onComplete = props.onComplete, useStringMatch = props.useStringMatch;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){
+    if (useStringMatch) return answers[i] === items[i].c;
+    return answers[i] === items[i].c;
+  }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      var isCorrect = useStringMatch ? a === q.c : a === q.c;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus ? renderStimulus(q,i) : e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+(borderColor||C.mod),fontStyle:"italic"}},q.passage||q.text),
+        e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          (q.opts||options).map(function(o,oi){
+            var matchVal = useStringMatch ? o : oi;
+            var isThisCorrect = useStringMatch ? o === q.c : oi === q.c;
+            var isThisAnswer = a === matchVal;
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (isThisCorrect) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (isThisAnswer) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return e("button",{key:oi,onClick:function(){pick(i,matchVal);},style:st},o);
+          })
+        ),
+        h && e("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:isCorrect?C.correctBg:C.wrongBg,color:isCorrect?C.correct:C.wrong}},(isCorrect?"\u2713 ":"\u2717 ")+q.fb)
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── TrapSpotterExercise ── */
+function TrapSpotterExercise(props) {
+  var _s = useState({}), revealed = _s[0], setRevealed = _s[1];
+  var total = TRAPS.length;
+  var done = Object.keys(revealed).length === total;
+
+  function reveal(i) {
+    if (revealed[i]) return;
+    setRevealed(function(prev){ var n = Object.assign({}, prev); n[i] = true; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:C.expr,fontSize:14,fontWeight:700}},"\u26A0\uFE0F Trap Spotter"),
+      e("span",{style:{color:C.muted,fontSize:13}},Object.keys(revealed).length,"/",total," reviewed")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Each question shows a passage, the trap answer, and the correct answer. Identify the trap type."),
+    TRAPS.map(function(q,i){
+      var h = revealed[i];
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.expr,fontStyle:"normal"},dangerouslySetInnerHTML:{__html:q.passage}}),
+        e("div",{style:{fontSize:13,color:"#ddd",marginBottom:8}},q.q),
+        e("div",{style:{display:"flex",gap:12,marginBottom:10,flexWrap:"wrap"}},
+          e("div",{style:{padding:"6px 12px",borderRadius:6,background:C.wrongBg,border:"1px solid "+C.wrong,fontSize:12}},
+            e("span",{style:{color:C.wrong,fontWeight:700}},"Trap: "),
+            e("span",{style:{color:"#ccc"}},q.wrong)
+          ),
+          e("div",{style:{padding:"6px 12px",borderRadius:6,background:C.correctBg,border:"1px solid "+C.correct,fontSize:12}},
+            e("span",{style:{color:C.correct,fontWeight:700}},"Correct: "),
+            e("span",{style:{color:"#ccc"}},q.right)
+          )
+        ),
+        e("div",{style:{fontSize:13,color:C.muted,marginBottom:8}},
+          "Trap type: ",
+          e("strong",{style:{color:C.expr}},q.trap)
+        ),
+        e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          e("button",{onClick:function(){reveal(i);},style:{padding:"6px 14px",background:h?C.correctBg:C.surface,border:"2px solid "+(h?C.correct:C.border),borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:h?C.correct:C.ink,transition:"all .15s",opacity:h?1:1,pointerEvents:h?"none":"auto"}},"I understand this trap \u2713")
+        ),
+        h && e("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:C.correctBg,color:C.correct}},q.fb)
+      );
+    }),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:props.onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── MCExercise ── */
+function MCExercise(props) {
+  var title = props.title, icon = props.icon, subtitle = props.subtitle, items = props.items, renderStimulus = props.renderStimulus, borderColor = props.borderColor, onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus(q,i),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          (q.ch||q.opts).map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return e("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              e("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              e("span",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:12}},ch)
+            );
+          })
+        ),
+        h && e("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(borderColor||C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── QuizEngine ── */
+function QuizEngine(props) {
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var item = PST[idx];
+
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.c) setScore(function(s){ return s+1; });
+  }
+  function next() {
+    if (idx < PST.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+
+  if (done) {
+    return e("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      e("div",{style:{fontSize:48,marginBottom:16}},"\uD83D\uDCDD"),
+      e("h2",{style:{color:C.ink,fontSize:28,fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Practice Complete"),
+      e("div",{style:{color:C.mod,fontSize:48,fontWeight:900}},score,"/",PST.length),
+      e("p",{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},
+        score >= 9 ? "Outstanding! You\u2019ve mastered text structure and cross-text connections." :
+        score >= 7 ? "Great work! A few more practice rounds and you\u2019ll own this topic." :
+        score >= 5 ? "Solid foundation. Review the errors you made and try again." :
+        "Keep practicing! Focus on the six structures and five relationship types."
+      ),
+      e("button",{onClick:function(){props.onComplete(score,PST.length);},style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff")},"Continue \u2192")
+    );
+  }
+
+  var tierColors = {1:C.sec, 2:C.info, 3:C.rw};
+  var tierLabels = {1:"Easy", 2:"Medium", 3:"Hard"};
+  var hasDual = item.passage.indexOf("<strong>Text 1:</strong>") !== -1;
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
+      e("div",{style:{color:C.mod,fontSize:13,fontWeight:700}},"\uD83D\uDCDD PSAT Practice"),
+      e("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        e("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:600,background:tierColors[item.t]+"22",color:tierColors[item.t]}},tierLabels[item.t]),
+        e("span",{style:{color:C.muted,fontSize:13}},idx+1,"/",PST.length)
+      )
+    ),
+    e("div",{style:{height:4,background:C.border,borderRadius:2,marginBottom:20,overflow:"hidden"}},
+      e("div",{style:{height:"100%",width:((idx+(confirmed?1:0))/PST.length*100)+"%",background:"linear-gradient(90deg,"+C.mod+","+C.rw+")",borderRadius:2,transition:"width .4s"}})
+    ),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,marginBottom:16}},
+      e("div",{style:{color:"#ddd",fontSize:15,lineHeight:1.8,fontFamily:"Georgia,serif"},dangerouslySetInnerHTML:{__html:item.passage}})
+    ),
+    e("div",{style:{color:C.ink,fontSize:14,fontWeight:600,marginBottom:16}},item.q),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      item.ch.map(function(c,ci){
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.c;
+        var bg = C.surface, bdr = "1px solid "+C.border, tc = "#ddd";
+        if (confirmed && isCorr) { bg = C.correct+"18"; bdr = "2px solid "+C.correct; tc = C.correct; }
+        else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
+        else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
+        return e("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+          e("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          e("span",{style:{color:tc,fontSize:14,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace"}},c)
+        );
+      })
+    ),
+    confirmed && e("div",{style:{background:C.border,borderRadius:12,padding:20,marginBottom:24,borderLeft:"4px solid "+C.mod}},
+      e("div",{style:{color:C.mod,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+      e("div",{style:{color:C.sub,fontSize:14,lineHeight:1.6}},item.fb)
+    ),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed
+        ? e("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?C.border:C.mod,selected===null?"#555":"#fff",{fontSize:14,padding:"10px 24px"})},"Confirm")
+        : e("button",{onClick:next,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},idx<PST.length-1?"Next \u2192":"See Results \u2192")
+    )
+  );
+}
+
+/* ── NavLinks ── */
+function NavLinks() {
+  return e("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border,flexWrap:"wrap"}},
+    NAV.prev && e("a",{href:NAV.prev.file,style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"})},"\u2190 "+NAV.prev.label),
+    NAV.next && e("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"10px 20px"})},NAV.next.label+" \u2192")
+  );
+}
+
+/* ── ModuleComplete ── */
+function ModuleComplete(props) {
+  var pct = Math.round(props.quizScore/props.quizTotal*100);
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
+    e("div",{style:{fontSize:64,marginBottom:16}},pct>=90?"\uD83C\uDFC6":pct>=70?"\uD83C\uDF1F":"\uD83D\uDCAA"),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 3 Complete!"),
+    e("div",{style:{color:C.mod,fontSize:48,fontWeight:900,marginBottom:8}},props.quizScore,"/",props.quizTotal),
+    e("p",{style:{color:C.sub,fontSize:15,marginBottom:32}},"on PSAT-format practice questions"),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
+      e("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+      KEY_TAKEAWAYS.map(function(t,i){
+        return e("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
+          e("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+          e("span",null,t)
+        );
+      })
+    ),
+    e(NavLinks, null)
+  );
+}
+
+/* ── Exercises Router ── */
+function Exercises(props) {
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+
+  /* Exercise 1: Structure Identifier — string matching */
+  if (step === 0) {
+    return e(ClassifyExercise, {
+      title:"Structure Identifier", icon:"\uD83C\uDFE7",
+      subtitle:"Read each passage and identify its organizational structure.",
+      items:STRUCT, useStringMatch:true, borderColor:C.mod,
+      renderStimulus:function(q){
+        return e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.mod,fontStyle:"italic"}},q.passage);
+      },
+      onComplete:function(){ setStep(1); }
+    });
+  }
+
+  /* Exercise 2: Purpose vs Topic — string matching */
+  if (step === 1) {
+    return e(ClassifyExercise, {
+      title:"Purpose vs. Topic Sorter", icon:"\uD83C\uDFAF",
+      subtitle:"Classify each answer choice: does it describe the author\u2019s PURPOSE (why they wrote it) or the TOPIC (what it\u2019s about)?",
+      items:PVST, options:["Purpose","Topic"], useStringMatch:true, borderColor:C.rw,
+      renderStimulus:function(q){
+        return e("div",{style:{fontStyle:"italic",color:C.ink,fontSize:14,marginBottom:8,padding:"10px 14px"}},"\u201c"+q.text+"\u201d");
+      },
+      onComplete:function(){ setStep(2); }
+    });
+  }
+
+  /* Exercise 3: Sentence Function — index matching */
+  if (step === 2) {
+    return e(ClassifyExercise, {
+      title:"Sentence Function Analyzer", icon:"\uD83D\uDD27",
+      subtitle:"Identify the function of the highlighted sentence within the passage.",
+      items:SFUNC, useStringMatch:false, borderColor:C.accent,
+      renderStimulus:function(q){
+        return e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.accent,fontStyle:"normal"},dangerouslySetInnerHTML:{__html:q.passage}});
+      },
+      onComplete:function(){ setStep(3); }
+    });
+  }
+
+  /* Exercise 4: Cross-Text Classifier — string matching with dual passage */
+  if (step === 3) {
+    return e(ClassifyExercise, {
+      title:"Cross-Text Relationship Classifier", icon:"\uD83D\uDD17",
+      subtitle:"Read both texts, then classify the relationship.",
+      items:CROSS, useStringMatch:true, borderColor:C.info,
+      renderStimulus:function(q){
+        return e(DualPassage, {t1:q.t1, t2:q.t2});
+      },
+      onComplete:function(){ setStep(4); }
+    });
+  }
+
+  /* Exercise 5: Trap Spotter */
+  if (step === 4) {
+    return e(TrapSpotterExercise, {
+      onComplete:function(){ props.onComplete(); }
+    });
+  }
+
+  return null;
+}
+
+/* ── App Shell ── */
+function App() {
+  var _s = useState("welcome"), screen = _s[0], setScreen = _s[1];
+  var _s2 = useState(true), vis = _s2[0], setVis = _s2[1];
+  var _s3 = useState(0), quizScore = _s3[0], setQuizScore = _s3[1];
+  var _s4 = useState(10), quizTotal = _s4[0], setQuizTotal = _s4[1];
+
+  function go(next) {
+    setVis(false);
+    setTimeout(function(){ setScreen(next); setVis(true); window.scrollTo(0,0); }, 350);
+  }
+
+  var content = null;
+  if (screen === "welcome") content = e(Welcome,{onNext:function(){go("lesson");}});
+  else if (screen === "lesson") content = e(LessonViewer,{onComplete:function(){go("exercises");}});
+  else if (screen === "exercises") content = e(Exercises,{onComplete:function(){go("practice");}});
+  else if (screen === "practice") content = e(QuizEngine,{onComplete:function(s,t){setQuizScore(s);setQuizTotal(t);go("complete");}});
+  else if (screen === "complete") content = e(ModuleComplete,{quizScore:quizScore,quizTotal:quizTotal});
+
+  return e("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

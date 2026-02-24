@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 8: Transitions — PSAT 8/9 R&W — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var e = React.createElement;
+var useState = React.useState, useEffect = React.useEffect, useCallback = React.useCallback, useRef = React.useRef;
+
+/* ── design tokens ── */
+var C = {
+  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
+  sub:"#999", muted:"#666", accent:"#0891b2",
+  mod:"#fb923c", modBg:"rgba(251,146,60,.12)",
+  craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
+  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+};
+var btn = function(bg, color, extra) {
+  return Object.assign({
+    padding:"12px 28px", borderRadius:10, border:"none", background:bg,
+    color:color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s"
+  }, extra || {});
+};
+var NAV = {
+  prev:{ label:"Module 7: Agreement & Modifiers", file:"PSAT_89_RW_module-7.html" },
+  next:{ label:"Module 9: Rhetorical Synthesis", file:"PSAT_89_RW_module-9.html" }
+};
+
+/* ── LESSONS ── */
+var LESSONS = [
+  {
+    id:"8a", title:"The Three-Step Method",
+    subtitle:"Topic 8A \u2014 Read \u2192 Name \u2192 Match",
+    body:[
+      "Transition questions are pattern-recognition problems. Follow these three steps and you'll get them right almost every time.",
+      "Step 1 \u2014 READ: Read the sentence BEFORE and AFTER the blank. What is the relationship between these two ideas?",
+      "Step 2 \u2014 NAME: Label the relationship: addition, contrast, cause/effect, sequence, example, or summary.",
+      "Step 3 \u2014 MATCH: Pick the answer choice that belongs to the category you named. Eliminate all choices from wrong categories.",
+      "Why This Works: On the PSAT, the four answer choices almost always come from different categories. You'll typically see one addition word, one contrast word, one cause/effect word, and one example word. If you can name the category correctly, you can eliminate three wrong answers instantly.",
+      "Common mistake: Students try to \"hear\" which word sounds best without analyzing the relationship. This leads to errors because many transition words sound smooth in a sentence but create the wrong logical connection. Always name the category first."
+    ],
+    visual:"toolkit"
+  },
+  {
+    id:"8b", title:"Tricky Transitions & Common Traps",
+    subtitle:"Topic 8B \u2014 Lookalikes, Degree Traps & Paragraph-Level Transitions",
+    body:[
+      "Most transition questions are straightforward, but a few patterns trip students up. Here's how to handle them.",
+      "Trap 1: Same Category, Wrong Word \u2014 Sometimes two answer choices are from the same category but differ in nuance.\n\u2022 \"Similarly\" vs. \"Likewise\": Nearly identical \u2014 either usually works. Don't overthink these.\n\u2022 \"Therefore\" vs. \"Consequently\": Both are cause/effect. Interchangeable on the PSAT.\n\u2022 \"However\" vs. \"Nevertheless\": Both contrast, but \"nevertheless\" means \"despite that, the thing still happened.\" \"However\" is a simple contrast.",
+      "Trap 2: The \"Sounds Good\" Trap \u2014 \"Moreover\" and \"however\" are the two most commonly chosen wrong answers because they sound sophisticated. Students pick them when they can't decide, hoping they'll work. They only work if the relationship actually IS addition or contrast.",
+      "Trap 3: Paragraph-Level Transitions \u2014 Some questions ask for a transition at the START of a new paragraph. The trick: you must read the END of the previous paragraph to understand the relationship.\n\n\u2022 Within a paragraph: Read the sentence before and after the blank.\n\u2022 Between paragraphs: Read the last sentence of the previous paragraph and the first sentence of the new paragraph.",
+      "Trap 4: Addition vs. Cause/Effect \u2014 This is the most common confusion. Both \"move forward\" \u2014 but in different ways:\n\u2022 Addition: Idea 2 is ANOTHER point supporting the same argument. (\"Dolphins are intelligent. Furthermore, they display complex social behaviors.\")\n\u2022 Cause/Effect: Idea 1 CAUSES or LEADS TO idea 2. (\"The drought destroyed crops. Consequently, food prices rose sharply.\")",
+      "The causation test: Ask yourself: \"Did Idea 1 directly cause or lead to Idea 2?\" If yes \u2192 cause/effect. If no, and Idea 2 just adds another supporting point \u2192 addition."
+    ],
+    visual:"causation-test"
+  }
+];
+
+/* ── EXERCISE 1: CATEGORY SORTER ── */
+var CAT = [
+  {word:"furthermore",c:0},{word:"however",c:1},{word:"therefore",c:2},{word:"for instance",c:3},
+  {word:"nevertheless",c:1},{word:"as a result",c:2},{word:"in addition",c:0},{word:"subsequently",c:4},
+  {word:"conversely",c:1},{word:"consequently",c:2},{word:"likewise",c:0},{word:"specifically",c:3},
+  {word:"meanwhile",c:4},{word:"in contrast",c:1},{word:"accordingly",c:2},{word:"moreover",c:0}
+];
+var CAT_OPTS = ["Addition","Contrast","Cause/Effect","Example","Sequence"];
+var CAT_CLRS = ["#34d399","#f472b6","#60a5fa","#c084fc","#fbbf24"];
+
+/* ── EXERCISE 2: NAME THE RELATIONSHIP ── */
+var REL = [
+  {s1:"The company reported record profits in the third quarter.",s2:"It announced plans to expand into three new markets.",c:2,
+   fb:"Record profits LED TO expansion plans. Idea 1 caused Idea 2. Cause/effect."},
+  {s1:"Classical music has been shown to reduce stress in hospital patients.",s2:"Jazz music has been found to improve focus and creativity in office settings.",c:0,
+   fb:"Both sentences present a PARALLEL finding about different music genres. Neither causes the other. Addition."},
+  {s1:"The city invested $50 million in a new public transit system.",s2:"Traffic congestion increased by 12% over the following year.",c:1,
+   fb:"You\u2019d expect investment to REDUCE congestion, but it increased. The second idea contradicts the expected outcome. Contrast."},
+  {s1:"The Sahara Desert receives less than 3 inches of rain per year.",s2:"The Atacama Desert in Chile gets less than 0.6 inches annually.",c:3,
+   fb:"The second sentence provides a specific EXAMPLE that illustrates extreme dryness. Example."},
+  {s1:"Researchers first collected soil samples from 20 locations across the valley.",s2:"They analyzed the samples for heavy metal contamination.",c:4,
+   fb:"First they collected, THEN they analyzed. This is a time sequence. Sequence."},
+  {s1:"Electric vehicles produce zero direct emissions.",s2:"Manufacturing their batteries requires mining lithium, which has significant environmental costs.",c:1,
+   fb:"Sentence 1 highlights a benefit; sentence 2 introduces a complication. These ideas are in tension. Contrast."},
+  {s1:"The drought destroyed over 60% of the wheat crop.",s2:"Bread prices rose by 40% within three months.",c:2,
+   fb:"Crop destruction directly caused price increases. Clear cause/effect chain."},
+  {s1:"The museum features over 10,000 artifacts from ancient Egypt.",s2:"One of its centerpieces is a 3,000-year-old sarcophagus decorated with gold leaf.",c:3,
+   fb:"The second sentence gives a specific EXAMPLE of one artifact from the collection. Example."}
+];
+var REL_OPTS = ["Addition","Contrast","Cause/Effect","Example","Sequence"];
+
+/* ── EXERCISE 3: FILL THE BLANK ── */
+var FIL = [
+  {ctx:"The experiment produced results that directly contradicted the original hypothesis. ___, the researchers decided to redesign their methodology.",
+   ch:["Furthermore","For example","Consequently","Similarly"],c:2,
+   fb:"The contradictory results CAUSED the redesign. Cause/effect \u2192 \"Consequently.\" \"Furthermore\" (addition) and \"Similarly\" (addition) don\u2019t show causation. \"For example\" introduces an illustration, not a result."},
+  {ctx:"Many critics dismissed the novel when it was first published in 1925. ___, it is now considered one of the greatest works of American literature.",
+   ch:["Therefore","In addition","For instance","However"],c:3,
+   fb:"Initial dismissal vs. current acclaim = contrast. \"However\" signals the reversal. \"Therefore\" would mean the dismissal CAUSED the acclaim, which is backwards."},
+  {ctx:"Honeybees are essential pollinators for crops like almonds, apples, and blueberries. ___, wild bees and butterflies contribute significantly to the pollination of tomatoes, peppers, and wildflowers.",
+   ch:["Nevertheless","Similarly","As a result","In conclusion"],c:1,
+   fb:"Both sentences describe pollinators contributing to different crops. The ideas are parallel \u2192 addition. \"Similarly\" shows the parallel. \"Nevertheless\" (contrast) is wrong because there\u2019s no tension."},
+  {ctx:"The town council allocated $2 million to renovate the historic theater. ___, the project included restoring the original 1920s ceiling murals and replacing the outdated electrical system.",
+   ch:["However","Therefore","On the other hand","Specifically"],c:3,
+   fb:"The second sentence gives DETAILS about what the renovation included. Example/specification \u2192 \"Specifically.\" \"Therefore\" would wrongly suggest causation. \"However\" introduces contrast that isn\u2019t there."},
+  {ctx:"The archaeological team spent three years excavating the site. ___, they cataloged and preserved over 5,000 artifacts for museum display.",
+   ch:["In contrast","For example","Afterward","Moreover"],c:2,
+   fb:"Excavating came first, then cataloging/preserving. Time sequence \u2192 \"Afterward.\" \"Moreover\" (addition) misses the time relationship. \"In contrast\" wrongly suggests opposition."}
+];
+
+/* ── EXERCISE 4: TRAP SPOTTER ── */
+var TRP = [
+  {ctx:"The medication reduced symptoms in 80% of patients. However, the FDA approved it for widespread use.",
+   trap:"Used contrast (\"However\") where cause/effect is needed.",c:0,
+   opts:["Needs cause/effect (therefore, consequently)","Needs addition (moreover, furthermore)","Needs example (for instance)","Transition is correct"],
+   fb:"Positive trial results CAUSED FDA approval. \"However\" implies the approval is surprising or contradictory, but it\u2019s the expected outcome. Should be \"Consequently\" or \"Therefore.\""},
+  {ctx:"The city\u2019s population has grown by 30% over the past decade. Therefore, neighboring suburbs have experienced similar growth trends.",
+   trap:"Used cause/effect (\"Therefore\") where addition is needed.",c:1,
+   opts:["Needs contrast (however, nevertheless)","Needs addition (similarly, likewise)","Needs sequence (subsequently)","Transition is correct"],
+   fb:"The city didn\u2019t CAUSE the suburbs to grow. Both are experiencing the same trend independently \u2192 parallel relationship. Should be \"Similarly\" or \"Likewise.\""},
+  {ctx:"Renewable energy sources like solar and wind are becoming cheaper every year. For example, many governments are investing heavily in renewable infrastructure.",
+   trap:"Used example (\"For example\") where cause/effect is needed.",c:0,
+   opts:["Needs cause/effect (as a result, consequently)","Needs contrast (however)","Needs addition (moreover)","Transition is correct"],
+   fb:"Cheaper renewables LED TO government investment. \"For example\" would mean government investment is an EXAMPLE of getting cheaper, which doesn\u2019t make sense. Should be \"As a result\" or \"Consequently.\""},
+  {ctx:"The first act of the play introduced the main characters and established the central conflict. In contrast, the second act developed the subplot and raised the stakes.",
+   trap:"Used contrast (\"In contrast\") where sequence is needed.",c:2,
+   opts:["Needs cause/effect (therefore)","Needs addition (furthermore)","Needs sequence (then, next, subsequently)","Transition is correct"],
+   fb:"Acts 1 and 2 aren\u2019t opposing each other \u2014 they\u2019re sequential parts of the same story. \"In contrast\" wrongly implies opposition. Should be \"Then\" or \"Subsequently.\""}
+];
+
+/* ── EXERCISE 5: SPEED ROUND ── */
+var SPD = [
+  {s1:"The soil was too acidic for most crops.",s2:"The farmers added limestone to raise the pH.",ch:["However","Therefore","Similarly","For instance"],c:1},
+  {s1:"Cheetahs are the fastest land animals.",s2:"Peregrine falcons are the fastest animals overall, reaching speeds above 240 mph in a dive.",ch:["Therefore","However","In addition","Specifically"],c:1},
+  {s1:"The team won the first two games of the series.",s2:"They lost the next three games and were eliminated.",ch:["Furthermore","However","For example","As a result"],c:1},
+  {s1:"The restaurant uses locally sourced vegetables.",s2:"It partners with a nearby farm for its grass-fed beef.",ch:["However","Similarly","Therefore","In conclusion"],c:1},
+  {s1:"Deforestation has reduced the habitat available to orangutans.",s2:"Their population has declined by over 50% in the past two decades.",ch:["In contrast","For example","Similarly","Consequently"],c:3},
+  {s1:"The study surveyed 10,000 participants across 15 countries.",s2:"In Japan, 78% of respondents reported high job satisfaction.",ch:["Therefore","Nevertheless","For instance","Subsequently"],c:2},
+  {s1:"The candidate promised to lower taxes.",s2:"She proposed a 15% reduction in the income tax rate.",ch:["However","Moreover","Specifically","As a result"],c:2},
+  {s1:"The architect completed the initial blueprints in March.",s2:"The construction crew began laying the foundation in June.",ch:["In contrast","For example","Subsequently","Moreover"],c:2},
+  {s1:"Vitamin D deficiency is linked to weakened bones.",s2:"It may also contribute to depression and fatigue.",ch:["However","Furthermore","Consequently","For instance"],c:1},
+  {s1:"Critics gave the film overwhelmingly negative reviews.",s2:"It earned over $800 million at the global box office.",ch:["Therefore","Similarly","Nevertheless","In addition"],c:2}
+];
+
+/* ── PRACTICE QUESTIONS ── */
+var QUIZ = [
+  {id:0,t:1,passage:"Astronomers have long studied Mars for signs of past water activity. ___, recent missions have discovered mineral deposits that form only in the presence of liquid water, providing strong evidence that rivers once flowed across the planet\u2019s surface.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["However","In fact","For example","Subsequently"],answer:1,
+   explain:"The second sentence STRENGTHENS the first by providing confirming evidence. \"In fact\" signals emphasis/confirmation of the preceding claim. \"However\" wrongly introduces contrast. \"For example\" could work but \"in fact\" better captures the confirmatory relationship."},
+  {id:1,t:1,passage:"The new highway bypass was designed to reduce traffic in the downtown area. ___, commuters report that their travel times have decreased by an average of 15 minutes.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["Nevertheless","In contrast","As a result","For instance"],answer:2,
+   explain:"The bypass (cause) \u2192 decreased travel times (effect). \"As a result\" correctly signals cause/effect. \"Nevertheless\" and \"In contrast\" wrongly suggest the outcome contradicts the intention."},
+  {id:2,t:1,passage:"Many species of birds migrate thousands of miles each fall. ___, the Arctic tern travels from pole to pole \u2014 a round trip of approximately 44,000 miles.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["However","Therefore","Moreover","For example"],answer:3,
+   explain:"The Arctic tern is a SPECIFIC EXAMPLE of a bird that migrates thousands of miles. \"For example\" introduces the illustration. \"Moreover\" (addition) is close but doesn\u2019t capture the specific-to-general relationship as well."},
+  {id:3,t:2,passage:"The novelist spent a decade researching the historical period before writing a single page of the manuscript. ___, she traveled to archives in six countries, interviewed dozens of historians, and read over 300 primary source documents.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["In contrast","Nevertheless","Specifically","As a result"],answer:2,
+   explain:"The second sentence gives DETAILS about what the research involved. \"Specifically\" introduces elaboration/specification. \"As a result\" would mean the research caused the traveling, but the traveling WAS the research."},
+  {id:4,t:2,passage:"Japan\u2019s population has been steadily declining since 2010, with birth rates falling to historic lows. ___, the country\u2019s workforce has shrunk significantly, prompting the government to invest in automation and robotics.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["Similarly","For instance","However","Consequently"],answer:3,
+   explain:"Population decline CAUSED workforce shrinkage and investment in automation. Clear cause/effect chain \u2192 \"Consequently.\" \"Similarly\" (addition) misses the causal relationship. \"However\" wrongly introduces contrast."},
+  {id:5,t:2,passage:"Supporters of the new education policy argue that standardized testing provides an objective measure of student achievement. ___, critics contend that such tests fail to capture creativity, critical thinking, and collaborative skills.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["Furthermore","Therefore","Similarly","On the other hand"],answer:3,
+   explain:"Supporters say one thing; critics say the opposite. Clear contrast between two viewpoints \u2192 \"On the other hand.\" \"Furthermore\" and \"Similarly\" wrongly suggest the critics are ADDING to the supporters\u2019 argument."},
+  {id:6,t:2,passage:"Dr. Chen\u2019s research team has published groundbreaking work on gene therapy for inherited diseases. ___, the team has secured over $40 million in federal grants to fund clinical trials.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["Nevertheless","In addition","In contrast","For example"],answer:1,
+   explain:"Publications AND grants are two achievements being listed. The second doesn\u2019t illustrate or result from the first \u2014 it\u2019s an additional accomplishment. \"In addition\" signals the parallel. \"For example\" would mean the grants are an example of publications, which doesn\u2019t make sense."},
+  {id:7,t:3,passage:"While early computers filled entire rooms and required specialized operators, modern smartphones can perform billions of calculations per second while fitting in a pocket. ___, the cost of computing power has plummeted: a calculation that cost $1 in 1960 now costs a fraction of a cent.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["In contrast","Furthermore","Nevertheless","Subsequently"],answer:1,
+   explain:"The passage already made the contrast (early computers vs. smartphones). The new sentence adds ANOTHER way computing has improved (cost reduction). Addition \u2192 \"Furthermore.\" \"In contrast\" would be redundant since the contrast was already made."},
+  {id:8,t:3,passage:"The restoration of the wetlands along the river\u2019s edge had an unexpected cascading effect. Native fish populations rebounded within two years. ___, herons, kingfishers, and other wading birds returned to the area, attracted by the abundant fish.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["For example","However","In turn","Moreover"],answer:2,
+   explain:"This is a CHAIN of cause/effect: wetlands restored \u2192 fish rebounded \u2192 birds returned (attracted by fish). \"In turn\" signals a cascading sequence where each effect becomes the cause of the next. \"Moreover\" (addition) misses the causal chain."},
+  {id:9,t:3,passage:"The pharmaceutical company\u2019s initial trials showed promising results for the new drug, with 73% of participants experiencing significant symptom reduction. ___, the drug produced severe side effects in nearly 15% of participants, leading regulators to require additional safety studies before approving it for public use.",
+   stem:"Which choice completes the text with the most logical transition?",
+   choices:["In addition","As a result","For instance","However"],answer:3,
+   explain:"Promising efficacy results vs. severe side effects = contrast. \"However\" correctly signals the reversal from positive to negative. \"In addition\" wrongly treats the side effects as another positive finding. \"As a result\" would mean good results caused bad side effects."}
+];
+
+var KEY_TAKEAWAYS = [
+  "Three-step method: Read the relationship \u2192 Name the category \u2192 Match the word.",
+  "Six categories: addition, contrast, cause/effect, sequence, example, summary.",
+  "PSAT answer choices almost always come from different categories. Name the category and you eliminate three wrong answers.",
+  "Don't pick \"however\" or \"moreover\" just because they sound good. They only work if the relationship is actually contrast or addition.",
+  "Addition vs. cause/effect: Ask \"Did Idea 1 cause Idea 2?\" If yes \u2192 cause/effect. If it just adds a parallel point \u2192 addition.",
+  "For paragraph-level transitions, read the END of the previous paragraph to find the relationship.",
+  "These should be your fastest questions \u2014 15\u201320 seconds each once you know the categories."
+];
+
+/* ========== COMPONENTS ========== */
+
+/* ── Welcome ── */
+function Welcome(props) {
+  var onNext = props.onNext;
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  return e("div", { style:{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"100vh", padding:"0 24px", transition:"all .7s", opacity:show?1:0, transform:show?"translateY(0)":"translateY(16px)" } },
+    e("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"44", borderRadius:12, padding:"6px 18px", fontSize:13, letterSpacing:1.5, textTransform:"uppercase", color:C.mod, marginBottom:12, fontWeight:600 } }, "Phase 3 \u00B7 Module 8"),
+    e("h1", { style:{ fontSize:"clamp(1.7rem,4.5vw,3rem)", fontWeight:800, background:"linear-gradient(135deg,"+C.mod+","+C.rw+")", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", lineHeight:1.1, textAlign:"center", marginBottom:16, fontFamily:"'Cormorant Garamond',serif" } }, "Transitions"),
+    e("p", { style:{ color:C.sub, fontSize:18, maxWidth:560, textAlign:"center", lineHeight:1.6, marginBottom:12 } }, "These are the fastest questions on the test \u2014 usually solvable in under 20 seconds once you build a strong transitions toolkit. ~4\u20135 questions per test."),
+    e("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"33", borderRadius:12, padding:"14px 22px", maxWidth:540, marginBottom:40, fontSize:14, color:C.sub, lineHeight:1.6, textAlign:"center" } },
+      e("strong", { style:{ color:C.mod } }, "Speed Questions: "),
+      "Transition questions follow the same pattern every time: two sentences (or ideas), a blank, and four transition words. Read the relationship between the ideas, name the category, then pick the word that fits. Average solve time: 15\u201320 seconds."
+    ),
+    e("div", { style:{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:16, maxWidth:700, width:"100%", marginBottom:48 } },
+      [{icon:"\uD83D\uDEE0\uFE0F",title:"6 Categories",desc:"Addition, contrast, cause..."},{icon:"\uD83D\uDC63",title:"3-Step Method",desc:"Read \u2192 Name \u2192 Match"},{icon:"\u26A0\uFE0F",title:"Common Traps",desc:"Lookalikes & degree traps"},{icon:"\uD83C\uDF1F",title:"5 Exercises",desc:"Sort, classify, fill, spot"},{icon:"\uD83D\uDCDD",title:"10 Practice Qs",desc:"PSAT-format questions"}
+      ].map(function(c,i){ return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
+        e("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        e("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
+        e("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      );})
+    ),
+    e("button", { onClick:onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")", "#fff"), onMouseOver:function(ev){ev.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(ev){ev.currentTarget.style.transform="scale(1)";} }, "Start Learning \u2192"),
+    e("div", { style:{ color:C.muted, fontSize:13, marginTop:24 } }, "\u23F1 ~40 min \u00B7 Expression of Ideas")
+  );
+}
+
+/* ── LessonViewer ── */
+function LessonViewer(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var lesson = LESSONS[idx];
+  var total = LESSONS.length;
+
+  function renderVisual() {
+    if (lesson.visual === "toolkit") {
+      var cats = [
+        {name:"Addition",color:"#34d399",words:"moreover, furthermore, additionally, also, in addition, likewise, similarly"},
+        {name:"Contrast",color:"#f472b6",words:"however, nevertheless, nonetheless, on the other hand, in contrast, conversely, yet, still"},
+        {name:"Cause / Effect",color:"#60a5fa",words:"therefore, consequently, as a result, thus, hence, accordingly, for this reason"},
+        {name:"Sequence",color:"#fbbf24",words:"first, next, then, finally, subsequently, meanwhile, previously, afterward"},
+        {name:"Example",color:"#c084fc",words:"for example, for instance, specifically, in particular, to illustrate, namely"},
+        {name:"Summary",color:"#999",words:"in summary, in conclusion, ultimately, overall, in other words, that is"}
+      ];
+      return e("div",{style:{padding:"12px 20px"}},
+        e("div",{style:{color:C.mod,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"\uD83D\uDEE0\uFE0F Transitions Toolkit"),
+        e("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(145px,1fr))",gap:8}},
+          cats.map(function(cat,i){
+            return e("div",{key:i,style:{background:C.paper,border:"2px solid "+cat.color+"55",borderRadius:10,padding:"10px 12px",textAlign:"center"}},
+              e("div",{style:{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,color:cat.color,marginBottom:6}},cat.name),
+              e("div",{style:{fontSize:12,color:"#ccc",lineHeight:1.5}},cat.words)
+            );
+          })
+        )
+      );
+    }
+    if (lesson.visual === "causation-test") {
+      return e("div",{style:{padding:"12px 20px"}},
+        e("div",{style:{color:C.rw,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"\uD83E\uDD14 The Causation Test"),
+        e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
+          e("div",{style:{background:C.paper,border:"2px solid #34d399"+"55",borderRadius:10,padding:14}},
+            e("div",{style:{color:"#34d399",fontWeight:700,fontSize:13,marginBottom:8}},"\u2795 Addition"),
+            e("div",{style:{fontSize:12,color:"#ccc",lineHeight:1.6,marginBottom:8}},"Idea 2 is ANOTHER point supporting the same argument."),
+            e("div",{style:{fontSize:12,color:"#aaa",fontStyle:"italic",lineHeight:1.5,background:"#34d399"+"08",padding:"8px 10px",borderRadius:6}},"\"Dolphins are intelligent. Furthermore, they display complex social behaviors.\"")
+          ),
+          e("div",{style:{background:C.paper,border:"2px solid #60a5fa"+"55",borderRadius:10,padding:14}},
+            e("div",{style:{color:"#60a5fa",fontWeight:700,fontSize:13,marginBottom:8}},"\u27A1\uFE0F Cause / Effect"),
+            e("div",{style:{fontSize:12,color:"#ccc",lineHeight:1.6,marginBottom:8}},"Idea 1 CAUSES or LEADS TO Idea 2."),
+            e("div",{style:{fontSize:12,color:"#aaa",fontStyle:"italic",lineHeight:1.5,background:"#60a5fa"+"08",padding:"8px 10px",borderRadius:6}},"\"The drought destroyed crops. Consequently, food prices rose sharply.\"")
+          )
+        ),
+        e("div",{style:{marginTop:10,padding:"10px 14px",background:C.rw+"08",borderLeft:"3px solid "+C.rw,borderRadius:"0 8px 8px 0",fontSize:12,color:C.sub,lineHeight:1.5}},
+          e("strong",{style:{color:C.rw}},"Ask: "),
+          "\"Did Idea 1 directly cause or lead to Idea 2?\" If yes \u2192 cause/effect. If no \u2192 addition."
+        )
+      );
+    }
+    return null;
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      LESSONS.map(function(_,i){
+        return e("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+      })
+    ),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      e("div",{style:{padding:"28px 28px 0"}},
+        e("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        e("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:16,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},lesson.title),
+        lesson.body.map(function(p,i){
+          return e("p",{key:i,style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p);
+        })
+      ),
+      lesson.visual && e("div",{style:{padding:"8px 4px 20px"}},renderVisual())
+    ),
+    e("div",{style:{display:"flex",justifyContent:"space-between"}},
+      e("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#444":C.sub),{border:"1px solid "+C.border,padding:"10px 20px",fontSize:14})},"\u2190 Back"),
+      idx < total-1
+        ? e("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
+        : e("button",{onClick:onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Exercises \u2192")
+    )
+  );
+}
+
+/* ── ClassifyExercise (reusable) ── */
+function ClassifyExercise(props) {
+  var title = props.title, icon = props.icon, subtitle = props.subtitle, items = props.items, options = props.options, renderStimulus = props.renderStimulus, borderColor = props.borderColor, onComplete = props.onComplete, optionColors = props.optionColors;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus ? renderStimulus(q,i) : e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+(borderColor||C.mod),fontFamily:"'JetBrains Mono',monospace"}},q.text||q.word),
+        e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          options.map(function(o,oi){
+            var optClr = optionColors ? optionColors[oi] : null;
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            } else if (optClr) {
+              st.borderColor = optClr+"55"; st.color = optClr;
+            }
+            return e("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        ),
+        h && q.fb && e("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===q.c?C.correctBg:C.wrongBg,color:a===q.c?C.correct:C.wrong}},(a===q.c?"\u2713 ":"\u2717 ")+q.fb)
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── MC Exercise ── */
+function MCExercise(props) {
+  var title = props.title, icon = props.icon, subtitle = props.subtitle, items = props.items, renderStimulus = props.renderStimulus, borderColor = props.borderColor, onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = items.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === items[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:borderColor||C.mod,fontSize:14,fontWeight:700}},icon," ",title),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},subtitle),
+    items.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        renderStimulus(q,i),
+        e("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return e("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              e("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              e("span",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:12}},ch)
+            );
+          })
+        ),
+        h && e("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(borderColor||C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── QuizEngine ── */
+function QuizEngine(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var item = QUIZ[idx];
+
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.answer) setScore(function(s){ return s+1; });
+  }
+  function next() {
+    if (idx < QUIZ.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+
+  if (done) {
+    return e("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      e("div",{style:{fontSize:48,marginBottom:16}},"\uD83D\uDCDD"),
+      e("h2",{style:{color:C.ink,fontSize:28,fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Practice Complete"),
+      e("div",{style:{color:C.mod,fontSize:48,fontWeight:900}},score,"/",QUIZ.length),
+      e("p",{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},
+        score >= 9 ? "Outstanding! You've mastered transitions." :
+        score >= 7 ? "Great work! A few more practice rounds and you'll own this topic." :
+        score >= 5 ? "Solid foundation. Review the errors you made and try again." :
+        "Keep practicing! Focus on naming the category before looking at the choices."
+      ),
+      e("button",{onClick:function(){onComplete(score,QUIZ.length);},style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff")},"Continue \u2192")
+    );
+  }
+
+  var tierColors = {1:C.sec, 2:C.info, 3:C.rw};
+  var tierLabels = {1:"Easy", 2:"Medium", 3:"Hard"};
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
+      e("div",{style:{color:C.mod,fontSize:13,fontWeight:700}},"\uD83D\uDCDD PSAT Practice"),
+      e("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        e("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:600,background:tierColors[item.t]+"22",color:tierColors[item.t]}},tierLabels[item.t]),
+        e("span",{style:{color:C.muted,fontSize:13}},idx+1,"/",QUIZ.length)
+      )
+    ),
+    e("div",{style:{height:4,background:C.border,borderRadius:2,marginBottom:20,overflow:"hidden"}},
+      e("div",{style:{height:"100%",width:((idx+(confirmed?1:0))/QUIZ.length*100)+"%",background:"linear-gradient(90deg,"+C.mod+","+C.rw+")",borderRadius:2,transition:"width .4s"}})
+    ),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,marginBottom:16}},
+      e("div",{style:{color:"#ddd",fontSize:15,lineHeight:1.8,fontFamily:"Georgia,serif"}},
+        item.passage.split("___").map(function(part,pi,arr){
+          if (pi === arr.length - 1) return e("span",{key:pi},part);
+          return e("span",{key:pi},part,e("span",{style:{color:C.mod,fontWeight:700}},"___"));
+        })
+      )
+    ),
+    e("div",{style:{color:C.ink,fontSize:14,fontWeight:600,marginBottom:16}},item.stem),
+    e("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      item.choices.map(function(c,ci){
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.answer;
+        var bg = C.surface, bdr = "1px solid "+C.border, tc = "#ddd";
+        if (confirmed && isCorr) { bg = C.correct+"18"; bdr = "2px solid "+C.correct; tc = C.correct; }
+        else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
+        else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
+        return e("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+          e("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          e("span",{style:{color:tc,fontSize:14,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace"}},c)
+        );
+      })
+    ),
+    confirmed && e("div",{style:{background:C.border,borderRadius:12,padding:20,marginBottom:24,borderLeft:"4px solid "+C.mod}},
+      e("div",{style:{color:C.mod,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+      e("div",{style:{color:C.sub,fontSize:14,lineHeight:1.6}},item.explain)
+    ),
+    e("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed
+        ? e("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?C.border:C.mod,selected===null?"#555":"#fff",{fontSize:14,padding:"10px 24px"})},"Confirm")
+        : e("button",{onClick:next,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},idx<QUIZ.length-1?"Next \u2192":"See Results \u2192")
+    )
+  );
+}
+
+/* ── NavLinks ── */
+function NavLinks() {
+  return e("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border}},
+    NAV.prev && e("a",{href:NAV.prev.file,style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"})},"\u2190 "+NAV.prev.label),
+    NAV.next && e("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"10px 20px"})},NAV.next.label+" \u2192")
+  );
+}
+
+/* ── ModuleComplete ── */
+function ModuleComplete(props) {
+  var quizScore = props.quizScore, quizTotal = props.quizTotal;
+  var pct = Math.round(quizScore/quizTotal*100);
+  return e("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
+    e("div",{style:{fontSize:64,marginBottom:16}},pct>=90?"\uD83C\uDFC6":pct>=70?"\uD83C\uDF1F":"\uD83D\uDCAA"),
+    e("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 8 Complete!"),
+    e("div",{style:{color:C.mod,fontSize:48,fontWeight:900,marginBottom:8}},quizScore,"/",quizTotal),
+    e("p",{style:{color:C.sub,fontSize:15,marginBottom:32}},"on PSAT-format practice questions"),
+    e("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
+      e("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+      KEY_TAKEAWAYS.map(function(t,i){
+        return e("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
+          e("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+          e("span",null,t)
+        );
+      })
+    ),
+    e(NavLinks, null)
+  );
+}
+
+/* ── Speed Round (custom since SPD has no fb text and unique format) ── */
+function SpeedRound(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = SPD.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === SPD[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:C.expr,fontSize:14,fontWeight:700}},"\u26A1 Speed Round"),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Goal: under 20 seconds each. Read \u2192 Name \u2192 Match."),
+    SPD.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:"10px 14px",marginBottom:10}},
+        e("div",{style:{fontSize:13,color:"#bbb",lineHeight:1.6,marginBottom:8}},
+          q.s1," ",e("span",{style:{color:C.mod,fontWeight:700}},"___")," ",q.s2
+        ),
+        e("div",{style:{display:"flex",flexWrap:"wrap",gap:6}},
+          q.ch.map(function(o,oi){
+            var st = {padding:"5px 12px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return e("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        )
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Start Practice \u2192")
+    )
+  );
+}
+
+/* ── TrapSpotterExercise (per-item options) ── */
+function TrapSpotterExercise(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = TRP.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === TRP[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      e("div",{style:{color:C.craft,fontSize:14,fontWeight:700}},"\u26A0\uFE0F Trap Spotter"),
+      e("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    e("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"The highlighted transition is WRONG. What category is actually needed?"),
+    TRP.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:8,borderLeft:"3px solid "+C.craft}},q.ctx),
+        e("div",{style:{fontSize:12,color:C.wrong,marginBottom:8}},"\u274C "+q.trap),
+        e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+          q.opts.map(function(o,oi){
+            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            if (h) {
+              st.opacity = 0.6; st.pointerEvents = "none";
+              if (oi === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
+              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+            }
+            return e("button",{key:oi,onClick:function(){pick(i,oi);},style:st},o);
+          })
+        ),
+        h && e("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:a===q.c?C.correctBg:C.wrongBg,color:a===q.c?C.correct:C.wrong}},(a===q.c?"\u2713 ":"\u2717 ")+q.fb)
+      );
+    }),
+    e("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      e("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      e("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        e("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      e("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── Exercises Router ── */
+function Exercises(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+
+  /* Exercise 1: Category Sorter */
+  if (step === 0) {
+    return e(ClassifyExercise, {
+      title:"Category Sorter", icon:"\uD83C\uDFF7\uFE0F",
+      subtitle:"Which category does each transition word belong to? Build your instincts.",
+      items:CAT, options:CAT_OPTS, borderColor:C.mod,
+      optionColors:CAT_CLRS,
+      renderStimulus:function(q){
+        return e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1rem",color:C.mod,fontWeight:700,marginBottom:8,padding:"6px 0"}},q.word);
+      },
+      onComplete:function(){ setStep(1); }
+    });
+  }
+
+  /* Exercise 2: Name the Relationship */
+  if (step === 1) {
+    return e(ClassifyExercise, {
+      title:"Name the Relationship", icon:"\uD83D\uDD17",
+      subtitle:"Read both sentences, then identify the logical relationship.",
+      items:REL, options:REL_OPTS, borderColor:C.info,
+      renderStimulus:function(q){
+        return e("div",{style:{fontSize:13,color:"#bbb",lineHeight:1.7,marginBottom:10}},
+          e("div",{style:{padding:"8px 12px",background:C.info+"06",borderLeft:"3px solid "+C.info,borderRadius:"0 8px 8px 0",marginBottom:6}},
+            e("strong",{style:{color:C.ink}},"S1: "),q.s1
+          ),
+          e("div",{style:{padding:"8px 12px",background:C.info+"06",borderLeft:"3px solid "+C.info,borderRadius:"0 8px 8px 0"}},
+            e("strong",{style:{color:C.ink}},"S2: "),q.s2
+          )
+        );
+      },
+      onComplete:function(){ setStep(2); }
+    });
+  }
+
+  /* Exercise 3: Fill the Blank */
+  if (step === 2) {
+    return e(MCExercise, {
+      title:"Fill the Blank", icon:"\u270D\uFE0F",
+      subtitle:"Read \u2192 Name the category \u2192 Match the transition.",
+      items:FIL, borderColor:C.rw,
+      renderStimulus:function(q){
+        var parts = q.ctx.split("___");
+        return e("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.8,padding:"10px 14px",background:C.mod+"06",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.rw,fontFamily:"'JetBrains Mono',monospace"}},
+          e("span",null,parts[0]),
+          e("span",{style:{color:C.mod,fontSize:"1.1rem",fontWeight:700}},"___"),
+          e("span",null,parts[1])
+        );
+      },
+      onComplete:function(){ setStep(3); }
+    });
+  }
+
+  /* Exercise 4: Trap Spotter */
+  if (step === 3) {
+    return e(TrapSpotterExercise, {
+      onComplete:function(){ setStep(4); }
+    });
+  }
+
+  /* Exercise 5: Speed Round */
+  if (step === 4) {
+    return e(SpeedRound, {
+      onComplete:function(){ onComplete(); }
+    });
+  }
+
+  return null;
+}
+
+/* ── App Shell ── */
+function App() {
+  var _s = useState("welcome"), screen = _s[0], setScreen = _s[1];
+  var _s2 = useState(true), vis = _s2[0], setVis = _s2[1];
+  var _s3 = useState(0), quizScore = _s3[0], setQuizScore = _s3[1];
+  var _s4 = useState(10), quizTotal = _s4[0], setQuizTotal = _s4[1];
+
+  function go(next) {
+    setVis(false);
+    setTimeout(function(){ setScreen(next); setVis(true); window.scrollTo(0,0); }, 350);
+  }
+
+  var content = null;
+  if (screen === "welcome") content = e(Welcome,{onNext:function(){go("lesson");}});
+  else if (screen === "lesson") content = e(LessonViewer,{onComplete:function(){go("exercises");}});
+  else if (screen === "exercises") content = e(Exercises,{onComplete:function(){go("practice");}});
+  else if (screen === "practice") content = e(QuizEngine,{onComplete:function(s,t){setQuizScore(s);setQuizTotal(t);go("complete");}});
+  else if (screen === "complete") content = e(ModuleComplete,{quizScore:quizScore,quizTotal:quizTotal});
+
+  return e("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

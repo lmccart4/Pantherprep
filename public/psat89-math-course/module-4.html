@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4: Problem-Solving & Data — PSAT 8/9 Math — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#0891b2 0%,#0891b2 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}.progress-fill{height:100%;background:linear-gradient(90deg,var(--psda),var(--math));width:0%;transition:width .3s ease}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--psda);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--psda);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(8,145,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}.callout strong{color:var(--accent)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
+.callout-gold{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3)}.callout-gold strong{color:var(--psda)}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.topic-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
+.topic-badge{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#000;flex-shrink:0}
+.topic-info{flex:1}.topic-title{font-weight:700;font-size:.95rem}.topic-sub{font-size:.82rem;color:var(--muted);margin-top:2px}
+.topic-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem}.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 20px 18px;font-size:.9rem;color:#ccc;line-height:1.7}.topic.open .topic-body{display:block}
+.topic-body h4{font-size:.95rem;color:var(--ink);margin:14px 0 6px;font-weight:700}
+.topic-body ul{padding-left:18px;margin-bottom:10px}.topic-body li{margin-bottom:6px}
+.formula-box{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:1.8}
+.formula-box .fn{color:var(--psda);font-weight:700}.formula-box .fl{color:var(--math);font-weight:700}
+.exercise{background:var(--surface);border:2px solid var(--psda);border-radius:14px;padding:22px;margin-bottom:16px}
+.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
+.exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+.ex-item{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.ex-prompt{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
+.ex-prompt code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+.ex-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ex-input{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;width:100px;text-align:center}.ex-input:focus{border-color:var(--psda);outline:none}
+.ex-btn{padding:8px 16px;background:var(--psda);color:#000;border:none;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600}.ex-btn:hover{filter:brightness(1.15)}
+.ex-fb{font-size:.82rem;padding:8px 10px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}.ex-fb.show{display:block}.ex-fb.correct{background:var(--correct-bg);color:var(--correct)}.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong)}
+.tier{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:rgba(167,139,250,.15);color:var(--advanced)}
+.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.classify-opt:hover:not(.cl-dis){border-color:var(--psda);background:rgba(251,191,36,.08)}
+.classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);opacity:1}
+.classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.classify-opt.cl-dis{pointer-events:none;opacity:.6}.classify-opt.cl-correct{opacity:1}
+.mc-choices{display:flex;flex-direction:column;gap:6px}
+.mc-choice{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.mc-choice:hover:not(.mc-dis){border-color:var(--psda);background:rgba(251,191,36,.05)}
+.mc-letter{font-weight:700;color:var(--muted);min-width:20px}
+.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg);opacity:1}
+.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}.mc-choice.mc-correct{opacity:1}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:10px;padding:10px;background:var(--paper);border-radius:8px;display:none;border-left:3px solid var(--correct)}.mc-fb.show{display:block}
+.score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
+.mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
+.mod-nav a{color:var(--accent);text-decoration:none}.mod-nav a:hover{text-decoration:underline}
+/* Two-way table */
+.tw-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+.tw-table th,.tw-table td{padding:8px 10px;border:1px solid var(--border);text-align:center}
+.tw-table th{background:var(--surface);font-weight:700;color:var(--psda);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.tw-table td{color:#ccc}
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{gap:4px}}
+
+.stat-exp{background:var(--surface);border:2px solid var(--psda);border-radius:14px;padding:22px;margin-bottom:16px}
+.stat-input{width:100%;padding:10px 14px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:.95rem}
+.stat-input:focus{border-color:var(--psda);outline:none}
+.stat-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.stat-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.stat-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+@media(max-width:600px){.stat-results{grid-template-columns:repeat(2,1fr)}}
+</style></head>
+<body>
+<div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to PSAT 8/9 Math Course</a>
+<div class="mod-header">
+  <div class="mod-badge">Module 4</div>
+  <h1>Problem-Solving & Data Analysis</h1>
+  <p class="subtitle">~15% of the test — but built on grades 6–8 content. This is the highest-ROI domain for quick score gains.</p>
+  <div class="mod-meta"><span>⏱ ~60 min</span><span>📋 4 topics + 6 exercises</span><span>🔨 Phase 2: Build</span></div>
+</div>
+
+<div class="callout-gold callout"><strong>Quick Wins Domain:</strong> Problem-Solving & Data Analysis draws heavily on grades 6–8 content — ratios, percentages, basic statistics. If you're solid on fundamentals, you can pick up 5–7 questions with targeted review.</div>
+
+<!-- TOPIC 4A: Ratios, Rates & Proportions -->
+<div class="section">
+  <div class="section-label">Topic 4A</div>
+  <h2>Ratios, Rates & Proportions</h2>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--psda)">4A</div>
+    <div class="topic-info"><div class="topic-title">Ratios, Rates & Unit Conversions</div><div class="topic-sub">Proportional relationships, unit rates, dimensional analysis</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <h4>Core Concepts</h4>
+    <ul>
+      <li><strong>Ratio:</strong> Compares two quantities. Written as a:b, a/b, or "a to b"</li>
+      <li><strong>Rate:</strong> A ratio with different units. Speed (mi/hr), price ($/item), density (people/sq mi)</li>
+      <li><strong>Unit rate:</strong> Rate per ONE unit. "60 miles per hour" = 60 mi/1 hr</li>
+      <li><strong>Proportion:</strong> Two equal ratios. Cross-multiply to solve: a/b = c/d → ad = bc</li>
+    </ul>
+    <div class="formula-box">
+      <div><span class="fn">Proportion:</span> a/b = c/d → cross multiply → ad = bc</div>
+      <div><span class="fn">Unit Rate:</span> total ÷ number of units</div>
+      <div><span class="fn">Unit Conversion:</span> multiply by fractions where units cancel</div>
+      <div style="color:var(--muted);font-size:.82rem">Example: 60 mph × (5280 ft/1 mi) × (1 hr/3600 sec) = 88 ft/sec</div>
+    </div>
+    <h4>Direct vs. Inverse Proportion</h4>
+    <ul>
+      <li><strong>Direct:</strong> y = kx. As x doubles, y doubles. y/x stays constant.</li>
+      <li><strong>Inverse:</strong> y = k/x. As x doubles, y halves. xy stays constant.</li>
+    </ul>
+    <div class="callout"><strong>Unit Conversion Trap:</strong> The question gives data in minutes but asks for hours, or gives feet but asks for miles. Always check what units the answer needs!</div>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--psda)">4A+</div>
+    <div class="topic-info"><div class="topic-title">Percentages: Increase, Decrease & Multi-Step</div><div class="topic-sub">Percent of, percent change, successive percent changes</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <h4>Percent Basics</h4>
+    <ul>
+      <li><strong>Finding a percent:</strong> "What is 30% of 80?" → 0.30 × 80 = 24</li>
+      <li><strong>Finding the whole:</strong> "40% of what number is 28?" → 28 ÷ 0.40 = 70</li>
+      <li><strong>Finding the percent:</strong> "12 is what percent of 48?" → 12/48 = 0.25 = 25%</li>
+    </ul>
+    <div class="formula-box">
+      <div><span class="fn">Percent Increase:</span> (new − old) / old × 100</div>
+      <div><span class="fn">Percent Decrease:</span> (old − new) / old × 100</div>
+      <div><span class="fn">Multiplier Shortcut:</span></div>
+      <div style="color:var(--muted);font-size:.82rem">15% increase → × 1.15 | 20% decrease → × 0.80 | 8% tax → × 1.08</div>
+    </div>
+    <h4>Multi-Step Percent Trap</h4>
+    <p><strong>A price goes up 20%, then down 20%. Is it back to the original?</strong></p>
+    <p>NO! Start with $100: +20% = $120. Then −20% of $120 = $24 off = <strong>$96</strong>. That's 4% LESS than the original. The second percent is applied to a different base.</p>
+    <div class="callout"><strong>Key Rule:</strong> Successive percent changes don't cancel! The second change applies to the NEW amount, not the original. This is one of the PSAT's favorite traps.</div>
+  </div>
+</div>
+
+<!-- TOPIC 4B: Statistics -->
+<div class="section">
+  <div class="section-label">Topic 4B</div>
+  <h2>Statistics: Center, Spread & Shape</h2>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--psda)">4B</div>
+    <div class="topic-info"><div class="topic-title">Mean vs. Median — When It Matters</div><div class="topic-sub">Calculating, comparing, and predicting outlier effects</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <div class="formula-box">
+      <div><span class="fn">Mean:</span> sum of all values ÷ count</div>
+      <div><span class="fn">Median:</span> middle value when sorted (average two middles if even count)</div>
+    </div>
+    <p><strong>The PSAT's favorite question:</strong> "A very high value is added. Which measure changes more?"</p>
+    <p>Answer: The <strong>mean</strong> is always more affected. The median barely moves.</p>
+    <p><strong>Example:</strong> Data: 10, 12, 14, 15, 16. Mean = 13.4, Median = 14.</p>
+    <p>Add outlier (100): New mean = 27.8 (huge jump!). New median = 14.5 (tiny change).</p>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--psda)">4B+</div>
+    <div class="topic-info"><div class="topic-title">Standard Deviation, Range & Distribution Shape</div><div class="topic-sub">Spread measures and skew — conceptual understanding only</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <h4>Spread</h4>
+    <ul>
+      <li><strong>Range:</strong> max − min. Simple but affected by outliers.</li>
+      <li><strong>Standard deviation:</strong> How spread out values are from the mean. You won't calculate it — just understand:</li>
+    </ul>
+    <div class="formula-box">
+      <div><span class="fn">Clustered tightly →</span> SMALL standard deviation</div>
+      <div><span class="fn">Spread far apart →</span> LARGE standard deviation</div>
+      <div><span class="fn">Adding a constant to every value:</span> Does NOT change SD</div>
+      <div><span class="fn">Multiplying every value by a constant:</span> DOES change SD (by that factor)</div>
+    </div>
+    <h4>Distribution Shape & Skew</h4>
+    <ul>
+      <li><strong>Symmetric:</strong> Mean ≈ Median. Bell-shaped.</li>
+      <li><strong>Skewed right (positive):</strong> Long tail to the right. Mean > Median. (High values pull mean up.)</li>
+      <li><strong>Skewed left (negative):</strong> Long tail to the left. Mean < Median. (Low values pull mean down.)</li>
+      <li><strong>Tip:</strong> "Which direction is the skew?" → look for the long tail direction.</li>
+    </ul>
+    <div class="callout"><strong>Common scenario:</strong> Income data is skewed right — a few very high earners pull the mean above the median. That's why "median household income" is more informative than "average household income."</div>
+  </div>
+</div>
+
+<!-- STATISTICS EXPLORER -->
+<div class="section">
+  <div class="section-label">Interactive Tool</div>
+  <h2>Statistics Explorer</h2>
+  <p>Enter comma-separated numbers to see mean, median, range, and count update instantly. Try adding an outlier to see the effect!</p>
+  <div class="stat-exp">
+    <input class="stat-input" id="statInput" value="12, 15, 18, 20, 22, 25, 28" placeholder="Enter numbers separated by commas…" oninput="calcStats()">
+    <div class="stat-results" id="statResults"></div>
+    <div id="statInsight" style="margin-top:10px;font-size:.85rem;color:var(--muted)"></div>
+  </div>
+</div>
+
+<!-- TOPIC 4C: Data Interpretation -->
+<div class="section">
+  <div class="section-label">Topic 4C</div>
+  <h2>Scatterplots, Two-Way Tables & Probability</h2>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--psda)">4C</div>
+    <div class="topic-info"><div class="topic-title">Scatterplots & Lines of Best Fit</div><div class="topic-sub">Correlation, regression, predictions, residuals</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <ul>
+      <li><strong>Positive correlation:</strong> As x increases, y increases (upward trend ↗)</li>
+      <li><strong>Negative correlation:</strong> As x increases, y decreases (downward trend ↘)</li>
+      <li><strong>No correlation:</strong> Random scatter, no clear trend</li>
+      <li><strong>Line of best fit:</strong> Slope = rate of change in context. Y-intercept = predicted value when x = 0.</li>
+      <li><strong>Interpolation:</strong> Predicting WITHIN the data range (reliable)</li>
+      <li><strong>Extrapolation:</strong> Predicting BEYOND the data range (unreliable — the trend may not continue)</li>
+      <li><strong>Residuals:</strong> actual − predicted. Good model → residuals scattered randomly around zero.</li>
+    </ul>
+    <div class="callout-blue callout"><strong>Desmos Regression:</strong> Enter data as a table, then type <code>y₁ ~ mx₁ + b</code> for a linear regression. Desmos finds the best-fit equation automatically.</div>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--psda)">4C+</div>
+    <div class="topic-info"><div class="topic-title">Two-Way Tables & Conditional Probability</div><div class="topic-sub">Joint, marginal, and conditional frequencies</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <ul>
+      <li><strong>Marginal frequencies:</strong> Row/column totals (the margins of the table)</li>
+      <li><strong>Joint frequencies:</strong> Values inside the table (where row and column intersect)</li>
+      <li><strong>Conditional probability:</strong> P(A|B) = "given B, what's the probability of A?"</li>
+    </ul>
+    <div class="formula-box">
+      <div><span class="fn">P(A|B) =</span> (count of A AND B) / (total count of B)</div>
+      <div style="color:var(--muted);font-size:.82rem">Key: Restrict to B's row/column first, then find A within it</div>
+    </div>
+    <div class="callout"><strong>PSAT Trap:</strong> Confusing P(A|B) with P(B|A). "Given they play sports, what's the probability they have a job?" is NOT the same as "given they have a job, what's the probability they play sports?" The denominator changes!</div>
+  </div>
+</div>
+
+<!-- TOPIC 4D: Study Design -->
+<div class="section">
+  <div class="section-label">Topic 4D</div>
+  <h2>Study Design & Statistical Inference</h2>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--psda)">4D</div>
+    <div class="topic-info"><div class="topic-title">Correlation vs. Causation, Sampling & Margin of Error</div><div class="topic-sub">What conclusions can we draw from data?</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <div class="formula-box">
+      <div><span class="fn">Observational study:</span> Observe without intervening → correlation only</div>
+      <div><span class="fn">Experiment:</span> Randomly assign treatments → CAN show causation</div>
+      <div><span class="fn">Survey/Sample:</span> Ask questions of a sample → generalizes to population</div>
+    </div>
+    <h4>Critical Rules</h4>
+    <ul>
+      <li><strong>Correlation ≠ causation</strong> — just because two things happen together doesn't mean one causes the other</li>
+      <li><strong>Only experiments with random assignment</strong> can establish cause and effect</li>
+      <li><strong>Random sampling</strong> is needed to generalize results to a larger population</li>
+      <li><strong>Larger sample → smaller margin of error</strong> (more precise estimate)</li>
+      <li><strong>Margin of error:</strong> "42% ± 3%" means the true value is likely between 39% and 45%</li>
+      <li><strong>Confounding variables:</strong> Other factors that could explain a relationship (ice cream sales and drownings both increase in summer — temperature is the confound)</li>
+    </ul>
+    <div class="callout"><strong>The #1 PSDA trap:</strong> A study shows students who eat breakfast score higher. Can you conclude breakfast CAUSES higher scores? <strong>NO</strong> — unless it's an experiment with random assignment. Students who eat breakfast may differ in many other ways.</div>
+  </div>
+</div>
+
+<!-- EXERCISES -->
+<div class="section"><div class="section-label">Interactive Exercise 1</div><h2>Ratio, Rate & Percent Problems</h2><p>Solve these common PSAT-style problems. Includes unit conversions and multi-step percents.</p><div class="exercise" id="ratioEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 2</div><h2>Percent Trap Spotter</h2><p>Identify the trap in each percent problem before solving.</p><div class="exercise" style="border-color:var(--accent)" id="pctTrapEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 3</div><h2>Two-Way Table & Probability</h2>
+<p>Use this table to answer the probability questions below.</p>
+<table class="tw-table">
+<tr><th></th><th>Prefers Math</th><th>Prefers Science</th><th>Total</th></tr>
+<tr><td><strong>9th Grade</strong></td><td>45</td><td>30</td><td>75</td></tr>
+<tr><td><strong>10th Grade</strong></td><td>35</td><td>40</td><td>75</td></tr>
+<tr><td><strong>Total</strong></td><td>80</td><td>70</td><td>150</td></tr>
+</table>
+<div class="exercise" id="probEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 4</div><h2>Spot the Misleading Statistic</h2><p>Each scenario describes a statistical claim. Identify why it's misleading.</p><div class="exercise" style="border-color:var(--accent)" id="misleadEx"></div></div>
+
+<div class="section"><div class="section-label">Interactive Exercise 5</div><h2>Study Design Classifier</h2><p>Observational study, experiment, or survey? And what can we conclude?</p><div class="exercise" id="studyEx"></div></div>
+
+<div class="section"><div class="section-label">PSAT 8/9 Practice</div><h2>Practice Questions</h2><p>10 questions covering all Problem-Solving & Data Analysis topics at PSAT 8/9 difficulty.</p><div id="psatPractice"></div></div>
+
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>PSDA is ~15% of the test but built on skills from middle school — highest ROI for study time.</li>
+      <li>Cross-multiply to solve proportions: a/b = c/d → ad = bc.</li>
+      <li>Percent multiplier shortcut: increase = × (1 + rate), decrease = × (1 − rate).</li>
+      <li><strong>Successive percent changes don't cancel!</strong> Each change applies to the new amount.</li>
+      <li>Mean is pulled by outliers. Median resists them. This is the PSAT's favorite stat question.</li>
+      <li>Skewed right → mean > median. Skewed left → mean < median.</li>
+      <li>Correlation ≠ causation. Only <strong>experiments with random assignment</strong> can show cause and effect.</li>
+      <li>P(A|B): restrict to B's group first, then find A within it. Don't confuse with P(B|A).</li>
+      <li>Larger sample → smaller margin of error. Random sampling → can generalize.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-3.html">← Module 3: Advanced Math</a>
+  <a href="module-5.html">Module 5: Geometry →</a>
+</div>
+</div>
+<script>
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';});
+
+// Statistics Explorer
+function calcStats(){
+  const raw=document.getElementById('statInput').value;
+  const nums=raw.split(',').map(s=>parseFloat(s.trim())).filter(n=>!isNaN(n));
+  const el=document.getElementById('statResults');
+  const ins=document.getElementById('statInsight');
+  if(nums.length===0){el.innerHTML='';ins.textContent='';return;}
+  nums.sort((a,b)=>a-b);
+  const n=nums.length;
+  const sum=nums.reduce((a,b)=>a+b,0);
+  const mean=sum/n;
+  const median=n%2===1?nums[Math.floor(n/2)]:(nums[n/2-1]+nums[n/2])/2;
+  const range=nums[n-1]-nums[0];
+  el.innerHTML=[
+    {l:'Count',v:n,c:'var(--math)'},
+    {l:'Mean',v:mean.toFixed(1),c:'var(--psda)'},
+    {l:'Median',v:median.toFixed(1),c:'var(--correct)'},
+    {l:'Range',v:range.toFixed(1),c:'var(--geo)'}
+  ].map(s=>`<div class="stat-card"><div class="stat-label">${s.l}</div><div class="stat-val" style="color:${s.c}">${s.v}</div></div>`).join('');
+  const diff=Math.abs(mean-median);
+  if(diff>2)ins.textContent=`Mean and median differ by ${diff.toFixed(1)} — the data may be skewed ${mean>median?'right (high outliers pull mean up)':'left (low outliers pull mean down)'}.`;
+  else ins.textContent='Mean ≈ Median — the data looks roughly symmetric. Try adding an extreme value like 200!';
+}
+calcStats();
+
+// Exercise 1: Ratio, Rate & Percent
+const RAT=[
+  {p:'A recipe needs 3 cups of flour for every 2 cups of sugar. If you use 9 cups of flour, how many cups of sugar?',a:6,s:'3/2 = 9/x → 3x = 18 → x = 6.',t:1},
+  {p:'A car travels 180 miles in 3 hours. What is its speed in miles per hour?',a:60,s:'180 ÷ 3 = 60 mph.',t:1},
+  {p:'Convert 5 hours to minutes.',a:300,s:'5 × 60 = 300 minutes.',t:1},
+  {p:'A shirt costs $40 and is 25% off. What is the sale price?',a:30,s:'$40 × 0.75 = $30. Or: 25% of $40 = $10 off.',t:1},
+  {p:'A population grows from 200 to 250. What is the percent increase?',a:25,s:'(250−200)/200 × 100 = 25%.',t:2},
+  {p:'If 40% of a number is 28, what is the number?',a:70,s:'0.40n = 28 → n = 70.',t:2},
+  {p:'A store raises prices 10%, then raises again by 10%. A shirt was originally $50. What is the final price?',a:60.5,s:'$50 × 1.10 = $55. Then $55 × 1.10 = $60.50. NOT $50 × 1.20!',t:2},
+  {p:'Convert 88 feet per second to miles per hour. (5280 ft = 1 mi, 3600 sec = 1 hr)',a:60,s:'88 × 3600/5280 = 88 × 0.6818 = 60 mph.',t:3},
+];
+function renderRat(){
+  document.getElementById('ratioEx').innerHTML='<h3>📊 Ratios, Rates & Percents</h3><div class="exercise-sub">Solve each. Round to one decimal if needed.</div>'+
+    RAT.map((q,i)=>`<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-${q.t}">${q.t===1?'Easy':q.t===2?'Medium':'Hard'}</span></div><div class="ex-prompt">${q.p}</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">= </span><input class="ex-input" type="number" step="any" id="rat${i}" placeholder="?"><button class="ex-btn" onclick="chkRat(${i})">Check</button></div><div class="ex-fb" id="ratFb${i}"></div></div>`).join('');
+}
+function chkRat(i){
+  var v=parseFloat(document.getElementById('rat'+i).value),fb=document.getElementById('ratFb'+i),q=RAT[i];
+  if(isNaN(v)){fb.className='ex-fb show wrong';fb.textContent='Enter a number.';return;}
+  var ok=Math.abs(v-q.a)<0.6;
+  fb.className='ex-fb show '+(ok?'correct':'wrong');
+  fb.textContent=(ok?'✓ Correct! ':'✗ Not quite. ')+q.s;
+}
+renderRat();
+
+// Exercise 2: Percent Trap Spotter
+const PCT=[
+  {q:'A price goes up 20%, then down 20%. Is the final price equal to the original?',opts:['Yes, they cancel out','No, it\'s 4% less','No, it\'s 4% more','Depends on the price'],c:1,fb:'Start $100: +20% = $120. −20% of $120 = $24 off = $96. That\'s 4% less. The second percent applies to the NEW amount.'},
+  {q:'A store advertises "50% off, then an additional 20% off." Is that the same as 70% off?',opts:['Yes, 50+20=70','No, it\'s only 60% off total','No, it\'s 56% off total','Depends on original price'],c:1,fb:'Start $100: 50% off = $50. Then 20% off $50 = $10 off = $40. Total discount = 60%, not 70%.'},
+  {q:'"Sales increased 200%." If original sales were $1,000, what are they now?',opts:['$2,000','$3,000','$200,000','$1,200'],c:1,fb:'200% INCREASE means the increase is $2,000. New total = $1,000 + $2,000 = $3,000. A 200% increase triples the original.'},
+  {q:'A student got 80% on Test 1 and 90% on Test 2. Is their overall average 85%?',opts:['Yes, always','Only if both tests have the same number of questions','Only if Test 2 was harder','Never'],c:1,fb:'Only if tests have equal weight (same number of questions/points). If Test 1 had 50 questions and Test 2 had 10, the average would be much closer to 80%.'},
+];
+var pctA={};
+function renderPct(){
+  document.getElementById('pctTrapEx').innerHTML='<h3>🎯 Percent Traps</h3><div class="exercise-sub">Identify the correct answer — these are the traps PSAT loves.</div>'+
+    PCT.map(function(q,i){var a=pctA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+q.opts.map(function(o,oi){var c='classify-opt';if(h){c+=' cl-dis';if(oi===q.c)c+=' cl-correct';else if(oi===a)c+=' cl-wrong';}return '<div class="'+c+'" onclick="aPct('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(h?' show':'')+(h?(a===q.c?' correct':' wrong'):'')+'">'+((h)?((a===q.c?'✓ ':'✗ ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aPct(i,v){if(pctA[i]!==undefined)return;pctA[i]=v;renderPct();}
+renderPct();
+
+// Exercise 3: Two-way table
+const PRB=[
+  {q:'What is P(prefers Math)?',ch:['45/150','80/150','45/75','35/75'],c:1,fb:'Total who prefer Math = 80. Total = 150. P = 80/150 ≈ 0.533.'},
+  {q:'What is P(9th grader AND prefers Science)?',ch:['30/150','30/75','30/70','70/150'],c:0,fb:'9th + Science = 30. Total = 150. P = 30/150 = 1/5.'},
+  {q:'What is P(prefers Math | 10th grader)?',ch:['35/150','35/80','35/75','80/150'],c:2,fb:'Restrict to 10th graders (75). Of those, 35 prefer Math. P = 35/75.'},
+  {q:'What is P(9th grader | prefers Science)?',ch:['30/150','30/75','30/70','75/150'],c:2,fb:'Restrict to Science-preferrers (70). Of those, 30 are 9th grade. P = 30/70.'},
+  {q:'Is a 10th grader more likely to prefer Science than a 9th grader?',ch:['Yes: 40/75 > 30/75','No: 30/75 > 40/75','Equal likelihood','Cannot determine'],c:0,fb:'10th: 40/75 ≈ 53% prefer Science. 9th: 30/75 = 40%. So yes, 10th graders prefer Science more.'},
+];
+var prbA={};
+function renderPrb(){
+  document.getElementById('probEx').innerHTML='<h3>🎲 Probability Practice</h3><div class="exercise-sub">Use the table above.</div>'+
+    PRB.map(function(q,i){var a=prbA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){var c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return '<div class="'+c+'" onclick="aPrb('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(h?' show':'')+'">'+(h?((a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aPrb(i,v){if(prbA[i]!==undefined)return;prbA[i]=v;renderPrb();}
+renderPrb();
+
+// Exercise 4: Misleading Stats
+const MIS=[
+  {q:'A news article says: "Students who drink coffee score 15% higher on tests" and recommends coffee before exams.',opts:['Correlation treated as causation','Sample too small','Data is fabricated','No issue'],c:0,fb:'Observational finding. Coffee drinkers may differ in other ways. Only an experiment could show causation.'},
+  {q:'A survey of 50 math club members found 90% enjoy math. The paper reports: "90% of students enjoy math."',opts:['Biased (non-random) sample','Too many participants','Wrong percentage','Margin of error too small'],c:0,fb:'Math club members aren\'t representative of all students. Biased sample → can\'t generalize.'},
+  {q:'Average salary at a company is $95,000. A new hire expects ~$95K. But 90% earn $50K–$70K while the CEO earns $2M.',opts:['Mean pulled by outlier','Median is wrong','Sample too small','Data is outdated'],c:0,fb:'The CEO\'s salary (outlier) pulls the mean way up. Median salary would be ~$60K — much more representative.'},
+  {q:'A study of 25 people found a supplement improved memory by 3%. Researchers call it "a breakthrough."',opts:['Sample too small for reliable conclusions','Effect is too large','Should use median','Study is well-designed'],c:0,fb:'25 participants is too few. A 3% difference could easily be random variation. Need a much larger sample.'},
+];
+var misA={};
+function renderMis(){
+  document.getElementById('misleadEx').innerHTML='<h3>🔍 Spot the Problem</h3><div class="exercise-sub">What makes each claim misleading?</div>'+
+    MIS.map(function(q,i){var a=misA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+q.opts.map(function(o,oi){var c='classify-opt';if(h){c+=' cl-dis';if(oi===q.c)c+=' cl-correct';else if(oi===a)c+=' cl-wrong';}return '<div class="'+c+'" onclick="aMis('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(h?' show':'')+(h?(a===q.c?' correct':' wrong'):'')+'">'+((h)?((a===q.c?'✓ ':'✗ ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aMis(i,v){if(misA[i]!==undefined)return;misA[i]=v;renderMis();}
+renderMis();
+
+// Exercise 5: Study Design
+const STD=[
+  {q:'Researchers randomly assign 100 patients to a new drug or placebo, then measure blood pressure after 8 weeks.',opts:['Observational','Experiment','Survey'],c:1,fb:'Random assignment → experiment → CAN establish causation.'},
+  {q:'A university surveys 500 randomly selected alumni about career satisfaction.',opts:['Observational','Experiment','Survey'],c:2,fb:'Just asking questions → survey. Random selection → results generalize to all alumni.'},
+  {q:'Researchers track 1,000 people for 10 years, recording exercise habits and heart disease rates.',opts:['Observational','Experiment','Survey'],c:0,fb:'No intervention → observational. Can show correlation but NOT causation.'},
+  {q:'A teacher puts half the class in quiet rooms and half in noisy rooms, then compares test scores.',opts:['Observational','Experiment','Survey'],c:1,fb:'Assigned conditions → experiment. Can show whether noise causes score changes.'},
+  {q:'A newspaper finds cities with more ice cream shops have higher crime rates.',opts:['Observational','Experiment','Survey'],c:0,fb:'Analyzing existing data → observational. Confounding variable: population size (or temperature).'},
+];
+var stdA={};
+function renderStd(){
+  document.getElementById('studyEx').innerHTML='<h3>🔬 Classify the Study</h3><div class="exercise-sub">What type and what can we conclude?</div>'+
+    STD.map(function(q,i){var a=stdA[i],h=a!==undefined;
+      return '<div class="ex-item"><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+q.opts.map(function(o,oi){var c='classify-opt';if(h){c+=' cl-dis';if(oi===q.c)c+=' cl-correct';else if(oi===a)c+=' cl-wrong';}return '<div class="'+c+'" onclick="aStd('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(h?' show':'')+(h?(a===q.c?' correct':' wrong'):'')+'">'+((h)?((a===q.c?'✓ ':'✗ ')+q.fb):'')+'</div></div>';
+    }).join('');
+}
+function aStd(i,v){if(stdA[i]!==undefined)return;stdA[i]=v;renderStd();}
+renderStd();
+
+// PSAT Practice
+const PST=[
+  {t:1,q:'A car travels 180 miles in 3 hours. What is its average speed?',ch:['45 mph','54 mph','60 mph','90 mph'],c:2,fb:'180 ÷ 3 = 60 mph.'},
+  {t:1,q:'What is 15% of 240?',ch:['24','36','48','60'],c:1,fb:'0.15 × 240 = 36.'},
+  {t:1,q:'The median of {3, 7, 9, 12, 15} is:',ch:['7','9','9.2','12'],c:1,fb:'5 values → middle (3rd) value = 9.'},
+  {t:1,q:'If boys to girls is 3:5 and there are 24 boys, how many girls?',ch:['30','35','40','45'],c:2,fb:'3/5 = 24/g → g = 40.'},
+  {t:2,q:'A store raises prices 20% then gives 20% off. Compared to original, the final price is:',ch:['The same','4% less','4% more','20% less'],c:1,fb:'$100 → $120 → $96. 4% less.'},
+  {t:2,q:'Data set A: SD = 3.2. Data set B: SD = 8.7. Which has more spread?',ch:['A','B','Equal','Cannot tell'],c:1,fb:'Higher SD = more spread. B is more variable.'},
+  {t:2,q:'A negative linear association in a scatterplot means:',ch:['As x increases, y increases','As x increases, y decreases','No relationship','y is always negative'],c:1,fb:'Negative association: x up → y down.'},
+  {t:2,q:'P(plays sports | female) = 40/60 means:',ch:['40% of all students play sports','40 of 60 females play sports','60 of 40 play sports','40% are female'],c:1,fb:'Given female (60 total), 40 play sports.'},
+  {t:3,q:'A study finds countries with more doctors have lower infant mortality. Valid conclusion:',ch:['More doctors cause lower mortality','More doctors are associated with lower mortality','Infant mortality causes fewer doctors','No relationship'],c:1,fb:'Observational → association only. Wealth may explain both.'},
+  {t:3,q:'A survey of 400 voters finds 52% support a policy (margin of error ±4%). Best interpretation:',ch:['Exactly 52% of all voters agree','Between 48%–56% of all voters likely agree','Survey is unreliable','52% is the exact population value'],c:1,fb:'52% ± 4% → true value likely between 48% and 56%.'},
+];
+var pstA={};
+function renderPST(){
+  document.getElementById('psatPractice').innerHTML=PST.map(function(q,i){var a=pstA[i],h=a!==undefined;
+    return '<div class="ex-item" style="border-color:'+(q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)')+'"><div style="margin-bottom:6px"><span class="tier tier-'+q.t+'">'+(q.t===1?'Easy':q.t===2?'Medium':'Hard')+'</span></div><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){var c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return '<div class="'+c+'" onclick="aPST('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(h?' show':'')+'">'+(h?((a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb):'')+'</div></div>';
+  }).join('');
+}
+function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;renderPST();}
+renderPST();
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

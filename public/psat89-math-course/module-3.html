@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3: Advanced Math — PSAT 8/9 Math — PantherPrep</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#0891b2 0%,#0891b2 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--advanced),var(--math));width:0%;transition:width .3s ease}
+.container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
+.mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.mod-badge{display:inline-block;background:var(--advanced);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
+.mod-header .subtitle{color:var(--muted);font-size:1rem}
+.mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--advanced);margin-bottom:6px}
+.section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(8,145,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
+.callout-purple{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3)}.callout-purple strong{color:var(--advanced)}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.topic-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
+.topic-badge{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
+.topic-info{flex:1}.topic-title{font-weight:700;font-size:.95rem}.topic-sub{font-size:.82rem;color:var(--muted);margin-top:2px}
+.topic-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 20px 18px;font-size:.9rem;color:#ccc;line-height:1.7}
+.topic.open .topic-body{display:block}
+.topic-body h4{font-size:.95rem;color:var(--ink);margin:14px 0 6px;font-weight:700}
+.topic-body ul{padding-left:18px;margin-bottom:10px}.topic-body li{margin-bottom:6px}
+.formula-box{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:1.8}
+.formula-box .fn{color:var(--advanced);font-weight:700}.formula-box .fl{color:var(--math);font-weight:700}
+.exercise{background:var(--surface);border:2px solid var(--advanced);border-radius:14px;padding:22px;margin-bottom:16px}
+.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
+.exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+.ex-item{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.ex-prompt{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
+.ex-prompt code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+.ex-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ex-input{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;width:100px;text-align:center}
+.ex-input:focus{border-color:var(--advanced);outline:none}
+.ex-btn{padding:8px 16px;background:var(--advanced);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600}.ex-btn:hover{filter:brightness(1.15)}
+.ex-fb{font-size:.82rem;padding:8px 10px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}
+.ex-fb.show{display:block}.ex-fb.correct{background:var(--correct-bg);color:var(--correct)}.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong)}
+.tier{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:rgba(167,139,250,.15);color:var(--advanced)}
+.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.classify-opt:hover:not(.cl-dis){border-color:var(--advanced);background:rgba(167,139,250,.08)}
+.classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);opacity:1}
+.classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.classify-opt.cl-dis{pointer-events:none;opacity:.6}.classify-opt.cl-correct{opacity:1}
+.mc-choices{display:flex;flex-direction:column;gap:6px}
+.mc-choice{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.mc-choice:hover:not(.mc-dis){border-color:var(--advanced);background:rgba(167,139,250,.05)}
+.mc-letter{font-weight:700;color:var(--muted);min-width:20px}
+.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg);opacity:1}
+.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}.mc-choice.mc-correct{opacity:1}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:10px;padding:10px;background:var(--paper);border-radius:8px;display:none;border-left:3px solid var(--correct)}.mc-fb.show{display:block}
+.score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
+.mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
+.mod-nav a{color:var(--accent);text-decoration:none}.mod-nav a:hover{text-decoration:underline}
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{gap:4px}}
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="container">
+<a class="back-link" href="index.html">← Back to PSAT 8/9 Math Course</a>
+<div class="mod-header">
+  <div class="mod-badge">Module 3</div>
+  <h1>Advanced Math — Quadratics, Polynomials & Functions</h1>
+  <p class="subtitle">~35% of the PSAT 8/9 — but calibrated to introductory levels. Most problems need just 1–2 steps.</p>
+  <div class="mod-meta"><span>⏱ ~60 min</span><span>📋 4 topics</span><span>🔨 Phase 2: Build</span></div>
+</div>
+
+<div class="callout-purple callout"><strong>Don't panic:</strong> You may not have learned all of this in class yet — especially if you're in Algebra 1 right now. That's completely normal. The PSAT 8/9 tests these topics at their simplest level, and we'll teach each one from scratch with worked examples.</div>
+
+<!-- TOPIC 3A: Exponent Rules -->
+<div class="section">
+  <div class="section-label">Topic 3A</div>
+  <h2>Exponent Rules</h2>
+  <p>These six rules show up constantly. Memorize them and you'll handle about a third of all Advanced Math questions automatically.</p>
+</div>
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--advanced)">3A</div>
+    <div class="topic-info"><div class="topic-title">The Six Exponent Rules</div><div class="topic-sub">Product, quotient, power, zero, negative, and distribution</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <div class="formula-box">
+      <div><span class="fn">Product Rule:</span> x^a · x^b = x^(a+b)</div>
+      <div><span class="fn">Quotient Rule:</span> x^a ÷ x^b = x^(a−b)</div>
+      <div><span class="fn">Power Rule:</span> (x^a)^b = x^(a×b)</div>
+      <div><span class="fn">Zero Rule:</span> x^0 = 1 (anything to the 0 is 1)</div>
+      <div><span class="fn">Negative Rule:</span> x^(−n) = 1/x^n</div>
+      <div><span class="fn">Distribution:</span> (xy)^n = x^n · y^n</div>
+    </div>
+    <h4>Common Mistakes</h4>
+    <ul>
+      <li><strong>Adding exponents when multiplying:</strong> x² · x³ = x⁵ ✓ (not x⁶)</li>
+      <li><strong>Multiplying exponents for power rule:</strong> (x²)³ = x⁶ ✓ (not x⁵)</li>
+      <li><strong>Can't add different bases:</strong> x² + y² stays as x² + y² (can't combine!)</li>
+      <li><strong>Negative exponent ≠ negative number:</strong> 3⁻² = 1/9, not −9</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TOPIC 3B: Quadratics -->
+<div class="section">
+  <div class="section-label">Topic 3B</div>
+  <h2>Quadratic Equations — The Three Forms</h2>
+  <p>Every quadratic on the PSAT 8/9 can be expressed in three forms. Each form reveals different information.</p>
+</div>
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--advanced)">3B</div>
+    <div class="topic-info"><div class="topic-title">Standard, Vertex & Factored Forms</div><div class="topic-sub">What each form tells you and when to use it</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <div class="formula-box">
+      <div><span class="fl">Standard Form:</span> f(x) = ax² + bx + c</div>
+      <div style="color:var(--muted);font-size:.82rem;margin-bottom:6px">Reveals: y-intercept (c), direction (a>0 opens up, a<0 opens down)</div>
+      <div><span class="fl">Vertex Form:</span> f(x) = a(x − h)² + k</div>
+      <div style="color:var(--muted);font-size:.82rem;margin-bottom:6px">Reveals: vertex at (h, k), axis of symmetry x = h</div>
+      <div><span class="fl">Factored Form:</span> f(x) = a(x − r₁)(x − r₂)</div>
+      <div style="color:var(--muted);font-size:.82rem">Reveals: x-intercepts (zeros) at r₁ and r₂</div>
+    </div>
+    <h4>Solving Quadratics</h4>
+    <ul>
+      <li><strong>Factoring:</strong> If x² − 5x + 6 = 0, find two numbers that multiply to 6 and add to −5 → (x−2)(x−3) = 0</li>
+      <li><strong>Square root method:</strong> If (x − 3)² = 16, then x − 3 = ±4, so x = 7 or x = −1</li>
+      <li><strong>Quadratic formula:</strong> x = (−b ± √(b²−4ac)) / 2a — works on everything, use as backup</li>
+    </ul>
+    <h4>The Discriminant</h4>
+    <div class="formula-box">
+      <div><span class="fn">b² − 4ac > 0:</span> Two real solutions</div>
+      <div><span class="fn">b² − 4ac = 0:</span> Exactly one real solution</div>
+      <div><span class="fn">b² − 4ac < 0:</span> No real solutions</div>
+    </div>
+    <h4>Vertex Shortcut</h4>
+    <p>For <code>ax² + bx + c</code>: x-coordinate of vertex = <code>−b/(2a)</code>. Plug back in for y.</p>
+    <div class="callout-blue callout"><strong>Desmos Power Move:</strong> Type any quadratic and Desmos instantly shows the parabola. Click the vertex and intercepts for exact values.</div>
+  </div>
+</div>
+
+<!-- TOPIC 3C: Polynomials & Factoring -->
+<div class="section">
+  <div class="section-label">Topic 3C</div>
+  <h2>Polynomials & Factoring</h2>
+</div>
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--advanced)">3C</div>
+    <div class="topic-info"><div class="topic-title">Polynomial Operations & Factoring Techniques</div><div class="topic-sub">Adding, subtracting, multiplying polynomials; GCF, trinomial, difference of squares</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <h4>Operations</h4>
+    <ul>
+      <li><strong>Adding/subtracting:</strong> Combine like terms only. 3x² + 2x² = 5x², but x² + x stays as is.</li>
+      <li><strong>Multiplying:</strong> FOIL for binomials, or distribute each term. (2x+3)(x−4) = 2x²−8x+3x−12 = 2x²−5x−12</li>
+      <li><strong>No long division on PSAT 8/9</strong> — just the basics.</li>
+    </ul>
+    <h4>Three Factoring Techniques</h4>
+    <div class="formula-box">
+      <div><span class="fn">GCF First:</span> 6x² + 12x = 6x(x + 2)</div>
+      <div><span class="fn">Trinomial:</span> x² + 5x + 6 = (x + 2)(x + 3) — find two numbers that multiply to c and add to b</div>
+      <div><span class="fn">Difference of Squares:</span> x² − 9 = (x + 3)(x − 3)</div>
+    </div>
+    <div class="callout"><strong>Always factor GCF first.</strong> It makes everything else easier. If there's no GCF, try trinomial factoring. If it's a² − b², use difference of squares.</div>
+  </div>
+</div>
+
+<!-- TOPIC 3D: Functions & Exponentials -->
+<div class="section">
+  <div class="section-label">Topic 3D</div>
+  <h2>Functions, Transformations & Exponential Models</h2>
+</div>
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--advanced)">3D</div>
+    <div class="topic-info"><div class="topic-title">Function Notation, Transformations & Growth/Decay</div><div class="topic-sub">Evaluating, interpreting, and recognizing function behavior</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <h4>Function Notation</h4>
+    <ul>
+      <li><code>f(x) = 2x + 3</code> means: plug in a value for x, get a value back. f(5) = 2(5) + 3 = 13.</li>
+      <li><strong>Domain:</strong> all valid inputs (x-values). <strong>Range:</strong> all possible outputs (y-values).</li>
+      <li>If f(a) = 0, then a is a <strong>zero</strong> (or root) of the function.</li>
+    </ul>
+    <h4>Basic Transformations</h4>
+    <div class="formula-box">
+      <div><span class="fn">f(x) + k:</span> shifts UP k units</div>
+      <div><span class="fn">f(x) − k:</span> shifts DOWN k units</div>
+      <div><span class="fn">f(x − h):</span> shifts RIGHT h units</div>
+      <div><span class="fn">f(x + h):</span> shifts LEFT h units</div>
+      <div><span class="fn">−f(x):</span> reflects over x-axis (flips upside down)</div>
+    </div>
+    <div class="callout"><strong>Horizontal shifts feel backwards:</strong> f(x − 3) shifts <em>right</em>, not left. Think of it as: what value of x makes the inside equal to 0? x = 3 → shifts to 3.</div>
+
+    <h4>Exponential Growth & Decay</h4>
+    <div class="formula-box">
+      <div><span class="fl">Growth:</span> y = a(1 + r)^t — multiplier > 1</div>
+      <div><span class="fl">Decay:</span> y = a(1 − r)^t — multiplier between 0 and 1</div>
+      <div style="color:var(--muted);font-size:.82rem">a = initial amount, r = rate (as decimal), t = time</div>
+    </div>
+    <ul>
+      <li><strong>Population doubles every 5 years:</strong> y = P₀ · 2^(t/5)</li>
+      <li><strong>Value decreases 20% per year:</strong> y = V₀ · (0.80)^t</li>
+      <li><strong>Key insight:</strong> If the base (multiplier) is > 1, it's growth. If 0 < base < 1, it's decay.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- EXERCISES -->
+<div class="section"><div class="section-label">Interactive Exercise 1</div><h2>Exponent Rules Speed Drill</h2><p>Simplify each expression using exponent rules.</p><div class="exercise" id="expEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 2</div><h2>Quadratic Form Identifier</h2><p>Identify which form each quadratic is in.</p><div class="exercise" id="qFormEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 3</div><h2>Which Form Do I Need?</h2><p>The question tells you what information you need. Which form gives it to you fastest?</p><div class="exercise" style="border-color:var(--accent)" id="whichEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 4</div><h2>Factoring Workshop</h2><p>Factor each expression completely.</p><div class="exercise" id="factorEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 5</div><h2>Linear, Growth, or Decay?</h2><p>Classify each function.</p><div class="exercise" style="border-color:var(--psda)" id="classifyEx"></div></div>
+
+<div class="section"><div class="section-label">PSAT 8/9 Practice</div><h2>Practice Questions</h2><p>10 questions covering all Advanced Math topics at PSAT 8/9 difficulty.</p><div id="psatPractice"></div></div>
+
+<div class="section">
+  <div class="section-label">Summary</div>
+  <h2>Key Takeaways</h2>
+  <div class="card card-accent">
+    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
+      <li>Advanced Math is ~35% of the PSAT 8/9 — tied with Algebra as the largest domain.</li>
+      <li>Know all six exponent rules cold. They're tested both directly and inside larger problems.</li>
+      <li>Three quadratic forms: standard (y-intercept), vertex (max/min), factored (zeros). Know when to use each.</li>
+      <li>Factor GCF first, then try trinomial factoring or difference of squares.</li>
+      <li>Function notation: f(x) is just a fancy way to say "plug in x." f(3) means replace x with 3.</li>
+      <li>Horizontal shifts feel backwards: f(x − 3) shifts <strong>right</strong>.</li>
+      <li>Exponential: base > 1 = growth, base between 0 and 1 = decay.</li>
+      <li>The PSAT 8/9 tests these at <strong>introductory level</strong> — usually 1–2 steps. Don't overthink it.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="mod-nav">
+  <a href="module-2.html">← Module 2: Algebra</a>
+  <a href="module-4.html">Module 4: Data Analysis →</a>
+</div>
+</div>
+
+<script>
+// Progress
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';});
+function mkSc(c,t){return `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${t?c/t*100:0}%"></div></div><div class="score-bar-val">${c}/${t}</div></div>`;}
+
+// ============ EXPONENT RULES ============
+const EXP=[
+  {p:'Simplify: <code>x³ · x⁴</code>',a:'x^7',acc:['x^7','x⁷','x7'],s:'Product rule: add exponents. x³⁺⁴ = x⁷'},
+  {p:'Simplify: <code>x⁸ ÷ x³</code>',a:'x^5',acc:['x^5','x⁵','x5'],s:'Quotient rule: subtract exponents. x⁸⁻³ = x⁵'},
+  {p:'Simplify: <code>(x²)⁵</code>',a:'x^10',acc:['x^10','x¹⁰','x10'],s:'Power rule: multiply exponents. x²ˣ⁵ = x¹⁰'},
+  {p:'Evaluate: <code>5⁰</code>',a:'1',acc:['1'],s:'Anything to the power of 0 equals 1.'},
+  {p:'Simplify: <code>2⁻³</code> (as a fraction)',a:'1/8',acc:['1/8','0.125','.125'],s:'2⁻³ = 1/2³ = 1/8.'},
+  {p:'Simplify: <code>(3x²)(4x³)</code>',a:'12x^5',acc:['12x^5','12x⁵','12x5'],s:'3×4 = 12, x²⁺³ = x⁵. Answer: 12x⁵'},
+];
+function renderExp(){
+  document.getElementById('expEx').innerHTML=`<h3>⚡ Exponent Speed Drill</h3><div class="exercise-sub">Type simplified form (use ^ for exponents, like x^7).</div>`+
+    EXP.map((q,i)=>`<div class="ex-item"><div class="ex-prompt">${q.p}</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">= </span><input class="ex-input" type="text" id="exp${i}" placeholder="?" style="width:120px"><button class="ex-btn" onclick="chkExp(${i})">Check</button></div><div class="ex-fb" id="expFb${i}"></div></div>`).join('');
+}
+function chkExp(i){
+  const v=document.getElementById('exp'+i).value.trim().replace(/\s/g,'').toLowerCase(),fb=document.getElementById('expFb'+i),q=EXP[i];
+  if(!v){fb.className='ex-fb show wrong';fb.textContent='Enter an answer.';return;}
+  const ok=q.acc.some(a=>v===a.toLowerCase());
+  fb.className='ex-fb show '+(ok?'correct':'wrong');
+  fb.textContent=(ok?'✓ Correct! ':'✗ Answer: '+q.a+'. ')+q.s;
+}
+renderExp();
+
+// ============ QUADRATIC FORM IDENTIFIER ============
+const QF=[
+  {eq:'f(x) = 2x² + 3x − 5',c:'Standard',fb:'ax² + bx + c form. a=2, b=3, c=−5.'},
+  {eq:'f(x) = 3(x − 2)² + 7',c:'Vertex',fb:'a(x−h)²+k form. Vertex at (2, 7).'},
+  {eq:'f(x) = −(x + 1)(x − 5)',c:'Factored',fb:'a(x−r₁)(x−r₂) form. Zeros at x=−1 and x=5.'},
+  {eq:'f(x) = x² − 9',c:'Standard',fb:'ax² + bx + c with a=1, b=0, c=−9. (Also a difference of squares!)'},
+  {eq:'f(x) = −2(x + 4)² − 1',c:'Vertex',fb:'Vertex at (−4, −1). Opens down (a=−2).'},
+  {eq:'f(x) = (x − 3)(x − 7)',c:'Factored',fb:'Zeros at x=3 and x=7.'},
+];
+const QFNAMES=['Standard','Vertex','Factored'];
+let qfA={};
+function renderQF(){
+  const tot=QF.length,cor=Object.entries(qfA).filter(([i,v])=>v===QF[i].c).length;
+  document.getElementById('qFormEx').innerHTML=`<h3>📐 Name That Form</h3><div class="exercise-sub">Click the correct quadratic form.</div>`+
+    QF.map((q,i)=>{const a=qfA[i],h=a!==undefined;
+      return `<div class="ex-item"><div class="ex-prompt" style="font-family:'JetBrains Mono',monospace;color:var(--math)">${q.eq}</div><div class="classify-opts">${QFNAMES.map(f=>{let c='classify-opt';if(h){c+=' cl-dis';if(f===q.c)c+=' cl-correct';else if(f===a)c+=' cl-wrong';}return `<div class="${c}" onclick="aQF(${i},'${f}')">${f}</div>`;}).join('')}</div><div class="ex-fb${h?' show':''}${h?(a===q.c?' correct':' wrong'):''}">${h?(a===q.c?'✓ ':'✗ ')+q.fb:''}</div></div>`;
+    }).join('')+mkSc(cor,tot);
+}
+function aQF(i,v){if(qfA[i]!==undefined)return;qfA[i]=v;renderQF();}
+renderQF();
+
+// ============ WHICH FORM DO I NEED? ============
+const WF=[
+  {q:'Find the <strong>y-intercept</strong> of a quadratic.',c:'Standard',fb:'Standard form: f(x) = ax² + bx + c. The y-intercept is c.'},
+  {q:'Find the <strong>vertex (maximum or minimum)</strong>.',c:'Vertex',fb:'Vertex form: f(x) = a(x−h)² + k. Vertex is (h, k).'},
+  {q:'Find the <strong>x-intercepts (zeros/roots)</strong>.',c:'Factored',fb:'Factored form: f(x) = a(x−r₁)(x−r₂). Set each factor to 0.'},
+  {q:'Determine if the parabola opens <strong>up or down</strong>.',c:'Standard',fb:'Any form works, but standard makes it easy: if a > 0, opens up; a < 0, opens down.'},
+  {q:'Find the <strong>axis of symmetry</strong>.',c:'Vertex',fb:'Vertex form: axis of symmetry is x = h.'},
+  {q:'Find the <strong>number of real solutions</strong>.',c:'Standard',fb:'Use standard form to calculate the discriminant: b² − 4ac.'},
+];
+let wfA={};
+function renderWF(){
+  const tot=WF.length,cor=Object.entries(wfA).filter(([i,v])=>v===WF[i].c).length;
+  document.getElementById('whichEx').innerHTML=`<h3>🤔 Which Form?</h3><div class="exercise-sub">Which quadratic form is best for finding each piece of information?</div>`+
+    WF.map((q,i)=>{const a=wfA[i],h=a!==undefined;
+      return `<div class="ex-item"><div class="ex-prompt">${q.q}</div><div class="classify-opts">${QFNAMES.map(f=>{let c='classify-opt';if(h){c+=' cl-dis';if(f===q.c)c+=' cl-correct';else if(f===a)c+=' cl-wrong';}return `<div class="${c}" onclick="aWF(${i},'${f}')">${f}</div>`;}).join('')}</div><div class="ex-fb${h?' show':''}${h?(a===q.c?' correct':' wrong'):''}">${h?(a===q.c?'✓ ':'✗ ')+q.fb:''}</div></div>`;
+    }).join('')+mkSc(cor,tot);
+}
+function aWF(i,v){if(wfA[i]!==undefined)return;wfA[i]=v;renderWF();}
+renderWF();
+
+// ============ FACTORING WORKSHOP ============
+const FAC=[
+  {p:'Factor: <code>x² + 7x + 12</code>',acc:['(x+3)(x+4)','(x+4)(x+3)'],s:'Find two numbers that multiply to 12 and add to 7: 3 and 4. → (x+3)(x+4)'},
+  {p:'Factor: <code>x² − 9</code>',acc:['(x+3)(x-3)','(x-3)(x+3)'],s:'Difference of squares: x² − 3² = (x+3)(x−3)'},
+  {p:'Factor: <code>2x² + 6x</code>',acc:['2x(x+3)'],s:'GCF = 2x. Factor out: 2x(x + 3)'},
+  {p:'Factor: <code>x² − 5x + 6</code>',acc:['(x-2)(x-3)','(x-3)(x-2)'],s:'Numbers that multiply to 6 and add to −5: −2 and −3. → (x−2)(x−3)'},
+  {p:'Factor: <code>x² − 16</code>',acc:['(x+4)(x-4)','(x-4)(x+4)'],s:'Difference of squares: x² − 4² = (x+4)(x−4)'},
+  {p:'Factor: <code>3x² − 12</code>',acc:['3(x+2)(x-2)','3(x-2)(x+2)'],s:'GCF first: 3(x² − 4). Then difference of squares: 3(x+2)(x−2)'},
+];
+function renderFac(){
+  document.getElementById('factorEx').innerHTML=`<h3>🔧 Factor It</h3><div class="exercise-sub">Type the factored form, e.g. (x+3)(x+4). No spaces needed.</div>`+
+    FAC.map((q,i)=>`<div class="ex-item"><div class="ex-prompt">${q.p}</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">= </span><input class="ex-input" type="text" id="fac${i}" placeholder="(  )(  )" style="width:180px"><button class="ex-btn" onclick="chkFac(${i})">Check</button></div><div class="ex-fb" id="facFb${i}"></div></div>`).join('');
+}
+function chkFac(i){
+  const v=document.getElementById('fac'+i).value.trim().replace(/\s/g,'').toLowerCase(),fb=document.getElementById('facFb'+i),q=FAC[i];
+  if(!v){fb.className='ex-fb show wrong';fb.textContent='Enter factored form.';return;}
+  const ok=q.acc.some(a=>v===a.replace(/\s/g,'').toLowerCase());
+  fb.className='ex-fb show '+(ok?'correct':'wrong');
+  fb.textContent=(ok?'✓ Correct! ':'✗ Answer: '+q.acc[0]+'. ')+q.s;
+}
+renderFac();
+
+// ============ LINEAR, GROWTH, OR DECAY? ============
+const CLS=[
+  {eq:'f(x) = 3x + 5',c:'Linear',fb:'Rate of change is constant (3). Linear.'},
+  {eq:'f(x) = 100(1.05)^x',c:'Growth',fb:'Base = 1.05 > 1 → exponential growth (5% increase).'},
+  {eq:'f(x) = 500(0.8)^x',c:'Decay',fb:'Base = 0.8, between 0 and 1 → exponential decay (20% decrease).'},
+  {eq:'f(x) = −2x + 100',c:'Linear',fb:'Constant rate of change (−2). Linear, even though it\'s decreasing.'},
+  {eq:'f(x) = 1000(2)^x',c:'Growth',fb:'Base = 2 > 1 → exponential growth (doubles each time).'},
+  {eq:'f(x) = 50(0.5)^x',c:'Decay',fb:'Base = 0.5 → halves each time → exponential decay.'},
+];
+const CNAMES=['Linear','Growth','Decay'];
+let clsA={};
+function renderCls(){
+  const tot=CLS.length,cor=Object.entries(clsA).filter(([i,v])=>v===CLS[i].c).length;
+  document.getElementById('classifyEx').innerHTML=`<h3>📈📉 Classify</h3><div class="exercise-sub">Is each function linear, exponential growth, or exponential decay?</div>`+
+    CLS.map((q,i)=>{const a=clsA[i],h=a!==undefined;
+      return `<div class="ex-item"><div class="ex-prompt" style="font-family:'JetBrains Mono',monospace;color:var(--math)">${q.eq}</div><div class="classify-opts">${CNAMES.map(f=>{let c='classify-opt';if(h){c+=' cl-dis';if(f===q.c)c+=' cl-correct';else if(f===a)c+=' cl-wrong';}return `<div class="${c}" onclick="aCls(${i},'${f}')">${f}</div>`;}).join('')}</div><div class="ex-fb${h?' show':''}${h?(a===q.c?' correct':' wrong'):''}">${h?(a===q.c?'✓ ':'✗ ')+q.fb:''}</div></div>`;
+    }).join('')+mkSc(cor,tot);
+}
+function aCls(i,v){if(clsA[i]!==undefined)return;clsA[i]=v;renderCls();}
+renderCls();
+
+// ============ PSAT 8/9 PRACTICE ============
+const PST=[
+  {t:1,tp:'3A',q:'Which expression is equivalent to <code>x⁴ · x³</code>?',ch:['x¹²','x⁷','x¹','7x'],c:1,fb:'Product rule: x⁴⁺³ = x⁷.'},
+  {t:1,tp:'3B',q:'What are the solutions to <code>x² − x − 12 = 0</code>?',ch:['x = 3 and x = 4','x = −3 and x = 4','x = 3 and x = −4','x = −3 and x = −4'],c:1,fb:'Factor: (x−4)(x+3) = 0 → x = 4 or x = −3.'},
+  {t:1,tp:'3D',q:'If <code>f(x) = 3x − 7</code>, what is <code>f(4)</code>?',ch:['5','12','−1','19'],c:0,fb:'f(4) = 3(4) − 7 = 12 − 7 = 5.'},
+  {t:1,tp:'3A',q:'Simplify: <code>(2x³)²</code>',ch:['2x⁶','4x⁶','4x⁵','2x⁵'],c:1,fb:'(2x³)² = 2² · (x³)² = 4x⁶.'},
+  {t:2,tp:'3B',q:'The quadratic <code>f(x) = −2(x − 3)² + 8</code> has its vertex at:',ch:['(3, 8)','(−3, 8)','(3, −8)','(−3, −8)'],c:0,fb:'Vertex form: a(x−h)²+k. Vertex is (h, k) = (3, 8).'},
+  {t:2,tp:'3D',q:'A car purchased for $20,000 loses 15% of its value each year. Which models its value after t years?',ch:['V = 20000(1.15)^t','V = 20000(0.85)^t','V = 20000 − 0.15t','V = 20000(0.15)^t'],c:1,fb:'Loses 15% → keeps 85% → multiplier is 0.85. V = 20000(0.85)^t.'},
+  {t:2,tp:'3C',q:'Factor completely: <code>3x² − 27</code>',ch:['3(x² − 9)','3(x+3)(x−3)','(3x+9)(x−3)','3(x−3)²'],c:1,fb:'GCF first: 3(x²−9). Then difference of squares: 3(x+3)(x−3).'},
+  {t:2,tp:'3B',q:'How many real solutions does <code>x² + 4x + 7 = 0</code> have?',ch:['0','1','2','4'],c:0,fb:'Discriminant: 4² − 4(1)(7) = 16 − 28 = −12 < 0 → no real solutions.'},
+  {t:3,tp:'3D',q:'The graph of <code>g(x) = f(x − 2) + 3</code> is the graph of f shifted:',ch:['Left 2, up 3','Right 2, up 3','Right 2, down 3','Left 2, down 3'],c:1,fb:'f(x−2) = right 2. +3 = up 3.'},
+  {t:3,tp:'3B',q:'If one x-intercept of <code>f(x) = x² + bx − 12</code> is x = 3, what is b?',ch:['−1','1','4','−4'],c:1,fb:'If x=3 is a root: 9 + 3b − 12 = 0 → 3b − 3 = 0 → b = 1. Check: factors as (x+4)(x−3), so other root is −4.'},
+];
+let pstA={};
+function renderPST(){
+  document.getElementById('psatPractice').innerHTML=PST.map((q,i)=>{const a=pstA[i],h=a!==undefined;
+    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}"><div style="margin-bottom:6px;display:flex;align-items:center;gap:8px"><span class="tier tier-${q.t}">${q.t===1?'Easy':q.t===2?'Medium':'Hard'}</span><span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span></div><div class="ex-prompt">${q.q}</div><div class="mc-choices">${q.ch.map((ch,ci)=>{let c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;}).join('')}</div><div class="mc-fb${h?' show':''}">${h?(a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
+  }).join('');
+}
+function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;renderPST();}
+renderPST();
+
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>

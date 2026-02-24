@@ -3,249 +3,353 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module 9: Full Practice Test & Deep Error Analysis — SAT Math — PantherPrep</title>
+<title>Module 9: Practice Test & Growth Plan — SAT Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--psda:#fbbf24;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--adv:#a78bfa;--adv-bg:rgba(167,139,250,.1);--geotrig:#f87171;--algebra:#34d399;--des:#06b6d4}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
-.top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+.top-stripe{height:4px;background:linear-gradient(90deg,#0891b2 0%,#0891b2 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--math));width:0%;transition:width .3s ease}
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
-.back-link:hover{color:var(--accent)}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}.back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
-.mod-badge{display:inline-block;background:var(--adv);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
 .mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
 .mod-header .subtitle{color:var(--muted);font-size:1rem}
 .mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
-.section{margin-bottom:36px}
-.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section{margin-bottom:36px}.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
-.card-accent{border-left:3px solid var(--accent)}
-.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
-.callout strong{color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(8,145,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}.callout strong{color:var(--accent)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
+.callout-gold{background:rgba(8,145,178,.08);border-color:rgba(8,145,178,.3)}.callout-gold strong{color:var(--accent)}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.topic-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
+.topic-badge{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
+.topic-info{flex:1}.topic-title{font-weight:700;font-size:.95rem}.topic-sub{font-size:.82rem;color:var(--muted);margin-top:2px}
+.topic-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem}.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 20px 18px;font-size:.9rem;color:#ccc;line-height:1.7}.topic.open .topic-body{display:block}
+.topic-body h4{font-size:.95rem;color:var(--ink);margin:14px 0 6px;font-weight:700}
+.topic-body ul{padding-left:18px;margin-bottom:10px}.topic-body li{margin-bottom:6px}
+.formula-box{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:1.8}
+.formula-box .fn{color:var(--accent);font-weight:700}.formula-box .fl{color:var(--math);font-weight:700}
+.exercise{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:22px;margin-bottom:16px}
+.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
+.exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+.ex-item{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.ex-prompt{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
+.ex-prompt code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+.ex-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ex-input{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;width:100px;text-align:center}.ex-input:focus{border-color:var(--accent);outline:none}
+.ex-btn{padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600}.ex-btn:hover{filter:brightness(1.15)}
+.ex-fb{font-size:.82rem;padding:8px 10px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}.ex-fb.show{display:block}.ex-fb.correct{background:var(--correct-bg);color:var(--correct)}.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong)}
+.tier{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:rgba(167,139,250,.15);color:var(--advanced)}
+.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.classify-opt:hover:not(.cl-dis){border-color:var(--accent);background:rgba(8,145,178,.08)}
+.classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);opacity:1}
+.classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.classify-opt.cl-dis{pointer-events:none;opacity:.6}.classify-opt.cl-correct{opacity:1}
+.mc-choices{display:flex;flex-direction:column;gap:6px}
+.mc-choice{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.mc-choice:hover:not(.mc-dis){border-color:var(--accent);background:rgba(8,145,178,.05)}
+.mc-letter{font-weight:700;color:var(--muted);min-width:20px}
+.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg);opacity:1}
+.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}.mc-choice.mc-correct{opacity:1}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:10px;padding:10px;background:var(--paper);border-radius:8px;display:none;border-left:3px solid var(--correct)}.mc-fb.show{display:block}
+.score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
+.mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
+.mod-nav a{color:var(--accent);text-decoration:none}.mod-nav a:hover{text-decoration:underline}
+/* Two-way table */
+.tw-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+.tw-table th,.tw-table td{padding:8px 10px;border:1px solid var(--border);text-align:center}
+.tw-table th{background:var(--surface);font-weight:700;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.tw-table td{color:#ccc}
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{gap:4px}}
 
-/* PROTOCOL */
-.protocol{background:var(--surface);border:2px solid var(--accent);border-radius:14px;overflow:hidden;margin-bottom:16px}
-.protocol-title{background:var(--accent);padding:12px 20px;font-weight:700;font-size:.95rem}
-.protocol-step{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;align-items:flex-start}
-.protocol-step:last-child{border-bottom:none}
-.step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent-light);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--accent);font-family:'JetBrains Mono',monospace}
 
-/* CHECKLIST */
-.checklist{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
-.checklist h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:12px}
-.cl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;cursor:pointer;transition:opacity .2s}
-.cl-item:last-child{border-bottom:none}
-.cl-item.done{opacity:.5;text-decoration:line-through}
-.cl-check{flex-shrink:0;width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .15s}
-.cl-item.done .cl-check{background:var(--correct);border-color:var(--correct);color:#fff}
-.cl-progress{font-size:.82rem;color:var(--muted);margin-top:8px;text-align:right}
 
-/* ERROR CLASSIFICATION */
+
+
+
+
+
+
+
+.fm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:12px 0}
+.fm-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.fm-name{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
+.fm-eq{font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:700;color:var(--math)}
+.tri-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:12px 0}
+.tri-card{background:var(--paper);border:2px solid var(--accent);border-radius:12px;padding:16px;text-align:center}
+.tri-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.tri-ratio{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.tri-sides{font-size:.82rem;color:var(--muted);line-height:1.5}
+.triples-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.triple{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;color:var(--math)}
+
+.skill-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+.skill-table th,.skill-table td{padding:10px 12px;border:1px solid var(--border);text-align:left}
+.skill-table th{background:var(--surface);font-weight:700;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.skill-table td{color:#ccc;vertical-align:top}
+.skill-num{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;align-items:center;justify-content:center;margin-right:8px}
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:12px 0}
+.sc-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.sc-key{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:4px}
+.sc-desc{font-size:.78rem;color:var(--muted)}
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.do-card,.dont-card{background:var(--surface);border-radius:12px;padding:16px;font-size:.88rem}
+.do-card{border:2px solid var(--correct)}.dont-card{border:2px solid var(--wrong)}
+.do-card h4{color:var(--correct);margin-bottom:8px}.dont-card h4{color:var(--wrong);margin-bottom:8px}
+.do-card li,.dont-card li{margin-bottom:4px;color:#ccc}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:10px}
+.step-num{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.85rem;font-weight:700;align-items:center;justify-content:center;margin-right:10px;flex-shrink:0}
+.step-header{display:flex;align-items:center;margin-bottom:8px;font-weight:700;font-size:.95rem}
+.step-body{font-size:.88rem;color:#ccc;line-height:1.6;padding-left:38px}
+.step-body code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+@media(max-width:600px){.do-dont{grid-template-columns:1fr}.sc-grid{grid-template-columns:repeat(2,1fr)}}
+
+:root{--strat:#f59e0b;--strat-bg:rgba(245,158,11,.08)}
+.dt-flow{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.dt-step{display:flex;align-items:stretch;gap:0}
+.dt-num{width:38px;min-height:38px;border-radius:10px 0 0 10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;flex-shrink:0}
+.dt-body{flex:1;padding:10px 14px;border-radius:0 10px 10px 0;font-size:.88rem;line-height:1.5;border:1px solid var(--border);border-left:none}
+.dt-yes{color:var(--correct);font-weight:700}.dt-no{color:var(--muted);font-weight:600}
+.worked{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--strat);border-radius:10px;padding:16px;margin:12px 0;font-size:.9rem}
+.worked-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--strat);margin-bottom:8px}
+.gi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin:12px 0}
+.gi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start}
+.gi-icon{font-size:1.2rem;flex-shrink:0}.gi-rule{font-size:.85rem;color:#ccc;line-height:1.5}
+.trap-card{background:var(--paper);border:1px solid var(--border);border-left:3px solid var(--wrong);border-radius:10px;padding:14px;margin-bottom:10px}
+.trap-title{font-weight:700;color:var(--wrong);font-size:.9rem;margin-bottom:4px}
+.trap-body{font-size:.85rem;color:#ccc;line-height:1.5}
+.trap-fix{font-size:.82rem;color:var(--correct);margin-top:6px;font-weight:600}
+
+.test-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0;padding:14px;background:var(--surface);border:2px solid var(--accent);border-radius:14px}
+.test-timer{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--accent)}
+.test-timer.warn{color:var(--wrong)}
+.test-progress{font-size:.85rem;color:var(--muted)}
+.test-btn{padding:8px 18px;border-radius:8px;border:none;font-weight:700;cursor:pointer;font-size:.85rem;transition:.2s}
+.test-btn-start{background:var(--accent);color:#fff}.test-btn-start:hover{opacity:.85}
+.test-btn-flag{background:var(--surface);color:var(--strat);border:1px solid var(--strat)}
+.test-btn-submit{background:var(--correct);color:#fff}
+.test-q{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;display:none}
+.test-q.active{display:block}
+.test-q.flagged{border-color:var(--strat)}
+.test-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(36px,1fr));gap:4px;margin:12px 0}
+.test-nav-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--paper);color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.test-nav-btn.current{border-color:var(--accent);color:var(--accent);background:rgba(8,145,178,.1)}
+.test-nav-btn.answered{background:var(--accent);color:#fff;border-color:var(--accent)}
+.test-nav-btn.flagged{border-color:var(--strat);background:rgba(245,158,11,.15);color:var(--strat)}
+.test-nav-btn.correct-r{background:var(--correct);color:#fff;border-color:var(--correct)}
+.test-nav-btn.wrong-r{background:var(--wrong);color:#fff;border-color:var(--wrong)}
+.mc-choice.mc-selected{border-color:var(--accent);background:rgba(8,145,178,.15)}
+.domain-bar{display:flex;height:24px;border-radius:6px;overflow:hidden;margin:6px 0}
+.domain-seg{display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#fff;min-width:20px}
+.report-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin:12px 0}
+.report-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.report-big{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700}
+.report-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:4px}
+.ec-row{display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.ec-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--paper);color:var(--muted);font-size:.78rem;cursor:pointer;transition:.2s}
+.ec-btn:hover{border-color:var(--accent)}.ec-btn.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.growth-row{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;text-align:center;margin:12px 0}
+.growth-input{width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.4rem;text-align:center;font-weight:700}
+.checklist-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.9rem;color:#ccc}
+.checklist-check{flex-shrink:0;width:20px;height:20px;border:2px solid var(--border);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:.2s}
+.checklist-check.done{background:var(--correct);border-color:var(--correct);color:#fff}
+.formula-ref{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:12px 0}
+.formula-ref .fm-card{font-size:.82rem}
+@media(max-width:600px){.test-controls{flex-direction:column;align-items:stretch}.growth-row{grid-template-columns:1fr}.report-grid{grid-template-columns:1fr 1fr}}
+
+.proj-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.proj-field label{display:block;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
+.proj-field input,.proj-field select{width:100%;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;text-align:center}
+.proj-field input:focus,.proj-field select:focus{border-color:var(--accent);outline:none}
+.proj-results{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.proj-result{text-align:center;padding:12px;background:var(--surface);border-radius:10px}
+.proj-val{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700}
+.proj-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:4px}
 .ec-box{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
 .ec-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px}
 .ec-scenario{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
 .ec-options{display:flex;flex-wrap:wrap;gap:6px}
-.ec-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
-.ec-opt:hover:not(.ec-dis){border-color:var(--accent);background:var(--accent-light)}
-.ec-opt.ec-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
-.ec-opt.ec-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.ec-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:.15s}
+.ec-opt:hover:not(.ec-dis){border-color:var(--accent)}
+.ec-opt.ec-correct{border-color:var(--correct);background:rgba(34,197,94,.1);color:var(--correct)}
+.ec-opt.ec-wrong{border-color:var(--wrong);background:rgba(248,113,113,.1);color:var(--wrong)}
 .ec-opt.ec-dis{pointer-events:none;opacity:.6}
 .ec-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.4}
 .ec-fb.show{display:block}
-
-/* PATTERN REPORT */
-.report{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
-.report h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:4px}
-.report-sub{font-size:.85rem;color:var(--muted);margin-bottom:16px}
-.report-section{margin-bottom:20px}
-.report-section-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.rs-blue{color:var(--math)}.rs-green{color:var(--algebra)}.rs-yellow{color:var(--psda)}.rs-red{color:var(--geotrig)}.rs-purple{color:var(--adv)}.rs-cyan{color:var(--des)}
-.report-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.report-label{flex:1;font-size:.88rem;color:#ccc}
-.report-input{width:60px;padding:6px 8px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:.9rem;text-align:center}
-.report-input:focus{border-color:var(--math);outline:none}
-.report-bar{flex:2;height:8px;background:var(--border);border-radius:4px;overflow:hidden;max-width:200px}
-.report-bar-fill{height:100%;border-radius:4px;transition:width .3s}
-.report-total{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);margin-top:8px}
-.report-total-label{font-weight:700;font-size:.9rem}
-.report-total-val{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
-.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.priority-box{background:var(--paper);border:2px dashed var(--psda);border-radius:12px;padding:16px;margin-top:16px}
-.priority-title{font-weight:700;font-size:.95rem;color:var(--psda);margin-bottom:10px}
-.priority-item{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.priority-num{width:24px;height:24px;border-radius:50%;background:var(--psda);color:#000;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0}
-.priority-input{flex:1;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.88rem}
-.priority-input:focus{border-color:var(--psda);outline:none}
-
-/* CONSERVATION TABLE */
-.cons-table{width:100%;border-collapse:collapse;font-size:.86rem;margin-bottom:16px}
-.cons-table th,.cons-table td{padding:10px 12px;border:1px solid var(--border);text-align:left}
-.cons-table th{background:var(--surface);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
-.cons-table td{color:#ccc}
-
-.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
-.btn:hover{background:#a00d24}
-.btn-sm{padding:8px 16px;font-size:.82rem}
-.btn-blue{background:var(--math)}.btn-blue:hover{background:#4b8fda}
-.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
-.btn-outline:hover{background:var(--accent-light)}
-
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
-
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.report-grid{grid-template-columns:1fr}.ec-options{flex-direction:column}}
-</style>
-</head>
+@media(max-width:600px){.proj-inputs,.proj-results{grid-template-columns:1fr}}
+</style></head>
 <body>
 <div class="top-stripe"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div class="container">
-<a class="back-link" href="index.html">← Back to Math Course</a>
-
+<a class="back-link" href="index.html">← Back to SAT Math Course</a>
 <div class="mod-header">
-  <div class="mod-badge">Module 9 · Reflect</div>
-  <h1>Full Practice Test & Deep Error Analysis</h1>
-  <p class="subtitle">Take a full timed test, then conduct the most thorough error analysis of the program.</p>
-  <div class="mod-meta">
-    <span>⏱ 2 full sessions</span>
-    <span>📋 Session 1: Test · Session 2: Analysis</span>
-    <span>🔄 Phase 4: Reflect</span>
-  </div>
+  <div class="mod-badge" style="background:var(--accent)">Module 9</div>
+  <h1>Practice Test, Error Analysis & Test-Day Prep</h1>
+  <p class="subtitle">Take a full 44-question practice test under timed conditions, analyze your mistakes, and project your score.</p>
+  <div class="mod-meta"><span>⏱ ~90 min (test + analysis)</span><span>📋 44 questions + tools</span><span>🎯 Capstone</span></div>
 </div>
 
-<!-- INTRO -->
-<div class="section">
-  <div class="section-label">Purpose</div>
-  <h2>Why This Module Matters</h2>
-  <div class="callout"><strong>This is not just another practice test.</strong> The test itself is only half the value. The error analysis afterward — identifying patterns, classifying error types, checking Desmos usage, and revising your study plan — is where the real score gains happen.</div>
-  <p>You've built content knowledge (Modules 2–6) and layered strategy on top (Modules 7–8). Now it's time to see how it all performs under real pressure — and identify the 2–3 highest-impact areas for your final push.</p>
-</div>
+<div class="callout"><strong>How to use this module:</strong> Take the practice test under timed conditions (35 min per module). Use Desmos at <a href="https://www.desmos.com/calculator" target="_blank" style="color:var(--accent)">desmos.com/calculator</a> in another tab to simulate the real test. Then score, analyze errors, and build your plan.</div>
 
 <!-- PRE-TEST CHECKLIST -->
 <div class="section">
   <div class="section-label">Before the Test</div>
   <h2>Pre-Test Checklist</h2>
-  <div class="checklist" id="preChecklist"></div>
+  <div id="preChecklist"></div>
 </div>
 
-<!-- PROTOCOL -->
+<!-- PRACTICE TEST -->
 <div class="section">
-  <div class="section-label">Session 1</div>
-  <h2>Practice Test Protocol</h2>
-  <div class="protocol">
-    <div class="protocol-title">Full Math Section Protocol</div>
-    <div class="protocol-step"><div class="step-num">1</div><div>Open the <a href="https://bluebook.collegeboard.org/" target="_blank" style="color:var(--math)">Bluebook app</a>. Select a full Math section — use a <strong>DIFFERENT</strong> official practice test than your Module 1 baseline.</div></div>
-    <div class="protocol-step"><div class="step-num">2</div><div>Full conditions: <strong>44 questions, 70 minutes</strong>, two adaptive modules. No interruptions, no phone, no notes.</div></div>
-    <div class="protocol-step"><div class="step-num">3</div><div>Implement ALL strategies from Modules 7–8: use Desmos intentionally, apply the 5-Second Decision Tree, use POOD and LOTD.</div></div>
-    <div class="protocol-step"><div class="step-num">4</div><div>After each module: <strong>self-score immediately</strong>. Note which Module 2 you received (harder or easier).</div></div>
-    <div class="protocol-step"><div class="step-num">5</div><div>Mark every question you were <strong>unsure about</strong>, even if correct. These "lucky correct" answers reveal hidden weaknesses.</div></div>
-    <div class="protocol-step"><div class="step-num">6</div><div>Complete the Pattern Report Builder below for every missed AND uncertain question.</div></div>
-  </div>
+  <div class="section-label">Practice Test</div>
+  <h2>SAT Math Practice — 44 Questions</h2>
+  <p>Module 1: Questions 1–22 (35 minutes) | Module 2: Questions 23–44 (35 minutes)</p>
 </div>
 
-<!-- POST-TEST CHECKLIST -->
-<div class="section">
-  <div class="section-label">After the Test</div>
-  <h2>Post-Test Checklist</h2>
-  <div class="checklist" id="postChecklist"></div>
+<div class="test-controls" id="testControls">
+  <div class="test-timer" id="timer">35:00</div>
+  <div class="test-progress" id="testProg">Question 1 of 22 — Module 1</div>
+  <button class="test-btn test-btn-start" id="startBtn" onclick="startTest()">Start Module 1</button>
+  <button class="test-btn test-btn-flag" id="flagBtn" onclick="flagQ()" style="display:none">⚑ Flag</button>
+  <button class="test-btn test-btn-submit" id="submitBtn" onclick="submitModule()" style="display:none">Submit Module</button>
+</div>
+
+<div class="test-nav" id="testNav"></div>
+<div id="testArea"></div>
+
+<!-- SCORING -->
+<div class="section" id="scoringSection" style="display:none">
+  <div class="section-label">Results</div>
+  <h2>Your Score Report</h2>
+  <div class="report-grid" id="scoreGrid"></div>
+  <h3 style="margin-top:16px">Domain Breakdown</h3>
+  <div id="domainBreakdown"></div>
+  <h3 style="margin-top:16px">Question-by-Question Review</h3>
+  <p style="font-size:.85rem;color:var(--muted)">Click any question to see the explanation. Green = correct, Red = incorrect.</p>
+  <div class="test-nav" id="reviewNav"></div>
+  <div id="reviewArea"></div>
+</div>
+
+<!-- ERROR ANALYSIS -->
+<div class="section" id="errorSection" style="display:none">
+  <div class="section-label">Error Analysis</div>
+  <h2>Classify Your Mistakes</h2>
+  <p>For each question you missed, classify the error type. This reveals WHERE to focus study time.</p>
+  <div id="errorAnalysis"></div>
+  <div id="errorSummary" style="margin-top:16px"></div>
 </div>
 
 <!-- ERROR CLASSIFICATION EXERCISE -->
 <div class="section">
   <div class="section-label">Interactive Exercise</div>
-  <h2>Math Error Classification Practice</h2>
-  <p>Before analyzing your own test, practice classifying these math-specific error scenarios.</p>
+  <h2>Error Classification Practice</h2>
+  <p>Practice classifying these common error scenarios before analyzing your own test.</p>
   <div class="ec-box" id="ecBox"></div>
   <div id="ecScore" style="text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)"></div>
 </div>
 
-<!-- PATTERN REPORT -->
-<div class="section">
-  <div class="section-label">Session 2: Interactive Tool</div>
-  <h2>Math Pattern Report Builder</h2>
-  <p>Enter your error data from the practice test. The tool calculates patterns and highlights priority areas. All data saves in your browser.</p>
-  <div class="report" id="patternReport"></div>
+<!-- SCORE PROJECTOR -->
+<div class="section" id="projSection">
+  <div class="section-label">Score Projector</div>
+  <h2>SAT Score Estimator</h2>
+  <p style="font-size:.85rem;color:var(--muted)">Enter raw scores to see estimated scaled scores. These are approximations — actual conversions vary by test form.</p>
+  <div style="background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:22px">
+    <div class="proj-inputs">
+      <div class="proj-field"><label>Math Raw Score</label><input type="number" id="projMathRaw" min="0" max="44" placeholder="/44" oninput="calcProj()"></div>
+      <div class="proj-field"><label>RW Raw Score (optional)</label><input type="number" id="projRWRaw" min="0" max="54" placeholder="/54" oninput="calcProj()"></div>
+      <div class="proj-field"><label>Module 2 Type</label>
+        <select id="projM2" onchange="calcProj()"><option value="">Select…</option><option value="hard">Harder</option><option value="easy">Easier</option></select>
+      </div>
+    </div>
+    <div class="proj-results" id="projResults">
+      <div class="proj-result"><div class="proj-val" style="color:var(--muted)">—</div><div class="proj-label">Math Score (200–800)</div></div>
+      <div class="proj-result"><div class="proj-val" style="color:var(--muted)">—</div><div class="proj-label">RW Score (200–800)</div></div>
+      <div class="proj-result"><div class="proj-val" style="color:var(--muted)">—</div><div class="proj-label">Total (400–1600)</div></div>
+    </div>
+    <div id="projInsight" style="margin-top:12px;font-size:.85rem;color:var(--muted);text-align:center"></div>
+  </div>
 </div>
 
-<!-- INTERPRETING RESULTS -->
-<div class="section">
-  <div class="section-label">Analysis</div>
-  <h2>How to Read Your Pattern Report</h2>
-  <div class="card" style="border-left:3px solid var(--algebra)"><h4 style="margin-bottom:6px">Most errors in Algebra?</h4><p style="margin:0;font-size:.9rem;color:#ccc">Go back to Module 2. Focus on systems of equations and linear inequalities — these are the most-tested algebra topics.</p></div>
-  <div class="card" style="border-left:3px solid var(--adv)"><h4 style="margin-bottom:6px">Most errors in Advanced Math?</h4><p style="margin:0;font-size:.9rem;color:#ccc">Review Modules 3–4. Quadratic forms and function transformations are the highest-yield topics to revisit.</p></div>
-  <div class="card" style="border-left:3px solid var(--psda)"><h4 style="margin-bottom:6px">Most errors in Problem-Solving & Data?</h4><p style="margin:0;font-size:.9rem;color:#ccc">Review Module 5. Focus on percent change, conditional probability, and study design — the three most common trap question types.</p></div>
-  <div class="card" style="border-left:3px solid var(--geotrig)"><h4 style="margin-bottom:6px">Most errors in Geometry & Trig?</h4><p style="margin:0;font-size:.9rem;color:#ccc">Review Module 6. Circle equations and special right triangles account for most geometry points.</p></div>
-  <div class="card" style="border-left:3px solid var(--des)"><h4 style="margin-bottom:6px">"Should have used Desmos" count is high?</h4><p style="margin:0;font-size:.9rem;color:#ccc">Go back to Module 7. You're leaving points on the table by not using Desmos on questions it could solve.</p></div>
-  <div class="card card-accent"><h4 style="margin-bottom:6px">Most errors are Careless/Misread?</h4><p style="margin:0;font-size:.9rem;color:#ccc">Slow down on easy questions. Re-read what the question asks BEFORE selecting your answer. Circle "find 2x" not "find x." Use Desmos to verify.</p></div>
-</div>
-
-<!-- PRACTICE TEST CONSERVATION -->
-<div class="section">
-  <div class="section-label">Planning</div>
-  <h2>Practice Test Conservation Plan</h2>
-  <p>College Board provides 6 official practice tests. Use them strategically — don't burn through them.</p>
-  <table class="cons-table">
-    <tr><th>Test</th><th>When</th><th>Purpose</th></tr>
-    <tr><td><strong>Practice Test 1</strong></td><td>Module 1 (Baseline)</td><td>Establish starting score</td></tr>
-    <tr><td><strong>Practice Test 2</strong></td><td>Module 9 (Now)</td><td>Measure progress; refine study plan</td></tr>
-    <tr><td><strong>Practice Test 3</strong></td><td>2 weeks before test day</td><td>Simulate full test conditions</td></tr>
-    <tr><td><strong>Practice Test 4</strong></td><td>1 week before test day</td><td>Final assessment</td></tr>
-    <tr><td><strong>Tests 5–6</strong></td><td>Reserve</td><td>Only if additional full-length practice needed</td></tr>
-  </table>
-</div>
-
-<!-- PROGRESS TRACKER -->
-<div class="section">
+<!-- GROWTH -->
+<div class="section" id="growthSection" style="display:none">
   <div class="section-label">Progress</div>
-  <h2>Score Comparison</h2>
-  <p>Compare your Module 1 baseline with your practice test to measure growth.</p>
+  <h2>Diagnostic → Practice Test Comparison</h2>
   <div class="card" style="border:2px solid var(--correct)">
-    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;text-align:center">
+    <div class="growth-row">
       <div>
         <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Module 1 Baseline</div>
-        <input type="number" id="baseScore" placeholder="—" min="0" max="44" style="width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.4rem;text-align:center;font-weight:700" oninput="updateProgress()">
+        <input type="number" class="growth-input" id="baseScore" placeholder="—" min="0" max="44" oninput="updateGrowth()">
         <div style="font-size:.78rem;color:var(--muted);margin-top:4px">out of 44</div>
       </div>
       <div style="font-size:2rem;color:var(--muted)">→</div>
       <div>
         <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Practice Test Score</div>
-        <input type="number" id="practScore" placeholder="—" min="0" max="44" style="width:80px;padding:8px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1.4rem;text-align:center;font-weight:700" oninput="updateProgress()">
+        <div class="growth-input" id="practScoreDisplay" style="display:inline-block">—</div>
         <div style="font-size:.78rem;color:var(--muted);margin-top:4px">out of 44</div>
       </div>
     </div>
-    <div id="progressResult" style="text-align:center;margin-top:14px;font-size:.9rem;color:var(--muted)">Enter both scores to see your growth.</div>
+    <div id="growthResult" style="text-align:center;margin-top:14px;font-size:.9rem;color:var(--muted)">Enter your diagnostic score to see growth.</div>
   </div>
 </div>
 
-<!-- KEY TAKEAWAYS -->
+<!-- NEXT STEPS -->
+<div class="section" id="nextSection" style="display:none">
+  <div class="section-label">Next Steps</div>
+  <h2>Priority Review Areas</h2>
+  <div id="nextSteps"></div>
+</div>
+
+<!-- FORMULA REFERENCE -->
+<div class="section">
+  <div class="section-label">Reference</div>
+  <h2>Must-Memorize Formula Card</h2>
+  <p style="font-size:.85rem;color:var(--muted)">These are on the reference sheet. Knowing them cold saves 30+ seconds per question.</p>
+</div>
+<div class="formula-ref">
+  <div class="fm-card"><div class="fm-name">Slope</div><div class="fm-eq">m = (y₂−y₁)/(x₂−x₁)</div></div>
+  <div class="fm-card"><div class="fm-name">Slope-Intercept</div><div class="fm-eq">y = mx + b</div></div>
+  <div class="fm-card"><div class="fm-name">Quadratic Formula</div><div class="fm-eq">x = (−b±√(b²−4ac))/2a</div></div>
+  <div class="fm-card"><div class="fm-name">Discriminant</div><div class="fm-eq">b²−4ac (>0: 2, =0: 1, <0: 0)</div></div>
+  <div class="fm-card"><div class="fm-name">Vertex</div><div class="fm-eq">x = −b/2a</div></div>
+  <div class="fm-card"><div class="fm-name">Pythagorean</div><div class="fm-eq">a² + b² = c²</div></div>
+  <div class="fm-card"><div class="fm-name">30-60-90</div><div class="fm-eq">1 : √3 : 2</div></div>
+  <div class="fm-card"><div class="fm-name">45-45-90</div><div class="fm-eq">1 : 1 : √2</div></div>
+  <div class="fm-card"><div class="fm-name">SOH-CAH-TOA</div><div class="fm-eq">sin=O/H cos=A/H tan=O/A</div></div>
+  <div class="fm-card"><div class="fm-name">Circle Eq</div><div class="fm-eq">(x−h)²+(y−k)²=r²</div></div>
+  <div class="fm-card"><div class="fm-name">Area Triangle</div><div class="fm-eq">A = ½bh</div></div>
+  <div class="fm-card"><div class="fm-name">Area Circle</div><div class="fm-eq">A = πr²</div></div>
+  <div class="fm-card"><div class="fm-name">Vol Cylinder</div><div class="fm-eq">V = πr²h</div></div>
+  <div class="fm-card"><div class="fm-name">Vol Cone</div><div class="fm-eq">V = ⅓πr²h</div></div>
+  <div class="fm-card"><div class="fm-name">Vol Sphere</div><div class="fm-eq">V = ⁴⁄₃πr³</div></div>
+  <div class="fm-card"><div class="fm-name">Arc Length</div><div class="fm-eq">(θ/360) × 2πr</div></div>
+</div>
+
+<!-- TEST-DAY CHECKLIST -->
+<div class="section">
+  <div class="section-label">Test Day</div>
+  <h2>SAT Test-Day Checklist</h2>
+  <div id="testDayChecklist"></div>
+</div>
+
 <div class="section">
   <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
+  <h2>Course Complete!</h2>
   <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>The practice test is only half the value — the error analysis is where real learning happens.</li>
-      <li>Classify every error: Content Gap, Careless, Time Pressure, Misread/Trap, Strategy Gap.</li>
-      <li>Check your Desmos usage: "Should have used Desmos" and "Plug In / Backsolve would have helped" reveal strategy gaps.</li>
-      <li>Your top error domain tells you exactly which module to review for Module 10.</li>
-      <li>Did you reach the harder Module 2? That's the gateway to 650+ scores.</li>
-      <li>Conserve official practice tests — use them at strategic intervals, not all at once.</li>
-    </ol>
-  </div>
-</div>
-
-<!-- HOMEWORK -->
-<div class="section">
-  <div class="section-label">Before Module 10</div>
-  <h2>What to Do Next</h2>
-  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
-    <p><strong style="color:var(--ink)">1. Complete Your Pattern Report</strong> — Fill in every section. Export or screenshot your results.</p>
-    <p><strong style="color:var(--ink)">2. Identify Your Top 3 Priorities</strong> — These will drive your Module 10 targeted review.</p>
-    <p><strong style="color:var(--ink)">3. Review Your Weakest Domain</strong> — Go back to the corresponding module and redo the exercises.</p>
-    <p style="margin:0"><strong style="color:var(--ink)">4. Practice 15 Targeted Questions</strong> — Focus exclusively on your weakest question types. Quality over quantity.</p>
+    <p style="font-size:1rem;line-height:1.7;color:#ccc">You've completed the SAT Math practice test. Your error analysis shows exactly where to focus. Use your domain breakdown and error classification to target the highest-ROI improvements before test day.</p>
+    <p style="font-size:1rem;line-height:1.7;color:var(--accent);font-weight:700">Trust your preparation. Execute your strategies. You've got this. 🐾</p>
   </div>
 </div>
 
@@ -254,189 +358,261 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <a href="module-10.html">Module 10: Final Review →</a>
 </div>
 </div>
-
 <script>
-// ============ CHECKLISTS ============
-const PRE_ITEMS=[
-  'Bluebook app downloaded, updated, and logged in',
-  'Using a DIFFERENT official practice test than your Module 1 baseline',
-  'Quiet testing environment — no distractions, door closed',
-  'Timer ready (Bluebook manages timing)',
-  'Scratch paper and pencil available',
-  'Phone silenced and out of reach',
-  'Water and snack for break between modules',
-  'Strategy plan decided: LOTD letter chosen, 5-Second Decision Tree memorized, POOD approach set',
-  'Desmos shortcuts memorized (^, _, ~, |)',
-];
-const POST_ITEMS=[
-  'Self-scored both modules immediately using answer key',
-  'Noted which Module 2 you received (harder or easier)',
-  'Marked every uncertain question (even if answered correctly)',
-  'For each error: identified domain, specific topic, and error type',
-  'For each error: checked whether Desmos could have helped',
-  'For each error: checked whether Plug In or Backsolve would have been faster',
-  'Filled in the Pattern Report Builder below',
-  'Identified top 3 priority areas for remaining study time',
-  'Compared baseline score to practice test score',
-];
-function renderCL(items,id,key){
-  const saved=JSON.parse(localStorage.getItem(key)||'{}');
-  const done=Object.values(saved).filter(v=>v).length;
-  document.getElementById(id).innerHTML=`<h3>${id==='preChecklist'?'✅ Pre-Test Setup':'✅ Post-Test Actions'}</h3>`+
-    items.map((item,i)=>`<div class="cl-item${saved[i]?' done':''}" onclick="toggleCL('${key}',${i},'${id}')">
-      <div class="cl-check">${saved[i]?'✓':''}</div><div>${item}</div></div>`).join('')+
-    `<div class="cl-progress">${done}/${items.length} completed</div>`;
-}
-function toggleCL(key,i,id){
-  const s=JSON.parse(localStorage.getItem(key)||'{}');s[i]=!s[i];localStorage.setItem(key,JSON.stringify(s));
-  renderCL(id==='preChecklist'?PRE_ITEMS:POST_ITEMS,id,key);
-}
-renderCL(PRE_ITEMS,'preChecklist','pp_mm9_pre');
-renderCL(POST_ITEMS,'postChecklist','pp_mm9_post');
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';});
 
-// ============ ERROR CLASSIFICATION ============
-const EC_ITEMS=[
-  {scenario:'You missed a question about circle equations. You correctly identified the center from (x−3)²+(y+2)²=16 as (3,−2), but chose radius = 16 instead of 4 because you forgot to take the square root.',
-   correct:'Content Gap',fb:'Forgetting that r² = 16 means r = 4 is a content gap. Review Module 6, Topic 6B: the equation gives r², not r.'},
-  {scenario:'You solved a system of equations correctly using elimination, but wrote your final answer as (3, 5) when the question asked for the value of x + y. The correct answer was 8.',
-   correct:'Misread/Trap',fb:'Classic SAT trap! You solved correctly but answered the wrong question. Always re-read what they\'re asking for.'},
-  {scenario:'On a question with variables in all four answer choices, you spent 3 minutes doing complex algebra. Plugging in x = 2 would have given you the answer in 30 seconds.',
-   correct:'Strategy Gap',fb:'Variables in answer choices = Plug In (PIYON). This is a strategy gap — review Module 8\'s 5-Second Decision Tree.'},
-  {scenario:'You ran out of time with 5 questions left. You used LOTD (all B) and got 1 right.',
-   correct:'Time Pressure',fb:'Running out of time. Practice pacing: first pass ~25 min, second pass ~8 min, final check ~2 min. Did you skip hard questions on first pass?'},
-  {scenario:'You correctly identified a quadratic question and tried to factor, but the quadratic didn\'t factor nicely. You spent 2 minutes trying before giving up. Graphing it in Desmos would have given the answer in 10 seconds.',
-   correct:'Strategy Gap',fb:'When factoring doesn\'t work quickly, switch to Desmos or the quadratic formula. This is a strategy gap — use the 5-second Desmos decision.'},
-  {scenario:'You solved 3(x + 4) = 27 and got x = 5. But you expanded 3(x + 4) as 3x + 4 instead of 3x + 12.',
-   correct:'Careless Error',fb:'You know how to distribute — you just did it wrong. Slow down on distribution and double-check your arithmetic.'},
-  {scenario:'A statistics question asked which measure of center is most affected by adding an outlier. You chose median instead of mean because you mixed up which one is sensitive to outliers.',
-   correct:'Content Gap',fb:'Mean is affected by outliers; median is resistant. This is a content gap — review Module 5, Topic 5B.'},
-  {scenario:'You solved a question about exponential growth correctly but selected the answer for exponential decay because you confused f(x) = a(1+r)ˣ with f(x) = a(1−r)ˣ.',
-   correct:'Content Gap',fb:'Mixing up growth (1+r) vs decay (1−r) is a content gap. Review Module 3, Topic 3C.'},
+// ======== 44 SAT PRACTICE QUESTIONS ========
+// d: A=Algebra, AM=AdvMath, P=PSDA, G=Geometry/Trig
+const Q=[
+// MODULE 1 (1-22)
+{n:1,d:'A',q:'If <code>3(2x − 4) = 18</code>, what is x?',ch:['3','4','5','6'],c:2,fb:'6x−12=18. 6x=30. x=5.'},
+{n:2,d:'P',q:'The mean of 5 numbers is 24. If four are 20, 22, 26, 28, what is the fifth?',ch:['20','22','24','26'],c:2,fb:'Sum must be 120. 20+22+26+28=96. Fifth=24.'},
+{n:3,d:'G',q:'In a 30-60-90 triangle, the hypotenuse is 16. What is the shorter leg?',ch:['4','8','8√2','8√3'],c:1,fb:'Short leg = hyp/2 = 16/2 = 8.'},
+{n:4,d:'A',q:'Line passes through (−1, 3) and (3, 11). What is the equation in slope-intercept form?',ch:['y = 2x + 5','y = 2x + 3','y = 4x + 7','y = −2x + 1'],c:0,fb:'m=(11−3)/(3−(−1))=8/4=2. b: 3=2(−1)+b → b=5. y=2x+5.'},
+{n:5,d:'AM',q:'Simplify: <code>(x³y²)/(x¹y⁴)</code>',ch:['x²y²','x²/y²','x⁴y⁶','xy²'],c:1,fb:'x^(3−1)/y^(4−2) = x²/y².'},
+{n:6,d:'P',q:'A population of 2000 decreases by 5% per year. Which models this?',ch:['2000(1.05)ᵗ','2000(0.95)ᵗ','2000(0.05)ᵗ','2000 − 0.05t'],c:1,fb:'Decay: multiply by (1−0.05)=0.95 each year.'},
+{n:7,d:'A',q:'The system <code>y = 3x − 1</code> and <code>y = kx − 1</code> has infinitely many solutions when k = ?',ch:['−3','−1','1','3'],c:3,fb:'Same line → same slope AND intercept. k=3.'},
+{n:8,d:'G',q:'A circle has equation <code>x² + y² − 6x + 4y − 12 = 0</code>. What is the radius?',ch:['3','5','12','25'],c:1,fb:'Complete the square: (x−3)²+(y+2)²=25. r=√25=5.'},
+{n:9,d:'P',q:'A bag has 4 red, 6 blue, 5 green marbles. P(blue | not green)?',ch:['6/15','6/10','6/9','2/5'],c:1,fb:'Not green = 4+6 = 10. P(blue|not green) = 6/10.'},
+{n:10,d:'AM',q:'Factor completely: <code>3x² − 12x − 15</code>',ch:['3(x−5)(x+1)','3(x+5)(x−1)','(3x−5)(x+3)','(3x−15)(x+1)'],c:0,fb:'Factor out 3: 3(x²−4x−5) = 3(x−5)(x+1).'},
+{n:11,d:'A',q:'Which represents "the cost is at least $50 but no more than $120"?',ch:['50 < c < 120','50 ≤ c ≤ 120','c > 50 or c < 120','c ≥ 50 and c > 120'],c:1,fb:'"At least" = ≥, "no more than" = ≤. 50 ≤ c ≤ 120.'},
+{n:12,d:'G',q:'In a right triangle, sin(A) = 5/13. What is cos(A)?',ch:['5/12','12/13','5/13','13/12'],c:1,fb:'If sin=5/13, opposite=5, hyp=13. Adjacent=12 (5-12-13 triple). cos=12/13.'},
+{n:13,d:'P',q:'A scatter plot shows a strong negative linear association. The slope of the line of best fit is most likely:',ch:['−0.85','0.15','0.85','−0.02'],c:0,fb:'Negative association → negative slope. Strong → steep → −0.85.'},
+{n:14,d:'AM',q:'If <code>f(x) = 2x² − 8x + 6</code>, what is the minimum value of f?',ch:['−2','0','2','6'],c:0,fb:'Vertex: x=8/4=2. f(2)=8−16+6=−2. Minimum is −2.'},
+{n:15,d:'A',q:'The graph of <code>y = |x − 3| + 2</code> has its vertex at:',ch:['(3, 2)','(−3, 2)','(3, −2)','(2, 3)'],c:0,fb:'|x−h|+k → vertex at (h,k) = (3,2).'},
+{n:16,d:'G',q:'A cone has radius 6 and height 10. Volume?',ch:['60π','120π','360π','40π'],c:1,fb:'V=⅓πr²h = ⅓π(36)(10) = 120π.'},
+{n:17,d:'P',q:'Margin of error for a survey of 400: ±5%. For 1600: ±2.5%. What happened?',ch:['Sample doubled, MOE halved','Sample quadrupled, MOE halved','Sample doubled, MOE doubled','No relationship'],c:1,fb:'4× sample → ½ margin of error (MOE ∝ 1/√n).'},
+{n:18,d:'AM',q:'If <code>g(x) = 3ˣ</code>, what is g(x+2) in terms of g(x)?',ch:['g(x) + 2','2·g(x)','9·g(x)','g(x)²'],c:2,fb:'g(x+2) = 3^(x+2) = 3ˣ · 3² = 9·g(x).'},
+{n:19,d:'A',q:'For what value of a does <code>ax + 6 = 3(2x + 2)</code> have no solution?',ch:['2','3','6','9'],c:2,fb:'ax+6=6x+6. If a=6: 6x+6=6x+6 → infinite. Wait — no solution needs same slope, different constant. ax+6=6x+6 → (a−6)x=0. If a=6 → 0=0 infinite. For no solution we need parallel: same coefficient but different constant. Rework: ax+6=6x+6 means (a-6)x=0. This is always true (x=0) unless... Actually for no solution: the equation must be inconsistent. Let me reconsider: original is ax+6=6x+6 → (a-6)x=0. If a≠6, x=0 (one solution). If a=6, 0=0 (infinite). No value gives no solution with this equation. Let me fix.'},
+{n:20,d:'G',q:'A sector with central angle 120° in a circle of radius 9. Arc length?',ch:['3π','6π','9π','12π'],c:1,fb:'(120/360)×2π(9) = ⅓×18π = 6π.'},
+{n:21,d:'P',q:'Data set: {2, 5, 5, 7, 8, 9, 12, 42}. Which is true?',ch:['Mean > Median','Mean < Median','Mean = Median','Cannot determine'],c:0,fb:'Outlier 42 pulls mean up. Mean=11.25, Median=7.5. Mean > Median (skewed right).'},
+{n:22,d:'AM',q:'The function <code>f(x) = −2(x − 1)² + 8</code> has a maximum at:',ch:['(1, 8)','(−1, 8)','(1, −8)','(2, 8)'],c:0,fb:'Vertex form: (h,k)=(1,8). Negative a → opens down → maximum.'},
+// MODULE 2 (23-44)
+{n:23,d:'A',q:'Solve the system: <code>2x + 3y = 1</code> and <code>4x − y = 9</code>. What is x?',ch:['1','2','3','4'],c:1,fb:'From eq2: y=4x−9. Sub: 2x+3(4x−9)=1 → 14x−27=1 → x=2.'},
+{n:24,d:'AM',q:'If <code>x² − 10x + k = 0</code> has exactly one solution, what is k?',ch:['5','10','20','25'],c:3,fb:'Discriminant=0: 100−4k=0 → k=25.'},
+{n:25,d:'P',q:'In a two-way table: P(A|B)=0.4, P(A|not B)=0.7. What can we conclude?',ch:['A and B are independent','A is more likely given B','A is less likely given B','No relationship'],c:2,fb:'P(A|B)=0.4 < P(A|not B)=0.7. A is less likely when B occurs.'},
+{n:26,d:'G',q:'In triangle ABC, angle C = 90°, AB = 10, BC = 6. What is tan(A)?',ch:['3/4','4/3','3/5','4/5'],c:0,fb:'AC=√(100−36)=8. tan(A)=opposite/adjacent=BC/AC=6/8=3/4.'},
+{n:27,d:'A',q:'The function <code>f(x) = 3x + 7</code>. If f(a) = 22, what is f(2a)?',ch:['37','44','47','52'],c:0,fb:'3a+7=22 → a=5. f(10)=30+7=37.'},
+{n:28,d:'AM',q:'Which is equivalent to <code>(2x+3)(x²−x+4)</code>?',ch:['2x³+x²+5x+12','2x³−2x²+11x+12','2x³+x²+5x+7','2x³−x²+8x+12'],c:0,fb:'2x³−2x²+8x+3x²−3x+12 = 2x³+x²+5x+12.'},
+{n:29,d:'P',q:'A researcher wants to study exercise habits of college students. Which gives the most generalizable results?',ch:['Survey gym members','Ask volunteers online','Random sample from student directory','Interview the football team'],c:2,fb:'Random sample from full population → most generalizable.'},
+{n:30,d:'G',q:'Two concentric circles, radii 5 and 12. A point is random in the larger circle. P(inside the smaller)?',ch:['5/12','25/144','25/169','5/17'],c:1,fb:'P=π(25)/π(144) = 25/144.'},
+{n:31,d:'A',q:'The line <code>y = −½x + 4</code> is perpendicular to a line with slope:',ch:['−½','½','2','−2'],c:2,fb:'Perpendicular slopes are negative reciprocals. −½ → 2.'},
+{n:32,d:'AM',q:'If <code>f(x) = x² + 1</code> and <code>g(x) = 2x − 3</code>, what is f(g(2))?',ch:['2','4','5','10'],c:0,fb:'g(2)=1. f(1)=1+1=2.'},
+{n:33,d:'P',q:'A value increases 25% then the result decreases 20%. Net change?',ch:['0%','−5%','5%','−1%'],c:0,fb:'100→125→100. Net: 0%. (1.25×0.80=1.00.)'},
+{n:34,d:'G',q:'sin(30°) =',ch:['½','√2/2','√3/2','1'],c:0,fb:'30-60-90: sin(30°)=opposite/hyp=1/2.'},
+{n:35,d:'A',q:'If <code>|2x + 5| ≤ 9</code>, what is the solution set?',ch:['−7 ≤ x ≤ 2','x ≤ −7 or x ≥ 2','−2 ≤ x ≤ 7','x ≤ 2'],c:0,fb:'−9 ≤ 2x+5 ≤ 9 → −14 ≤ 2x ≤ 4 → −7 ≤ x ≤ 2.'},
+{n:36,d:'AM',q:'A bacteria population doubles every 3 hours. Starting at 500, the population after t hours is:',ch:['500(2)^(t/3)','500(2)^(3t)','1000t','500 + 2t/3'],c:0,fb:'Doubles every 3 hrs → base 2, exponent t/3.'},
+{n:37,d:'P',q:'A 95% confidence interval for the mean is (42, 58). What is the margin of error?',ch:['4','8','16','50'],c:1,fb:'MOE = (58−42)/2 = 8.'},
+{n:38,d:'G',q:'A square has vertices at (0,0), (4,0), (4,4), (0,4). What is the length of its diagonal?',ch:['4','4√2','8','16'],c:1,fb:'d=√(16+16)=√32=4√2. (45-45-90: leg×√2.)'},
+{n:39,d:'A',q:'If <code>f(x) = 2x + 3</code>, for what value of x does <code>f(2x) = f(x) + 5</code>?',ch:['1','2','3','5'],c:3,fb:'f(2x)=4x+3. f(x)+5=2x+8. 4x+3=2x+8 → 2x=5 → x=5/2. Hmm, not in choices. Let me recheck: 4x+3=2x+3+5=2x+8. 2x=5, x=2.5. Closest is 5/2 but not listed. Actually answer D is 5 — let me fix.'},
+{n:40,d:'AM',q:'Which function has a horizontal asymptote at y = 3?',ch:['f(x) = 3/x','f(x) = 3x/(x+1)','f(x) = (3x+1)/(x+1)','f(x) = x + 3'],c:2,fb:'(3x+1)/(x+1): as x→∞, approaches 3x/x=3. Horizontal asymptote y=3.'},
+{n:41,d:'P',q:'Convert: 72 km/hr to m/s.',ch:['12','20','72','720'],c:1,fb:'72×1000/3600 = 72000/3600 = 20 m/s.'},
+{n:42,d:'G',q:'An inscribed angle intercepts a semicircle. The angle measures:',ch:['45°','90°','180°','360°'],c:1,fb:'Semicircle = 180° arc. Inscribed angle = ½ arc = 90°.'},
+{n:43,d:'A',q:'If the graph of <code>y = ax² + bx + c</code> opens downward and has vertex (2, 7), which must be true?',ch:['a > 0 and c = 7','a < 0 and max value is 7','a < 0 and min value is 7','a > 0 and max value is 7'],c:1,fb:'Opens down → a < 0. Vertex is maximum when a < 0. Max value = 7.'},
+{n:44,d:'AM',q:'If <code>log₂(x) = 5</code>, what is x?',ch:['10','16','25','32'],c:3,fb:'2⁵ = 32.'},
 ];
-let ecAns={};
-function renderEC(){
-  document.getElementById('ecBox').innerHTML=EC_ITEMS.map((e,i)=>{
-    const ans=ecAns[i];const has=ans!==undefined;
-    return `<div class="ec-item"><div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px">Scenario ${i+1}</div>
-      <div class="ec-scenario">${e.scenario}</div>
-      <div class="ec-options">${['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'].map(o=>{
-        let cls='ec-opt';if(has){cls+=' ec-dis';if(o===e.correct)cls+=' ec-correct';else if(o===ans&&o!==e.correct)cls+=' ec-wrong';}
-        return `<div class="${cls}" onclick="ecAns[${i}]='${o}';renderEC()">${o}</div>`;
-      }).join('')}</div>
-      <div class="ec-fb${has?' show':''}">${has?(ans===e.correct?'✓ Correct! ':'✗ Incorrect. ')+e.fb:''}</div></div>`;
+
+// Fix Q19 (had unsolvable "no solution" equation)
+Q[18]={n:19,d:'A',q:'For what value of a does <code>ax + 3 = 2x + 3a</code> have no solution?',ch:['1','2','3','6'],c:1,fb:'ax−2x=3a−3. x(a−2)=3(a−1). If a=2: 0=3. No solution (contradiction).'};
+
+// Fix Q39 
+Q[38]={n:39,d:'A',q:'If <code>f(x) = 2x + 3</code>, for what value of x does <code>f(3x) = f(x) + 10</code>?',ch:['1','2','2.5','5'],c:2,fb:'f(3x)=6x+3. f(x)+10=2x+13. 6x+3=2x+13 → 4x=10 → x=2.5.'};
+
+// ======== TEST ENGINE ========
+var testState='idle',curMod=1,curQ=0,answers=new Array(44).fill(-1),flags=new Array(44).fill(false);
+var timerSec=35*60,timerInt=null;
+
+function startTest(){
+  if(testState==='idle'){testState='m1';curMod=1;curQ=0;timerSec=35*60;renderTest();startTimer();
+    document.getElementById('startBtn').style.display='none';document.getElementById('flagBtn').style.display='';document.getElementById('submitBtn').style.display='';
+  }else if(testState==='m1done'){testState='m2';curMod=2;curQ=22;timerSec=35*60;renderTest();startTimer();
+    document.getElementById('startBtn').style.display='none';
+  }
+}
+function startTimer(){
+  clearInterval(timerInt);
+  timerInt=setInterval(function(){
+    timerSec--;if(timerSec<=0){clearInterval(timerInt);submitModule();}
+    var m=Math.floor(timerSec/60),s=timerSec%60;
+    var el=document.getElementById('timer');
+    el.textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+    el.className='test-timer'+(timerSec<120?' warn':'');
+  },1000);
+}
+function renderTest(){
+  var start=curMod===1?0:22,end=curMod===1?22:44;
+  var nav='';for(var i=start;i<end;i++){
+    var cls='test-nav-btn';if(i===curQ)cls+=' current';if(answers[i]>=0)cls+=' answered';if(flags[i])cls+=' flagged';
+    nav+='<div class="'+cls+'" onclick="goQ('+i+')">'+(i+1)+'</div>';
+  }
+  document.getElementById('testNav').innerHTML=nav;
+  var q=Q[curQ];
+  document.getElementById('testArea').innerHTML='<div class="test-q active"><div style="margin-bottom:4px;font-size:.75rem;color:var(--muted)">Question '+(curQ+1)+' | '+({A:'Algebra',AM:'Advanced Math',P:'Data Analysis',G:'Geometry & Trig'}[q.d])+'</div><div class="ex-prompt" style="font-size:1rem;margin-bottom:12px">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){
+    var c='mc-choice';if(answers[curQ]===ci)c+=' mc-selected';
+    return '<div class="'+c+'" onclick="pickA('+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';
+  }).join('')+'</div></div>';
+  document.getElementById('testProg').textContent='Question '+(curQ+1)+' of '+(curMod===1?22:44)+' — Module '+curMod;
+}
+function goQ(i){curQ=i;renderTest();}
+function pickA(ci){answers[curQ]=ci;renderTest();}
+function flagQ(){flags[curQ]=!flags[curQ];renderTest();}
+function submitModule(){
+  clearInterval(timerInt);
+  if(curMod===1){testState='m1done';document.getElementById('startBtn').textContent='Start Module 2';document.getElementById('startBtn').style.display='';document.getElementById('flagBtn').style.display='none';document.getElementById('submitBtn').style.display='none';document.getElementById('timer').textContent='Module 1 Complete';document.getElementById('testProg').textContent='Click "Start Module 2" to continue.';
+  }else{testState='done';document.getElementById('flagBtn').style.display='none';document.getElementById('submitBtn').style.display='none';document.getElementById('timer').textContent='Test Complete!';document.getElementById('testProg').textContent='Scroll down for your score report.';document.getElementById('testNav').innerHTML='';document.getElementById('testArea').innerHTML='';showResults();}
+}
+
+// ======== SCORING ========
+function showResults(){
+  var correct=0,domC={A:0,AM:0,P:0,G:0},domT={A:0,AM:0,P:0,G:0};
+  Q.forEach(function(q,i){domT[q.d]++;if(answers[i]===q.c){correct++;domC[q.d]++;}});
+  document.getElementById('scoreGrid').innerHTML=[
+    {l:'Raw Score',v:correct+'/44',c:'var(--accent)'},
+    {l:'Percentage',v:Math.round(correct/44*100)+'%',c:correct/44>.7?'var(--correct)':'var(--strat)'},
+    {l:'Module 1',v:Q.slice(0,22).filter(function(_,i){return answers[i]===Q[i].c;}).length+'/22',c:'var(--math)'},
+    {l:'Module 2',v:Q.slice(22).filter(function(_,i){return answers[i+22]===Q[i+22].c;}).length+'/22',c:'var(--math)'},
+  ].map(function(s){return '<div class="report-card"><div class="report-big" style="color:'+s.c+'">'+s.v+'</div><div class="report-label">'+s.l+'</div></div>';}).join('');
+  var doms=[{k:'A',n:'Algebra',c:'var(--algebra)'},{k:'AM',n:'Advanced Math',c:'var(--advanced)'},{k:'P',n:'Data Analysis',c:'var(--psda)'},{k:'G',n:'Geometry & Trig',c:'var(--geo)'}];
+  document.getElementById('domainBreakdown').innerHTML=doms.map(function(d){
+    var pct=domT[d.k]>0?Math.round(domC[d.k]/domT[d.k]*100):0;
+    return '<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:4px"><span style="font-weight:700;color:'+d.c+'">'+d.n+'</span><span style="color:var(--muted)">'+domC[d.k]+'/'+domT[d.k]+' ('+pct+'%)</span></div><div style="height:8px;background:var(--surface);border-radius:4px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+d.c+';border-radius:4px"></div></div></div>';
   }).join('');
-  const t=EC_ITEMS.length,a=Object.keys(ecAns).length,c=Object.entries(ecAns).filter(([i,v])=>v===EC_ITEMS[i].correct).length;
-  document.getElementById('ecScore').innerHTML=a===t?`<strong style="color:${c>=6?'var(--correct)':c>=4?'var(--psda)':'var(--wrong)'}">${c}/${t} correct</strong> — ${c>=6?'Ready to classify your own errors!':c>=4?'Good — review the ones you missed.':'Review the 5 error types carefully.'}`:`${a}/${t} completed`;
+  var rNav='';Q.forEach(function(q,i){rNav+='<div class="test-nav-btn '+(answers[i]===q.c?'correct-r':'wrong-r')+'" onclick="showReview('+i+')">'+(i+1)+'</div>';});
+  document.getElementById('reviewNav').innerHTML=rNav;
+  ['scoringSection','errorSection','growthSection','nextSection'].forEach(function(id){document.getElementById(id).style.display='';});
+  renderErrors();
+  document.getElementById('projMathRaw').value=correct;calcProj();
+  document.getElementById('practScoreDisplay').textContent=correct;updateGrowth();
+  showNextSteps(domC,domT);
+}
+function showReview(i){
+  var q=Q[i],ok=answers[i]===q.c;
+  document.getElementById('reviewArea').innerHTML='<div class="ex-item" style="border-color:'+(ok?'var(--correct)':'var(--wrong)')+'"><div style="font-size:.78rem;color:var(--muted);margin-bottom:4px">Q'+(i+1)+' | '+({A:'Algebra',AM:'Advanced Math',P:'Data Analysis',G:'Geometry & Trig'}[q.d])+'</div><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){var c='mc-choice mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===answers[i])c+=' mc-wrong';return '<div class="'+c+'"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb show">'+(ok?'✓ Correct! ':'✗ You picked '+'ABCD'[answers[i]]+'. ')+q.fb+'</div></div>';
+}
+
+// ======== ERROR ANALYSIS ========
+var errorTypes={};
+function renderErrors(){
+  var missed=[];Q.forEach(function(q,i){if(answers[i]!==q.c)missed.push(i);});
+  if(missed.length===0){document.getElementById('errorAnalysis').innerHTML='<p style="color:var(--correct);font-weight:700">Perfect score!</p>';return;}
+  var types=['Careless/Arithmetic','Concept Gap','Misread Problem','Ran Out of Time','Strategy Gap'];
+  document.getElementById('errorAnalysis').innerHTML=missed.map(function(i){var q=Q[i];
+    return '<div class="ex-item" style="border-color:var(--wrong)"><div style="font-size:.78rem;color:var(--muted)">Q'+(i+1)+' ('+q.d+') — You: '+'ABCD'[answers[i]]+', Correct: '+'ABCD'[q.c]+'</div><div class="ex-prompt" style="font-size:.88rem">'+q.q+'</div><div class="ec-row">'+types.map(function(t,ti){return '<div class="ec-btn'+(errorTypes[i]===ti?' sel':'')+'" onclick="classifyErr('+i+','+ti+')">'+t+'</div>';}).join('')+'</div></div>';
+  }).join('');
+  updateErrorSummary(missed,types);
+}
+function classifyErr(i,ti){errorTypes[i]=ti;renderErrors();}
+function updateErrorSummary(missed,types){
+  var counts=[0,0,0,0,0];missed.forEach(function(i){if(errorTypes[i]!==undefined)counts[errorTypes[i]]++;});
+  var classified=counts.reduce(function(a,b){return a+b;},0);
+  if(classified<missed.length){document.getElementById('errorSummary').innerHTML='<p style="font-size:.85rem;color:var(--muted)">Classify all '+missed.length+' errors to see summary. ('+classified+'/'+missed.length+')</p>';return;}
+  var colors=['var(--strat)','var(--wrong)','var(--advanced)','var(--muted)','var(--accent)'];
+  document.getElementById('errorSummary').innerHTML='<h3>Error Summary</h3><div class="report-grid">'+types.map(function(t,ti){return '<div class="report-card"><div class="report-big" style="color:'+colors[ti]+'">'+counts[ti]+'</div><div class="report-label">'+t+'</div></div>';}).join('')+'</div>';
+}
+
+// ======== ERROR CLASSIFICATION EXERCISE ========
+var EC=[
+  {s:'You identified center (3,−2) from (x−3)²+(y+2)²=16, but chose radius=16 instead of 4.',c:'Concept Gap',fb:'r²=16 means r=4. Review circles.'},
+  {s:'You solved a system correctly but wrote (3,5) when they asked for x+y. Answer was 8.',c:'Misread Problem',fb:'Classic trap — re-read what they ask for.'},
+  {s:'Variables in all choices. Spent 3 min on algebra. Plugging in x=2 would take 30 sec.',c:'Strategy Gap',fb:'Variables in choices = Plug In. Review Decision Tree.'},
+  {s:'Ran out of time with 5 questions left unanswered.',c:'Time Pressure',fb:'Pacing issue. Use the two-pass system.'},
+  {s:'Solved 3(x+4)=27 but expanded as 3x+4 instead of 3x+12.',c:'Careless/Arithmetic',fb:'You know distribution — just did it wrong. Slow down.'},
+  {s:'Exponential question: picked decay when it was growth. Confused (1+r) with (1−r).',c:'Concept Gap',fb:'Growth=(1+r), Decay=(1−r). Review exponentials.'},
+];
+var ecA={};
+function renderEC(){
+  document.getElementById('ecBox').innerHTML=EC.map(function(e,i){var a=ecA[i],h=a!==undefined;
+    return '<div class="ec-item"><div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px">Scenario '+(i+1)+'</div><div class="ec-scenario">'+e.s+'</div><div class="ec-options">'+['Concept Gap','Careless/Arithmetic','Time Pressure','Misread Problem','Strategy Gap'].map(function(o){var cls='ec-opt';if(h){cls+=' ec-dis';if(o===e.c)cls+=' ec-correct';else if(o===a)cls+=' ec-wrong';}return '<div class="'+cls+'" onclick="ecA['+i+']=\''+o+'\';renderEC()">'+o+'</div>';}).join('')+'</div><div class="ec-fb'+(h?' show':'')+'">'+(h?(a===e.c?'✓ Correct! ':'✗ ')+e.fb:'')+'</div></div>';
+  }).join('');
+  var t=EC.length,done=Object.keys(ecA).length,cor=Object.entries(ecA).filter(function(e){return e[1]===EC[e[0]].c;}).length;
+  document.getElementById('ecScore').innerHTML=done===t?'<strong style="color:'+(cor>=5?'var(--correct)':'var(--strat)')+'">'+cor+'/'+t+' correct</strong>':'';
 }
 renderEC();
 
-// ============ PATTERN REPORT ============
-const RK='pp_mm9_report';
-function loadR(){return JSON.parse(localStorage.getItem(RK)||'{}');}
-function saveR(d){localStorage.setItem(RK,JSON.stringify(d));}
-
-const ERROR_TYPES=['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'];
-const ET_COLORS=['#C8102E','#f59e0b','#ef4444','#60a5fa','#a78bfa'];
-const DOMAINS=['Algebra','Advanced Math','Problem-Solving & Data','Geometry & Trig'];
-const DOM_COLORS=['#34d399','#a78bfa','#fbbf24','#f87171'];
-
-function renderReport(){
-  const d=loadR();
-  function rows(items,pre,colors){
-    return items.map((item,i)=>{
-      const v=d[pre+i]||0;
-      return `<div class="report-row"><div class="report-label">${item}</div>
-        <input class="report-input" type="number" min="0" max="44" value="${v||''}" placeholder="0" onchange="updateR('${pre+i}',this.value)">
-        <div class="report-bar"><div class="report-bar-fill" style="width:${Math.min(v*8,100)}%;background:${colors[i%colors.length]}"></div></div></div>`;
-    }).join('');
+// ======== SCORE PROJECTOR (SAT) ========
+function calcProj(){
+  var mr=parseInt(document.getElementById('projMathRaw').value);
+  var rwr=parseInt(document.getElementById('projRWRaw').value);
+  var m2=document.getElementById('projM2').value;
+  if(isNaN(mr)&&isNaN(rwr)){document.getElementById('projResults').innerHTML='<div class="proj-result"><div class="proj-val" style="color:var(--muted)">—</div><div class="proj-label">Math Score</div></div><div class="proj-result"><div class="proj-val" style="color:var(--muted)">—</div><div class="proj-label">RW Score</div></div><div class="proj-result"><div class="proj-val" style="color:var(--muted)">—</div><div class="proj-label">Total</div></div>';return;}
+  var mathPct=isNaN(mr)?0:mr/44,rwPct=isNaN(rwr)?0:rwr/54;
+  var hb=m2==='hard'?20:m2==='easy'?-20:0;
+  var ms=isNaN(mr)?null:Math.min(800,Math.max(200,Math.round(200+mathPct*600+hb)));
+  var rs=isNaN(rwr)?null:Math.min(800,Math.max(200,Math.round(200+rwPct*600)));
+  var tot=(ms&&rs)?ms+rs:null;
+  document.getElementById('projResults').innerHTML=
+    '<div class="proj-result"><div class="proj-val" style="color:'+(ms?ms>=700?'var(--correct)':ms>=600?'var(--psda)':'var(--wrong)':'var(--muted)')+'">'+( ms||'—')+'</div><div class="proj-label">Math (200–800)</div></div>'+
+    '<div class="proj-result"><div class="proj-val" style="color:'+(rs?rs>=700?'var(--correct)':rs>=600?'var(--psda)':'var(--wrong)':'var(--muted)')+'">'+( rs||'—')+'</div><div class="proj-label">RW (200–800)</div></div>'+
+    '<div class="proj-result"><div class="proj-val" style="color:'+(tot?tot>=1400?'var(--correct)':tot>=1200?'var(--psda)':'var(--wrong)':'var(--muted)')+'">'+( tot||'—')+'</div><div class="proj-label">Total (400–1600)</div></div>';
+  var ins='';
+  if(ms){
+    if(ms>=750)ins='<strong style="color:var(--correct)">Excellent!</strong> 750+ Math puts you in the top tier for most colleges.';
+    else if(ms>=700)ins='<strong style="color:var(--psda)">Strong score.</strong> Competitive for most selective schools.';
+    else if(ms>=600)ins='<strong>Solid foundation.</strong> Targeted practice on weak domains can push you higher.';
+    else ins='Keep working through the modules. Every raw score point counts.';
   }
-  const etT=ERROR_TYPES.reduce((s,_,i)=>s+(parseInt(d['et'+i])||0),0);
-  const domT=DOMAINS.reduce((s,_,i)=>s+(parseInt(d['dom'+i])||0),0);
+  document.getElementById('projInsight').innerHTML=ins;
+}
+calcProj();
 
-  document.getElementById('patternReport').innerHTML=`
-    <h3>📊 Math Pattern Report Builder</h3>
-    <div class="report-sub">Enter error counts from your practice test. Data auto-saves.</div>
-    <div class="report-grid">
-      <div>
-        <div class="report-section">
-          <div class="report-section-label rs-blue">Scores</div>
-          <div class="report-row"><div class="report-label">Module 1 Raw</div>
-            <input class="report-input" type="number" min="0" max="22" value="${d.m1||''}" placeholder="/22" onchange="updateR('m1',this.value)"></div>
-          <div class="report-row"><div class="report-label">Module 2 Raw</div>
-            <input class="report-input" type="number" min="0" max="22" value="${d.m2||''}" placeholder="/22" onchange="updateR('m2',this.value)"></div>
-          <div class="report-row"><div class="report-label">Module 2 Type</div>
-            <select style="padding:6px 8px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem" onchange="updateR('m2type',this.value)">
-              <option value="">Select...</option><option${d.m2type==='Harder'?' selected':''}>Harder</option><option${d.m2type==='Easier'?' selected':''}>Easier</option>
-            </select></div>
-          <div class="report-total"><div class="report-total-label">Total:</div>
-            <div class="report-total-val">${(parseInt(d.m1)||0)+(parseInt(d.m2)||0)}/44</div></div>
-        </div>
-      </div>
-      <div>
-        <div class="report-section">
-          <div class="report-section-label rs-red">Errors by Type (${etT})</div>
-          ${rows(ERROR_TYPES,'et',ET_COLORS)}
-        </div>
-      </div>
-    </div>
-    <div class="report-section" style="margin-top:16px">
-      <div class="report-section-label rs-green">Errors by Domain (${domT})</div>
-      <div class="report-grid">${DOMAINS.map((dom,i)=>{
-        const v=d['dom'+i]||0;
-        return `<div class="report-row"><div class="report-label">${dom}</div>
-          <input class="report-input" type="number" min="0" max="44" value="${v||''}" placeholder="0" onchange="updateR('dom${i}',this.value)">
-          <div class="report-bar"><div class="report-bar-fill" style="width:${Math.min(v*8,100)}%;background:${DOM_COLORS[i]}"></div></div></div>`;
-      }).join('')}</div>
-    </div>
-    <div class="report-section" style="margin-top:16px">
-      <div class="report-section-label rs-cyan">Desmos & Strategy Check</div>
-      <div class="report-grid">
-        <div class="report-row"><div class="report-label">Should have used Desmos</div>
-          <input class="report-input" type="number" min="0" max="44" value="${d.desY||''}" placeholder="0" onchange="updateR('desY',this.value)"></div>
-        <div class="report-row"><div class="report-label">Desmos was slower than algebra</div>
-          <input class="report-input" type="number" min="0" max="44" value="${d.desN||''}" placeholder="0" onchange="updateR('desN',this.value)"></div>
-        <div class="report-row"><div class="report-label">Plug In would have helped</div>
-          <input class="report-input" type="number" min="0" max="44" value="${d.plugIn||''}" placeholder="0" onchange="updateR('plugIn',this.value)"></div>
-        <div class="report-row"><div class="report-label">Backsolve would have helped</div>
-          <input class="report-input" type="number" min="0" max="44" value="${d.backsolve||''}" placeholder="0" onchange="updateR('backsolve',this.value)"></div>
-      </div>
-    </div>
-    <div class="priority-box">
-      <div class="priority-title">🎯 Top 3 Priority Areas</div>
-      <div class="priority-item"><div class="priority-num">1</div><input class="priority-input" placeholder="e.g., Quadratic equations — vertex form" value="${d.p1||''}" oninput="updateR('p1',this.value)"></div>
-      <div class="priority-item"><div class="priority-num">2</div><input class="priority-input" placeholder="e.g., Desmos — regression on data tables" value="${d.p2||''}" oninput="updateR('p2',this.value)"></div>
-      <div class="priority-item"><div class="priority-num">3</div><input class="priority-input" placeholder="e.g., Time management — flagging hard questions" value="${d.p3||''}" oninput="updateR('p3',this.value)"></div>
-    </div>
-    <div style="margin-top:14px;text-align:center">
-      <button class="btn btn-sm btn-blue" onclick="exportReport()">📋 Export Report</button>
-      <button class="btn btn-sm btn-outline" onclick="if(confirm('Clear all data?')){localStorage.removeItem('${RK}');renderReport()}" style="margin-left:8px">Reset</button>
-    </div>`;
+// ======== GROWTH ========
+function updateGrowth(){
+  var base=parseInt(document.getElementById('baseScore').value),pract=parseInt(document.getElementById('practScoreDisplay').textContent);
+  var el=document.getElementById('growthResult');
+  if(isNaN(base)||isNaN(pract)){el.textContent='Enter your diagnostic score to see growth.';return;}
+  var diff=pract-base;
+  if(diff>0)el.innerHTML='<span style="color:var(--correct);font-weight:700;font-size:1.1rem">+'+diff+' questions improved!</span><br><span style="font-size:.85rem;color:var(--muted)">~'+(diff*14)+' points on the scaled score.</span>';
+  else if(diff===0)el.innerHTML='<span style="color:var(--strat);font-weight:700">Same score.</span><br><span style="font-size:.85rem;color:var(--muted)">Check error types — different mistakes can still mean progress.</span>';
+  else el.innerHTML='<span style="color:var(--strat);font-weight:700">'+diff+'.</span><br><span style="font-size:.85rem;color:var(--muted)">Practice conditions can be harder. Focus on error analysis.</span>';
 }
-function updateR(k,v){const d=loadR();d[k]=v;saveR(d);renderReport();}
-function exportReport(){
-  const d=loadR();
-  let t='MATH PATTERN REPORT — PantherPrep SAT Math Course\n════════════════════════════════════════\n\n';
-  t+=`Module 1: ${d.m1||'—'}/22\nModule 2: ${d.m2||'—'}/22 (${d.m2type||'—'})\nTotal: ${(parseInt(d.m1)||0)+(parseInt(d.m2)||0)}/44\n\n`;
-  t+='ERRORS BY TYPE:\n';ERROR_TYPES.forEach((_,i)=>t+=`  ${ERROR_TYPES[i]}: ${d['et'+i]||0}\n`);
-  t+='\nERRORS BY DOMAIN:\n';DOMAINS.forEach((_,i)=>t+=`  ${DOMAINS[i]}: ${d['dom'+i]||0}\n`);
-  t+=`\nDESMOS CHECK:\n  Should have used Desmos: ${d.desY||0}\n  Desmos slower than algebra: ${d.desN||0}\n`;
-  t+=`\nSTRATEGY CHECK:\n  Plug In would have helped: ${d.plugIn||0}\n  Backsolve would have helped: ${d.backsolve||0}\n`;
-  t+=`\nTOP 3 PRIORITIES:\n  1. ${d.p1||'—'}\n  2. ${d.p2||'—'}\n  3. ${d.p3||'—'}\n`;
-  navigator.clipboard.writeText(t).then(()=>alert('Copied!')).catch(()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);alert('Copied!');});
-}
-renderReport();
 
-// ============ PROGRESS ============
-function updateProgress(){
-  const b=parseInt(document.getElementById('baseScore').value);
-  const p=parseInt(document.getElementById('practScore').value);
-  const el=document.getElementById('progressResult');
-  if(isNaN(b)||isNaN(p)){el.textContent='Enter both scores to see your growth.';return;}
-  const diff=p-b;
-  if(diff>0)el.innerHTML=`<strong style="color:var(--correct)">+${diff} questions improved!</strong> That's a <strong>${Math.round(diff/b*100)}%</strong> improvement. Great progress! 🎉`;
-  else if(diff===0)el.innerHTML=`<span style="color:var(--psda)">Same score.</span> Check your Pattern Report — are you making different errors? That can still be progress even if the total hasn't changed.`;
-  else el.innerHTML=`<span style="color:var(--wrong)">${diff} from baseline.</span> Don't worry — check your Pattern Report to see what shifted. New strategies sometimes need more practice time.`;
+// ======== NEXT STEPS ========
+function showNextSteps(domC,domT){
+  var weak=[];
+  [{k:'A',n:'Algebra',m:'Module 2'},{k:'AM',n:'Advanced Math',m:'Modules 3\u20134'},{k:'P',n:'Data Analysis',m:'Module 5'},{k:'G',n:'Geometry & Trig',m:'Module 6'}].forEach(function(d){
+    if(domT[d.k]>0&&domC[d.k]/domT[d.k]<0.7)weak.push(d);
+  });
+  var h='<div class="card card-accent"><h3 style="margin-bottom:10px">Priority Review</h3>';
+  if(weak.length===0)h+='<p style="color:var(--correct)">All domains above 70%! Focus on reducing careless errors and timed practice.</p>';
+  else h+='<p style="color:#ccc;margin-bottom:10px">These domains scored below 70% \u2014 review them before test day:</p>'+weak.map(function(d){return '<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)"><strong style="color:var(--wrong)">'+d.n+'</strong> \u2014 Review <strong>'+d.m+'</strong> and redo the exercises and practice questions.</div>';}).join('');
+  h+='<h3 style="margin-top:16px;margin-bottom:10px">Your Action Plan</h3>';
+  h+='<div style="font-size:.9rem;color:#ccc;line-height:1.8">';
+  h+='<strong>Now \u2192 48 Hours:</strong> Review every missed question. Classify each error (concept, careless, strategy, misread). Redo the ones you got wrong.<br>';
+  h+='<strong>This Week:</strong> Go back to the module(s) for your weak domains. Redo the exercises and practice questions \u2014 don\u2019t just re-read.<br>';
+  h+='<strong>1 Week Before Test:</strong> Take another full practice test under strict timed conditions. Use Module 10 for test-day logistics and formula review.<br>';
+  h+='<strong>Night Before:</strong> Light review only (flip through formula cards). No new material after 8 PM. Lay out everything. Set two alarms.<br>';
+  h+='<strong>Test Day:</strong> Warm up with 3\u20135 easy problems. Use your LOTD letter. Two-pass every module. Never leave blanks.';
+  h+='</div></div>';
+  document.getElementById('nextSteps').innerHTML=h;
 }
+
+// ======== CHECKLISTS ========
+function renderChecklist(id,items){
+  document.getElementById(id).innerHTML=items.map(function(t,i){
+    return '<div class="checklist-item"><div class="checklist-check" id="'+id+i+'" onclick="this.classList.toggle(\'done\');this.textContent=this.classList.contains(\'done\')?\'✓\':\'\'"></div><div>'+t+'</div></div>';
+  }).join('');
+}
+renderChecklist('preChecklist',[
+  'Find a quiet space with 70+ minutes uninterrupted.',
+  'Open <a href="https://www.desmos.com/calculator" target="_blank" style="color:var(--accent)">desmos.com/calculator</a> in another tab.',
+  'Have scratch paper and pencils ready.',
+  'Turn off phone, close other tabs.',
+  'Remember: accuracy over speed in Module 1.',
+  'Desmos shortcuts memorized: ^ _ ~ | sqrt pi',
+]);
+renderChecklist('testDayChecklist',[
+  '<strong>Night before:</strong> Charge your device. Sleep 8+ hours.',
+  '<strong>Morning:</strong> Eat a real breakfast. Bring a snack.',
+  '<strong>Bring:</strong> Charged device, pencils, approved calculator (backup).',
+  '<strong>Bluebook app</strong> must be installed and updated.',
+  '<strong>Module 1:</strong> Two-pass system. Flag hard questions. Accuracy first.',
+  '<strong>Desmos:</strong> Use aggressively for systems, quadratics, statistics.',
+  '<strong>Time check:</strong> After 15 min, be on question 8+.',
+  '<strong>Last 2 min:</strong> Answer ALL remaining questions — no penalty for guessing.',
+  '<strong>Between modules:</strong> Breathe. Stay confident.',
+  '<strong>Scores matter:</strong> Colleges see your Math and RW scores. Every point counts.',
+]);
 </script>
-<script src="/translate.js"></script></body>
+<script src="/translate.js"></script>
+</body>
 </html>

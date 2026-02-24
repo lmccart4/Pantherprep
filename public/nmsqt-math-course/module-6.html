@@ -177,6 +177,28 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- WHEN TO USE -->
+
+<!-- GRAPHING vs SCIENTIFIC MODE -->
+<div class="section">
+  <div class="section-label">Calculator Modes</div>
+  <h2>Graphing vs. Scientific Mode</h2>
+</div>
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--des)">⚙</div>
+    <div class="topic-info"><div class="topic-title">When to Use Each Mode</div><div class="topic-sub">Graphing for visuals, scientific for quick calculations</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <ul>
+      <li><strong>Graphing mode (default):</strong> Use 95% of the time. Graphs equations, finds intersections, runs regressions, handles tables. This is your power tool.</li>
+      <li><strong>Scientific mode:</strong> Switch for pure arithmetic. Cleaner interface for calculations that don’t need graphs — unit conversions, complex fractions.</li>
+      <li><strong>CAS ban:</strong> Computer Algebra Systems (like TI-Nspire CAS) are NOT allowed on the PSAT/NMSQT. The built-in Desmos does NOT have CAS — it won’t simplify algebraic expressions or factor for you. It only evaluates numerically and graphs.</li>
+    </ul>
+    <div class="callout"><strong>Practical tip:</strong> Even for arithmetic, the graphing calculator works fine — type the expression on a blank line and Desmos evaluates it. No need to switch modes unless the interface feels cluttered.</div>
+  </div>
+</div>
+
 <div class="section">
   <div class="section-label">Calculator Discipline</div>
   <h2>When to Use Desmos — and When Not To</h2>
@@ -212,6 +234,83 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- ==================== EXERCISE 1: SKILL MATCHER ==================== -->
+
+<!-- DESMOS IN ACTION: 5 COMMON SCENARIOS -->
+<div class="section">
+  <div class="section-label">Worked Examples</div>
+  <h2>Desmos in Action — 5 Common PSAT/NMSQT Scenarios</h2>
+  <p>These step-by-step walkthroughs show exactly what to type and click. Practice each one in Desmos before moving to the exercises.</p>
+</div>
+
+<div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--algebra)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 1: Solve a System of Equations</div><div class="topic-sub">y = 2x + 1 and y = −x + 7</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Type <code>y = 2x + 1</code> on line 1.</p>
+    <p><strong>Step 2:</strong> Type <code>y = −x + 7</code> on line 2.</p>
+    <p><strong>Step 3:</strong> Click the gray intersection dot → (2, 5).</p>
+    <p><strong>Answer:</strong> x = 2, y = 5. Done in under 10 seconds.</p>
+    <p style="color:var(--muted);font-size:.85rem"><em>Algebraically, this would take 30+ seconds with substitution or elimination.</em></p>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--advanced)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 2: Find the Vertex of a Quadratic</div><div class="topic-sub">f(x) = x² − 6x + 5</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Type <code>y = x^2 − 6x + 5</code></p>
+    <p><strong>Step 2:</strong> Click the bottom of the parabola → Desmos shows (3, −4).</p>
+    <p><strong>Answer:</strong> Vertex at (3, −4). You also see zeros at x = 1 and x = 5 (click those dots too).</p>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--psda)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 3: Regression & Line of Best Fit</div><div class="topic-sub">Data: (1,3), (2,5), (3,8), (4,11), (5,14)</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Click <strong>+</strong> → Table. Enter x values: 1,2,3,4,5 and y values: 3,5,8,11,14.</p>
+    <p><strong>Step 2:</strong> On a new line, type <code>y₁ ~ mx₁ + b</code> (use _ for subscript, ~ for regression).</p>
+    <p><strong>Step 3:</strong> Desmos shows: m ≈ 2.8, b ≈ 0.2. So the line is approximately y = 2.8x + 0.2.</p>
+    <p style="color:var(--muted);font-size:.85rem"><em>Try <code>y₁ ~ ax₁² + bx₁ + c</code> for a quadratic fit if the data curves.</em></p>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--geo)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 4: Use a Slider to Find an Unknown</div><div class="topic-sub">The line y = ax + 3 passes through (4, 11). Find a.</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Type <code>y = ax + 3</code>. Desmos creates a slider for a.</p>
+    <p><strong>Step 2:</strong> Plot the point <code>(4, 11)</code> on another line.</p>
+    <p><strong>Step 3:</strong> Slide a until the line passes through the point. Or compute: 11 = 4a + 3 → a = 2.</p>
+    <p style="color:var(--muted);font-size:.85rem"><em>Sliders are especially powerful when the algebra is messy — slide until the graph looks right, then read the value.</em></p>
+  </div>
+</div>
+
+<div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+  <div class="topic-header">
+    <div class="topic-badge" style="background:var(--des)">Ex</div>
+    <div class="topic-info"><div class="topic-title">Scenario 5: Quick Statistics</div><div class="topic-sub">Find the mean of 12, 15, 18, 22, 33</div></div>
+    <div class="topic-arrow">▸</div>
+  </div>
+  <div class="topic-body">
+    <p><strong>Step 1:</strong> Type <code>mean(12,15,18,22,33)</code> on any line.</p>
+    <p><strong>Result:</strong> Desmos shows 20. Instant.</p>
+    <p>Also works: <code>median(12,15,18,22,33)</code> → 18. And: <code>total(12,15,18,22,33)</code> → 100. And: <code>stdev(12,15,18,22,33)</code> for standard deviation.</p>
+  </div>
+</div>
+
 <div class="section">
   <div class="section-label">Interactive Exercise 1</div>
   <h2>Which Desmos Skill?</h2>

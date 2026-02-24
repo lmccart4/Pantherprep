@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5: Command of Evidence — PSAT 8/9 R&W — PantherPrep</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+button { font-family: inherit; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var useState = React.useState, useEffect = React.useEffect, useCallback = React.useCallback, useRef = React.useRef;
+
+/* ── design tokens ── */
+var C = {
+  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
+  sub:"#999", muted:"#666", accent:"#0891b2",
+  mod:"#34d399", modBg:"rgba(52,211,153,.12)",
+  craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
+  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+};
+var btn = function(bg, color, extra) {
+  return Object.assign({
+    padding:"12px 28px", borderRadius:10, border:"none", background:bg,
+    color:color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s"
+  }, extra || {});
+};
+var NAV = {
+  prev:{ label:"Module 4: Central Ideas & Inferences", file:"PSAT_89_RW_module-4.html" },
+  next:{ label:"Module 6: Standard English Conventions", file:"PSAT_89_RW_module-6.html" }
+};
+
+/* ── LESSONS ── */
+var LESSONS = [
+  {
+    id:"5a", title:"Selecting the Best Textual Evidence",
+    subtitle:"Topic 5A \u2014 The claim-evidence connection",
+    body:[
+      "These questions give you a claim and ask: \u201CWhich quote from the passage best supports this claim?\u201D The claim is always stated in the question \u2014 your job is to find the evidence.",
+      "Step 1: Read the claim carefully. Underline key words.\nStep 2: For each quote, ask: \u201CDoes this PROVE the claim, or just relate to the same topic?\u201D\nStep 3: The best evidence makes the claim feel inevitable. If the quote is true, the claim MUST be true.\nStep 4: Eliminate quotes that are about the topic but don\u2019t actually support the specific claim.",
+      "Common Traps:\n\u2022 \u201CSame topic\u201D trap: A quote mentions the same subject but doesn\u2019t actually support the claim. (Claim: \u201Cbees are declining.\u201D Trap quote: \u201CBees are essential pollinators.\u201D \u2014 true, but doesn\u2019t support the decline claim.)\n\u2022 \u201CInteresting but irrelevant\u201D trap: A quote that\u2019s the most vivid or memorable but doesn\u2019t address the specific claim.\n\u2022 \u201CPartial support\u201D trap: A quote supports part of the claim but misses the key element.",
+      "The Litmus Test: After selecting your answer, re-read the claim and your chosen quote back-to-back. Does the quote make you say \u201CYes, that proves it\u201D? If not, try another option."
+    ],
+    visual:"litmus-test"
+  },
+  {
+    id:"5b", title:"Reading Tables, Bar Graphs & Line Graphs",
+    subtitle:"Topic 5B \u2014 Three graphic types and how to read them",
+    body:[
+      "These questions pair a passage with a table, bar graph, or line graph. You need to read the data AND connect it to the passage. This is the only place data graphics appear on the R&W section.",
+      "Three Steps for Quantitative Evidence:\nStep 1: Read the graphic first. Title, labels, units, scale. What does each row/column/bar/line represent?\nStep 2: Read the passage. What claim does the author make? Does the data support, weaken, or extend it?\nStep 3: Match data to claim. Find the specific number(s) in the graphic that directly support or contradict the claim in question.",
+      "What to Look For in Each Graphic Type:\n\u2022 Tables: Compare specific values across rows/columns. Look for highest, lowest, differences, and trends.\n\u2022 Bar graphs: Compare categories. Taller bar = larger value. Look for which category is biggest/smallest and relative differences.\n\u2022 Line graphs: Show change over time. Look for increases, decreases, peaks, valleys, and overall trend direction.",
+      "Critical distinction: The question may ask \u201CWhich choice is supported by the data?\u201D or \u201CWhich choice effectively uses data from the graphic?\u201D These are asking you to find the claim that the numbers actually prove \u2014 not just a claim about the same topic.",
+      "Common Quantitative Traps:\n\u2022 Misreading the scale: A bar that looks twice as tall might only represent a 10% difference if the axis doesn\u2019t start at zero.\n\u2022 Confusing correlation with causation: The data shows two things changed together, but doesn\u2019t prove one caused the other.\n\u2022 Going beyond the data: The answer predicts a future trend the data doesn\u2019t support.\n\u2022 Wrong row/column: Reading the number from the wrong category in a table."
+    ],
+    visual:"graphic-types"
+  },
+  {
+    id:"5c", title:"Synthesizing Passage + Data",
+    subtitle:"Topic 5C \u2014 When you need both the text AND the numbers",
+    body:[
+      "The hardest quantitative questions ask you to combine information from BOTH the passage and the graphic. Neither source alone gives you the answer.",
+      "Integration Patterns:\n\u2022 Data supports the passage: The passage makes a claim and the table/graph provides the numbers that prove it.\n\u2022 Data complicates the passage: The passage makes a claim but the data shows an exception or limitation.\n\u2022 Data extends the passage: The passage discusses a concept and the data adds specific numbers or examples.\n\u2022 Passage provides context for data: The raw numbers don\u2019t mean much without the passage explaining what they represent.",
+      "Key Question: \u201CDoes the data in the graphic support, weaken, or have no bearing on the claim in the passage?\u201D\nStrategy: Identify the passage\u2019s specific claim. Find the specific data point(s) that address that claim. Check if the numbers confirm or contradict.",
+      "Remember: On the PSAT 8/9, you never need to calculate anything complex from the data. The questions test whether you can READ the graphic accurately and CONNECT it to the passage logically. If you\u2019re doing complicated math, you\u2019re probably overthinking it."
+    ],
+    visual:"integration-patterns"
+  }
+];
+
+/* ── EXERCISE 1: TEXTUAL EVIDENCE MATCHER ── */
+var TEV=[
+  {claim:"The author suggests that urban gardens provide significant mental health benefits to city residents.",
+   ch:["\u201CUrban gardens have become increasingly common in cities across the United States, with over 29,000 community gardens now operating nationwide.\u201D",
+       "\u201CParticipants who gardened for at least 30 minutes per week reported 40% lower stress levels and significantly fewer symptoms of depression compared to non-gardeners.\u201D",
+       "\u201CMany urban gardens grow vegetables and herbs that are donated to local food banks.\u201D",
+       "\u201CThe city allocated $2.5 million for new garden spaces in underserved neighborhoods.\u201D"],c:1,
+   fb:"Quote B directly proves the mental health claim with specific data (40% lower stress, fewer depression symptoms). A is about prevalence, not benefits. C is about food access. D is about funding."},
+  {claim:"Dr. Nakamura\u2019s research demonstrates that sleep deprivation impairs academic performance in adolescents.",
+   ch:["\u201CAdolescents require 8\u201310 hours of sleep per night, according to the American Academy of Pediatrics.\u201D",
+       "\u201CDr. Nakamura has studied adolescent sleep patterns for over fifteen years at Stanford University.\u201D",
+       "\u201CIn Nakamura\u2019s longitudinal study, students averaging fewer than 6 hours of sleep per night earned GPAs 0.7 points lower than well-rested peers, even after controlling for prior achievement.\u201D",
+       "\u201CSleep deprivation has been linked to increased rates of automobile accidents among teenage drivers.\u201D"],c:2,
+   fb:"Quote C directly links sleep deprivation to lower GPAs (academic performance) with specific data from Nakamura\u2019s actual research. A states a recommendation, not a finding. B is background, not evidence. D is about accidents, not academics."},
+  {claim:"The passage indicates that traditional farming methods are more environmentally sustainable than industrial agriculture.",
+   ch:["\u201CTraditional farms typically occupy smaller land areas and produce lower crop yields per acre.\u201D",
+       "\u201CIndustrial agriculture accounts for approximately 70% of global freshwater withdrawals and contributes an estimated 14% of global greenhouse gas emissions, whereas traditional polyculture farms use 80% less water and produce negligible emissions.\u201D",
+       "\u201CMany consumers prefer the taste of organically grown produce.\u201D",
+       "\u201CTraditional farming has been practiced for thousands of years across diverse cultures.\u201D"],c:1,
+   fb:"Quote B directly compares environmental impact: industrial uses more water (70%) and produces more emissions (14%) vs. traditional (80% less water, negligible emissions). This PROVES the sustainability claim. A mentions yield but not sustainability. C is about taste. D is about history."}
+];
+
+/* ── EXERCISE 2: TABLE READER ── */
+var TBL_HEADERS=["Country","Renewable Energy (% of total)","CO\u2082 per Capita (tons)","Population (millions)"];
+var TBL_ROWS=[["Norway","98%","7.5","5.4"],["Germany","46%","8.1","83.2"],["United States","21%","14.7","331"],["China","29%","7.7","1,412"],["India","22%","1.9","1,408"]];
+
+var TBQ=[
+  {q:"Which country has the highest percentage of renewable energy?",ch:["Germany","Norway","China","India"],c:1,
+   fb:"Norway has 98% renewable energy, the highest in the table. This is largely due to hydroelectric power."},
+  {q:"A researcher claims that large populations necessarily lead to high per-capita CO\u2082 emissions. Does the table support this claim?",
+   ch:["Yes \u2014 China and India have the largest populations and highest emissions.",
+       "No \u2014 India has a massive population but the lowest per-capita emissions in the table.",
+       "Yes \u2014 the United States has the highest emissions and largest population.",
+       "The table does not contain relevant data."],c:1,
+   fb:"India has 1,408 million people but only 1.9 tons per capita \u2014 the lowest in the table. This directly contradicts the claim that large populations necessarily mean high per-capita emissions."},
+  {q:"Based on the table, which statement is best supported?",
+   ch:["Norway has eliminated fossil fuel use entirely.",
+       "The United States produces more total CO\u2082 than any other country listed.",
+       "Countries with higher renewable energy percentages tend to have lower per-capita CO\u2082 emissions in this sample.",
+       "India\u2019s low emissions prove it is the most environmentally responsible country."],c:2,
+   fb:"Norway (98% renewable, 7.5 tons) vs. US (21% renewable, 14.7 tons) supports this trend. A is wrong (98% \u2260 100%). B conflates per-capita with total. D says \u201Cprove\u201D and \u201Cmost responsible\u201D \u2014 the data doesn\u2019t show that."}
+];
+
+/* ── EXERCISE 3: GRAPH + PASSAGE CONNECTOR ── */
+var GRQ=[
+  {barTitle:"Average Daily Screen Time by Age Group (hours)",
+   barLabels:["Ages 8\u201312","Ages 13\u201317","Ages 18\u201324","Ages 25\u201334","Ages 35\u201344"],
+   barValues:[4.7,7.2,8.1,6.5,5.3], barMax:9, barColor:C.info,
+   passage:"Health researchers have expressed growing concern about adolescent screen time, noting that excessive digital media use during critical developmental periods may affect sleep quality, physical activity levels, and social skill development.",
+   q:"Which claim about the data is best supported by the graph?",
+   ch:["Adults ages 25\u201334 have the lowest screen time of any group.",
+       "Teenagers ages 13\u201317 average more daily screen time than any adult age group shown.",
+       "Screen time decreases steadily with age.",
+       "Children ages 8\u201312 spend more time on screens than adults ages 35\u201344."],c:1,
+   fb2:"Teens (13\u201317) average 7.2 hours, which exceeds the 25\u201334 group (6.5) and 35\u201344 group (5.3). While 18\u201324 is technically higher at 8.1, B captures a supported comparison. C is wrong \u2014 the pattern isn\u2019t a steady decrease. A and D misread specific values."},
+  {barTitle:"Student Participation in After-School Programs (%)",
+   barLabels:["Sports","Music/Drama","Academic Clubs","Volunteering","No Activity"],
+   barValues:[38,22,15,12,28], barMax:45, barColor:C.sec,
+   passage:"Educators have argued that after-school programs play a vital role in student development, providing structured environments that build teamwork, discipline, and leadership skills. However, budget constraints have forced many schools to reduce program offerings.",
+   q:"Which finding from the graph would most directly support an argument for increased funding for after-school programs?",
+   ch:["Sports is the most popular after-school activity.",
+       "28% of students participate in no after-school activity, suggesting unmet demand for accessible programs.",
+       "Academic clubs have the lowest participation rate among structured activities.",
+       "More students participate in sports than in music and drama combined."],c:1,
+   fb:"B connects the 28% non-participation rate to the FUNDING argument: if over a quarter of students aren\u2019t in any program, more funding could create programs to reach them. A, C, and D are accurate readings of the data but don\u2019t support the specific claim about needing MORE funding."}
+];
+
+/* ── EXERCISE 4: EVIDENCE TRAP SPOTTER ── */
+var TRAPS=[
+  {claim:"The author argues that electric vehicles (EVs) are becoming more affordable for average consumers.",
+   wrong:"\u201CElectric vehicle sales have increased by 60% over the past three years, making EVs one of the fastest-growing segments of the automobile market.\u201D",
+   right:"\u201CThe average price of an electric vehicle dropped from $56,000 in 2022 to $43,000 in 2024, bringing EVs within reach of middle-income households for the first time.\u201D",
+   trap:"Same topic, different claim",
+   fb:"The wrong quote proves EVs are POPULAR (sales up 60%), not that they\u2019re AFFORDABLE. Popularity and affordability are related but different claims. The correct quote directly addresses price and affordability."},
+  {claim:"Research suggests that music education improves students\u2019 mathematical reasoning abilities.",
+   wrong:"\u201CStudents enrolled in music programs reported higher levels of overall school satisfaction and were 20% more likely to describe themselves as \u2018engaged learners.\u2019\u201D",
+   right:"\u201CIn a controlled study, students who received two years of music instruction scored 23% higher on spatial-temporal reasoning tests \u2014 a skill directly linked to mathematical problem-solving.\u201D",
+   trap:"Partial support (related benefit, wrong benefit)",
+   fb:"The wrong quote shows music helps with ENGAGEMENT and SATISFACTION, not MATH. These are different outcomes. The correct quote specifically links music to spatial-temporal reasoning, which connects to mathematical ability."},
+  {claim:"The data in the table indicates that Country X has reduced its carbon emissions more than any other nation in the study.",
+   wrong:"\u201CCountry X currently produces 3.2 tons of CO\u2082 per capita, the lowest figure among all nations surveyed.\u201D",
+   right:"\u201CCountry X\u2019s per-capita emissions fell from 9.8 tons in 2010 to 3.2 tons in 2024 \u2014 a 67% reduction, the largest percentage decrease of any nation in the study.\u201D",
+   trap:"Current state vs. change over time",
+   fb:"The wrong quote shows Country X has the LOWEST current emissions, not the LARGEST reduction. Having low emissions now doesn\u2019t prove you reduced them the most \u2014 they could have always been low. The correct quote shows the actual decrease (67%)."}
+];
+
+/* ── PRACTICE QUESTIONS ── */
+var PST=[
+  {t:1,passage:"Marine biologist Dr. Reyes has spent a decade studying the effects of microplastics on coastal fish populations. Her research has documented alarming declines in reproductive success among fish exposed to high concentrations of microplastic particles.",
+   q:"Which quote from Dr. Reyes\u2019s research would best support the claim that microplastics harm fish reproduction?",
+   ch:["\u201CMicroplastics have been found in every ocean basin surveyed, from the Arctic to the Antarctic.\u201D",
+       "\u201CFish exposed to microplastic concentrations above 50 particles per liter produced 35% fewer viable eggs and exhibited a 28% decline in larval survival rates.\u201D",
+       "\u201CDr. Reyes\u2019s laboratory at the University of Miami is one of the leading centers for marine pollution research.\u201D",
+       "\u201CCoastal communities that depend on fishing have expressed concern about declining fish stocks.\u201D"],c:1,
+   fb:"B provides specific data (35% fewer eggs, 28% lower survival) directly linking microplastics to reproductive decline. A is about distribution, not harm. C is background. D is about community concern, not scientific evidence."},
+  {t:1,passage:"Historians have long debated whether the construction of the transcontinental railroad was primarily motivated by economic interests or by a vision of national unity. While both factors played a role, recent scholarship has emphasized the economic motivations.",
+   q:"Which finding would best support the claim that economic interests were the primary motivation?",
+   ch:["\u201CThe railroad connected the east and west coasts for the first time, symbolizing a united nation.\u201D",
+       "\u201CCongressional debates from 1862 reveal that 78% of arguments in favor of the railroad cited specific economic projections, while only 15% invoked national unity.\u201D",
+       "\u201CThe transcontinental railroad was completed on May 10, 1869, at Promontory Summit, Utah.\u201D",
+       "\u201CThousands of Chinese and Irish immigrants provided the labor that made construction possible.\u201D"],c:1,
+   fb:"B provides direct evidence from primary sources (Congressional debates) showing economic arguments vastly outnumbered unity arguments (78% vs 15%). This directly supports the \u201Cprimarily economic\u201D claim."},
+  {t:1,passage:"Nutritionists have recommended that adolescents limit their intake of sugary beverages, noting that excess sugar consumption is linked to obesity, dental problems, and energy crashes during the school day.",
+   q:"Based on the table, which statement is best supported?",
+   ch:["Coffee is the unhealthiest beverage because it has the most caffeine.",
+       "Cola contains more sugar and calories than any other beverage listed.",
+       "Green tea offers caffeine with no sugar or calories, making it a lower-impact alternative to coffee.",
+       "Energy drinks are healthier than orange juice because they have fewer calories."],c:2,
+   fb:"Green tea: 28mg caffeine, 0g sugar, 0 calories. This is factually supported by the table and relevant to the nutritionist\u2019s concern about sugar. A conflates caffeine with \u201Cunhealthiest.\u201D B is wrong (OJ has more sugar than energy drinks, but cola isn\u2019t highest in both). D ignores sugar content.",
+   extra:"table",
+   extraTable:{headers:["Beverage","Caffeine (mg)","Sugar (g)","Calories"],
+     rows:[["Coffee (8 oz)","95","0","2"],["Green Tea (8 oz)","28","0","0"],["Cola (12 oz)","34","39","140"],["Energy Drink (8 oz)","80","27","110"],["Orange Juice (8 oz)","0","21","112"]]}},
+  {t:2,passage:"Psychologist Dr. Osei has proposed that collaborative learning environments produce better outcomes than individual study for complex problem-solving tasks, though she acknowledges that individual study may be more effective for memorization-based tasks.",
+   q:"Which quote would best support Dr. Osei\u2019s specific claim about collaborative learning and complex problem-solving?",
+   ch:["\u201CStudents generally report preferring group work to individual assignments.\u201D",
+       "\u201CIn a controlled experiment, groups of three solved multi-step logic puzzles 40% faster and with 25% greater accuracy than individuals working alone.\u201D",
+       "\u201CCollaborative learning has been practiced in educational settings since the early twentieth century.\u201D",
+       "\u201CStudents who studied vocabulary individually outperformed those in groups on a next-day recall test.\u201D"],c:1,
+   fb:"B provides experimental evidence specifically about complex tasks (multi-step logic puzzles) showing groups outperformed individuals. A is about preference, not outcomes. C is history. D actually supports the INDIVIDUAL study caveat, not the collaborative claim."},
+  {t:2,passage:"The National Park Service has expressed concern about overcrowding at popular parks, noting that high visitor volumes can damage trails, stress wildlife habitats, and diminish the visitor experience. Some parks have begun implementing reservation systems to manage capacity.",
+   q:"Which claim about the data is best supported by the graph?",
+   ch:["All national parks receive more than 5 million visitors annually.",
+       "Grand Canyon receives the most visitors of the parks shown, which may intensify the overcrowding concerns described in the passage.",
+       "Yosemite has the fewest visitors because it is the least scenic park.",
+       "Visitor numbers have been declining at all national parks."],c:1,
+   fb:"Grand Canyon = 6.4 million, the highest bar. Combined with the passage\u2019s overcrowding concerns, B makes a supported connection. A is false (Yosemite = 3.9M). C makes an unsupported causal claim. D discusses trends not shown in the graph.",
+   extra:"bar",
+   extraBar:{title:"Annual Visitors to National Parks (millions)",labels:["Yellowstone","Grand Canyon","Zion","Yosemite","Acadia"],values:[4.9,6.4,4.7,3.9,4.1],max:7.5,color:C.sec}},
+  {t:2,passage:"Archaeologists studying ancient Roman roads have noted their remarkable durability. While modern asphalt roads typically require resurfacing every 10\u201315 years, many Roman roads built over 2,000 years ago remain intact. Researchers attribute this longevity to the Romans\u2019 multi-layered construction technique, which included a deep gravel foundation, compacted sand layers, and precisely fitted stone surfaces.",
+   q:"Which finding would most effectively illustrate the durability claim made in the passage?",
+   ch:["\u201CThe Roman road network eventually extended over 250,000 miles across the empire.\u201D",
+       "\u201CA section of the Appian Way, constructed in 312 BCE, still bears vehicle traffic today with no structural reinforcement in over two millennia.\u201D",
+       "\u201CRoman engineers used slave labor to construct most major roads.\u201D",
+       "\u201CModern highway construction costs approximately $2\u20134 million per mile.\u201D"],c:1,
+   fb:"B provides a concrete, specific example of a Roman road still functioning after 2,300+ years \u2014 directly illustrating the \u201Cremarkable durability\u201D claim. A is about extent, not durability. C is about labor. D is about modern costs."},
+  {t:2,passage:"Educational psychologists have increasingly advocated for \u201Cactive recall\u201D study strategies, in which students test themselves on material rather than passively reviewing it. These researchers argue that the effort of retrieving information strengthens memory traces more effectively than repeated exposure.",
+   q:"Which statement is best supported by both the passage and the table?",
+   ch:["Highlighting is the most efficient study method because it requires the least time.",
+       "Practice testing and spaced repetition, both active recall strategies, produce higher test scores and better retention than passive methods like re-reading and highlighting.",
+       "Students should always use spaced repetition because it produces the highest scores.",
+       "Study time is the most important factor in test performance."],c:1,
+   fb:"The passage advocates for active recall. The table shows practice testing (85%, 67% retention) and spaced repetition (88%, 74%) outperform re-reading (72%, 38%) and highlighting (70%, 35%). B correctly synthesizes BOTH sources. A ignores scores. C uses \u201Calways.\u201D D is contradicted (highlighting takes least time but scores lowest).",
+   extra:"table",
+   extraTable:{headers:["Study Method","Avg. Test Score","Study Time (hrs)","Retention After 1 Week"],
+     rows:[["Re-reading notes","72%","4.2","38%"],["Practice testing","85%","3.8","67%"],["Highlighting","70%","3.5","35%"],["Spaced repetition","88%","4.5","74%"]]}},
+  {t:3,passage:"Linguists studying the phenomenon of \u201Ccode-switching\u201D \u2014 the practice of alternating between two or more languages within a single conversation \u2014 have challenged the misconception that it reflects linguistic confusion or inability. Research now suggests that code-switching requires sophisticated grammatical knowledge of both languages and serves important social functions, such as signaling group identity or adjusting formality.",
+   q:"Which evidence would most directly challenge the \u201Cconfusion\u201D misconception mentioned in the passage?",
+   ch:["\u201CCode-switching is observed in bilingual communities worldwide.\u201D",
+       "\u201CAnalysis of 500 recorded code-switching instances revealed that 97% followed the grammatical rules of both languages simultaneously, with switches occurring only at syntactically permissible points.\u201D",
+       "\u201CMany bilingual parents encourage their children to use one language at home and another at school.\u201D",
+       "\u201CCode-switching is more common in informal settings than in formal ones.\u201D"],c:1,
+   fb:"B directly disproves \u201Cconfusion\u201D: if 97% of switches follow BOTH languages\u2019 grammar rules at syntactically permissible points, this is precision, not confusion. The data proves sophisticated competence. A, C, and D are related but don\u2019t address the confusion claim."},
+  {t:3,passage:"Economists have long documented a positive correlation between educational attainment and income. However, some researchers caution that this correlation does not necessarily prove that education directly causes higher earnings, as other factors \u2014 such as family wealth, social connections, and cognitive ability \u2014 may independently influence both educational attainment and income.",
+   q:"A student claims: \u201CThe graph proves that getting a college degree causes you to earn more money.\u201D Based on both the passage and the graph, which response best evaluates this claim?",
+   ch:["The claim is fully supported \u2014 the graph clearly shows higher education leads to higher income.",
+       "The claim accurately describes the data pattern but overstates what can be concluded, since the passage notes that correlation does not prove causation.",
+       "The claim is completely wrong \u2014 education has no relationship to income.",
+       "The graph contradicts the passage\u2019s argument."],c:1,
+   fb:"The graph DOES show higher income at higher education levels (the pattern is real). But the passage warns that correlation \u2260 causation. B captures both: the data pattern is accurate, but \u201Cproves\u201D and \u201Ccauses\u201D go beyond what the data can show. This is the most nuanced, accurate reading.",
+   extra:"bar",
+   extraBar:{title:"Median Household Income by Education Level",labels:["No H.S. Diploma","H.S. Diploma","Associate\u2019s","Bachelor\u2019s","Graduate Degree"],values:[30200,38800,46900,65400,80200],max:90000,color:C.info}},
+  {t:3,passage:"In a comprehensive review of urban transportation policies, researchers found that cities investing in public transit infrastructure experienced measurable reductions in traffic congestion, air pollution, and commute times. The researchers emphasized that the benefits were most pronounced in cities that simultaneously invested in pedestrian and cycling infrastructure, creating an integrated multi-modal transportation network.",
+   q:"Which textual evidence would best support the researchers\u2019 emphasis on integrated multi-modal networks?",
+   ch:["\u201CCities with extensive subway systems transported an average of 2.5 million passengers daily.\u201D",
+       "\u201CPortland, Oregon, which combined light rail expansion with 350 miles of bike lanes and pedestrian-priority zones, saw a 42% reduction in single-occupancy vehicle commuting \u2014 nearly double the reduction achieved by cities that invested in transit alone.\u201D",
+       "\u201CPublic transit reduces greenhouse gas emissions by an estimated 37 million metric tons annually in the United States.\u201D",
+       "\u201CMany cities have faced political opposition to public transit funding from suburban constituents.\u201D"],c:1,
+   fb:"B provides a specific example of an integrated approach (light rail + bike lanes + pedestrian zones) with comparative data showing it outperformed transit-only investment (42% vs. ~21%). This directly supports the \u201Cintegrated multi-modal\u201D emphasis. A is about subway ridership. C is about emissions. D is about politics."}
+];
+
+var KEY_TAKEAWAYS = [
+  "Textual evidence: The best quote PROVES the claim, not just relates to the same topic.",
+  "Use the litmus test: read the claim and your chosen quote back-to-back. Does the quote make the claim feel inevitable?",
+  "Quantitative evidence: Always read the graphic first \u2014 title, labels, units, scale \u2014 before reading the passage.",
+  "For tables: compare specific values. For bar graphs: compare heights. For line graphs: look for trends over time.",
+  "Match SPECIFIC data points to SPECIFIC claims. Vague connections are usually wrong.",
+  "Don\u2019t go beyond the data: if the graphic doesn\u2019t show it, the answer shouldn\u2019t claim it.",
+  "Integration questions need BOTH the passage and the data \u2014 neither alone gives you the answer.",
+  "No complex math needed \u2014 just accurate reading and logical connection."
+];
+
+/* ========== COMPONENTS ========== */
+
+/* ── DataTable ── */
+function DataTable(props) {
+  var headers = props.headers, rows = props.rows;
+  var thStyle = {padding:"8px 10px",border:"1px solid "+C.border,textAlign:"center",background:C.surface,fontWeight:700,color:C.sec,fontSize:".75rem",textTransform:"uppercase",letterSpacing:".5px"};
+  var tdStyle = {padding:"8px 10px",border:"1px solid "+C.border,textAlign:"center",color:"#ccc",fontSize:".82rem"};
+  return React.createElement("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:".82rem",margin:"12px 0"}},
+    React.createElement("thead",null,
+      React.createElement("tr",null,
+        headers.map(function(h,i){ return React.createElement("th",{key:i,style:thStyle},h); })
+      )
+    ),
+    React.createElement("tbody",null,
+      rows.map(function(r,ri){
+        return React.createElement("tr",{key:ri},
+          r.map(function(cell,ci){ return React.createElement("td",{key:ci,style:tdStyle},cell); })
+        );
+      })
+    )
+  );
+}
+
+/* ── BarChart ── */
+function BarChart(props) {
+  var title = props.title, labels = props.labels, values = props.values, max = props.max, color = props.color;
+  return React.createElement("div",{style:{margin:"12px 0",padding:12,background:C.surface,borderRadius:10,border:"1px solid "+C.border}},
+    React.createElement("div",{style:{fontSize:".75rem",fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",color:C.muted,marginBottom:10,textAlign:"center"}},title),
+    labels.map(function(label,i){
+      var pct = Math.round(values[i]/max*100);
+      return React.createElement("div",{key:i,style:{display:"flex",alignItems:"center",gap:8,marginBottom:6}},
+        React.createElement("div",{style:{fontSize:".78rem",color:"#ccc",minWidth:80,textAlign:"right"}},label),
+        React.createElement("div",{style:{flex:1,height:18,background:C.paper,borderRadius:4,overflow:"hidden",position:"relative"}},
+          React.createElement("div",{style:{height:"100%",borderRadius:4,width:pct+"%",background:color,transition:"width .4s"}})
+        ),
+        React.createElement("div",{style:{fontSize:".75rem",fontFamily:"'JetBrains Mono',monospace",color:C.muted,minWidth:36}},values[i])
+      );
+    })
+  );
+}
+
+/* ── Welcome ── */
+function Welcome(props) {
+  var onNext = props.onNext;
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  return React.createElement("div", { style:{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"100vh", padding:"0 24px", transition:"all .7s", opacity:show?1:0, transform:show?"translateY(0)":"translateY(16px)" } },
+    React.createElement("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"44", borderRadius:12, padding:"6px 18px", fontSize:13, letterSpacing:1.5, textTransform:"uppercase", color:C.mod, marginBottom:12, fontWeight:600 } }, "Phase 2 \u00B7 Module 5"),
+    React.createElement("h1", { style:{ fontSize:"clamp(1.7rem,4.5vw,3rem)", fontWeight:800, background:"linear-gradient(135deg,"+C.mod+","+C.rw+")", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", lineHeight:1.1, textAlign:"center", marginBottom:16, fontFamily:"'Cormorant Garamond',serif" } }, "Command of Evidence: Textual & Quantitative"),
+    React.createElement("p", { style:{ color:C.sub, fontSize:18, maxWidth:560, textAlign:"center", lineHeight:1.6, marginBottom:12 } }, "Can you pick the best evidence to support a claim? Can you read a table or graph and connect it to a passage? ~5\u20137 questions per test."),
+    React.createElement("div", { style:{ background:C.modBg, border:"1px solid "+C.mod+"33", borderRadius:12, padding:"14px 22px", maxWidth:540, marginBottom:40, fontSize:14, color:C.sub, lineHeight:1.6, textAlign:"center" } },
+      React.createElement("strong", { style:{ color:C.mod } }, "Two Skills, One Goal: "),
+      "This module covers TWO related question types. Textual evidence asks you to pick the quote that best supports a claim (~3\u20134 questions). Quantitative evidence asks you to read a table or graph alongside a passage (~2\u20133 questions). Both test the same core skill: matching evidence to claims."
+    ),
+    React.createElement("div", { style:{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:16, maxWidth:700, width:"100%", marginBottom:48 } },
+      [{icon:"\uD83D\uDCDD",title:"Textual Evidence",desc:"Quotes that prove claims"},{icon:"\uD83D\uDCCA",title:"Tables & Graphs",desc:"Reading data accurately"},{icon:"\uD83D\uDD17",title:"Text + Data",desc:"Integrating both sources"},{icon:"\uD83C\uDFAF",title:"4 Exercises",desc:"Match, read, connect, spot"},{icon:"\uD83D\uDCDD",title:"10 Practice Qs",desc:"PSAT-format questions"}
+      ].map(function(c,i){ return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
+        React.createElement("div",{style:{fontSize:28,marginBottom:6}},c.icon),
+        React.createElement("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
+        React.createElement("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      );})
+    ),
+    React.createElement("button", { onClick:onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")", "#fff"), onMouseOver:function(e){e.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";} }, "Start Learning \u2192"),
+    React.createElement("div", { style:{ color:C.muted, fontSize:13, marginTop:24 } }, "\u23F1 ~60 min \u00B7 Information & Ideas")
+  );
+}
+
+/* ── LessonViewer ── */
+function LessonViewer(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var lesson = LESSONS[idx];
+  var total = LESSONS.length;
+
+  function renderVisual() {
+    if (lesson.visual === "litmus-test") {
+      return React.createElement("div",{style:{padding:"12px 20px"}},
+        React.createElement("div",{style:{color:C.mod,fontSize:12,fontWeight:700,marginBottom:10,textTransform:"uppercase",letterSpacing:1}},"The Litmus Test"),
+        React.createElement("div",{style:{padding:"12px 16px",background:C.mod+"08",borderLeft:"3px solid "+C.mod,borderRadius:"0 8px 8px 0",marginBottom:8}},
+          React.createElement("div",{style:{color:C.mod,fontWeight:700,fontSize:12,marginBottom:4}},"Claim:"),
+          React.createElement("div",{style:{color:C.sub,fontSize:13}},"\u201CUrban gardens provide mental health benefits.\u201D")
+        ),
+        React.createElement("div",{style:{padding:"12px 16px",background:C.correct+"08",borderLeft:"3px solid "+C.correct,borderRadius:"0 8px 8px 0",marginBottom:8}},
+          React.createElement("div",{style:{color:C.correct,fontWeight:700,fontSize:12,marginBottom:4}},"\u2713 Best Evidence:"),
+          React.createElement("div",{style:{color:C.sub,fontSize:13,fontStyle:"italic"}},"\u201CGardeners reported 40% lower stress levels...\u201D")
+        ),
+        React.createElement("div",{style:{padding:"8px 16px",background:C.correct+"12",borderRadius:8,textAlign:"center"}},
+          React.createElement("span",{style:{color:C.correct,fontWeight:700,fontSize:13}},"\u2713 Quote proves claim \u2014 pass!")
+        )
+      );
+    }
+    if (lesson.visual === "graphic-types") {
+      var types = [
+        {icon:"\uD83D\uDCCB",name:"Table",desc:"Compare specific values across rows & columns",color:C.sec},
+        {icon:"\uD83D\uDCCA",name:"Bar Graph",desc:"Compare categories by bar height/length",color:C.info},
+        {icon:"\uD83D\uDCC8",name:"Line Graph",desc:"Show change over time; find trends",color:C.rw}
+      ];
+      return React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:8,padding:"12px 20px"}},
+        types.map(function(t,i){
+          return React.createElement("div",{key:i,style:{background:C.paper,border:"1px solid "+C.border,borderRadius:10,padding:14,textAlign:"center"}},
+            React.createElement("div",{style:{fontSize:28,marginBottom:4}},t.icon),
+            React.createElement("div",{style:{fontSize:13,fontWeight:700,color:t.color,marginBottom:4}},t.name),
+            React.createElement("div",{style:{fontSize:11,color:C.sub,lineHeight:1.4}},t.desc)
+          );
+        })
+      );
+    }
+    if (lesson.visual === "integration-patterns") {
+      var patterns = [
+        {label:"Supports",desc:"Data proves the passage\u2019s claim",color:C.correct},
+        {label:"Complicates",desc:"Data shows exception or limitation",color:C.expr},
+        {label:"Extends",desc:"Data adds specific numbers/examples",color:C.info},
+        {label:"Provides Context",desc:"Passage explains what numbers mean",color:C.rw}
+      ];
+      return React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:8,padding:"12px 20px"}},
+        patterns.map(function(p,i){
+          return React.createElement("div",{key:i,style:{background:p.color+"08",border:"1px solid "+p.color+"33",borderRadius:10,padding:12,textAlign:"center"}},
+            React.createElement("div",{style:{fontSize:13,fontWeight:700,color:p.color,marginBottom:4}},p.label),
+            React.createElement("div",{style:{fontSize:11,color:C.sub,lineHeight:1.4}},p.desc)
+          );
+        })
+      );
+    }
+    return null;
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+      LESSONS.map(function(_,i){
+        return React.createElement("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+      })
+    ),
+    React.createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",marginBottom:32}},
+      React.createElement("div",{style:{padding:"28px 28px 0"}},
+        React.createElement("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}},lesson.subtitle),
+        React.createElement("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:16,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},lesson.title),
+        lesson.body.map(function(p,i){
+          return React.createElement("p",{key:i,style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:14,whiteSpace:"pre-line"}},p);
+        })
+      ),
+      lesson.visual && React.createElement("div",{style:{padding:"8px 4px 20px"}},renderVisual())
+    ),
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between"}},
+      React.createElement("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#444":C.sub),{border:"1px solid "+C.border,padding:"10px 20px",fontSize:14})},"\u2190 Back"),
+      idx < total-1
+        ? React.createElement("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
+        : React.createElement("button",{onClick:onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Exercises \u2192")
+    )
+  );
+}
+
+/* ── Exercise 1: Textual Evidence Matcher (MC with quote choices) ── */
+function TextEvMatcher(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = TEV.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === TEV[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:C.mod,fontSize:14,fontWeight:700}},"\uD83D\uDCDD Textual Evidence Matcher"),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Which quote BEST supports the claim? Watch for quotes that relate to the topic but don\u2019t actually prove the claim."),
+    TEV.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.7,marginBottom:12}},
+          React.createElement("strong",null,"Claim: "),q.claim
+        ),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return React.createElement("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              React.createElement("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              React.createElement("span",{style:{fontSize:12,fontStyle:"italic",color:"#ccc"}},ch)
+            );
+          })
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      React.createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      React.createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        React.createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── Exercise 2: Table Reader ── */
+function TableReader(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = TBQ.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === TBQ[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:C.info,fontSize:14,fontWeight:700}},"\uD83D\uDCCA Table Reader"),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Use the data table to answer each question. Practice reading rows, columns, and comparing values."),
+    React.createElement(DataTable,{headers:TBL_HEADERS,rows:TBL_ROWS}),
+    TBQ.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.7,marginBottom:12}},q.q),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return React.createElement("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              React.createElement("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              React.createElement("span",null,ch)
+            );
+          })
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+q.fb)
+      );
+    }),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      React.createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      React.createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        React.createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(C.info,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── Exercise 3: Graph + Passage Connector ── */
+function GraphPassageConnector(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = GRQ.length;
+  var correct = Object.keys(answers).filter(function(i){ return answers[i] === GRQ[i].c; }).length;
+  var done = Object.keys(answers).length === total;
+
+  function pick(i, v) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:C.rw,fontSize:14,fontWeight:700}},"\uD83D\uDCCA Graph + Passage"),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},correct,"/",total," correct")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Use both the graph and the passage to answer."),
+    GRQ.map(function(q,i){
+      var a = answers[i], h = a !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        React.createElement(BarChart,{title:q.barTitle,labels:q.barLabels,values:q.barValues,max:q.barMax,color:q.barColor}),
+        React.createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"12px 16px",background:C.mod+"06",borderRadius:8,marginBottom:12,borderLeft:"3px solid "+C.mod}},q.passage),
+        React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.7,marginBottom:12}},q.q),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
+          q.ch.map(function(ch,ci){
+            var st = {display:"flex",alignItems:"flex-start",gap:10,padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s",textAlign:"left",width:"100%"};
+            if (h) {
+              st.opacity = 0.7; st.pointerEvents = "none";
+              if (ci === q.c) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
+              else if (ci === a) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+            }
+            return React.createElement("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
+              React.createElement("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
+              React.createElement("span",null,ch)
+            );
+          })
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"10px",borderRadius:8,background:C.paper,borderLeft:"3px solid "+C.correct,lineHeight:1.6,color:C.sub}},(a===q.c?"\u2713 Correct! ":"\u274c Incorrect. ")+(q.fb2||q.fb))
+      );
+    }),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
+      React.createElement("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+      React.createElement("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
+        React.createElement("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+      ),
+      React.createElement("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
+    ),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(C.rw,"#fff",{fontSize:14,padding:"10px 24px"})},"Next Exercise \u2192")
+    )
+  );
+}
+
+/* ── Exercise 4: Evidence Trap Spotter ── */
+function TrapSpotter(props) {
+  var onComplete = props.onComplete;
+  var _s = useState({}), answers = _s[0], setAnswers = _s[1];
+  var total = TRAPS.length;
+  var done = Object.keys(answers).length === total;
+
+  function ack(i) {
+    if (answers[i] !== undefined) return;
+    setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = true; return n; });
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+      React.createElement("div",{style:{color:C.expr,fontSize:14,fontWeight:700}},"\u26A0\uFE0F Evidence Trap Spotter"),
+      React.createElement("span",{style:{color:C.muted,fontSize:13}},Object.keys(answers).length,"/",total," reviewed")
+    ),
+    React.createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"Each item shows a claim, a trap quote, and the correct quote. Click \u201CI understand\u201D after reading why the trap fails."),
+    TRAPS.map(function(q,i){
+      var h = answers[i] !== undefined;
+      return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
+        React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.7,marginBottom:12}},
+          React.createElement("strong",null,"Claim: "),q.claim
+        ),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:8,marginBottom:10}},
+          React.createElement("div",{style:{padding:"8px 12px",borderRadius:6,background:C.wrongBg,border:"1px solid "+C.wrong,fontSize:13}},
+            React.createElement("span",{style:{color:C.wrong,fontWeight:700}},"\u2717 Trap: "),
+            React.createElement("span",{style:{color:"#ccc",fontStyle:"italic"}},q.wrong)
+          ),
+          React.createElement("div",{style:{padding:"8px 12px",borderRadius:6,background:C.correctBg,border:"1px solid "+C.correct,fontSize:13}},
+            React.createElement("span",{style:{color:C.correct,fontWeight:700}},"\u2713 Best: "),
+            React.createElement("span",{style:{color:"#ccc",fontStyle:"italic"}},q.right)
+          )
+        ),
+        React.createElement("div",{style:{fontSize:13,color:C.expr,marginBottom:8}},
+          React.createElement("strong",null,"Trap type: "),q.trap
+        ),
+        React.createElement("div",{style:{marginBottom:h?8:0}},
+          React.createElement("button",{onClick:function(){ack(i);},disabled:h,style:{padding:"6px 14px",background:h?C.correctBg:C.surface,border:"2px solid "+(h?C.correct:C.border),borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:h?C.correct:C.ink,transition:"all .15s",opacity:h?1:undefined,pointerEvents:h?"none":undefined}},"I understand this trap \u2713")
+        ),
+        h && React.createElement("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:C.correctBg,color:C.correct}},q.fb)
+      );
+    }),
+    done && React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
+      React.createElement("button",{onClick:onComplete,style:btn(C.expr,"#000",{fontSize:14,padding:"10px 24px"})},"Start Practice \u2192")
+    )
+  );
+}
+
+/* ── QuizEngine ── */
+function QuizEngine(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), idx = _s[0], setIdx = _s[1];
+  var _s2 = useState(null), selected = _s2[0], setSelected = _s2[1];
+  var _s3 = useState(false), confirmed = _s3[0], setConfirmed = _s3[1];
+  var _s4 = useState(0), score = _s4[0], setScore = _s4[1];
+  var _s5 = useState(false), done = _s5[0], setDone = _s5[1];
+  var item = PST[idx];
+
+  function confirm() {
+    if (selected === null) return;
+    setConfirmed(true);
+    if (selected === item.c) setScore(function(s){ return s+1; });
+  }
+  function next() {
+    if (idx < PST.length-1) { setIdx(idx+1); setSelected(null); setConfirmed(false); }
+    else { setDone(true); }
+  }
+
+  if (done) {
+    return React.createElement("div",{style:{maxWidth:600,margin:"0 auto",padding:"80px 20px",textAlign:"center"}},
+      React.createElement("div",{style:{fontSize:48,marginBottom:16}},"\uD83D\uDCDD"),
+      React.createElement("h2",{style:{color:C.ink,fontSize:28,fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Practice Complete"),
+      React.createElement("div",{style:{color:C.mod,fontSize:48,fontWeight:900}},score,"/",PST.length),
+      React.createElement("p",{style:{color:C.sub,fontSize:15,marginTop:8,marginBottom:32}},
+        score >= 9 ? "Outstanding! You\u2019ve mastered command of evidence." :
+        score >= 7 ? "Great work! A few more practice rounds and you\u2019ll own this topic." :
+        score >= 5 ? "Solid foundation. Review the errors you made and try again." :
+        "Keep practicing! Focus on matching specific evidence to specific claims."
+      ),
+      React.createElement("button",{onClick:function(){onComplete(score,PST.length);},style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff")},"Continue \u2192")
+    );
+  }
+
+  var tierColors = {1:C.sec, 2:C.info, 3:C.rw};
+  var tierLabels = {1:"Easy", 2:"Medium", 3:"Hard"};
+
+  function renderExtra() {
+    if (!item.extra) return null;
+    if (item.extra === "table" && item.extraTable) {
+      return React.createElement(DataTable,{headers:item.extraTable.headers,rows:item.extraTable.rows});
+    }
+    if (item.extra === "bar" && item.extraBar) {
+      var b = item.extraBar;
+      return React.createElement(BarChart,{title:b.title,labels:b.labels,values:b.values,max:b.max,color:b.color});
+    }
+    return null;
+  }
+
+  return React.createElement("div",{style:{maxWidth:700,margin:"0 auto",padding:"40px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
+      React.createElement("div",{style:{color:C.mod,fontSize:13,fontWeight:700}},"\uD83D\uDCDD PSAT Practice"),
+      React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        React.createElement("span",{style:{fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:600,background:tierColors[item.t]+"22",color:tierColors[item.t]}},tierLabels[item.t]),
+        React.createElement("span",{style:{color:C.muted,fontSize:13}},idx+1,"/",PST.length)
+      )
+    ),
+    React.createElement("div",{style:{height:4,background:C.border,borderRadius:2,marginBottom:20,overflow:"hidden"}},
+      React.createElement("div",{style:{height:"100%",width:((idx+(confirmed?1:0))/PST.length*100)+"%",background:"linear-gradient(90deg,"+C.mod+","+C.rw+")",borderRadius:2,transition:"width .4s"}})
+    ),
+    renderExtra(),
+    React.createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,marginBottom:16}},
+      React.createElement("div",{style:{color:"#ddd",fontSize:15,lineHeight:1.8,fontFamily:"Georgia,serif"}},item.passage)
+    ),
+    React.createElement("div",{style:{color:C.ink,fontSize:14,fontWeight:600,marginBottom:16}},item.q),
+    React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:24}},
+      item.ch.map(function(c,ci){
+        var letter = "ABCD"[ci];
+        var isSel = selected === ci;
+        var isCorr = ci === item.c;
+        var bg = C.surface, bdr = "1px solid "+C.border, tc = "#ddd";
+        if (confirmed && isCorr) { bg = C.correct+"18"; bdr = "2px solid "+C.correct; tc = C.correct; }
+        else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
+        else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
+        return React.createElement("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
+          React.createElement("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          React.createElement("span",{style:{color:tc,fontSize:14,lineHeight:1.5}},c)
+        );
+      })
+    ),
+    confirmed && React.createElement("div",{style:{background:C.border,borderRadius:12,padding:20,marginBottom:24,borderLeft:"4px solid "+C.mod}},
+      React.createElement("div",{style:{color:C.mod,fontWeight:700,fontSize:13,marginBottom:6}},"Explanation"),
+      React.createElement("div",{style:{color:C.sub,fontSize:14,lineHeight:1.6}},item.fb)
+    ),
+    React.createElement("div",{style:{display:"flex",justifyContent:"flex-end"}},
+      !confirmed
+        ? React.createElement("button",{onClick:confirm,disabled:selected===null,style:btn(selected===null?C.border:C.mod,selected===null?"#555":"#fff",{fontSize:14,padding:"10px 24px"})},"Confirm")
+        : React.createElement("button",{onClick:next,style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 24px"})},idx<PST.length-1?"Next \u2192":"See Results \u2192")
+    )
+  );
+}
+
+/* ── NavLinks ── */
+function NavLinks() {
+  return React.createElement("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border,flexWrap:"wrap"}},
+    NAV.prev && React.createElement("a",{href:NAV.prev.file,style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"})},"\u2190 "+NAV.prev.label),
+    NAV.next && React.createElement("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"10px 20px"})},NAV.next.label+" \u2192")
+  );
+}
+
+/* ── ModuleComplete ── */
+function ModuleComplete(props) {
+  var quizScore = props.quizScore, quizTotal = props.quizTotal;
+  var pct = Math.round(quizScore/quizTotal*100);
+  return React.createElement("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
+    React.createElement("div",{style:{fontSize:64,marginBottom:16}},pct>=90?"\uD83C\uDFC6":pct>=70?"\uD83C\uDF1F":"\uD83D\uDCAA"),
+    React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 5 Complete!"),
+    React.createElement("div",{style:{color:C.mod,fontSize:48,fontWeight:900,marginBottom:8}},quizScore,"/",quizTotal),
+    React.createElement("p",{style:{color:C.sub,fontSize:15,marginBottom:32}},"on PSAT-format practice questions"),
+    React.createElement("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
+      React.createElement("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+      KEY_TAKEAWAYS.map(function(t,i){
+        return React.createElement("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
+          React.createElement("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+          React.createElement("span",null,t)
+        );
+      })
+    ),
+    React.createElement(NavLinks, null)
+  );
+}
+
+/* ── Exercises Router ── */
+function Exercises(props) {
+  var onComplete = props.onComplete;
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+
+  if (step === 0) {
+    return React.createElement(TextEvMatcher, {
+      onComplete:function(){ setStep(1); }
+    });
+  }
+  if (step === 1) {
+    return React.createElement(TableReader, {
+      onComplete:function(){ setStep(2); }
+    });
+  }
+  if (step === 2) {
+    return React.createElement(GraphPassageConnector, {
+      onComplete:function(){ setStep(3); }
+    });
+  }
+  if (step === 3) {
+    return React.createElement(TrapSpotter, {
+      onComplete:function(){ onComplete(); }
+    });
+  }
+  return null;
+}
+
+/* ── App Shell ── */
+function App() {
+  var _s = useState("welcome"), screen = _s[0], setScreen = _s[1];
+  var _s2 = useState(true), vis = _s2[0], setVis = _s2[1];
+  var _s3 = useState(0), quizScore = _s3[0], setQuizScore = _s3[1];
+  var _s4 = useState(10), quizTotal = _s4[0], setQuizTotal = _s4[1];
+
+  function go(next) {
+    setVis(false);
+    setTimeout(function(){ setScreen(next); setVis(true); window.scrollTo(0,0); }, 350);
+  }
+
+  var content = null;
+  if (screen === "welcome") content = React.createElement(Welcome,{onNext:function(){go("lesson");}});
+  else if (screen === "lesson") content = React.createElement(LessonViewer,{onComplete:function(){go("exercises");}});
+  else if (screen === "exercises") content = React.createElement(Exercises,{onComplete:function(){go("practice");}});
+  else if (screen === "practice") content = React.createElement(QuizEngine,{onComplete:function(s,t){setQuizScore(s);setQuizTotal(t);go("complete");}});
+  else if (screen === "complete") content = React.createElement(ModuleComplete,{quizScore:quizScore,quizTotal:quizTotal});
+
+  return React.createElement("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+<script src="/translate.js"></script>
+</body>
+</html>
