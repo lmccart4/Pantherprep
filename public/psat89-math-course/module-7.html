@@ -6,55 +6,154 @@
 <title>Module 7: Strategy & Time Management — PSAT 8/9 Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08);--strat:#f59e0b;--strat-bg:rgba(245,158,11,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#0891b2 0%,#0891b2 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--math));width:0%;transition:width .3s ease}
+
+/* ── Screen System ── */
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+/* ── Progress Dots ── */
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--psda)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(8,145,178,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
+/* ── Container ── */
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}.back-link:hover{color:var(--accent)}
+
+/* ── Welcome Screen ── */
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--psda);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--psda);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--psda);color:#000;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(251,191,36,.3)}
+
+/* ── Retrieval Warm-Up ── */
+.warmup-container{max-width:600px;margin:0 auto;padding:60px 20px}
+.warmup-header{text-align:center;margin-bottom:32px}
+.warmup-badge{display:inline-block;background:var(--psda);color:#000;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.warmup-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.warmup-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.warmup-dot.done-correct{background:var(--correct)}
+.warmup-dot.done-wrong{background:var(--wrong)}
+.warmup-dot.active{background:var(--psda);box-shadow:0 0 8px rgba(251,191,36,.4)}
+.warmup-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.warmup-q .source-tag{font-size:.7rem;color:var(--psda);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.warmup-q .q-text{font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.warmup-choices{display:flex;flex-direction:column;gap:8px}
+.warmup-choice{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.warmup-choice:hover:not(.wu-dis){border-color:var(--psda);background:rgba(251,191,36,.05)}
+.warmup-choice.wu-correct{border-color:var(--correct);background:var(--correct-bg)}
+.warmup-choice.wu-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.warmup-choice.wu-dis{pointer-events:none;opacity:.7}
+.warmup-choice.wu-correct{opacity:1}
+.warmup-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:12px;padding:10px;background:var(--paper);border-radius:8px;border-left:3px solid var(--correct)}
+.warmup-next{padding:10px 24px;background:var(--psda);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;margin-top:12px;font-family:'Source Sans 3',sans-serif}
+.warmup-next:hover{filter:brightness(1.1)}
+.warmup-summary{text-align:center;padding:40px 20px}
+.warmup-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:var(--psda);margin:12px 0}
+.warmup-continue{padding:12px 28px;background:var(--psda);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:20px;font-family:'Source Sans 3',sans-serif}
+.warmup-continue:hover{filter:brightness(1.15)}
+
+/* ── Lesson Content ── */
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
-.mod-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-badge{display:inline-block;background:var(--strat);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
 .mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
 .mod-header .subtitle{color:var(--muted);font-size:1rem}
 .mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
-.section{margin-bottom:36px}.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--strat);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.card-accent{border-left:3px solid var(--accent)}
-.callout{background:var(--accent-light);border:1px solid rgba(8,145,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}.callout strong{color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(8,145,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
 .callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
 .callout-gold{background:rgba(8,145,178,.08);border-color:rgba(8,145,178,.3)}.callout-gold strong{color:var(--accent)}
-.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;transition:all .3s}
 .topic-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
 .topic-badge{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
 .topic-info{flex:1}.topic-title{font-weight:700;font-size:.95rem}.topic-sub{font-size:.82rem;color:var(--muted);margin-top:2px}
-.topic-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem}.topic.open .topic-arrow{transform:rotate(90deg)}
-.topic-body{display:none;padding:0 20px 18px;font-size:.9rem;color:#ccc;line-height:1.7}.topic.open .topic-body{display:block}
+.topic-arrow{color:var(--muted);transition:transform .2s;font-size:.9rem}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 20px 18px;font-size:.9rem;color:#ccc;line-height:1.7}
+.topic.open .topic-body{display:block}
 .topic-body h4{font-size:.95rem;color:var(--ink);margin:14px 0 6px;font-weight:700}
 .topic-body ul{padding-left:18px;margin-bottom:10px}.topic-body li{margin-bottom:6px}
 .formula-box{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:1.8}
-.formula-box .fn{color:var(--accent);font-weight:700}.formula-box .fl{color:var(--math);font-weight:700}
-.exercise{background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:22px;margin-bottom:16px}
+.formula-box .fn{color:var(--strat);font-weight:700}.formula-box .fl{color:var(--math);font-weight:700}
+.exercise{background:var(--surface);border:2px solid var(--strat);border-radius:14px;padding:22px;margin-bottom:16px}
 .exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
 .exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
 .ex-item{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
 .ex-prompt{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
 .ex-prompt code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
 .ex-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ex-input{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;width:100px;text-align:center}.ex-input:focus{border-color:var(--accent);outline:none}
-.ex-btn{padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600}.ex-btn:hover{filter:brightness(1.15)}
-.ex-fb{font-size:.82rem;padding:8px 10px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}.ex-fb.show{display:block}.ex-fb.correct{background:var(--correct-bg);color:var(--correct)}.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong)}
+.ex-input{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;width:100px;text-align:center}
+.ex-input:focus{border-color:var(--strat);outline:none}
+.ex-btn{padding:8px 16px;background:var(--strat);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600}.ex-btn:hover{filter:brightness(1.15)}
+.ex-fb{font-size:.82rem;padding:8px 10px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}
+.ex-fb.show{display:block}.ex-fb.correct{background:var(--correct-bg);color:var(--correct)}.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong)}
 .tier{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
 .tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:rgba(167,139,250,.15);color:var(--advanced)}
 .classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
 .classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
-.classify-opt:hover:not(.cl-dis){border-color:var(--accent);background:rgba(8,145,178,.08)}
+.classify-opt:hover:not(.cl-dis){border-color:var(--strat);background:var(--strat-bg)}
 .classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);opacity:1}
 .classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .classify-opt.cl-dis{pointer-events:none;opacity:.6}.classify-opt.cl-correct{opacity:1}
+
+/* ── Confidence Tags ── */
+.confidence-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.conf-tag{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;letter-spacing:.5px}
+.conf-tag:hover{border-color:var(--psda)}
+.conf-tag.selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="guessing"].selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="unsure"].selected{border-color:var(--math);background:var(--math-bg);color:var(--math)}
+.conf-tag[data-conf="confident"].selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+
+/* ── Timed Practice ── */
+.timer-bar{position:sticky;top:8px;z-index:50;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--psda);min-width:60px}
+.timer-display.warning{color:var(--psda)}
+.timer-display.danger{color:var(--wrong);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.timer-fill{height:100%;background:var(--psda);transition:width 1s linear;border-radius:2px}
+.timer-fill.warning{background:var(--psda)}
+.timer-fill.danger{background:var(--wrong)}
+.timer-toggle{padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.75rem;color:var(--muted);cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600}
+.timer-toggle:hover{border-color:var(--accent);color:var(--ink)}
+.timer-toggle.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.q-dots{display:flex;gap:4px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.q-dot.correct{background:var(--correct)}
+.q-dot.wrong{background:var(--wrong)}
+.q-dot.current{background:var(--accent);box-shadow:0 0 6px rgba(8,145,178,.5)}
+
+/* ── MC Choices ── */
 .mc-choices{display:flex;flex-direction:column;gap:6px}
 .mc-choice{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
-.mc-choice:hover:not(.mc-dis){border-color:var(--accent);background:rgba(8,145,178,.05)}
+.mc-choice:hover:not(.mc-dis){border-color:var(--psda);background:rgba(251,191,36,.05)}
 .mc-letter{font-weight:700;color:var(--muted);min-width:20px}
 .mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg);opacity:1}
 .mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
@@ -66,44 +165,55 @@
 .score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
 .score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
 .score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
-.mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
-.mod-nav a{color:var(--accent);text-decoration:none}.mod-nav a:hover{text-decoration:underline}
-/* Two-way table */
-.tw-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
-.tw-table th,.tw-table td{padding:8px 10px;border:1px solid var(--border);text-align:center}
-.tw-table th{background:var(--surface);font-weight:700;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
-.tw-table td{color:#ccc}
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{gap:4px}}
 
+/* ── Results Enhancement ── */
+.results-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.results-section h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px}
+.results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:16px;background:var(--border);border-radius:10px;overflow:hidden}
+.results-grid-header{background:var(--surface);padding:8px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.results-grid-cell{background:var(--paper);padding:10px 8px;text-align:center;font-size:.78rem;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.results-grid-cell.danger-cell{background:var(--danger-bg);border:1px solid rgba(239,68,68,.3)}
+.cell-label{font-size:.65rem;color:var(--muted);font-weight:600}
+.cell-dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.cell-dot{width:8px;height:8px;border-radius:50%}
+.difficulty-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.diff-row{display:flex;align-items:center;gap:10px}
+.diff-label{font-size:.78rem;font-weight:600;min-width:60px}
+.diff-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.diff-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.diff-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;min-width:40px;text-align:right}
+.error-category{padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:.85rem;line-height:1.6}
+.error-category .error-label{font-weight:700;margin-bottom:4px}
+.error-category .error-items{color:var(--muted);font-size:.82rem}
 
+/* ── Module Complete ── */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--psda);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
 
-
-
-
-
-
-
-
+/* ── Module 7-Specific Styles ── */
 .fm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:12px 0}
 .fm-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
 .fm-name{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
 .fm-eq{font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:700;color:var(--math)}
-.tri-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:12px 0}
-.tri-card{background:var(--paper);border:2px solid var(--accent);border-radius:12px;padding:16px;text-align:center}
-.tri-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px}
-.tri-ratio{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:6px}
-.tri-sides{font-size:.82rem;color:var(--muted);line-height:1.5}
-.triples-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-.triple{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;color:var(--math)}
-
 .skill-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
 .skill-table th,.skill-table td{padding:10px 12px;border:1px solid var(--border);text-align:left}
-.skill-table th{background:var(--surface);font-weight:700;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.skill-table th{background:var(--surface);font-weight:700;color:var(--strat);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
 .skill-table td{color:#ccc;vertical-align:top}
-.skill-num{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;align-items:center;justify-content:center;margin-right:8px}
+.skill-num{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--strat);color:#fff;font-size:.72rem;font-weight:700;align-items:center;justify-content:center;margin-right:8px}
 .sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:12px 0}
 .sc-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
-.sc-key{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);margin-bottom:4px}
+.sc-key{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--strat);margin-bottom:4px}
 .sc-desc{font-size:.78rem;color:var(--muted)}
 .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
 .do-card,.dont-card{background:var(--surface);border-radius:12px;padding:16px;font-size:.88rem}
@@ -111,13 +221,10 @@
 .do-card h4{color:var(--correct);margin-bottom:8px}.dont-card h4{color:var(--wrong);margin-bottom:8px}
 .do-card li,.dont-card li{margin-bottom:4px;color:#ccc}
 .step-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:10px}
-.step-num{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.85rem;font-weight:700;align-items:center;justify-content:center;margin-right:10px;flex-shrink:0}
+.step-num{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--strat);color:#fff;font-size:.85rem;font-weight:700;align-items:center;justify-content:center;margin-right:10px;flex-shrink:0}
 .step-header{display:flex;align-items:center;margin-bottom:8px;font-weight:700;font-size:.95rem}
 .step-body{font-size:.88rem;color:#ccc;line-height:1.6;padding-left:38px}
 .step-body code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
-@media(max-width:600px){.do-dont{grid-template-columns:1fr}.sc-grid{grid-template-columns:repeat(2,1fr)}}
-
-:root{--strat:#f59e0b;--strat-bg:rgba(245,158,11,.08)}
 .dt-flow{display:flex;flex-direction:column;gap:8px;margin:12px 0}
 .dt-step{display:flex;align-items:stretch;gap:0}
 .dt-num{width:38px;min-height:38px;border-radius:10px 0 0 10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;flex-shrink:0}
@@ -132,14 +239,103 @@
 .trap-title{font-weight:700;color:var(--wrong);font-size:.9rem;margin-bottom:4px}
 .trap-body{font-size:.85rem;color:#ccc;line-height:1.5}
 .trap-fix{font-size:.82rem;color:var(--correct);margin-top:6px;font-weight:600}
-</style></head>
+.tw-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0}
+.tw-table th,.tw-table td{padding:8px 10px;border:1px solid var(--border);text-align:center}
+.tw-table th{background:var(--surface);font-weight:700;color:var(--strat);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.tw-table td{color:#ccc}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .mod-meta{flex-wrap:wrap;gap:10px}
+  .classify-opts{gap:4px}
+  .preview-grid{grid-template-columns:1fr 1fr}
+  .welcome-meta{flex-wrap:wrap;gap:12px}
+  .results-grid{grid-template-columns:1fr;gap:1px}
+  .nav-cards{grid-template-columns:1fr}
+  .timer-bar{flex-wrap:wrap;gap:8px}
+  .do-dont{grid-template-columns:1fr}
+  .sc-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- ── Screen Progress Dots ── -->
+<div class="screen-progress" id="screenProgress"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 1: WELCOME                             -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 7</div>
+    <h1>Strategy Toolkit & Time Management</h1>
+    <p class="welcome-sub">The difference between a good math student and a good test-taker is strategy. This module teaches you how to work smarter.</p>
+    <div class="welcome-meta">
+      <span>⏱ ~50 min</span>
+      <span>📋 5 strategies</span>
+      <span>🔨 5 exercises</span>
+      <span>🎯 10 practice Qs</span>
+    </div>
+    <div class="preview-grid">
+      <div class="preview-card">
+        <div class="preview-icon">🔄</div>
+        <div class="preview-title">Retrieval Warm-Up</div>
+        <div class="preview-desc">5 questions from Module 6 to activate prior knowledge</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">🌳</div>
+        <div class="preview-title">Decision Tree</div>
+        <div class="preview-desc">5-second framework to pick the fastest approach</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">🔌</div>
+        <div class="preview-title">PIYON & Backsolve</div>
+        <div class="preview-desc">Plug in your own numbers or test answer choices</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">🎯</div>
+        <div class="preview-title">Ballpark/POE & Grid-In</div>
+        <div class="preview-desc">Estimate, eliminate, and SPR rules</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">🚨</div>
+        <div class="preview-title">Misread Traps</div>
+        <div class="preview-desc">The top 6 preventable mistakes on test day</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">⏱</div>
+        <div class="preview-title">Timed Practice</div>
+        <div class="preview-desc">10 strategy-tagged questions with timer ON</div>
+      </div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 2: RETRIEVAL WARM-UP                   -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-warmup">
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <div class="warmup-badge">Retrieval Warm-Up</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem">Module 6 Review</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:4px">Quick recall from Desmos Mastery — the tool you'll pair with strategy.</p>
+      <div class="warmup-dots" id="warmupDots"></div>
+    </div>
+    <div id="warmupContent"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 3: LESSON CONTENT                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-lesson">
 <div class="container">
-<a class="back-link" href="index.html">← Back to PSAT 8/9 Math Course</a>
 <div class="mod-header">
-  <div class="mod-badge" style="background:var(--strat)">Module 7</div>
+  <div class="mod-badge">Module 7</div>
   <h1>Strategy Toolkit & Time Management</h1>
   <p class="subtitle">The difference between a good math student and a good test-taker is strategy. This module teaches you how to work smarter.</p>
   <div class="mod-meta"><span>⏱ ~50 min</span><span>📋 5 strategies + 5 exercises</span><span>🛠 Phase 3: Strategize</span></div>
@@ -372,35 +568,231 @@
 
 <div class="section"><div class="section-label">Interactive Exercise 5</div><h2>Misread Trap Detector</h2><p>Each question has a common misread trap. Identify it.</p><div class="exercise" style="border-color:var(--wrong)" id="trapEx"></div></div>
 
-<div class="section"><div class="section-label">PSAT 8/9 Practice</div><h2>Strategy-Tagged Practice</h2><p>10 questions — each tagged with the recommended strategy.</p><div id="psatPractice"></div></div>
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(3)">Continue to Practice Questions →</button>
+</div>
+</div>
+</div>
 
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>Module 1 accuracy > Module 2 speed. Getting into hard M2 is worth 40–80 points.</li>
-      <li>Two-pass system: Pass 1 (25 min) = answer what you can. Pass 2 (10 min) = return to flagged.</li>
-      <li>5-Second Decision Tree: direct solve → plug in → backsolve → Desmos → ballpark.</li>
-      <li>PIYON: Variables in answers → choose simple numbers, find target, match.</li>
-      <li>Backsolve: Number answers → start with B/C and test.</li>
-      <li>Ballpark: Estimate first, eliminate clearly wrong, pick from what's left.</li>
-      <li>SPR rules: fractions OK, negatives OK, no mixed numbers, always re-read what they ask for.</li>
-      <li><strong>No penalty for guessing — never leave a question blank.</strong></li>
-      <li>Most missed points are from misreading, not math. Underline what the question asks.</li>
-    </ol>
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 4: TIMED PRACTICE                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-practice">
+<div class="container">
+  <div class="section-label">PSAT 8/9 Practice</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:4px">Strategy-Tagged Practice</h2>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px">10 questions at three difficulty tiers. Tag your confidence before answering.</p>
+
+  <div class="timer-bar" id="timerBar">
+    <div class="timer-display" id="timerDisplay">--:--</div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="q-dots" id="qDots"></div>
+    <button class="timer-toggle active" id="timerToggle" onclick="toggleTimer()">⏱ Timer ON</button>
+  </div>
+
+  <div id="psatPractice"></div>
+  <div id="practiceResults" style="display:none"></div>
+
+  <div id="practiceNav" style="display:none;text-align:center;padding:24px 0">
+    <button class="start-btn" onclick="goScreen(4)">View Summary & Complete Module →</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 5: MODULE COMPLETE                     -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎯</div>
+    <h1>Module 7 Complete!</h1>
+    <p class="complete-sub">You've mastered the strategy gap — the difference between knowing the math and acing the test.</p>
+
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--psda);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Module 1 accuracy > Module 2 speed. Getting into hard M2 is worth 40–80 points.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Two-pass system: Pass 1 (25 min) = answer what you can. Pass 2 (10 min) = return to flagged.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> 5-Second Decision Tree: direct solve → plug in → backsolve → Desmos → ballpark.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> PIYON: Variables in answers → choose simple numbers, find target, match.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Backsolve: Number answers → start with B/C and test.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Ballpark: Estimate first, eliminate clearly wrong, pick from what's left.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> SPR rules: fractions OK, negatives OK, no mixed numbers, always re-read what they ask for.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> No penalty for guessing — never leave a question blank.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Most missed points are from misreading, not math. Underline what the question asks.</div>
+    </div>
+
+    <div id="completePracticeStats"></div>
+
+    <div class="nav-cards">
+      <a class="nav-card" href="module-6.html">
+        <div class="nav-card-label">← Previous</div>
+        <div class="nav-card-title">Module 6: Desmos Mastery</div>
+      </a>
+      <a class="nav-card" href="module-8.html" style="border-color:var(--psda)">
+        <div class="nav-card-label">Next →</div>
+        <div class="nav-card-title">Module 8: Practice Test</div>
+      </a>
+    </div>
   </div>
 </div>
 
-<div class="mod-nav">
-  <a href="module-6.html">← Module 6: Desmos Mastery</a>
-  <a href="module-8.html">Module 8: Practice Test →</a>
-</div>
-</div>
 <script>
-window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';});
+// ════════════════════════════════════════════════
+// SCREEN NAVIGATION SYSTEM
+// ════════════════════════════════════════════════
+const SCREENS = ['screen-welcome','screen-warmup','screen-lesson','screen-practice','screen-complete'];
+let currentScreen = 0;
 
-// ============ EXERCISE 1: DECISION TREE TRAINER ============
+function goScreen(idx) {
+  if (idx < 0 || idx >= SCREENS.length) return;
+  const cur = document.getElementById(SCREENS[currentScreen]);
+  const nxt = document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');
+  cur.classList.add('fade-out');
+  setTimeout(() => {
+    cur.classList.remove('active','fade-out');
+    nxt.classList.add('active','fade-in');
+    currentScreen = idx;
+    updateProgressDots();
+    window.scrollTo(0, 0);
+    if (idx === 3 && timerEnabled) startTimer();
+  }, 300);
+}
+
+function updateProgressDots() {
+  const cont = document.getElementById('screenProgress');
+  cont.innerHTML = SCREENS.map((s, i) => {
+    let cls = 'screen-dot';
+    if (i < currentScreen) cls += ' completed';
+    if (i === currentScreen) cls += ' current';
+    return `<div class="${cls}" onclick="${i <= currentScreen ? 'goScreen('+i+')' : ''}" title="${['Welcome','Warm-Up','Lesson','Practice','Complete'][i]}"></div>`;
+  }).join('');
+}
+updateProgressDots();
+
+// ════════════════════════════════════════════════
+// RETRIEVAL WARM-UP (Module 6 content)
+// ════════════════════════════════════════════════
+const WARMUP_QS = [
+  {
+    source: 'Module 6 — Desmos Basics',
+    q: 'What should you do to solve a system of equations in Desmos?',
+    ch: ['Type both equations and look for the formula','Graph both and click the intersection dot','Use a slider for each variable','Run a regression'],
+    c: 1,
+    fb: 'Graph both equations. Where they cross, a gray dot appears — click it to see the exact (x, y) solution.'
+  },
+  {
+    source: 'Module 6 — Shortcuts',
+    q: 'Which key creates an exponent in Desmos?',
+    ch: ['*','^','_','~'],
+    c: 1,
+    fb: 'Type x^2 to get x². The caret (^) is your exponent key.'
+  },
+  {
+    source: 'Module 6 — Regression',
+    q: 'To find a line of best fit for data in Desmos, you type:',
+    ch: ['y = mx + b','y₁ ~ mx₁ + b','best_fit(data)','regression(x, y)'],
+    c: 1,
+    fb: 'After entering data in a table, type y₁~mx₁+b (use _ for subscript, ~ for regression).'
+  },
+  {
+    source: 'Module 6 — When to Use',
+    q: 'Which problem is BEST solved with Desmos?',
+    ch: ['What is 8 × 7?','Where do y=x² and y=2x+3 intersect?','Is correlation the same as causation?','What is P(A|B)?'],
+    c: 1,
+    fb: 'Systems and intersections are Desmos\'s sweet spot. Conceptual and probability questions don\'t benefit.'
+  },
+  {
+    source: 'Module 6 — CAS Limitations',
+    q: 'Can Desmos factor the expression x² − 5x + 6?',
+    ch: ['Yes, type factor(x²−5x+6)','No — Desmos is not a CAS','Yes if you use scientific mode','Only with a plugin'],
+    c: 1,
+    fb: 'Desmos cannot factor or simplify algebraically. But you CAN graph y=x²−5x+6 and find zeros at x=2 and x=3.'
+  }
+];
+
+let warmupIdx = 0;
+let warmupAnswers = [];
+let warmupAnswered = false;
+
+function renderWarmup() {
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map((_, i) => {
+    let cls = 'warmup-dot';
+    if (i < warmupIdx) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    if (i === warmupIdx && warmupIdx < WARMUP_QS.length) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  const cont = document.getElementById('warmupContent');
+
+  if (warmupIdx >= WARMUP_QS.length) {
+    const cor = warmupAnswers.filter(Boolean).length;
+    cont.innerHTML = `
+      <div class="warmup-summary">
+        <div class="warmup-badge">Warm-Up Complete</div>
+        <div class="warmup-score">${cor} / ${WARMUP_QS.length}</div>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:8px">
+          ${cor === 5 ? 'Perfect recall! Module 6 knowledge is locked in.' :
+            cor >= 3 ? 'Good recall! A couple of Desmos topics to revisit.' :
+            'Some gaps from Module 6 — consider a quick review before continuing.'}
+        </p>
+        <button class="warmup-continue" onclick="goScreen(2)">Continue to Lesson →</button>
+      </div>`;
+    return;
+  }
+
+  const q = WARMUP_QS[warmupIdx];
+  warmupAnswered = false;
+  cont.innerHTML = `
+    <div class="warmup-q">
+      <div class="source-tag">From ${q.source}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="warmup-choices" id="warmupChoices">
+        ${q.ch.map((ch, ci) => `<div class="warmup-choice" onclick="answerWarmup(${ci})">${ch}</div>`).join('')}
+      </div>
+      <div id="warmupFb" style="display:none"></div>
+    </div>`;
+}
+
+function answerWarmup(ci) {
+  if (warmupAnswered) return;
+  warmupAnswered = true;
+  const q = WARMUP_QS[warmupIdx];
+  const correct = ci === q.c;
+  warmupAnswers.push(correct);
+
+  const choices = document.querySelectorAll('.warmup-choice');
+  choices.forEach((ch, i) => {
+    ch.classList.add('wu-dis');
+    if (i === q.c) ch.classList.add('wu-correct');
+    else if (i === ci && !correct) ch.classList.add('wu-wrong');
+  });
+
+  const fb = document.getElementById('warmupFb');
+  fb.style.display = 'block';
+  fb.innerHTML = `<div class="warmup-fb">${correct ? '✓ ' : '✗ '}${q.fb}</div>
+    <button class="warmup-next" onclick="warmupIdx++;renderWarmup()">
+      ${warmupIdx < WARMUP_QS.length - 1 ? 'Next Question →' : 'See Results →'}
+    </button>`;
+
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map((_, i) => {
+    let cls = 'warmup-dot';
+    if (i < warmupAnswers.length) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    else if (i === warmupIdx + 1) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+
+renderWarmup();
+
+// ════════════════════════════════════════════════
+// GENERIC HELPERS
+// ════════════════════════════════════════════════
+function mkSc(c,t){return `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${t?c/t*100:0}%"></div></div><div class="score-bar-val">${c}/${t}</div></div>`;}
+
+// ════════════════════════════════════════════════
+// EXERCISE 1: DECISION TREE TRAINER
+// ════════════════════════════════════════════════
 const DT=[
   {q:'Which expression is equivalent to <code>2(x+3)−x</code>?<br>A) x+6 B) x+3 C) 3x+3 D) 2x+6',c:'Direct Solve',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Distribute and simplify — straightforward algebra. 2x+6−x = x+6.'},
   {q:'If <code>3x−5=22</code>, what is x?<br>A) 7 B) 9 C) 11 D) 13',c:'Backsolve',opts:['Direct Solve','Plug In','Backsolve','Desmos','Ballpark'],fb:'Number answers → try B or C. 3(9)−5=22 ✓. Or direct solve works too.'},
@@ -421,7 +813,9 @@ function renderDt(){
 function aDt(i,idx){if(dtA[i]!==undefined)return;dtA[i]=DT[i].opts[idx];renderDt();}
 renderDt();
 
-// ============ EXERCISE 2: PLUG IN WORKSHOP ============
+// ════════════════════════════════════════════════
+// EXERCISE 2: PLUG IN WORKSHOP
+// ════════════════════════════════════════════════
 const PIY=[
   {q:'If n is a positive integer, which equals <code>(n² + n) / n</code>?',ch:['n + 1','n²','n − 1','2n'],c:0,fb:'Plug in n=2: (4+2)/2 = 3. A) 2+1=3 ✓. (Or simplify: n+1.)'},
   {q:'If x = 5, which expression has the greatest value?',ch:['2x + 1','x² / 5','3(x − 1)','x + 7'],c:2,fb:'x=5: A) 11, B) 5, C) 12, D) 12. C and D tie — but C = 3(4)=12, D = 12. Check another: x=10: C=27, D=17. C wins.'},
@@ -438,7 +832,9 @@ function renderPiy(){
 function aPiy(i,v){if(piyA[i]!==undefined)return;piyA[i]=v;renderPiy();}
 renderPiy();
 
-// ============ EXERCISE 3: BACKSOLVE WORKSHOP ============
+// ════════════════════════════════════════════════
+// EXERCISE 3: BACKSOLVE WORKSHOP
+// ════════════════════════════════════════════════
 const BS=[
   {q:'If <code>2x + 7 = 19</code>, what is x?',ch:['4','5','6','7'],c:2,fb:'Try C: 2(6)+7 = 19 ✓. Done.'},
   {q:'A number tripled and then decreased by 5 equals 22. What is the number?',ch:['7','8','9','10'],c:2,fb:'Try C: 3(9)−5 = 22 ✓.'},
@@ -455,7 +851,9 @@ function renderBs(){
 function aBs(i,v){if(bsA[i]!==undefined)return;bsA[i]=v;renderBs();}
 renderBs();
 
-// ============ EXERCISE 4: BALLPARK ELIMINATOR ============
+// ════════════════════════════════════════════════
+// EXERCISE 4: BALLPARK ELIMINATOR
+// ════════════════════════════════════════════════
 const BP=[
   {q:'A car travels 287 miles in 4.5 hours. What is the average speed?',ch:['48 mph','64 mph','72 mph','128 mph'],c:1,fb:'Ballpark: 280/4.5 ≈ 280/5 = 56, but /4.5 is bigger → ~63. Eliminate A (too low) and D (way too high). B is closest.'},
   {q:'15% of 392 is approximately:',ch:['20','39','59','79'],c:2,fb:'10% of 392 = 39.2. 15% = 39.2 + half of 39.2 ≈ 39 + 20 = ~59. Eliminate A and D immediately.'},
@@ -472,7 +870,9 @@ function renderBp(){
 function aBp(i,v){if(bpA[i]!==undefined)return;bpA[i]=v;renderBp();}
 renderBp();
 
-// ============ EXERCISE 5: MISREAD TRAP DETECTOR ============
+// ════════════════════════════════════════════════
+// EXERCISE 5: MISREAD TRAP DETECTOR
+// ════════════════════════════════════════════════
 const TRP=[
   {q:'Solve <code>2x + 4 = 12</code>. What is <code>3x − 1</code>?<br>A student solves x = 4 and picks 4. What went wrong?',c:'Solved for x, not 3x − 1',opts:['Solved for x, not 3x − 1','Arithmetic error','Wrong equation','Forgot negative'],fb:'The question asks for 3x−1, not x. Answer: 3(4)−1 = 11.'},
   {q:'A graph has y-axis labeled 0, 50, 100, 150. A student reads a point at y ≈ 3 grid lines up as "3." What went wrong?',c:'Misread axis scale',opts:['Misread axis scale','Wrong point','Calculator error','Mixed up x and y'],fb:'Each grid line = 50, not 1. The point is at y = 150, not 3.'},
@@ -491,26 +891,300 @@ function renderTrp(){
 function aTrp(i,idx){if(trpA[i]!==undefined)return;trpA[i]=TRP[i].opts[idx];renderTrp();}
 renderTrp();
 
-// ============ PSAT 8/9 PRACTICE (STRATEGY-TAGGED) ============
+// ════════════════════════════════════════════════
+// TIMED PRACTICE WITH CONFIDENCE & ERROR ANALYSIS
+// ════════════════════════════════════════════════
 const PST=[
-  {t:1,q:'<span class="tier tier-1" style="margin-right:6px">Direct Solve</span> Solve: <code>5x − 3 = 17</code>',ch:['2','3','4','5'],c:2,fb:'5x=20 → x=4. Quick one-step algebra.'},
-  {t:1,q:'<span class="tier tier-1" style="margin-right:6px">Direct Solve</span> What is the area of a triangle with base 10 and height 6?',ch:['16','30','60','120'],c:1,fb:'A = (1/2)(10)(6) = 30.'},
-  {t:1,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Backsolve</span> If <code>x² − 3x = 10</code>, what positive value of x works?',ch:['2','3','4','5'],c:3,fb:'Try D: 25−15=10 ✓. Backsolving is fast here.'},
-  {t:2,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Plug In</span> If m is positive, which equals <code>(4m + 8) / 4</code>?',ch:['m + 2','m + 8','4m + 2','m/2 + 2'],c:0,fb:'Plug in m=4: (16+8)/4 = 6. A) 4+2=6 ✓.'},
-  {t:2,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Desmos</span> At what point do <code>y = 2x − 1</code> and <code>y = −x + 8</code> intersect?',ch:['(2, 3)','(3, 5)','(4, 4)','(3, 6)'],c:1,fb:'Graph both in Desmos, click intersection → (3, 5). Check: 2(3)−1=5 ✓, −3+8=5 ✓.'},
-  {t:2,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Ballpark</span> 18% of 495 is closest to:',ch:['49','72','89','99'],c:2,fb:'20% of 500 = 100. 18% is a bit less → ~89. Eliminate A (too low) and D (too close to 20%).'},
-  {t:2,q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Trap Alert</span> If <code>4x + 2 = 18</code>, what is <code>2x + 1</code>?',ch:['4','8','9','18'],c:2,fb:'4x+2=18 → 2(2x+1)=18 → 2x+1=9. Or solve x=4, then 2(4)+1=9. Trap: picking x=4.'},
-  {t:3,q:'<span class="tier tier-3" style="margin-right:6px;background:var(--advanced)">Plug In</span> For all positive n, which is equivalent to <code>n/(n+1) + 1/(n+1)</code>?',ch:['1','n','2n/(n+1)','(n+1)/(n+2)'],c:0,fb:'Same denominator: (n+1)/(n+1) = 1. Or plug in n=2: 2/3+1/3=1. A) 1 ✓.'},
-  {t:3,q:'<span class="tier tier-3" style="margin-right:6px;background:var(--advanced)">Desmos</span> How many real solutions does <code>x² + 4x + 5 = 0</code> have?',ch:['0','1','2','Infinite'],c:0,fb:'Graph y=x²+4x+5. The parabola sits above the x-axis — never touches it. Zero solutions.'},
-  {t:3,q:'<span class="tier tier-3" style="margin-right:6px;background:var(--advanced)">Trap Alert</span> SPR: If <code>|x − 3| = 7</code>, what is one possible value of x?<br><em>(Enter either valid answer.)</em>',ch:['10','−4','Both 10 and −4 are correct','3'],c:2,fb:'x−3=7 → x=10. Or x−3=−7 → x=−4. Both are valid SPR answers. Trap: forgetting the negative case.'},
+  {t:1,tp:'7A',q:'<span class="tier tier-1" style="margin-right:6px">Direct Solve</span> Solve: <code>5x − 3 = 17</code>',ch:['2','3','4','5'],c:2,fb:'5x=20 → x=4. Quick one-step algebra.',
+   trap:null,trapAnswer:2,trapDesc:'Used wrong operation — subtracted instead of dividing'},
+  {t:1,tp:'7A',q:'<span class="tier tier-1" style="margin-right:6px">Direct Solve</span> What is the area of a triangle with base 10 and height 6?',ch:['16','30','60','120'],c:1,fb:'A = (1/2)(10)(6) = 30.',
+   trap:null,trapAnswer:2,trapDesc:'Used bh instead of ½bh — forgot the half'},
+  {t:1,tp:'7B',q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Backsolve</span> If <code>x² − 3x = 10</code>, what positive value of x works?',ch:['2','3','4','5'],c:3,fb:'Try D: 25−15=10 ✓. Backsolving is fast here.',
+   trap:'wrong_variable',trapAnswer:3,trapDesc:'Tried D: 25−15=10 ✓ but should try C first — x=5 is correct'},
+  {t:2,tp:'7B',q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Plug In</span> If m is positive, which equals <code>(4m + 8) / 4</code>?',ch:['m + 2','m + 8','4m + 2','m/2 + 2'],c:0,fb:'Plug in m=4: (16+8)/4 = 6. A) 4+2=6 ✓.',
+   trap:null,trapAnswer:1,trapDesc:'m+8: forgot to divide the 8 by 4 too'},
+  {t:2,tp:'7C',q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Desmos</span> At what point do <code>y = 2x − 1</code> and <code>y = −x + 8</code> intersect?',ch:['(2, 3)','(3, 5)','(4, 4)','(3, 6)'],c:1,fb:'Graph both in Desmos, click intersection → (3, 5). Check: 2(3)−1=5 ✓, −3+8=5 ✓.',
+   trap:null,trapAnswer:0,trapDesc:'(2,3): 2(2)−1=3 works for first but −2+8=6≠3'},
+  {t:2,tp:'7D',q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Ballpark</span> 18% of 495 is closest to:',ch:['49','72','89','99'],c:2,fb:'20% of 500 = 100. 18% is a bit less → ~89. Eliminate A (too low) and D (too close to 20%).',
+   trap:null,trapAnswer:3,trapDesc:'99 is close to 20% — used wrong percentage'},
+  {t:2,tp:'7E',q:'<span class="tier tier-2" style="margin-right:6px;background:var(--math)">Trap Alert</span> If <code>4x + 2 = 18</code>, what is <code>2x + 1</code>?',ch:['4','8','9','18'],c:2,fb:'4x+2=18 → 2(2x+1)=18 → 2x+1=9. Or solve x=4, then 2(4)+1=9. Trap: picking x=4.',
+   trap:'wrong_variable',trapAnswer:0,trapDesc:'Solved for x=4 but question asked for 2x+1 — The Wrong Variable trap'},
+  {t:3,tp:'7B',q:'<span class="tier tier-3" style="margin-right:6px;background:var(--advanced)">Plug In</span> For all positive n, which is equivalent to <code>n/(n+1) + 1/(n+1)</code>?',ch:['1','n','2n/(n+1)','(n+1)/(n+2)'],c:0,fb:'Same denominator: (n+1)/(n+1) = 1. Or plug in n=2: 2/3+1/3=1. A) 1 ✓.',
+   trap:null,trapAnswer:1,trapDesc:'n is not simplified — need to combine fractions first'},
+  {t:3,tp:'7C',q:'<span class="tier tier-3" style="margin-right:6px;background:var(--advanced)">Desmos</span> How many real solutions does <code>x² + 4x + 5 = 0</code> have?',ch:['0','1','2','Infinite'],c:0,fb:'Graph y=x²+4x+5. The parabola sits above the x-axis — never touches it. Zero solutions.',
+   trap:null,trapAnswer:2,trapDesc:'Assumed quadratic always has 2 solutions'},
+  {t:3,tp:'7E',q:'<span class="tier tier-3" style="margin-right:6px;background:var(--advanced)">Trap Alert</span> SPR: If <code>|x − 3| = 7</code>, what is one possible value of x?<br><em>(Enter either valid answer.)</em>',ch:['10','−4','Both 10 and −4 are correct','3'],c:2,fb:'x−3=7 → x=10. Or x−3=−7 → x=−4. Both are valid SPR answers. Trap: forgetting the negative case.',
+   trap:'forgot_negative',trapAnswer:0,trapDesc:'Only found x=10, missed the negative case x=−4'},
 ];
-var pstA={};
-function renderPST(){
-  document.getElementById('psatPractice').innerHTML=PST.map(function(q,i){var a=pstA[i],h=a!==undefined;
-    return '<div class="ex-item" style="border-color:'+(q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)')+'"><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.ch.map(function(ch,ci){var c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return '<div class="'+c+'" onclick="aPST('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(h?' show':'')+'">'+(h?((a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb):'')+'</div></div>';
-  }).join('');
+
+let pstA = {};
+let pstConf = {};
+let pstTime = {};
+let pstStartTime = null;
+
+// Timer system — DEFAULT ON for Module 7
+let timerEnabled = true;
+let timerInterval = null;
+let timerSeconds = 0;
+const SECS_PER_Q = 95;
+let totalTimerSecs = PST.length * SECS_PER_Q;
+
+function toggleTimer() {
+  timerEnabled = !timerEnabled;
+  const btn = document.getElementById('timerToggle');
+  btn.textContent = timerEnabled ? '⏱ Timer ON' : '⏱ Timer OFF';
+  btn.classList.toggle('active', timerEnabled);
+  if (!timerEnabled && timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    document.getElementById('timerDisplay').textContent = '--:--';
+    document.getElementById('timerFill').style.width = '100%';
+  } else if (timerEnabled && currentScreen === 3) {
+    startTimer();
+  }
 }
-function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;renderPST();}
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerSeconds = totalTimerSecs;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }, 1000);
+  pstStartTime = Date.now();
+}
+
+function updateTimerDisplay() {
+  const disp = document.getElementById('timerDisplay');
+  const fill = document.getElementById('timerFill');
+  const mins = Math.floor(timerSeconds / 60);
+  const secs = timerSeconds % 60;
+  disp.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+  const pct = (timerSeconds / totalTimerSecs) * 100;
+  fill.style.width = pct + '%';
+
+  disp.className = 'timer-display';
+  fill.className = 'timer-fill';
+  if (pct < 15) { disp.classList.add('danger'); fill.classList.add('danger'); }
+  else if (pct < 35) { disp.classList.add('warning'); fill.classList.add('warning'); }
+}
+
+function renderPST() {
+  const answered = Object.keys(pstA).length;
+  const TRAP_NAMES = {'wrong_variable':'🎯 Wrong Variable','forgot_negative':'➖ Forgot Negative Case','misread_scale':'📊 Misread Scale','intermediate_answer':'⚡ Intermediate Answer'};
+
+  document.getElementById('qDots').innerHTML = PST.map((_, i) => {
+    let cls = 'q-dot';
+    if (pstA[i] !== undefined) cls += pstA[i] === PST[i].c ? ' correct' : ' wrong';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  document.getElementById('psatPractice').innerHTML = PST.map((q, i) => {
+    const a = pstA[i], h = a !== undefined;
+    const conf = pstConf[i];
+    const tierLabel = q.t === 1 ? 'Easy' : q.t === 2 ? 'Medium' : 'Hard';
+    const trapName = q.trap ? TRAP_NAMES[q.trap] || '' : '';
+
+    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}">
+      <div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="tier tier-${q.t}">${tierLabel}</span>
+        <span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span>
+        ${trapName && h ? `<span style="font-size:.72rem;color:var(--accent)">Trap: ${trapName}</span>` : ''}
+      </div>
+      <div class="ex-prompt">${q.q}</div>
+      ${!h ? `<div class="confidence-row">
+        <div class="conf-tag ${conf==='guessing'?'selected':''}" data-conf="guessing" onclick="setConf(${i},'guessing')">Guessing</div>
+        <div class="conf-tag ${conf==='unsure'?'selected':''}" data-conf="unsure" onclick="setConf(${i},'unsure')">Unsure</div>
+        <div class="conf-tag ${conf==='confident'?'selected':''}" data-conf="confident" onclick="setConf(${i},'confident')">Confident</div>
+      </div>` : `<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">Confidence: ${conf || 'not tagged'}</div>`}
+      <div class="mc-choices">${q.ch.map((ch, ci) => {
+        let c = 'mc-choice';
+        if (h) { c += ' mc-dis'; if (ci === q.c) c += ' mc-correct'; else if (ci === a) c += ' mc-wrong'; }
+        return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
+      }).join('')}</div>
+      <div class="mc-fb${h ? ' show' : ''}">${h ? (a === q.c ? '✓ Correct! ' : '✗ Incorrect. ') + q.fb + (a !== q.c && a === q.trapAnswer ? '<br><span style="color:var(--psda)">⚠️ ' + q.trapDesc + '</span>' : '') : ''}</div>
+    </div>`;
+  }).join('');
+
+  if (answered === PST.length) {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    document.getElementById('practiceNav').style.display = 'block';
+    showPracticeResults();
+  }
+}
+
+function setConf(i, level) {
+  if (pstA[i] !== undefined) return;
+  pstConf[i] = level;
+  renderPST();
+}
+
+function aPST(i, v) {
+  if (pstA[i] !== undefined) return;
+  pstA[i] = v;
+  if (pstStartTime) {
+    pstTime[i] = Date.now() - pstStartTime;
+    pstStartTime = Date.now();
+  }
+  renderPST();
+}
+
+function showPracticeResults() {
+  const total = PST.length;
+  const correct = Object.entries(pstA).filter(([i, v]) => v === PST[i].c).length;
+
+  const byDiff = {1:{cor:0,tot:0},2:{cor:0,tot:0},3:{cor:0,tot:0}};
+  PST.forEach((q, i) => {
+    byDiff[q.t].tot++;
+    if (pstA[i] === q.c) byDiff[q.t].cor++;
+  });
+
+  const matrix = {};
+  ['guessing','unsure','confident'].forEach(conf => {
+    matrix[conf] = {correct:[], wrong:[]};
+  });
+  PST.forEach((q, i) => {
+    const conf = pstConf[i] || 'unsure';
+    const isCorrect = pstA[i] === q.c;
+    matrix[conf][isCorrect ? 'correct' : 'wrong'].push(i);
+  });
+
+  const errors = {content_gap:[], trap_answer:[], careless:[], calibration:[]};
+  PST.forEach((q, i) => {
+    if (pstA[i] === q.c) return;
+    const conf = pstConf[i] || 'unsure';
+    if (pstA[i] === q.trapAnswer) {
+      errors.trap_answer.push({i, desc:q.trapDesc, topic:q.tp});
+    } else {
+      errors.content_gap.push({i, topic:q.tp});
+    }
+    if (conf === 'confident') {
+      if (q.t === 1) errors.careless.push({i, topic:q.tp});
+      errors.calibration.push({i, topic:q.tp});
+    }
+  });
+
+  let html = `<div class="results-section">
+    <h3>📊 Practice Results: ${correct}/${total}</h3>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Difficulty</div>
+      <div class="difficulty-bars">
+        <div class="diff-row">
+          <span class="diff-label" style="color:var(--algebra)">Easy</span>
+          <div class="diff-track"><div class="diff-fill" style="width:${byDiff[1].tot?byDiff[1].cor/byDiff[1].tot*100:0}%;background:var(--algebra)"></div></div>
+          <span class="diff-val" style="color:var(--algebra)">${byDiff[1].cor}/${byDiff[1].tot}</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-label" style="color:var(--math)">Medium</span>
+          <div class="diff-track"><div class="diff-fill" style="width:${byDiff[2].tot?byDiff[2].cor/byDiff[2].tot*100:0}%;background:var(--math)"></div></div>
+          <span class="diff-val" style="color:var(--math)">${byDiff[2].cor}/${byDiff[2].tot}</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-label" style="color:var(--advanced)">Hard</span>
+          <div class="diff-track"><div class="diff-fill" style="width:${byDiff[3].tot?byDiff[3].cor/byDiff[3].tot*100:0}%;background:var(--advanced)"></div></div>
+          <span class="diff-val" style="color:var(--advanced)">${byDiff[3].cor}/${byDiff[3].tot}</span>
+        </div>
+      </div>
+    </div>`;
+
+  html += `<div style="margin-bottom:20px">
+    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Confidence × Accuracy Matrix</div>
+    <div class="results-grid">
+      <div class="results-grid-header"></div>
+      <div class="results-grid-header">Guessing</div>
+      <div class="results-grid-header">Unsure</div>
+      <div class="results-grid-header">Confident</div>
+
+      <div class="results-grid-header" style="writing-mode:horizontal-tb">✓ Correct</div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Lucky</div>
+        <div class="cell-dots">${matrix.guessing.correct.map(()=>`<div class="cell-dot" style="background:var(--psda)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.correct.length}</div>
+      </div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Developing</div>
+        <div class="cell-dots">${matrix.unsure.correct.map(()=>`<div class="cell-dot" style="background:var(--math)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.correct.length}</div>
+      </div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Solid</div>
+        <div class="cell-dots">${matrix.confident.correct.map(()=>`<div class="cell-dot" style="background:var(--correct)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.confident.correct.length}</div>
+      </div>
+
+      <div class="results-grid-header" style="writing-mode:horizontal-tb">✗ Wrong</div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Expected</div>
+        <div class="cell-dots">${matrix.guessing.wrong.map(()=>`<div class="cell-dot" style="background:var(--muted)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.wrong.length}</div>
+      </div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Needs work</div>
+        <div class="cell-dots">${matrix.unsure.wrong.map(()=>`<div class="cell-dot" style="background:var(--psda)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.wrong.length}</div>
+      </div>
+      <div class="results-grid-cell danger-cell">
+        <div class="cell-label" style="color:var(--wrong);font-weight:700">⚠️ DANGER</div>
+        <div class="cell-dots">${matrix.confident.wrong.map(()=>`<div class="cell-dot" style="background:var(--wrong)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--wrong)">${matrix.confident.wrong.length}</div>
+      </div>
+    </div>
+    ${matrix.confident.wrong.length > 0 ? '<div class="callout" style="border-color:var(--wrong);background:var(--wrong-bg)"><strong style="color:var(--wrong)">Confident + Wrong</strong> is the most dangerous category. These errors persist into test day because you won\'t self-correct what you think you already know.</div>' : ''}
+  </div>`;
+
+  const hasErrors = errors.trap_answer.length + errors.content_gap.length > 0;
+  if (hasErrors) {
+    html += `<div style="margin-bottom:16px">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Error Pattern Analysis</div>`;
+
+    if (errors.trap_answer.length > 0) {
+      html += `<div class="error-category" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3)">
+        <div class="error-label" style="color:var(--psda)">🟡 Trap Answers (${errors.trap_answer.length})</div>
+        <div class="error-items">${errors.trap_answer.map(e => e.desc).join(' · ')}</div>
+      </div>`;
+    }
+    if (errors.content_gap.length > 0) {
+      html += `<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)">
+        <div class="error-label" style="color:var(--wrong)">🔴 Content Gaps (${errors.content_gap.length})</div>
+        <div class="error-items">Topics: ${[...new Set(errors.content_gap.map(e=>e.topic))].join(', ')}</div>
+      </div>`;
+    }
+    if (errors.careless.length > 0) {
+      html += `<div class="error-category" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)">
+        <div class="error-label" style="color:var(--math)">🔵 Possible Careless Errors (${errors.careless.length})</div>
+        <div class="error-items">Confident + wrong on easy questions — likely arithmetic mistakes</div>
+      </div>`;
+    }
+    if (errors.calibration.length > 0) {
+      html += `<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)">
+        <div class="error-label" style="color:var(--wrong)">⚠️ Calibration Issues (${errors.calibration.length})</div>
+        <div class="error-items">You were confident but wrong — review these topics carefully</div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  html += `</div>`;
+  document.getElementById('practiceResults').style.display = 'block';
+  document.getElementById('practiceResults').innerHTML = html;
+
+  document.getElementById('completePracticeStats').innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:24px;max-width:500px;width:100%;text-align:left">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Practice Results</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--correct);margin-bottom:8px">${correct}/${total} correct</div>
+      <div style="font-size:.82rem;color:var(--muted)">
+        Easy: ${byDiff[1].cor}/${byDiff[1].tot} · Medium: ${byDiff[2].cor}/${byDiff[2].tot} · Hard: ${byDiff[3].cor}/${byDiff[3].tot}
+      </div>
+    </div>`;
+}
+
 renderPST();
 </script>
 <script src="/translate.js"></script>

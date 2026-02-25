@@ -6,13 +6,72 @@
 <title>Module 3: Advanced Math — PSAT 8/9 Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#0891b2 0%,#0891b2 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--advanced),var(--math));width:0%;transition:width .3s ease}
+
+/* ── Screen System ── */
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+/* ── Progress Dots ── */
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--advanced)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(8,145,178,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
+/* ── Container ── */
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+
+/* ── Welcome Screen ── */
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--advanced);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--advanced);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--advanced);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(167,139,250,.3)}
+
+/* ── Retrieval Warm-Up ── */
+.warmup-container{max-width:600px;margin:0 auto;padding:60px 20px}
+.warmup-header{text-align:center;margin-bottom:32px}
+.warmup-badge{display:inline-block;background:var(--psda);color:#000;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.warmup-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.warmup-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.warmup-dot.done-correct{background:var(--correct)}
+.warmup-dot.done-wrong{background:var(--wrong)}
+.warmup-dot.active{background:var(--psda);box-shadow:0 0 8px rgba(251,191,36,.4)}
+.warmup-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.warmup-q .source-tag{font-size:.7rem;color:var(--psda);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.warmup-q .q-text{font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.warmup-choices{display:flex;flex-direction:column;gap:8px}
+.warmup-choice{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.warmup-choice:hover:not(.wu-dis){border-color:var(--psda);background:rgba(251,191,36,.05)}
+.warmup-choice.wu-correct{border-color:var(--correct);background:var(--correct-bg)}
+.warmup-choice.wu-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.warmup-choice.wu-dis{pointer-events:none;opacity:.7}
+.warmup-choice.wu-correct{opacity:1}
+.warmup-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:12px;padding:10px;background:var(--paper);border-radius:8px;border-left:3px solid var(--correct)}
+.warmup-next{padding:10px 24px;background:var(--psda);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;margin-top:12px;font-family:'Source Sans 3',sans-serif}
+.warmup-next:hover{filter:brightness(1.1)}
+.warmup-summary{text-align:center;padding:40px 20px}
+.warmup-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:var(--psda);margin:12px 0}
+.warmup-continue{padding:12px 28px;background:var(--advanced);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:20px;font-family:'Source Sans 3',sans-serif}
+.warmup-continue:hover{filter:brightness(1.15)}
+
+/* ── Lesson Content ── */
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
@@ -30,7 +89,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .callout strong{color:var(--accent)}
 .callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
 .callout-purple{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3)}.callout-purple strong{color:var(--advanced)}
-.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;transition:all .3s}
 .topic-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
 .topic-badge{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
 .topic-info{flex:1}.topic-title{font-weight:700;font-size:.95rem}.topic-sub{font-size:.82rem;color:var(--muted);margin-top:2px}
@@ -62,6 +121,46 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);opacity:1}
 .classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .classify-opt.cl-dis{pointer-events:none;opacity:.6}.classify-opt.cl-correct{opacity:1}
+
+/* ── Trap Taxonomy ── */
+.trap-taxonomy{margin-bottom:24px}
+.trap-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:all .2s}
+.trap-card:hover{border-color:var(--accent);transform:translateX(3px)}
+.trap-number{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:#fff;flex-shrink:0}
+.trap-card-body{flex:1}
+.trap-card-name{font-weight:700;font-size:.92rem;margin-bottom:3px}
+.trap-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+.trap-card-example{font-size:.78rem;color:var(--math);font-family:'JetBrains Mono',monospace;margin-top:4px}
+
+/* ── Confidence Tags ── */
+.confidence-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.conf-tag{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;letter-spacing:.5px}
+.conf-tag:hover{border-color:var(--advanced)}
+.conf-tag.selected{border-color:var(--advanced);background:rgba(167,139,250,.12);color:var(--advanced)}
+.conf-tag[data-conf="guessing"].selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="unsure"].selected{border-color:var(--math);background:var(--math-bg);color:var(--math)}
+.conf-tag[data-conf="confident"].selected{border-color:var(--advanced);background:rgba(167,139,250,.12);color:var(--advanced)}
+
+/* ── Timed Practice ── */
+.timer-bar{position:sticky;top:8px;z-index:50;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--advanced);min-width:60px}
+.timer-display.warning{color:var(--psda)}
+.timer-display.danger{color:var(--wrong);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.timer-fill{height:100%;background:var(--advanced);transition:width 1s linear;border-radius:2px}
+.timer-fill.warning{background:var(--psda)}
+.timer-fill.danger{background:var(--wrong)}
+.timer-toggle{padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.75rem;color:var(--muted);cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600}
+.timer-toggle:hover{border-color:var(--accent);color:var(--ink)}
+.timer-toggle.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.q-dots{display:flex;gap:4px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.q-dot.correct{background:var(--correct)}
+.q-dot.wrong{background:var(--wrong)}
+.q-dot.current{background:var(--accent);box-shadow:0 0 6px rgba(8,145,178,.5)}
+
+/* ── MC Choices ── */
 .mc-choices{display:flex;flex-direction:column;gap:6px}
 .mc-choice{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
 .mc-choice:hover:not(.mc-dis){border-color:var(--advanced);background:rgba(167,139,250,.05)}
@@ -76,16 +175,130 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
 .score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
 .score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
-.mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
-.mod-nav a{color:var(--accent);text-decoration:none}.mod-nav a:hover{text-decoration:underline}
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{gap:4px}}
+
+/* ── Results Enhancement ── */
+.results-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.results-section h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px}
+.results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:16px;background:var(--border);border-radius:10px;overflow:hidden}
+.results-grid-header{background:var(--surface);padding:8px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.results-grid-cell{background:var(--paper);padding:10px 8px;text-align:center;font-size:.78rem;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.results-grid-cell.danger-cell{background:var(--danger-bg);border:1px solid rgba(239,68,68,.3)}
+.cell-label{font-size:.65rem;color:var(--muted);font-weight:600}
+.cell-dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.cell-dot{width:8px;height:8px;border-radius:50%}
+.difficulty-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.diff-row{display:flex;align-items:center;gap:10px}
+.diff-label{font-size:.78rem;font-weight:600;min-width:60px}
+.diff-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.diff-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.diff-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;min-width:40px;text-align:right}
+.error-category{padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:.85rem;line-height:1.6}
+.error-category .error-label{font-weight:700;margin-bottom:4px}
+.error-category .error-items{color:var(--muted);font-size:.82rem}
+
+/* ── Module Complete ── */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--advanced);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .mod-meta{flex-wrap:wrap;gap:10px}
+  .classify-opts{gap:4px}
+  .preview-grid{grid-template-columns:1fr 1fr}
+  .welcome-meta{flex-wrap:wrap;gap:12px}
+  .results-grid{grid-template-columns:1fr;gap:1px}
+  .nav-cards{grid-template-columns:1fr}
+  .timer-bar{flex-wrap:wrap;gap:8px}
+}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- ── Screen Progress Dots ── -->
+<div class="screen-progress" id="screenProgress"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 1: WELCOME                             -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 3</div>
+    <h1>Advanced Math — Quadratics, Polynomials & Functions</h1>
+    <p class="welcome-sub">~35% of the PSAT 8/9 — but calibrated to introductory levels. Most problems need just 1–2 steps.</p>
+    <div class="welcome-meta">
+      <span>⏱ ~60 min</span>
+      <span>📋 4 topics</span>
+      <span>🔨 5 exercises</span>
+      <span>🎯 10 practice Qs</span>
+    </div>
+    <div class="preview-grid">
+      <div class="preview-card">
+        <div class="preview-icon">🔄</div>
+        <div class="preview-title">Retrieval Warm-Up</div>
+        <div class="preview-desc">5 questions from Module 2 to activate prior knowledge</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">⚡</div>
+        <div class="preview-title">Exponent Rules</div>
+        <div class="preview-desc">Six rules that handle ~⅓ of Advanced Math automatically</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">📐</div>
+        <div class="preview-title">Quadratics & Polynomials</div>
+        <div class="preview-desc">Three forms, factoring, discriminant</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">📈</div>
+        <div class="preview-title">Functions & Growth</div>
+        <div class="preview-desc">Notation, transformations, exponential models</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">🎯</div>
+        <div class="preview-title">Trap Taxonomy</div>
+        <div class="preview-desc">4 named traps specific to Advanced Math</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">⏱</div>
+        <div class="preview-title">Timed Practice</div>
+        <div class="preview-desc">10 PSAT-style questions with confidence tracking</div>
+      </div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 2: RETRIEVAL WARM-UP                   -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-warmup">
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <div class="warmup-badge">Retrieval Warm-Up</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem">Module 2 Review</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:4px">Quick recall from Algebra — the foundation for everything ahead.</p>
+      <div class="warmup-dots" id="warmupDots"></div>
+    </div>
+    <div id="warmupContent"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 3: LESSON CONTENT                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-lesson">
 <div class="container">
-<a class="back-link" href="index.html">← Back to PSAT 8/9 Math Course</a>
 <div class="mod-header">
   <div class="mod-badge">Module 3</div>
   <h1>Advanced Math — Quadratics, Polynomials & Functions</h1>
@@ -235,6 +448,47 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
+<!-- ── Trap Taxonomy Section ── -->
+<div class="section">
+  <div class="section-label">Math Trap Taxonomy</div>
+  <h2>Four Traps in Advanced Math</h2>
+  <p>These traps from Module 2 show up again here — plus one new one specific to quadratics. Spot them before they spot you.</p>
+  <div class="trap-taxonomy">
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--wrong)">1</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">🎯 The Wrong Target</div>
+        <div class="trap-card-desc">Solved for x when they asked for x² + 1 or f(3). Always underline what the question asks for.</div>
+        <div class="trap-card-example">Asked: "What is 2x + 1?" You solved x = 3 and picked 3. Answer: 7</div>
+      </div>
+    </div>
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--math)">2</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">👻 The Distribution Ghost</div>
+        <div class="trap-card-desc">Forgot to distribute to ALL terms during FOIL or expansion. The ghost term gets left behind.</div>
+        <div class="trap-card-example">(x+3)(x−2) = x²−2x+3x−6 = x²+x−6 (not x²+x+6)</div>
+      </div>
+    </div>
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--geo)">3</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">🔀 The One-Case Trap</div>
+        <div class="trap-card-desc">Only solved one branch of a square root or absolute value. Remember: x² = 9 means x = ±3.</div>
+        <div class="trap-card-example">(x−1)² = 4 → x−1 = ±2 → x = 3 AND x = −1 (two answers)</div>
+      </div>
+    </div>
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--advanced)">4</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">📐 The Form Mismatch</div>
+        <div class="trap-card-desc">Used the wrong quadratic form for what the question asks. Vertex question? Use vertex form. Zeros? Use factored form.</div>
+        <div class="trap-card-example">Asked for vertex but used standard form and forgot −b/(2a). Use vertex form: (h,k) is right there.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- EXERCISES -->
 <div class="section"><div class="section-label">Interactive Exercise 1</div><h2>Exponent Rules Speed Drill</h2><p>Simplify each expression using exponent rules.</p><div class="exercise" id="expEx"></div></div>
 <div class="section"><div class="section-label">Interactive Exercise 2</div><h2>Quadratic Form Identifier</h2><p>Identify which form each quadratic is in.</p><div class="exercise" id="qFormEx"></div></div>
@@ -242,37 +496,230 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <div class="section"><div class="section-label">Interactive Exercise 4</div><h2>Factoring Workshop</h2><p>Factor each expression completely.</p><div class="exercise" id="factorEx"></div></div>
 <div class="section"><div class="section-label">Interactive Exercise 5</div><h2>Linear, Growth, or Decay?</h2><p>Classify each function.</p><div class="exercise" style="border-color:var(--psda)" id="classifyEx"></div></div>
 
-<div class="section"><div class="section-label">PSAT 8/9 Practice</div><h2>Practice Questions</h2><p>10 questions covering all Advanced Math topics at PSAT 8/9 difficulty.</p><div id="psatPractice"></div></div>
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(3)">Continue to Practice Questions →</button>
+</div>
+</div>
+</div>
 
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>Advanced Math is ~35% of the PSAT 8/9 — tied with Algebra as the largest domain.</li>
-      <li>Know all six exponent rules cold. They're tested both directly and inside larger problems.</li>
-      <li>Three quadratic forms: standard (y-intercept), vertex (max/min), factored (zeros). Know when to use each.</li>
-      <li>Factor GCF first, then try trinomial factoring or difference of squares.</li>
-      <li>Function notation: f(x) is just a fancy way to say "plug in x." f(3) means replace x with 3.</li>
-      <li>Horizontal shifts feel backwards: f(x − 3) shifts <strong>right</strong>.</li>
-      <li>Exponential: base > 1 = growth, base between 0 and 1 = decay.</li>
-      <li>The PSAT 8/9 tests these at <strong>introductory level</strong> — usually 1–2 steps. Don't overthink it.</li>
-    </ol>
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 4: TIMED PRACTICE                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-practice">
+<div class="container">
+  <div class="section-label">PSAT 8/9 Practice</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:4px">Practice Questions</h2>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px">10 questions at three difficulty tiers. Tag your confidence before answering.</p>
+
+  <div class="timer-bar" id="timerBar">
+    <div class="timer-display" id="timerDisplay">--:--</div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="q-dots" id="qDots"></div>
+    <button class="timer-toggle" id="timerToggle" onclick="toggleTimer()">⏱ Timer OFF</button>
+  </div>
+
+  <div id="psatPractice"></div>
+  <div id="practiceResults" style="display:none"></div>
+
+  <div id="practiceNav" style="display:none;text-align:center;padding:24px 0">
+    <button class="start-btn" onclick="goScreen(4)">View Summary & Complete Module →</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 5: MODULE COMPLETE                     -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">⭐</div>
+    <h1>Module 3 Complete!</h1>
+    <p class="complete-sub">You've tackled Advanced Math — tied with Algebra as the PSAT 8/9's largest domain.</p>
+
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--advanced);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Advanced Math is ~35% of the PSAT 8/9 — tied with Algebra as the largest domain.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Know all six exponent rules cold. They're tested directly and inside larger problems.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Three quadratic forms: standard (y-intercept), vertex (max/min), factored (zeros).</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Factor GCF first, then try trinomial factoring or difference of squares.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Function notation: f(x) just means "plug in x." f(3) = replace x with 3.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Horizontal shifts feel backwards: f(x − 3) shifts RIGHT.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Exponential: base > 1 = growth, base between 0 and 1 = decay.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> The PSAT 8/9 tests these at introductory level — usually 1–2 steps.</div>
+    </div>
+
+    <div id="completePracticeStats"></div>
+
+    <div class="nav-cards">
+      <a class="nav-card" href="module-2.html">
+        <div class="nav-card-label">← Previous</div>
+        <div class="nav-card-title">Module 2: Algebra</div>
+      </a>
+      <a class="nav-card" href="module-4.html" style="border-color:var(--advanced)">
+        <div class="nav-card-label">Next →</div>
+        <div class="nav-card-title">Module 4: Data Analysis</div>
+      </a>
+    </div>
   </div>
 </div>
 
-<div class="mod-nav">
-  <a href="module-2.html">← Module 2: Algebra</a>
-  <a href="module-4.html">Module 4: Data Analysis →</a>
-</div>
-</div>
-
 <script>
-// Progress
-window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';});
+// ════════════════════════════════════════════════
+// SCREEN NAVIGATION SYSTEM
+// ════════════════════════════════════════════════
+const SCREENS = ['screen-welcome','screen-warmup','screen-lesson','screen-practice','screen-complete'];
+let currentScreen = 0;
+
+function goScreen(idx) {
+  if (idx < 0 || idx >= SCREENS.length) return;
+  const cur = document.getElementById(SCREENS[currentScreen]);
+  const nxt = document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');
+  cur.classList.add('fade-out');
+  setTimeout(() => {
+    cur.classList.remove('active','fade-out');
+    nxt.classList.add('active','fade-in');
+    currentScreen = idx;
+    updateProgressDots();
+    window.scrollTo(0, 0);
+    if (idx === 3 && timerEnabled) startTimer();
+  }, 300);
+}
+
+function updateProgressDots() {
+  const cont = document.getElementById('screenProgress');
+  cont.innerHTML = SCREENS.map((s, i) => {
+    let cls = 'screen-dot';
+    if (i < currentScreen) cls += ' completed';
+    if (i === currentScreen) cls += ' current';
+    return `<div class="${cls}" onclick="${i <= currentScreen ? 'goScreen('+i+')' : ''}" title="${['Welcome','Warm-Up','Lesson','Practice','Complete'][i]}"></div>`;
+  }).join('');
+}
+updateProgressDots();
+
+// ════════════════════════════════════════════════
+// RETRIEVAL WARM-UP (Module 2 content)
+// ════════════════════════════════════════════════
+const WARMUP_QS = [
+  {
+    source: 'Module 2 — Slope',
+    q: 'What is the slope of the line <code>y = −3x + 12</code>?',
+    ch: ['12','−3','3','4'],
+    c: 1,
+    fb: 'In y = mx + b, slope = m = −3. The 12 is the y-intercept, not the slope.'
+  },
+  {
+    source: 'Module 2 — Systems',
+    q: 'Two lines have the same slope but different y-intercepts. How many solutions does this system have?',
+    ch: ['One solution','No solution','Infinitely many','Cannot determine'],
+    c: 1,
+    fb: 'Same slope + different intercepts = parallel lines = no intersection = no solution.'
+  },
+  {
+    source: 'Module 2 — Inequalities',
+    q: 'When solving <code>−2x > 8</code>, what happens to the inequality sign?',
+    ch: ['Nothing changes','It flips direction','It becomes an equals sign','You drop the sign'],
+    c: 1,
+    fb: 'Dividing by a negative number FLIPS the inequality sign. −2x > 8 → x < −4. This is The Sign Flip trap!'
+  },
+  {
+    source: 'Module 2 — Trap Taxonomy',
+    q: 'If 2x + 8 = 20, what is x + 4?',
+    ch: ['6','10','14','20'],
+    c: 1,
+    fb: 'Divide the whole equation by 2: x + 4 = 10. Don\'t solve for x first — that\'s The Wrong Target trap!'
+  },
+  {
+    source: 'Module 2 — Word Problems',
+    q: 'The word "per" in a word problem usually translates to which math operation?',
+    ch: ['Addition (+)','Subtraction (−)','Multiplication (×)','Division (÷)'],
+    c: 2,
+    fb: '"Per" means multiplication (as a rate). "$8 per month" = 8 × months = 8m.'
+  }
+];
+
+let warmupIdx = 0;
+let warmupAnswers = [];
+let warmupAnswered = false;
+
+function renderWarmup() {
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map((_, i) => {
+    let cls = 'warmup-dot';
+    if (i < warmupIdx) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    if (i === warmupIdx && warmupIdx < WARMUP_QS.length) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  const cont = document.getElementById('warmupContent');
+
+  if (warmupIdx >= WARMUP_QS.length) {
+    const cor = warmupAnswers.filter(Boolean).length;
+    cont.innerHTML = `
+      <div class="warmup-summary">
+        <div class="warmup-badge">Warm-Up Complete</div>
+        <div class="warmup-score">${cor} / ${WARMUP_QS.length}</div>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:8px">
+          ${cor === 5 ? 'Perfect recall! Module 2 knowledge is locked in.' :
+            cor >= 3 ? 'Good recall! A couple of Algebra topics to revisit.' :
+            'Some gaps from Module 2 — consider a quick review before continuing.'}
+        </p>
+        <button class="warmup-continue" onclick="goScreen(2)">Continue to Lesson →</button>
+      </div>`;
+    return;
+  }
+
+  const q = WARMUP_QS[warmupIdx];
+  warmupAnswered = false;
+  cont.innerHTML = `
+    <div class="warmup-q">
+      <div class="source-tag">From ${q.source}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="warmup-choices" id="warmupChoices">
+        ${q.ch.map((ch, ci) => `<div class="warmup-choice" onclick="answerWarmup(${ci})">${ch}</div>`).join('')}
+      </div>
+      <div id="warmupFb" style="display:none"></div>
+    </div>`;
+}
+
+function answerWarmup(ci) {
+  if (warmupAnswered) return;
+  warmupAnswered = true;
+  const q = WARMUP_QS[warmupIdx];
+  const correct = ci === q.c;
+  warmupAnswers.push(correct);
+
+  const choices = document.querySelectorAll('.warmup-choice');
+  choices.forEach((ch, i) => {
+    ch.classList.add('wu-dis');
+    if (i === q.c) ch.classList.add('wu-correct');
+    else if (i === ci && !correct) ch.classList.add('wu-wrong');
+  });
+
+  const fb = document.getElementById('warmupFb');
+  fb.style.display = 'block';
+  fb.innerHTML = `<div class="warmup-fb">${correct ? '✓ ' : '✗ '}${q.fb}</div>
+    <button class="warmup-next" onclick="warmupIdx++;renderWarmup()">
+      ${warmupIdx < WARMUP_QS.length - 1 ? 'Next Question →' : 'See Results →'}
+    </button>`;
+
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map((_, i) => {
+    let cls = 'warmup-dot';
+    if (i < warmupAnswers.length) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    else if (i === warmupIdx + 1) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+
+renderWarmup();
+
+// ════════════════════════════════════════════════
+// GENERIC HELPERS
+// ════════════════════════════════════════════════
 function mkSc(c,t){return `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${t?c/t*100:0}%"></div></div><div class="score-bar-val">${c}/${t}</div></div>`;}
 
-// ============ EXPONENT RULES ============
+// ════════════════════════════════════════════════
+// EXPONENT RULES
+// ════════════════════════════════════════════════
 const EXP=[
   {p:'Simplify: <code>x³ · x⁴</code>',a:'x^7',acc:['x^7','x⁷','x7'],s:'Product rule: add exponents. x³⁺⁴ = x⁷'},
   {p:'Simplify: <code>x⁸ ÷ x³</code>',a:'x^5',acc:['x^5','x⁵','x5'],s:'Quotient rule: subtract exponents. x⁸⁻³ = x⁵'},
@@ -294,7 +741,9 @@ function chkExp(i){
 }
 renderExp();
 
-// ============ QUADRATIC FORM IDENTIFIER ============
+// ════════════════════════════════════════════════
+// QUADRATIC FORM IDENTIFIER
+// ════════════════════════════════════════════════
 const QF=[
   {eq:'f(x) = 2x² + 3x − 5',c:'Standard',fb:'ax² + bx + c form. a=2, b=3, c=−5.'},
   {eq:'f(x) = 3(x − 2)² + 7',c:'Vertex',fb:'a(x−h)²+k form. Vertex at (2, 7).'},
@@ -315,7 +764,9 @@ function renderQF(){
 function aQF(i,v){if(qfA[i]!==undefined)return;qfA[i]=v;renderQF();}
 renderQF();
 
-// ============ WHICH FORM DO I NEED? ============
+// ════════════════════════════════════════════════
+// WHICH FORM DO I NEED?
+// ════════════════════════════════════════════════
 const WF=[
   {q:'Find the <strong>y-intercept</strong> of a quadratic.',c:'Standard',fb:'Standard form: f(x) = ax² + bx + c. The y-intercept is c.'},
   {q:'Find the <strong>vertex (maximum or minimum)</strong>.',c:'Vertex',fb:'Vertex form: f(x) = a(x−h)² + k. Vertex is (h, k).'},
@@ -335,7 +786,9 @@ function renderWF(){
 function aWF(i,v){if(wfA[i]!==undefined)return;wfA[i]=v;renderWF();}
 renderWF();
 
-// ============ FACTORING WORKSHOP ============
+// ════════════════════════════════════════════════
+// FACTORING WORKSHOP
+// ════════════════════════════════════════════════
 const FAC=[
   {p:'Factor: <code>x² + 7x + 12</code>',acc:['(x+3)(x+4)','(x+4)(x+3)'],s:'Find two numbers that multiply to 12 and add to 7: 3 and 4. → (x+3)(x+4)'},
   {p:'Factor: <code>x² − 9</code>',acc:['(x+3)(x-3)','(x-3)(x+3)'],s:'Difference of squares: x² − 3² = (x+3)(x−3)'},
@@ -357,7 +810,9 @@ function chkFac(i){
 }
 renderFac();
 
-// ============ LINEAR, GROWTH, OR DECAY? ============
+// ════════════════════════════════════════════════
+// LINEAR, GROWTH, OR DECAY?
+// ════════════════════════════════════════════════
 const CLS=[
   {eq:'f(x) = 3x + 5',c:'Linear',fb:'Rate of change is constant (3). Linear.'},
   {eq:'f(x) = 100(1.05)^x',c:'Growth',fb:'Base = 1.05 > 1 → exponential growth (5% increase).'},
@@ -378,28 +833,301 @@ function renderCls(){
 function aCls(i,v){if(clsA[i]!==undefined)return;clsA[i]=v;renderCls();}
 renderCls();
 
-// ============ PSAT 8/9 PRACTICE ============
+// ════════════════════════════════════════════════
+// TIMED PRACTICE WITH CONFIDENCE & ERROR ANALYSIS
+// ════════════════════════════════════════════════
 const PST=[
-  {t:1,tp:'3A',q:'Which expression is equivalent to <code>x⁴ · x³</code>?',ch:['x¹²','x⁷','x¹','7x'],c:1,fb:'Product rule: x⁴⁺³ = x⁷.'},
-  {t:1,tp:'3B',q:'What are the solutions to <code>x² − x − 12 = 0</code>?',ch:['x = 3 and x = 4','x = −3 and x = 4','x = 3 and x = −4','x = −3 and x = −4'],c:1,fb:'Factor: (x−4)(x+3) = 0 → x = 4 or x = −3.'},
-  {t:1,tp:'3D',q:'If <code>f(x) = 3x − 7</code>, what is <code>f(4)</code>?',ch:['5','12','−1','19'],c:0,fb:'f(4) = 3(4) − 7 = 12 − 7 = 5.'},
-  {t:1,tp:'3A',q:'Simplify: <code>(2x³)²</code>',ch:['2x⁶','4x⁶','4x⁵','2x⁵'],c:1,fb:'(2x³)² = 2² · (x³)² = 4x⁶.'},
-  {t:2,tp:'3B',q:'The quadratic <code>f(x) = −2(x − 3)² + 8</code> has its vertex at:',ch:['(3, 8)','(−3, 8)','(3, −8)','(−3, −8)'],c:0,fb:'Vertex form: a(x−h)²+k. Vertex is (h, k) = (3, 8).'},
-  {t:2,tp:'3D',q:'A car purchased for $20,000 loses 15% of its value each year. Which models its value after t years?',ch:['V = 20000(1.15)^t','V = 20000(0.85)^t','V = 20000 − 0.15t','V = 20000(0.15)^t'],c:1,fb:'Loses 15% → keeps 85% → multiplier is 0.85. V = 20000(0.85)^t.'},
-  {t:2,tp:'3C',q:'Factor completely: <code>3x² − 27</code>',ch:['3(x² − 9)','3(x+3)(x−3)','(3x+9)(x−3)','3(x−3)²'],c:1,fb:'GCF first: 3(x²−9). Then difference of squares: 3(x+3)(x−3).'},
-  {t:2,tp:'3B',q:'How many real solutions does <code>x² + 4x + 7 = 0</code> have?',ch:['0','1','2','4'],c:0,fb:'Discriminant: 4² − 4(1)(7) = 16 − 28 = −12 < 0 → no real solutions.'},
-  {t:3,tp:'3D',q:'The graph of <code>g(x) = f(x − 2) + 3</code> is the graph of f shifted:',ch:['Left 2, up 3','Right 2, up 3','Right 2, down 3','Left 2, down 3'],c:1,fb:'f(x−2) = right 2. +3 = up 3.'},
-  {t:3,tp:'3B',q:'If one x-intercept of <code>f(x) = x² + bx − 12</code> is x = 3, what is b?',ch:['−1','1','4','−4'],c:1,fb:'If x=3 is a root: 9 + 3b − 12 = 0 → 3b − 3 = 0 → b = 1. Check: factors as (x+4)(x−3), so other root is −4.'},
+  {t:1,tp:'3A',q:'Which expression is equivalent to <code>x⁴ · x³</code>?',ch:['x¹²','x⁷','x¹','7x'],c:1,fb:'Product rule: x⁴⁺³ = x⁷.',
+   trap:null,trapAnswer:0,trapDesc:'Multiplied exponents instead of adding — confused product and power rules'},
+  {t:1,tp:'3B',q:'What are the solutions to <code>x² − x − 12 = 0</code>?',ch:['x = 3 and x = 4','x = −3 and x = 4','x = 3 and x = −4','x = −3 and x = −4'],c:1,fb:'Factor: (x−4)(x+3) = 0 → x = 4 or x = −3.',
+   trap:'one_case',trapAnswer:0,trapDesc:'Got the factor numbers but missed the signs — The One-Case Trap'},
+  {t:1,tp:'3D',q:'If <code>f(x) = 3x − 7</code>, what is <code>f(4)</code>?',ch:['5','12','−1','19'],c:0,fb:'f(4) = 3(4) − 7 = 12 − 7 = 5.',
+   trap:'wrong_target',trapAnswer:1,trapDesc:'Computed 3×4 = 12 but forgot to subtract 7 — The Wrong Target'},
+  {t:1,tp:'3A',q:'Simplify: <code>(2x³)²</code>',ch:['2x⁶','4x⁶','4x⁵','2x⁵'],c:1,fb:'(2x³)² = 2² · (x³)² = 4x⁶.',
+   trap:'distribution_ghost',trapAnswer:0,trapDesc:'Forgot to square the coefficient 2 — The Distribution Ghost'},
+  {t:2,tp:'3B',q:'The quadratic <code>f(x) = −2(x − 3)² + 8</code> has its vertex at:',ch:['(3, 8)','(−3, 8)','(3, −8)','(−3, −8)'],c:0,fb:'Vertex form: a(x−h)²+k. Vertex is (h, k) = (3, 8).',
+   trap:'form_mismatch',trapAnswer:1,trapDesc:'Flipped the sign of h — in (x−3), h=3 not −3 — The Form Mismatch'},
+  {t:2,tp:'3D',q:'A car purchased for $20,000 loses 15% of its value each year. Which models its value after t years?',ch:['V = 20000(1.15)^t','V = 20000(0.85)^t','V = 20000 − 0.15t','V = 20000(0.15)^t'],c:1,fb:'Loses 15% → keeps 85% → multiplier is 0.85. V = 20000(0.85)^t.',
+   trap:null,trapAnswer:0,trapDesc:'Used growth formula instead of decay'},
+  {t:2,tp:'3C',q:'Factor completely: <code>3x² − 27</code>',ch:['3(x² − 9)','3(x+3)(x−3)','(3x+9)(x−3)','3(x−3)²'],c:1,fb:'GCF first: 3(x²−9). Then difference of squares: 3(x+3)(x−3).',
+   trap:null,trapAnswer:0,trapDesc:'Factored GCF but stopped — didn\'t factor completely'},
+  {t:2,tp:'3B',q:'How many real solutions does <code>x² + 4x + 7 = 0</code> have?',ch:['0','1','2','4'],c:0,fb:'Discriminant: 4² − 4(1)(7) = 16 − 28 = −12 < 0 → no real solutions.',
+   trap:null,trapAnswer:2,trapDesc:'Guessed "2" because quadratics usually have 2 solutions'},
+  {t:3,tp:'3D',q:'The graph of <code>g(x) = f(x − 2) + 3</code> is the graph of f shifted:',ch:['Left 2, up 3','Right 2, up 3','Right 2, down 3','Left 2, down 3'],c:1,fb:'f(x−2) = right 2. +3 = up 3.',
+   trap:'form_mismatch',trapAnswer:0,trapDesc:'Horizontal shifts feel backwards — f(x−2) shifts RIGHT, not left — The Form Mismatch'},
+  {t:3,tp:'3B',q:'If one x-intercept of <code>f(x) = x² + bx − 12</code> is x = 3, what is b?',ch:['−1','1','4','−4'],c:1,fb:'If x=3 is a root: 9 + 3b − 12 = 0 → 3b − 3 = 0 → b = 1. Check: factors as (x+4)(x−3), so other root is −4.',
+   trap:'wrong_target',trapAnswer:0,trapDesc:'Got 3b = 3 but then picked −1 instead of 1 — sign error'},
 ];
-let pstA={};
-function renderPST(){
-  document.getElementById('psatPractice').innerHTML=PST.map((q,i)=>{const a=pstA[i],h=a!==undefined;
-    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}"><div style="margin-bottom:6px;display:flex;align-items:center;gap:8px"><span class="tier tier-${q.t}">${q.t===1?'Easy':q.t===2?'Medium':'Hard'}</span><span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span></div><div class="ex-prompt">${q.q}</div><div class="mc-choices">${q.ch.map((ch,ci)=>{let c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;}).join('')}</div><div class="mc-fb${h?' show':''}">${h?(a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
-  }).join('');
-}
-function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;renderPST();}
-renderPST();
 
+let pstA = {};
+let pstConf = {};
+let pstTime = {};
+let pstStartTime = null;
+
+// Timer system
+let timerEnabled = false;
+let timerInterval = null;
+let timerSeconds = 0;
+const SECS_PER_Q = 95;
+let totalTimerSecs = PST.length * SECS_PER_Q;
+
+function toggleTimer() {
+  timerEnabled = !timerEnabled;
+  const btn = document.getElementById('timerToggle');
+  btn.textContent = timerEnabled ? '⏱ Timer ON' : '⏱ Timer OFF';
+  btn.classList.toggle('active', timerEnabled);
+  if (!timerEnabled && timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    document.getElementById('timerDisplay').textContent = '--:--';
+    document.getElementById('timerFill').style.width = '100%';
+  } else if (timerEnabled && currentScreen === 3) {
+    startTimer();
+  }
+}
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerSeconds = totalTimerSecs;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }, 1000);
+  pstStartTime = Date.now();
+}
+
+function updateTimerDisplay() {
+  const disp = document.getElementById('timerDisplay');
+  const fill = document.getElementById('timerFill');
+  const mins = Math.floor(timerSeconds / 60);
+  const secs = timerSeconds % 60;
+  disp.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+  const pct = (timerSeconds / totalTimerSecs) * 100;
+  fill.style.width = pct + '%';
+
+  disp.className = 'timer-display';
+  fill.className = 'timer-fill';
+  if (pct < 15) { disp.classList.add('danger'); fill.classList.add('danger'); }
+  else if (pct < 35) { disp.classList.add('warning'); fill.classList.add('warning'); }
+}
+
+function renderPST() {
+  const answered = Object.keys(pstA).length;
+  const TRAP_NAMES = {'wrong_target':'🎯 Wrong Target','distribution_ghost':'👻 Distribution Ghost','one_case':'🔀 One-Case Trap','form_mismatch':'📐 Form Mismatch'};
+
+  document.getElementById('qDots').innerHTML = PST.map((_, i) => {
+    let cls = 'q-dot';
+    if (pstA[i] !== undefined) cls += pstA[i] === PST[i].c ? ' correct' : ' wrong';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  document.getElementById('psatPractice').innerHTML = PST.map((q, i) => {
+    const a = pstA[i], h = a !== undefined;
+    const conf = pstConf[i];
+    const tierLabel = q.t === 1 ? 'Easy' : q.t === 2 ? 'Medium' : 'Hard';
+    const trapName = q.trap ? TRAP_NAMES[q.trap] || '' : '';
+
+    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}">
+      <div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="tier tier-${q.t}">${tierLabel}</span>
+        <span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span>
+        ${trapName && h ? `<span style="font-size:.72rem;color:var(--accent)">Trap: ${trapName}</span>` : ''}
+      </div>
+      <div class="ex-prompt">${q.q}</div>
+      ${!h ? `<div class="confidence-row">
+        <div class="conf-tag ${conf==='guessing'?'selected':''}" data-conf="guessing" onclick="setConf(${i},'guessing')">Guessing</div>
+        <div class="conf-tag ${conf==='unsure'?'selected':''}" data-conf="unsure" onclick="setConf(${i},'unsure')">Unsure</div>
+        <div class="conf-tag ${conf==='confident'?'selected':''}" data-conf="confident" onclick="setConf(${i},'confident')">Confident</div>
+      </div>` : `<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">Confidence: ${conf || 'not tagged'}</div>`}
+      <div class="mc-choices">${q.ch.map((ch, ci) => {
+        let c = 'mc-choice';
+        if (h) { c += ' mc-dis'; if (ci === q.c) c += ' mc-correct'; else if (ci === a) c += ' mc-wrong'; }
+        return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
+      }).join('')}</div>
+      <div class="mc-fb${h ? ' show' : ''}">${h ? (a === q.c ? '✓ Correct! ' : '✗ Incorrect. ') + q.fb + (a !== q.c && a === q.trapAnswer ? '<br><span style="color:var(--psda)">⚠️ ' + q.trapDesc + '</span>' : '') : ''}</div>
+    </div>`;
+  }).join('');
+
+  if (answered === PST.length) {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    document.getElementById('practiceNav').style.display = 'block';
+    showPracticeResults();
+  }
+}
+
+function setConf(i, level) {
+  if (pstA[i] !== undefined) return;
+  pstConf[i] = level;
+  renderPST();
+}
+
+function aPST(i, v) {
+  if (pstA[i] !== undefined) return;
+  pstA[i] = v;
+  if (pstStartTime) {
+    pstTime[i] = Date.now() - pstStartTime;
+    pstStartTime = Date.now();
+  }
+  renderPST();
+}
+
+function showPracticeResults() {
+  const total = PST.length;
+  const correct = Object.entries(pstA).filter(([i, v]) => v === PST[i].c).length;
+
+  const byDiff = {1:{cor:0,tot:0},2:{cor:0,tot:0},3:{cor:0,tot:0}};
+  PST.forEach((q, i) => {
+    byDiff[q.t].tot++;
+    if (pstA[i] === q.c) byDiff[q.t].cor++;
+  });
+
+  const matrix = {};
+  ['guessing','unsure','confident'].forEach(conf => {
+    matrix[conf] = {correct:[], wrong:[]};
+  });
+  PST.forEach((q, i) => {
+    const conf = pstConf[i] || 'unsure';
+    const isCorrect = pstA[i] === q.c;
+    matrix[conf][isCorrect ? 'correct' : 'wrong'].push(i);
+  });
+
+  const errors = {content_gap:[], trap_answer:[], careless:[], calibration:[]};
+  PST.forEach((q, i) => {
+    if (pstA[i] === q.c) return;
+    const conf = pstConf[i] || 'unsure';
+    if (pstA[i] === q.trapAnswer) {
+      errors.trap_answer.push({i, desc:q.trapDesc, topic:q.tp});
+    } else {
+      errors.content_gap.push({i, topic:q.tp});
+    }
+    if (conf === 'confident') {
+      if (q.t === 1) errors.careless.push({i, topic:q.tp});
+      errors.calibration.push({i, topic:q.tp});
+    }
+  });
+
+  let html = `<div class="results-section">
+    <h3>📊 Practice Results: ${correct}/${total}</h3>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Difficulty</div>
+      <div class="difficulty-bars">
+        <div class="diff-row">
+          <span class="diff-label" style="color:var(--algebra)">Easy</span>
+          <div class="diff-track"><div class="diff-fill" style="width:${byDiff[1].tot?byDiff[1].cor/byDiff[1].tot*100:0}%;background:var(--algebra)"></div></div>
+          <span class="diff-val" style="color:var(--algebra)">${byDiff[1].cor}/${byDiff[1].tot}</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-label" style="color:var(--math)">Medium</span>
+          <div class="diff-track"><div class="diff-fill" style="width:${byDiff[2].tot?byDiff[2].cor/byDiff[2].tot*100:0}%;background:var(--math)"></div></div>
+          <span class="diff-val" style="color:var(--math)">${byDiff[2].cor}/${byDiff[2].tot}</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-label" style="color:var(--advanced)">Hard</span>
+          <div class="diff-track"><div class="diff-fill" style="width:${byDiff[3].tot?byDiff[3].cor/byDiff[3].tot*100:0}%;background:var(--advanced)"></div></div>
+          <span class="diff-val" style="color:var(--advanced)">${byDiff[3].cor}/${byDiff[3].tot}</span>
+        </div>
+      </div>
+    </div>`;
+
+  html += `<div style="margin-bottom:20px">
+    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Confidence × Accuracy Matrix</div>
+    <div class="results-grid">
+      <div class="results-grid-header"></div>
+      <div class="results-grid-header">Guessing</div>
+      <div class="results-grid-header">Unsure</div>
+      <div class="results-grid-header">Confident</div>
+
+      <div class="results-grid-header" style="writing-mode:horizontal-tb">✓ Correct</div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Lucky</div>
+        <div class="cell-dots">${matrix.guessing.correct.map(()=>`<div class="cell-dot" style="background:var(--psda)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.correct.length}</div>
+      </div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Developing</div>
+        <div class="cell-dots">${matrix.unsure.correct.map(()=>`<div class="cell-dot" style="background:var(--math)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.correct.length}</div>
+      </div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Solid</div>
+        <div class="cell-dots">${matrix.confident.correct.map(()=>`<div class="cell-dot" style="background:var(--correct)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.confident.correct.length}</div>
+      </div>
+
+      <div class="results-grid-header" style="writing-mode:horizontal-tb">✗ Wrong</div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Expected</div>
+        <div class="cell-dots">${matrix.guessing.wrong.map(()=>`<div class="cell-dot" style="background:var(--muted)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.wrong.length}</div>
+      </div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Needs work</div>
+        <div class="cell-dots">${matrix.unsure.wrong.map(()=>`<div class="cell-dot" style="background:var(--psda)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.wrong.length}</div>
+      </div>
+      <div class="results-grid-cell danger-cell">
+        <div class="cell-label" style="color:var(--wrong);font-weight:700">⚠️ DANGER</div>
+        <div class="cell-dots">${matrix.confident.wrong.map(()=>`<div class="cell-dot" style="background:var(--wrong)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--wrong)">${matrix.confident.wrong.length}</div>
+      </div>
+    </div>
+    ${matrix.confident.wrong.length > 0 ? '<div class="callout" style="border-color:var(--wrong);background:var(--wrong-bg)"><strong style="color:var(--wrong)">Confident + Wrong</strong> is the most dangerous category. These errors persist into test day because you won\'t self-correct what you think you already know.</div>' : ''}
+  </div>`;
+
+  const hasErrors = errors.trap_answer.length + errors.content_gap.length > 0;
+  if (hasErrors) {
+    html += `<div style="margin-bottom:16px">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Error Pattern Analysis</div>`;
+
+    if (errors.trap_answer.length > 0) {
+      html += `<div class="error-category" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3)">
+        <div class="error-label" style="color:var(--psda)">🟡 Trap Answers (${errors.trap_answer.length})</div>
+        <div class="error-items">${errors.trap_answer.map(e => e.desc).join(' · ')}</div>
+      </div>`;
+    }
+    if (errors.content_gap.length > 0) {
+      html += `<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)">
+        <div class="error-label" style="color:var(--wrong)">🔴 Content Gaps (${errors.content_gap.length})</div>
+        <div class="error-items">Topics: ${[...new Set(errors.content_gap.map(e=>e.topic))].join(', ')}</div>
+      </div>`;
+    }
+    if (errors.careless.length > 0) {
+      html += `<div class="error-category" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)">
+        <div class="error-label" style="color:var(--math)">🔵 Possible Careless Errors (${errors.careless.length})</div>
+        <div class="error-items">Confident + wrong on easy questions — likely arithmetic mistakes</div>
+      </div>`;
+    }
+    if (errors.calibration.length > 0) {
+      html += `<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)">
+        <div class="error-label" style="color:var(--wrong)">⚠️ Calibration Issues (${errors.calibration.length})</div>
+        <div class="error-items">You were confident but wrong — review these topics carefully</div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  html += `</div>`;
+  document.getElementById('practiceResults').style.display = 'block';
+  document.getElementById('practiceResults').innerHTML = html;
+
+  document.getElementById('completePracticeStats').innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:24px;max-width:500px;width:100%;text-align:left">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Practice Results</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--correct);margin-bottom:8px">${correct}/${total} correct</div>
+      <div style="font-size:.82rem;color:var(--muted)">
+        Easy: ${byDiff[1].cor}/${byDiff[1].tot} · Medium: ${byDiff[2].cor}/${byDiff[2].tot} · Hard: ${byDiff[3].cor}/${byDiff[3].tot}
+      </div>
+    </div>`;
+}
+
+renderPST();
 </script>
 <script src="/translate.js"></script>
 </body>

@@ -6,13 +6,72 @@
 <title>Module 2: Algebra — PSAT 8/9 Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geo:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#0891b2 0%,#0891b2 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--algebra),var(--math));width:0%;transition:width .3s ease}
+
+/* ── Screen System ── */
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+/* ── Progress Dots ── */
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--algebra)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(8,145,178,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
+/* ── Container ── */
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+
+/* ── Welcome Screen ── */
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--algebra);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--algebra);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--algebra);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(52,211,153,.3)}
+
+/* ── Retrieval Warm-Up ── */
+.warmup-container{max-width:600px;margin:0 auto;padding:60px 20px}
+.warmup-header{text-align:center;margin-bottom:32px}
+.warmup-badge{display:inline-block;background:var(--psda);color:#000;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.warmup-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.warmup-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.warmup-dot.done-correct{background:var(--correct)}
+.warmup-dot.done-wrong{background:var(--wrong)}
+.warmup-dot.active{background:var(--psda);box-shadow:0 0 8px rgba(251,191,36,.4)}
+.warmup-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.warmup-q .source-tag{font-size:.7rem;color:var(--psda);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.warmup-q .q-text{font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.warmup-choices{display:flex;flex-direction:column;gap:8px}
+.warmup-choice{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.warmup-choice:hover:not(.wu-dis){border-color:var(--psda);background:rgba(251,191,36,.05)}
+.warmup-choice.wu-correct{border-color:var(--correct);background:var(--correct-bg)}
+.warmup-choice.wu-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.warmup-choice.wu-dis{pointer-events:none;opacity:.7}
+.warmup-choice.wu-correct{opacity:1}
+.warmup-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:12px;padding:10px;background:var(--paper);border-radius:8px;border-left:3px solid var(--correct)}
+.warmup-next{padding:10px 24px;background:var(--psda);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;margin-top:12px;font-family:'Source Sans 3',sans-serif}
+.warmup-next:hover{filter:brightness(1.1)}
+.warmup-summary{text-align:center;padding:40px 20px}
+.warmup-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:var(--psda);margin:12px 0}
+.warmup-continue{padding:12px 28px;background:var(--algebra);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:20px;font-family:'Source Sans 3',sans-serif}
+.warmup-continue:hover{filter:brightness(1.15)}
+
+/* ── Lesson Content (existing styles) ── */
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
@@ -100,14 +159,169 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
 .mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
 .mod-nav a{color:var(--accent);text-decoration:none}.mod-nav a:hover{text-decoration:underline}
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.wpt-phrase{min-width:auto}.classify-opts,.trap-opts{gap:4px}}
+
+/* ── Trap Taxonomy ── */
+.trap-taxonomy{margin-bottom:24px}
+.trap-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:all .2s}
+.trap-card:hover{border-color:var(--accent);transform:translateX(3px)}
+.trap-number{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:#fff;flex-shrink:0}
+.trap-card-body{flex:1}
+.trap-card-name{font-weight:700;font-size:.92rem;margin-bottom:3px}
+.trap-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+.trap-card-example{font-size:.78rem;color:var(--math);font-family:'JetBrains Mono',monospace;margin-top:4px}
+
+/* ── Confidence Tags ── */
+.confidence-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.conf-tag{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;letter-spacing:.5px}
+.conf-tag:hover{border-color:var(--algebra)}
+.conf-tag.selected{border-color:var(--algebra);background:rgba(52,211,153,.12);color:var(--algebra)}
+.conf-tag[data-conf="guessing"].selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="unsure"].selected{border-color:var(--math);background:var(--math-bg);color:var(--math)}
+.conf-tag[data-conf="confident"].selected{border-color:var(--algebra);background:rgba(52,211,153,.12);color:var(--algebra)}
+
+/* ── Timed Practice ── */
+.timer-bar{position:sticky;top:8px;z-index:50;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--algebra);min-width:60px}
+.timer-display.warning{color:var(--psda)}
+.timer-display.danger{color:var(--wrong);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.timer-fill{height:100%;background:var(--algebra);transition:width 1s linear;border-radius:2px}
+.timer-fill.warning{background:var(--psda)}
+.timer-fill.danger{background:var(--wrong)}
+.timer-toggle{padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.75rem;color:var(--muted);cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600}
+.timer-toggle:hover{border-color:var(--accent);color:var(--ink)}
+.timer-toggle.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.q-dots{display:flex;gap:4px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.q-dot.correct{background:var(--correct)}
+.q-dot.wrong{background:var(--wrong)}
+.q-dot.current{background:var(--accent);box-shadow:0 0 6px rgba(8,145,178,.5)}
+
+/* ── Results Enhancement ── */
+.results-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.results-section h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px;background:var(--border);border-radius:10px;overflow:hidden}
+.results-grid-header{background:var(--surface);padding:8px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.results-grid-cell{background:var(--paper);padding:10px 8px;text-align:center;font-size:.78rem;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative}
+.results-grid-cell.danger-cell{background:var(--danger-bg);border:1px solid rgba(239,68,68,.3)}
+.cell-label{font-size:.65rem;color:var(--muted);font-weight:600}
+.cell-dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.cell-dot{width:8px;height:8px;border-radius:50%}
+.difficulty-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.diff-row{display:flex;align-items:center;gap:10px}
+.diff-label{font-size:.78rem;font-weight:600;min-width:60px}
+.diff-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.diff-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.diff-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;min-width:40px;text-align:right}
+.error-category{padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:.85rem;line-height:1.6}
+.error-category .error-label{font-weight:700;margin-bottom:4px}
+.error-category .error-items{color:var(--muted);font-size:.82rem}
+
+/* ── Module Complete ── */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--algebra);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .mod-meta{flex-wrap:wrap;gap:10px}
+  .wpt-phrase{min-width:auto}
+  .classify-opts,.trap-opts{gap:4px}
+  .preview-grid{grid-template-columns:1fr 1fr}
+  .welcome-meta{flex-wrap:wrap;gap:12px}
+  .results-grid{grid-template-columns:1fr;gap:1px}
+  .nav-cards{grid-template-columns:1fr}
+  .timer-bar{flex-wrap:wrap;gap:8px}
+}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- ── Screen Progress Dots ── -->
+<div class="screen-progress" id="screenProgress"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 1: WELCOME                             -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 2</div>
+    <h1>Algebra — Linear Equations, Systems & Inequalities</h1>
+    <p class="welcome-sub">The single highest-impact domain on the PSAT 8/9. Master this and you've conquered ~35% of the test.</p>
+    <div class="welcome-meta">
+      <span>⏱ ~60 min</span>
+      <span>📋 4 topics</span>
+      <span>🔨 6 exercises</span>
+      <span>🎯 10 practice Qs</span>
+    </div>
+    <div class="preview-grid">
+      <div class="preview-card">
+        <div class="preview-icon">🔄</div>
+        <div class="preview-title">Retrieval Warm-Up</div>
+        <div class="preview-desc">5 questions from Module 1 to activate prior knowledge</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">📐</div>
+        <div class="preview-title">4 Core Topics</div>
+        <div class="preview-desc">Linear equations, two-variable, systems, inequalities</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">🎯</div>
+        <div class="preview-title">Trap Taxonomy</div>
+        <div class="preview-desc">6 named traps that recur throughout the PSAT</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">🧮</div>
+        <div class="preview-title">6 Exercises</div>
+        <div class="preview-desc">Solve, classify, spot traps, translate word problems</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">⏱</div>
+        <div class="preview-title">Timed Practice</div>
+        <div class="preview-desc">10 PSAT-style questions with optional timer</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-icon">📊</div>
+        <div class="preview-title">Error Analysis</div>
+        <div class="preview-desc">Difficulty breakdown + confidence matrix + trap patterns</div>
+      </div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 2: RETRIEVAL WARM-UP                   -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-warmup">
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <div class="warmup-badge">Retrieval Warm-Up</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem">Module 1 Review</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:4px">Quick recall from what you learned last time.</p>
+      <div class="warmup-dots" id="warmupDots"></div>
+    </div>
+    <div id="warmupContent"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 3: LESSON CONTENT                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-lesson">
 <div class="container">
-<a class="back-link" href="index.html">← Back to PSAT 8/9 Math Course</a>
 <div class="mod-header">
   <div class="mod-badge">Module 2</div>
   <h1>Algebra — Linear Equations, Systems & Inequalities</h1>
@@ -144,7 +358,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
       <div><span class="fn">Infinite solutions:</span> Variables cancel, leaves true statement (e.g., 0 = 0)</div>
       <div><span class="fn">Absolute value:</span> |expression| = k → two equations (k must be ≥ 0)</div>
     </div>
-    <div class="callout"><strong>PSAT Trap #1:</strong> The question asks for <em>3x + 2</em>, not x. Always re-read exactly what's being asked <strong>before</strong> you start solving. Underline it.</div>
+    <div class="callout"><strong>🎯 The Wrong Target:</strong> The question asks for <em>3x + 2</em>, not x. Always re-read exactly what's being asked <strong>before</strong> you start solving. Underline it.</div>
   </div>
 </div>
 
@@ -208,7 +422,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     <div class="topic-arrow">▸</div>
   </div>
   <div class="topic-body">
-    <div class="callout"><strong>When you multiply or divide by a NEGATIVE number, FLIP the inequality sign.</strong> This is the #1 most-tested inequality rule.</div>
+    <div class="callout"><strong>🎯 The Sign Flip:</strong> When you multiply or divide by a NEGATIVE number, FLIP the inequality sign. This is the #1 most-tested inequality rule.</div>
     <h4>Graphing</h4>
     <ul>
       <li><strong>Number line:</strong> Open circle for &lt; or &gt;, closed for ≤ or ≥</li>
@@ -222,45 +436,299 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
+<!-- ── Trap Taxonomy Section ── -->
+<div class="section">
+  <div class="section-label">Math Trap Taxonomy</div>
+  <h2>Six Traps That Recur Throughout the PSAT</h2>
+  <p>Learn these by name. When you spot one in a problem, you'll know exactly what to watch for. We'll reference these traps by name in exercises and practice questions from now on.</p>
+  <div class="trap-taxonomy">
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--wrong)">1</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">🎯 The Wrong Target</div>
+        <div class="trap-card-desc">Solved for x when they asked for 2x + 1. Always underline exactly what the question asks for before solving.</div>
+        <div class="trap-card-example">Asked: "What is x + 4?" You solved: x = 6, picked 6. Answer: 10</div>
+      </div>
+    </div>
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--psda)">2</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">🔄 The Sign Flip</div>
+        <div class="trap-card-desc">Forgot to flip the inequality sign when multiplying or dividing by a negative number.</div>
+        <div class="trap-card-example">−3x > 12 → x < −4 (not x > −4)</div>
+      </div>
+    </div>
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--math)">3</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">👻 The Distribution Ghost</div>
+        <div class="trap-card-desc">Forgot to distribute to ALL terms inside parentheses. The ghost term gets left behind.</div>
+        <div class="trap-card-example">−2(3x − 5) = −6x + 10 (not −6x − 5)</div>
+      </div>
+    </div>
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--advanced)">4</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">🎭 The Imposter Subject</div>
+        <div class="trap-card-desc">Used the wrong variable or misidentified what the problem is actually asking you to solve for.</div>
+        <div class="trap-card-example">System asks for y but you solved for x and stopped.</div>
+      </div>
+    </div>
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--geo)">5</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">🔀 The One-Case Trap</div>
+        <div class="trap-card-desc">Only solved one branch of an absolute value equation. |x| = 5 means x = 5 OR x = −5.</div>
+        <div class="trap-card-example">|x − 3| = 7 → x = 10 AND x = −4 (two answers)</div>
+      </div>
+    </div>
+    <div class="trap-card">
+      <div class="trap-number" style="background:var(--accent)">6</div>
+      <div class="trap-card-body">
+        <div class="trap-card-name">🌀 The Percent Spiral</div>
+        <div class="trap-card-desc">Applied successive percentages to the original value instead of the new value after each change.</div>
+        <div class="trap-card-example">$100 + 10% − 10% ≠ $100. It's $110 → $99.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="section"><div class="section-label">Interactive Exercise 1</div><h2>Equation Solver Practice</h2><p>Solve each equation. Watch for the trap on #6!</p><div class="exercise" id="solverEx"></div></div>
 <div class="section"><div class="section-label">Interactive Exercise 2</div><h2>Identify the Form</h2><p>Click whether each equation is slope-intercept, point-slope, or standard form.</p><div class="exercise" id="formEx"></div></div>
 <div class="section"><div class="section-label">Interactive Exercise 3</div><h2>System of Equations Classifier</h2><p>One solution, no solution, or infinitely many?</p><div class="exercise" id="systemEx"></div></div>
 <div class="section"><div class="section-label">Interactive Exercise 4</div><h2>Inequality Challenge</h2><p>Solve each inequality. Watch for sign flips!</p><div class="exercise" id="ineqEx"></div></div>
-<div class="section"><div class="section-label">Interactive Exercise 5</div><h2>Trap Spotter</h2><p>Identify the trap in each problem <em>before</em> solving.</p><div class="exercise" style="border-color:var(--accent)" id="trapEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 5</div><h2>Trap Spotter</h2><p>Identify the trap in each problem <em>before</em> solving. Use the trap names you just learned!</p><div class="exercise" style="border-color:var(--accent)" id="trapEx"></div></div>
 <div class="section"><div class="section-label">Interactive Exercise 6</div><h2>Word Problem Translator</h2><p>Match each English phrase to its math symbol.</p><div class="exercise" style="border-color:var(--psda)" id="wptEx"></div></div>
-<div class="section"><div class="section-label">PSAT 8/9 Practice</div><h2>Practice Questions</h2><p>10 questions at three difficulty tiers. Full worked explanations.</p><div id="psatPractice"></div></div>
 
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>Algebra is ~35% of the PSAT 8/9 — the single largest domain.</li>
-      <li>Know all three forms: slope-intercept, point-slope, standard.</li>
-      <li>Parallel = same slope. Perpendicular = negative reciprocal slopes.</li>
-      <li>Systems: substitution, elimination, or <strong>Desmos for speed</strong>.</li>
-      <li>Variables cancel → true = infinite solutions, false = no solution.</li>
-      <li>Inequalities: FLIP the sign when multiplying/dividing by a negative.</li>
-      <li>50%+ of word problem errors happen at <strong>translation</strong>. Practice converting English to equations.</li>
-      <li><strong>Always re-read what the question asks for</strong> before choosing your answer.</li>
-    </ol>
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(3)">Continue to Practice Questions →</button>
+</div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 4: TIMED PRACTICE                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-practice">
+<div class="container">
+  <div class="section-label">PSAT 8/9 Practice</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:4px">Practice Questions</h2>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px">10 questions at three difficulty tiers. Tag your confidence before answering.</p>
+
+  <div class="timer-bar" id="timerBar">
+    <div class="timer-display" id="timerDisplay">--:--</div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="q-dots" id="qDots"></div>
+    <button class="timer-toggle active" id="timerToggle" onclick="toggleTimer()">⏱ Timer ON</button>
+  </div>
+
+  <div id="psatPractice"></div>
+  <div id="practiceResults" style="display:none"></div>
+
+  <div id="practiceNav" style="display:none;text-align:center;padding:24px 0">
+    <button class="start-btn" onclick="goScreen(4)">View Summary & Complete Module →</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 5: MODULE COMPLETE                     -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎉</div>
+    <h1>Module 2 Complete!</h1>
+    <p class="complete-sub">You've conquered Algebra — the largest domain on the PSAT 8/9.</p>
+
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--algebra);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Algebra is ~35% of the PSAT 8/9 — the single largest domain.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Know all three forms: slope-intercept, point-slope, standard.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Parallel = same slope. Perpendicular = negative reciprocal slopes.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Systems: substitution, elimination, or Desmos for speed.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Variables cancel → true = infinite solutions, false = no solution.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Inequalities: FLIP the sign when multiplying/dividing by a negative.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> 50%+ of word problem errors happen at translation.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Always re-read what the question asks for before choosing your answer.</div>
+    </div>
+
+    <div id="completePracticeStats"></div>
+
+    <div class="nav-cards">
+      <a class="nav-card" href="module-1.html">
+        <div class="nav-card-label">← Previous</div>
+        <div class="nav-card-title">Module 1: Diagnostic</div>
+      </a>
+      <a class="nav-card" href="module-3.html" style="border-color:var(--algebra)">
+        <div class="nav-card-label">Next →</div>
+        <div class="nav-card-title">Module 3: Advanced Math</div>
+      </a>
+    </div>
   </div>
 </div>
 
-<div class="mod-nav">
-  <a href="module-1.html">← Module 1: Diagnostic</a>
-  <a href="module-3.html">Module 3: Advanced Math →</a>
-</div>
-</div>
-
 <script>
-// Progress Bar
-window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';});
+// ════════════════════════════════════════════════
+// SCREEN NAVIGATION SYSTEM
+// ════════════════════════════════════════════════
+const SCREENS = ['screen-welcome','screen-warmup','screen-lesson','screen-practice','screen-complete'];
+let currentScreen = 0;
 
-// Generic helpers
-function mkScore(id,correct,total){return `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;}
+function goScreen(idx) {
+  if (idx < 0 || idx >= SCREENS.length) return;
+  const cur = document.getElementById(SCREENS[currentScreen]);
+  const nxt = document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');
+  cur.classList.add('fade-out');
+  setTimeout(() => {
+    cur.classList.remove('active','fade-out');
+    nxt.classList.add('active','fade-in');
+    currentScreen = idx;
+    updateProgressDots();
+    window.scrollTo(0, 0);
+    // Initialize practice timer when entering practice screen
+    if (idx === 3 && timerEnabled) startTimer();
+  }, 300);
+}
 
-// ============ PREREQUISITE CHECKPOINT ============
+function updateProgressDots() {
+  const cont = document.getElementById('screenProgress');
+  cont.innerHTML = SCREENS.map((s, i) => {
+    let cls = 'screen-dot';
+    if (i < currentScreen) cls += ' completed';
+    if (i === currentScreen) cls += ' current';
+    return `<div class="${cls}" onclick="${i <= currentScreen ? 'goScreen('+i+')' : ''}" title="${['Welcome','Warm-Up','Lesson','Practice','Complete'][i]}"></div>`;
+  }).join('');
+}
+updateProgressDots();
+
+// ════════════════════════════════════════════════
+// RETRIEVAL WARM-UP (Module 1 content)
+// ════════════════════════════════════════════════
+const WARMUP_QS = [
+  {
+    source: 'Module 1 — Test Structure',
+    q: 'How many modules does the PSAT 8/9 Math section have?',
+    ch: ['1 module','2 modules (adaptive)','3 modules','4 modules'],
+    c: 1,
+    fb: 'The PSAT 8/9 Math section has 2 modules. Module 2 adapts based on your Module 1 performance — harder questions if you did well, standard if not.'
+  },
+  {
+    source: 'Module 1 — Score Ranges',
+    q: 'What is the PSAT 8/9 Math score range?',
+    ch: ['200–800','120–720','400–1600','100–500'],
+    c: 1,
+    fb: 'PSAT 8/9 Math scores range from 120 to 720. Combined with Evidence-Based Reading and Writing, the total is 240–1440.'
+  },
+  {
+    source: 'Module 1 — Calculator Policy',
+    q: 'Can you use a calculator on the PSAT 8/9 Math section?',
+    ch: ['Only on Module 2','Only on hard questions','Yes, on the entire section','No calculators allowed'],
+    c: 2,
+    fb: 'You can use a calculator on the ENTIRE math section. A built-in Desmos graphing calculator is provided, or you can bring your own approved calculator.'
+  },
+  {
+    source: 'Module 1 — Four Domains',
+    q: 'Which domain makes up the largest share of PSAT 8/9 Math questions?',
+    ch: ['Geometry','Problem-Solving & Data Analysis','Algebra','Advanced Math'],
+    c: 2,
+    fb: 'Algebra is the largest domain at about 35% of questions (13–15 questions). That\'s exactly what this module covers!'
+  },
+  {
+    source: 'Module 1 — Strategy',
+    q: 'What should you do FIRST when you see a word problem?',
+    ch: ['Start solving immediately','Underline what the question asks for','Eliminate answer choices','Plug in numbers'],
+    c: 1,
+    fb: 'Always underline what the question is asking for FIRST. Over 50% of word problem errors happen because students solve for the wrong thing.'
+  }
+];
+
+let warmupIdx = 0;
+let warmupAnswers = [];
+let warmupAnswered = false;
+
+function renderWarmup() {
+  // Dots
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map((_, i) => {
+    let cls = 'warmup-dot';
+    if (i < warmupIdx) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    if (i === warmupIdx && warmupIdx < WARMUP_QS.length) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  const cont = document.getElementById('warmupContent');
+
+  if (warmupIdx >= WARMUP_QS.length) {
+    const cor = warmupAnswers.filter(Boolean).length;
+    cont.innerHTML = `
+      <div class="warmup-summary">
+        <div class="warmup-badge">Warm-Up Complete</div>
+        <div class="warmup-score">${cor} / ${WARMUP_QS.length}</div>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:8px">
+          ${cor === 5 ? 'Perfect recall! Module 1 knowledge is locked in.' :
+            cor >= 3 ? 'Good recall! A couple topics to revisit.' :
+            'Some gaps from Module 1 — consider a quick review.'}
+        </p>
+        <button class="warmup-continue" onclick="goScreen(2)">Continue to Lesson →</button>
+      </div>`;
+    return;
+  }
+
+  const q = WARMUP_QS[warmupIdx];
+  warmupAnswered = false;
+  cont.innerHTML = `
+    <div class="warmup-q">
+      <div class="source-tag">From ${q.source}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="warmup-choices" id="warmupChoices">
+        ${q.ch.map((ch, ci) => `<div class="warmup-choice" onclick="answerWarmup(${ci})">${ch}</div>`).join('')}
+      </div>
+      <div id="warmupFb" style="display:none"></div>
+    </div>`;
+}
+
+function answerWarmup(ci) {
+  if (warmupAnswered) return;
+  warmupAnswered = true;
+  const q = WARMUP_QS[warmupIdx];
+  const correct = ci === q.c;
+  warmupAnswers.push(correct);
+
+  const choices = document.querySelectorAll('.warmup-choice');
+  choices.forEach((ch, i) => {
+    ch.classList.add('wu-dis');
+    if (i === q.c) ch.classList.add('wu-correct');
+    else if (i === ci && !correct) ch.classList.add('wu-wrong');
+  });
+
+  const fb = document.getElementById('warmupFb');
+  fb.style.display = 'block';
+  fb.innerHTML = `<div class="warmup-fb">${correct ? '✓ ' : '✗ '}${q.fb}</div>
+    <button class="warmup-next" onclick="warmupIdx++;renderWarmup()">
+      ${warmupIdx < WARMUP_QS.length - 1 ? 'Next Question →' : 'See Results →'}
+    </button>`;
+
+  // Update dots
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map((_, i) => {
+    let cls = 'warmup-dot';
+    if (i < warmupAnswers.length) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    else if (i === warmupIdx + 1) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+
+renderWarmup();
+
+// ════════════════════════════════════════════════
+// GENERIC HELPERS
+// ════════════════════════════════════════════════
+function mkScore(id, correct, total) {
+  return `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total ? correct/total*100 : 0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+}
+
+// ════════════════════════════════════════════════
+// PREREQUISITE CHECKPOINT
+// ════════════════════════════════════════════════
 const PREREQ=[
   {p:'Compute: <code>−3 × (−7)</code>',a:21,s:'Negative × negative = positive. −3 × −7 = 21.'},
   {p:'Compute: <code>−8 + 15 − 3</code>',a:4,s:'−8 + 15 = 7, then 7 − 3 = 4.'},
@@ -271,93 +739,96 @@ const PREREQ=[
 ];
 function renderPrereq(){
   document.getElementById('prereqEx').innerHTML=`<h3>🔧 Foundation Check</h3><div class="exercise-sub">Quick check on negatives, fractions, order of operations. If any trip you up, the explanation will help.</div>`+
-    PREREQ.map((q,i)=>`<div class="ex-item"><div class="ex-prompt">${q.p}</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">${q.l||'= '}</span><input class="ex-input" type="text" id="pre${i}" placeholder="?"><button class="ex-btn" style="background:var(--psda)" onclick="chkPre(${i})">Check</button></div><div class="ex-fb" id="preFb${i}"></div></div>`).join('');
+    PREREQ.map((q,i)=>`<div class="ex-item"><div class="ex-prompt">${q.p}</div><div class="ex-input-row">${q.l?`<span style="font-size:.9rem;color:var(--muted)">${q.l}</span>`:''}<input class="ex-input" type="text" id="prq${i}" placeholder="?"><button class="ex-btn" onclick="chkPrq(${i})">Check</button></div><div class="ex-fb" id="prqFb${i}"></div></div>`).join('');
 }
-function chkPre(i){
-  const v=document.getElementById('pre'+i).value.trim(),fb=document.getElementById('preFb'+i),q=PREREQ[i];
-  if(!v){fb.className='ex-fb show wrong';fb.textContent='Enter an answer.';return;}
-  let ok=false;
-  if(q.acc)ok=q.acc.includes(v.replace(/\s/g,''));
-  else ok=Math.abs(parseFloat(v)-q.a)<0.01;
+function chkPrq(i){
+  const v=document.getElementById('prq'+i).value.trim(),fb=document.getElementById('prqFb'+i),q=PREREQ[i];
+  if(!v){fb.className='ex-fb show wrong';fb.textContent='Enter your answer.';return;}
+  const ok=q.a!==null?parseFloat(v)===q.a:(q.acc||[]).includes(v);
   fb.className='ex-fb show '+(ok?'correct':'wrong');
-  fb.textContent=(ok?'✓ Correct! ':'✗ Not quite. ')+q.s;
+  fb.textContent=(ok?'✓ Correct! ':'✗ ')+q.s;
 }
 renderPrereq();
 
-// ============ EQUATION SOLVER ============
-const SOL=[
-  {p:'Solve for x: <code>3x + 7 = 22</code>',a:5,s:'3x = 15 → x = 5',t:1},
-  {p:'Solve for x: <code>2(x − 4) = 3x + 6</code>',a:-14,s:'2x − 8 = 3x + 6 → x = −14',t:1},
-  {p:'Solve for x: <code>5x − 3 = 2x + 12</code>',a:5,s:'3x = 15 → x = 5',t:1},
-  {p:'Solve for x: <code>(2/3)x + 4 = 10</code>',a:9,s:'(2/3)x = 6 → x = 9',t:2},
-  {p:'Solve for x: <code>4(x + 1) − 2(x − 3) = 20</code>',a:5,s:'4x + 4 − 2x + 6 = 20 → 2x = 10 → x = 5',t:2},
-  {p:'If <code>2x − 5 = 9</code>, what is <code>6x − 15</code>?',a:27,s:'6x − 15 = 3(2x − 5) = 3(9) = 27. No need to solve for x!',t:2,l:'6x − 15 ='},
+// ════════════════════════════════════════════════
+// EQUATION SOLVER
+// ════════════════════════════════════════════════
+const SOLV=[
+  {p:'Solve: <code>3x + 7 = 22</code>',a:5,s:'3x = 15 → x = 5.',t:1},
+  {p:'Solve: <code>2(x − 4) = 14</code>',a:11,s:'2x − 8 = 14 → 2x = 22 → x = 11.',t:1},
+  {p:'Solve: <code>5x − 3 = 2x + 12</code>',a:5,s:'3x = 15 → x = 5.',t:1},
+  {p:'Solve: <code>−4x + 10 = 2</code>',a:2,s:'−4x = −8 → x = 2.',t:1},
+  {p:'Solve: <code>3(2x + 1) − 4 = 5x + 6</code>',a:7,s:'6x + 3 − 4 = 5x + 6 → x = 7.',t:2},
+  {p:'If <code>2x + 8 = 20</code>, what is <code>x + 4</code>?<br><span style="font-size:.78rem;color:var(--psda)">🎯 Watch out — The Wrong Target!</span>',a:10,s:'Shortcut: divide whole equation by 2 → x + 4 = 10. Don\'t solve for x first!',t:2},
 ];
-function renderSol(){
-  document.getElementById('solverEx').innerHTML=`<h3>🧮 Solve It</h3><div class="exercise-sub">Type the value. Watch #6 — it's a trap!</div>`+
-    SOL.map((q,i)=>`<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-${q.t}">${q.t===1?'Easy':'Medium'}</span></div><div class="ex-prompt">${q.p}</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">${q.l||'x ='}</span><input class="ex-input" type="number" step="any" id="sol${i}" placeholder="?"><button class="ex-btn" onclick="chkSol(${i})">Check</button></div><div class="ex-fb" id="solFb${i}"></div></div>`).join('');
+function renderSolv(){
+  document.getElementById('solverEx').innerHTML=`<h3>🧮 Solve It</h3><div class="exercise-sub">Type the value. Watch #6 — it's a <strong>Wrong Target</strong> trap!</div>`+
+    SOLV.map((q,i)=>`<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-${q.t}">${q.t===1?'Easy':'Medium'}</span></div><div class="ex-prompt">${q.p}</div><div class="ex-input-row"><input class="ex-input" type="text" id="sol${i}" placeholder="?"><button class="ex-btn" onclick="chkSol(${i})">Check</button></div><div class="ex-fb" id="solFb${i}"></div></div>`).join('');
 }
 function chkSol(i){
-  const v=parseFloat(document.getElementById('sol'+i).value),fb=document.getElementById('solFb'+i),q=SOL[i];
-  if(isNaN(v)){fb.className='ex-fb show wrong';fb.textContent='Enter a number.';return;}
-  const ok=Math.abs(v-q.a)<0.01;
+  const v=document.getElementById('sol'+i).value.trim(),fb=document.getElementById('solFb'+i),q=SOLV[i];
+  if(!v){fb.className='ex-fb show wrong';fb.textContent='Enter your answer.';return;}
+  const ok=parseFloat(v)===q.a;
   fb.className='ex-fb show '+(ok?'correct':'wrong');
-  fb.textContent=(ok?'✓ Correct! ':'✗ Not quite. ')+q.s;
+  fb.textContent=(ok?'✓ Correct! ':'✗ Answer: '+q.a+'. ')+q.s;
 }
-renderSol();
+renderSolv();
 
-// ============ FORM IDENTIFICATION ============
-const FRM=[
-  {eq:'y = 3x − 7',c:'Slope-Intercept',fb:'y = mx + b. m = 3, b = −7.'},
-  {eq:'y − 5 = 2(x − 1)',c:'Point-Slope',fb:'y − y₁ = m(x − x₁). Point (1,5), slope 2.'},
-  {eq:'4x + 3y = 24',c:'Standard',fb:'Ax + By = C.'},
-  {eq:'y = −½x + 9',c:'Slope-Intercept',fb:'y = mx + b. m = −½, b = 9.'},
-  {eq:'y − 3 = −4(x + 2)',c:'Point-Slope',fb:'Point (−2,3), slope −4.'},
-  {eq:'7x − 2y = 14',c:'Standard',fb:'Ax + By = C.'},
+// ════════════════════════════════════════════════
+// IDENTIFY THE FORM
+// ════════════════════════════════════════════════
+const FORMS=[
+  {eq:'y = 4x − 7',c:'Slope-Intercept',fb:'y = mx + b pattern.'},
+  {eq:'y − 3 = 2(x − 5)',c:'Point-Slope',fb:'y − y₁ = m(x − x₁) pattern.'},
+  {eq:'3x + 2y = 12',c:'Standard',fb:'Ax + By = C pattern.'},
+  {eq:'y = −½x + 9',c:'Slope-Intercept',fb:'y = mx + b. The ½ is the slope.'},
+  {eq:'x − 4y = 8',c:'Standard',fb:'Ax + By = C.'},
+  {eq:'y − 1 = −3(x + 2)',c:'Point-Slope',fb:'y − y₁ = m(x − x₁). Note: x + 2 = x − (−2), so the point is (−2, 1).'},
 ];
-const FNAMES=['Slope-Intercept','Point-Slope','Standard'];
-let frmA={};
-function renderFrm(){
-  const tot=FRM.length,cor=Object.entries(frmA).filter(([i,v])=>v===FRM[i].c).length;
+let formA={};
+function renderForm(){
+  const opts=['Slope-Intercept','Point-Slope','Standard'],tot=FORMS.length,cor=Object.entries(formA).filter(([i,v])=>v===FORMS[i].c).length;
   document.getElementById('formEx').innerHTML=`<h3>📐 Name That Form</h3><div class="exercise-sub">Click the correct form.</div>`+
-    FRM.map((q,i)=>{const a=frmA[i],h=a!==undefined;
-      return `<div class="ex-item"><div class="ex-prompt" style="font-family:'JetBrains Mono',monospace;color:var(--math)">${q.eq}</div><div class="classify-opts">${FNAMES.map(f=>{let c='classify-opt';if(h){c+=' cl-dis';if(f===q.c)c+=' cl-correct';else if(f===a)c+=' cl-wrong';}return `<div class="${c}" onclick="aFrm(${i},'${f}')">${f}</div>`;}).join('')}</div><div class="ex-fb${h?' show':''}${h?(a===q.c?' correct':' wrong'):''}">${h?(a===q.c?'✓ ':'✗ ')+q.fb:''}</div></div>`;
+    FORMS.map((q,i)=>{const a=formA[i],h=a!==undefined;
+      return `<div class="ex-item"><div class="ex-prompt"><code>${q.eq}</code></div><div class="classify-opts">${opts.map(o=>{let c='classify-opt';if(h){c+=' cl-dis';if(o===q.c)c+=' cl-correct';else if(o===a)c+=' cl-wrong';}return `<div class="${c}" onclick="aForm(${i},'${o}')">${o}</div>`;}).join('')}</div>${h?`<div class="ex-fb show ${a===q.c?'correct':'wrong'}">${a===q.c?'✓ ':'✗ '}${q.fb}</div>`:''}</div>`;
     }).join('')+mkScore('f',cor,tot);
 }
-function aFrm(i,v){if(frmA[i]!==undefined)return;frmA[i]=v;renderFrm();}
-renderFrm();
+function aForm(i,v){if(formA[i]!==undefined)return;formA[i]=v;renderForm();}
+renderForm();
 
-// ============ SYSTEM CLASSIFIER ============
+// ════════════════════════════════════════════════
+// SYSTEMS CLASSIFIER
+// ════════════════════════════════════════════════
 const SYS=[
-  {a:'y = 2x + 3',b:'y = 2x − 1',c:'No Solution',fb:'Same slope, different intercepts → parallel.'},
   {a:'y = 3x + 1',b:'y = −x + 5',c:'One Solution',fb:'Different slopes → one intersection.'},
-  {a:'2x + 4y = 8',b:'x + 2y = 4',c:'Infinite Solutions',fb:'First ÷ 2 = second. Same line.'},
-  {a:'y = −2x + 6',b:'4x + 2y = 12',c:'Infinite Solutions',fb:'Substitute: always true.'},
-  {a:'3x + y = 7',b:'6x + 2y = 10',c:'No Solution',fb:'Second ÷ 2 = 3x + y = 5 ≠ 7.'},
+  {a:'y = 2x + 3',b:'y = 2x − 1',c:'No Solution',fb:'Same slope (2), different intercepts → parallel lines.'},
+  {a:'2x + 4y = 8',b:'x + 2y = 4',c:'Infinitely Many',fb:'Second equation × 2 = first. Same line.'},
   {a:'y = x − 2',b:'y = −3x + 6',c:'One Solution',fb:'Different slopes → one intersection.'},
+  {a:'3x − y = 6',b:'6x − 2y = 10',c:'No Solution',fb:'First × 2 = 6x − 2y = 12 ≠ 10. Parallel.'},
 ];
-const SOPTS=['One Solution','No Solution','Infinite Solutions'];
 let sysA={};
 function renderSys(){
-  const tot=SYS.length,cor=Object.entries(sysA).filter(([i,v])=>v===SYS[i].c).length;
+  const opts=['One Solution','No Solution','Infinitely Many'],tot=SYS.length,cor=Object.entries(sysA).filter(([i,v])=>v===SYS[i].c).length;
   document.getElementById('systemEx').innerHTML=`<h3>🔗 Classify the System</h3><div class="exercise-sub">How many solutions?</div>`+
     SYS.map((q,i)=>{const a=sysA[i],h=a!==undefined;
-      return `<div class="ex-item"><div class="ex-prompt"><span style="font-family:'JetBrains Mono',monospace;color:var(--math)">${q.a}</span><br><span style="font-family:'JetBrains Mono',monospace;color:var(--math)">${q.b}</span></div><div class="classify-opts">${SOPTS.map(o=>{let c='classify-opt';if(h){c+=' cl-dis';if(o===q.c)c+=' cl-correct';else if(o===a)c+=' cl-wrong';}return `<div class="${c}" onclick="aSys(${i},\`${o}\`)">${o}</div>`;}).join('')}</div><div class="ex-fb${h?' show':''}${h?(a===q.c?' correct':' wrong'):''}">${h?(a===q.c?'✓ ':'✗ ')+q.fb:''}</div></div>`;
+      return `<div class="ex-item"><div class="ex-prompt"><code>${q.a}</code><br><code>${q.b}</code></div><div class="classify-opts">${opts.map(o=>{let c='classify-opt';if(h){c+=' cl-dis';if(o===q.c)c+=' cl-correct';else if(o===a)c+=' cl-wrong';}return `<div class="${c}" onclick="aSys(${i},'${o}')">${o}</div>`;}).join('')}</div>${h?`<div class="ex-fb show ${a===q.c?'correct':'wrong'}">${a===q.c?'✓ ':'✗ '}${q.fb}</div>`:''}</div>`;
     }).join('')+mkScore('s',cor,tot);
 }
 function aSys(i,v){if(sysA[i]!==undefined)return;sysA[i]=v;renderSys();}
 renderSys();
 
-// ============ INEQUALITY SOLVER ============
+// ════════════════════════════════════════════════
+// INEQUALITY SOLVER
+// ════════════════════════════════════════════════
 const INQ=[
-  {p:'Solve: <code>x + 5 &gt; 12</code>',ans:'x > 7',acc:['x>7','x > 7'],s:'x > 7.',t:1},
-  {p:'Solve: <code>3x − 9 ≤ 6</code>',ans:'x ≤ 5',acc:['x<=5','x≤5','x <= 5','x ≤ 5'],s:'3x ≤ 15 → x ≤ 5.',t:1},
-  {p:'Solve: <code>−2x &gt; 10</code>',ans:'x < −5',acc:['x<-5','x < -5'],s:'Divide by −2, FLIP → x < −5.',t:2},
-  {p:'Solve: <code>−4x + 8 ≤ 20</code>',ans:'x ≥ −3',acc:['x>=-3','x >= -3','x≥-3'],s:'−4x ≤ 12 → FLIP → x ≥ −3.',t:2},
+  {p:'Solve: <code>2x + 3 > 11</code>',ans:'x > 4',acc:['x>4','x > 4'],s:'2x > 8 → x > 4.',t:1},
+  {p:'Solve: <code>−x ≤ 5</code>',ans:'x ≥ −5',acc:['x≥-5','x >= -5','x ≥ -5','x>=-5'],s:'Multiply by −1 and FLIP: x ≥ −5. 🎯 <strong>Sign Flip</strong> trap!',t:1},
+  {p:'Solve: <code>4x − 7 < 2x + 9</code>',ans:'x < 8',acc:['x<8','x < 8'],s:'2x < 16 → x < 8.',t:1},
+  {p:'Solve: <code>−2x + 6 ≥ 10</code>',ans:'x ≤ −2',acc:['x≤-2','x <= -2','x ≤ -2','x<=-2'],s:'−2x ≥ 4 → FLIP → x ≤ −2. 🎯 <strong>Sign Flip</strong> trap!',t:2},
   {p:'Solve: <code>5 − 3x &lt; 2x + 25</code>',ans:'x > −4',acc:['x>-4','x > -4'],s:'−5x < 20 → FLIP → x > −4.',t:2},
 ];
 function renderInq(){
-  document.getElementById('ineqEx').innerHTML=`<h3>⚖️ Inequality Solver</h3><div class="exercise-sub">Type the solution (e.g., "x > 7").</div>`+
+  document.getElementById('ineqEx').innerHTML=`<h3>⚖️ Inequality Solver</h3><div class="exercise-sub">Type the solution (e.g., "x > 7"). Watch for 🔄 <strong>Sign Flip</strong> traps!</div>`+
     INQ.map((q,i)=>`<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-${q.t}">${q.t===1?'Easy':'Medium'}</span></div><div class="ex-prompt">${q.p}</div><div class="ex-input-row"><input class="ex-input" type="text" id="inq${i}" placeholder="x > ?" style="width:140px"><button class="ex-btn" onclick="chkInq(${i})">Check</button></div><div class="ex-fb" id="inqFb${i}"></div></div>`).join('');
 }
 function chkInq(i){
@@ -369,18 +840,20 @@ function chkInq(i){
 }
 renderInq();
 
-// ============ TRAP SPOTTER ============
+// ════════════════════════════════════════════════
+// TRAP SPOTTER (now with taxonomy names)
+// ════════════════════════════════════════════════
 const TRP=[
-  {q:'If <code>2x + 8 = 20</code>, what is <code>x + 4</code>?',opts:['Asks for x + 4, not x','Needs sign flip','Wrong operation','No trap'],c:0,fb:'You might solve for x=6 and pick 6. But question asks for x+4=10. Shortcut: divide whole equation by 2.'},
-  {q:'Solve: <code>−3x &gt; 12</code>',opts:['Asks for expression','Need to flip sign','Distribute first','Standard solving'],c:1,fb:'Dividing by −3 requires flipping. x < −4, not x > −4.'},
-  {q:'A store sells shirts for $15 and pants for $25. A customer buys 8 items for $160. How many shirts?',opts:['One equation enough','Need two equations','Asks for pants','Prices swapped'],c:1,fb:'Two unknowns need two equations: s + p = 8 AND 15s + 25p = 160.'},
-  {q:'Line <code>y = 3x − 7</code> passes through (2, k). What is k?',opts:['Asks for slope','Need point-slope','Just plug in x=2','Solve for x first'],c:2,fb:'Just substitute: k = 3(2) − 7 = −1. Don\'t overcomplicate it.'},
-  {q:'Lines m and n are parallel. Line m has slope 4. Line n goes through (1,3) and (3,k). Find k.',opts:['Perpendicular not parallel','Use slope formula with parallel slope','Need standard form','Undefined slope'],c:1,fb:'Parallel → same slope 4. (k−3)/(3−1) = 4 → k = 11. Don\'t confuse with perpendicular.'},
+  {q:'If <code>2x + 8 = 20</code>, what is <code>x + 4</code>?',opts:['🎯 Wrong Target','🔄 Sign Flip','👻 Distribution Ghost','No trap'],c:0,fb:'<strong>Wrong Target.</strong> You might solve for x=6 and pick 6. But question asks for x+4=10. Shortcut: divide whole equation by 2.'},
+  {q:'Solve: <code>−3x &gt; 12</code>',opts:['🎯 Wrong Target','🔄 Sign Flip','👻 Distribution Ghost','🎭 Imposter Subject'],c:1,fb:'<strong>Sign Flip.</strong> Dividing by −3 requires flipping the sign. x < −4, not x > −4.'},
+  {q:'A store sells shirts for $15 and pants for $25. A customer buys 8 items for $160. How many shirts?',opts:['🎯 Wrong Target','🎭 Imposter Subject','🔀 One-Case Trap','Two equations needed'],c:3,fb:'Two unknowns need two equations: s + p = 8 AND 15s + 25p = 160. Not a named trap, but a setup recognition.'},
+  {q:'Line <code>y = 3x − 7</code> passes through (2, k). What is k?',opts:['🎯 Wrong Target','🎭 Imposter Subject','Just plug in x=2','🔄 Sign Flip'],c:2,fb:'Just substitute: k = 3(2) − 7 = −1. Don\'t overcomplicate it.'},
+  {q:'Lines m and n are parallel. Line m has slope 4. Line n goes through (1,3) and (3,k). Find k.',opts:['🎭 Imposter Subject (perpendicular not parallel)','Use slope formula with parallel slope','👻 Distribution Ghost','🔀 One-Case Trap'],c:1,fb:'Parallel → same slope 4. (k−3)/(3−1) = 4 → k = 11. The <strong>Imposter Subject</strong> trap would be confusing parallel with perpendicular.'},
 ];
 let trpA={};
 function renderTrp(){
   const tot=TRP.length,cor=Object.entries(trpA).filter(([i,v])=>v===TRP[i].c).length;
-  document.getElementById('trapEx').innerHTML=`<h3>🎯 Spot the Trap</h3><div class="exercise-sub">Identify the key insight or trap.</div>`+
+  document.getElementById('trapEx').innerHTML=`<h3>🎯 Spot the Trap</h3><div class="exercise-sub">Identify the key insight or trap using the taxonomy names.</div>`+
     TRP.map((q,i)=>{const a=trpA[i],h=a!==undefined;
       return `<div class="trap-item"><div class="trap-q">${q.q}</div><div class="trap-opts">${q.opts.map((o,oi)=>{let c='trap-opt';if(h){c+=' t-dis';if(oi===q.c)c+=' t-correct';else if(oi===a)c+=' t-wrong';}return `<div class="${c}" onclick="aTrp(${i},${oi})">${o}</div>`;}).join('')}</div><div class="trap-fb ${h?'show':''}">${h?q.fb:''}</div></div>`;
     }).join('')+mkScore('t',cor,tot);
@@ -388,7 +861,9 @@ function renderTrp(){
 function aTrp(i,v){if(trpA[i]!==undefined)return;trpA[i]=v;renderTrp();}
 renderTrp();
 
-// ============ WORD PROBLEM TRANSLATOR ============
+// ════════════════════════════════════════════════
+// WORD PROBLEM TRANSLATOR
+// ════════════════════════════════════════════════
 const WPT=[
   {phrase:'"is"',c:'=',opts:['=','+','×','÷']},
   {phrase:'"more than"',c:'+',opts:['=','+','−','×']},
@@ -412,28 +887,311 @@ function renderWPT(){
 function aWPT(i,v){if(wptA[i]!==undefined||!v)return;wptA[i]=v;renderWPT();}
 renderWPT();
 
-// ============ PSAT 8/9 PRACTICE ============
+// ════════════════════════════════════════════════
+// TIMED PRACTICE WITH CONFIDENCE & ERROR ANALYSIS
+// ════════════════════════════════════════════════
 const PST=[
-  {t:1,tp:'2A',q:'If <code>4x − 8 = 2x + 6</code>, what is x?',ch:['1','5','7','14'],c:2,fb:'2x = 14 → x = 7.'},
-  {t:1,tp:'2B',q:'What is the slope of <code>y = −3x + 12</code>?',ch:['12','−3','3','4'],c:1,fb:'In y = mx + b, slope = m = −3.'},
-  {t:1,tp:'2D',q:'Which represents all x where <code>3x − 5 > 7</code>?',ch:['x > 4','x > 2','x < 4','x > 12'],c:0,fb:'3x > 12 → x > 4.'},
-  {t:1,tp:'2A',q:'A streaming service charges $12 sign-up plus $8/month. Which gives cost C after m months?',ch:['C = 12m + 8','C = 8m + 12','C = 20m','C = 8(m+12)'],c:1,fb:'$8/month = 8m. $12 fixed = +12. C = 8m + 12.'},
-  {t:2,tp:'2B',q:'A line through (2, 5) with slope −3 has what y-intercept?',ch:['−1','1','11','−11'],c:2,fb:'y − 5 = −3(x − 2) → y = −3x + 11. Intercept = 11.'},
-  {t:2,tp:'2C',q:'If <code>2x + y = 10</code> and <code>x − y = 2</code>, what is x?',ch:['2','3','4','6'],c:2,fb:'Add equations: 3x = 12 → x = 4.'},
-  {t:2,tp:'2A',q:'If <code>3(x − 2) = 2(x + 4)</code>, what is x?',ch:['2','6','10','14'],c:3,fb:'3x − 6 = 2x + 8 → x = 14.'},
-  {t:2,tp:'2D',q:'Which graph shows <code>y ≤ 2x + 1</code>?',ch:['Solid line, shaded above','Solid line, shaded below','Dashed line, shaded below','Dashed line, shaded above'],c:1,fb:'≤ means solid line and shaded below the line (where y is less).'},
-  {t:3,tp:'2C',q:'<code>3x + ky = 12</code> and <code>9x + 15y = 36</code> have infinitely many solutions. What is k?',ch:['3','5','9','15'],c:1,fb:'Second = 3 × first. 15 = 3k → k = 5.'},
-  {t:3,tp:'2B',q:'Line p: <code>y = (2/5)x − 3</code>. Line q is perpendicular to p and goes through (4, 1). What is line q?',ch:['y = (2/5)x − 3/5','y = −(5/2)x + 11','y = (5/2)x − 9','y = −(2/5)x + 11/5'],c:1,fb:'Perpendicular slope = −5/2. y − 1 = −(5/2)(x − 4) → y = −(5/2)x + 11.'},
+  {t:1,tp:'2A',q:'If <code>4x − 8 = 2x + 6</code>, what is x?',ch:['1','5','7','14'],c:2,fb:'2x = 14 → x = 7.',
+   trap:null,misconception:'content_gap',trapAnswer:0,trapDesc:'Arithmetic error'},
+  {t:1,tp:'2B',q:'What is the slope of <code>y = −3x + 12</code>?',ch:['12','−3','3','4'],c:1,fb:'In y = mx + b, slope = m = −3.',
+   trap:'wrong_target',misconception:'content_gap',trapAnswer:0,trapDesc:'Confused y-intercept with slope'},
+  {t:1,tp:'2D',q:'Which represents all x where <code>3x − 5 > 7</code>?',ch:['x > 4','x > 2','x < 4','x > 12'],c:0,fb:'3x > 12 → x > 4.',
+   trap:null,misconception:'content_gap',trapAnswer:1,trapDesc:'Divided incorrectly'},
+  {t:1,tp:'2A',q:'A streaming service charges $12 sign-up plus $8/month. Which gives cost C after m months?',ch:['C = 12m + 8','C = 8m + 12','C = 20m','C = 8(m+12)'],c:1,fb:'$8/month = 8m. $12 fixed = +12. C = 8m + 12.',
+   trap:'wrong_target',misconception:'content_gap',trapAnswer:0,trapDesc:'Swapped slope and intercept — The Wrong Target'},
+  {t:2,tp:'2B',q:'A line through (2, 5) with slope −3 has what y-intercept?',ch:['−1','1','11','−11'],c:2,fb:'y − 5 = −3(x − 2) → y = −3x + 11. Intercept = 11.',
+   trap:'distribution_ghost',misconception:'content_gap',trapAnswer:3,trapDesc:'Sign error in distribution — The Distribution Ghost'},
+  {t:2,tp:'2C',q:'If <code>2x + y = 10</code> and <code>x − y = 2</code>, what is x?',ch:['2','3','4','6'],c:2,fb:'Add equations: 3x = 12 → x = 4.',
+   trap:null,misconception:'content_gap',trapAnswer:3,trapDesc:'Arithmetic error'},
+  {t:2,tp:'2A',q:'If <code>3(x − 2) = 2(x + 4)</code>, what is x?',ch:['2','6','10','14'],c:3,fb:'3x − 6 = 2x + 8 → x = 14.',
+   trap:'distribution_ghost',misconception:'content_gap',trapAnswer:0,trapDesc:'Forgot to distribute to second term — The Distribution Ghost'},
+  {t:2,tp:'2D',q:'Which graph shows <code>y ≤ 2x + 1</code>?',ch:['Solid line, shaded above','Solid line, shaded below','Dashed line, shaded below','Dashed line, shaded above'],c:1,fb:'≤ means solid line and shaded below the line (where y is less).',
+   trap:null,misconception:'content_gap',trapAnswer:2,trapDesc:'Confused solid vs dashed'},
+  {t:3,tp:'2C',q:'<code>3x + ky = 12</code> and <code>9x + 15y = 36</code> have infinitely many solutions. What is k?',ch:['3','5','9','15'],c:1,fb:'Second = 3 × first. 15 = 3k → k = 5.',
+   trap:null,misconception:'content_gap',trapAnswer:0,trapDesc:'Confused ratio'},
+  {t:3,tp:'2B',q:'Line p: <code>y = (2/5)x − 3</code>. Line q is perpendicular to p and goes through (4, 1). What is line q?',ch:['y = (2/5)x − 3/5','y = −(5/2)x + 11','y = (5/2)x − 9','y = −(2/5)x + 11/5'],c:1,fb:'Perpendicular slope = −5/2. y − 1 = −(5/2)(x − 4) → y = −(5/2)x + 11.',
+   trap:'imposter_subject',misconception:'content_gap',trapAnswer:0,trapDesc:'Used same slope instead of perpendicular — The Imposter Subject'},
 ];
-let pstA={};
-function renderPST(){
-  document.getElementById('psatPractice').innerHTML=PST.map((q,i)=>{const a=pstA[i],h=a!==undefined;
-    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}"><div style="margin-bottom:6px;display:flex;align-items:center;gap:8px"><span class="tier tier-${q.t}">${q.t===1?'Easy':q.t===2?'Medium':'Hard'}</span><span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span></div><div class="ex-prompt">${q.q}</div><div class="mc-choices">${q.ch.map((ch,ci)=>{let c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;}).join('')}</div><div class="mc-fb${h?' show':''}">${h?(a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
-  }).join('');
-}
-function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;renderPST();}
-renderPST();
 
+let pstA = {};       // answers
+let pstConf = {};    // confidence tags
+let pstTime = {};    // time per question (ms)
+let pstStartTime = null;
+
+// Timer system
+let timerEnabled = true;
+let timerInterval = null;
+let timerSeconds = 0;
+const SECS_PER_Q = 95; // PSAT pacing
+let totalTimerSecs = PST.length * SECS_PER_Q;
+
+function toggleTimer() {
+  timerEnabled = !timerEnabled;
+  const btn = document.getElementById('timerToggle');
+  btn.textContent = timerEnabled ? '⏱ Timer ON' : '⏱ Timer OFF';
+  btn.classList.toggle('active', timerEnabled);
+  if (!timerEnabled && timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    document.getElementById('timerDisplay').textContent = '--:--';
+    document.getElementById('timerFill').style.width = '100%';
+  } else if (timerEnabled && currentScreen === 3) {
+    startTimer();
+  }
+}
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerSeconds = totalTimerSecs;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      // Auto-finish remaining questions
+    }
+  }, 1000);
+  pstStartTime = Date.now();
+}
+
+function updateTimerDisplay() {
+  const disp = document.getElementById('timerDisplay');
+  const fill = document.getElementById('timerFill');
+  const mins = Math.floor(timerSeconds / 60);
+  const secs = timerSeconds % 60;
+  disp.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+  const pct = (timerSeconds / totalTimerSecs) * 100;
+  fill.style.width = pct + '%';
+
+  // Color warnings
+  disp.className = 'timer-display';
+  fill.className = 'timer-fill';
+  if (pct < 15) { disp.classList.add('danger'); fill.classList.add('danger'); }
+  else if (pct < 35) { disp.classList.add('warning'); fill.classList.add('warning'); }
+}
+
+function renderPST() {
+  const answered = Object.keys(pstA).length;
+
+  // Q dots
+  document.getElementById('qDots').innerHTML = PST.map((_, i) => {
+    let cls = 'q-dot';
+    if (pstA[i] !== undefined) cls += pstA[i] === PST[i].c ? ' correct' : ' wrong';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  document.getElementById('psatPractice').innerHTML = PST.map((q, i) => {
+    const a = pstA[i], h = a !== undefined;
+    const conf = pstConf[i];
+    const tierLabel = q.t === 1 ? 'Easy' : q.t === 2 ? 'Medium' : 'Hard';
+    const trapName = q.trap ? {'wrong_target':'🎯 Wrong Target','sign_flip':'🔄 Sign Flip','distribution_ghost':'👻 Distribution Ghost','imposter_subject':'🎭 Imposter Subject','one_case':'🔀 One-Case','percent_spiral':'🌀 Percent Spiral'}[q.trap] || '' : '';
+
+    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}">
+      <div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="tier tier-${q.t}">${tierLabel}</span>
+        <span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span>
+        ${trapName && h ? `<span style="font-size:.72rem;color:var(--accent)">Trap: ${trapName}</span>` : ''}
+      </div>
+      <div class="ex-prompt">${q.q}</div>
+      ${!h ? `<div class="confidence-row">
+        <div class="conf-tag ${conf==='guessing'?'selected':''}" data-conf="guessing" onclick="setConf(${i},'guessing')">Guessing</div>
+        <div class="conf-tag ${conf==='unsure'?'selected':''}" data-conf="unsure" onclick="setConf(${i},'unsure')">Unsure</div>
+        <div class="conf-tag ${conf==='confident'?'selected':''}" data-conf="confident" onclick="setConf(${i},'confident')">Confident</div>
+      </div>` : `<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">Confidence: ${conf || 'not tagged'}</div>`}
+      <div class="mc-choices">${q.ch.map((ch, ci) => {
+        let c = 'mc-choice';
+        if (h) { c += ' mc-dis'; if (ci === q.c) c += ' mc-correct'; else if (ci === a) c += ' mc-wrong'; }
+        return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
+      }).join('')}</div>
+      <div class="mc-fb${h ? ' show' : ''}">${h ? (a === q.c ? '✓ Correct! ' : '✗ Incorrect. ') + q.fb + (a !== q.c && q.trapAnswer === a ? '<br><span style="color:var(--psda)">⚠️ ' + q.trapDesc + '</span>' : '') : ''}</div>
+    </div>`;
+  }).join('');
+
+  // Show results when all answered
+  if (answered === PST.length) {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    document.getElementById('practiceNav').style.display = 'block';
+    showPracticeResults();
+  }
+}
+
+function setConf(i, level) {
+  if (pstA[i] !== undefined) return;
+  pstConf[i] = level;
+  renderPST();
+}
+
+function aPST(i, v) {
+  if (pstA[i] !== undefined) return;
+  pstA[i] = v;
+  // Track time
+  if (pstStartTime) {
+    pstTime[i] = Date.now() - pstStartTime;
+    pstStartTime = Date.now();
+  }
+  renderPST();
+}
+
+function showPracticeResults() {
+  const total = PST.length;
+  const correct = Object.entries(pstA).filter(([i, v]) => v === PST[i].c).length;
+
+  // Difficulty breakdown
+  const byDiff = {1:{cor:0,tot:0},2:{cor:0,tot:0},3:{cor:0,tot:0}};
+  PST.forEach((q, i) => {
+    byDiff[q.t].tot++;
+    if (pstA[i] === q.c) byDiff[q.t].cor++;
+  });
+
+  // Confidence × Correct matrix
+  const matrix = {};
+  ['guessing','unsure','confident'].forEach(conf => {
+    matrix[conf] = {correct:[], wrong:[]};
+  });
+  PST.forEach((q, i) => {
+    const conf = pstConf[i] || 'unsure';
+    const isCorrect = pstA[i] === q.c;
+    matrix[conf][isCorrect ? 'correct' : 'wrong'].push(i);
+  });
+
+  // Error pattern analysis
+  const errors = {content_gap:[], trap_answer:[], careless:[], calibration:[]};
+  PST.forEach((q, i) => {
+    if (pstA[i] === q.c) return;
+    const conf = pstConf[i] || 'unsure';
+    if (pstA[i] === q.trapAnswer) {
+      errors.trap_answer.push({i, desc:q.trapDesc, topic:q.tp});
+    } else {
+      errors.content_gap.push({i, topic:q.tp});
+    }
+    if (conf === 'confident') {
+      if (q.t === 1) errors.careless.push({i, topic:q.tp});
+      errors.calibration.push({i, topic:q.tp});
+    }
+  });
+
+  let html = `<div class="results-section">
+    <h3>📊 Practice Results: ${correct}/${total}</h3>
+
+    <div style="margin-bottom:20px">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Difficulty</div>
+      <div class="difficulty-bars">
+        <div class="diff-row">
+          <span class="diff-label" style="color:var(--algebra)">Easy</span>
+          <div class="diff-track"><div class="diff-fill" style="width:${byDiff[1].tot?byDiff[1].cor/byDiff[1].tot*100:0}%;background:var(--algebra)"></div></div>
+          <span class="diff-val" style="color:var(--algebra)">${byDiff[1].cor}/${byDiff[1].tot}</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-label" style="color:var(--math)">Medium</span>
+          <div class="diff-track"><div class="diff-fill" style="width:${byDiff[2].tot?byDiff[2].cor/byDiff[2].tot*100:0}%;background:var(--math)"></div></div>
+          <span class="diff-val" style="color:var(--math)">${byDiff[2].cor}/${byDiff[2].tot}</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-label" style="color:var(--advanced)">Hard</span>
+          <div class="diff-track"><div class="diff-fill" style="width:${byDiff[3].tot?byDiff[3].cor/byDiff[3].tot*100:0}%;background:var(--advanced)"></div></div>
+          <span class="diff-val" style="color:var(--advanced)">${byDiff[3].cor}/${byDiff[3].tot}</span>
+        </div>
+      </div>
+    </div>`;
+
+  // Confidence matrix
+  html += `<div style="margin-bottom:20px">
+    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Confidence × Accuracy Matrix</div>
+    <div class="results-grid">
+      <div class="results-grid-header"></div>
+      <div class="results-grid-header">Guessing</div>
+      <div class="results-grid-header">Unsure</div>
+      <div class="results-grid-header">Confident</div>
+
+      <div class="results-grid-header" style="writing-mode:horizontal-tb">✓ Correct</div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Lucky</div>
+        <div class="cell-dots">${matrix.guessing.correct.map(()=>`<div class="cell-dot" style="background:var(--psda)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.correct.length}</div>
+      </div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Developing</div>
+        <div class="cell-dots">${matrix.unsure.correct.map(()=>`<div class="cell-dot" style="background:var(--math)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.correct.length}</div>
+      </div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Solid</div>
+        <div class="cell-dots">${matrix.confident.correct.map(()=>`<div class="cell-dot" style="background:var(--correct)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.confident.correct.length}</div>
+      </div>
+
+      <div class="results-grid-header" style="writing-mode:horizontal-tb">✗ Wrong</div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Expected</div>
+        <div class="cell-dots">${matrix.guessing.wrong.map(()=>`<div class="cell-dot" style="background:var(--muted)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.wrong.length}</div>
+      </div>
+      <div class="results-grid-cell">
+        <div class="cell-label">Needs work</div>
+        <div class="cell-dots">${matrix.unsure.wrong.map(()=>`<div class="cell-dot" style="background:var(--psda)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.wrong.length}</div>
+      </div>
+      <div class="results-grid-cell danger-cell">
+        <div class="cell-label" style="color:var(--wrong);font-weight:700">⚠️ DANGER</div>
+        <div class="cell-dots">${matrix.confident.wrong.map(()=>`<div class="cell-dot" style="background:var(--wrong)"></div>`).join('')}</div>
+        <div style="font-size:.7rem;color:var(--wrong)">${matrix.confident.wrong.length}</div>
+      </div>
+    </div>
+    ${matrix.confident.wrong.length > 0 ? '<div class="callout" style="border-color:var(--wrong);background:var(--wrong-bg)"><strong style="color:var(--wrong)">Confident + Wrong</strong> is the most dangerous category. These errors persist into test day because you won\'t self-correct what you think you already know.</div>' : ''}
+  </div>`;
+
+  // Error patterns
+  const hasErrors = errors.trap_answer.length + errors.content_gap.length > 0;
+  if (hasErrors) {
+    html += `<div style="margin-bottom:16px">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Error Pattern Analysis</div>`;
+
+    if (errors.trap_answer.length > 0) {
+      html += `<div class="error-category" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3)">
+        <div class="error-label" style="color:var(--psda)">🟡 Trap Answers (${errors.trap_answer.length})</div>
+        <div class="error-items">${errors.trap_answer.map(e => e.desc).join(' · ')}</div>
+      </div>`;
+    }
+    if (errors.content_gap.length > 0) {
+      html += `<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)">
+        <div class="error-label" style="color:var(--wrong)">🔴 Content Gaps (${errors.content_gap.length})</div>
+        <div class="error-items">Topics: ${[...new Set(errors.content_gap.map(e=>e.topic))].join(', ')}</div>
+      </div>`;
+    }
+    if (errors.careless.length > 0) {
+      html += `<div class="error-category" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)">
+        <div class="error-label" style="color:var(--math)">🔵 Possible Careless Errors (${errors.careless.length})</div>
+        <div class="error-items">Confident + wrong on easy questions — likely arithmetic mistakes</div>
+      </div>`;
+    }
+    if (errors.calibration.length > 0) {
+      html += `<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)">
+        <div class="error-label" style="color:var(--wrong)">⚠️ Calibration Issues (${errors.calibration.length})</div>
+        <div class="error-items">You were confident but wrong — review these topics carefully</div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  html += `</div>`;
+  document.getElementById('practiceResults').style.display = 'block';
+  document.getElementById('practiceResults').innerHTML = html;
+
+  // Also populate the completion screen stats
+  document.getElementById('completePracticeStats').innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:24px;max-width:500px;width:100%;text-align:left">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Practice Results</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--correct);margin-bottom:8px">${correct}/${total} correct</div>
+      <div style="font-size:.82rem;color:var(--muted)">
+        Easy: ${byDiff[1].cor}/${byDiff[1].tot} · Medium: ${byDiff[2].cor}/${byDiff[2].tot} · Hard: ${byDiff[3].cor}/${byDiff[3].tot}
+      </div>
+    </div>`;
+}
+
+renderPST();
 </script>
 <script src="/translate.js"></script>
 </body>

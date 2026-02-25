@@ -146,7 +146,47 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .mod-nav{display:flex;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border);margin-top:16px;font-size:.9rem}
 .mod-nav a{color:var(--accent);text-decoration:none}
 .mod-nav a:hover{text-decoration:underline}
-@media(max-width:600px){.domain-grid{grid-template-columns:1fr}.adaptive-split{flex-direction:column}.mod-meta{flex-wrap:wrap;gap:10px}.traj-bar{height:32px}.traj-seg{font-size:.6rem}}
+/* Welcome Screen */
+.welcome-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--paper);z-index:200;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .5s ease,transform .5s ease}
+.welcome-overlay.hidden{opacity:0;pointer-events:none;transform:translateY(-20px)}
+.welcome-inner{text-align:center;max-width:700px;padding:0 24px;opacity:0;transform:translateY(16px);transition:all .7s ease}
+.welcome-inner.show{opacity:1;transform:translateY(0)}
+.welcome-badge{display:inline-block;background:var(--accent-light);border:1px solid rgba(8,145,178,.4);border-radius:12px;padding:6px 18px;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;font-weight:600}
+.welcome-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4.5vw,3rem);font-weight:800;background:linear-gradient(135deg,var(--accent),var(--math));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;margin-bottom:16px}
+.welcome-sub{color:var(--muted);font-size:18px;max-width:560px;margin:0 auto 12px;line-height:1.6}
+.welcome-context{background:var(--accent-light);border:1px solid rgba(8,145,178,.3);border-radius:12px;padding:14px 22px;max-width:540px;margin:0 auto 40px;font-size:14px;color:var(--muted);line-height:1.6}
+.welcome-context strong{color:var(--accent)}
+.welcome-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;max-width:700px;margin:0 auto 48px}
+.welcome-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center}
+.welcome-card-icon{font-size:28px;margin-bottom:6px}
+.welcome-card-title{color:var(--ink);font-weight:700;font-size:14px;margin-bottom:4px}
+.welcome-card-desc{color:var(--muted);font-size:12px;line-height:1.4}
+.welcome-btn{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--math));color:#fff;font-family:inherit;font-size:15px;font-weight:700;padding:12px 28px;border:none;border-radius:10px;cursor:pointer;transition:transform .12s}
+.welcome-btn:hover{transform:scale(1.04)}
+.welcome-time{color:var(--muted);font-size:13px;margin-top:24px}
+.main-content{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.main-content.show{opacity:1;transform:translateY(0)}
+/* Difficulty Tags */
+.diag-diff{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;display:inline-block;padding:2px 8px;border-radius:4px;margin-left:6px}
+.diff-easy{background:rgba(34,197,94,.12);color:var(--correct)}
+.diff-medium{background:rgba(251,191,36,.12);color:var(--psda)}
+.diff-hard{background:rgba(239,68,68,.12);color:var(--wrong)}
+/* Completion Screen */
+.complete-screen{display:none;text-align:center;padding:60px 20px;min-height:80vh}
+.complete-screen.show{display:block}
+.complete-icon{font-size:64px;margin-bottom:16px}
+.complete-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,4vw,2.4rem);font-weight:800;margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:15px;margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto}
+.complete-takeaways,.takeaway-list{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;max-width:520px;margin:0 auto 32px;text-align:left}
+.complete-takeaway,.takeaway-item{display:flex;gap:8px;margin-bottom:8px;font-size:13px;line-height:1.6;color:var(--muted)}
+.complete-takeaway .check,.takeaway-item span:first-child{color:var(--correct);flex-shrink:0}
+.takeaway-label{color:var(--accent);font-weight:700;font-size:15px;margin-bottom:12px}
+.complete-nav{display:flex;justify-content:center;gap:12px;margin-top:32px}
+.complete-nav a{padding:10px 20px;border-radius:10px;text-decoration:none;font-size:13px;font-weight:700;transition:transform .12s}
+.complete-nav a:hover{transform:scale(1.03)}
+.complete-nav .nav-home,.complete-nav .cn-home{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.complete-nav .nav-next,.complete-nav .cn-next{background:linear-gradient(135deg,var(--accent),var(--math));color:#fff}
+@media(max-width:600px){.domain-grid{grid-template-columns:1fr}.adaptive-split{flex-direction:column}.mod-meta{flex-wrap:wrap;gap:10px}.traj-bar{height:32px}.traj-seg{font-size:.6rem}.welcome-grid{grid-template-columns:repeat(2,1fr)}}
 /* Strategy Cards */
 .strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
 .strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
@@ -160,6 +200,29 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <body>
 <div class="top-stripe"></div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- WELCOME SCREEN -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-inner" id="welcomeInner">
+    <div class="welcome-badge">Phase 1 · Module 1</div>
+    <h1 class="welcome-title">Welcome to PSAT 8/9 Math</h1>
+    <p class="welcome-sub">Understand the test, see where it fits in your journey, establish your baseline, and build your study plan.</p>
+    <div class="welcome-context">
+      <strong>Your First Step: </strong>This module covers everything you need to know about the PSAT 8/9 Math section — format, question types, strategies, and your diagnostic baseline.
+    </div>
+    <div class="welcome-grid">
+      <div class="welcome-card"><div class="welcome-card-icon">📋</div><div class="welcome-card-title">Test Structure</div><div class="welcome-card-desc">Format, timing, scoring</div></div>
+      <div class="welcome-card"><div class="welcome-card-icon">🎯</div><div class="welcome-card-title">Strategy Toolkit</div><div class="welcome-card-desc">6 core math strategies</div></div>
+      <div class="welcome-card"><div class="welcome-card-icon">📝</div><div class="welcome-card-title">20-Q Diagnostic</div><div class="welcome-card-desc">Find your baseline</div></div>
+      <div class="welcome-card"><div class="welcome-card-icon">🔍</div><div class="welcome-card-title">Error Analysis</div><div class="welcome-card-desc">Classify your mistakes</div></div>
+      <div class="welcome-card"><div class="welcome-card-icon">📈</div><div class="welcome-card-title">Study Plan</div><div class="welcome-card-desc">Personalized next steps</div></div>
+    </div>
+    <button class="welcome-btn" onclick="dismissWelcome()">Start Learning →</button>
+    <div class="welcome-time">⏱ ~60 min · All 4 Math Domains</div>
+  </div>
+</div>
+
+<div class="main-content" id="mainContent">
 <div class="container">
 <a class="back-link" href="index.html">← Back to PSAT 8/9 Math Course</a>
 
@@ -397,33 +460,69 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     <p><strong style="color:var(--ink)">4. Use the Score Projector</strong> \u2014 Enter your raw scores to estimate your scaled score and see where you stand.</p>
     <p><strong style="color:var(--ink)">5. Identify Your Top 3 Priority Areas</strong> \u2014 Based on the error analysis, what domains/topics cost you the most points?</p>
     <p style="margin:0"><strong style="color:var(--ink)">6. Explore Desmos</strong> \u2014 Go to <a href="https://desmos.com/calculator" target="_blank" style="color:var(--math)">desmos.com/calculator</a> and spend 15 minutes graphing equations and finding intersection points.</p>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+      <div style="font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px">Real-World Transfer</div>
+      <p><strong style="color:var(--ink)">7. Find Math in the Wild</strong> \u2014 Find a graph or chart in a news article, social media post, or textbook. Identify: What type of data is shown? What's the scale? Is anything misleading about how it's presented?</p>
+      <p><strong style="color:var(--ink)">8. Mental Math Challenge</strong> \u2014 Next time you're at a store or restaurant, estimate a percentage mentally before checking with a calculator. (Tip: 15% = 10% + half of 10%.) How close were you?</p>
+      <p style="margin:0"><strong style="color:var(--ink)">9. Desmos Discovery</strong> \u2014 Graph <code style="background:var(--math-bg);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem">y = x²</code>, then graph <code style="background:var(--math-bg);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem">y = (x − 3)² + 2</code>. Describe what changed. Then predict what <code style="background:var(--math-bg);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem">y = (x + 1)² − 4</code> will look like <em>before</em> graphing it.</p>
+    </div>
   </div>
 </div>
 
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>The PSAT 8/9 Math section has <strong>44 questions in 70 minutes</strong>, split into two adaptive modules of 22 questions each.</li>
-      <li>Module 1 performance determines your Module 2 difficulty — and your <strong>score ceiling</strong>. Accuracy in Module 1 matters most.</li>
-      <li>The four domains are Algebra (~35%), Advanced Math (~35%), Problem-Solving & Data Analysis (~15%), and Geometry (~15%). <strong>No trig.</strong></li>
-      <li>A <strong>Desmos graphing calculator</strong> is available on every question. With CAS calculators now banned, mastering Desmos is essential.</li>
-      <li>There's <strong>no penalty for wrong answers</strong> — never leave a question blank.</li>
-      <li>Your PSAT 8/9 score uses the <strong>same scale as the SAT</strong> — every point of growth here carries forward to future tests.</li>
-      <li>Error analysis is the most powerful study tool: identify <em>why</em> you missed a question, not just <em>what</em> you missed.</li>
-      <li>The college readiness benchmark is <strong>450</strong>. That's your first target.</li>
-    </ol>
+<div class="section" style="text-align:center;padding-top:12px">
+  <button class="btn" style="background:linear-gradient(135deg,var(--accent),var(--math));font-size:1rem;padding:14px 36px" onclick="showComplete()">Finish Module →</button>
+</div>
+
+<div class="complete-screen" id="completeScreen">
+  <div class="complete-icon">🏆</div>
+  <h1 class="complete-title">Module 1 Complete!</h1>
+  <p class="complete-sub">You've learned the PSAT 8/9 Math structure, explored all four content domains, completed your diagnostic assessment, and built your personalized study plan.</p>
+  <div class="takeaway-list">
+    <div class="takeaway-label">📋 Key Takeaways</div>
+    <div class="takeaway-item"><span>✓</span><span>The PSAT 8/9 Math section has <strong>44 questions in 70 minutes</strong>, split into two adaptive modules of 22 questions each.</span></div>
+    <div class="takeaway-item"><span>✓</span><span>Module 1 performance determines your Module 2 difficulty — and your <strong>score ceiling</strong>. Accuracy in Module 1 matters most.</span></div>
+    <div class="takeaway-item"><span>✓</span><span>The four domains are Algebra (~35%), Advanced Math (~35%), Problem-Solving & Data Analysis (~15%), and Geometry (~15%). <strong>No trig.</strong></span></div>
+    <div class="takeaway-item"><span>✓</span><span>A <strong>Desmos graphing calculator</strong> is available on every question. With CAS calculators now banned, mastering Desmos is essential.</span></div>
+    <div class="takeaway-item"><span>✓</span><span>There's <strong>no penalty for wrong answers</strong> — never leave a question blank.</span></div>
+    <div class="takeaway-item"><span>✓</span><span>Your PSAT 8/9 score uses the <strong>same scale as the SAT</strong> — every point of growth carries forward.</span></div>
+    <div class="takeaway-item"><span>✓</span><span>Error analysis is the most powerful study tool: identify <em>why</em> you missed a question, not just <em>what</em> you missed.</span></div>
+    <div class="takeaway-item"><span>✓</span><span>The college readiness benchmark is <strong>450</strong>. That's your first target.</span></div>
+  </div>
+  <div class="complete-nav">
+    <a class="cn-home" href="index.html">← Course Home</a>
+    <a class="cn-next" href="module-2.html">Module 2: Algebra →</a>
   </div>
 </div>
 
-<div class="mod-nav">
+<div class="mod-nav" id="oldNav">
   <a href="index.html">← Course Home</a>
   <a href="module-2.html">Module 2: Algebra →</a>
 </div>
-</div>
+</div><!-- /.container -->
+</div><!-- /.main-content -->
 
 <script>
+// ============ WELCOME SCREEN ============
+function dismissWelcome(){
+  document.getElementById('welcomeOverlay').classList.add('hidden');
+  document.getElementById('mainContent').classList.add('show');
+  document.body.style.overflow='';
+}
+// Prevent scrolling while welcome is visible
+document.body.style.overflow='hidden';
+// Animate welcome in
+setTimeout(function(){ document.getElementById('welcomeInner').classList.add('show'); }, 100);
+
+// ============ COMPLETION SCREEN ============
+function showComplete(){
+  var cs=document.getElementById('completeScreen');
+  cs.style.display='block';
+  cs.classList.add('show');
+  var oldNav=document.getElementById('oldNav');
+  if(oldNav)oldNav.style.display='none';
+  cs.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
 // ============ PROGRESS BAR ============
 window.addEventListener('scroll',()=>{
   const h=document.documentElement.scrollHeight-window.innerHeight;
@@ -513,64 +612,64 @@ function updateScores(){
 
 // ============ MINI DIAGNOSTIC ============
 const DIAG_QS=[
-  {domain:'Algebra',color:'var(--algebra)',stem:'If <code>3(2x − 5) = 4x + 7</code>, what is the value of <code>x</code>?',
+  {domain:'Algebra',color:'var(--algebra)',diff:'easy',stem:'If <code>3(2x − 5) = 4x + 7</code>, what is the value of <code>x</code>?',
    choices:['8','9','11','22/6'],correct:2,
    explain:'Distribute: 6x − 15 = 4x + 7. Subtract 4x: 2x − 15 = 7. Add 15: 2x = 22. Divide: x = 11.'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'A gym charges a $50 registration fee plus $25 per month. Which equation represents the total cost <code>C</code> after <code>m</code> months?',
+  {domain:'Algebra',color:'var(--algebra)',diff:'easy',stem:'A gym charges a $50 registration fee plus $25 per month. Which equation represents the total cost <code>C</code> after <code>m</code> months?',
    choices:['C = 50m + 25','C = 25m + 50','C = 75m','C = 25(m + 50)'],correct:1,
    explain:'The fixed fee ($50) is the y-intercept, and $25/month is the slope. C = 25m + 50.'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'The system <code>2x + 3y = 12</code> and <code>4x + 6y = 24</code> has how many solutions?',
+  {domain:'Algebra',color:'var(--algebra)',diff:'medium',stem:'The system <code>2x + 3y = 12</code> and <code>4x + 6y = 24</code> has how many solutions?',
    choices:['Zero','Exactly one','Exactly two','Infinitely many'],correct:3,
    explain:'The second equation is exactly 2× the first. They\'re the same line → infinitely many solutions.'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'What are the solutions to <code>x² − 5x + 6 = 0</code>?',
+  {domain:'Advanced Math',color:'var(--advanced)',diff:'easy',stem:'What are the solutions to <code>x² − 5x + 6 = 0</code>?',
    choices:['x = 2 and x = 3','x = −2 and x = −3','x = 1 and x = 6','x = −1 and x = −6'],correct:0,
    explain:'Factor: (x − 2)(x − 3) = 0 → x = 2 or x = 3. Check: 2² − 5(2) + 6 = 0 ✓'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'If <code>f(x) = 2x² − 3</code>, what is <code>f(−4)</code>?',
+  {domain:'Advanced Math',color:'var(--advanced)',diff:'easy',stem:'If <code>f(x) = 2x² − 3</code>, what is <code>f(−4)</code>?',
    choices:['29','−35','5','−11'],correct:0,
    explain:'f(−4) = 2(−4)² − 3 = 2(16) − 3 = 32 − 3 = 29. Remember: (−4)² = 16 (positive!).'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'Which expression is equivalent to <code>(3x²)(4x³)</code>?',
+  {domain:'Advanced Math',color:'var(--advanced)',diff:'easy',stem:'Which expression is equivalent to <code>(3x²)(4x³)</code>?',
    choices:['7x⁵','12x⁵','12x⁶','7x⁶'],correct:1,
    explain:'Multiply coefficients: 3 × 4 = 12. Add exponents: x² · x³ = x⁵. Answer: 12x⁵.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A shirt originally costs $40 and is marked 30% off. What is the sale price?',
+  {domain:'Problem-Solving & Data',color:'var(--psda)',diff:'easy',stem:'A shirt originally costs $40 and is marked 30% off. What is the sale price?',
    choices:['$10','$12','$28','$30'],correct:2,
    explain:'30% of $40 = $12 discount. Sale price = $40 − $12 = $28. Or: $40 × 0.70 = $28.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'The mean of 5 numbers is 12. If a sixth number (30) is added, what is the new mean?',
+  {domain:'Problem-Solving & Data',color:'var(--psda)',diff:'medium',stem:'The mean of 5 numbers is 12. If a sixth number (30) is added, what is the new mean?',
    choices:['14','15','17','21'],correct:1,
    explain:'Original sum = 5 × 12 = 60. New sum = 60 + 30 = 90. New mean = 90 ÷ 6 = 15.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A researcher surveys 200 randomly selected students at a university of 10,000. 35% prefer online classes. Which conclusion is best?',
+  {domain:'Problem-Solving & Data',color:'var(--psda)',diff:'hard',stem:'A researcher surveys 200 randomly selected students at a university of 10,000. 35% prefer online classes. Which conclusion is best?',
    choices:['Exactly 3,500 students prefer online classes','About 35% at this university likely prefer online classes','35% of all college students prefer online classes','The survey is invalid — too small'],correct:1,
    explain:'A random sample supports inference about the population it was drawn from (this university), not all students everywhere.'},
-  {domain:'Geometry',color:'var(--geo)',stem:'A right triangle has legs of length 5 and 12. What is the length of the hypotenuse?',
+  {domain:'Geometry',color:'var(--geo)',diff:'easy',stem:'A right triangle has legs of length 5 and 12. What is the length of the hypotenuse?',
    choices:['13','15','17','√119'],correct:0,
    explain:'Pythagorean theorem: 5² + 12² = 25 + 144 = 169 = 13². This is the classic 5-12-13 triple.'},
-  {domain:'Geometry',color:'var(--geo)',stem:'A circle has area 36π. What is its circumference?',
+  {domain:'Geometry',color:'var(--geo)',diff:'medium',stem:'A circle has area 36π. What is its circumference?',
    choices:['6π','12π','18π','36π'],correct:1,
    explain:'Area = πr² = 36π → r = 6. Circumference = 2πr = 2π(6) = 12π.'},
-  {domain:'Geometry',color:'var(--geo)',stem:'Two parallel lines are cut by a transversal. One angle measures 65°. What is the measure of the same-side interior angle on the other parallel line?',
+  {domain:'Geometry',color:'var(--geo)',diff:'medium',stem:'Two parallel lines are cut by a transversal. One angle measures 65°. What is the measure of the same-side interior angle on the other parallel line?',
    choices:['65°','115°','25°','180°'],correct:1,
    explain:'Same-side (co-interior) angles are supplementary: 180° − 65° = 115°.'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'The line through (−1, 4) and (3, 12) has slope:',
+  {domain:'Algebra',color:'var(--algebra)',diff:'medium',stem:'The line through (−1, 4) and (3, 12) has slope:',
    choices:['2','4','1/2','−2'],correct:0,
    explain:'m = (12−4)/(3−(−1)) = 8/4 = 2.'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'If <code>|2x − 5| = 9</code>, what is the sum of all solutions?',
+  {domain:'Algebra',color:'var(--algebra)',diff:'hard',stem:'If <code>|2x − 5| = 9</code>, what is the sum of all solutions?',
    choices:['5','7','9','12'],correct:0,
    explain:'2x−5=9 → x=7. 2x−5=−9 → x=−2. Sum = 7+(−2) = 5.'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'The vertex of <code>y = x² − 8x + 12</code> is at:',
+  {domain:'Advanced Math',color:'var(--advanced)',diff:'medium',stem:'The vertex of <code>y = x² − 8x + 12</code> is at:',
    choices:['(4, −4)','(−4, 4)','(4, 12)','(8, 12)'],correct:0,
    explain:'x = −b/2a = 8/2 = 4. y = 16−32+12 = −4. Vertex (4,−4).'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'A population starts at 500 and doubles every 3 years. Which models this?',
+  {domain:'Advanced Math',color:'var(--advanced)',diff:'hard',stem:'A population starts at 500 and doubles every 3 years. Which models this?',
    choices:['500(2)^(t/3)','500(2)^(3t)','500 + 2t','1000t'],correct:0,
    explain:'Doubles every 3 years → base 2, exponent t/3.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A scatterplot shows strong positive linear association. The correlation r is closest to:',
+  {domain:'Problem-Solving & Data',color:'var(--psda)',diff:'medium',stem:'A scatterplot shows strong positive linear association. The correlation r is closest to:',
    choices:['0.91','0.12','−0.85','−0.45'],correct:0,
    explain:'Strong positive → r close to +1. 0.91.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A price increases 20% then decreases 20%. Compared to the original:',
+  {domain:'Problem-Solving & Data',color:'var(--psda)',diff:'hard',stem:'A price increases 20% then decreases 20%. Compared to the original:',
    choices:['Same','4% less','2% less','4% more'],correct:1,
    explain:'100 → 120 → 96. Net: 4% less. Successive percents trap!'},
-  {domain:'Geometry',color:'var(--geo)',stem:'A rectangle has area 48 and width 6. What is the perimeter?',
+  {domain:'Geometry',color:'var(--geo)',diff:'easy',stem:'A rectangle has area 48 and width 6. What is the perimeter?',
    choices:['28','22','54','16'],correct:0,
    explain:'Length = 48/6 = 8. Perimeter = 2(8+6) = 28.'},
-  {domain:'Geometry',color:'var(--geo)',stem:'The circle <code>(x − 3)² + (y + 1)² = 25</code> has center:',
+  {domain:'Geometry',color:'var(--geo)',diff:'hard',stem:'The circle <code>(x − 3)² + (y + 1)² = 25</code> has center:',
    choices:['(3, −1)','(−3, 1)','(3, 1)','(−3, −1)'],correct:0,
    explain:'(x−h)²+(y−k)²=r². h=3, k=−1. Center (3,−1). Watch the sign on (y+1)!'},
 ];
@@ -580,12 +679,15 @@ let diagConf=new Array(DIAG_QS.length).fill(null);
 let diagScored=false;
 
 function renderDiag(){
+  const diffColors={easy:'var(--correct)',medium:'var(--psda)',hard:'var(--wrong)'};
   const el=document.getElementById('diagQuestions');
   el.innerHTML=DIAG_QS.map((q,i)=>{
     const answered=diagAnswers[i]!==null;
     const isCorrect=answered&&diagAnswers[i]===q.correct;
+    const dc=diffColors[q.diff]||'var(--muted)';
     return `<div class="diag-q ${diagScored&&answered?'answered':''}">
       <div class="diag-domain" style="background:${q.color}22;color:${q.color}">${q.domain}</div>
+      <div class="diag-diff" style="background:${dc}22;color:${dc}">${q.diff}</div>
       <div class="diag-stem">${q.stem}</div>
       ${!diagScored?`<div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">How confident are you?</div>
       <div class="diag-conf">${['Guessing','Unsure','Confident'].map((c,ci)=>
@@ -616,6 +718,7 @@ function ansDiag(i,v){if(diagScored)return;diagAnswers[i]=v;renderDiag();}
 function scoreDiag(){
   diagScored=true;renderDiag();
   let total=0;const domScores={},domTotals={},miscal=[];
+  const diffScores={easy:0,medium:0,hard:0},diffTotals={easy:0,medium:0,hard:0};
   DIAG_QS.forEach((q,i)=>{
     const correct=diagAnswers[i]===q.correct;
     if(correct)total++;
@@ -623,19 +726,23 @@ function scoreDiag(){
     if(!domTotals[q.domain])domTotals[q.domain]=0;
     domTotals[q.domain]++;
     if(correct)domScores[q.domain]++;
+    diffTotals[q.diff]++;
+    if(correct)diffScores[q.diff]++;
     if(diagConf[i]===2&&!correct)miscal.push({q:i+1,type:'Overconfident',domain:q.domain});
     if(diagConf[i]===0&&correct)miscal.push({q:i+1,type:'Underconfident',domain:q.domain});
   });
   const colors={Algebra:'var(--algebra)','Advanced Math':'var(--advanced)','Problem-Solving & Data':'var(--psda)',Geometry:'var(--geo)'};
-  const pct=Math.round((total/12)*100);
+  const diffColors={easy:'var(--correct)',medium:'var(--psda)',hard:'var(--wrong)'};
+  const pct=Math.round((total/DIAG_QS.length)*100);
   let scoreColor=pct>=80?'var(--correct)':pct>=60?'var(--psda)':'var(--wrong)';
   document.getElementById('diagResults').style.display='block';
   document.getElementById('diagResults').innerHTML=`
     <div class="results">
       <div class="results-score">
-        <div class="results-big" style="color:${scoreColor}">${total}/12</div>
+        <div class="results-big" style="color:${scoreColor}">${total}/${DIAG_QS.length}</div>
         <div class="results-sub">${pct}% correct</div>
       </div>
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Domain</div>
       <div class="results-domains">${Object.keys(domScores).map(d=>{
         const s=domScores[d],t=domTotals[d],p=Math.round((s/t)*100);
         const c=p>=80?'var(--correct)':p>=50?'var(--psda)':'var(--wrong)';
@@ -643,6 +750,17 @@ function scoreDiag(){
           <div class="results-domain-name" style="color:${colors[d]}">${d}</div>
           <div class="results-domain-score" style="color:${c}">${s}/${t}</div>
           <div class="results-domain-bar"><div class="results-domain-fill" style="width:${p}%;background:${c}"></div></div>
+        </div>`;}).join('')}
+      </div>
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Difficulty</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">${['easy','medium','hard'].map(d=>{
+        const s=diffScores[d],t=diffTotals[d],p=t>0?Math.round((s/t)*100):0;
+        const dc=diffColors[d];
+        const label=d.charAt(0).toUpperCase()+d.slice(1);
+        return `<div class="results-domain">
+          <div class="results-domain-name" style="color:${dc}">${label}</div>
+          <div class="results-domain-score" style="color:${dc}">${s}/${t}</div>
+          <div class="results-domain-bar"><div class="results-domain-fill" style="width:${p}%;background:${dc}"></div></div>
         </div>`;}).join('')}
       </div>
       ${miscal.length>0?`<div style="margin-top:12px">
