@@ -295,16 +295,6 @@ body{background:var(--bg-deep);background-image:radial-gradient(ellipse at 30% 0
 .class-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .class-chip{padding:6px 14px;border-radius:20px;font-size:.8rem;cursor:pointer;border:1px solid var(--border);background:var(--bg-surface);color:var(--text-muted);transition:all .2s}
 .class-chip.active{border-color:var(--panther-red);color:var(--panther-red);background:rgba(200,16,46,.1)}
-.class-detail-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;transition:all .25s}
-.class-detail-card:hover{border-color:var(--panther-red)}
-.class-detail-code{font-family:var(--font-mono);font-size:2rem;font-weight:700;letter-spacing:.2em;color:var(--panther-red);text-align:center;padding:16px;background:var(--bg-surface);border-radius:var(--radius-md);cursor:pointer;user-select:all;transition:all .2s;margin:16px 0}
-.class-detail-code:hover{background:rgba(200,16,46,0.08);box-shadow:0 0 12px rgba(200,16,46,0.15)}
-.class-create-form{background:var(--bg-card);border:2px dashed var(--panther-red);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;text-align:center}
-.class-create-form input{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 16px;font-size:1rem;font-family:var(--font-body);color:var(--text-primary);width:100%;max-width:360px;margin-bottom:12px}
-.class-create-form input:focus{outline:none;border-color:var(--panther-red)}
-.class-create-form input::placeholder{color:var(--text-muted)}
-.class-dashboard-link{display:inline-flex;align-items:center;gap:6px;color:var(--panther-red);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s;background:none;border:none;font-family:var(--font-body);padding:0}
-.class-dashboard-link:hover{text-decoration:underline}
 .qm-modal-close{float:right;background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;padding:0 4px;line-height:1}
 .qm-modal-close:hover{color:var(--text-primary)}
 .qm-modal-title{font-family:var(--font-display);font-size:1.3rem;margin-bottom:4px}
@@ -1774,7 +1764,7 @@ function App(){
 const[user,setUser]=useState(null);const[isTchr,setIsTchr]=useState(false);const[loading,setLoading]=useState(true);const[err,setErr]=useState(null);
 const[view,setView]=useState('home');const[selTest,setSelTest]=useState(null);const[selDom,setSelDom]=useState(null);const[xpFlashG,setXpFlashG]=useState(0);
 const[stuClasses,setStuClasses]=useState([]);const[showJoin,setShowJoin]=useState(false);
-const[tchrClasses,setTchrClasses]=useState([]);const[selClassTab,setSelClassTab]=useState(null);const[showCreateClass,setShowCreateClass]=useState(false);const[newClassName,setNewClassName]=useState('');const[creatingClass,setCreatingClass]=useState(false);const[copiedCode,setCopiedCode]=useState(null);
+const[tchrClasses,setTchrClasses]=useState([]);const[showCreateClass,setShowCreateClass]=useState(false);const[newClassName,setNewClassName]=useState('');const[creatingClass,setCreatingClass]=useState(false);
 useEffect(()=>{if(!auth){setLoading(false);return}
 getRedirectResult(auth).then(function(result){
 if(result&&result.user){var e=result.user.email||'';if(!e.endsWith('@paps.net')){signOut(auth)}
@@ -1792,11 +1782,9 @@ const goHome=()=>{setView('home');setSelTest(null);setSelDom(null)};
 // Load student's classes for non-teachers
 useEffect(()=>{if(!user||!user.uid)return;if(!isTchr){loadStudentClasses(user.uid).then(function(c){setStuClasses(c)})}},[user,isTchr]);
 // Load teacher's classes
-useEffect(()=>{if(!user||!user.uid||!isTchr)return;loadTeacherClasses(user.uid).then(function(c){setTchrClasses(c);if(c.length>0&&!selClassTab)setSelClassTab(c[0].id)})},[user,isTchr]);
+useEffect(()=>{if(!user||!user.uid||!isTchr)return;loadTeacherClasses(user.uid).then(function(c){setTchrClasses(c)})},[user,isTchr]);
 // Teacher: create class from home page
 const handleCreateClassHome=async function(){if(!newClassName.trim())return;setCreatingClass(true);var cls=await createClass(newClassName.trim(),user.uid,user.email||'',user.displayName||'');setCreatingClass(false);if(cls){setTchrClasses(function(prev){return prev.concat([cls])});setSelClassTab(cls.id);setNewClassName('');setShowCreateClass(false)}else{alert('Failed to create class.')}};
-const copyClassCode=function(code,id){if(navigator.clipboard){navigator.clipboard.writeText(code)}setCopiedCode(id);setTimeout(function(){setCopiedCode(null)},2000)};
-
 if(loading)return h('div',{className:'login-screen'},h('div',{className:'login-logo',style:{animation:'pulse 1.5s infinite'}},'PANTHER',h('span',{className:'login-logo-accent'},'PREP')));
 
 if(!user)return h(Fragment,null,h('div',{className:'top-stripe'}),h('div',{className:'login-screen animate-in'},
@@ -1822,33 +1810,21 @@ stuClasses.map(function(c){return h('span',{key:c.id,className:'class-chip activ
 h('span',{className:'class-chip',onClick:function(){setShowJoin(!showJoin)},style:{cursor:'pointer'}},showJoin?'Cancel':'+ Join Class')):
 h('span',{className:'class-chip',onClick:function(){setShowJoin(!showJoin)},style:{cursor:'pointer'}},showJoin?'Cancel':'🏫 Join a Class')),
 !isTchr&&showJoin&&h(JoinClassCard,{user:user,onJoined:function(){setShowJoin(false);loadStudentClasses(user.uid).then(function(c){setStuClasses(c)})}}),
-// Teacher: inline create class form (shown when + New Class clicked)
-isTchr&&showCreateClass&&h('div',{className:'class-create-form'},
-h('div',{style:{fontSize:'2rem',marginBottom:'8px'}},'🏫'),
-h('div',{style:{fontWeight:600,fontSize:'1.1rem',marginBottom:'4px'}},'Create a New Class'),
-h('div',{style:{color:'var(--text-muted)',fontSize:'.9rem',marginBottom:'16px'}},'Your students will use a join code to enroll.'),
-h('input',{value:newClassName,onChange:function(e){setNewClassName(e.target.value)},placeholder:'e.g. Period 3 SAT Prep',onKeyDown:function(e){if(e.key==='Enter')handleCreateClassHome()}}),
-h('div',null,h('button',{className:'btn btn-primary',onClick:handleCreateClassHome,disabled:creatingClass,style:{padding:'10px 28px'}},creatingClass?'Creating...':'Create Class'),
-h('button',{onClick:function(){setShowCreateClass(false);setNewClassName('')},style:{marginLeft:'12px',background:'none',border:'none',color:'var(--text-muted)',cursor:'pointer',fontFamily:'var(--font-body)',fontSize:'.9rem'}},'Cancel'))),
-// Teacher: class detail card (shown when a class is selected)
-isTchr&&selClassTab&&!showCreateClass&&function(){var cls=tchrClasses.find(function(c){return c.id===selClassTab});if(!cls)return null;var count=(cls.studentUids||[]).length;return h('div',{className:'class-detail-card',style:{marginBottom:'20px'}},
-h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'8px'}},
-h('div',null,h('div',{style:{fontWeight:600,fontSize:'1.2rem'}},cls.name),h('div',{style:{color:'var(--text-muted)',fontSize:'.9rem',marginTop:'4px'}},count+' student'+(count!==1?'s':'')+' enrolled')),
-h('div',{style:{display:'flex',gap:'12px',alignItems:'center'}},
-h('button',{className:'class-dashboard-link',onClick:function(){setView('dashboard')}},'📊 Dashboard'),
-h('button',{onClick:function(){setSelClassTab(null)},style:{background:'none',border:'none',color:'var(--text-muted)',cursor:'pointer',fontSize:'1.1rem'}},'✕'))),
-h('div',{style:{fontSize:'.75rem',color:'var(--text-muted)',textAlign:'center',textTransform:'uppercase',letterSpacing:'.1em',marginTop:'12px'}},'Join Code — share with students'),
-h('div',{className:'class-detail-code',onClick:function(){copyClassCode(cls.code,cls.id)},title:'Click to copy'},cls.code+(copiedCode===cls.id?' ✓ Copied!':'')))}(),
-// Grid: class cards + new class button + dashboard + tests
+// Teacher: + New Class button (standalone, above grid)
+isTchr&&h('div',{style:{display:'flex',alignItems:'center',gap:'12px',marginBottom:'20px'}},
+!showCreateClass&&h('button',{onClick:function(){setShowCreateClass(true)},style:{padding:'8px 18px',borderRadius:'8px',border:'1px dashed var(--border)',background:'transparent',color:'var(--text-muted)',fontFamily:'var(--font-body)',fontSize:'.85rem',fontWeight:500,cursor:'pointer',transition:'all .2s'}},
+'+ New Class'),
+showCreateClass&&h('div',{style:{display:'flex',alignItems:'center',gap:'8px',flex:1,maxWidth:'420px'}},
+h('input',{value:newClassName,onChange:function(e){setNewClassName(e.target.value)},placeholder:'e.g. Period 3 SAT Prep',onKeyDown:function(e){if(e.key==='Enter')handleCreateClassHome()},style:{flex:1,background:'var(--bg-surface)',border:'1px solid var(--border)',borderRadius:'8px',padding:'8px 14px',fontSize:'.9rem',fontFamily:'var(--font-body)',color:'var(--text-primary)',outline:'none'}}),
+h('button',{className:'btn btn-primary',onClick:handleCreateClassHome,disabled:creatingClass,style:{padding:'8px 18px',fontSize:'.85rem',whiteSpace:'nowrap'}},creatingClass?'Creating...':'Create'),
+h('button',{onClick:function(){setShowCreateClass(false);setNewClassName('')},style:{background:'none',border:'none',color:'var(--text-muted)',cursor:'pointer',fontSize:'.9rem'}},'✕'))),
+// Grid: class cards + dashboard + tests
 h('div',{className:'test-grid'},
 // Teacher class cards in the grid
-isTchr&&tchrClasses.map(function(c){var count=(c.studentUids||[]).length;return h('div',{key:'cls-'+c.id,className:'test-card',style:{borderColor:selClassTab===c.id?'var(--panther-red)':'',cursor:'pointer'},onClick:function(){setSelClassTab(selClassTab===c.id?null:c.id);setShowCreateClass(false)}},
+isTchr&&tchrClasses.map(function(c){var count=(c.studentUids||[]).length;return h('div',{key:'cls-'+c.id,className:'test-card',style:{cursor:'pointer'},onClick:function(){setView('dashboard')}},
 h('div',{className:'test-card-title'},'📚 '+c.name),
 h('div',{className:'test-card-desc'},count+' student'+(count!==1?'s':'')+' enrolled'),
 h('div',{className:'test-card-stats'},h('span',{className:'test-stat'},'Code: '),h('span',{className:'test-stat'},h('strong',null,c.code))))}),
-// + New Class button card
-isTchr&&h('div',{className:'test-card',style:{cursor:'pointer',borderStyle:'dashed',display:'flex',alignItems:'center',justifyContent:'center',minHeight:'120px'},onClick:function(){setShowCreateClass(!showCreateClass);setSelClassTab(null)}},
-h('div',{style:{textAlign:'center'}},h('div',{style:{fontSize:'2rem',marginBottom:'8px'}},'+'),h('div',{className:'test-card-desc',style:{marginBottom:0,color:'var(--text-muted)'}},'New Class'))),
 // Dashboard card
 isTchr&&h('div',{className:'test-card',style:{borderColor:'var(--panther-red)',cursor:'pointer'},onClick:function(){setView('dashboard')}},
 h('div',{className:'test-card-title'},'📊 Dashboard'),
