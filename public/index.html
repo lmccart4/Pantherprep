@@ -1294,12 +1294,12 @@ return{id:ref.id,name:name,code:code,teacherUid:teacherUid,teacherEmail:teacherE
 
 async function loadTeacherClasses(teacherUid){
 if(!db)return[];
-try{var q2=query(collection(db,'classes'),where('teacherUid','==',teacherUid));var snap=await getDocs(q2);return snap.docs.map(function(d){return Object.assign({id:d.id},d.data())})}catch(e){console.warn('Load classes error:',e);return[]}
+try{var q2=query(collection(db,'classes'),where('teacherUid','==',teacherUid));var snap=await getDocs(q2);return snap.docs.map(function(d){return Object.assign({id:d.id},d.data())}).filter(function(c){return!c.deleted})}catch(e){console.warn('Load classes error:',e);return[]}
 }
 
 async function loadAllClasses(){
 if(!db)return[];
-try{var snap=await getDocs(collection(db,'classes'));return snap.docs.map(function(d){return Object.assign({id:d.id},d.data())})}catch(e){console.warn('Load all classes error:',e);return[]}
+try{var snap=await getDocs(collection(db,'classes'));return snap.docs.map(function(d){return Object.assign({id:d.id},d.data())}).filter(function(c){return!c.deleted})}catch(e){console.warn('Load all classes error:',e);return[]}
 }
 
 async function joinClass(code,studentUid,studentName,studentEmail){
@@ -1603,6 +1603,8 @@ var _s1=useState(false),showCreate=_s1[0],setShowCreate=_s1[1];
 var _s2=useState(''),newName=_s2[0],setNewName=_s2[1];
 var _s3=useState(false),creating=_s3[0],setCreating=_s3[1];
 var _s4=useState(null),copiedId=_s4[0],setCopiedId=_s4[1];
+var _s5=useState(null),deleting=_s5[0],setDeleting=_s5[1];
+var handleDelete=async function(cls){if(!confirm('Delete "'+cls.name+'"? This will remove all '+((cls.studentUids||[]).length)+' students from the class. This cannot be undone.'))return;setDeleting(cls.id);var ok=await deleteClass(cls.id);setDeleting(null);if(ok){setClasses(function(prev){return prev.filter(function(c){return c.id!==cls.id})})}else{alert('Failed to delete class.')}};
 
 var handleCreate=async function(){
 if(!newName.trim()){alert('Please enter a class name.');return}
@@ -1637,15 +1639,17 @@ h('div',{style:{color:'var(--text-muted)',fontSize:'.9rem'}},'Create a class and
 else{
 classes.forEach(function(cls){
 var count=(cls.studentUids||[]).length;
+var rightSide=h('div',{style:{display:'flex',alignItems:'center',gap:'12px'}},
+h('div',{style:{textAlign:'right'}},
+h('div',{style:{fontSize:'.75rem',color:'var(--text-muted)',marginBottom:'4px'}},'JOIN CODE'),
+h('div',{className:'class-code-sm',style:{cursor:'pointer'},onClick:function(){copyCode(cls.code,cls.id)},title:'Click to copy'},cls.code+(copiedId===cls.id?' ✓':''))),
+h('button',{onClick:function(){handleDelete(cls)},disabled:deleting===cls.id,style:{background:'none',border:'1px solid var(--border)',borderRadius:'6px',padding:'4px 10px',fontSize:'.75rem',color:'var(--text-muted)',cursor:'pointer',transition:'all .2s',fontFamily:'var(--font-body)'}},deleting===cls.id?'Deleting...':'🗑 Delete'));
 els.push(h('div',{key:cls.id,className:'class-card'},
 h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}},
 h('div',null,
 h('div',{style:{fontWeight:600,fontSize:'1.05rem'}},cls.name),
 h('div',{className:'class-student-count'},count+' student'+(count!==1?'s':''))),
-h('div',{style:{textAlign:'right'}},
-h('div',{style:{fontSize:'.75rem',color:'var(--text-muted)',marginBottom:'4px'}},'JOIN CODE'),
-h('div',{className:'class-code-sm',style:{cursor:'pointer'},onClick:function(){copyCode(cls.code,cls.id)},title:'Click to copy'},
-cls.code+(copiedId===cls.id?' ✓':''))))))})}
+rightSide)))})}
 
 return h(Fragment,null,els)}
 
@@ -1784,7 +1788,8 @@ useEffect(()=>{if(!user||!user.uid)return;if(!isTchr){loadStudentClasses(user.ui
 // Load teacher's classes
 useEffect(()=>{if(!user||!user.uid||!isTchr)return;loadTeacherClasses(user.uid).then(function(c){setTchrClasses(c)})},[user,isTchr]);
 // Teacher: create class from home page
-const handleCreateClassHome=async function(){if(!newClassName.trim())return;setCreatingClass(true);var cls=await createClass(newClassName.trim(),user.uid,user.email||'',user.displayName||'');setCreatingClass(false);if(cls){setTchrClasses(function(prev){return prev.concat([cls])});setSelClassTab(cls.id);setNewClassName('');setShowCreateClass(false)}else{alert('Failed to create class.')}};
+const handleCreateClassHome=async function(){if(!newClassName.trim())return;setCreatingClass(true);var cls=await createClass(newClassName.trim(),user.uid,user.email||'',user.displayName||'');setCreatingClass(false);if(cls){setTchrClasses(function(prev){return prev.concat([cls])});setNewClassName('');setShowCreateClass(false)}else{alert('Failed to create class.')}};
+const handleDeleteClassHome=async function(cls){if(!confirm('Delete "'+cls.name+'"? This will remove all '+((cls.studentUids||[]).length)+' students from the class. This cannot be undone.'))return;var ok=await deleteClass(cls.id);if(ok){setTchrClasses(function(prev){return prev.filter(function(c){return c.id!==cls.id})})}else{alert('Failed to delete class.')}};
 if(loading)return h('div',{className:'login-screen'},h('div',{className:'login-logo',style:{animation:'pulse 1.5s infinite'}},'PANTHER',h('span',{className:'login-logo-accent'},'PREP')));
 
 if(!user)return h(Fragment,null,h('div',{className:'top-stripe'}),h('div',{className:'login-screen animate-in'},
@@ -1824,7 +1829,8 @@ h('div',{className:'test-grid'},
 isTchr&&tchrClasses.map(function(c){var count=(c.studentUids||[]).length;return h('div',{key:'cls-'+c.id,className:'test-card',style:{cursor:'pointer'},onClick:function(){setView('dashboard')}},
 h('div',{className:'test-card-title'},'📚 '+c.name),
 h('div',{className:'test-card-desc'},count+' student'+(count!==1?'s':'')+' enrolled'),
-h('div',{className:'test-card-stats'},h('span',{className:'test-stat'},'Code: '),h('span',{className:'test-stat'},h('strong',null,c.code))))}),
+h('div',{className:'test-card-stats',style:{justifyContent:'space-between',alignItems:'center'}},h('div',null,h('span',{className:'test-stat'},'Code: '),h('span',{className:'test-stat'},h('strong',null,c.code))),
+h('button',{onClick:function(e){e.stopPropagation();handleDeleteClassHome(c)},style:{background:'none',border:'1px solid var(--border)',borderRadius:'6px',padding:'4px 10px',fontSize:'.75rem',color:'var(--text-muted)',cursor:'pointer',transition:'all .2s',fontFamily:'var(--font-body)'}},'🗑 Delete')))}),
 // Dashboard card
 isTchr&&h('div',{className:'test-card',style:{borderColor:'var(--panther-red)',cursor:'pointer'},onClick:function(){setView('dashboard')}},
 h('div',{className:'test-card-title'},'📊 Dashboard'),
