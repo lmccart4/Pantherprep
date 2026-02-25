@@ -6,16 +6,57 @@
 <title>Module 1: Welcome & Diagnostic — PSAT/NMSQT Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geotrig:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--nm:#d4a017}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--geotrig:#f87171;--geotrig-bg:rgba(248,113,113,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08);--nm:#d4a017;--des:#2bc4a9;--des-bg:rgba(43,196,169,.1);--strat:#f97316;--strat-bg:rgba(249,115,22,.1)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
 
-/* PROGRESS BAR */
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--math));width:0%;transition:width .3s ease}
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--accent)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(200,16,46,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
 
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+
+/* WELCOME SCREEN */
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,16,46,.3)}
+
+/* COMPLETE SCREEN */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
+
+/* LESSON CHROME */
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
@@ -179,14 +220,14 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}
 .btn-outline:hover{background:var(--accent-light)}
 
-/* NAV */
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
-
-/* ANIMATIONS */
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeIn .4s ease forwards}
+/* STRATEGY GRID */
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
+.strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
+.strat-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.strat-card.flipped .sf-front{display:none}.strat-card.flipped .sf-back{display:block}
+.sf-front{text-align:center}.sf-icon{font-size:2rem;margin-bottom:6px}.sf-title{font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:4px}
+.sf-hint{font-size:.78rem;color:var(--muted)}.sf-flip{font-size:.68rem;color:var(--accent);margin-top:8px;text-transform:uppercase;letter-spacing:1px}
+.sf-back{font-size:.85rem;color:#ccc;line-height:1.6;display:none}
 
 @media(max-width:600px){
   .mod-meta{flex-wrap:wrap;gap:10px}
@@ -195,19 +236,37 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   .si-inputs{grid-template-columns:1fr}
   .results-domains{grid-template-columns:1fr}
   .ec-options{flex-direction:column}
+  .preview-grid{grid-template-columns:1fr 1fr}
+  .welcome-meta{flex-wrap:wrap;gap:12px}
+  .nav-cards{grid-template-columns:1fr}
 }
-.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
-.strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
-.strat-card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.strat-card.flipped .sf-front{display:none}.strat-card.flipped .sf-back{display:block}
-.sf-front{text-align:center}.sf-icon{font-size:2rem;margin-bottom:6px}.sf-title{font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:4px}
-.sf-hint{font-size:.78rem;color:var(--muted)}.sf-flip{font-size:.68rem;color:var(--accent);margin-top:8px;text-transform:uppercase;letter-spacing:1px}
-.sf-back{font-size:.85rem;color:#ccc;line-height:1.6;display:none}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="screen-progress" id="screenProgress"></div>
+
+<!-- ==================== SCREEN 1: WELCOME ==================== -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 1</div>
+    <h1>Welcome to the PSAT & Diagnostic</h1>
+    <p class="welcome-sub">Understand the test, set your goal, establish your baseline, and build your personalized study plan.</p>
+    <div class="welcome-meta"><span>⏱ ~60 minutes</span><span>📋 3 sessions</span><span>🔍 Phase 1: Orient</span></div>
+    <div class="preview-grid">
+      <div class="preview-card"><div class="preview-icon">📊</div><div class="preview-title">Test Structure</div><div class="preview-desc">44 questions, 70 minutes, adaptive module format</div></div>
+      <div class="preview-card"><div class="preview-icon">🔀</div><div class="preview-title">Adaptive Modules</div><div class="preview-desc">How Module 1 performance determines your score ceiling</div></div>
+      <div class="preview-card"><div class="preview-icon">🏆</div><div class="preview-title">Selection Index</div><div class="preview-desc">National Merit formula and state cutoffs</div></div>
+      <div class="preview-card"><div class="preview-icon">🎯</div><div class="preview-title">Diagnostic</div><div class="preview-desc">20-question assessment across all four domains</div></div>
+      <div class="preview-card"><div class="preview-icon">🔍</div><div class="preview-title">Error Analysis</div><div class="preview-desc">Classify mistakes to target your study time</div></div>
+      <div class="preview-card"><div class="preview-icon">📋</div><div class="preview-title">Study Plan</div><div class="preview-desc">Personalized pathway based on your results</div></div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 2: LESSON CONTENT ==================== -->
+<div class="screen" id="screen-lesson">
 <div class="container">
 <a class="back-link" href="index.html">← Back to PSAT Math Course</a>
 
@@ -357,16 +416,15 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<!-- ==================== SECTION 6: MINI DIAGNOSTIC ==================== -->
-
-<!-- STRATEGY TOOLKIT PREVIEW -->
+<!-- ==================== STRATEGY TOOLKIT PREVIEW ==================== -->
 <div class="section">
   <div class="section-label">Strategy Preview</div>
   <h2>The PSAT/NMSQT Math Strategy Toolkit</h2>
-  <p>These six strategies will be your weapons throughout the course. Click each card to learn more. We’ll practice all of them in Modules 6–7.</p>
+  <p>These six strategies will be your weapons throughout the course. Click each card to learn more. We'll practice all of them in Modules 6–7.</p>
   <div class="strat-grid" id="stratGrid"></div>
 </div>
 
+<!-- ==================== SECTION 6: MINI DIAGNOSTIC ==================== -->
 <div class="section">
   <div class="section-label">Session 2: Diagnostic</div>
   <h2>Mini Diagnostic Assessment</h2>
@@ -453,21 +511,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 
 <!-- KEY TAKEAWAYS -->
-
-<!-- HOMEWORK -->
-<div class="section">
-  <div class="section-label">Session 3: Action Items</div>
-  <h2>Homework</h2>
-  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
-    <p><strong style="color:var(--ink)">1. Complete Your Baseline Test</strong> — Full 44 questions, 70 minutes, official Bluebook practice test under test conditions.</p>
-    <p><strong style="color:var(--ink)">2. Self-Score & Mark Uncertain Questions</strong> — Score yourself before reviewing. Flag every question you weren’t sure about.</p>
-    <p><strong style="color:var(--ink)">3. Complete the Error Analysis Worksheet</strong> — One entry for every missed AND uncertain question.</p>
-    <p><strong style="color:var(--ink)">4. Use the Score Projector</strong> — Enter your raw scores above to estimate your scaled score and see where you stand.</p>
-    <p><strong style="color:var(--ink)">5. Identify Your Top 3 Priority Areas</strong> — Based on the error analysis, what domains/topics cost you the most points?</p>
-    <p style="margin:0"><strong style="color:var(--ink)">6. Explore Desmos</strong> — Go to <a href="https://desmos.com/calculator" target="_blank" style="color:var(--math)">desmos.com/calculator</a> and spend 15 minutes graphing equations and finding intersection points.</p>
-  </div>
-</div>
-
 <div class="section">
   <div class="section-label">Summary</div>
   <h2>Key Takeaways</h2>
@@ -484,26 +527,71 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<div class="mod-nav">
-  <a href="index.html">← Course Home</a>
-  <a href="module-2.html">Module 2: Algebra →</a>
+<!-- HOMEWORK -->
+<div class="section">
+  <div class="section-label">Session 3: Action Items</div>
+  <h2>Homework</h2>
+  <div class="card card-accent" style="font-size:.93rem;color:#ccc">
+    <p><strong style="color:var(--ink)">1. Complete Your Baseline Test</strong> — Full 44 questions, 70 minutes, official Bluebook practice test under test conditions.</p>
+    <p><strong style="color:var(--ink)">2. Self-Score & Mark Uncertain Questions</strong> — Score yourself before reviewing. Flag every question you weren't sure about.</p>
+    <p><strong style="color:var(--ink)">3. Complete the Error Analysis Worksheet</strong> — One entry for every missed AND uncertain question.</p>
+    <p><strong style="color:var(--ink)">4. Use the Score Projector</strong> — Enter your raw scores above to estimate your scaled score and see where you stand.</p>
+    <p><strong style="color:var(--ink)">5. Identify Your Top 3 Priority Areas</strong> — Based on the error analysis, what domains/topics cost you the most points?</p>
+    <p style="margin:0"><strong style="color:var(--ink)">6. Explore Desmos</strong> — Go to <a href="https://desmos.com/calculator" target="_blank" style="color:var(--math)">desmos.com/calculator</a> and spend 15 minutes graphing equations and finding intersection points.</p>
+  </div>
 </div>
+
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(2)">Continue to Summary →</button>
+</div>
+</div>
+</div>
+
+<!-- ==================== SCREEN 3: MODULE COMPLETE ==================== -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎉</div>
+    <h1>Module 1 Complete!</h1>
+    <p class="complete-sub">You've established your baseline and have a personalized study plan.</p>
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--accent);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> 44 questions in 70 minutes, two adaptive modules of 22.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Module 1 performance determines Module 2 difficulty and score ceiling.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Four domains: Algebra ~35%, Advanced Math ~35%, PSDA ~15%, Geometry & Trig ~15%.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Desmos graphing calculator available on every question.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> No penalty for wrong answers — never leave blank.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Selection Index double-weights RW for National Merit.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Error analysis is the most powerful study tool.</div>
+    </div>
+    <div class="nav-cards">
+      <a class="nav-card" href="index.html"><div class="nav-card-label">← Home</div><div class="nav-card-title">Course Home</div></a>
+      <a class="nav-card" href="module-2.html" style="border-color:var(--accent)"><div class="nav-card-label">Next →</div><div class="nav-card-title">Module 2: Algebra</div></a>
+    </div>
+  </div>
 </div>
 
 <script>
-// ============ PROGRESS BAR ============
-window.addEventListener('scroll',()=>{
-  const h=document.documentElement.scrollHeight-window.innerHeight;
-  const pct=h>0?(window.scrollY/h)*100:0;
-  document.getElementById('progressFill').style.width=Math.min(pct,100)+'%';
-});
+// ============ SCREEN NAVIGATION ============
+var SCREENS=['screen-welcome','screen-lesson','screen-complete'];
+var currentScreen=0;
+function goScreen(idx){
+  if(idx<0||idx>=SCREENS.length)return;
+  var cur=document.getElementById(SCREENS[currentScreen]),nxt=document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');cur.classList.add('fade-out');
+  setTimeout(function(){cur.classList.remove('active','fade-out');nxt.classList.add('active','fade-in');currentScreen=idx;updateProgressDots();window.scrollTo(0,0);},300);
+}
+function updateProgressDots(){
+  var labels=['Welcome','Lesson','Complete'];
+  document.getElementById('screenProgress').innerHTML=SCREENS.map(function(s,i){var cls='screen-dot';if(i<currentScreen)cls+=' completed';if(i===currentScreen)cls+=' current';return '<div class="'+cls+'" onclick="'+(i<=currentScreen?'goScreen('+i+')':'')+'" title="'+labels[i]+'"></div>';}).join('');
+}
+updateProgressDots();
 
 // ============ ROUTING SIMULATOR ============
 function updateSim(){
-  const v=parseInt(document.getElementById('simSlider').value);
+  var v=parseInt(document.getElementById('simSlider').value);
   document.getElementById('simVal').textContent=v;
-  const pct=v/22;
-  let route,color,floor,ceil,bg;
+  var pct=v/22;
+  var route,color,floor,ceil,bg;
   if(pct>=.64){
     route='Harder Module 2';color='var(--correct)';floor=400;ceil=760;bg='var(--correct-bg)';
   }else if(pct>=.5){
@@ -511,66 +599,59 @@ function updateSim(){
   }else{
     route='Easier Module 2';color='var(--wrong)';floor=160;ceil=Math.min(550+v*10,650);bg='var(--wrong-bg)';
   }
-  document.getElementById('simResult').innerHTML=`
-    <div style="font-size:1rem;font-weight:700;color:${color};margin-bottom:4px">${v}/22 correct → ${route}</div>
-    <div style="font-size:.85rem;color:var(--muted)">Estimated score range: ${floor}–${ceil}</div>`;
+  document.getElementById('simResult').innerHTML=
+    '<div style="font-size:1rem;font-weight:700;color:'+color+';margin-bottom:4px">'+v+'/22 correct \u2192 '+route+'</div>'+
+    '<div style="font-size:.85rem;color:var(--muted)">Estimated score range: '+floor+'\u2013'+ceil+'</div>';
   document.getElementById('simResult').style.background=bg;
-  const meterPct=((ceil-160)/600)*100;
-  const fill=document.getElementById('simMeter');
+  var meterPct=((ceil-160)/600)*100;
+  var fill=document.getElementById('simMeter');
   fill.style.width=meterPct+'%';
   fill.style.background=pct>=.64?'var(--correct)':pct>=.5?'var(--psda)':'var(--wrong)';
-  document.getElementById('simRange').textContent=floor+'–'+ceil;
+  document.getElementById('simRange').textContent=floor+'\u2013'+ceil;
 }
 updateSim();
 
 // ============ DOMAIN CARDS ============
-const DOMAINS=[
+var DOMAINS=[
   {name:'Algebra',pct:'~35%',qs:'13–15 questions',color:'var(--algebra)',
    front:'Linear equations, systems, inequalities, functions',
-   back:'<strong>Topics:</strong> One-variable linear equations · Slope-intercept, point-slope, standard form · Systems by substitution & elimination · Linear inequalities · Interpreting slope & y-intercept in context'},
+   back:'<strong>Topics:</strong> One-variable linear equations \u00b7 Slope-intercept, point-slope, standard form \u00b7 Systems by substitution & elimination \u00b7 Linear inequalities \u00b7 Interpreting slope & y-intercept in context'},
   {name:'Advanced Math',pct:'~35%',qs:'12–14 questions',color:'var(--advanced)',
    front:'Quadratics, polynomials, functions, exponents',
-   back:'<strong>Topics:</strong> Three quadratic forms (standard, vertex, factored) · Discriminant · Factoring · Exponent rules · Function notation & transformations · Exponential growth/decay · Rational & radical expressions'},
+   back:'<strong>Topics:</strong> Three quadratic forms (standard, vertex, factored) \u00b7 Discriminant \u00b7 Factoring \u00b7 Exponent rules \u00b7 Function notation & transformations \u00b7 Exponential growth/decay \u00b7 Rational & radical expressions'},
   {name:'Problem-Solving & Data',pct:'~15%',qs:'5–7 questions',color:'var(--psda)',
    front:'Ratios, percentages, statistics, probability',
-   back:'<strong>Topics:</strong> Ratios & rates · Percentages & percent change · Mean, median, spread · Scatterplots & lines of best fit · Probability · Study design (observational vs. experimental)'},
+   back:'<strong>Topics:</strong> Ratios & rates \u00b7 Percentages & percent change \u00b7 Mean, median, spread \u00b7 Scatterplots & lines of best fit \u00b7 Probability \u00b7 Study design (observational vs. experimental)'},
   {name:'Geometry & Trig',pct:'~15%',qs:'4–6 questions',color:'var(--geotrig)',
    front:'Area, volume, triangles, circles, SOH-CAH-TOA',
-   back:'<strong>Topics:</strong> Area & volume of 2D/3D shapes · Lines, angles, triangles · Pythagorean theorem · Similar triangles · SOH-CAH-TOA · Arc length & sector area · Circle equations'}
+   back:'<strong>Topics:</strong> Area & volume of 2D/3D shapes \u00b7 Lines, angles, triangles \u00b7 Pythagorean theorem \u00b7 Similar triangles \u00b7 SOH-CAH-TOA \u00b7 Arc length & sector area \u00b7 Circle equations'}
 ];
-document.getElementById('domainGrid').innerHTML=DOMAINS.map((d,i)=>`
-  <div class="domain-card" onclick="this.classList.toggle('flipped')">
-    <div class="dc-front">
-      <div class="dc-header"><div class="dc-pct" style="color:${d.color}">${d.pct}</div><div class="dc-name">${d.name}</div></div>
-      <div class="dc-qs">${d.qs}</div>
-      <div class="dc-topics">${d.front}</div>
-      <div class="dc-flip">tap to see topics →</div>
-    </div>
-    <div class="dc-back">${d.back}<div class="dc-flip">← tap to flip back</div></div>
-  </div>`).join('');
+document.getElementById('domainGrid').innerHTML=DOMAINS.map(function(d,i){return '<div class="domain-card" onclick="this.classList.toggle(\'flipped\')">'+
+  '<div class="dc-front"><div class="dc-header"><div class="dc-pct" style="color:'+d.color+'">'+d.pct+'</div><div class="dc-name">'+d.name+'</div></div>'+
+  '<div class="dc-qs">'+d.qs+'</div><div class="dc-topics">'+d.front+'</div><div class="dc-flip">tap to see topics \u2192</div></div>'+
+  '<div class="dc-back">'+d.back+'<div class="dc-flip">\u2190 tap to flip back</div></div></div>';}).join('');
 
 // ============ SELECTION INDEX CALCULATOR ============
 function calcSI(){
-  const rw=parseInt(document.getElementById('siRW').value);
-  const m=parseInt(document.getElementById('siMath').value);
-  const el=document.getElementById('siResult');
+  var rw=parseInt(document.getElementById('siRW').value);
+  var m=parseInt(document.getElementById('siMath').value);
+  var el=document.getElementById('siResult');
   if(isNaN(rw)||isNaN(m)){el.innerHTML='<div style="color:var(--muted);font-size:.9rem">Enter both scores to see your Selection Index</div>';return;}
-  const si=Math.round((rw*2+m)/10);
-  const total=rw+m;
-  let level='',lcolor='';
+  var si=Math.round((rw*2+m)/10);
+  var total=rw+m;
+  var level='',lcolor='';
   if(si>=220){level='Strong National Merit Semifinalist contender in most states';lcolor='var(--nm)';}
-  else if(si>=210){level='Commended Student range — Semifinalist in some states';lcolor='var(--correct)';}
-  else if(si>=200){level='Above average — near Commended threshold';lcolor='var(--psda)';}
-  else{level='Below Commended threshold — focus on building core skills';lcolor='var(--muted)';}
-  el.innerHTML=`
-    <div class="si-big">${si}</div>
-    <div class="si-label">Selection Index (out of 228)</div>
-    <div style="margin-top:8px;font-size:.88rem;color:${lcolor}">${level}</div>
-    <div style="margin-top:6px;font-size:.82rem;color:var(--muted)">Total: ${total} (RW ${rw} + Math ${m})</div>`;
+  else if(si>=210){level='Commended Student range \u2014 Semifinalist in some states';lcolor='var(--correct)';}
+  else if(si>=200){level='Above average \u2014 near Commended threshold';lcolor='var(--psda)';}
+  else{level='Below Commended threshold \u2014 focus on building core skills';lcolor='var(--muted)';}
+  el.innerHTML='<div class="si-big">'+si+'</div>'+
+    '<div class="si-label">Selection Index (out of 228)</div>'+
+    '<div style="margin-top:8px;font-size:.88rem;color:'+lcolor+'">'+level+'</div>'+
+    '<div style="margin-top:6px;font-size:.82rem;color:var(--muted)">Total: '+total+' (RW '+rw+' + Math '+m+')</div>';
 }
 
 // ============ STATE CUTOFFS ============
-const CUTOFFS={
+var CUTOFFS={
   'Alabama':215,'Alaska':213,'Arizona':220,'Arkansas':213,'California':224,
   'Colorado':221,'Connecticut':223,'Delaware':220,'DC':225,'Florida':219,
   'Georgia':220,'Hawaii':220,'Idaho':215,'Illinois':222,'Indiana':218,
@@ -583,19 +664,19 @@ const CUTOFFS={
   'South Dakota':212,'Tennessee':218,'Texas':222,'Utah':216,'Vermont':218,
   'Virginia':222,'Washington':223,'West Virginia':210,'Wisconsin':218,'Wyoming':209
 };
-const sel=document.getElementById('stateSelect');
-Object.keys(CUTOFFS).sort().forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});
+var sel=document.getElementById('stateSelect');
+Object.keys(CUTOFFS).sort().forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});
 
 function showCutoff(){
-  const s=document.getElementById('stateSelect').value;
-  const el=document.getElementById('cutoffResult');
+  var s=document.getElementById('stateSelect').value;
+  var el=document.getElementById('cutoffResult');
   if(!s){el.style.display='none';return;}
   el.style.display='block';
-  const c=CUTOFFS[s];
+  var c=CUTOFFS[s];
   document.getElementById('cutoffVal').textContent=c+' / 228';
-  const pct=((c-48)/180)*100;
+  var pct=((c-48)/180)*100;
   document.getElementById('cutoffFill').style.width=pct+'%';
-  let ctx='';
+  var ctx='';
   if(c>=224)ctx='One of the most competitive states. You\'ll likely need RW 750+ and Math 730+ to qualify.';
   else if(c>=221)ctx='Highly competitive. Target RW 740+ and Math 720+.';
   else if(c>=218)ctx='Moderately competitive. Target RW 720+ and Math 710+.';
@@ -605,7 +686,7 @@ function showCutoff(){
 }
 
 // ============ MINI DIAGNOSTIC ============
-const DIAG_QS=[
+var DIAG_QS=[
   // ALGEBRA (5 questions)
   {domain:'Algebra',color:'var(--algebra)',stem:'If <code>3(2x \u2212 5) = 4x + 7</code>, what is the value of <code>x</code>?',
    choices:['8','9','11','22/6'],correct:2,
@@ -672,24 +753,24 @@ const DIAG_QS=[
    explain:'V=\u2153\u03c0r\u00b2h = \u2153\u03c0(9)(8) = 24\u03c0.'},
 ];
 
-let diagAnswers=new Array(DIAG_QS.length).fill(null);
-let diagConf=new Array(DIAG_QS.length).fill(null);
-let diagScored=false;
+var diagAnswers=new Array(DIAG_QS.length).fill(null);
+var diagConf=new Array(DIAG_QS.length).fill(null);
+var diagScored=false;
 
 function renderDiag(){
-  const el=document.getElementById('diagQuestions');
-  el.innerHTML=DIAG_QS.map((q,i)=>{
-    const answered=diagAnswers[i]!==null;
-    const isCorrect=answered&&diagAnswers[i]===q.correct;
-    return `<div class="diag-q ${diagScored&&answered?'answered':''}">
-      <div class="diag-domain" style="background:${q.color}22;color:${q.color}">${q.domain}</div>
-      <div class="diag-stem">${q.stem}</div>
-      ${!diagScored?`<div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">How confident are you?</div>
-      <div class="diag-conf">${['Guessing','Unsure','Confident'].map((c,ci)=>
-        `<div class="diag-conf-btn ${diagConf[i]===ci?'active':''}" onclick="setConf(${i},${ci})">${c}</div>`).join('')}
-      </div>`:''}
-      <div class="diag-choices">${q.choices.map((c,ci)=>{
-        let cls='diag-choice';
+  var el=document.getElementById('diagQuestions');
+  el.innerHTML=DIAG_QS.map(function(q,i){
+    var answered=diagAnswers[i]!==null;
+    var isCorrect=answered&&diagAnswers[i]===q.correct;
+    return '<div class="diag-q '+(diagScored&&answered?'answered':'')+'">'+
+      '<div class="diag-domain" style="background:'+q.color+'22;color:'+q.color+'">'+q.domain+'</div>'+
+      '<div class="diag-stem">'+q.stem+'</div>'+
+      (!diagScored?'<div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">How confident are you?</div>'+
+      '<div class="diag-conf">'+['Guessing','Unsure','Confident'].map(function(c,ci){
+        return '<div class="diag-conf-btn '+(diagConf[i]===ci?'active':'')+'" onclick="setConf('+i+','+ci+')">'+c+'</div>';}).join('')+
+      '</div>':'')+
+      '<div class="diag-choices">'+q.choices.map(function(c,ci){
+        var cls='diag-choice';
         if(diagScored){
           if(ci===q.correct)cls+=' dc-correct';
           else if(diagAnswers[i]===ci)cls+=' dc-wrong';
@@ -697,16 +778,15 @@ function renderDiag(){
         }else if(diagAnswers[i]===ci){
           cls+=' dc-correct';
         }
-        const letter=String.fromCharCode(65+ci);
-        return `<div class="${cls}" onclick="ansDiag(${i},${ci})"><span class="letter">${letter})</span>${c}</div>`;
-      }).join('')}</div>
-      <div class="diag-explain ${diagScored?'show':''}">${diagScored?
-        `${isCorrect?'✅ Correct!':'❌ Incorrect.'} ${q.explain}`:''}
-      </div>
-    </div>`;
+        var letter=String.fromCharCode(65+ci);
+        return '<div class="'+cls+'" onclick="ansDiag('+i+','+ci+')"><span class="letter">'+letter+')</span>'+c+'</div>';
+      }).join('')+'</div>'+
+      '<div class="diag-explain '+(diagScored?'show':'')+'">'+(diagScored?
+        (isCorrect?'\u2705 Correct!':'\u274c Incorrect.')+' '+q.explain:'')+'</div>'+
+    '</div>';
   }).join('');
   // Show submit button when all answered
-  const allAnswered=diagAnswers.every(a=>a!==null);
+  var allAnswered=diagAnswers.every(function(a){return a!==null;});
   document.getElementById('diagSubmit').style.display=allAnswered&&!diagScored?'inline-block':'none';
 }
 
@@ -717,9 +797,9 @@ function scoreDiag(){
   diagScored=true;
   renderDiag();
   // Calculate results
-  let total=0;const domScores={};const domTotals={};const miscal=[];
-  DIAG_QS.forEach((q,i)=>{
-    const correct=diagAnswers[i]===q.correct;
+  var total=0;var domScores={};var domTotals={};var miscal=[];
+  DIAG_QS.forEach(function(q,i){
+    var correct=diagAnswers[i]===q.correct;
     if(correct)total++;
     if(!domScores[q.domain])domScores[q.domain]=0;
     if(!domTotals[q.domain])domTotals[q.domain]=0;
@@ -730,36 +810,36 @@ function scoreDiag(){
     if(diagConf[i]===0&&correct)miscal.push({q:i+1,type:'Underconfident',domain:q.domain});
   });
 
-  const colors={Algebra:'var(--algebra)','Advanced Math':'var(--advanced)','Problem-Solving & Data':'var(--psda)','Geometry & Trig':'var(--geotrig)'};
-  const pct=Math.round((total/DIAG_QS.length)*100);
-  let scoreColor=pct>=80?'var(--correct)':pct>=60?'var(--psda)':'var(--wrong)';
+  var colors={Algebra:'var(--algebra)','Advanced Math':'var(--advanced)','Problem-Solving & Data':'var(--psda)','Geometry & Trig':'var(--geotrig)'};
+  var pct=Math.round((total/DIAG_QS.length)*100);
+  var scoreColor=pct>=80?'var(--correct)':pct>=60?'var(--psda)':'var(--wrong)';
 
   document.getElementById('diagResults').style.display='block';
-  document.getElementById('diagResults').innerHTML=`
-    <div class="results fade-in">
-      <div class="results-score">
-        <div class="results-big" style="color:${scoreColor}">${total}/${DIAG_QS.length}</div>
-        <div class="results-sub">${pct}% correct</div>
-      </div>
-      <div class="results-domains">${Object.keys(domScores).map(d=>{
-        const s=domScores[d],t=domTotals[d],p=Math.round((s/t)*100);
-        const c=p>=80?'var(--correct)':p>=50?'var(--psda)':'var(--wrong)';
-        return `<div class="results-domain">
-          <div class="results-domain-name" style="color:${colors[d]}">${d}</div>
-          <div class="results-domain-score" style="color:${c}">${s}/${t}</div>
-          <div class="results-domain-bar"><div class="results-domain-fill" style="width:${p}%;background:${c}"></div></div>
-        </div>`;}).join('')}
-      </div>
-      ${miscal.length>0?`<div style="margin-top:12px">
-        <div style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">⚠️ Calibration Flags</div>
-        ${miscal.map(m=>`<div style="font-size:.85rem;color:#ccc;padding:4px 0">Q${m.q}: <span style="color:${m.type==='Overconfident'?'var(--wrong)':'var(--math)'}">${m.type}</span> (${m.domain})</div>`).join('')}
-        <div style="font-size:.82rem;color:var(--muted);margin-top:8px;font-style:italic">Overconfident = you felt sure but got it wrong (watch for these!). Underconfident = you guessed but were right (you may know more than you think).</div>
-      </div>`:''}
-      <div style="margin-top:16px;font-size:.9rem;color:#ccc">
-        <strong style="color:var(--ink)">Next step:</strong> Use these results to focus your study. See your personalized plan below.
-      </div>
-      <div id="studyPlan"></div>
-    </div>`;
+  document.getElementById('diagResults').innerHTML=
+    '<div class="results fade-in">'+
+      '<div class="results-score">'+
+        '<div class="results-big" style="color:'+scoreColor+'">'+total+'/'+DIAG_QS.length+'</div>'+
+        '<div class="results-sub">'+pct+'% correct</div>'+
+      '</div>'+
+      '<div class="results-domains">'+Object.keys(domScores).map(function(d){
+        var s=domScores[d],t=domTotals[d],p=Math.round((s/t)*100);
+        var c=p>=80?'var(--correct)':p>=50?'var(--psda)':'var(--wrong)';
+        return '<div class="results-domain">'+
+          '<div class="results-domain-name" style="color:'+colors[d]+'">'+d+'</div>'+
+          '<div class="results-domain-score" style="color:'+c+'">'+s+'/'+t+'</div>'+
+          '<div class="results-domain-bar"><div class="results-domain-fill" style="width:'+p+'%;background:'+c+'"></div></div>'+
+        '</div>';}).join('')+
+      '</div>'+
+      (miscal.length>0?'<div style="margin-top:12px">'+
+        '<div style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">\u26a0\ufe0f Calibration Flags</div>'+
+        miscal.map(function(m){return '<div style="font-size:.85rem;color:#ccc;padding:4px 0">Q'+m.q+': <span style="color:'+(m.type==='Overconfident'?'var(--wrong)':'var(--math)')+'">'+m.type+'</span> ('+m.domain+')</div>';}).join('')+
+        '<div style="font-size:.82rem;color:var(--muted);margin-top:8px;font-style:italic">Overconfident = you felt sure but got it wrong (watch for these!). Underconfident = you guessed but were right (you may know more than you think).</div>'+
+      '</div>':'')+
+      '<div style="margin-top:16px;font-size:.9rem;color:#ccc">'+
+        '<strong style="color:var(--ink)">Next step:</strong> Use these results to focus your study. See your personalized plan below.'+
+      '</div>'+
+      '<div id="studyPlan"></div>'+
+    '</div>';
   // Build study plan
   buildStudyPlan(domScores,domTotals);
   document.getElementById('diagResults').scrollIntoView({behavior:'smooth',block:'start'});
@@ -784,8 +864,8 @@ function buildStudyPlan(domScores,domTotals){
 renderDiag();
 
 // ============ ERROR CLASSIFICATION ============
-const EC_QS=[
-  {scenario:'A student solved 3x − 7 = 14 and got x = 3. When checking: 3(3) − 7 = 2 ≠ 14. They made an arithmetic error dividing 21 by 3.',
+var EC_QS=[
+  {scenario:'A student solved 3x \u2212 7 = 14 and got x = 3. When checking: 3(3) \u2212 7 = 2 \u2260 14. They made an arithmetic error dividing 21 by 3.',
    options:['Content Gap','Careless Error','Time Pressure','Misread/Trap'],correct:1,
    fb:'This is a <strong>Careless Error</strong>. The student knows the method but made a simple calculation mistake. Fix: slow down and check by substituting back.'},
   {scenario:'A student sees "what is the value of 3x + 2?" and solves for x instead. They get x = 4, choose 4, and it\'s wrong. The answer was 3(4)+2 = 14.',
@@ -793,162 +873,161 @@ const EC_QS=[
    fb:'This is a <strong>Misread/Trap</strong>. The student solved for x but the question asked for 3x + 2. This is the #1 most common PSAT math trap. Fix: circle or underline exactly what the question asks for.'},
   {scenario:'A student can\'t remember how to find the vertex of a quadratic in standard form. They guess by plugging in x = 0.',
    options:['Content Gap','Careless Error','Time Pressure','Strategy Gap'],correct:0,
-   fb:'This is a <strong>Content Gap</strong>. The student doesn\'t know the vertex formula (x = −b/2a). Fix: study quadratic forms in Module 3.'},
+   fb:'This is a <strong>Content Gap</strong>. The student doesn\'t know the vertex formula (x = \u2212b/2a). Fix: study quadratic forms in Module 3.'},
   {scenario:'A student runs out of time with 4 questions left. They had spent 3+ minutes on a hard question earlier that they ended up guessing on anyway.',
    options:['Content Gap','Careless Error','Time Pressure','Strategy Gap'],correct:2,
-   fb:'This is a <strong>Time Pressure</strong> error caused by poor time management. Fix: use the two-pass strategy — skip hard questions on the first pass, return with remaining time.'},
-  {scenario:'A student multiplies both sides of −2x > 8 by −1 and gets x > −4. The correct answer is x < −4.',
+   fb:'This is a <strong>Time Pressure</strong> error caused by poor time management. Fix: use the two-pass strategy \u2014 skip hard questions on the first pass, return with remaining time.'},
+  {scenario:'A student multiplies both sides of \u22122x > 8 by \u22121 and gets x > \u22124. The correct answer is x < \u22124.',
    options:['Content Gap','Careless Error','Time Pressure','Misread/Trap'],correct:0,
    fb:'This is a <strong>Content Gap</strong>. The student doesn\'t know the rule: when dividing or multiplying by a negative, flip the inequality sign. This is a learned rule, not a careless mistake.'},
   {scenario:'A student stares at a systems problem for 45 seconds trying to set up elimination, when graphing both equations in Desmos would have given the answer in 10 seconds.',
    options:['Content Gap','Careless Error','Time Pressure','Strategy Gap'],correct:3,
    fb:'This is a <strong>Strategy Gap</strong>. The student knows the math but chose an inefficient method. Fix: develop the "Desmos or Algebra?" decision habit (Module 6).'}
 ];
-let ecAns={};
+var ecAns={};
 function renderEC(){
-  let correct=0,total=0;
-  document.getElementById('ecBox').innerHTML=EC_QS.map((q,i)=>{
-    const answered=ecAns[i]!==undefined;
-    const isCorrect=ecAns[i]===q.correct;
+  var correct=0,total=0;
+  document.getElementById('ecBox').innerHTML=EC_QS.map(function(q,i){
+    var answered=ecAns[i]!==undefined;
+    var isCorrect=ecAns[i]===q.correct;
     if(answered){total++;if(isCorrect)correct++;}
-    return `<div class="ec-item">
-      <div class="ec-scenario">${q.scenario}</div>
-      <div class="ec-options">${q.options.map((o,oi)=>{
-        let cls='ec-opt';
+    return '<div class="ec-item">'+
+      '<div class="ec-scenario">'+q.scenario+'</div>'+
+      '<div class="ec-options">'+q.options.map(function(o,oi){
+        var cls='ec-opt';
         if(answered){
           if(oi===q.correct)cls+=' ec-correct';
           else if(ecAns[i]===oi)cls+=' ec-wrong';
           cls+=' ec-dis';
         }
-        return `<div class="${cls}" onclick="ansEC(${i},${oi})">${o}</div>`;
-      }).join('')}</div>
-      <div class="ec-fb ${answered?'show':''}">${answered?q.fb:''}</div>
-    </div>`;
+        return '<div class="'+cls+'" onclick="ansEC('+i+','+oi+')">'+o+'</div>';
+      }).join('')+'</div>'+
+      '<div class="ec-fb '+(answered?'show':'')+'">'+(answered?q.fb:'')+'</div>'+
+    '</div>';
   }).join('');
-  document.getElementById('ecScore').textContent=total>0?`${correct}/${total} correct`:'';
+  document.getElementById('ecScore').textContent=total>0?correct+'/'+total+' correct':'';
 }
 function ansEC(i,v){if(ecAns[i]!==undefined)return;ecAns[i]=v;renderEC();}
 renderEC();
 
 // ============ ERROR ANALYSIS WORKSHEET ============
-const WS_KEY='pp_psat_m1_ws';
+var WS_KEY='pp_psat_m1_ws';
 function loadWS(){return JSON.parse(localStorage.getItem(WS_KEY)||'[]');}
 function saveWS(d){localStorage.setItem(WS_KEY,JSON.stringify(d));}
 function addEntry(){
-  const d=loadWS();d.push({qnum:'',domain:'',topic:'',errorType:'',shouldHave:'',desmos:''});saveWS(d);renderWS();
+  var d=loadWS();d.push({qnum:'',domain:'',topic:'',errorType:'',shouldHave:'',desmos:''});saveWS(d);renderWS();
 }
-function updateEntry(idx,field,val){const d=loadWS();if(d[idx])d[idx][field]=val;saveWS(d);}
-function removeEntry(idx){const d=loadWS();d.splice(idx,1);saveWS(d);renderWS();}
+function updateEntry(idx,field,val){var d=loadWS();if(d[idx])d[idx][field]=val;saveWS(d);}
+function removeEntry(idx){var d=loadWS();d.splice(idx,1);saveWS(d);renderWS();}
 function renderWS(){
-  const d=loadWS();
+  var d=loadWS();
   if(d.length===0){addEntry();return;}
-  document.getElementById('wsEntries').innerHTML=d.map((e,i)=>`
-    <div class="ws-entry">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div style="font-weight:700;font-size:.88rem;color:var(--math)">Question ${i+1}</div>
-        <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.82rem" onclick="removeEntry(${i})">✕ Remove</button>
-      </div>
-      <div class="ws-row">
-        <div class="ws-label">Q #</div>
-        <input class="ws-input" type="number" min="1" max="44" placeholder="1–44" value="${e.qnum}" onchange="updateEntry(${i},'qnum',this.value)" style="width:80px">
-      </div>
-      <div class="ws-row">
-        <div class="ws-label">Domain</div>
-        <select class="ws-select" onchange="updateEntry(${i},'domain',this.value)">
-          <option value="">Select domain…</option>
-          <option${e.domain==='Algebra'?' selected':''}>Algebra</option>
-          <option${e.domain==='Advanced Math'?' selected':''}>Advanced Math</option>
-          <option${e.domain==='Problem-Solving & Data'?' selected':''}>Problem-Solving & Data</option>
-          <option${e.domain==='Geometry & Trig'?' selected':''}>Geometry & Trig</option>
-        </select>
-      </div>
-      <div class="ws-row">
-        <div class="ws-label">Topic</div>
-        <input class="ws-input" placeholder="e.g., Quadratic vertex form" value="${e.topic||''}" onchange="updateEntry(${i},'topic',this.value)" style="width:100%">
-      </div>
-      <div class="ws-row">
-        <div class="ws-label">Error Type</div>
-        <select class="ws-select" onchange="updateEntry(${i},'errorType',this.value)">
-          <option value="">Select type…</option>
-          <option${e.errorType==='Content Gap'?' selected':''}>Content Gap</option>
-          <option${e.errorType==='Careless Error'?' selected':''}>Careless Error</option>
-          <option${e.errorType==='Time Pressure'?' selected':''}>Time Pressure</option>
-          <option${e.errorType==='Misread/Trap'?' selected':''}>Misread/Trap</option>
-          <option${e.errorType==='Strategy Gap'?' selected':''}>Strategy Gap</option>
-        </select>
-      </div>
-      <div class="ws-row" style="grid-template-columns:1fr"><div class="ws-label">What I should have done</div></div>
-      <textarea class="ws-textarea" placeholder="Write the correct approach in your own words…" onchange="updateEntry(${i},'shouldHave',this.value)">${e.shouldHave||''}</textarea>
-      <div class="ws-row" style="margin-top:6px">
-        <div class="ws-label">Desmos?</div>
-        <select class="ws-select" onchange="updateEntry(${i},'desmos',this.value)">
-          <option value="">Could Desmos have helped?</option>
-          <option${e.desmos==='Yes'?' selected':''}>Yes</option>
-          <option${e.desmos==='No'?' selected':''}>No</option>
-          <option${e.desmos==='I used it but incorrectly'?' selected':''}>I used it but incorrectly</option>
-        </select>
-      </div>
-    </div>`).join('');
+  document.getElementById('wsEntries').innerHTML=d.map(function(e,i){return '<div class="ws-entry">'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'+
+      '<div style="font-weight:700;font-size:.88rem;color:var(--math)">Question '+(i+1)+'</div>'+
+      '<button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.82rem" onclick="removeEntry('+i+')">\u2715 Remove</button>'+
+    '</div>'+
+    '<div class="ws-row">'+
+      '<div class="ws-label">Q #</div>'+
+      '<input class="ws-input" type="number" min="1" max="44" placeholder="1\u201344" value="'+e.qnum+'" onchange="updateEntry('+i+',\'qnum\',this.value)" style="width:80px">'+
+    '</div>'+
+    '<div class="ws-row">'+
+      '<div class="ws-label">Domain</div>'+
+      '<select class="ws-select" onchange="updateEntry('+i+',\'domain\',this.value)">'+
+        '<option value="">Select domain\u2026</option>'+
+        '<option'+(e.domain==='Algebra'?' selected':'')+'>Algebra</option>'+
+        '<option'+(e.domain==='Advanced Math'?' selected':'')+'>Advanced Math</option>'+
+        '<option'+(e.domain==='Problem-Solving & Data'?' selected':'')+'>Problem-Solving & Data</option>'+
+        '<option'+(e.domain==='Geometry & Trig'?' selected':'')+'>Geometry & Trig</option>'+
+      '</select>'+
+    '</div>'+
+    '<div class="ws-row">'+
+      '<div class="ws-label">Topic</div>'+
+      '<input class="ws-input" placeholder="e.g., Quadratic vertex form" value="'+(e.topic||'')+'" onchange="updateEntry('+i+',\'topic\',this.value)" style="width:100%">'+
+    '</div>'+
+    '<div class="ws-row">'+
+      '<div class="ws-label">Error Type</div>'+
+      '<select class="ws-select" onchange="updateEntry('+i+',\'errorType\',this.value)">'+
+        '<option value="">Select type\u2026</option>'+
+        '<option'+(e.errorType==='Content Gap'?' selected':'')+'>Content Gap</option>'+
+        '<option'+(e.errorType==='Careless Error'?' selected':'')+'>Careless Error</option>'+
+        '<option'+(e.errorType==='Time Pressure'?' selected':'')+'>Time Pressure</option>'+
+        '<option'+(e.errorType==='Misread/Trap'?' selected':'')+'>Misread/Trap</option>'+
+        '<option'+(e.errorType==='Strategy Gap'?' selected':'')+'>Strategy Gap</option>'+
+      '</select>'+
+    '</div>'+
+    '<div class="ws-row" style="grid-template-columns:1fr"><div class="ws-label">What I should have done</div></div>'+
+    '<textarea class="ws-textarea" placeholder="Write the correct approach in your own words\u2026" onchange="updateEntry('+i+',\'shouldHave\',this.value)">'+(e.shouldHave||'')+'</textarea>'+
+    '<div class="ws-row" style="margin-top:6px">'+
+      '<div class="ws-label">Desmos?</div>'+
+      '<select class="ws-select" onchange="updateEntry('+i+',\'desmos\',this.value)">'+
+        '<option value="">Could Desmos have helped?</option>'+
+        '<option'+(e.desmos==='Yes'?' selected':'')+'>Yes</option>'+
+        '<option'+(e.desmos==='No'?' selected':'')+'>No</option>'+
+        '<option'+(e.desmos==='I used it but incorrectly'?' selected':'')+'>I used it but incorrectly</option>'+
+      '</select>'+
+    '</div>'+
+  '</div>';}).join('');
 }
 function exportWS(){
-  const d=loadWS();
-  let txt='PSAT/NMSQT MATH ERROR ANALYSIS — PantherPrep\n';
-  txt+='════════════════════════════════════════════\n\n';
-  const counts={},domCounts={};
-  d.forEach((e,i)=>{
-    txt+=`Q${e.qnum||'?'} | ${e.domain||'—'} | ${e.topic||'—'} | ${e.errorType||'—'} | Desmos: ${e.desmos||'—'}\n`;
-    txt+=`  → ${e.shouldHave||'—'}\n\n`;
+  var d=loadWS();
+  var txt='PSAT/NMSQT MATH ERROR ANALYSIS \u2014 PantherPrep\n';
+  txt+='\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n';
+  var counts={},domCounts={};
+  d.forEach(function(e,i){
+    txt+='Q'+(e.qnum||'?')+' | '+(e.domain||'\u2014')+' | '+(e.topic||'\u2014')+' | '+(e.errorType||'\u2014')+' | Desmos: '+(e.desmos||'\u2014')+'\n';
+    txt+='  \u2192 '+(e.shouldHave||'\u2014')+'\n\n';
     if(e.errorType)counts[e.errorType]=(counts[e.errorType]||0)+1;
     if(e.domain)domCounts[e.domain]=(domCounts[e.domain]||0)+1;
   });
-  txt+='ERROR TYPE SUMMARY:\n';Object.entries(counts).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
-  txt+='\nDOMAIN SUMMARY:\n';Object.entries(domCounts).forEach(([k,v])=>txt+=`  ${k}: ${v}\n`);
-  navigator.clipboard.writeText(txt).then(()=>alert('Worksheet copied to clipboard!')).catch(()=>{
-    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Copied!');});
+  txt+='ERROR TYPE SUMMARY:\n';Object.entries(counts).forEach(function(kv){txt+='  '+kv[0]+': '+kv[1]+'\n';});
+  txt+='\nDOMAIN SUMMARY:\n';Object.entries(domCounts).forEach(function(kv){txt+='  '+kv[0]+': '+kv[1]+'\n';});
+  navigator.clipboard.writeText(txt).then(function(){alert('Worksheet copied to clipboard!');}).catch(function(){
+    var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Copied!');});
 }
 renderWS();
 
 // ============ CHECKLIST ============
-const CL_ITEMS=['Bluebook app installed and working','Quiet testing environment prepared','Phone silenced and out of reach','Scratch paper and pencil ready','70 uninterrupted minutes available','Water bottle nearby'];
-const CL_KEY='pp_psat_m1_cl';
-let clState=JSON.parse(localStorage.getItem(CL_KEY)||'[]');
-if(clState.length!==CL_ITEMS.length)clState=CL_ITEMS.map(()=>false);
+var CL_ITEMS=['Bluebook app installed and working','Quiet testing environment prepared','Phone silenced and out of reach','Scratch paper and pencil ready','70 uninterrupted minutes available','Water bottle nearby'];
+var CL_KEY='pp_psat_m1_cl';
+var clState=JSON.parse(localStorage.getItem(CL_KEY)||'[]');
+if(clState.length!==CL_ITEMS.length)clState=CL_ITEMS.map(function(){return false;});
 function renderCL(){
-  const done=clState.filter(Boolean).length;
+  var done=clState.filter(Boolean).length;
   document.getElementById('preChecklist').innerHTML=
-    `<h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:12px">✅ Before Your Baseline Test</h3>`+
-    CL_ITEMS.map((item,i)=>`<div class="cl-item ${clState[i]?'done':''}" onclick="toggleCL(${i})">
-      <div class="cl-check">${clState[i]?'✓':''}</div><div>${item}</div></div>`).join('')+
-    `<div class="cl-progress">${done}/${CL_ITEMS.length} complete</div>`;
+    '<h3 style="font-family:\'Cormorant Garamond\',serif;font-size:1.2rem;margin-bottom:12px">\u2705 Before Your Baseline Test</h3>'+
+    CL_ITEMS.map(function(item,i){return '<div class="cl-item '+(clState[i]?'done':'')+'" onclick="toggleCL('+i+')">'+
+      '<div class="cl-check">'+(clState[i]?'\u2713':'')+'</div><div>'+item+'</div></div>';}).join('')+
+    '<div class="cl-progress">'+done+'/'+CL_ITEMS.length+' complete</div>';
 }
 function toggleCL(i){clState[i]=!clState[i];localStorage.setItem(CL_KEY,JSON.stringify(clState));renderCL();}
 renderCL();
 
 // ============ BASELINE SCORES ============
 function updateScores(){
-  const m1=parseInt(document.getElementById('m1Score').value);
-  const m2=parseInt(document.getElementById('m2Score').value);
-  const el=document.getElementById('scoreResult');
+  var m1=parseInt(document.getElementById('m1Score').value);
+  var m2=parseInt(document.getElementById('m2Score').value);
+  var el=document.getElementById('scoreResult');
   if(isNaN(m1)||isNaN(m2)){el.textContent='Enter both scores to see your estimated scaled score.';return;}
-  const total=m1+m2;
-  const scaled=Math.round(160+((total/44)*600));
-  const capped=Math.min(Math.max(scaled,160),760);
-  let lvl,color,advice;
+  var total=m1+m2;
+  var scaled=Math.round(160+((total/44)*600));
+  var capped=Math.min(Math.max(scaled,160),760);
+  var lvl,color,advice;
   if(capped>=650){lvl='Advanced';color='var(--correct)';advice='Focus on Modules 3, 4, 6, 7. Priority: advanced functions, strategy optimization, National Merit push.';}
   else if(capped>=530){lvl='Proficient';color='var(--math)';advice='Solid foundation! Focus on your weakest domain and Modules 3, 4, 6 to push higher.';}
   else if(capped>=460){lvl='On Track';color='var(--accent)';advice='At or above the college readiness benchmark. Complete all modules with focus on weak areas.';}
   else if(capped>=350){lvl='Building';color='var(--psda)';advice='Complete all modules with extra attention on Algebra (Module 2) and Data Analysis (Module 4).';}
   else{lvl='Developing';color='var(--wrong)';advice='Start with Modules 2 and 4. Build your foundation in linear equations and data analysis.';}
-  const benchPct=((460-160)/600)*100;
-  const scorePct=((capped-160)/600)*100;
-  el.innerHTML=`<div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;color:${color}">${capped}</div>
-    <div style="font-size:.82rem;color:var(--muted)">${total}/44 raw \u00b7 ${lvl}</div>
-    <div style="height:8px;border-radius:4px;background:var(--border);margin:12px 0;position:relative">
-      <div style="height:100%;border-radius:4px;background:${color};width:${scorePct}%;transition:width .4s"></div>
-      <div style="position:absolute;left:${benchPct}%;top:-6px;width:2px;height:20px;background:var(--correct);border-radius:1px" title="460 Benchmark"></div>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:12px"><span>160</span><span style="color:var(--correct)">460 benchmark \u2191</span><span>760</span></div>
-    <div style="font-size:.88rem;color:#ccc;line-height:1.6">${advice}</div>`;
+  var benchPct=((460-160)/600)*100;
+  var scorePct=((capped-160)/600)*100;
+  el.innerHTML='<div style="font-family:\'JetBrains Mono\',monospace;font-size:2rem;font-weight:700;color:'+color+'">'+capped+'</div>'+
+    '<div style="font-size:.82rem;color:var(--muted)">'+total+'/44 raw \u00b7 '+lvl+'</div>'+
+    '<div style="height:8px;border-radius:4px;background:var(--border);margin:12px 0;position:relative">'+
+      '<div style="height:100%;border-radius:4px;background:'+color+';width:'+scorePct+'%;transition:width .4s"></div>'+
+      '<div style="position:absolute;left:'+benchPct+'%;top:-6px;width:2px;height:20px;background:var(--correct);border-radius:1px" title="460 Benchmark"></div>'+
+    '</div>'+
+    '<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:12px"><span>160</span><span style="color:var(--correct)">460 benchmark \u2191</span><span>760</span></div>'+
+    '<div style="font-size:.88rem;color:#ccc;line-height:1.6">'+advice+'</div>';
 }
 
 // ============ STRATEGY TOOLKIT ============

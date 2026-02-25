@@ -6,13 +6,66 @@
 <title>Module 6: Desmos Mastery — PSAT/NMSQT Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--geo:#f87171;--des:#2bc4a9;--des-bg:rgba(43,196,169,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--geotrig:#f87171;--geotrig-bg:rgba(248,113,113,.1);--des:#2bc4a9;--des-bg:rgba(43,196,169,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--des));width:0%;transition:width .3s ease}
+
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--des)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(200,16,46,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--des);color:#111;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--des);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--des);color:#111;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,196,169,.3)}
+
+.warmup-container{max-width:600px;margin:0 auto;padding:60px 20px}
+.warmup-header{text-align:center;margin-bottom:32px}
+.warmup-badge{display:inline-block;background:var(--geotrig);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.warmup-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.warmup-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.warmup-dot.done-correct{background:var(--correct)}
+.warmup-dot.done-wrong{background:var(--wrong)}
+.warmup-dot.active{background:var(--geotrig);box-shadow:0 0 8px rgba(248,113,113,.4)}
+.warmup-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.warmup-q .source-tag{font-size:.7rem;color:var(--geotrig);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.warmup-q .q-text{font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.warmup-choices{display:flex;flex-direction:column;gap:8px}
+.warmup-choice{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.warmup-choice:hover:not(.wu-dis){border-color:var(--geotrig);background:rgba(248,113,113,.05)}
+.warmup-choice.wu-correct{border-color:var(--correct);background:var(--correct-bg)}
+.warmup-choice.wu-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.warmup-choice.wu-dis{pointer-events:none;opacity:.7}
+.warmup-choice.wu-correct{opacity:1}
+.warmup-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:12px;padding:10px;background:var(--paper);border-radius:8px;border-left:3px solid var(--correct)}
+.warmup-next{padding:10px 24px;background:var(--geotrig);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;margin-top:12px;font-family:'Source Sans 3',sans-serif}
+.warmup-next:hover{filter:brightness(1.1)}
+.warmup-summary{text-align:center;padding:40px 20px}
+.warmup-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:var(--geotrig);margin:12px 0}
+.warmup-continue{padding:12px 28px;background:var(--des);color:#111;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:20px;font-family:'Source Sans 3',sans-serif}
+.warmup-continue:hover{filter:brightness(1.15)}
+
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
@@ -24,12 +77,25 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--des);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
 .callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
 .callout strong{color:var(--accent)}
 .callout-des{background:var(--des-bg);border-color:rgba(43,196,169,.3)}
 .callout-des strong{color:var(--des)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
-.card-accent{border-left:3px solid var(--accent)}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:all .2s}
+.topic-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer}
+.topic-header:hover{background:rgba(43,196,169,.05)}
+.topic-badge{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#111;flex-shrink:0}
+.topic-title{font-weight:700;font-size:.95rem;flex:1}
+.topic-sub{font-size:.78rem;color:var(--muted)}
+.topic-arrow{color:var(--muted);font-size:.9rem;transition:transform .2s;flex-shrink:0}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 18px 18px;font-size:.93rem;color:#ccc;line-height:1.7}
+.topic.open .topic-body{display:block}
+.topic-body h4{color:var(--ink);font-size:.9rem;margin:14px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+.topic-body ul{padding-left:18px;margin-bottom:10px}
+.topic-body li{margin-bottom:6px}
 
 /* SKILL TABLE */
 .skill-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:16px}
@@ -91,46 +157,142 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg)}
 .mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
 .mc-choice.mc-dis{pointer-events:none;opacity:.7}
-.mc-choice.mc-correct .mc-letter{color:var(--correct)}
-.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
-.mc-fb{font-size:.85rem;padding:8px 12px;border-radius:6px;margin-top:8px;display:none;line-height:1.5;border-left:3px solid var(--correct);background:var(--paper);color:var(--muted)}
-.mc-fb.show{display:block}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:8px;display:none;border-left:3px solid var(--correct);background:var(--paper);padding:8px 12px;border-radius:6px}.mc-fb.show{display:block}
 
 /* SCORE BAR */
 .score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
-.score-bar-label{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.score-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.score-bar-fill{height:100%;background:var(--correct);border-radius:4px;transition:width .4s ease}
-.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;color:var(--correct)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
+.tier{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:8px}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:var(--adv-bg);color:var(--advanced)}
 
-/* TIMER */
+/* DRILL TIMER (for DD exercise) */
 .drill-timer{font-family:'JetBrains Mono',monospace;font-size:1.1rem;text-align:center;padding:8px;border-radius:8px;margin-bottom:14px;background:var(--paper);color:var(--muted)}
 .drill-timer.running{color:var(--psda)}
 .drill-timer.done{color:var(--correct)}
 
-/* NAV */
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
+/* TRAP TAXONOMY */
+.trap-taxonomy{margin-bottom:24px}
+.trap-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:all .2s}
+.trap-card:hover{border-color:var(--accent);transform:translateX(3px)}
+.trap-number{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:#fff;flex-shrink:0}
+.trap-card-body{flex:1}
+.trap-card-name{font-weight:700;font-size:.92rem;margin-bottom:3px}
+.trap-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+.trap-card-example{font-size:.78rem;color:var(--math);font-family:'JetBrains Mono',monospace;margin-top:4px}
 
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.sc-grid{grid-template-columns:repeat(2,1fr)}.do-dont{grid-template-columns:1fr}.classify-opts{flex-direction:column}.dd-btns{flex-direction:column}}
+/* CONFIDENCE / TIMER / PRACTICE */
+.confidence-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.conf-tag{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;letter-spacing:.5px}
+.conf-tag:hover{border-color:var(--des)}
+.conf-tag.selected{border-color:var(--des);background:rgba(43,196,169,.12);color:var(--des)}
+.conf-tag[data-conf="guessing"].selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="unsure"].selected{border-color:var(--math);background:var(--math-bg);color:var(--math)}
+.conf-tag[data-conf="confident"].selected{border-color:var(--des);background:rgba(43,196,169,.12);color:var(--des)}
+
+.timer-bar{position:sticky;top:8px;z-index:50;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--des);min-width:60px}
+.timer-display.warning{color:var(--psda)}
+.timer-display.danger{color:var(--wrong);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.timer-fill{height:100%;background:var(--des);transition:width 1s linear;border-radius:2px}
+.timer-fill.warning{background:var(--psda)}
+.timer-fill.danger{background:var(--wrong)}
+.timer-toggle{padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.75rem;color:var(--muted);cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600}
+.timer-toggle:hover{border-color:var(--accent);color:var(--ink)}
+.timer-toggle.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.q-dots{display:flex;gap:4px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.q-dot.correct{background:var(--correct)}
+.q-dot.wrong{background:var(--wrong)}
+
+/* RESULTS */
+.results-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.results-section h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px;background:var(--border);border-radius:10px;overflow:hidden}
+.results-grid-header{background:var(--surface);padding:8px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.results-grid-cell{background:var(--paper);padding:10px 8px;text-align:center;font-size:.78rem;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.results-grid-cell.danger-cell{background:var(--danger-bg);border:1px solid rgba(239,68,68,.3)}
+.cell-label{font-size:.65rem;color:var(--muted);font-weight:600}
+.cell-dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.cell-dot{width:8px;height:8px;border-radius:50%}
+.difficulty-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.diff-row{display:flex;align-items:center;gap:10px}
+.diff-label{font-size:.78rem;font-weight:600;min-width:60px}
+.diff-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.diff-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.diff-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;min-width:40px;text-align:right}
+.error-category{padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:.85rem;line-height:1.6}
+.error-category .error-label{font-weight:700;margin-bottom:4px}
+.error-category .error-items{color:var(--muted);font-size:.82rem}
+
+/* COMPLETE */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--des);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.sc-grid{grid-template-columns:repeat(2,1fr)}.do-dont{grid-template-columns:1fr}.classify-opts{flex-direction:column}.dd-btns{flex-direction:column}.preview-grid{grid-template-columns:1fr 1fr}.welcome-meta{flex-wrap:wrap;gap:12px}.results-grid{grid-template-columns:1fr;gap:1px}.nav-cards{grid-template-columns:1fr}.timer-bar{flex-wrap:wrap;gap:8px}}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="container">
-<a class="back-link" href="index.html">← Back to PSAT Math Course</a>
+<div class="screen-progress" id="screenProgress"></div>
 
+<!-- SCREEN 1: WELCOME -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 6</div>
+    <h1>Desmos Mastery for PSAT</h1>
+    <p class="welcome-sub">Desmos is available on ALL 44 questions. Fluency here is a massive competitive advantage.</p>
+    <div class="welcome-meta"><span>⏱ ~45 min</span><span>📋 10 skills</span><span>🔨 3 exercises</span><span>🎯 8 practice Qs</span></div>
+    <div class="preview-grid">
+      <div class="preview-card"><div class="preview-icon">🔄</div><div class="preview-title">Retrieval Warm-Up</div><div class="preview-desc">5 questions from Module 5 to activate prior knowledge</div></div>
+      <div class="preview-card"><div class="preview-icon">📊</div><div class="preview-title">10 Essential Skills</div><div class="preview-desc">Graphing, intersections, sliders, tables, regression & more</div></div>
+      <div class="preview-card"><div class="preview-icon">🎯</div><div class="preview-title">Trap Taxonomy</div><div class="preview-desc">4 named traps that recur in Desmos problems</div></div>
+      <div class="preview-card"><div class="preview-icon">🧮</div><div class="preview-title">3 Exercises</div><div class="preview-desc">Skill matcher, Desmos vs algebra speed drill, shortcut quiz</div></div>
+      <div class="preview-card"><div class="preview-icon">⏱</div><div class="preview-title">Timed Practice</div><div class="preview-desc">8 PSAT-style questions with optional timer</div></div>
+      <div class="preview-card"><div class="preview-icon">📈</div><div class="preview-title">Error Analysis</div><div class="preview-desc">Difficulty breakdown + confidence matrix + trap patterns</div></div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: RETRIEVAL WARM-UP -->
+<div class="screen" id="screen-warmup">
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <div class="warmup-badge">Retrieval Warm-Up</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem">Module 5 Review</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:4px">Quick recall from what you learned last time.</p>
+      <div class="warmup-dots" id="warmupDots"></div>
+    </div>
+    <div id="warmupContent"></div>
+  </div>
+</div>
+
+<!-- SCREEN 3: LESSON CONTENT -->
+<div class="screen" id="screen-lesson">
+<div class="container">
+<a class="back-link" href="index.html">← Back to PSAT/NMSQT Math Course</a>
 <div class="mod-header">
   <div class="mod-badge">Module 6</div>
   <h1>Desmos Mastery for PSAT</h1>
   <p class="subtitle">Desmos is available on ALL 44 questions. Fluency here is a massive competitive advantage.</p>
-  <div class="mod-meta">
-    <span>⏱ ~45 min</span>
-    <span>📋 10 skills</span>
-    <span>🔨 Phase 3: Strategize</span>
-  </div>
+  <div class="mod-meta"><span>⏱ ~45 min</span><span>📋 10 skills</span><span>🔨 Phase 3: Strategize</span></div>
 </div>
 
 <div class="callout-des callout"><strong>Key PSAT Fact:</strong> Unlike older paper PSATs, the digital PSAT gives you Desmos on <em>every single question</em> — both Module 1 and Module 2. Roughly ⅓ of all questions can be solved or verified faster with Desmos than by hand. That's ~15 questions where Desmos fluency pays off.</div>
@@ -176,8 +338,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<!-- WHEN TO USE -->
-
 <!-- GRAPHING vs SCIENTIFIC MODE -->
 <div class="section">
   <div class="section-label">Calculator Modes</div>
@@ -192,8 +352,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="topic-body">
     <ul>
       <li><strong>Graphing mode (default):</strong> Use 95% of the time. Graphs equations, finds intersections, runs regressions, handles tables. This is your power tool.</li>
-      <li><strong>Scientific mode:</strong> Switch for pure arithmetic. Cleaner interface for calculations that don’t need graphs — unit conversions, complex fractions.</li>
-      <li><strong>CAS ban:</strong> Computer Algebra Systems (like TI-Nspire CAS) are NOT allowed on the PSAT/NMSQT. The built-in Desmos does NOT have CAS — it won’t simplify algebraic expressions or factor for you. It only evaluates numerically and graphs.</li>
+      <li><strong>Scientific mode:</strong> Switch for pure arithmetic. Cleaner interface for calculations that don't need graphs — unit conversions, complex fractions.</li>
+      <li><strong>CAS ban:</strong> Computer Algebra Systems (like TI-Nspire CAS) are NOT allowed on the PSAT/NMSQT. The built-in Desmos does NOT have CAS — it won't simplify algebraic expressions or factor for you. It only evaluates numerically and graphs.</li>
     </ul>
     <div class="callout"><strong>Practical tip:</strong> Even for arithmetic, the graphing calculator works fine — type the expression on a blank line and Desmos evaluates it. No need to switch modes unless the interface feels cluttered.</div>
   </div>
@@ -233,9 +393,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="callout"><strong>The 5-Second Rule:</strong> If you can't figure out how to set it up in Desmos within 5 seconds, switch to algebra. Desmos is a tool, not a crutch.</div>
 </div>
 
-<!-- ==================== EXERCISE 1: SKILL MATCHER ==================== -->
-
-<!-- DESMOS IN ACTION: 5 COMMON SCENARIOS -->
+<!-- WORKED EXAMPLES -->
 <div class="section">
   <div class="section-label">Worked Examples</div>
   <h2>Desmos in Action — 5 Common PSAT/NMSQT Scenarios</h2>
@@ -286,7 +444,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
   <div class="topic-header">
-    <div class="topic-badge" style="background:var(--geo)">Ex</div>
+    <div class="topic-badge" style="background:var(--geotrig)">Ex</div>
     <div class="topic-info"><div class="topic-title">Scenario 4: Use a Slider to Find an Unknown</div><div class="topic-sub">The line y = ax + 3 passes through (4, 11). Find a.</div></div>
     <div class="topic-arrow">▸</div>
   </div>
@@ -318,7 +476,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="exercise" id="skillEx"></div>
 </div>
 
-<!-- ==================== EXERCISE 2: DESMOS VS ALGEBRA ==================== -->
+<!-- EXERCISE 2: DESMOS VS ALGEBRA -->
 <div class="section">
   <div class="section-label">Interactive Exercise 2</div>
   <h2>Desmos or Algebra? — Speed Decision Drill</h2>
@@ -326,7 +484,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="exercise" style="border-color:var(--psda)" id="ddEx"></div>
 </div>
 
-<!-- ==================== EXERCISE 3: SHORTCUT QUIZ ==================== -->
+<!-- EXERCISE 3: SHORTCUT QUIZ -->
 <div class="section">
   <div class="section-label">Interactive Exercise 3</div>
   <h2>Keyboard Shortcut Quiz</h2>
@@ -347,42 +505,121 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<!-- ==================== PSAT PRACTICE ==================== -->
+<!-- TRAP TAXONOMY -->
 <div class="section">
-  <div class="section-label">PSAT-Style Practice</div>
-  <h2>Desmos-Solvable Practice Questions</h2>
-  <p>All 8 can be solved with Desmos. Try solving with Desmos AND by hand to compare speed. Each explanation shows both methods.</p>
-  <div id="psatPractice"></div>
-</div>
-
-<!-- TAKEAWAYS -->
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>~⅓ of PSAT math can be solved or verified with Desmos. Fluency is a massive advantage.</li>
-      <li>Master the 10 essential skills — graphing, intersections, sliders, tables, regression, inequalities, stats, %, circles, shortcuts.</li>
-      <li>Calculator discipline: use Desmos when it's faster (systems, quadratics, regression), skip when it's slower (arithmetic, conceptual).</li>
-      <li>The 5-second rule: if setup takes more than 5 seconds, switch to algebra.</li>
-      <li>Memorize keyboard shortcuts: ^ _ ~ | sqrt pi</li>
-      <li>Always verify your answer when time allows — graph your equation and check it makes sense.</li>
-    </ol>
+  <div class="section-label">Math Trap Taxonomy</div>
+  <h2>Four Traps That Recur in Desmos Problems</h2>
+  <p>Learn these by name. When you spot one in a problem, you'll know exactly what to watch for.</p>
+  <div class="trap-taxonomy">
+    <div class="trap-card"><div class="trap-number" style="background:var(--wrong)">1</div><div class="trap-card-body"><div class="trap-card-name">⏱ The Setup Trap</div><div class="trap-card-desc">Spent too long setting up Desmos when algebra would have been faster. The 5-second rule exists for a reason — if you can't see how to enter it quickly, switch methods.</div><div class="trap-card-example">Simple probability from a table → Desmos can't help. Read the table directly.</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--des)">2</div><div class="trap-card-body"><div class="trap-card-name">🧮 The Mental Math Trap</div><div class="trap-card-desc">Used Desmos for something you could do in your head. Every second spent opening and typing into the calculator is a second wasted on easy questions.</div><div class="trap-card-example">Using Desmos for 25% of 400 → Just do 400/4 = 100 mentally.</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--psda)">3</div><div class="trap-card-body"><div class="trap-card-name">🔍 The CAS Illusion</div><div class="trap-card-desc">Expected Desmos to factor, simplify, or solve algebraically. Desmos is NOT a CAS — it graphs and evaluates numerically, but won't simplify x²−4 into (x−2)(x+2) for you.</div><div class="trap-card-example">Asking Desmos to simplify (x²+3x)/(x+3) → It only graphs. Factor by hand.</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--math)">4</div><div class="trap-card-body"><div class="trap-card-name">🎯 The Intersection Misread</div><div class="trap-card-desc">Read the wrong intersection point, or clicked a different point on the graph. Always verify which intersection you need, and zoom in if the points are close together.</div><div class="trap-card-example">Two parabolas with 2 intersections → clicked the wrong one. Check both!</div></div></div>
   </div>
 </div>
 
-<div class="mod-nav">
-  <a href="module-5.html">← Module 5: Geometry & Trig</a>
-  <a href="module-7.html">Module 7: Strategy Toolkit →</a>
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(3)">Continue to Practice Questions →</button>
+</div>
 </div>
 </div>
 
+<!-- SCREEN 4: TIMED PRACTICE -->
+<div class="screen" id="screen-practice">
+<div class="container">
+  <div class="section-label">PSAT/NMSQT Practice</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:4px">Practice Questions</h2>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px">8 questions at three difficulty tiers. Tag your confidence before answering.</p>
+  <div class="timer-bar" id="timerBar">
+    <div class="timer-display" id="timerDisplay">--:--</div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="q-dots" id="qDots"></div>
+    <button class="timer-toggle" id="timerToggle" onclick="toggleTimer()">⏱ Timer OFF</button>
+  </div>
+  <div id="psatPractice"></div>
+  <div id="practiceResults" style="display:none"></div>
+  <div id="practiceNav" style="display:none;text-align:center;padding:24px 0">
+    <button class="start-btn" onclick="goScreen(4)">View Summary & Complete Module →</button>
+  </div>
+</div>
+</div>
+
+<!-- SCREEN 5: MODULE COMPLETE -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎉</div>
+    <h1>Module 6 Complete!</h1>
+    <p class="complete-sub">You've mastered Desmos — now you have a powerful tool advantage on test day.</p>
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--des);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> ~⅓ of PSAT math can be solved or verified with Desmos. Fluency is a massive advantage.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Master the 10 essential skills — graphing, intersections, sliders, tables, regression, inequalities, stats, %, circles, shortcuts.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Calculator discipline: use Desmos when it's faster (systems, quadratics, regression), skip when it's slower (arithmetic, conceptual).</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> The 5-second rule: if setup takes more than 5 seconds, switch to algebra.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Memorize keyboard shortcuts: <strong>^ _ ~ | sqrt pi</strong></div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Always verify your answer when time allows — graph your equation and check it makes sense.</div>
+    </div>
+    <div id="completePracticeStats"></div>
+    <div class="nav-cards">
+      <a class="nav-card" href="module-5.html"><div class="nav-card-label">← Previous</div><div class="nav-card-title">Module 5: Geometry & Trig</div></a>
+      <a class="nav-card" href="module-7.html" style="border-color:var(--des)"><div class="nav-card-label">Next →</div><div class="nav-card-title">Module 7: Strategy Toolkit</div></a>
+    </div>
+  </div>
+</div>
+
 <script>
-// ============ PROGRESS BAR ============
-window.addEventListener('scroll',()=>{
-  const h=document.documentElement.scrollHeight-window.innerHeight;
-  document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';
-});
+// SCREEN NAVIGATION
+const SCREENS=['screen-welcome','screen-warmup','screen-lesson','screen-practice','screen-complete'];
+let currentScreen=0;
+function goScreen(idx){
+  if(idx<0||idx>=SCREENS.length)return;
+  const cur=document.getElementById(SCREENS[currentScreen]),nxt=document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');cur.classList.add('fade-out');
+  setTimeout(()=>{cur.classList.remove('active','fade-out');nxt.classList.add('active','fade-in');currentScreen=idx;updateProgressDots();window.scrollTo(0,0);if(idx===3&&timerEnabled)startTimer();},300);
+}
+function updateProgressDots(){
+  document.getElementById('screenProgress').innerHTML=SCREENS.map((s,i)=>{let cls='screen-dot';if(i<currentScreen)cls+=' completed';if(i===currentScreen)cls+=' current';return `<div class="${cls}" onclick="${i<=currentScreen?'goScreen('+i+')':''}" title="${['Welcome','Warm-Up','Lesson','Practice','Complete'][i]}"></div>`;}).join('');
+}
+updateProgressDots();
+
+// WARM-UP (Module 5 content — Geometry & Trig)
+const WARMUP_QS=[
+  {source:'Module 5 — Special Triangles',q:'In a 30-60-90 triangle, the side opposite the 30° angle is 5. What is the hypotenuse?',
+   ch:['5√2','5√3','10','15'],c:2,
+   fb:'Ratio 1:√3:2. Short leg = 5, hypotenuse = 5 × 2 = 10. The hypotenuse is always double the short leg in a 30-60-90.'},
+  {source:'Module 5 — Circles',q:'The equation (x+2)² + (y−3)² = 16 represents a circle. What is the center?',
+   ch:['(2, −3)','(−2, 3)','(2, 3)','(−2, −3)'],c:1,
+   fb:'Standard form: (x−h)²+(y−k)²=r². Here h=−2, k=3. Center is (−2, 3). The signs flip inside the parentheses!'},
+  {source:'Module 5 — Volume',q:'A cone has the same base and height as a cylinder with volume 60π. What is the cone\'s volume?',
+   ch:['20π','30π','60π','180π'],c:0,
+   fb:'Cone volume = ⅓ × cylinder volume = ⅓ × 60π = 20π. Cones are always one-third of their corresponding cylinder.'},
+  {source:'Module 5 — Trigonometry',q:'What is sin(30°)?',
+   ch:['½','√2/2','√3/2','1'],c:0,
+   fb:'sin(30°) = ½. From the 30-60-90 triangle: opposite/hypotenuse = 1/2. This is a must-memorize value.'},
+  {source:'Module 5 — Complementary Angles',q:'If sin(x) = cos(55°), what is x?',
+   ch:['55°','35°','125°','45°'],c:1,
+   fb:'sin(x) = cos(90°−x). So if sin(x) = cos(55°), then x = 90° − 55° = 35°. Complementary angles!'}
+];
+let warmupIdx=0,warmupAnswers=[],warmupAnswered=false;
+function renderWarmup(){
+  document.getElementById('warmupDots').innerHTML=WARMUP_QS.map((_,i)=>{let cls='warmup-dot';if(i<warmupIdx)cls+=warmupAnswers[i]?' done-correct':' done-wrong';if(i===warmupIdx&&warmupIdx<WARMUP_QS.length)cls+=' active';return `<div class="${cls}"></div>`;}).join('');
+  const cont=document.getElementById('warmupContent');
+  if(warmupIdx>=WARMUP_QS.length){const cor=warmupAnswers.filter(Boolean).length;cont.innerHTML=`<div class="warmup-summary"><div class="warmup-badge">Warm-Up Complete</div><div class="warmup-score">${cor} / ${WARMUP_QS.length}</div><p style="color:var(--muted);font-size:.9rem;margin-bottom:8px">${cor===5?'Perfect recall! Module 5 knowledge is locked in.':cor>=3?'Good recall! A couple topics to revisit.':'Some gaps from Module 5 — consider a quick review.'}</p><button class="warmup-continue" onclick="goScreen(2)">Continue to Lesson →</button></div>`;return;}
+  const q=WARMUP_QS[warmupIdx];warmupAnswered=false;
+  cont.innerHTML=`<div class="warmup-q"><div class="source-tag">From ${q.source}</div><div class="q-text">${q.q}</div><div class="warmup-choices" id="warmupChoices">${q.ch.map((ch,ci)=>`<div class="warmup-choice" onclick="answerWarmup(${ci})">${ch}</div>`).join('')}</div><div id="warmupFb" style="display:none"></div></div>`;
+}
+function answerWarmup(ci){
+  if(warmupAnswered)return;warmupAnswered=true;
+  const q=WARMUP_QS[warmupIdx],correct=ci===q.c;warmupAnswers.push(correct);
+  document.querySelectorAll('.warmup-choice').forEach((ch,i)=>{ch.classList.add('wu-dis');if(i===q.c)ch.classList.add('wu-correct');else if(i===ci&&!correct)ch.classList.add('wu-wrong');});
+  const fb=document.getElementById('warmupFb');fb.style.display='block';
+  fb.innerHTML=`<div class="warmup-fb">${correct?'✓ ':'✗ '}${q.fb}</div><button class="warmup-next" onclick="warmupIdx++;renderWarmup()">${warmupIdx<WARMUP_QS.length-1?'Next Question →':'See Results →'}</button>`;
+  document.getElementById('warmupDots').innerHTML=WARMUP_QS.map((_,i)=>{let cls='warmup-dot';if(i<warmupAnswers.length)cls+=warmupAnswers[i]?' done-correct':' done-wrong';else if(i===warmupIdx+1)cls+=' active';return `<div class="${cls}"></div>`;}).join('');
+}
+renderWarmup();
+
+// HELPERS
+function mkScore(id,correct,total){return `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;}
 
 // ============ EXERCISE 1: SKILL MATCHER ============
 const SKILL_QS=[
@@ -429,8 +666,7 @@ function renderSkills(){
         }).join('')}</div>
         <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ ':'✗ ')+q.fb:''}</div>
       </div>`;
-    }).join('')+
-    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+    }).join('')+mkScore('s',correct,total);
 }
 function ansSkill(i,v){if(skillAns[i]!==undefined)return;skillAns[i]=v;renderSkills();}
 renderSkills();
@@ -502,56 +738,150 @@ function renderSC(){
         }).join('')}</div>
         <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ Correct!':'✗ The correct shortcut is: '+q.opts[q.correct]):''}</div>
       </div>`;
-    }).join('')+
-    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+    }).join('')+mkScore('sc',correct,total);
 }
 function ansSC(i,v){if(scAns[i]!==undefined)return;scAns[i]=v;renderSC();}
 renderSC();
 
-// ============ PSAT PRACTICE ============
-const PSAT_QS=[
-  {q:'What are the solutions of <code>x² − 3x − 10 = 0</code>?',
-   choices:['x = −2 and x = 5','x = 2 and x = −5','x = −2 and x = −5','x = 2 and x = 5'],correct:0,
-   fb:'<strong>Desmos:</strong> Graph y = x² − 3x − 10, click x-intercepts → (−2, 0) and (5, 0). <strong>Algebra:</strong> Factor (x−5)(x+2) = 0.'},
-  {q:'At what point do <code>y = 3x − 2</code> and <code>y = −x + 6</code> intersect?',
-   choices:['(1, 1)','(2, 4)','(4, 2)','(3, 7)'],correct:1,
-   fb:'<strong>Desmos:</strong> Graph both, click intersection → (2, 4). <strong>Algebra:</strong> 3x−2 = −x+6 → 4x = 8 → x=2, y=4.'},
-  {q:'What is the vertex of <code>f(x) = −2x² + 8x − 3</code>?',
-   choices:['(2, 5)','(−2, −27)','(4, −3)','(2, −3)'],correct:0,
-   fb:'<strong>Desmos:</strong> Graph it, click vertex → (2, 5). <strong>Algebra:</strong> x = −8/(2·−2) = 2, f(2) = −8+16−3 = 5.'},
-  {q:'How many real solutions does <code>2x² − 4x + 5 = 0</code> have?',
-   choices:['0','1','2','Cannot determine'],correct:0,
-   fb:'<strong>Desmos:</strong> Graph y = 2x² − 4x + 5. Parabola stays above x-axis → 0 solutions. <strong>Algebra:</strong> Disc = 16 − 40 = −24 < 0.'},
-  {q:'The data points (1,3), (2,5), (3,8), (4,10), (5,13) are best modeled by:',
-   choices:['y = 2x + 1','y = 2.5x + 0.5','y = 3x − 1','y = x² + 2'],correct:1,
-   fb:'<strong>Desmos:</strong> Enter as table, run y₁ ~ mx₁ + b → m ≈ 2.5, b ≈ 0.5. Always use regression for best-fit.'},
-  {q:'What is the center of <code>x² + y² − 6x + 4y − 12 = 0</code>?',
-   choices:['(3, −2)','(−3, 2)','(6, −4)','(−6, 4)'],correct:0,
-   fb:'<strong>Desmos:</strong> Type the equation, Desmos draws the circle. Click center → (3, −2). <strong>Algebra:</strong> Complete square → (x−3)²+(y+2)²=25.'},
-  {q:'If <code>f(x) = x³ − 6x² + 11x − 6</code>, how many positive x-intercepts?',
-   choices:['0','1','2','3'],correct:3,
-   fb:'<strong>Desmos:</strong> Graph it. Three crossings at x=1, 2, 3. All positive. <strong>Algebra:</strong> Factor (x−1)(x−2)(x−3)=0.'},
-  {q:'Where does <code>y = |x − 4| + 1</code> intersect <code>y = 5</code>?',
-   choices:['x = 0 and x = 8','x = 4 only','x = −1 and x = 9','x = 0 only'],correct:0,
-   fb:'<strong>Desmos:</strong> Graph both, click intersections. <strong>Algebra:</strong> |x−4|+1=5 → |x−4|=4 → x−4=±4 → x=0 or x=8.'},
+// ============ TIMED PRACTICE ============
+const PST=[
+  {t:1,tp:'6A',q:'What are the solutions of <code>x² − 3x − 10 = 0</code>?',
+   ch:['x = −2 and x = 5','x = 2 and x = −5','x = −2 and x = −5','x = 2 and x = 5'],c:0,
+   fb:'<strong>Desmos:</strong> Graph y = x² − 3x − 10, click x-intercepts → (−2, 0) and (5, 0). <strong>Algebra:</strong> Factor (x−5)(x+2) = 0.',
+   trap:'intersection_misread',trapAnswer:3,trapDesc:'Misread the signs of the x-intercepts — Intersection Misread'},
+  {t:1,tp:'6A',q:'At what point do <code>y = 3x − 2</code> and <code>y = −x + 6</code> intersect?',
+   ch:['(1, 1)','(2, 4)','(4, 2)','(3, 7)'],c:1,
+   fb:'<strong>Desmos:</strong> Graph both, click intersection → (2, 4). <strong>Algebra:</strong> 3x−2 = −x+6 → 4x = 8 → x=2, y=4.',
+   trap:null,trapAnswer:0,trapDesc:'Graphing both lines finds the intersection instantly'},
+  {t:1,tp:'6B',q:'What is the vertex of <code>f(x) = −2x² + 8x − 3</code>?',
+   ch:['(2, 5)','(−2, −27)','(4, −3)','(2, −3)'],c:0,
+   fb:'<strong>Desmos:</strong> Graph it, click vertex → (2, 5). <strong>Algebra:</strong> x = −8/(2·−2) = 2, f(2) = −8+16−3 = 5.',
+   trap:'setup_trap',trapAnswer:3,trapDesc:'Tried algebra and made a sign error — Setup Trap: Desmos was faster here'},
+  {t:2,tp:'6B',q:'How many real solutions does <code>2x² − 4x + 5 = 0</code> have?',
+   ch:['0','1','2','Cannot determine'],c:0,
+   fb:'<strong>Desmos:</strong> Graph y = 2x² − 4x + 5. Parabola stays above x-axis → 0 solutions. <strong>Algebra:</strong> Disc = 16 − 40 = −24 < 0.',
+   trap:'mental_math',trapAnswer:2,trapDesc:'Assumed 2 solutions without checking — Mental Math Trap'},
+  {t:2,tp:'6C',q:'The data points (1,3), (2,5), (3,8), (4,10), (5,13) are best modeled by:',
+   ch:['y = 2x + 1','y = 2.5x + 0.5','y = 3x − 1','y = x² + 2'],c:1,
+   fb:'<strong>Desmos:</strong> Enter as table, run y₁ ~ mx₁ + b → m ≈ 2.5, b ≈ 0.5. Always use regression for best-fit.',
+   trap:'cas_illusion',trapAnswer:0,trapDesc:'Tried to eyeball the slope instead of using regression — CAS Illusion'},
+  {t:2,tp:'6A',q:'What is the center of <code>x² + y² − 6x + 4y − 12 = 0</code>?',
+   ch:['(3, −2)','(−3, 2)','(6, −4)','(−6, 4)'],c:0,
+   fb:'<strong>Desmos:</strong> Type the equation, Desmos draws the circle. Click center → (3, −2). <strong>Algebra:</strong> Complete square → (x−3)²+(y+2)²=25.',
+   trap:'intersection_misread',trapAnswer:1,trapDesc:'Misread the sign from the completed square — Intersection Misread'},
+  {t:3,tp:'6C',q:'If <code>f(x) = x³ − 6x² + 11x − 6</code>, how many positive x-intercepts?',
+   ch:['0','1','2','3'],c:3,
+   fb:'<strong>Desmos:</strong> Graph it. Three crossings at x=1, 2, 3. All positive. <strong>Algebra:</strong> Factor (x−1)(x−2)(x−3)=0.',
+   trap:'intersection_misread',trapAnswer:1,trapDesc:'Only zoomed in enough to see one crossing — Intersection Misread'},
+  {t:3,tp:'6A',q:'Where does <code>y = |x − 4| + 1</code> intersect <code>y = 5</code>?',
+   ch:['x = 0 and x = 8','x = 4 only','x = −1 and x = 9','x = 0 only'],c:0,
+   fb:'<strong>Desmos:</strong> Graph both, click intersections. <strong>Algebra:</strong> |x−4|+1=5 → |x−4|=4 → x−4=±4 → x=0 or x=8.',
+   trap:'setup_trap',trapAnswer:1,trapDesc:'Forgot the absolute value creates two solutions — Setup Trap'},
 ];
-let psatAns={};
-function renderPSAT(){
-  document.getElementById('psatPractice').innerHTML=PSAT_QS.map((q,i)=>{
-    const a=psatAns[i];const has=a!==undefined;
-    return `<div class="ex-item" style="border-color:var(--des)">
+
+const TRAP_NAMES={'setup_trap':'⏱ Setup Trap','mental_math':'🧮 Mental Math Trap','cas_illusion':'🔍 CAS Illusion','intersection_misread':'🎯 Intersection Misread'};
+
+let pstA={},pstConf={},pstTime={},pstStartTime=null;
+let timerEnabled=false,timerInterval=null,timerSeconds=0;
+const SECS_PER_Q=95;let totalTimerSecs=PST.length*SECS_PER_Q;
+
+function toggleTimer(){
+  timerEnabled=!timerEnabled;const btn=document.getElementById('timerToggle');
+  btn.textContent=timerEnabled?'⏱ Timer ON':'⏱ Timer OFF';btn.classList.toggle('active',timerEnabled);
+  if(!timerEnabled&&timerInterval){clearInterval(timerInterval);timerInterval=null;document.getElementById('timerDisplay').textContent='--:--';document.getElementById('timerFill').style.width='100%';}
+  else if(timerEnabled&&currentScreen===3){startTimer();}
+}
+function startTimer(){
+  if(timerInterval)clearInterval(timerInterval);timerSeconds=totalTimerSecs;updateTimerDisplay();
+  timerInterval=setInterval(()=>{timerSeconds--;updateTimerDisplay();if(timerSeconds<=0){clearInterval(timerInterval);timerInterval=null;}},1000);pstStartTime=Date.now();
+}
+function updateTimerDisplay(){
+  const disp=document.getElementById('timerDisplay'),fill=document.getElementById('timerFill');
+  const mins=Math.floor(timerSeconds/60),secs=timerSeconds%60;
+  disp.textContent=`${mins}:${secs.toString().padStart(2,'0')}`;
+  const pct=(timerSeconds/totalTimerSecs)*100;fill.style.width=pct+'%';
+  disp.className='timer-display';fill.className='timer-fill';
+  if(pct<15){disp.classList.add('danger');fill.classList.add('danger');}
+  else if(pct<35){disp.classList.add('warning');fill.classList.add('warning');}
+}
+
+function renderPST(){
+  const answered=Object.keys(pstA).length;
+  document.getElementById('qDots').innerHTML=PST.map((_,i)=>{let cls='q-dot';if(pstA[i]!==undefined)cls+=pstA[i]===PST[i].c?' correct':' wrong';return `<div class="${cls}"></div>`;}).join('');
+  document.getElementById('psatPractice').innerHTML=PST.map((q,i)=>{
+    const a=pstA[i],h=a!==undefined;const conf=pstConf[i];
+    const tierLabel=q.t===1?'Easy':q.t===2?'Medium':'Hard';
+    const trapName=q.trap?TRAP_NAMES[q.trap]||'':'';
+    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}">
+      <div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="tier tier-${q.t}">${tierLabel}</span><span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span>
+        ${trapName&&h?`<span style="font-size:.72rem;color:var(--accent)">Trap: ${trapName}</span>`:''}
+      </div>
       <div class="ex-prompt">${q.q}</div>
-      <div class="mc-choices">${q.choices.map((ch,ci)=>{
-        let cls='mc-choice';
-        if(has){cls+=' mc-dis';if(ci===q.correct)cls+=' mc-correct';else if(ci===a&&ci!==q.correct)cls+=' mc-wrong';}
-        return `<div class="${cls}" onclick="ansPSAT(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
-      }).join('')}</div>
-      <div class="mc-fb${has?' show':''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div>
+      ${!h?`<div class="confidence-row">
+        <div class="conf-tag ${conf==='guessing'?'selected':''}" data-conf="guessing" onclick="setConf(${i},'guessing')">Guessing</div>
+        <div class="conf-tag ${conf==='unsure'?'selected':''}" data-conf="unsure" onclick="setConf(${i},'unsure')">Unsure</div>
+        <div class="conf-tag ${conf==='confident'?'selected':''}" data-conf="confident" onclick="setConf(${i},'confident')">Confident</div>
+      </div>`:`<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">Confidence: ${conf||'not tagged'}</div>`}
+      <div class="mc-choices">${q.ch.map((ch,ci)=>{let c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;}).join('')}</div>
+      <div class="mc-fb${h?' show':''}">${h?(a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb+(a!==q.c&&q.trapAnswer===a?'<br><span style="color:var(--psda)">⚠️ '+q.trapDesc+'</span>':''):''}</div>
     </div>`;
   }).join('');
+  if(answered===PST.length){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}document.getElementById('practiceNav').style.display='block';showPracticeResults();}
 }
-function ansPSAT(i,ci){if(psatAns[i]!==undefined)return;psatAns[i]=ci;renderPSAT();}
-renderPSAT();
+function setConf(i,level){if(pstA[i]!==undefined)return;pstConf[i]=level;renderPST();}
+function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;if(pstStartTime){pstTime[i]=Date.now()-pstStartTime;pstStartTime=Date.now();}renderPST();}
+
+function showPracticeResults(){
+  const total=PST.length,correct=Object.entries(pstA).filter(([i,v])=>v===PST[i].c).length;
+  const byDiff={1:{cor:0,tot:0},2:{cor:0,tot:0},3:{cor:0,tot:0}};
+  PST.forEach((q,i)=>{byDiff[q.t].tot++;if(pstA[i]===q.c)byDiff[q.t].cor++;});
+  const matrix={};['guessing','unsure','confident'].forEach(c=>{matrix[c]={correct:[],wrong:[]};});
+  PST.forEach((q,i)=>{const conf=pstConf[i]||'unsure';matrix[conf][pstA[i]===q.c?'correct':'wrong'].push(i);});
+  const errors={content_gap:[],trap_answer:[],careless:[],calibration:[]};
+  PST.forEach((q,i)=>{if(pstA[i]===q.c)return;const conf=pstConf[i]||'unsure';if(pstA[i]===q.trapAnswer)errors.trap_answer.push({i,desc:q.trapDesc,topic:q.tp});else errors.content_gap.push({i,topic:q.tp});if(conf==='confident'){if(q.t===1)errors.careless.push({i,topic:q.tp});errors.calibration.push({i,topic:q.tp});}});
+
+  let html=`<div class="results-section"><h3>📊 Practice Results: ${correct}/${total}</h3>
+    <div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Difficulty</div>
+    <div class="difficulty-bars">
+      <div class="diff-row"><span class="diff-label" style="color:var(--algebra)">Easy</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[1].tot?byDiff[1].cor/byDiff[1].tot*100:0}%;background:var(--algebra)"></div></div><span class="diff-val" style="color:var(--algebra)">${byDiff[1].cor}/${byDiff[1].tot}</span></div>
+      <div class="diff-row"><span class="diff-label" style="color:var(--math)">Medium</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[2].tot?byDiff[2].cor/byDiff[2].tot*100:0}%;background:var(--math)"></div></div><span class="diff-val" style="color:var(--math)">${byDiff[2].cor}/${byDiff[2].tot}</span></div>
+      <div class="diff-row"><span class="diff-label" style="color:var(--advanced)">Hard</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[3].tot?byDiff[3].cor/byDiff[3].tot*100:0}%;background:var(--advanced)"></div></div><span class="diff-val" style="color:var(--advanced)">${byDiff[3].cor}/${byDiff[3].tot}</span></div>
+    </div></div>`;
+  html+=`<div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Confidence × Accuracy Matrix</div>
+    <div class="results-grid">
+      <div class="results-grid-header"></div><div class="results-grid-header">Guessing</div><div class="results-grid-header">Unsure</div><div class="results-grid-header">Confident</div>
+      <div class="results-grid-header">✓ Correct</div>
+      <div class="results-grid-cell"><div class="cell-label">Lucky</div><div class="cell-dots">${matrix.guessing.correct.map(()=>'<div class="cell-dot" style="background:var(--psda)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.correct.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Developing</div><div class="cell-dots">${matrix.unsure.correct.map(()=>'<div class="cell-dot" style="background:var(--math)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.correct.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Solid</div><div class="cell-dots">${matrix.confident.correct.map(()=>'<div class="cell-dot" style="background:var(--correct)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.confident.correct.length}</div></div>
+      <div class="results-grid-header">✗ Wrong</div>
+      <div class="results-grid-cell"><div class="cell-label">Expected</div><div class="cell-dots">${matrix.guessing.wrong.map(()=>'<div class="cell-dot" style="background:var(--muted)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.wrong.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Needs work</div><div class="cell-dots">${matrix.unsure.wrong.map(()=>'<div class="cell-dot" style="background:var(--psda)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.wrong.length}</div></div>
+      <div class="results-grid-cell danger-cell"><div class="cell-label" style="color:var(--wrong);font-weight:700">⚠️ DANGER</div><div class="cell-dots">${matrix.confident.wrong.map(()=>'<div class="cell-dot" style="background:var(--wrong)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.confident.wrong.length}</div></div>
+    </div>
+    ${matrix.confident.wrong.length>0?'<div class="callout" style="border-color:var(--wrong);background:var(--wrong-bg)"><strong style="color:var(--wrong)">Confident + Wrong</strong> is the most dangerous category. These errors persist because you won\'t self-correct what you think you already know.</div>':''}
+  </div>`;
+  const hasErrors=errors.trap_answer.length+errors.content_gap.length>0;
+  if(hasErrors){
+    html+=`<div style="margin-bottom:16px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Error Pattern Analysis</div>`;
+    if(errors.trap_answer.length>0)html+=`<div class="error-category" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3)"><div class="error-label" style="color:var(--psda)">🟡 Trap Answers (${errors.trap_answer.length})</div><div class="error-items">${errors.trap_answer.map(e=>e.desc).join(' · ')}</div></div>`;
+    if(errors.content_gap.length>0)html+=`<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">🔴 Content Gaps (${errors.content_gap.length})</div><div class="error-items">Topics: ${[...new Set(errors.content_gap.map(e=>e.topic))].join(', ')}</div></div>`;
+    if(errors.careless.length>0)html+=`<div class="error-category" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)"><div class="error-label" style="color:var(--math)">🔵 Possible Careless Errors (${errors.careless.length})</div><div class="error-items">Confident + wrong on easy questions — likely arithmetic mistakes</div></div>`;
+    if(errors.calibration.length>0)html+=`<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">⚠️ Calibration Issues (${errors.calibration.length})</div><div class="error-items">You were confident but wrong — review these topics carefully</div></div>`;
+    html+=`</div>`;
+  }
+  html+=`</div>`;
+  document.getElementById('practiceResults').style.display='block';
+  document.getElementById('practiceResults').innerHTML=html;
+  document.getElementById('completePracticeStats').innerHTML=`
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:24px;max-width:500px;width:100%;text-align:left">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Practice Results</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--correct);margin-bottom:8px">${correct}/${total} correct</div>
+      <div style="font-size:.82rem;color:var(--muted)">Easy: ${byDiff[1].cor}/${byDiff[1].tot} · Medium: ${byDiff[2].cor}/${byDiff[2].tot} · Hard: ${byDiff[3].cor}/${byDiff[3].tot}</div>
+    </div>`;
+}
+renderPST();
 </script>
 <script src="/translate.js"></script>
 </body>

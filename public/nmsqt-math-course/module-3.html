@@ -6,13 +6,72 @@
 <title>Module 3: Advanced Math — PSAT/NMSQT Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--geotrig:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--geotrig:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--advanced));width:0%;transition:width .3s ease}
+
+/* ── Screen System ── */
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+/* ── Progress Dots ── */
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--advanced)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(200,16,46,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
+/* ── Container ── */
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+
+/* ── Welcome Screen ── */
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--advanced);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--advanced);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--advanced);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(167,139,250,.3)}
+
+/* ── Retrieval Warm-Up ── */
+.warmup-container{max-width:600px;margin:0 auto;padding:60px 20px}
+.warmup-header{text-align:center;margin-bottom:32px}
+.warmup-badge{display:inline-block;background:var(--psda);color:#000;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.warmup-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.warmup-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.warmup-dot.done-correct{background:var(--correct)}
+.warmup-dot.done-wrong{background:var(--wrong)}
+.warmup-dot.active{background:var(--psda);box-shadow:0 0 8px rgba(251,191,36,.4)}
+.warmup-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.warmup-q .source-tag{font-size:.7rem;color:var(--psda);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.warmup-q .q-text{font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.warmup-choices{display:flex;flex-direction:column;gap:8px}
+.warmup-choice{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.warmup-choice:hover:not(.wu-dis){border-color:var(--psda);background:rgba(251,191,36,.05)}
+.warmup-choice.wu-correct{border-color:var(--correct);background:var(--correct-bg)}
+.warmup-choice.wu-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.warmup-choice.wu-dis{pointer-events:none;opacity:.7}
+.warmup-choice.wu-correct{opacity:1}
+.warmup-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:12px;padding:10px;background:var(--paper);border-radius:8px;border-left:3px solid var(--correct)}
+.warmup-next{padding:10px 24px;background:var(--psda);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;margin-top:12px;font-family:'Source Sans 3',sans-serif}
+.warmup-next:hover{filter:brightness(1.1)}
+.warmup-summary{text-align:center;padding:40px 20px}
+.warmup-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:var(--psda);margin:12px 0}
+.warmup-continue{padding:12px 28px;background:var(--advanced);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:20px;font-family:'Source Sans 3',sans-serif}
+.warmup-continue:hover{filter:brightness(1.15)}
+
+/* ── Lesson Content ── */
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
@@ -24,28 +83,21 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--advanced);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
 .callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
 .callout strong{color:var(--accent)}
 .callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
 .callout-blue strong{color:var(--math)}
 .callout-purple{background:var(--adv-bg);border-color:rgba(167,139,250,.3)}
 .callout-purple strong{color:var(--advanced)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
-.card-accent{border-left:3px solid var(--accent)}
-
-/* THREE FORMS DISPLAY */
-.forms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-.form-card{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;transition:all .3s}
-.form-card:hover{transform:translateY(-2px)}
-.form-name{font-weight:700;font-size:.9rem;margin-bottom:6px}
-.form-eq{font-family:'JetBrains Mono',monospace;font-size:1rem;margin-bottom:8px}
-.form-reveals{font-size:.82rem;color:var(--muted);line-height:1.5}
-
-/* TOPICS (EXPANDABLE) */
 .topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:all .2s}
 .topic-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer}
 .topic-header:hover{background:rgba(167,139,250,.05)}
-.topic-title{font-weight:700;font-size:.95rem;flex:1}
+.topic-badge{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
+.topic-info{flex:1}
+.topic-title{font-weight:700;font-size:.95rem}
+.topic-sub{font-size:.82rem;color:var(--muted)}
 .topic-arrow{color:var(--muted);font-size:.9rem;transition:transform .2s;flex-shrink:0}
 .topic.open .topic-arrow{transform:rotate(90deg)}
 .topic-body{display:none;padding:0 18px 18px;font-size:.93rem;color:#ccc;line-height:1.7}
@@ -54,7 +106,15 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .topic-body ul{padding-left:18px;margin-bottom:10px}
 .topic-body li{margin-bottom:6px}
 
-/* FORMULA & RULES */
+/* ── Forms Grid ── */
+.forms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.form-card{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;transition:all .3s}
+.form-card:hover{transform:translateY(-2px)}
+.form-name{font-weight:700;font-size:.9rem;margin-bottom:6px}
+.form-eq{font-family:'JetBrains Mono',monospace;font-size:1rem;margin-bottom:8px}
+.form-reveals{font-size:.82rem;color:var(--muted);line-height:1.5}
+
+/* ── Formula & Rules ── */
 .formula-box{background:var(--paper);border:2px solid var(--advanced);border-radius:10px;padding:14px 18px;margin:10px 0 14px;font-family:'JetBrains Mono',monospace;font-size:.88rem;line-height:2}
 .formula-box .fn{color:var(--advanced);font-weight:700}
 .formula{background:var(--paper);border:2px solid var(--advanced);border-radius:10px;padding:16px;text-align:center;margin:12px 0 16px}
@@ -66,7 +126,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .rules-table td{color:#ccc}
 .rules-table code{background:var(--adv-bg);color:var(--advanced);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82rem}
 
-/* EXERCISES */
+/* ── Exercises ── */
 .exercise{background:var(--surface);border:2px solid var(--advanced);border-radius:14px;padding:22px;margin-bottom:16px}
 .exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;margin-bottom:4px}
 .exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
@@ -83,11 +143,9 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .ex-fb.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
 .ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
 .tier{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:8px}
-.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}
-.tier-2{background:var(--math-bg);color:var(--math)}
-.tier-3{background:var(--adv-bg);color:var(--advanced)}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:var(--adv-bg);color:var(--advanced)}
 
-/* CLASSIFY OPTIONS */
+/* ── Classify Options ── */
 .classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
 .classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
 .classify-opt:hover:not(.cl-dis){border-color:var(--advanced);background:var(--adv-bg)}
@@ -95,7 +153,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .classify-opt.cl-dis{pointer-events:none;opacity:.7}
 
-/* MC CHOICES */
+/* ── MC Choices ── */
 .mc-choices{display:flex;flex-direction:column;gap:6px}
 .mc-choice{padding:10px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s;display:flex;align-items:center;gap:10px}
 .mc-choice:hover:not(.mc-dis){border-color:var(--advanced);background:var(--adv-bg)}
@@ -103,52 +161,168 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg)}
 .mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
 .mc-choice.mc-dis{pointer-events:none;opacity:.7}
-.mc-choice.mc-correct .mc-letter{color:var(--correct)}
-.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
-.mc-fb{font-size:.85rem;padding:8px 12px;border-radius:6px;margin-top:8px;display:none;line-height:1.5;border-left:3px solid var(--correct);background:var(--paper);color:var(--muted)}
-.mc-fb.show{display:block}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:8px;display:none;border-left:3px solid var(--correct);background:var(--paper);padding:8px 12px;border-radius:6px}.mc-fb.show{display:block}
 
-/* SCORE BAR */
+/* ── Score Bar ── */
 .score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
-.score-bar-label{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.score-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.score-bar-fill{height:100%;background:var(--correct);border-radius:4px;transition:width .4s ease}
-.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;color:var(--correct)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
 
-/* SPEED DRILL TIMER */
+/* ── Speed Drill Timer ── */
 .drill-timer{font-family:'JetBrains Mono',monospace;font-size:1.1rem;text-align:center;padding:8px;border-radius:8px;margin-bottom:14px;background:var(--paper);color:var(--muted)}
 .drill-timer.running{color:var(--psda)}
 .drill-timer.done{color:var(--correct)}
 
-/* DISCRIMINANT */
+/* ── Discriminant ── */
 .disc-inputs{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
 .disc-inputs label{display:flex;align-items:center;gap:6px;font-weight:700;font-size:.9rem}
 .disc-inputs input{width:60px;padding:6px;background:var(--paper);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;text-align:center}
 .disc-inputs input:focus{border-color:var(--advanced);outline:none}
 
-/* NAV */
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
+/* ── Trap Taxonomy ── */
+.trap-taxonomy{margin-bottom:24px}
+.trap-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:all .2s}
+.trap-card:hover{border-color:var(--accent);transform:translateX(3px)}
+.trap-number{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:#fff;flex-shrink:0}
+.trap-card-body{flex:1}
+.trap-card-name{font-weight:700;font-size:.92rem;margin-bottom:3px}
+.trap-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+.trap-card-example{font-size:.78rem;color:var(--math);font-family:'JetBrains Mono',monospace;margin-top:4px}
 
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.forms-grid{grid-template-columns:1fr}.classify-opts{flex-direction:column}.disc-inputs{flex-direction:column;align-items:flex-start}}
+/* ── Confidence Tags ── */
+.confidence-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.conf-tag{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;letter-spacing:.5px}
+.conf-tag:hover{border-color:var(--advanced)}
+.conf-tag.selected{border-color:var(--advanced);background:rgba(167,139,250,.12);color:var(--advanced)}
+.conf-tag[data-conf="guessing"].selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="unsure"].selected{border-color:var(--math);background:var(--math-bg);color:var(--math)}
+.conf-tag[data-conf="confident"].selected{border-color:var(--advanced);background:rgba(167,139,250,.12);color:var(--advanced)}
+
+/* ── Timed Practice ── */
+.timer-bar{position:sticky;top:8px;z-index:50;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--advanced);min-width:60px}
+.timer-display.warning{color:var(--psda)}
+.timer-display.danger{color:var(--wrong);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.timer-fill{height:100%;background:var(--advanced);transition:width 1s linear;border-radius:2px}
+.timer-fill.warning{background:var(--psda)}
+.timer-fill.danger{background:var(--wrong)}
+.timer-toggle{padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.75rem;color:var(--muted);cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600}
+.timer-toggle:hover{border-color:var(--accent);color:var(--ink)}
+.timer-toggle.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.q-dots{display:flex;gap:4px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.q-dot.correct{background:var(--correct)}
+.q-dot.wrong{background:var(--wrong)}
+
+/* ── Results ── */
+.results-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.results-section h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px;background:var(--border);border-radius:10px;overflow:hidden}
+.results-grid-header{background:var(--surface);padding:8px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.results-grid-cell{background:var(--paper);padding:10px 8px;text-align:center;font-size:.78rem;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.results-grid-cell.danger-cell{background:var(--danger-bg);border:1px solid rgba(239,68,68,.3)}
+.cell-label{font-size:.65rem;color:var(--muted);font-weight:600}
+.cell-dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.cell-dot{width:8px;height:8px;border-radius:50%}
+.difficulty-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.diff-row{display:flex;align-items:center;gap:10px}
+.diff-label{font-size:.78rem;font-weight:600;min-width:60px}
+.diff-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.diff-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.diff-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;min-width:40px;text-align:right}
+.error-category{padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:.85rem;line-height:1.6}
+.error-category .error-label{font-weight:700;margin-bottom:4px}
+.error-category .error-items{color:var(--muted);font-size:.82rem}
+
+/* ── Module Complete ── */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--advanced);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
+
+@media(max-width:600px){
+  .mod-meta{flex-wrap:wrap;gap:10px}
+  .forms-grid{grid-template-columns:1fr}
+  .classify-opts{gap:4px}
+  .preview-grid{grid-template-columns:1fr 1fr}
+  .welcome-meta{flex-wrap:wrap;gap:12px}
+  .results-grid{grid-template-columns:1fr;gap:1px}
+  .nav-cards{grid-template-columns:1fr}
+  .timer-bar{flex-wrap:wrap;gap:8px}
+  .disc-inputs{flex-direction:column;align-items:flex-start}
+}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="container">
-<a class="back-link" href="index.html">← Back to PSAT Math Course</a>
+<div class="screen-progress" id="screenProgress"></div>
 
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 1: WELCOME                             -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 3</div>
+    <h1>Advanced Math — Quadratics, Polynomials & Nonlinear Functions</h1>
+    <p class="welcome-sub">The backbone of Advanced Math — master these and you control ~35% of the test.</p>
+    <div class="welcome-meta">
+      <span>⏱ ~60 min</span>
+      <span>📋 4 topics</span>
+      <span>🔨 5 exercises</span>
+      <span>🎯 8 practice Qs</span>
+    </div>
+    <div class="preview-grid">
+      <div class="preview-card"><div class="preview-icon">🔄</div><div class="preview-title">Retrieval Warm-Up</div><div class="preview-desc">5 questions from Module 2 to activate prior knowledge</div></div>
+      <div class="preview-card"><div class="preview-icon">📐</div><div class="preview-title">4 Core Topics</div><div class="preview-desc">Quadratics, polynomials, exponents, rational expressions</div></div>
+      <div class="preview-card"><div class="preview-icon">🎯</div><div class="preview-title">Trap Taxonomy</div><div class="preview-desc">4 named traps that recur in Advanced Math</div></div>
+      <div class="preview-card"><div class="preview-icon">🧮</div><div class="preview-title">5 Exercises</div><div class="preview-desc">Form ID, decision tree, factoring, speed drill, growth/decay</div></div>
+      <div class="preview-card"><div class="preview-icon">⏱</div><div class="preview-title">Timed Practice</div><div class="preview-desc">8 PSAT-style questions with optional timer</div></div>
+      <div class="preview-card"><div class="preview-icon">📊</div><div class="preview-title">Error Analysis</div><div class="preview-desc">Difficulty breakdown + confidence matrix + trap patterns</div></div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 2: RETRIEVAL WARM-UP                   -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-warmup">
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <div class="warmup-badge">Retrieval Warm-Up</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem">Module 2 Review</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:4px">Quick recall from what you learned last time.</p>
+      <div class="warmup-dots" id="warmupDots"></div>
+    </div>
+    <div id="warmupContent"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 3: LESSON CONTENT                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-lesson">
+<div class="container">
+<a class="back-link" href="index.html">← Back to PSAT/NMSQT Math Course</a>
 <div class="mod-header">
   <div class="mod-badge">Module 3</div>
   <h1>Advanced Math — Quadratics, Polynomials & Nonlinear Functions</h1>
   <p class="subtitle">The backbone of Advanced Math — master these and you control ~35% of the test.</p>
-  <div class="mod-meta">
-    <span>⏱ ~60 min</span>
-    <span>📋 4 topics</span>
-    <span>🔨 Phase 2: Build</span>
-  </div>
+  <div class="mod-meta"><span>⏱ ~60 min</span><span>📋 4 topics</span><span>🔨 Phase 2: Build</span></div>
 </div>
 
 <div class="callout-purple callout"><strong>Quadratics are the single most tested topic in Advanced Math.</strong> If you learn nothing else in this module, learn the three quadratic forms and when to use each one. That single skill can be worth 40–60 points.</div>
@@ -394,46 +568,180 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<!-- ==================== PSAT-STYLE PRACTICE ==================== -->
+<!-- ── Trap Taxonomy ── -->
 <div class="section">
-  <div class="section-label">PSAT-Style Practice</div>
-  <h2>Practice Questions</h2>
-  <p>8 questions covering all topics in this module. 3 Easy, 3 Medium, 2 Hard.</p>
-  <div id="psatPractice"></div>
-</div>
-
-<!-- KEY TAKEAWAYS -->
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>Know the three quadratic forms and what each reveals: <strong>standard</strong> (y-intercept), <strong>factored</strong> (zeros), <strong>vertex</strong> (min/max).</li>
-      <li>The discriminant (b² − 4ac) tells you how many solutions — positive = 2, zero = 1, negative = 0.</li>
-      <li>Vertex x-coordinate shortcut: <strong>x = −b/2a</strong>. The y-coordinate is always the min or max value.</li>
-      <li>Master all five factoring techniques — GCF, difference of squares, perfect square, trinomial, grouping.</li>
-      <li>Memorize the exponent rules cold. They show up in nearly every Advanced Math question.</li>
-      <li><strong>Linear = constant amount of change. Exponential = constant percent change.</strong></li>
-      <li>f(x − 3) shifts RIGHT (not left). "Minus goes right."</li>
-      <li>On rational equations, ALWAYS check for extraneous solutions.</li>
-    </ol>
+  <div class="section-label">Math Trap Taxonomy</div>
+  <h2>Four Traps That Recur in Advanced Math</h2>
+  <p>Learn these by name. When you spot one in a problem, you'll know exactly what to watch for.</p>
+  <div class="trap-taxonomy">
+    <div class="trap-card"><div class="trap-number" style="background:var(--wrong)">1</div><div class="trap-card-body"><div class="trap-card-name">🎯 The Wrong Target</div><div class="trap-card-desc">Solved for x when they asked for x² + 1. Always underline exactly what the question asks for.</div><div class="trap-card-example">Asked: "What is 2x − 3?" You solved: x = 5, picked 5. Answer: 7</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--math)">2</div><div class="trap-card-body"><div class="trap-card-name">👻 The Distribution Ghost</div><div class="trap-card-desc">Forgot to distribute to ALL terms when expanding. Especially dangerous with negative signs and squared binomials.</div><div class="trap-card-example">(x + 3)² = x² + 6x + 9 (not x² + 9)</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--geotrig)">3</div><div class="trap-card-body"><div class="trap-card-name">🔀 The One-Case Trap</div><div class="trap-card-desc">Only found one solution when there were two. Quadratics can have two roots — check both.</div><div class="trap-card-example">x² = 25 → x = 5 AND x = −5 (two answers)</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--advanced)">4</div><div class="trap-card-body"><div class="trap-card-name">📐 Form Mismatch</div><div class="trap-card-desc">Used the wrong quadratic form for the question. Vertex form for intercepts? Standard form for the vertex? Wrong tool, slow solve.</div><div class="trap-card-example">Asked for zeros → use factored form, not vertex form</div></div></div>
   </div>
 </div>
 
-<div class="mod-nav">
-  <a href="module-2.html">← Module 2: Algebra</a>
-  <a href="module-4.html">Module 4: Problem-Solving & Data →</a>
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(3)">Continue to Practice Questions →</button>
 </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 4: TIMED PRACTICE                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-practice">
+<div class="container">
+  <div class="section-label">PSAT/NMSQT Practice</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:4px">Practice Questions</h2>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px">8 questions at three difficulty tiers. Tag your confidence before answering.</p>
+  <div class="timer-bar" id="timerBar">
+    <div class="timer-display" id="timerDisplay">--:--</div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="q-dots" id="qDots"></div>
+    <button class="timer-toggle" id="timerToggle" onclick="toggleTimer()">⏱ Timer OFF</button>
+  </div>
+  <div id="psatPractice"></div>
+  <div id="practiceResults" style="display:none"></div>
+  <div id="practiceNav" style="display:none;text-align:center;padding:24px 0">
+    <button class="start-btn" onclick="goScreen(4)">View Summary & Complete Module →</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 5: MODULE COMPLETE                     -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎉</div>
+    <h1>Module 3 Complete!</h1>
+    <p class="complete-sub">You've mastered Advanced Math — quadratics, polynomials, exponents, and more.</p>
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--advanced);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Know the three quadratic forms and what each reveals: <strong>standard</strong> (y-intercept), <strong>factored</strong> (zeros), <strong>vertex</strong> (min/max).</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> The discriminant (b² − 4ac) tells you how many solutions — positive = 2, zero = 1, negative = 0.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Vertex x-coordinate shortcut: <strong>x = −b/2a</strong>. The y-coordinate is always the min or max value.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Master all five factoring techniques — GCF, difference of squares, perfect square, trinomial, grouping.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Memorize the exponent rules cold. They show up in nearly every Advanced Math question.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> <strong>Linear = constant amount of change. Exponential = constant percent change.</strong></div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> f(x − 3) shifts RIGHT (not left). "Minus goes right."</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> On rational equations, ALWAYS check for extraneous solutions.</div>
+    </div>
+    <div id="completePracticeStats"></div>
+    <div class="nav-cards">
+      <a class="nav-card" href="module-2.html"><div class="nav-card-label">← Previous</div><div class="nav-card-title">Module 2: Algebra</div></a>
+      <a class="nav-card" href="module-4.html" style="border-color:var(--advanced)"><div class="nav-card-label">Next →</div><div class="nav-card-title">Module 4: Problem-Solving & Data</div></a>
+    </div>
+  </div>
 </div>
 
 <script>
-// ============ PROGRESS BAR ============
-window.addEventListener('scroll',()=>{
-  const h=document.documentElement.scrollHeight-window.innerHeight;
-  document.getElementById('progressFill').style.width=Math.min(h>0?(window.scrollY/h)*100:0,100)+'%';
-});
+// ════════════════════════════════════════════════
+// SCREEN NAVIGATION SYSTEM
+// ════════════════════════════════════════════════
+const SCREENS = ['screen-welcome','screen-warmup','screen-lesson','screen-practice','screen-complete'];
+let currentScreen = 0;
 
-// ============ EXERCISE 1: FORM IDENTIFIER ============
+function goScreen(idx) {
+  if (idx < 0 || idx >= SCREENS.length) return;
+  const cur = document.getElementById(SCREENS[currentScreen]);
+  const nxt = document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');
+  cur.classList.add('fade-out');
+  setTimeout(() => {
+    cur.classList.remove('active','fade-out');
+    nxt.classList.add('active','fade-in');
+    currentScreen = idx;
+    updateProgressDots();
+    window.scrollTo(0, 0);
+    if (idx === 3 && timerEnabled) startTimer();
+  }, 300);
+}
+
+function updateProgressDots() {
+  document.getElementById('screenProgress').innerHTML = SCREENS.map((s, i) => {
+    let cls = 'screen-dot';
+    if (i < currentScreen) cls += ' completed';
+    if (i === currentScreen) cls += ' current';
+    return `<div class="${cls}" onclick="${i <= currentScreen ? 'goScreen('+i+')' : ''}" title="${['Welcome','Warm-Up','Lesson','Practice','Complete'][i]}"></div>`;
+  }).join('');
+}
+updateProgressDots();
+
+// ════════════════════════════════════════════════
+// RETRIEVAL WARM-UP (Module 2 content)
+// ════════════════════════════════════════════════
+const WARMUP_QS = [
+  {source:'Module 2 — Slope', q:'What is the slope of the line y = −3x + 7?',
+   ch:['7','−3','3','−7'], c:1,
+   fb:'In y = mx + b, the slope is m. Here m = −3. The 7 is the y-intercept.'},
+  {source:'Module 2 — Systems', q:'If two lines have the same slope but different y-intercepts, how many solutions does the system have?',
+   ch:['One solution','Infinite solutions','No solution','Cannot determine'], c:2,
+   fb:'Same slope + different y-intercepts = parallel lines = no solution. They never intersect.'},
+  {source:'Module 2 — Inequalities', q:'When solving −5x > 20, what happens to the inequality sign?',
+   ch:['It stays the same','It flips direction','It becomes an equals sign','It disappears'], c:1,
+   fb:'When you divide (or multiply) by a negative number, you must FLIP the inequality sign. −5x > 20 → x < −4.'},
+  {source:'Module 2 — Sign Flip Trap', q:'Which trap involves forgetting to flip the inequality sign?',
+   ch:['The Wrong Target','The Distribution Ghost','The Sign Flip','The Imposter Subject'], c:2,
+   fb:'The Sign Flip trap: forgetting to flip the inequality when multiplying or dividing by a negative number.'},
+  {source:'Module 2 — Word Problems', q:'In the equation C = 8m + 12, the "8" represents:',
+   ch:['The y-intercept (starting value)','The slope (rate per month)','The total cost','The number of months'], c:1,
+   fb:'In C = 8m + 12, the 8 is the coefficient of m (slope) — the rate per month. The 12 is the fixed starting cost (y-intercept).'}
+];
+
+let warmupIdx = 0, warmupAnswers = [], warmupAnswered = false;
+
+function renderWarmup() {
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map((_, i) => {
+    let cls = 'warmup-dot';
+    if (i < warmupIdx) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    if (i === warmupIdx && warmupIdx < WARMUP_QS.length) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+  const cont = document.getElementById('warmupContent');
+  if (warmupIdx >= WARMUP_QS.length) {
+    const cor = warmupAnswers.filter(Boolean).length;
+    cont.innerHTML = `<div class="warmup-summary"><div class="warmup-badge">Warm-Up Complete</div><div class="warmup-score">${cor} / ${WARMUP_QS.length}</div><p style="color:var(--muted);font-size:.9rem;margin-bottom:8px">${cor===5?'Perfect recall! Module 2 knowledge is locked in.':cor>=3?'Good recall! A couple topics to revisit.':'Some gaps from Module 2 — consider a quick review.'}</p><button class="warmup-continue" onclick="goScreen(2)">Continue to Lesson →</button></div>`;
+    return;
+  }
+  const q = WARMUP_QS[warmupIdx];
+  warmupAnswered = false;
+  cont.innerHTML = `<div class="warmup-q"><div class="source-tag">From ${q.source}</div><div class="q-text">${q.q}</div><div class="warmup-choices" id="warmupChoices">${q.ch.map((ch, ci) => `<div class="warmup-choice" onclick="answerWarmup(${ci})">${ch}</div>`).join('')}</div><div id="warmupFb" style="display:none"></div></div>`;
+}
+
+function answerWarmup(ci) {
+  if (warmupAnswered) return;
+  warmupAnswered = true;
+  const q = WARMUP_QS[warmupIdx], correct = ci === q.c;
+  warmupAnswers.push(correct);
+  document.querySelectorAll('.warmup-choice').forEach((ch, i) => {
+    ch.classList.add('wu-dis');
+    if (i === q.c) ch.classList.add('wu-correct');
+    else if (i === ci && !correct) ch.classList.add('wu-wrong');
+  });
+  const fb = document.getElementById('warmupFb');
+  fb.style.display = 'block';
+  fb.innerHTML = `<div class="warmup-fb">${correct ? '✓ ' : '✗ '}${q.fb}</div><button class="warmup-next" onclick="warmupIdx++;renderWarmup()">${warmupIdx < WARMUP_QS.length - 1 ? 'Next Question →' : 'See Results →'}</button>`;
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map((_, i) => {
+    let cls = 'warmup-dot';
+    if (i < warmupAnswers.length) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    else if (i === warmupIdx + 1) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+renderWarmup();
+
+// ════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════
+function mkScore(id, correct, total) {
+  return `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total ? correct/total*100 : 0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+}
+
+// ════════════════════════════════════════════════
+// EXERCISE 1: FORM IDENTIFIER
+// ════════════════════════════════════════════════
 const FORM_QS=[
   {eq:'f(x) = 2(x − 3)(x + 1)',correct:'Factored',reveal:'x-intercepts at x = 3 and x = −1'},
   {eq:'f(x) = x² − 6x + 8',correct:'Standard',reveal:'y-intercept at (0, 8), opens upward (a = 1 > 0)'},
@@ -460,13 +768,14 @@ function renderForms(){
         }).join('')}</div>
         <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.reveal:''}</div>
       </div>`;
-    }).join('')+
-    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+    }).join('')+mkScore('f',correct,total);
 }
 function ansForm(i,v){if(formAns[i]!==undefined)return;formAns[i]=v;renderForms();}
 renderForms();
 
-// ============ EXERCISE 2: WHICH FORM DO I NEED? ============
+// ════════════════════════════════════════════════
+// EXERCISE 2: WHICH FORM DO I NEED?
+// ════════════════════════════════════════════════
 const WF_QS=[
   {q:'The question asks: "What is the y-intercept of the parabola?"',correct:'Standard',fb:'Standard form f(x) = ax² + bx + c gives you the y-intercept directly: it\'s c.'},
   {q:'The question asks: "What is the maximum value of the function?"',correct:'Vertex',fb:'Vertex form f(x) = a(x−h)² + k gives you the max/min directly: it\'s k (when a < 0, k is the max).'},
@@ -492,13 +801,14 @@ function renderWF(){
         }).join('')}</div>
         <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ ':'✗ ')+q.fb:''}</div>
       </div>`;
-    }).join('')+
-    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+    }).join('')+mkScore('wf',correct,total);
 }
 function ansWF(i,v){if(wfAns[i]!==undefined)return;wfAns[i]=v;renderWF();}
 renderWF();
 
-// ============ EXERCISE 3: FACTORING WORKSHOP ============
+// ════════════════════════════════════════════════
+// EXERCISE 3: FACTORING WORKSHOP
+// ════════════════════════════════════════════════
 const FACTOR_QS=[
   {expr:'x² − 25',technique:'Difference of Squares',answers:['(x+5)(x-5)','(x-5)(x+5)'],solution:'x² − 25 = (x + 5)(x − 5)'},
   {expr:'x² + 7x + 12',technique:'Standard Trinomial',answers:['(x+3)(x+4)','(x+4)(x+3)'],solution:'Find numbers that multiply to 12 and add to 7: 3 and 4 → (x + 3)(x + 4)'},
@@ -511,7 +821,6 @@ let factorChecked={};
 function renderFactors(){
   document.getElementById('factorEx').innerHTML=`<h3>🔧 Factor It</h3><div class="exercise-sub">Type your answer like (x+3)(x-2) or 3x(x+5). Don't use spaces.</div>`+
     FACTOR_QS.map((q,i)=>{
-      const checked=factorChecked[i];
       return `<div class="ex-item">
         <div style="margin-bottom:6px;font-size:.78rem"><span style="color:var(--advanced);font-weight:700">${q.technique}</span></div>
         <div class="ex-prompt">Factor: <code>${q.expr}</code></div>
@@ -534,7 +843,9 @@ function checkFactor(i){
 }
 renderFactors();
 
-// ============ EXERCISE 4: EXPONENT SPEED DRILL ============
+// ════════════════════════════════════════════════
+// EXERCISE 4: EXPONENT SPEED DRILL
+// ════════════════════════════════════════════════
 const EXPS=[
   {expr:'x³ · x⁵',display:'x⁸',opts:['x⁸','x¹⁵','x²','8x']},
   {expr:'(x⁴)²',display:'x⁸',opts:['x⁶','x⁸','x²','4x²']},
@@ -566,7 +877,7 @@ function renderExps(){
           return `<div class="${cls}" onclick="ansExp(${i},'${o}')">${o}</div>`;
         }).join('')}</div></div>`;
     }).join('')+
-    (allDone?`<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${correct/EXPS.length*100}%"></div></div><div class="score-bar-val">${correct}/${EXPS.length}</div></div>`:'');
+    (allDone?mkScore('exp',correct,EXPS.length):'');
 }
 function ansExp(i,v){
   if(expAns[i]!==undefined)return;
@@ -575,7 +886,9 @@ function ansExp(i,v){
 }
 renderExps();
 
-// ============ EXERCISE 5: GROWTH vs DECAY vs LINEAR ============
+// ════════════════════════════════════════════════
+// EXERCISE 5: GROWTH vs DECAY vs LINEAR
+// ════════════════════════════════════════════════
 const GROWTH_QS=[
   {scenario:'A population doubles every 5 years.',correct:'Exponential Growth',fb:'Doubling = multiplying by 2 each period. That\'s exponential growth.'},
   {scenario:'A car loses $2,000 in value each year.',correct:'Linear Decay',fb:'Constant dollar amount decrease = linear (not exponential). The graph is a straight line going down.'},
@@ -602,13 +915,14 @@ function renderGrowth(){
         }).join('')}</div>
         <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ ':'✗ ')+q.fb:''}</div>
       </div>`;
-    }).join('')+
-    `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;
+    }).join('')+mkScore('g',correct,total);
 }
 function ansGrowth(i,v){if(growthAns[i]!==undefined)return;growthAns[i]=v;renderGrowth();}
 renderGrowth();
 
-// ============ DISCRIMINANT EXPLORER ============
+// ════════════════════════════════════════════════
+// DISCRIMINANT EXPLORER
+// ════════════════════════════════════════════════
 function calcDisc(){
   const a=parseFloat(document.getElementById('discA').value)||0;
   const b=parseFloat(document.getElementById('discB').value)||0;
@@ -633,53 +947,187 @@ function calcDisc(){
 }
 calcDisc();
 
-// ============ PSAT-STYLE PRACTICE ============
-const PSAT_QS=[
-  {tier:1,q:'What are the solutions of <code>x² − 5x + 6 = 0</code>?',
-   choices:['x = 2 and x = 3','x = −2 and x = −3','x = 1 and x = 6','x = −1 and x = −6'],correct:0,
-   fb:'Factor: (x − 2)(x − 3) = 0, so x = 2 or x = 3.'},
-  {tier:1,q:'What is the y-intercept of <code>f(x) = 3x² − 7x + 4</code>?',
-   choices:['(0, 3)','(0, −7)','(0, 4)','(0, 0)'],correct:2,
-   fb:'In standard form, the y-intercept is c. Here c = 4, so the y-intercept is (0, 4).'},
-  {tier:1,q:'Simplify: <code>x⁵ · x³ / x²</code>',
-   choices:['x⁶','x⁸','x⁴','x¹⁰'],correct:0,
-   fb:'x⁵ · x³ = x⁸, then x⁸ / x² = x⁶.'},
-  {tier:2,q:'The function <code>f(x) = −2(x − 4)² + 18</code> models the height of a ball. What is the maximum height?',
-   choices:['4','18','−2','20'],correct:1,
-   fb:'Vertex form: vertex is (4, 18). Since a = −2 < 0, the parabola opens downward, so 18 is the maximum.'},
-  {tier:2,q:'For what value of k does <code>2x² + kx + 8 = 0</code> have exactly one real solution?',
-   choices:['k = 4','k = 8','k = ±8','k = 16'],correct:2,
-   fb:'One solution means discriminant = 0. k² − 4(2)(8) = k² − 64 = 0 → k² = 64 → k = ±8.'},
-  {tier:2,q:'Which expression is equivalent to <code>(x² − 9)/(x + 3)</code>?',
-   choices:['x − 3','x + 3','x² − 3','(x − 3)/(x + 3)'],correct:0,
-   fb:'Factor numerator: x² − 9 = (x + 3)(x − 3). Cancel (x + 3): result is (x − 3).'},
-  {tier:3,q:'If <code>f(x) = ax² + bx + c</code> has roots at x = −1 and x = 5, and passes through (0, −10), what is the value of a?',
-   choices:['a = 2','a = −2','a = 1','a = −10'],correct:0,
-   fb:'Factored form: f(x) = a(x + 1)(x − 5). Plug in (0, −10): −10 = a(1)(−5) = −5a → a = 2.'},
-  {tier:3,q:'A population of 2,000 bacteria triples every 4 hours. Which function models the population P after t hours?',
-   choices:['P = 2000(3)^(t/4)','P = 2000 + 3t','P = 2000(3)^(4t)','P = 6000t'],correct:0,
-   fb:'Triples = multiply by 3. Every 4 hours means the exponent is t/4 (so when t=4, one full tripling). P = 2000(3)^(t/4).'},
+// ════════════════════════════════════════════════
+// TIMED PRACTICE WITH CONFIDENCE & ERROR ANALYSIS
+// ════════════════════════════════════════════════
+const PST=[
+  {t:1,tp:'3A',q:'What are the solutions of <code>x² − 5x + 6 = 0</code>?',ch:['x = 2 and x = 3','x = −2 and x = −3','x = 1 and x = 6','x = −1 and x = −6'],c:0,fb:'Factor: (x − 2)(x − 3) = 0, so x = 2 or x = 3.',
+   trap:null,trapAnswer:1,trapDesc:'Sign error on factors'},
+  {t:1,tp:'3A',q:'What is the y-intercept of <code>f(x) = 3x² − 7x + 4</code>?',ch:['(0, 3)','(0, −7)','(0, 4)','(0, 0)'],c:2,fb:'In standard form, the y-intercept is c. Here c = 4, so the y-intercept is (0, 4).',
+   trap:'wrong_target',trapAnswer:0,trapDesc:'Confused leading coefficient with y-intercept — The Wrong Target'},
+  {t:1,tp:'3C',q:'Simplify: <code>x⁵ · x³ / x²</code>',ch:['x⁶','x⁸','x⁴','x¹⁰'],c:0,fb:'x⁵ · x³ = x⁸, then x⁸ / x² = x⁶.',
+   trap:null,trapAnswer:1,trapDesc:'Forgot to subtract quotient exponent'},
+  {t:2,tp:'3A',q:'The function <code>f(x) = −2(x − 4)² + 18</code> models the height of a ball. What is the maximum height?',ch:['4','18','−2','20'],c:1,fb:'Vertex form: vertex is (4, 18). Since a = −2 < 0, the parabola opens downward, so 18 is the maximum.',
+   trap:'wrong_target',trapAnswer:0,trapDesc:'Picked the x-coordinate instead of the y-coordinate — The Wrong Target'},
+  {t:2,tp:'3A',q:'For what value of k does <code>2x² + kx + 8 = 0</code> have exactly one real solution?',ch:['k = 4','k = 8','k = ±8','k = 16'],c:2,fb:'One solution means discriminant = 0. k² − 4(2)(8) = k² − 64 = 0 → k² = 64 → k = ±8.',
+   trap:'one_case',trapAnswer:1,trapDesc:'Only found the positive value — The One-Case Trap'},
+  {t:2,tp:'3D',q:'Which expression is equivalent to <code>(x² − 9)/(x + 3)</code>?',ch:['x − 3','x + 3','x² − 3','(x − 3)/(x + 3)'],c:0,fb:'Factor numerator: x² − 9 = (x + 3)(x − 3). Cancel (x + 3): result is (x − 3).',
+   trap:null,trapAnswer:2,trapDesc:'Failed to factor before simplifying'},
+  {t:3,tp:'3A',q:'If <code>f(x) = ax² + bx + c</code> has roots at x = −1 and x = 5, and passes through (0, −10), what is the value of a?',ch:['a = 2','a = −2','a = 1','a = −10'],c:0,fb:'Factored form: f(x) = a(x + 1)(x − 5). Plug in (0, −10): −10 = a(1)(−5) = −5a → a = 2.',
+   trap:'distribution_ghost',trapAnswer:1,trapDesc:'Sign error when plugging in — The Distribution Ghost'},
+  {t:3,tp:'3C',q:'A population of 2,000 bacteria triples every 4 hours. Which function models the population P after t hours?',ch:['P = 2000(3)^(t/4)','P = 2000 + 3t','P = 2000(3)^(4t)','P = 6000t'],c:0,fb:'Triples = multiply by 3. Every 4 hours means the exponent is t/4 (so when t=4, one full tripling). P = 2000(3)^(t/4).',
+   trap:'form_mismatch',trapAnswer:1,trapDesc:'Used linear model for exponential situation — Form Mismatch'},
 ];
-let psatAns={};
-function renderPSAT(){
-  document.getElementById('psatPractice').innerHTML=PSAT_QS.map((q,i)=>{
-    const a=psatAns[i];const has=a!==undefined;
-    return `<div class="ex-item" style="border-color:${q.tier===1?'var(--algebra)':q.tier===2?'var(--math)':'var(--advanced)'}">
-      <div style="margin-bottom:6px;display:flex;align-items:center;gap:8px">
-        <span class="tier tier-${q.tier}">${q.tier===1?'Easy':q.tier===2?'Medium':'Hard'}</span>
+
+const TRAP_NAMES = {'wrong_target':'🎯 Wrong Target','distribution_ghost':'👻 Distribution Ghost','one_case':'🔀 One-Case','form_mismatch':'📐 Form Mismatch'};
+
+let pstA = {}, pstConf = {}, pstTime = {}, pstStartTime = null;
+
+// Timer system
+let timerEnabled = false;
+let timerInterval = null;
+let timerSeconds = 0;
+const SECS_PER_Q = 95;
+let totalTimerSecs = PST.length * SECS_PER_Q;
+
+function toggleTimer() {
+  timerEnabled = !timerEnabled;
+  const btn = document.getElementById('timerToggle');
+  btn.textContent = timerEnabled ? '⏱ Timer ON' : '⏱ Timer OFF';
+  btn.classList.toggle('active', timerEnabled);
+  if (!timerEnabled && timerInterval) {
+    clearInterval(timerInterval); timerInterval = null;
+    document.getElementById('timerDisplay').textContent = '--:--';
+    document.getElementById('timerFill').style.width = '100%';
+  } else if (timerEnabled && currentScreen === 3) { startTimer(); }
+}
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerSeconds = totalTimerSecs;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) { clearInterval(timerInterval); timerInterval = null; }
+  }, 1000);
+  pstStartTime = Date.now();
+}
+
+function updateTimerDisplay() {
+  const disp = document.getElementById('timerDisplay');
+  const fill = document.getElementById('timerFill');
+  const mins = Math.floor(timerSeconds / 60), secs = timerSeconds % 60;
+  disp.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+  const pct = (timerSeconds / totalTimerSecs) * 100;
+  fill.style.width = pct + '%';
+  disp.className = 'timer-display'; fill.className = 'timer-fill';
+  if (pct < 15) { disp.classList.add('danger'); fill.classList.add('danger'); }
+  else if (pct < 35) { disp.classList.add('warning'); fill.classList.add('warning'); }
+}
+
+function renderPST() {
+  const answered = Object.keys(pstA).length;
+  document.getElementById('qDots').innerHTML = PST.map((_, i) => {
+    let cls = 'q-dot';
+    if (pstA[i] !== undefined) cls += pstA[i] === PST[i].c ? ' correct' : ' wrong';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  document.getElementById('psatPractice').innerHTML = PST.map((q, i) => {
+    const a = pstA[i], h = a !== undefined;
+    const conf = pstConf[i];
+    const tierLabel = q.t === 1 ? 'Easy' : q.t === 2 ? 'Medium' : 'Hard';
+    const trapName = q.trap ? TRAP_NAMES[q.trap] || '' : '';
+    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}">
+      <div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="tier tier-${q.t}">${tierLabel}</span>
+        <span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span>
+        ${trapName && h ? `<span style="font-size:.72rem;color:var(--accent)">Trap: ${trapName}</span>` : ''}
       </div>
       <div class="ex-prompt">${q.q}</div>
-      <div class="mc-choices">${q.choices.map((ch,ci)=>{
-        let cls='mc-choice';
-        if(has){cls+=' mc-dis';if(ci===q.correct)cls+=' mc-correct';else if(ci===a&&ci!==q.correct)cls+=' mc-wrong';}
-        return `<div class="${cls}" onclick="ansPSAT(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
+      ${!h ? `<div class="confidence-row">
+        <div class="conf-tag ${conf==='guessing'?'selected':''}" data-conf="guessing" onclick="setConf(${i},'guessing')">Guessing</div>
+        <div class="conf-tag ${conf==='unsure'?'selected':''}" data-conf="unsure" onclick="setConf(${i},'unsure')">Unsure</div>
+        <div class="conf-tag ${conf==='confident'?'selected':''}" data-conf="confident" onclick="setConf(${i},'confident')">Confident</div>
+      </div>` : `<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">Confidence: ${conf || 'not tagged'}</div>`}
+      <div class="mc-choices">${q.ch.map((ch, ci) => {
+        let c = 'mc-choice';
+        if (h) { c += ' mc-dis'; if (ci === q.c) c += ' mc-correct'; else if (ci === a) c += ' mc-wrong'; }
+        return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;
       }).join('')}</div>
-      <div class="mc-fb${has?' show':''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div>
+      <div class="mc-fb${h ? ' show' : ''}">${h ? (a === q.c ? '✓ Correct! ' : '✗ Incorrect. ') + q.fb + (a !== q.c && q.trapAnswer === a ? '<br><span style="color:var(--psda)">⚠️ ' + q.trapDesc + '</span>' : '') : ''}</div>
     </div>`;
   }).join('');
+
+  if (answered === PST.length) {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    document.getElementById('practiceNav').style.display = 'block';
+    showPracticeResults();
+  }
 }
-function ansPSAT(i,ci){if(psatAns[i]!==undefined)return;psatAns[i]=ci;renderPSAT();}
-renderPSAT();
+
+function setConf(i, level) { if (pstA[i] !== undefined) return; pstConf[i] = level; renderPST(); }
+
+function aPST(i, v) {
+  if (pstA[i] !== undefined) return;
+  pstA[i] = v;
+  if (pstStartTime) { pstTime[i] = Date.now() - pstStartTime; pstStartTime = Date.now(); }
+  renderPST();
+}
+
+function showPracticeResults() {
+  const total = PST.length;
+  const correct = Object.entries(pstA).filter(([i, v]) => v === PST[i].c).length;
+  const byDiff = {1:{cor:0,tot:0},2:{cor:0,tot:0},3:{cor:0,tot:0}};
+  PST.forEach((q, i) => { byDiff[q.t].tot++; if (pstA[i] === q.c) byDiff[q.t].cor++; });
+  const matrix = {};
+  ['guessing','unsure','confident'].forEach(conf => { matrix[conf] = {correct:[], wrong:[]}; });
+  PST.forEach((q, i) => { const conf = pstConf[i] || 'unsure'; matrix[conf][pstA[i] === q.c ? 'correct' : 'wrong'].push(i); });
+  const errors = {content_gap:[], trap_answer:[], careless:[], calibration:[]};
+  PST.forEach((q, i) => {
+    if (pstA[i] === q.c) return;
+    const conf = pstConf[i] || 'unsure';
+    if (pstA[i] === q.trapAnswer) errors.trap_answer.push({i, desc:q.trapDesc, topic:q.tp});
+    else errors.content_gap.push({i, topic:q.tp});
+    if (conf === 'confident') { if (q.t === 1) errors.careless.push({i, topic:q.tp}); errors.calibration.push({i, topic:q.tp}); }
+  });
+
+  let html = `<div class="results-section"><h3>📊 Practice Results: ${correct}/${total}</h3>
+    <div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Difficulty</div>
+    <div class="difficulty-bars">
+      <div class="diff-row"><span class="diff-label" style="color:var(--algebra)">Easy</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[1].tot?byDiff[1].cor/byDiff[1].tot*100:0}%;background:var(--algebra)"></div></div><span class="diff-val" style="color:var(--algebra)">${byDiff[1].cor}/${byDiff[1].tot}</span></div>
+      <div class="diff-row"><span class="diff-label" style="color:var(--math)">Medium</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[2].tot?byDiff[2].cor/byDiff[2].tot*100:0}%;background:var(--math)"></div></div><span class="diff-val" style="color:var(--math)">${byDiff[2].cor}/${byDiff[2].tot}</span></div>
+      <div class="diff-row"><span class="diff-label" style="color:var(--advanced)">Hard</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[3].tot?byDiff[3].cor/byDiff[3].tot*100:0}%;background:var(--advanced)"></div></div><span class="diff-val" style="color:var(--advanced)">${byDiff[3].cor}/${byDiff[3].tot}</span></div>
+    </div></div>`;
+
+  html += `<div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Confidence × Accuracy Matrix</div>
+    <div class="results-grid">
+      <div class="results-grid-header"></div><div class="results-grid-header">Guessing</div><div class="results-grid-header">Unsure</div><div class="results-grid-header">Confident</div>
+      <div class="results-grid-header" style="writing-mode:horizontal-tb">✓ Correct</div>
+      <div class="results-grid-cell"><div class="cell-label">Lucky</div><div class="cell-dots">${matrix.guessing.correct.map(()=>'<div class="cell-dot" style="background:var(--psda)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.correct.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Developing</div><div class="cell-dots">${matrix.unsure.correct.map(()=>'<div class="cell-dot" style="background:var(--math)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.correct.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Solid</div><div class="cell-dots">${matrix.confident.correct.map(()=>'<div class="cell-dot" style="background:var(--correct)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.confident.correct.length}</div></div>
+      <div class="results-grid-header" style="writing-mode:horizontal-tb">✗ Wrong</div>
+      <div class="results-grid-cell"><div class="cell-label">Expected</div><div class="cell-dots">${matrix.guessing.wrong.map(()=>'<div class="cell-dot" style="background:var(--muted)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.wrong.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Needs work</div><div class="cell-dots">${matrix.unsure.wrong.map(()=>'<div class="cell-dot" style="background:var(--psda)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.wrong.length}</div></div>
+      <div class="results-grid-cell danger-cell"><div class="cell-label" style="color:var(--wrong);font-weight:700">⚠️ DANGER</div><div class="cell-dots">${matrix.confident.wrong.map(()=>'<div class="cell-dot" style="background:var(--wrong)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--wrong)">${matrix.confident.wrong.length}</div></div>
+    </div>
+    ${matrix.confident.wrong.length > 0 ? '<div class="callout" style="border-color:var(--wrong);background:var(--wrong-bg)"><strong style="color:var(--wrong)">Confident + Wrong</strong> is the most dangerous category. These errors persist into test day because you won\'t self-correct what you think you already know.</div>' : ''}
+  </div>`;
+
+  const hasErrors = errors.trap_answer.length + errors.content_gap.length > 0;
+  if (hasErrors) {
+    html += `<div style="margin-bottom:16px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Error Pattern Analysis</div>`;
+    if (errors.trap_answer.length > 0) html += `<div class="error-category" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3)"><div class="error-label" style="color:var(--psda)">🟡 Trap Answers (${errors.trap_answer.length})</div><div class="error-items">${errors.trap_answer.map(e => e.desc).join(' · ')}</div></div>`;
+    if (errors.content_gap.length > 0) html += `<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">🔴 Content Gaps (${errors.content_gap.length})</div><div class="error-items">Topics: ${[...new Set(errors.content_gap.map(e=>e.topic))].join(', ')}</div></div>`;
+    if (errors.careless.length > 0) html += `<div class="error-category" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)"><div class="error-label" style="color:var(--math)">🔵 Possible Careless Errors (${errors.careless.length})</div><div class="error-items">Confident + wrong on easy questions — likely arithmetic mistakes</div></div>`;
+    if (errors.calibration.length > 0) html += `<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">⚠️ Calibration Issues (${errors.calibration.length})</div><div class="error-items">You were confident but wrong — review these topics carefully</div></div>`;
+    html += `</div>`;
+  }
+  html += `</div>`;
+  document.getElementById('practiceResults').style.display = 'block';
+  document.getElementById('practiceResults').innerHTML = html;
+
+  document.getElementById('completePracticeStats').innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:24px;max-width:500px;width:100%;text-align:left">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Practice Results</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--correct);margin-bottom:8px">${correct}/${total} correct</div>
+      <div style="font-size:.82rem;color:var(--muted)">Easy: ${byDiff[1].cor}/${byDiff[1].tot} · Medium: ${byDiff[2].cor}/${byDiff[2].tot} · Hard: ${byDiff[3].cor}/${byDiff[3].tot}</div>
+    </div>`;
+}
+
+renderPST();
 </script>
 <script src="/translate.js"></script>
 </body>
