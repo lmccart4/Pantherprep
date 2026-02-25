@@ -6,137 +6,308 @@
 <title>Module 7: Desmos Mastery — SAT Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--adv:#a78bfa;--adv-bg:rgba(167,139,250,.1);--geotrig:#f87171;--algebra:#34d399;--des:#06b6d4;--des-bg:rgba(6,182,212,.1)}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--geotrig:#f87171;--geotrig-bg:rgba(248,113,113,.1);--des:#2bc4a9;--des-bg:rgba(43,196,169,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--des));width:0%;transition:width .3s ease}
+
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--des)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(200,16,46,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--des);color:#111;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--des);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--des);color:#111;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,196,169,.3)}
+
+.warmup-container{max-width:600px;margin:0 auto;padding:60px 20px}
+.warmup-header{text-align:center;margin-bottom:32px}
+.warmup-badge{display:inline-block;background:var(--geotrig);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.warmup-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.warmup-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.warmup-dot.done-correct{background:var(--correct)}
+.warmup-dot.done-wrong{background:var(--wrong)}
+.warmup-dot.active{background:var(--geotrig);box-shadow:0 0 8px rgba(248,113,113,.4)}
+.warmup-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.warmup-q .source-tag{font-size:.7rem;color:var(--geotrig);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.warmup-q .q-text{font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.warmup-choices{display:flex;flex-direction:column;gap:8px}
+.warmup-choice{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.warmup-choice:hover:not(.wu-dis){border-color:var(--geotrig);background:rgba(248,113,113,.05)}
+.warmup-choice.wu-correct{border-color:var(--correct);background:var(--correct-bg)}
+.warmup-choice.wu-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.warmup-choice.wu-dis{pointer-events:none;opacity:.7}
+.warmup-choice.wu-correct{opacity:1}
+.warmup-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:12px;padding:10px;background:var(--paper);border-radius:8px;border-left:3px solid var(--correct)}
+.warmup-next{padding:10px 24px;background:var(--geotrig);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;margin-top:12px;font-family:'Source Sans 3',sans-serif}
+.warmup-next:hover{filter:brightness(1.1)}
+.warmup-summary{text-align:center;padding:40px 20px}
+.warmup-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:var(--geotrig);margin:12px 0}
+.warmup-continue{padding:12px 28px;background:var(--des);color:#111;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:20px;font-family:'Source Sans 3',sans-serif}
+.warmup-continue:hover{filter:brightness(1.15)}
+
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
-.mod-badge{display:inline-block;background:var(--des);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-badge{display:inline-block;background:var(--des);color:#111;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
 .mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
 .mod-header .subtitle{color:var(--muted);font-size:1rem}
 .mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
 .section{margin-bottom:36px}
-.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--des);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
 .card-accent{border-left:3px solid var(--accent)}
 .callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
 .callout strong{color:var(--accent)}
-.callout-cyan{background:var(--des-bg);border-color:rgba(6,182,212,.3)}
-.callout-cyan strong{color:var(--des)}
+.callout-des{background:var(--des-bg);border-color:rgba(43,196,169,.3)}
+.callout-des strong{color:var(--des)}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:all .2s}
+.topic-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer}
+.topic-header:hover{background:rgba(43,196,169,.05)}
+.topic-badge{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#111;flex-shrink:0}
+.topic-info{flex:1}
+.topic-title{font-weight:700;font-size:.95rem}
+.topic-sub{font-size:.78rem;color:var(--muted)}
+.topic-arrow{color:var(--muted);font-size:.9rem;transition:transform .2s;flex-shrink:0}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 18px 18px;font-size:.93rem;color:#ccc;line-height:1.7}
+.topic.open .topic-body{display:block}
+.topic-body h4{color:var(--ink);font-size:.9rem;margin:14px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+.topic-body ul{padding-left:18px;margin-bottom:10px}
+.topic-body li{margin-bottom:6px}
 
-/* SKILLS TABLE */
-.skill-table{width:100%;border-collapse:collapse;font-size:.84rem;margin-bottom:16px}
+/* SKILL TABLE */
+.skill-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:16px}
 .skill-table th,.skill-table td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
-.skill-table th{background:var(--surface);font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.skill-table th{background:var(--surface);font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
 .skill-table code{background:var(--des-bg);color:var(--des);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82rem}
-.skill-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--des);color:#000;font-weight:700;font-size:.72rem;margin-right:6px}
+.skill-num{display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--des);color:#111;text-align:center;font-size:.72rem;font-weight:700;line-height:20px;margin-right:6px}
+
+/* SHORTCUT GRID */
+.sc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.sc-card:hover{border-color:var(--des)}
+.sc-key{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--des);margin-bottom:4px}
+.sc-desc{font-size:.78rem;color:var(--muted)}
 
 /* DO / DON'T */
 .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.do-card,.dont-card{border-radius:12px;padding:16px;font-size:.88rem}
-.do-card{background:var(--correct-bg);border:2px solid var(--correct)}
-.dont-card{background:var(--wrong-bg);border:2px solid var(--wrong)}
-.do-card h4{color:var(--correct);margin-bottom:8px}.dont-card h4{color:var(--wrong);margin-bottom:8px}
+.do-card,.dont-card{background:var(--surface);border-radius:12px;padding:16px;font-size:.88rem}
+.do-card{border:2px solid var(--correct)}
+.dont-card{border:2px solid var(--wrong)}
+.do-card h4{color:var(--correct);margin-bottom:8px}
+.dont-card h4{color:var(--wrong);margin-bottom:8px}
 .do-card li,.dont-card li{color:#ccc;margin-bottom:4px;line-height:1.5}
-
-/* SHORTCUT TABLE */
-.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin-bottom:16px}
-.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;transition:border-color .15s}
-.sc-card:hover{border-color:var(--des)}
-.sc-key{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--des);margin-bottom:2px}
-.sc-desc{font-size:.78rem;color:var(--muted)}
 
 /* EXERCISES */
 .exercise{background:var(--surface);border:2px solid var(--des);border-radius:14px;padding:22px;margin-bottom:16px}
-.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
-.exercise-sub{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;margin-bottom:4px}
+.exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
 .ex-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
-.ex-num{font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px}
-.ex-prompt{font-size:.93rem;margin-bottom:10px;line-height:1.6}
-.ex-prompt code{background:var(--des-bg);color:var(--des);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.9rem}
-.ex-options{display:flex;flex-wrap:wrap;gap:6px}
-.ex-opt{padding:7px 16px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .15s}
-.ex-opt:hover:not(.ex-dis){border-color:var(--des);background:var(--des-bg)}
-.ex-opt.ex-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
-.ex-opt.ex-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
-.ex-opt.ex-dis{pointer-events:none;opacity:.6}
-.ex-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.5}
-.ex-fb.show{display:block}
-.ex-score{text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)}
+.ex-prompt{font-size:.93rem;margin-bottom:10px;line-height:1.6;color:#ddd}
+.ex-prompt code{background:var(--des-bg);color:var(--des);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
 
-/* DECISION DRILL */
-.dd-item{display:flex;align-items:center;gap:12px;background:var(--paper);border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1px solid var(--border)}
-.dd-prompt{flex:1;font-size:.9rem;line-height:1.5}
-.dd-btns{display:flex;gap:6px;flex-shrink:0}
-.dd-btn{padding:8px 18px;border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600;background:var(--surface);color:var(--ink);transition:all .15s}
+/* CLASSIFY OPTIONS */
+.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.classify-opt:hover:not(.cl-dis){border-color:var(--des);background:var(--des-bg)}
+.classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.classify-opt.cl-dis{pointer-events:none;opacity:.7}
+.ex-fb{font-size:.85rem;padding:8px 12px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}
+.ex-fb.show{display:block}
+.ex-fb.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
+.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+
+/* DD BUTTONS (Desmos vs Algebra) */
+.dd-btns{display:flex;gap:8px}
+.dd-btn{padding:8px 20px;border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;font-weight:600;transition:all .15s}
+.dd-btn:first-child{color:var(--des)}
+.dd-btn:last-child{color:var(--psda)}
 .dd-btn:hover:not(.dd-dis){border-color:var(--des);background:var(--des-bg)}
 .dd-btn.dd-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
 .dd-btn.dd-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
-.dd-btn.dd-dis{pointer-events:none;opacity:.6}
-.dd-fb{font-size:.78rem;color:var(--muted);margin-top:4px;display:none}
-.dd-fb.show{display:block}
-.drill-timer{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:12px}
-.drill-timer.running{color:var(--des)}.drill-timer.done{color:var(--correct)}
+.dd-btn.dd-dis{pointer-events:none;opacity:.7}
 
-/* SAT */
-.sat-q{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
-.sat-choices{display:flex;flex-direction:column;gap:6px}
-.sat-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:.88rem;transition:all .15s}
-.sat-choice:hover:not(.sc-dis){border-color:var(--des);background:var(--des-bg)}
-.sat-choice.sc-correct{border-color:var(--correct);background:var(--correct-bg)}
-.sat-choice.sc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.sat-choice.sc-dis{pointer-events:none;opacity:.6}.sat-choice.sc-dis.sc-correct{opacity:1}
-.sc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
-.sat-choice.sc-correct .sc-letter{background:var(--correct);color:#fff}
-.sat-choice.sc-wrong .sc-letter{background:var(--wrong);color:#fff}
-.sat-fb{margin-top:8px;padding:10px;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}
-.sat-fb.show{display:block}
-.sat-fb.sfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}
-.sat-fb.sfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
+/* MC CHOICES */
+.mc-choices{display:flex;flex-direction:column;gap:6px}
+.mc-choice{padding:10px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s;display:flex;align-items:center;gap:10px}
+.mc-choice:hover:not(.mc-dis){border-color:var(--des);background:var(--des-bg)}
+.mc-letter{font-weight:700;color:var(--muted);min-width:24px;font-family:'JetBrains Mono',monospace}
+.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg)}
+.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:8px;display:none;border-left:3px solid var(--correct);background:var(--paper);padding:8px 12px;border-radius:6px}.mc-fb.show{display:block}
 
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
+/* SCORE BAR */
+.score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
+.tier{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:8px}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:var(--adv-bg);color:var(--advanced)}
 
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.do-dont{grid-template-columns:1fr}.sc-grid{grid-template-columns:1fr 1fr}.dd-item{flex-direction:column;align-items:stretch}.ex-options{flex-direction:column}}
+/* DRILL TIMER (for DD exercise — uses ddStart/ddTimer, NOT timerInterval/timerSeconds) */
+.drill-timer{font-family:'JetBrains Mono',monospace;font-size:1.1rem;text-align:center;padding:8px;border-radius:8px;margin-bottom:14px;background:var(--paper);color:var(--muted)}
+.drill-timer.running{color:var(--psda)}
+.drill-timer.done{color:var(--correct)}
+
+/* TRAP TAXONOMY */
+.trap-taxonomy{margin-bottom:24px}
+.trap-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:all .2s}
+.trap-card:hover{border-color:var(--accent);transform:translateX(3px)}
+.trap-number{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:#fff;flex-shrink:0}
+.trap-card-body{flex:1}
+.trap-card-name{font-weight:700;font-size:.92rem;margin-bottom:3px}
+.trap-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+.trap-card-example{font-size:.78rem;color:var(--math);font-family:'JetBrains Mono',monospace;margin-top:4px}
+
+/* CONFIDENCE / TIMER / PRACTICE */
+.confidence-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.conf-tag{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;letter-spacing:.5px}
+.conf-tag:hover{border-color:var(--des)}
+.conf-tag.selected{border-color:var(--des);background:rgba(43,196,169,.12);color:var(--des)}
+.conf-tag[data-conf="guessing"].selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="unsure"].selected{border-color:var(--math);background:var(--math-bg);color:var(--math)}
+.conf-tag[data-conf="confident"].selected{border-color:var(--des);background:rgba(43,196,169,.12);color:var(--des)}
+
+.timer-bar{position:sticky;top:8px;z-index:50;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--des);min-width:60px}
+.timer-display.warning{color:var(--psda)}
+.timer-display.danger{color:var(--wrong);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.timer-fill{height:100%;background:var(--des);transition:width 1s linear;border-radius:2px}
+.timer-fill.warning{background:var(--psda)}
+.timer-fill.danger{background:var(--wrong)}
+.timer-toggle{padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.75rem;color:var(--muted);cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600}
+.timer-toggle:hover{border-color:var(--accent);color:var(--ink)}
+.timer-toggle.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.q-dots{display:flex;gap:4px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.q-dot.correct{background:var(--correct)}
+.q-dot.wrong{background:var(--wrong)}
+
+/* RESULTS */
+.results-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.results-section h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px;background:var(--border);border-radius:10px;overflow:hidden}
+.results-grid-header{background:var(--surface);padding:8px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.results-grid-cell{background:var(--paper);padding:10px 8px;text-align:center;font-size:.78rem;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.results-grid-cell.danger-cell{background:var(--danger-bg);border:1px solid rgba(239,68,68,.3)}
+.cell-label{font-size:.65rem;color:var(--muted);font-weight:600}
+.cell-dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.cell-dot{width:8px;height:8px;border-radius:50%}
+.difficulty-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.diff-row{display:flex;align-items:center;gap:10px}
+.diff-label{font-size:.78rem;font-weight:600;min-width:60px}
+.diff-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.diff-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.diff-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;min-width:40px;text-align:right}
+.error-category{padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:.85rem;line-height:1.6}
+.error-category .error-label{font-weight:700;margin-bottom:4px}
+.error-category .error-items{color:var(--muted);font-size:.82rem}
+
+/* COMPLETE */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--des);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.sc-grid{grid-template-columns:repeat(2,1fr)}.do-dont{grid-template-columns:1fr}.classify-opts{flex-direction:column}.dd-btns{flex-direction:column}.preview-grid{grid-template-columns:1fr 1fr}.welcome-meta{flex-wrap:wrap;gap:12px}.results-grid{grid-template-columns:1fr;gap:1px}.nav-cards{grid-template-columns:1fr}.timer-bar{flex-wrap:wrap;gap:8px}}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="container">
-<a class="back-link" href="index.html">← Back to Math Course</a>
+<div class="screen-progress" id="screenProgress"></div>
 
-<div class="mod-header">
-  <div class="mod-badge">Module 7 · Strategy</div>
-  <h1>Desmos Mastery</h1>
-  <p class="subtitle">~⅓ of SAT math questions can be solved or verified with Desmos. This is not optional.</p>
-  <div class="mod-meta">
-    <span>⏱ 1–2 sessions</span>
-    <span>📊 10 essential skills</span>
-    <span>🎯 Phase 3: Strategize</span>
+<!-- SCREEN 1: WELCOME -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 7</div>
+    <h1>Desmos Mastery</h1>
+    <p class="welcome-sub">~1/3 of SAT math questions can be solved or verified with Desmos. This is not optional.</p>
+    <div class="welcome-meta"><span>⏱ 1-2 sessions</span><span>📊 10 essential skills</span><span>🔨 3 exercises</span><span>🎯 10 practice Qs</span></div>
+    <div class="preview-grid">
+      <div class="preview-card"><div class="preview-icon">🔄</div><div class="preview-title">Retrieval Warm-Up</div><div class="preview-desc">5 questions from Module 6 to activate prior knowledge</div></div>
+      <div class="preview-card"><div class="preview-icon">📊</div><div class="preview-title">10 Essential Skills</div><div class="preview-desc">Graphing, intersections, sliders, tables, regression & more</div></div>
+      <div class="preview-card"><div class="preview-icon">🎯</div><div class="preview-title">Trap Taxonomy</div><div class="preview-desc">4 named traps that recur in Desmos problems</div></div>
+      <div class="preview-card"><div class="preview-icon">🧮</div><div class="preview-title">3 Exercises</div><div class="preview-desc">Skill matcher, Desmos vs algebra speed drill, shortcut quiz</div></div>
+      <div class="preview-card"><div class="preview-icon">⏱</div><div class="preview-title">Timed Practice</div><div class="preview-desc">10 SAT-style questions with optional timer</div></div>
+      <div class="preview-card"><div class="preview-icon">📈</div><div class="preview-title">Error Analysis</div><div class="preview-desc">Difficulty breakdown + confidence matrix + trap patterns</div></div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
   </div>
 </div>
 
-<!-- INTRO -->
-<div class="section">
-  <div class="section-label">Why This Module Matters</div>
-  <h2>Desmos Is a Superpower — If You Know How to Use It</h2>
-  <div class="callout-cyan callout"><strong>Approximately one-third of all SAT math questions can be solved or verified using Desmos.</strong> Students who are fluent with Desmos solve problems faster, catch errors more often, and feel more confident on test day.</div>
-  <p>Desmos is not just a calculator — it's a graphing, regression, and equation-solving engine built into every Digital SAT. But knowing it exists isn't enough. You need to be fast, deliberate, and know exactly when to use it versus when algebra is faster.</p>
-  <p>Practice at <a href="https://desmos.com/practice" target="_blank" style="color:var(--des)">desmos.com/practice</a> for the exact interface you'll see on test day.</p>
-  <div class="callout"><strong>CAS calculators are banned</strong> on the Digital SAT starting August 2025 (weekend) and October 2025 (in-school). This makes Desmos proficiency more critical than ever — it is now the most powerful calculator every student has access to.</div>
-  <div class="callout-cyan callout"><strong>New: Calculator Mode Toggle.</strong> Starting Fall 2025, you can switch between <strong>scientific mode</strong> (quick arithmetic, no graphing) and <strong>graphing mode</strong> (full Desmos). Use scientific for simple calculations to avoid accidentally opening a graph. Switch to graphing when you need visualization.</div>
+<!-- SCREEN 2: RETRIEVAL WARM-UP -->
+<div class="screen" id="screen-warmup">
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <div class="warmup-badge">Retrieval Warm-Up</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem">Module 6 Review</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:4px">Quick recall from Geometry & Trig.</p>
+      <div class="warmup-dots" id="warmupDots"></div>
+    </div>
+    <div id="warmupContent"></div>
+  </div>
 </div>
 
-<!-- THE 10 SKILLS -->
+<!-- SCREEN 3: LESSON CONTENT -->
+<div class="screen" id="screen-lesson">
+<div class="container">
+<a class="back-link" href="index.html">← Back to SAT Math Course</a>
+<div class="mod-header">
+  <div class="mod-badge">Module 7</div>
+  <h1>Desmos Mastery</h1>
+  <p class="subtitle">~1/3 of SAT math questions can be solved or verified with Desmos. This is not optional.</p>
+  <div class="mod-meta"><span>⏱ 1-2 sessions</span><span>📊 10 essential skills</span><span>🎯 Phase 3: Strategize</span></div>
+</div>
+
+<!-- INTRO -->
+<div class="callout-des callout"><strong>Approximately one-third of all SAT math questions can be solved or verified using Desmos.</strong> Students who are fluent with Desmos solve problems faster, catch errors more often, and feel more confident on test day.</div>
+
+<div class="section">
+  <p>Desmos is not just a calculator — it's a graphing, regression, and equation-solving engine built into every Digital SAT. But knowing it exists isn't enough. You need to be <strong>fast</strong>, <strong>deliberate</strong>, and know exactly when to use it versus when algebra is faster.</p>
+  <p>Practice at <a href="https://desmos.com/practice" target="_blank" style="color:var(--des);font-weight:600">desmos.com/practice</a> for the exact interface you'll see on test day.</p>
+  <div class="callout"><strong>CAS calculators are banned</strong> on the Digital SAT starting August 2025 (weekend) and October 2025 (in-school). This makes Desmos proficiency more critical than ever — it is now the most powerful calculator every student has access to.</div>
+  <div class="callout-des callout"><strong>New: Calculator Mode Toggle.</strong> Starting Fall 2025, you can switch between <strong>scientific mode</strong> (quick arithmetic, no graphing) and <strong>graphing mode</strong> (full Desmos). Use scientific for simple calculations to avoid accidentally opening a graph. Switch to graphing when you need visualization.</div>
+</div>
+
+<!-- 10 ESSENTIAL SKILLS -->
 <div class="section">
   <div class="section-label">Core Content</div>
   <h2>The 10 Essential Desmos Skills</h2>
@@ -159,7 +330,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <div class="section">
   <div class="section-label">Reference</div>
   <h2>Keyboard Shortcuts</h2>
-  <p>Memorize these before test day. They save 2–3 seconds per entry — which adds up fast over 44 questions.</p>
+  <p>Memorize these before test day. They save 2-3 seconds per entry — which adds up fast over 44 questions.</p>
   <div class="sc-grid">
     <div class="sc-card"><div class="sc-key">^</div><div class="sc-desc">Exponents: x^2 → x²</div></div>
     <div class="sc-card"><div class="sc-key">_</div><div class="sc-desc">Subscripts: y_1 → y₁</div></div>
@@ -168,11 +339,9 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     <div class="sc-card"><div class="sc-key">sqrt</div><div class="sc-desc">Square root: sqrt(x)</div></div>
     <div class="sc-card"><div class="sc-key">pi</div><div class="sc-desc">π constant: pi → π</div></div>
     <div class="sc-card"><div class="sc-key">/</div><div class="sc-desc">Fractions: 3/7</div></div>
-    <div class="sc-card"><div class="sc-key">🔧</div><div class="sc-desc">Wrench icon: switch degrees ↔ radians</div></div>
+    <div class="sc-card"><div class="sc-key">🔧</div><div class="sc-desc">Wrench: degrees ↔ radians</div></div>
   </div>
 </div>
-
-<!-- WHEN TO USE / NOT USE -->
 
 <!-- GRAPHING vs SCIENTIFIC MODE -->
 <div class="section">
@@ -181,20 +350,21 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 </div>
 <div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
   <div class="topic-header">
-    <div class="topic-badge" style="background:var(--accent)">⚙</div>
+    <div class="topic-badge" style="background:var(--des)">⚙</div>
     <div class="topic-info"><div class="topic-title">When to Use Each Mode</div><div class="topic-sub">Graphing for visuals, scientific for quick calculations</div></div>
     <div class="topic-arrow">▸</div>
   </div>
   <div class="topic-body">
     <ul>
       <li><strong>Graphing mode (default):</strong> Use 95% of the time. Graphs equations, finds intersections, runs regressions, handles tables. This is your power tool.</li>
-      <li><strong>Scientific mode:</strong> Switch for pure arithmetic. Cleaner interface for calculations that don’t need graphs — unit conversions, complex fractions.</li>
-      <li><strong>CAS ban:</strong> Computer Algebra Systems (like TI-Nspire CAS) are NOT allowed on the SAT. The built-in Desmos does NOT have CAS — it won’t simplify algebraic expressions or factor for you. It only evaluates numerically and graphs.</li>
+      <li><strong>Scientific mode:</strong> Switch for pure arithmetic. Cleaner interface for calculations that don't need graphs — unit conversions, complex fractions.</li>
+      <li><strong>CAS ban:</strong> Computer Algebra Systems (like TI-Nspire CAS) are NOT allowed on the SAT. The built-in Desmos does NOT have CAS — it won't simplify algebraic expressions or factor for you. It only evaluates numerically and graphs.</li>
     </ul>
     <div class="callout"><strong>Practical tip:</strong> Even for arithmetic, the graphing calculator works fine — type the expression on a blank line and Desmos evaluates it. No need to switch modes unless the interface feels cluttered.</div>
   </div>
 </div>
 
+<!-- WHEN TO USE / NOT USE -->
 <div class="section">
   <div class="section-label">Calculator Discipline</div>
   <h2>When to Use Desmos — and When Not To</h2>
@@ -229,9 +399,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="callout"><strong>The 5-Second Rule:</strong> If you can't figure out how to set it up in Desmos within 5 seconds, switch to algebra. Desmos is a tool, not a crutch.</div>
 </div>
 
-<!-- INTERACTIVE: SKILL MATCHER -->
-
-<!-- DESMOS IN ACTION: 5 COMMON SAT SCENARIOS -->
+<!-- WORKED EXAMPLES -->
 <div class="section">
   <div class="section-label">Worked Examples</div>
   <h2>Desmos in Action — 5 Common SAT Scenarios</h2>
@@ -283,7 +451,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
   <div class="topic-header">
-    <div class="topic-badge" style="background:var(--geo)">Ex</div>
+    <div class="topic-badge" style="background:var(--geotrig)">Ex</div>
     <div class="topic-info"><div class="topic-title">Scenario 4: Use a Slider to Find an Unknown</div><div class="topic-sub">The line y = ax + 3 passes through (4, 11). Find a.</div></div>
     <div class="topic-arrow">▸</div>
   </div>
@@ -297,7 +465,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 <div class="topic" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
   <div class="topic-header">
-    <div class="topic-badge" style="background:var(--accent)">Ex</div>
+    <div class="topic-badge" style="background:var(--des)">Ex</div>
     <div class="topic-info"><div class="topic-title">Scenario 5: Quick Statistics</div><div class="topic-sub">Find the mean of 12, 15, 18, 22, 33</div></div>
     <div class="topic-arrow">▸</div>
   </div>
@@ -308,33 +476,31 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
+<!-- EXERCISE 1: SKILL MATCHER -->
 <div class="section">
   <div class="section-label">Interactive Exercise 1</div>
   <h2>Which Desmos Skill?</h2>
   <p>For each SAT scenario, choose the best Desmos technique to use.</p>
-  <div class="exercise" id="skillExercise"></div>
-  <div id="skillScore" class="ex-score"></div>
+  <div class="exercise" id="skillEx"></div>
 </div>
 
-<!-- INTERACTIVE: DESMOS VS ALGEBRA DECISION DRILL -->
+<!-- EXERCISE 2: DESMOS VS ALGEBRA -->
 <div class="section">
   <div class="section-label">Interactive Exercise 2</div>
   <h2>Desmos or Algebra? — Speed Decision Drill</h2>
   <p>For each question type, decide instantly: would Desmos be faster, or algebra? Timer starts on first answer.</p>
-  <div class="exercise" style="border-color:var(--psda)" id="ddExercise"></div>
-  <div id="ddScore" class="ex-score"></div>
+  <div class="exercise" style="border-color:var(--psda)" id="ddEx"></div>
 </div>
 
-<!-- INTERACTIVE: SHORTCUT QUIZ -->
+<!-- EXERCISE 3: SHORTCUT QUIZ -->
 <div class="section">
   <div class="section-label">Interactive Exercise 3</div>
   <h2>Keyboard Shortcut Quiz</h2>
   <p>Match each action to the correct Desmos keyboard shortcut.</p>
-  <div class="exercise" style="border-color:var(--adv)" id="scExercise"></div>
-  <div id="scScore" class="ex-score"></div>
+  <div class="exercise" style="border-color:var(--advanced)" id="scEx"></div>
 </div>
 
-<!-- DESMOS PRACTICE PROTOCOL -->
+<!-- PRACTICE PROTOCOL -->
 <div class="section">
   <div class="section-label">Homework</div>
   <h2>Desmos Practice Protocol</h2>
@@ -347,129 +513,396 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<!-- SAT PRACTICE -->
+<!-- TRAP TAXONOMY -->
 <div class="section">
-  <div class="section-label">SAT-Style Practice</div>
-  <h2>Desmos-Solvable Practice Questions</h2>
-  <p>All 10 of these can be solved with Desmos. Try solving with Desmos AND by hand to compare speed.</p>
-  <div id="satQuestions"></div>
-  <div id="satScore" class="ex-score"></div>
-</div>
-
-<!-- TAKEAWAYS -->
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>~⅓ of SAT math can be solved or verified with Desmos. With CAS calculators banned, Desmos fluency is now essential.</li>
-      <li>Master the 10 essential skills — graphing, intersections, sliders, tables, regression, inequalities, stats, %, circles, shortcuts.</li>
-      <li>Calculator discipline: use Desmos when it's faster (systems, quadratics, regression), skip it when it's slower (arithmetic, single-step, conceptual).</li>
-      <li>The 5-second rule: if setup takes more than 5 seconds, switch to algebra.</li>
-      <li>Memorize keyboard shortcuts: ^, _, ~, |, sqrt, pi.</li>
-      <li>Always verify your answer when time allows — graph your equation and check it makes sense.</li>
-      <li>New features: Autoregression for instant model fitting, scientific/graphing mode toggle, and list statistics (mean, median, stdev).</li>
-    </ol>
+  <div class="section-label">Math Trap Taxonomy</div>
+  <h2>Four Traps That Recur in Desmos Problems</h2>
+  <p>Learn these by name. When you spot one in a problem, you'll know exactly what to watch for.</p>
+  <div class="trap-taxonomy">
+    <div class="trap-card"><div class="trap-number" style="background:var(--wrong)">1</div><div class="trap-card-body"><div class="trap-card-name">⏱ The Setup Trap</div><div class="trap-card-desc">Spent too long setting up Desmos when algebra would have been faster. The 5-second rule exists for a reason — if you can't see how to enter it quickly, switch methods.</div><div class="trap-card-example">Simple probability from a table → Desmos can't help. Read the table directly.</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--des)">2</div><div class="trap-card-body"><div class="trap-card-name">🧮 The Mental Math Trap</div><div class="trap-card-desc">Used Desmos for something you could do in your head. Every second spent opening and typing into the calculator is a second wasted on easy questions.</div><div class="trap-card-example">Using Desmos for 25% of 400 → Just do 400/4 = 100 mentally.</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--psda)">3</div><div class="trap-card-body"><div class="trap-card-name">🔍 The CAS Illusion</div><div class="trap-card-desc">Expected Desmos to factor, simplify, or solve algebraically. Desmos is NOT a CAS — it graphs and evaluates numerically, but won't simplify x²−4 into (x−2)(x+2) for you.</div><div class="trap-card-example">Asking Desmos to simplify (x²+3x)/(x+3) → It only graphs. Factor by hand.</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--math)">4</div><div class="trap-card-body"><div class="trap-card-name">🎯 The Intersection Misread</div><div class="trap-card-desc">Read the wrong intersection point, or clicked a different point on the graph. Always verify which intersection you need, and zoom in if the points are close together.</div><div class="trap-card-example">Two parabolas with 2 intersections → clicked the wrong one. Check both!</div></div></div>
   </div>
 </div>
 
-<div class="mod-nav">
-  <a href="module-6.html">← Module 6: Geometry</a>
-  <a href="module-8.html">Module 8: Strategy →</a>
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(3)">Continue to Practice Questions →</button>
 </div>
+</div>
+</div>
+
+<!-- SCREEN 4: TIMED PRACTICE -->
+<div class="screen" id="screen-practice">
+<div class="container">
+  <div class="section-label">SAT Practice</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:4px">Practice Questions</h2>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px">10 questions at three difficulty tiers. Tag your confidence before answering.</p>
+  <div class="timer-bar" id="timerBar">
+    <div class="timer-display" id="timerDisplay">--:--</div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="q-dots" id="qDots"></div>
+    <button class="timer-toggle" id="timerToggle" onclick="toggleTimer()">⏱ Timer OFF</button>
+  </div>
+  <div id="satPractice"></div>
+  <div id="practiceResults" style="display:none"></div>
+  <div id="practiceNav" style="display:none;text-align:center;padding:24px 0">
+    <button class="start-btn" onclick="goScreen(4)">View Summary & Complete Module →</button>
+  </div>
+</div>
+</div>
+
+<!-- SCREEN 5: MODULE COMPLETE -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎉</div>
+    <h1>Module 7 Complete!</h1>
+    <p class="complete-sub">You've mastered Desmos — now you have a powerful tool advantage on test day.</p>
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--des);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> ~1/3 of SAT math can be solved or verified with Desmos. With CAS calculators banned, Desmos fluency is now essential.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Master the 10 essential skills — graphing, intersections, sliders, tables, regression, inequalities, stats, %, circles, shortcuts.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Calculator discipline: use Desmos when it's faster (systems, quadratics, regression), skip it when it's slower (arithmetic, single-step, conceptual).</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> The 5-second rule: if setup takes more than 5 seconds, switch to algebra.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Memorize keyboard shortcuts: <strong>^ _ ~ | sqrt pi</strong></div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Always verify your answer when time allows — graph your equation and check it makes sense.</div>
+    </div>
+    <div id="completePracticeStats"></div>
+    <div class="nav-cards">
+      <a class="nav-card" href="module-6.html"><div class="nav-card-label">← Previous</div><div class="nav-card-title">Module 6: Geometry & Trig</div></a>
+      <a class="nav-card" href="module-8.html" style="border-color:var(--des)"><div class="nav-card-label">Next →</div><div class="nav-card-title">Module 8: Strategy & Time Management</div></a>
+    </div>
+  </div>
 </div>
 
 <script>
-// ============ PROGRESS BAR ============
-window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;var pct=h>0?(window.scrollY/h)*100:0;document.getElementById('progressFill').style.width=pct+'%';});
+// ============ SCREEN NAVIGATION ============
+const SCREENS=['screen-welcome','screen-warmup','screen-lesson','screen-practice','screen-complete'];
+let currentScreen=0;
+function goScreen(idx){
+  if(idx<0||idx>=SCREENS.length)return;
+  const cur=document.getElementById(SCREENS[currentScreen]),nxt=document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');cur.classList.add('fade-out');
+  setTimeout(()=>{cur.classList.remove('active','fade-out');nxt.classList.add('active','fade-in');currentScreen=idx;updateProgressDots();window.scrollTo(0,0);if(idx===3&&timerEnabled)startTimer();},300);
+}
+function updateProgressDots(){
+  document.getElementById('screenProgress').innerHTML=SCREENS.map((s,i)=>{let cls='screen-dot';if(i<currentScreen)cls+=' completed';if(i===currentScreen)cls+=' current';return `<div class="${cls}" onclick="${i<=currentScreen?'goScreen('+i+')':''}" title="${['Welcome','Warm-Up','Lesson','Practice','Complete'][i]}"></div>`;}).join('');
+}
+updateProgressDots();
+
+// ============ WARM-UP (Module 6 — Geometry & Trig) ============
+const WARMUP_QS=[
+  {source:'Module 6 — Special Triangles',q:'In a 30-60-90 triangle, what is the ratio of sides?',
+   ch:['1 : 1 : √2','1 : √2 : 2','1 : √3 : 2','√3 : √3 : 2'],c:2,
+   fb:'The 30-60-90 ratio is always 1 : √3 : 2. The short leg is opposite 30°, the long leg opposite 60° (×√3), and the hypotenuse is double the short leg.'},
+  {source:'Module 6 — Circles',q:'The equation (x−3)² + (y+1)² = 25 has center at?',
+   ch:['(−3, 1)','(3, 1)','(3, −1)','(−3, −1)'],c:2,
+   fb:'Standard form: (x−h)² + (y−k)² = r². Here h=3, k=−1. Center is (3, −1). The signs flip inside the parentheses!'},
+  {source:'Module 6 — Volume',q:'Volume of a cone with radius r and height h?',
+   ch:['V = πr²h','V = ⅓πr²h','V = ½πr²h','V = 2πr²h'],c:1,
+   fb:'Cone volume = ⅓πr²h. A cone is always one-third the volume of the cylinder with the same base and height.'},
+  {source:'Module 6 — Trigonometry',q:'sin(30°) = ?',
+   ch:['½','√2/2','√3/2','1'],c:0,
+   fb:'sin(30°) = ½. From the 30-60-90 triangle: opposite/hypotenuse = 1/2. This is a must-memorize value.'},
+  {source:'Module 6 — Complementary Angles',q:'If two angles are complementary and one is 35°, the other is?',
+   ch:['145°','65°','55°','35°'],c:2,
+   fb:'Complementary angles sum to 90°. So 90° − 35° = 55°. Don\'t confuse with supplementary (sum to 180°).'}
+];
+let warmupIdx=0,warmupAnswers=[],warmupAnswered=false;
+function renderWarmup(){
+  document.getElementById('warmupDots').innerHTML=WARMUP_QS.map((_,i)=>{let cls='warmup-dot';if(i<warmupIdx)cls+=warmupAnswers[i]?' done-correct':' done-wrong';if(i===warmupIdx&&warmupIdx<WARMUP_QS.length)cls+=' active';return `<div class="${cls}"></div>`;}).join('');
+  const cont=document.getElementById('warmupContent');
+  if(warmupIdx>=WARMUP_QS.length){const cor=warmupAnswers.filter(Boolean).length;cont.innerHTML=`<div class="warmup-summary"><div class="warmup-badge">Warm-Up Complete</div><div class="warmup-score">${cor} / ${WARMUP_QS.length}</div><p style="color:var(--muted);font-size:.9rem;margin-bottom:8px">${cor===5?'Perfect recall! Module 6 knowledge is locked in.':cor>=3?'Good recall! A couple topics to revisit from Geometry & Trig.':'Some gaps from Module 6 — consider a quick review of Geometry & Trig.'}</p><button class="warmup-continue" onclick="goScreen(2)">Continue to Lesson →</button></div>`;return;}
+  const q=WARMUP_QS[warmupIdx];warmupAnswered=false;
+  cont.innerHTML=`<div class="warmup-q"><div class="source-tag">From ${q.source}</div><div class="q-text">${q.q}</div><div class="warmup-choices" id="warmupChoices">${q.ch.map((ch,ci)=>`<div class="warmup-choice" onclick="answerWarmup(${ci})">${ch}</div>`).join('')}</div><div id="warmupFb" style="display:none"></div></div>`;
+}
+function answerWarmup(ci){
+  if(warmupAnswered)return;warmupAnswered=true;
+  const q=WARMUP_QS[warmupIdx],correct=ci===q.c;warmupAnswers.push(correct);
+  document.querySelectorAll('.warmup-choice').forEach((ch,i)=>{ch.classList.add('wu-dis');if(i===q.c)ch.classList.add('wu-correct');else if(i===ci&&!correct)ch.classList.add('wu-wrong');});
+  const fb=document.getElementById('warmupFb');fb.style.display='block';
+  fb.innerHTML=`<div class="warmup-fb">${correct?'✓ ':'✗ '}${q.fb}</div><button class="warmup-next" onclick="warmupIdx++;renderWarmup()">${warmupIdx<WARMUP_QS.length-1?'Next Question →':'See Results →'}</button>`;
+  document.getElementById('warmupDots').innerHTML=WARMUP_QS.map((_,i)=>{let cls='warmup-dot';if(i<warmupAnswers.length)cls+=warmupAnswers[i]?' done-correct':' done-wrong';else if(i===warmupIdx+1)cls+=' active';return `<div class="${cls}"></div>`;}).join('');
+}
+renderWarmup();
 
 // ============ HELPERS ============
-function showScore(id,ans,items,key){var t=items.length,a=Object.keys(ans).length,c=0;Object.entries(ans).forEach(function(p){var i=parseInt(p[0]),v=p[1];if(v===items[i][key||'correct'])c++;});document.getElementById(id).innerHTML=a===t?'<strong style="color:'+(c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';}
+function mkScore(id,correct,total){return `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;}
 
 // ============ EXERCISE 1: SKILL MATCHER ============
-var SKILLS=[
-  {scenario:'Find solutions of 2x²−5x−3=0.',correct:'Graph the function',opts:['Graph the function','Use a slider','Run a regression','Calculate statistics'],fb:'Graph y=2x²−5x−3, click x-intercepts.'},
-  {scenario:'8 data points. Find best-fit line.',correct:'Enter table + regression',opts:['Graph the function','Use a slider','Enter table + regression','Graph an inequality'],fb:'Table + y₁~mx₁+b. Or use Autoregression for auto-fit.'},
-  {scenario:'For what k does kx+2=x² have one solution?',correct:'Use a slider',opts:['Graph the function','Use a slider','Run a regression','Calculate statistics'],fb:'Graph y=x² and y=kx+2 with k slider. Adjust until tangent.'},
-  {scenario:'Graph solution region for y<3x−1 AND y≥−x+4.',correct:'Graph inequalities',opts:['Find intersections','Graph inequalities','Use a slider','Enter table + regression'],fb:'Type both inequalities. Overlap is the solution.'},
-  {scenario:'Center and radius of (x+3)²+(y−1)²=36.',correct:'Graph the circle',opts:['Graph the circle','Use a slider','Run a regression','Calculate statistics'],fb:'Type equation directly. Desmos draws it.'},
-  {scenario:'Where do y=2x+1 and y=x²−3 intersect?',correct:'Find intersections',opts:['Find intersections','Use a slider','Graph inequalities','Calculate statistics'],fb:'Graph both, click intersection dots.'},
-  {scenario:'Mean and median of: 12, 15, 18, 22, 95.',correct:'Calculate statistics',opts:['Enter table + regression','Find intersections','Calculate statistics','Graph the function'],fb:'mean(12,15,18,22,95) and median(12,15,18,22,95). Or define L=[12,15,18,22,95] then mean(L).'},
-  {scenario:'What is 15% of 840?',correct:'Use the % key',opts:['Graph the function','Use the % key','Run a regression','Use a slider'],fb:'Type "15% of 840" directly.'},
-  {scenario:'How many x-intercepts does x³−4x²+x+6 have?',correct:'Graph the function',opts:['Graph the function','Calculate statistics','Use a slider','Run a regression'],fb:'Graph and count crossings.'},
-  {scenario:'Verify x=7 is a solution to 3(x−2)+4=2x+3.',correct:'Graph the function',opts:['Graph the function','Use a slider','Find intersections','Calculate statistics'],fb:'Graph both sides. Check if they intersect at x=7.'},
+const SKILL_QS=[
+  {scenario:'Find the solutions of <code>2x² − 5x − 3 = 0</code>.',correct:0,
+   opts:['Graph the function','Use a slider','Run a regression','Calculate statistics'],
+   fb:'Graph y = 2x² − 5x − 3 and click the x-intercepts. Desmos gives exact solutions.'},
+  {scenario:'A data table shows 8 points. Find the best-fit line equation.',correct:2,
+   opts:['Graph the function','Use a slider','Enter table + regression','Graph an inequality'],
+   fb:'Click + → Table, enter data, then type y₁ ~ mx₁ + b. Or use Autoregression for auto-fit.'},
+  {scenario:'For what value of k does <code>kx + 2 = x²</code> have exactly one solution?',correct:1,
+   opts:['Graph the function','Use a slider','Run a regression','Calculate statistics'],
+   fb:'Graph y = x² and y = kx + 2 with a slider for k. Adjust until the line is tangent to the parabola.'},
+  {scenario:'Graph the solution region for <code>y &lt; 3x − 1</code> AND <code>y ≥ −x + 4</code>.',correct:1,
+   opts:['Find intersections','Graph inequalities','Use a slider','Run a regression'],
+   fb:'Type both inequalities. Desmos shades each region. The overlap is the solution.'},
+  {scenario:'Find the center and radius of <code>(x + 3)² + (y − 1)² = 36</code>.',correct:0,
+   opts:['Graph the circle','Use a slider','Run a regression','Calculate statistics'],
+   fb:'Type the equation directly. Desmos draws the circle. Center (−3, 1), radius 6.'},
+  {scenario:'Where do <code>y = 2x + 1</code> and <code>y = x² − 3</code> intersect?',correct:0,
+   opts:['Find intersections','Use a slider','Graph inequalities','Calculate statistics'],
+   fb:'Graph both equations. Click the intersection dots for exact coordinates.'},
+  {scenario:'Find the mean and median of: 12, 15, 18, 22, 95.',correct:3,
+   opts:['Enter table + regression','Find intersections','Graph the function','Calculate statistics'],
+   fb:'Type mean(12,15,18,22,95) and median(12,15,18,22,95). Or define L=[12,15,18,22,95] then mean(L). Instant results.'},
+  {scenario:'What is 15% of 840?',correct:1,
+   opts:['Graph the function','Use the % key','Run a regression','Use a slider'],
+   fb:'Type "15% of 840" directly into Desmos. It computes 126 instantly.'},
+  {scenario:'How many x-intercepts does <code>f(x) = x³ − 4x² + x + 6</code> have?',correct:0,
+   opts:['Graph the function','Calculate statistics','Use a slider','Run a regression'],
+   fb:'Graph it and count x-axis crossings. Click each intercept for exact values.'},
+  {scenario:'Verify that x = 7 is a solution to <code>3(x − 2) + 4 = 2x + 3</code>.',correct:0,
+   opts:['Graph the function','Use a slider','Find intersections','Calculate statistics'],
+   fb:'Graph both sides as separate equations. Check if they intersect at x = 7.'},
 ];
-var skillAns={};
-function ansSkill(i,oi){if(skillAns[i]!==undefined)return;skillAns[i]=SKILLS[i].opts[oi];renderSkills();}
+let skillAns={};
 function renderSkills(){
-  document.getElementById('skillExercise').innerHTML='<h3>🎯 Match the Skill</h3><div class="exercise-sub">Which Desmos technique solves each problem fastest?</div>'+SKILLS.map(function(s,i){var ans=skillAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Scenario '+(i+1)+'</div><div class="ex-prompt">'+s.scenario+'</div><div class="ex-options">'+s.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===s.correct)cls+=' ex-correct';else if(o===ans&&o!==s.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansSkill('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===s.correct?'✓ Correct! ':'✗ Incorrect. ')+s.fb:'')+'</div></div>';}).join('');
-  showScore('skillScore',skillAns,SKILLS);
+  const total=SKILL_QS.length;const correct=Object.entries(skillAns).filter(([i,v])=>v===SKILL_QS[i].correct).length;
+  document.getElementById('skillEx').innerHTML=`<h3>🎯 Match the Skill</h3><div class="exercise-sub">Which Desmos technique solves each problem fastest?</div>`+
+    SKILL_QS.map((q,i)=>{
+      const a=skillAns[i];const has=a!==undefined;
+      return `<div class="ex-item">
+        <div class="ex-prompt">${q.scenario}</div>
+        <div class="classify-opts">${q.opts.map((o,oi)=>{
+          let cls='classify-opt';
+          if(has){cls+=' cl-dis';if(oi===q.correct)cls+=' cl-correct';else if(oi===a&&oi!==q.correct)cls+=' cl-wrong';}
+          return `<div class="${cls}" onclick="ansSkill(${i},${oi})">${o}</div>`;
+        }).join('')}</div>
+        <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ ':'✗ ')+q.fb:''}</div>
+      </div>`;
+    }).join('')+mkScore('s',correct,total);
 }
+function ansSkill(i,v){if(skillAns[i]!==undefined)return;skillAns[i]=v;renderSkills();}
 renderSkills();
 
 // ============ EXERCISE 2: DESMOS VS ALGEBRA DRILL ============
-var DD_ITEMS=[
-  {q:'What is 8 × 7?',correct:'Algebra',fb:'Mental math: 56.'},
-  {q:'Find vertex of f(x)=3x²−12x+7.',correct:'Desmos',fb:'Graph it. Desmos labels the vertex.'},
-  {q:'Solve: y=2x−1, y=−x+5.',correct:'Desmos',fb:'Graph both, click intersection. 3 seconds.'},
-  {q:'What is 25% of 400?',correct:'Algebra',fb:'25%=¼. 400/4=100. Instant.'},
-  {q:'How many solutions: x²+4x+5=0?',correct:'Desmos',fb:'Graph it. Parabola above x-axis → 0 solutions.'},
-  {q:'Line of best fit for 6 data points.',correct:'Desmos',fb:'Table + regression. Can\'t do by hand.'},
-  {q:'Simplify 3x²+5x−2x²+x.',correct:'Algebra',fb:'Combine like terms: x²+6x.'},
-  {q:'Where do y=|x−3| and y=2 intersect?',correct:'Desmos',fb:'Absolute value intersections: graph both.'},
-  {q:'If f(x)=x+3, find f(7).',correct:'Algebra',fb:'7+3=10. Don\'t open the calculator.'},
-  {q:'For what a does y=ax² pass through (3,18)?',correct:'Desmos',fb:'Slider for a. Adjust until curve hits (3,18).'},
+// NOTE: ddStart and ddTimer are the drill's own timer vars — distinct from the practice timer (timerInterval/timerSeconds)
+const DD_QS=[
+  {q:'What is 8 × 7?',correct:'Algebra',fb:'Mental math: 56. Opening Desmos is slower.'},
+  {q:'Find the vertex of f(x) = 3x² − 12x + 7.',correct:'Desmos',fb:'Graph it → Desmos labels the vertex. Faster than computing −b/2a and plugging in.'},
+  {q:'Solve the system: y = 2x − 1, y = −x + 5.',correct:'Desmos',fb:'Graph both, click intersection. 3 seconds.'},
+  {q:'What is 25% of 400?',correct:'Algebra',fb:'25% = ¼. 400/4 = 100. Instant mental math.'},
+  {q:'How many solutions does x² + 4x + 5 = 0 have?',correct:'Desmos',fb:'Graph it. Parabola above x-axis → 0 solutions. Faster than discriminant.'},
+  {q:'Find the best-fit line for 6 data points.',correct:'Desmos',fb:'Table + regression. No human can do this by hand during a test.'},
+  {q:'Simplify 3x² + 5x − 2x² + x.',correct:'Algebra',fb:'Combine like terms: x² + 6x. No calculator needed.'},
+  {q:'Where do y = |x − 3| and y = 2 intersect?',correct:'Desmos',fb:'Absolute value intersections are messy. Graph both and click.'},
+  {q:'If f(x) = x + 3, find f(7).',correct:'Algebra',fb:'7 + 3 = 10. Don\'t even open the calculator.'},
+  {q:'For what value of a does y = ax² pass through (3, 18)?',correct:'Desmos',fb:'Type y = ax² with slider. Adjust until curve hits (3, 18). Or algebra: 18 = 9a → a = 2.'},
 ];
-var ddAns={},ddStart=null,ddTimer=null;
+let ddAns={};let ddStart=null;let ddTimer=null;
 function renderDD(){
-  var elapsed=ddStart?((Date.now()-ddStart)/1000).toFixed(1):'0.0';
-  var allDone=Object.keys(ddAns).length===DD_ITEMS.length;
-  document.getElementById('ddExercise').innerHTML='<h3>⚡ Speed Decision Drill</h3><div class="exercise-sub">Desmos or Algebra? Decide instantly!</div><div class="drill-timer '+(ddStart&&!allDone?'running':'')+(allDone?' done':'')+'">'+( allDone?elapsed+'s — Done!':ddStart?elapsed+'s':'Ready')+'</div>'+DD_ITEMS.map(function(d,i){var ans=ddAns[i];var has=ans!==undefined;return '<div class="dd-item"><div class="dd-prompt">'+d.q+'</div><div class="dd-btns">'+['Desmos','Algebra'].map(function(o){var cls='dd-btn';if(has){cls+=' dd-dis';if(o===d.correct)cls+=' dd-correct';else if(o===ans&&o!==d.correct)cls+=' dd-wrong';}return '<div class="'+cls+'" onclick="ansDD('+i+',\''+o+'\')">'+( o==='Desmos'?'📊 Desmos':'✏️ Algebra')+'</div>';}).join('')+'</div></div><div class="dd-fb'+(has?' show':'')+'" style="margin:-4px 0 8px 0;padding:0 14px;font-size:.8rem;color:var(--muted)">'+(has?(ans===d.correct?'✓ ':'✗ ')+d.fb:'')+'</div>';}).join('');
-  var t=DD_ITEMS.length,a=Object.keys(ddAns).length,c=0;Object.entries(ddAns).forEach(function(p){if(p[1]===DD_ITEMS[parseInt(p[0])].correct)c++;});
-  document.getElementById('ddScore').innerHTML=allDone?'<strong style="color:'+(c>=8?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct in '+elapsed+'s</strong>':a>0?a+'/'+t+' completed':'';
+  const elapsed=ddStart?((Date.now()-ddStart)/1000).toFixed(1):'0.0';
+  const allDone=Object.keys(ddAns).length===DD_QS.length;
+  const correct=Object.entries(ddAns).filter(([i,v])=>v===DD_QS[i].correct).length;
+  if(allDone&&ddTimer){clearInterval(ddTimer);ddTimer=null;}
+  document.getElementById('ddEx').innerHTML=
+    `<h3>⚡ Speed Decision Drill</h3><div class="exercise-sub">Desmos or Algebra? Decide instantly!</div>
+    <div class="drill-timer ${ddStart&&!allDone?'running':''}${allDone?' done':''}">${allDone?elapsed+'s — '+correct+'/'+DD_QS.length+(correct>=8?' 🔥':''):ddStart?elapsed+'s':'Ready — click to start'}</div>`+
+    DD_QS.map((d,i)=>{
+      const a=ddAns[i];const has=a!==undefined;
+      return `<div class="ex-item" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px">
+        <div style="flex:1;min-width:200px;font-size:.9rem">${d.q}</div>
+        <div class="dd-btns">${['Desmos','Algebra'].map(o=>{
+          let cls='dd-btn';
+          if(has){cls+=' dd-dis';if(o===d.correct)cls+=' dd-correct';else if(o===a&&o!==d.correct)cls+=' dd-wrong';}
+          return `<div class="${cls}" onclick="ansDD(${i},'${o}')">${o==='Desmos'?'📊 Desmos':'✏️ Algebra'}</div>`;
+        }).join('')}</div>
+        ${has?`<div style="width:100%;font-size:.8rem;color:var(--muted)">${a===d.correct?'✓ ':'✗ '}${d.fb}</div>`:''}</div>`;
+    }).join('');
 }
-function ansDD(i,v){if(ddAns[i]!==undefined)return;if(!ddStart){ddStart=Date.now();ddTimer=setInterval(function(){renderDD();},100);}ddAns[i]=v;if(Object.keys(ddAns).length===DD_ITEMS.length&&ddTimer){clearInterval(ddTimer);ddTimer=null;}renderDD();}
+function ansDD(i,v){
+  if(ddAns[i]!==undefined)return;
+  if(!ddStart){ddStart=Date.now();ddTimer=setInterval(()=>renderDD(),100);}
+  ddAns[i]=v;renderDD();
+}
 renderDD();
 
 // ============ EXERCISE 3: SHORTCUT QUIZ ============
-var SC_QS=[
-  {q:'Type an exponent (x²)',correct:'^',opts:['^','_','~','|']},
-  {q:'Type a subscript (y₁)',correct:'_',opts:['^','_','~','|']},
-  {q:'Start a regression equation',correct:'~',opts:['^','_','~','|']},
-  {q:'Type absolute value (|x|)',correct:'Shift+\\',opts:['^','Shift+\\','~','|x|']},
-  {q:'Type a square root',correct:'sqrt',opts:['root','sqrt','sqr','rt']},
-  {q:'Type the π constant',correct:'pi',opts:['p','pi','3.14','PI']},
-  {q:'Switch degrees ↔ radians',correct:'Wrench icon',opts:['Settings menu','Wrench icon','Gear icon','Keyboard shortcut']},
-  {q:'Create a fraction like 3/7',correct:'/',opts:['/','frac','÷','fraction']},
+const SC_QS=[
+  {q:'Type an exponent (e.g., x²)',correct:0,opts:['^','_','~','|']},
+  {q:'Type a subscript (e.g., y₁)',correct:1,opts:['^','_','~','|']},
+  {q:'Start a regression equation',correct:2,opts:['^','_','~','|']},
+  {q:'Type absolute value (e.g., |x|)',correct:1,opts:['^','Shift+\\','~','sqrt']},
+  {q:'Type a square root',correct:1,opts:['root','sqrt','sqr','rt']},
+  {q:'Type the π constant',correct:1,opts:['p','pi','3.14','PI']},
+  {q:'Switch between degrees and radians',correct:1,opts:['Settings menu','Wrench icon','Gear icon','Keyboard shortcut']},
+  {q:'Create a fraction like 3/7',correct:0,opts:['/','frac','÷','fraction']},
 ];
-var scAns={};
-function ansSC(i,oi){if(scAns[i]!==undefined)return;scAns[i]=SC_QS[i].opts[oi];renderSC();}
+let scAns={};
 function renderSC(){
-  document.getElementById('scExercise').innerHTML='<h3>⌨️ Shortcut Quiz</h3><div class="exercise-sub">What key or action do you use?</div>'+SC_QS.map(function(s,i){var ans=scAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Action '+(i+1)+'</div><div class="ex-prompt">'+s.q+'</div><div class="ex-options">'+s.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===s.correct)cls+=' ex-correct';else if(o===ans&&o!==s.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansSC('+i+','+oi+')"><code>'+o+'</code></div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===s.correct?'✓ Correct!':'✗ Correct shortcut: '+s.correct):'')+'</div></div>';}).join('');
-  showScore('scScore',scAns,SC_QS);
+  const total=SC_QS.length;const correct=Object.entries(scAns).filter(([i,v])=>v===SC_QS[i].correct).length;
+  document.getElementById('scEx').innerHTML=`<h3>⌨️ Shortcut Quiz</h3><div class="exercise-sub">What key or action do you use?</div>`+
+    SC_QS.map((q,i)=>{
+      const a=scAns[i];const has=a!==undefined;
+      return `<div class="ex-item">
+        <div class="ex-prompt">${q.q}</div>
+        <div class="classify-opts">${q.opts.map((o,oi)=>{
+          let cls='classify-opt';
+          if(has){cls+=' cl-dis';if(oi===q.correct)cls+=' cl-correct';else if(oi===a&&oi!==q.correct)cls+=' cl-wrong';}
+          return `<div class="${cls}" onclick="ansSC(${i},${oi})"><code>${o}</code></div>`;
+        }).join('')}</div>
+        <div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ Correct!':'✗ The correct shortcut is: '+q.opts[q.correct]):''}</div>
+      </div>`;
+    }).join('')+mkScore('sc',correct,total);
 }
+function ansSC(i,v){if(scAns[i]!==undefined)return;scAns[i]=v;renderSC();}
 renderSC();
 
-// ============ SAT PRACTICE ============
-var SAT_QS=[
-  {tier:'Desmos',q:'Solutions of x²−3x−10=0?',choices:['x=−2 and x=5','x=2 and x=−5','x=−2 and x=−5','x=2 and x=5'],correct:0,fb:'Graph y=x²−3x−10. X-intercepts: (−2,0) and (5,0).'},
-  {tier:'Desmos',q:'Where do y=3x−2 and y=−x+6 intersect?',choices:['(1,1)','(2,4)','(4,2)','(3,7)'],correct:1,fb:'Graph both, click intersection → (2,4).'},
-  {tier:'Desmos',q:'Vertex of f(x)=−2x²+8x−3?',choices:['(2,5)','(−2,−27)','(4,−3)','(2,−3)'],correct:0,fb:'Graph it. Vertex → (2,5).'},
-  {tier:'Desmos',q:'How many real solutions: 2x²−4x+5=0?',choices:['0','1','2','Cannot determine'],correct:0,fb:'Graph y=2x²−4x+5. Doesn\'t touch x-axis → 0 solutions.'},
-  {tier:'Desmos',q:'Best fit for (1,3),(2,5),(3,8),(4,10),(5,13)?',choices:['y=2x+1','y=2.5x+0.5','y=3x−1','y=x²+2'],correct:1,fb:'Table + regression (or Autoregression). Returns m≈2.5, b≈0.5.'},
-  {tier:'Desmos',q:'Center of x²+y²−6x+4y−12=0?',choices:['(3,−2)','(−3,2)','(6,−4)','(−6,4)'],correct:0,fb:'Type equation directly. Desmos draws circle. Center: (3,−2).'},
-  {tier:'Desmos',q:'How many positive x-intercepts: f(x)=x³−6x²+11x−6?',choices:['0','1','2','3'],correct:3,fb:'Graph it. Three intercepts at x=1,2,3. All positive.'},
-  {tier:'Desmos',q:'mean(4,8,15,16,23,42) = ?',choices:['18','15.5','16','14'],correct:0,fb:'Type mean(4,8,15,16,23,42) in Desmos → 18. Or: sum=108, count=6, 108/6=18.'},
-  {tier:'Desmos',q:'For what value of b does y=2x+b pass through (3,11)?',choices:['b=5','b=6','b=17','b=−5'],correct:0,fb:'Slider for b. Or algebra: 11=6+b → b=5. Both fast here.'},
-  {tier:'Desmos',q:'Data: (0,100),(1,80),(2,64),(3,51.2). Which model fits best?',choices:['Linear: y=−16x+100','Quadratic: y=x²−16x+100','Exponential: y=100(0.8)ˣ','None of the above'],correct:2,fb:'Autoregression: enter table, compare R² values. Exponential decay (×0.8 each step) fits perfectly. 100→80→64→51.2.'},
+// ============ TIMED PRACTICE ============
+const PST=[
+  {t:1,tp:'6A',q:'What are the solutions of <code>x² − 3x − 10 = 0</code>?',
+   ch:['x = −2 and x = 5','x = 2 and x = −5','x = −2 and x = −5','x = 2 and x = 5'],c:0,
+   fb:'<strong>Desmos:</strong> Graph y = x² − 3x − 10, click x-intercepts → (−2, 0) and (5, 0). <strong>Algebra:</strong> Factor (x−5)(x+2) = 0.',
+   trap:'intersection_misread',trapAnswer:3,trapDesc:'Misread the signs of the x-intercepts — Intersection Misread'},
+  {t:1,tp:'6A',q:'At what point do <code>y = 3x − 2</code> and <code>y = −x + 6</code> intersect?',
+   ch:['(1, 1)','(2, 4)','(4, 2)','(3, 7)'],c:1,
+   fb:'<strong>Desmos:</strong> Graph both, click intersection → (2, 4). <strong>Algebra:</strong> 3x−2 = −x+6 → 4x = 8 → x=2, y=4.',
+   trap:null,trapAnswer:0,trapDesc:'Graphing both lines finds the intersection instantly'},
+  {t:1,tp:'6D',q:'What is the vertex of <code>f(x) = −2x² + 8x − 3</code>?',
+   ch:['(2, 5)','(−2, −27)','(4, −3)','(2, −3)'],c:0,
+   fb:'<strong>Desmos:</strong> Graph it, click vertex → (2, 5). <strong>Algebra:</strong> x = −8/(2·−2) = 2, f(2) = −8+16−3 = 5.',
+   trap:'setup_trap',trapAnswer:3,trapDesc:'Tried algebra and made a sign error — Setup Trap: Desmos was faster here'},
+  {t:2,tp:'6A',q:'How many real solutions does <code>2x² − 4x + 5 = 0</code> have?',
+   ch:['0','1','2','Cannot determine'],c:0,
+   fb:'<strong>Desmos:</strong> Graph y = 2x² − 4x + 5. Parabola stays above x-axis → 0 solutions. <strong>Algebra:</strong> Discriminant = 16 − 40 = −24 < 0.',
+   trap:'mental_math',trapAnswer:2,trapDesc:'Assumed 2 solutions without checking — Mental Math Trap'},
+  {t:2,tp:'6B',q:'The data points (1,3), (2,5), (3,8), (4,10), (5,13) are best modeled by:',
+   ch:['y = 2x + 1','y = 2.5x + 0.5','y = 3x − 1','y = x² + 2'],c:1,
+   fb:'<strong>Desmos:</strong> Enter as table, run y₁ ~ mx₁ + b → m ≈ 2.5, b ≈ 0.5. Always use regression for best-fit. Or use Autoregression.',
+   trap:'cas_illusion',trapAnswer:0,trapDesc:'Tried to eyeball the slope instead of using regression — CAS Illusion'},
+  {t:2,tp:'6A',q:'What is the center of <code>x² + y² − 6x + 4y − 12 = 0</code>?',
+   ch:['(3, −2)','(−3, 2)','(6, −4)','(−6, 4)'],c:0,
+   fb:'<strong>Desmos:</strong> Type the equation, Desmos draws the circle. Click center → (3, −2). <strong>Algebra:</strong> Complete square → (x−3)²+(y+2)²=25.',
+   trap:'intersection_misread',trapAnswer:1,trapDesc:'Misread the sign from the completed square — Intersection Misread'},
+  {t:2,tp:'6C',q:'What is <code>mean(4, 8, 15, 16, 23, 42)</code>?',
+   ch:['18','15.5','16','14'],c:0,
+   fb:'<strong>Desmos:</strong> Type mean(4,8,15,16,23,42) → 18. <strong>Algebra:</strong> Sum = 108, count = 6, 108/6 = 18.',
+   trap:'mental_math',trapAnswer:2,trapDesc:'Guessed 16 (the median-ish value) without calculating — Mental Math Trap'},
+  {t:3,tp:'6C',q:'If <code>f(x) = x³ − 6x² + 11x − 6</code>, how many positive x-intercepts?',
+   ch:['0','1','2','3'],c:3,
+   fb:'<strong>Desmos:</strong> Graph it. Three crossings at x = 1, 2, 3. All positive. <strong>Algebra:</strong> Factor (x−1)(x−2)(x−3) = 0.',
+   trap:'intersection_misread',trapAnswer:1,trapDesc:'Only zoomed in enough to see one crossing — Intersection Misread'},
+  {t:3,tp:'6A',q:'For what value of b does <code>y = 2x + b</code> pass through (3, 11)?',
+   ch:['b = 5','b = 6','b = 17','b = −5'],c:0,
+   fb:'<strong>Desmos:</strong> Slider for b, or type y = 2x + b and point (3, 11). Adjust until line hits point. <strong>Algebra:</strong> 11 = 6 + b → b = 5.',
+   trap:'setup_trap',trapAnswer:2,trapDesc:'Forgot to subtract and added 2(3)+11 = 17 — Setup Trap'},
+  {t:3,tp:'6B',q:'Data: (0,100), (1,80), (2,64), (3,51.2). Which model fits best?',
+   ch:['Linear: y = −16x + 100','Quadratic: y = x² − 16x + 100','Exponential: y = 100(0.8)ˣ','None of the above'],c:2,
+   fb:'<strong>Desmos:</strong> Use Autoregression — enter table, compare R² values. Exponential decay (×0.8 each step) fits perfectly: 100 → 80 → 64 → 51.2.',
+   trap:'cas_illusion',trapAnswer:0,trapDesc:'Assumed linear because the first drop is −20 — CAS Illusion: the drop rate changes'},
 ];
-var satAns={};
-function renderSAT(){
-  document.getElementById('satQuestions').innerHTML=SAT_QS.map(function(q,i){var ans=satAns[i];var has=ans!==undefined;return '<div class="sat-q"><div class="ex-num">'+q.tier+' · Question '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="sat-choices">'+q.choices.map(function(ch,ci){var cls='sat-choice';if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}return '<div class="'+cls+'" onclick="satAns['+i+']='+ci+';renderSAT()"><div class="sc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="sat-fb'+(has?' show':'')+(has?(ans===q.correct?' sfb-correct':' sfb-wrong'):'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
-  var t=SAT_QS.length,a=Object.keys(satAns).length,c=0;Object.entries(satAns).forEach(function(p){if(parseInt(p[1])===SAT_QS[parseInt(p[0])].correct)c++;});
-  document.getElementById('satScore').innerHTML=a===t?'<strong style="color:'+(c>=7?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
+
+const TRAP_NAMES={'setup_trap':'⏱ Setup Trap','mental_math':'🧮 Mental Math Trap','cas_illusion':'🔍 CAS Illusion','intersection_misread':'🎯 Intersection Misread'};
+
+let pstA={},pstConf={},pstTime={},pstStartTime=null;
+let timerEnabled=false,timerInterval=null,timerSeconds=0;
+const SECS_PER_Q=95;let totalTimerSecs=PST.length*SECS_PER_Q; // 10 × 95 = 950s = 15:50
+
+function toggleTimer(){
+  timerEnabled=!timerEnabled;const btn=document.getElementById('timerToggle');
+  btn.textContent=timerEnabled?'⏱ Timer ON':'⏱ Timer OFF';btn.classList.toggle('active',timerEnabled);
+  if(!timerEnabled&&timerInterval){clearInterval(timerInterval);timerInterval=null;document.getElementById('timerDisplay').textContent='--:--';document.getElementById('timerFill').style.width='100%';}
+  else if(timerEnabled&&currentScreen===3){startTimer();}
 }
-renderSAT();
+function startTimer(){
+  if(timerInterval)clearInterval(timerInterval);timerSeconds=totalTimerSecs;updateTimerDisplay();
+  timerInterval=setInterval(()=>{timerSeconds--;updateTimerDisplay();if(timerSeconds<=0){clearInterval(timerInterval);timerInterval=null;}},1000);pstStartTime=Date.now();
+}
+function updateTimerDisplay(){
+  const disp=document.getElementById('timerDisplay'),fill=document.getElementById('timerFill');
+  const mins=Math.floor(timerSeconds/60),secs=timerSeconds%60;
+  disp.textContent=`${mins}:${secs.toString().padStart(2,'0')}`;
+  const pct=(timerSeconds/totalTimerSecs)*100;fill.style.width=pct+'%';
+  disp.className='timer-display';fill.className='timer-fill';
+  if(pct<15){disp.classList.add('danger');fill.classList.add('danger');}
+  else if(pct<35){disp.classList.add('warning');fill.classList.add('warning');}
+}
+
+function renderPST(){
+  const answered=Object.keys(pstA).length;
+  document.getElementById('qDots').innerHTML=PST.map((_,i)=>{let cls='q-dot';if(pstA[i]!==undefined)cls+=pstA[i]===PST[i].c?' correct':' wrong';return `<div class="${cls}"></div>`;}).join('');
+  document.getElementById('satPractice').innerHTML=PST.map((q,i)=>{
+    const a=pstA[i],h=a!==undefined;const conf=pstConf[i];
+    const tierLabel=q.t===1?'Easy':q.t===2?'Medium':'Hard';
+    const trapName=q.trap?TRAP_NAMES[q.trap]||'':'';
+    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}">
+      <div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="tier tier-${q.t}">${tierLabel}</span><span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span>
+        ${trapName&&h?`<span style="font-size:.72rem;color:var(--accent)">Trap: ${trapName}</span>`:''}
+      </div>
+      <div class="ex-prompt">${q.q}</div>
+      ${!h?`<div class="confidence-row">
+        <div class="conf-tag ${conf==='guessing'?'selected':''}" data-conf="guessing" onclick="setConf(${i},'guessing')">Guessing</div>
+        <div class="conf-tag ${conf==='unsure'?'selected':''}" data-conf="unsure" onclick="setConf(${i},'unsure')">Unsure</div>
+        <div class="conf-tag ${conf==='confident'?'selected':''}" data-conf="confident" onclick="setConf(${i},'confident')">Confident</div>
+      </div>`:`<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">Confidence: ${conf||'not tagged'}</div>`}
+      <div class="mc-choices">${q.ch.map((ch,ci)=>{let c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;}).join('')}</div>
+      <div class="mc-fb${h?' show':''}">${h?(a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb+(a!==q.c&&q.trapAnswer===a?'<br><span style="color:var(--psda)">⚠️ '+q.trapDesc+'</span>':''):''}</div>
+    </div>`;
+  }).join('');
+  if(answered===PST.length){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}document.getElementById('practiceNav').style.display='block';showPracticeResults();}
+}
+function setConf(i,level){if(pstA[i]!==undefined)return;pstConf[i]=level;renderPST();}
+function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;if(pstStartTime){pstTime[i]=Date.now()-pstStartTime;pstStartTime=Date.now();}renderPST();}
+
+function showPracticeResults(){
+  const total=PST.length,correct=Object.entries(pstA).filter(([i,v])=>v===PST[i].c).length;
+  const byDiff={1:{cor:0,tot:0},2:{cor:0,tot:0},3:{cor:0,tot:0}};
+  PST.forEach((q,i)=>{byDiff[q.t].tot++;if(pstA[i]===q.c)byDiff[q.t].cor++;});
+  const matrix={};['guessing','unsure','confident'].forEach(c=>{matrix[c]={correct:[],wrong:[]};});
+  PST.forEach((q,i)=>{const conf=pstConf[i]||'unsure';matrix[conf][pstA[i]===q.c?'correct':'wrong'].push(i);});
+  const errors={content_gap:[],trap_answer:[],careless:[],calibration:[]};
+  PST.forEach((q,i)=>{if(pstA[i]===q.c)return;const conf=pstConf[i]||'unsure';if(pstA[i]===q.trapAnswer)errors.trap_answer.push({i,desc:q.trapDesc,topic:q.tp});else errors.content_gap.push({i,topic:q.tp});if(conf==='confident'){if(q.t===1)errors.careless.push({i,topic:q.tp});errors.calibration.push({i,topic:q.tp});}});
+
+  let html=`<div class="results-section"><h3>📊 Practice Results: ${correct}/${total}</h3>
+    <div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Difficulty</div>
+    <div class="difficulty-bars">
+      <div class="diff-row"><span class="diff-label" style="color:var(--algebra)">Easy</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[1].tot?byDiff[1].cor/byDiff[1].tot*100:0}%;background:var(--algebra)"></div></div><span class="diff-val" style="color:var(--algebra)">${byDiff[1].cor}/${byDiff[1].tot}</span></div>
+      <div class="diff-row"><span class="diff-label" style="color:var(--math)">Medium</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[2].tot?byDiff[2].cor/byDiff[2].tot*100:0}%;background:var(--math)"></div></div><span class="diff-val" style="color:var(--math)">${byDiff[2].cor}/${byDiff[2].tot}</span></div>
+      <div class="diff-row"><span class="diff-label" style="color:var(--advanced)">Hard</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[3].tot?byDiff[3].cor/byDiff[3].tot*100:0}%;background:var(--advanced)"></div></div><span class="diff-val" style="color:var(--advanced)">${byDiff[3].cor}/${byDiff[3].tot}</span></div>
+    </div></div>`;
+  html+=`<div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Confidence × Accuracy Matrix</div>
+    <div class="results-grid">
+      <div class="results-grid-header"></div><div class="results-grid-header">Guessing</div><div class="results-grid-header">Unsure</div><div class="results-grid-header">Confident</div>
+      <div class="results-grid-header">✓ Correct</div>
+      <div class="results-grid-cell"><div class="cell-label">Lucky</div><div class="cell-dots">${matrix.guessing.correct.map(()=>'<div class="cell-dot" style="background:var(--psda)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.correct.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Developing</div><div class="cell-dots">${matrix.unsure.correct.map(()=>'<div class="cell-dot" style="background:var(--math)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.correct.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Solid</div><div class="cell-dots">${matrix.confident.correct.map(()=>'<div class="cell-dot" style="background:var(--correct)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.confident.correct.length}</div></div>
+      <div class="results-grid-header">✗ Wrong</div>
+      <div class="results-grid-cell"><div class="cell-label">Expected</div><div class="cell-dots">${matrix.guessing.wrong.map(()=>'<div class="cell-dot" style="background:var(--muted)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.wrong.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Needs work</div><div class="cell-dots">${matrix.unsure.wrong.map(()=>'<div class="cell-dot" style="background:var(--psda)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.wrong.length}</div></div>
+      <div class="results-grid-cell danger-cell"><div class="cell-label" style="color:var(--wrong);font-weight:700">⚠️ DANGER</div><div class="cell-dots">${matrix.confident.wrong.map(()=>'<div class="cell-dot" style="background:var(--wrong)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.confident.wrong.length}</div></div>
+    </div>
+    ${matrix.confident.wrong.length>0?'<div class="callout" style="border-color:var(--wrong);background:var(--wrong-bg)"><strong style="color:var(--wrong)">Confident + Wrong</strong> is the most dangerous category. These errors persist because you won\'t self-correct what you think you already know.</div>':''}
+  </div>`;
+  const hasErrors=errors.trap_answer.length+errors.content_gap.length>0;
+  if(hasErrors){
+    html+=`<div style="margin-bottom:16px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Error Pattern Analysis</div>`;
+    if(errors.trap_answer.length>0)html+=`<div class="error-category" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3)"><div class="error-label" style="color:var(--psda)">🟡 Trap Answers (${errors.trap_answer.length})</div><div class="error-items">${errors.trap_answer.map(e=>e.desc).join(' · ')}</div></div>`;
+    if(errors.content_gap.length>0)html+=`<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">🔴 Content Gaps (${errors.content_gap.length})</div><div class="error-items">Topics: ${[...new Set(errors.content_gap.map(e=>e.topic))].join(', ')}</div></div>`;
+    if(errors.careless.length>0)html+=`<div class="error-category" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)"><div class="error-label" style="color:var(--math)">🔵 Possible Careless Errors (${errors.careless.length})</div><div class="error-items">Confident + wrong on easy questions — likely arithmetic mistakes</div></div>`;
+    if(errors.calibration.length>0)html+=`<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">⚠️ Calibration Issues (${errors.calibration.length})</div><div class="error-items">You were confident but wrong — review these topics carefully</div></div>`;
+    html+=`</div>`;
+  }
+  html+=`</div>`;
+  document.getElementById('practiceResults').style.display='block';
+  document.getElementById('practiceResults').innerHTML=html;
+  document.getElementById('completePracticeStats').innerHTML=`
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:24px;max-width:500px;width:100%;text-align:left">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Practice Results</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--correct);margin-bottom:8px">${correct}/${total} correct</div>
+      <div style="font-size:.82rem;color:var(--muted)">Easy: ${byDiff[1].cor}/${byDiff[1].tot} · Medium: ${byDiff[2].cor}/${byDiff[2].tot} · Hard: ${byDiff[3].cor}/${byDiff[3].tot}</div>
+    </div>`;
+}
+renderPST();
 </script>
-<script src="/translate.js"></script></body>
+<script src="/translate.js"></script>
+</body>
 </html>

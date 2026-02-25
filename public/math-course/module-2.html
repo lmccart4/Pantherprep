@@ -3,89 +3,151 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module 2: Algebra — Linear Equations & Systems — SAT Math — PantherPrep</title>
+<title>Module 2: Algebra — SAT Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--purple:#a78bfa;--psda:#fbbf24}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--geotrig:#f87171;--geotrig-bg:rgba(248,113,113,.1);--des:#2bc4a9;--des-bg:rgba(43,196,169,.1);--strat:#f97316;--strat-bg:rgba(249,115,22,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--algebra));width:0%;transition:width .3s ease}
+
+/* ── Screen System ── */
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+/* ── Progress Dots ── */
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--algebra)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(200,16,46,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
+/* ── Container ── */
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+
+/* ── Welcome Screen ── */
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--algebra);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--algebra);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--algebra);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(52,211,153,.3)}
+
+/* ── Retrieval Warm-Up ── */
+.warmup-container{max-width:600px;margin:0 auto;padding:60px 20px}
+.warmup-header{text-align:center;margin-bottom:32px}
+.warmup-badge{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.warmup-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.warmup-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.warmup-dot.done-correct{background:var(--correct)}
+.warmup-dot.done-wrong{background:var(--wrong)}
+.warmup-dot.active{background:var(--accent);box-shadow:0 0 8px rgba(200,16,46,.4)}
+.warmup-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.warmup-q .source-tag{font-size:.7rem;color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.warmup-q .q-text{font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.warmup-choices{display:flex;flex-direction:column;gap:8px}
+.warmup-choice{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.warmup-choice:hover:not(.wu-dis){border-color:var(--accent);background:rgba(200,16,46,.05)}
+.warmup-choice.wu-correct{border-color:var(--correct);background:var(--correct-bg)}
+.warmup-choice.wu-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.warmup-choice.wu-dis{pointer-events:none;opacity:.7}
+.warmup-choice.wu-correct{opacity:1}
+.warmup-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:12px;padding:10px;background:var(--paper);border-radius:8px;border-left:3px solid var(--correct)}
+.warmup-next{padding:10px 24px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;margin-top:12px;font-family:'Source Sans 3',sans-serif}
+.warmup-next:hover{filter:brightness(1.1)}
+.warmup-summary{text-align:center;padding:40px 20px}
+.warmup-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:var(--accent);margin:12px 0}
+.warmup-continue{padding:12px 28px;background:var(--algebra);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:20px;font-family:'Source Sans 3',sans-serif}
+.warmup-continue:hover{filter:brightness(1.15)}
+
+/* ── Lesson Content ── */
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
-.mod-badge{display:inline-block;background:var(--algebra);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
+.mod-badge{display:inline-block;background:var(--algebra);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
 .mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
 .mod-header .subtitle{color:var(--muted);font-size:1rem}
 .mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
 .section{margin-bottom:36px}
-.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--algebra);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
 .card-accent{border-left:3px solid var(--accent)}
 .callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
 .callout strong{color:var(--accent)}
-.callout-green{background:var(--algebra-bg);border-color:rgba(52,211,153,.3)}
-.callout-green strong{color:var(--algebra)}
 .callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
 .callout-blue strong{color:var(--math)}
-code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
-.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:14px;overflow:hidden}
-.topic-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background .15s}
-.topic-header:hover{background:rgba(255,255,255,.03)}
-.topic-badge{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;flex-shrink:0}
-.topic-info{flex:1}.topic-title{font-weight:700;font-size:.98rem}.topic-sub{font-size:.82rem;color:var(--muted)}
-.topic-arrow{color:var(--muted);transition:transform .2s;font-size:1rem}
+.callout-green{background:var(--algebra-bg);border-color:rgba(52,211,153,.3)}
+.callout-green strong{color:var(--algebra)}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:all .2s}
+.topic-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer}
+.topic-header:hover{background:rgba(52,211,153,.05)}
+.topic-badge{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
+.topic-info{flex:1}
+.topic-title{font-weight:700;font-size:.95rem}
+.topic-sub{font-size:.82rem;color:var(--muted)}
+.topic-arrow{color:var(--muted);font-size:.9rem;transition:transform .2s;flex-shrink:0}
 .topic.open .topic-arrow{transform:rotate(90deg)}
-.topic-body{display:none;padding:0 20px 20px;font-size:.9rem;color:#ccc;line-height:1.7}
+.topic-body{display:none;padding:0 18px 18px;font-size:.93rem;color:#ccc;line-height:1.7}
 .topic.open .topic-body{display:block}
-.topic-body h4{color:var(--ink);margin:14px 0 6px;font-size:.95rem}
-.topic-body ul{padding-left:20px;margin-bottom:10px}.topic-body li{margin-bottom:4px}
-.formula-box{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:.88rem;line-height:1.8}
-.formula-box .fl{color:var(--math)}.formula-box .fn{color:var(--algebra)}
+.topic-body h4{color:var(--ink);font-size:.9rem;margin:14px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+.topic-body ul{padding-left:18px;margin-bottom:10px}
+.topic-body li{margin-bottom:6px}
+.formula-box{background:var(--paper);border:2px solid var(--algebra);border-radius:10px;padding:14px 18px;margin:10px 0 14px;font-family:'JetBrains Mono',monospace;font-size:.88rem;line-height:2}
+.formula-box .fn{color:var(--algebra);font-weight:700}
+.formula-box .fl{color:var(--math);font-weight:700}
 .exercise{background:var(--surface);border:2px solid var(--algebra);border-radius:14px;padding:22px;margin-bottom:16px}
-.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
-.exercise-sub{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;margin-bottom:4px}
+.exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
 .ex-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
-.ex-prompt{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
-.ex-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.ex-input{padding:7px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:.9rem;width:100px;text-align:center}
+.ex-prompt{font-size:.93rem;margin-bottom:10px;line-height:1.6;color:#ddd}
+.ex-prompt code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
+.ex-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ex-input{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:.95rem;width:120px}
 .ex-input:focus{border-color:var(--algebra);outline:none}
-.ex-btn{padding:7px 16px;background:var(--algebra);color:#000;border:none;border-radius:6px;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:opacity .15s}
-.ex-btn:hover{opacity:.85}
-.ex-fb{margin-top:8px;font-size:.82rem;line-height:1.4;display:none}
-.ex-fb.show{display:block}.ex-fb.correct{color:var(--correct)}.ex-fb.wrong{color:var(--wrong)}
-.mc-choices{display:flex;flex-direction:column;gap:7px;margin-top:8px}
-.mc-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:.88rem;transition:all .15s}
-.mc-choice:hover:not(.mc-dis){border-color:var(--accent);background:var(--accent-light)}
-.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg)}
-.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.mc-choice.mc-dis{pointer-events:none;opacity:.7}.mc-choice.mc-dis.mc-correct{opacity:1}
-.mc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
-.mc-choice.mc-correct .mc-letter{background:var(--correct);color:#fff}
-.mc-choice.mc-wrong .mc-letter{background:var(--wrong);color:#fff}
-.mc-fb{margin-top:8px;font-size:.82rem;line-height:1.4;display:none;color:var(--muted)}.mc-fb.show{display:block}
-.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ex-btn{padding:8px 16px;background:var(--algebra);color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600;transition:background .15s}
+.ex-btn:hover{background:#2ab585}
+.ex-fb{font-size:.85rem;padding:8px 12px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}
+.ex-fb.show{display:block}
+.ex-fb.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
+.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.tier{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:8px}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:rgba(167,139,250,.15);color:var(--advanced)}
+.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
 .classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
 .classify-opt:hover:not(.cl-dis){border-color:var(--algebra);background:var(--algebra-bg)}
 .classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
 .classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
-.classify-opt.cl-dis{pointer-events:none;opacity:.6}
-.score-bar{display:flex;align-items:center;gap:10px;padding:10px 0}
-.score-bar-label{font-size:.82rem;color:var(--muted)}
-.score-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.score-bar-fill{height:100%;background:var(--algebra);border-radius:4px;transition:width .3s}
-.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;min-width:40px;text-align:right}
-.tier{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:6px}
-.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}
-.tier-2{background:rgba(96,165,250,.15);color:var(--math)}
-.tier-3{background:rgba(167,139,250,.15);color:var(--purple)}
-/* TRAP SPOTTER */
+.classify-opt.cl-dis{pointer-events:none;opacity:.7}
+.mc-choices{display:flex;flex-direction:column;gap:6px}
+.mc-choice{padding:10px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s;display:flex;align-items:center;gap:10px}
+.mc-choice:hover:not(.mc-dis){border-color:var(--algebra);background:var(--algebra-bg)}
+.mc-letter{font-weight:700;color:var(--muted);min-width:24px;font-family:'JetBrains Mono',monospace}
+.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg)}
+.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:8px;display:none;border-left:3px solid var(--correct);background:var(--paper);padding:8px 12px;border-radius:6px}.mc-fb.show{display:block}
+.score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
 .trap-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
 .trap-q{font-size:.93rem;margin-bottom:10px;color:#ddd;line-height:1.6}
+.trap-q code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
 .trap-opts{display:flex;flex-wrap:wrap;gap:6px}
 .trap-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
 .trap-opt:hover:not(.t-dis){border-color:var(--accent);background:var(--accent-light)}
@@ -93,7 +155,6 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
 .trap-opt.t-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .trap-opt.t-dis{pointer-events:none;opacity:.7}
 .trap-fb{font-size:.82rem;margin-top:8px;display:none;line-height:1.4;color:var(--muted)}.trap-fb.show{display:block}
-/* WORD PROBLEM TRANSLATOR */
 .wpt-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .wpt-row:last-child{border-bottom:none}
 .wpt-phrase{font-size:.9rem;color:#ddd;min-width:180px;flex:1}
@@ -102,27 +163,150 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
 .wpt-select:focus{border-color:var(--algebra);outline:none}
 .wpt-select.wpt-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
 .wpt-select.wpt-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
-.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
-.btn:hover{background:#a00d24}
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.classify-opts{flex-direction:column}.ex-input-row{flex-direction:column;align-items:stretch}.wpt-row{flex-direction:column;align-items:flex-start;gap:6px}.trap-opts{flex-direction:column}}
+
+/* ── Trap Taxonomy ── */
+.trap-taxonomy{margin-bottom:24px}
+.trap-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:all .2s}
+.trap-card:hover{border-color:var(--accent);transform:translateX(3px)}
+.trap-number{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:#fff;flex-shrink:0}
+.trap-card-body{flex:1}
+.trap-card-name{font-weight:700;font-size:.92rem;margin-bottom:3px}
+.trap-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+.trap-card-example{font-size:.78rem;color:var(--math);font-family:'JetBrains Mono',monospace;margin-top:4px}
+
+/* ── Confidence Tags ── */
+.confidence-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.conf-tag{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;letter-spacing:.5px}
+.conf-tag:hover{border-color:var(--algebra)}
+.conf-tag.selected{border-color:var(--algebra);background:rgba(52,211,153,.12);color:var(--algebra)}
+.conf-tag[data-conf="guessing"].selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="unsure"].selected{border-color:var(--math);background:var(--math-bg);color:var(--math)}
+.conf-tag[data-conf="confident"].selected{border-color:var(--algebra);background:rgba(52,211,153,.12);color:var(--algebra)}
+
+/* ── Timed Practice ── */
+.timer-bar{position:sticky;top:8px;z-index:50;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--algebra);min-width:60px}
+.timer-display.warning{color:var(--psda)}
+.timer-display.danger{color:var(--wrong);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.timer-fill{height:100%;background:var(--algebra);transition:width 1s linear;border-radius:2px}
+.timer-fill.warning{background:var(--psda)}
+.timer-fill.danger{background:var(--wrong)}
+.timer-toggle{padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.75rem;color:var(--muted);cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600}
+.timer-toggle:hover{border-color:var(--accent);color:var(--ink)}
+.timer-toggle.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.q-dots{display:flex;gap:4px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.q-dot.correct{background:var(--correct)}
+.q-dot.wrong{background:var(--wrong)}
+
+/* ── Results ── */
+.results-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.results-section h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px;background:var(--border);border-radius:10px;overflow:hidden}
+.results-grid-header{background:var(--surface);padding:8px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.results-grid-cell{background:var(--paper);padding:10px 8px;text-align:center;font-size:.78rem;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.results-grid-cell.danger-cell{background:var(--danger-bg);border:1px solid rgba(239,68,68,.3)}
+.cell-label{font-size:.65rem;color:var(--muted);font-weight:600}
+.cell-dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.cell-dot{width:8px;height:8px;border-radius:50%}
+.difficulty-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.diff-row{display:flex;align-items:center;gap:10px}
+.diff-label{font-size:.78rem;font-weight:600;min-width:60px}
+.diff-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.diff-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.diff-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;min-width:40px;text-align:right}
+.error-category{padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:.85rem;line-height:1.6}
+.error-category .error-label{font-weight:700;margin-bottom:4px}
+.error-category .error-items{color:var(--muted);font-size:.82rem}
+
+/* ── Module Complete ── */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--algebra);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
+
+@media(max-width:600px){
+  .mod-meta{flex-wrap:wrap;gap:10px}
+  .classify-opts,.trap-opts{gap:4px}
+  .preview-grid{grid-template-columns:1fr 1fr}
+  .welcome-meta{flex-wrap:wrap;gap:12px}
+  .results-grid{grid-template-columns:1fr;gap:1px}
+  .nav-cards{grid-template-columns:1fr}
+  .timer-bar{flex-wrap:wrap;gap:8px}
+  .wpt-row{flex-direction:column;align-items:flex-start;gap:6px}
+}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="screen-progress" id="screenProgress"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 1: WELCOME                             -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 2</div>
+    <h1>Algebra: Linear Equations & Systems</h1>
+    <p class="welcome-sub">The single highest-impact domain on the SAT. Master this and you've conquered ~35% of the test.</p>
+    <div class="welcome-meta">
+      <span>⏱ 2-3 sessions</span>
+      <span>📋 4 topics</span>
+      <span>🔨 6 exercises</span>
+      <span>🎯 10 practice Qs</span>
+    </div>
+    <div class="preview-grid">
+      <div class="preview-card"><div class="preview-icon">🔄</div><div class="preview-title">Retrieval Warm-Up</div><div class="preview-desc">5 questions from Module 1 to activate prior knowledge</div></div>
+      <div class="preview-card"><div class="preview-icon">📐</div><div class="preview-title">4 Core Topics</div><div class="preview-desc">Linear equations, two-variable, systems, inequalities</div></div>
+      <div class="preview-card"><div class="preview-icon">🎯</div><div class="preview-title">Trap Taxonomy</div><div class="preview-desc">6 named traps that recur throughout the SAT</div></div>
+      <div class="preview-card"><div class="preview-icon">🧮</div><div class="preview-title">6 Exercises</div><div class="preview-desc">Solve, classify, spot traps, translate word problems</div></div>
+      <div class="preview-card"><div class="preview-icon">⏱</div><div class="preview-title">Timed Practice</div><div class="preview-desc">10 SAT-style questions with optional timer</div></div>
+      <div class="preview-card"><div class="preview-icon">📊</div><div class="preview-title">Error Analysis</div><div class="preview-desc">Difficulty breakdown + confidence matrix + trap patterns</div></div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 2: RETRIEVAL WARM-UP                   -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-warmup">
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <div class="warmup-badge">Retrieval Warm-Up</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem">Module 1 Review</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:4px">Quick recall from what you learned last time.</p>
+      <div class="warmup-dots" id="warmupDots"></div>
+    </div>
+    <div id="warmupContent"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 3: LESSON CONTENT                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-lesson">
 <div class="container">
-<a class="back-link" href="index.html">← Back to Math Course</a>
+<a class="back-link" href="index.html">← Back to SAT Math Course</a>
 <div class="mod-header">
   <div class="mod-badge">Module 2</div>
   <h1>Algebra — Linear Equations & Systems</h1>
   <p class="subtitle">The single highest-impact domain on the SAT. Master this and you've conquered ~35% of the test.</p>
-  <div class="mod-meta"><span>⏱ 2–3 sessions</span><span>📋 4 topics</span><span>🔨 Phase 2: Build</span></div>
+  <div class="mod-meta"><span>⏱ 2-3 sessions</span><span>📋 4 topics</span><span>🔨 Phase 2: Build</span></div>
 </div>
 
-<div class="callout-green callout"><strong>High-Impact Domain:</strong> Algebra accounts for 13–15 questions (~35% of the test). Mastering linear equations and systems alone can be worth 60–80 points on your score.</div>
+<div class="callout-green callout"><strong>High-Impact Domain:</strong> Algebra accounts for 13-15 questions (~35% of the test). Mastering linear equations and systems alone can be worth 60-80 points on your score.</div>
 
 <!-- TOPIC 2A -->
 <div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
@@ -136,15 +320,15 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
     <ul>
       <li><strong>Solving one-variable equations:</strong> Isolate the variable using inverse operations. Whatever you do to one side, do to the other.</li>
       <li><strong>Number of solutions:</strong> One solution (normal), no solution (contradiction like 3 = 5), infinitely many (identity like 2x = 2x)</li>
-      <li><strong>Word problem translation:</strong> "is" → =, "more than" → +, "less than" → −, "per" → ÷, "of" → ×</li>
+      <li><strong>Word problem translation:</strong> "is" → =, "more than" → +, "less than" → −, "per" → ÷ or ×, "of" → ×</li>
       <li><strong>Absolute value:</strong> |ax + b| = c produces TWO cases: ax + b = c AND ax + b = −c</li>
       <li><strong>Interpreting in context:</strong> In C = 50 + 0.15m, the 50 is the flat fee and 0.15 is the per-mile rate</li>
     </ul>
     <div class="formula-box">
-      <div><span class="fn">Solve:</span> Combine like terms → isolate variable → check</div>
+      <div><span class="fn">Solve:</span> Distribute → combine like terms → isolate variable → check</div>
       <div><span class="fn">No solution:</span> Variables cancel, leaves false statement (e.g., 0 = 5)</div>
       <div><span class="fn">Infinite solutions:</span> Variables cancel, leaves true statement (e.g., 0 = 0)</div>
-      <div><span class="fn">Absolute value:</span> |expression| = k → two equations</div>
+      <div><span class="fn">Absolute value:</span> |expression| = k → two equations (k must be ≥ 0)</div>
     </div>
     <div class="callout"><strong>SAT Trap #1:</strong> The question asks for the value of <em>3x + 2</em>, not x. Always re-read exactly what's being asked <strong>before</strong> you start solving. Circle it.</div>
     <div class="callout-blue callout"><strong>SAT Trap #2:</strong> Questions about "number of solutions" are common. When you simplify and the variables disappear, check: is the remaining statement true or false?</div>
@@ -166,15 +350,15 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
       <div><span class="fl">Point-Slope:</span> y − y₁ = m(x − x₁)</div>
       <div style="color:var(--muted);font-size:.82rem;margin-bottom:6px">Use when given a point and slope</div>
       <div><span class="fl">Standard Form:</span> Ax + By = C</div>
-      <div style="color:var(--muted);font-size:.82rem">Useful for finding intercepts (set x=0 or y=0) and systems</div>
+      <div style="color:var(--muted);font-size:.82rem">Useful for finding intercepts (set x=0 or y=0) and for systems</div>
     </div>
     <h4>Slope</h4>
     <ul>
-      <li><strong>Formula:</strong> m = (y₂ − y₁) / (x₂ − x₁)</li>
+      <li><strong>Formula:</strong> m = (y₂ − y₁) / (x₂ − x₁) — rise over run</li>
       <li><strong>Positive slope:</strong> line goes up left to right</li>
       <li><strong>Negative slope:</strong> line goes down left to right</li>
-      <li><strong>Zero slope:</strong> horizontal line</li>
-      <li><strong>Undefined slope:</strong> vertical line</li>
+      <li><strong>Zero slope:</strong> horizontal line (y = constant)</li>
+      <li><strong>Undefined slope:</strong> vertical line (x = constant)</li>
     </ul>
     <h4>Special Relationships</h4>
     <ul>
@@ -193,10 +377,11 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
     <div class="topic-arrow">▸</div>
   </div>
   <div class="topic-body">
-    <h4>Two Methods</h4>
+    <h4>Three Methods</h4>
     <ul>
-      <li><strong>Substitution:</strong> Solve one equation for a variable, plug into the other. Best when one variable is already isolated.</li>
+      <li><strong>Substitution:</strong> Solve one equation for a variable, plug into the other. Best when one variable is already isolated (e.g., y = 3x + 1).</li>
       <li><strong>Elimination:</strong> Add or subtract equations to cancel a variable. Best when coefficients are easy to align.</li>
+      <li><strong>Graphing (Desmos):</strong> Graph both equations, click the intersection point. Often the fastest method on the SAT.</li>
     </ul>
     <h4>Number of Solutions</h4>
     <div class="formula-box">
@@ -210,7 +395,7 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
       <li><strong>Cost comparison:</strong> Set two cost expressions equal to find break-even</li>
       <li><strong>Rate problems:</strong> distance = rate × time for each part</li>
     </ul>
-    <div class="callout-blue callout"><strong>Desmos Power Move:</strong> Graph both equations and click the intersection point. This is the fastest method for many systems — especially on the SAT where speed matters.</div>
+    <div class="callout-blue callout"><strong>Desmos Power Move:</strong> Graph both equations and click the intersection point. This is often the fastest method for systems on the SAT — especially when the algebra looks messy.</div>
     <div class="callout"><strong>Quick Check for Number of Solutions:</strong> If you can multiply one entire equation by a constant and get the other equation, there are infinite solutions. If you can make the left sides identical but the right sides differ, there's no solution.</div>
   </div>
 </div>
@@ -223,8 +408,8 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
     <div class="topic-arrow">▸</div>
   </div>
   <div class="topic-body">
-    <h4>Key Rule</h4>
-    <div class="callout"><strong>When you multiply or divide by a NEGATIVE number, FLIP the inequality sign.</strong> This is the #1 most-tested inequality rule on the SAT.</div>
+    <h4>The One Rule That Changes Everything</h4>
+    <div class="callout"><strong>When you multiply or divide by a NEGATIVE number, FLIP the inequality sign.</strong> This is the #1 most-tested inequality rule on the SAT. Everything else works exactly like equations.</div>
     <h4>Graphing</h4>
     <ul>
       <li><strong>Number line:</strong> Open circle for &lt; or &gt; (not included), closed circle for ≤ or ≥ (included)</li>
@@ -236,156 +421,265 @@ code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-rad
       <li><strong>"and"</strong> = intersection (both true) — narrower solution</li>
       <li><strong>"or"</strong> = union (either true) — wider solution</li>
     </ul>
-    <div class="callout-blue callout"><strong>Desmos Power Move:</strong> Type any inequality directly (like y &gt; 2x + 1) and Desmos automatically shades the solution region. For systems, enter multiple inequalities — the overlap is your answer.</div>
+    <div class="callout-blue callout"><strong>Desmos Power Move:</strong> Type any inequality directly (like y &gt; 2x + 1) and Desmos automatically shades the solution region. For systems of inequalities, enter multiple — the overlap is your answer.</div>
   </div>
 </div>
 
-<!-- EXERCISE 1: EQUATION SOLVER -->
+<!-- ── Trap Taxonomy ── -->
 <div class="section">
-  <div class="section-label">Interactive Exercise 1</div>
-  <h2>Equation Solver Practice</h2>
-  <p>Solve each equation for x. Type your answer and check it.</p>
-  <div class="exercise" id="solverEx"></div>
+  <div class="section-label">Math Trap Taxonomy</div>
+  <h2>Six Traps That Recur Throughout the SAT</h2>
+  <p>Learn these by name. When you spot one in a problem, you'll know exactly what to watch for.</p>
+  <div class="trap-taxonomy">
+    <div class="trap-card"><div class="trap-number" style="background:var(--wrong)">1</div><div class="trap-card-body"><div class="trap-card-name">🎯 The Wrong Target</div><div class="trap-card-desc">Solved for x when they asked for 2x + 1. Always underline exactly what the question asks for.</div><div class="trap-card-example">Asked: "What is x + 4?" You solved: x = 6, picked 6. Answer: 10</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--psda)">2</div><div class="trap-card-body"><div class="trap-card-name">🔄 The Sign Flip</div><div class="trap-card-desc">Forgot to flip the inequality sign when multiplying or dividing by a negative number.</div><div class="trap-card-example">−3x > 12 → x < −4 (not x > −4)</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--math)">3</div><div class="trap-card-body"><div class="trap-card-name">👻 The Distribution Ghost</div><div class="trap-card-desc">Forgot to distribute to ALL terms inside parentheses.</div><div class="trap-card-example">−2(3x − 5) = −6x + 10 (not −6x − 5)</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--advanced)">4</div><div class="trap-card-body"><div class="trap-card-name">🎭 The Imposter Subject</div><div class="trap-card-desc">Used the wrong variable or misidentified what the problem asks you to solve for.</div><div class="trap-card-example">System asks for y but you solved for x and stopped.</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--geotrig)">5</div><div class="trap-card-body"><div class="trap-card-name">🔀 The One-Case Trap</div><div class="trap-card-desc">Only solved one branch of an absolute value equation. |x| = 5 means x = 5 OR x = −5.</div><div class="trap-card-example">|x − 3| = 7 → x = 10 AND x = −4 (two answers)</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--accent)">6</div><div class="trap-card-body"><div class="trap-card-name">🌀 The Percent Spiral</div><div class="trap-card-desc">Applied successive percentages to the original value instead of the new value.</div><div class="trap-card-example">$100 + 10% − 10% ≠ $100. It's $110 → $99.</div></div></div>
+  </div>
 </div>
 
-<!-- EXERCISE 2: SLOPE & FORM IDENTIFICATION -->
-<div class="section">
-  <div class="section-label">Interactive Exercise 2</div>
-  <h2>Identify the Form</h2>
-  <p>For each equation, identify whether it's in slope-intercept, point-slope, or standard form.</p>
-  <div class="exercise" id="formEx"></div>
+<!-- EXERCISES -->
+<div class="section"><div class="section-label">Interactive Exercise 1</div><h2>Equation Solver Practice</h2><p>Solve each equation. Type your answer and check it. Watch for the trap on #6!</p><div class="exercise" id="solverEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 2</div><h2>Identify the Form</h2><p>For each equation, click whether it's in slope-intercept, point-slope, or standard form.</p><div class="exercise" id="formEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 3</div><h2>System of Equations Classifier</h2><p>For each system, determine: one solution, no solution, or infinitely many?</p><div class="exercise" id="systemEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 4</div><h2>Inequality Challenge</h2><p>Solve each inequality. Pay attention to when you need to flip the sign!</p><div class="exercise" id="ineqEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 5</div><h2>Trap Spotter</h2><p>Each problem below contains a common SAT trap. Before solving, identify what the trap is. Learning to <em>see</em> traps before they catch you is one of the highest-value skills you can develop — over 35% of SAT math errors are preventable misreads and traps.</p><div class="exercise" style="border-color:var(--accent)" id="trapEx"></div></div>
+<div class="section"><div class="section-label">Interactive Exercise 6</div><h2>Word Problem Translator</h2><p>Match each English phrase to its mathematical symbol. This skill is essential for converting SAT word problems into equations you can solve.</p><div class="exercise" style="border-color:var(--psda)" id="wptEx"></div></div>
+
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(3)">Continue to Practice Questions →</button>
+</div>
+</div>
 </div>
 
-<!-- EXERCISE 3: SYSTEM CLASSIFIER -->
-<div class="section">
-  <div class="section-label">Interactive Exercise 3</div>
-  <h2>System of Equations Classifier</h2>
-  <p>For each system, determine: does it have one solution, no solution, or infinitely many solutions?</p>
-  <div class="exercise" id="systemEx"></div>
-</div>
-
-<!-- EXERCISE 4: INEQUALITY SIGN FLIPPER -->
-<div class="section">
-  <div class="section-label">Interactive Exercise 4</div>
-  <h2>Inequality Challenge</h2>
-  <p>Solve each inequality. Pay attention to when you need to flip the sign!</p>
-  <div class="exercise" id="ineqEx"></div>
-</div>
-
-<!-- EXERCISE 5: TRAP SPOTTER -->
-<div class="section">
-  <div class="section-label">Interactive Exercise 5</div>
-  <h2>Trap Spotter</h2>
-  <p>Each problem below contains a common SAT trap. Before solving, identify what the trap is. Learning to <em>see</em> traps before they catch you is one of the highest-value skills you can develop — over 35% of SAT math errors are preventable misreads and traps.</p>
-  <div class="exercise" style="border-color:var(--accent)" id="trapEx"></div>
-</div>
-
-<!-- EXERCISE 6: WORD PROBLEM TRANSLATOR -->
-<div class="section">
-  <div class="section-label">Interactive Exercise 6</div>
-  <h2>Word Problem Translator</h2>
-  <p>Match each English phrase to its mathematical symbol. This skill is essential for converting SAT word problems into equations you can solve.</p>
-  <div class="exercise" style="border-color:var(--psda)" id="wptEx"></div>
-</div>
-
-<!-- SAT-STYLE PRACTICE -->
-<div class="section">
-  <div class="section-label">SAT-Style Practice</div>
-  <h2>Practice Questions</h2>
-  <p>10 questions at three difficulty tiers. Every question comes with a full worked explanation.</p>
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 4: TIMED PRACTICE                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-practice">
+<div class="container">
+  <div class="section-label">SAT Practice</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:4px">Practice Questions</h2>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px">10 questions at three difficulty tiers. Tag your confidence before answering.</p>
+  <div class="timer-bar" id="timerBar">
+    <div class="timer-display" id="timerDisplay">--:--</div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="q-dots" id="qDots"></div>
+    <button class="timer-toggle" id="timerToggle" onclick="toggleTimer()">⏱ Timer OFF</button>
+  </div>
   <div id="satPractice"></div>
-</div>
-
-<!-- KEY TAKEAWAYS -->
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>Algebra is ~35% of the test — the single largest domain. Time here pays off the most.</li>
-      <li>Know all three forms of linear equations: slope-intercept (y = mx + b), point-slope (y − y₁ = m(x − x₁)), standard (Ax + By = C).</li>
-      <li>Parallel lines = same slope. Perpendicular lines = negative reciprocal slopes.</li>
-      <li>Systems: substitution when a variable is isolated, elimination when coefficients align, Desmos for speed.</li>
-      <li>When variables cancel in a system: true statement = infinite solutions, false statement = no solution.</li>
-      <li>Inequalities: FLIP the sign when multiplying/dividing by a negative.</li>
-      <li><strong>Always re-read what the question is actually asking for</strong> before choosing your answer — the #1 algebra trap on the SAT.</li>
-      <li>Desmos graphs inequalities with shading automatically — use it for systems of inequalities.</li>
-    </ol>
+  <div id="practiceResults" style="display:none"></div>
+  <div id="practiceNav" style="display:none;text-align:center;padding:24px 0">
+    <button class="start-btn" onclick="goScreen(4)">View Summary & Complete Module →</button>
   </div>
 </div>
-
-<div class="mod-nav">
-  <a href="module-1.html">← Module 1: Diagnostic</a>
-  <a href="module-3.html">Module 3: Quadratics →</a>
 </div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SCREEN 5: MODULE COMPLETE                     -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎉</div>
+    <h1>Module 2 Complete!</h1>
+    <p class="complete-sub">You've conquered Algebra — the largest domain on the SAT.</p>
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--algebra);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Algebra is ~35% of the SAT — the single largest domain. Time invested here pays off the most.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Know all three forms of linear equations: slope-intercept (y = mx + b), point-slope (y − y₁ = m(x − x₁)), standard (Ax + By = C).</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Parallel lines = same slope. Perpendicular lines = negative reciprocal slopes.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Systems: substitution when a variable is isolated, elimination when coefficients align, Desmos for speed.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> When variables cancel in a system: true statement = infinite solutions, false statement = no solution.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Inequalities: FLIP the sign when multiplying/dividing by a negative.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Always re-read what the question is actually asking for before choosing your answer — the #1 algebra trap on the SAT.</div>
+    </div>
+    <div id="completePracticeStats"></div>
+    <div class="nav-cards">
+      <a class="nav-card" href="module-1.html"><div class="nav-card-label">← Previous</div><div class="nav-card-title">Module 1: Diagnostic & Orientation</div></a>
+      <a class="nav-card" href="module-3.html" style="border-color:var(--algebra)"><div class="nav-card-label">Next →</div><div class="nav-card-title">Module 3: Quadratics & Polynomials</div></a>
+    </div>
+  </div>
 </div>
 
 <script>
-// ============ PROGRESS BAR ============
-window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;var pct=h>0?(window.scrollY/h)*100:0;document.getElementById('progressFill').style.width=pct+'%';});
+// ════════════════════════════════════════════════
+// SCREEN NAVIGATION SYSTEM
+// ════════════════════════════════════════════════
+var SCREENS = ['screen-welcome','screen-warmup','screen-lesson','screen-practice','screen-complete'];
+var currentScreen = 0;
 
-// ============ EXERCISE 1: EQUATION SOLVER ============
+function goScreen(idx) {
+  if (idx < 0 || idx >= SCREENS.length) return;
+  var cur = document.getElementById(SCREENS[currentScreen]);
+  var nxt = document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');
+  cur.classList.add('fade-out');
+  setTimeout(function() {
+    cur.classList.remove('active','fade-out');
+    nxt.classList.add('active','fade-in');
+    currentScreen = idx;
+    updateProgressDots();
+    window.scrollTo(0, 0);
+    if (idx === 3 && timerEnabled) startTimer();
+  }, 300);
+}
+
+function updateProgressDots() {
+  var labels = ['Welcome','Warm-Up','Lesson','Practice','Complete'];
+  document.getElementById('screenProgress').innerHTML = SCREENS.map(function(s, i) {
+    var cls = 'screen-dot';
+    if (i < currentScreen) cls += ' completed';
+    if (i === currentScreen) cls += ' current';
+    return '<div class="' + cls + '" onclick="' + (i <= currentScreen ? 'goScreen('+i+')' : '') + '" title="' + labels[i] + '"></div>';
+  }).join('');
+}
+updateProgressDots();
+
+// ════════════════════════════════════════════════
+// RETRIEVAL WARM-UP (Module 1 content)
+// ════════════════════════════════════════════════
+var WARMUP_QS = [
+  {source:'Module 1 — Test Structure', q:'How many modules does each SAT Math section have?',
+   ch:['1 module','2 modules (22 questions each)','3 modules','4 modules'], c:1,
+   fb:'Each SAT Math section has 2 adaptive modules with 22 questions each. Your Module 1 performance determines whether you get a harder or easier Module 2.'},
+  {source:'Module 1 — Adaptivity', q:'What determines whether you get a harder or easier Module 2?',
+   ch:['Random assignment','Module 1 performance','Your registration preferences','The test proctor'], c:1,
+   fb:'The SAT is adaptive at the module level. A strong Module 1 performance routes you to a harder Module 2 with a higher scoring ceiling.'},
+  {source:'Module 1 — Domains', q:'Which of these is NOT one of the four SAT Math domains?',
+   ch:['Algebra','Advanced Math','Problem-Solving & Data Analysis','Statistics & Modeling'], c:3,
+   fb:'The four SAT Math domains are: Algebra, Advanced Math, Problem-Solving & Data Analysis, and Geometry & Trigonometry. "Statistics & Modeling" is not a separate domain.'},
+  {source:'Module 1 — Strategy', q:'The SAT has no penalty for wrong answers. What is the best strategy for unanswered questions?',
+   ch:['Leave them blank','Always guess','Only guess if you can eliminate one choice','Skip and come back later'], c:1,
+   fb:'With no penalty for wrong answers, you should always guess on any question you cannot answer. A blank answer has a 0% chance; a random guess has a 25% chance.'},
+  {source:'Module 1 — Error Types', q:'Classifying an error as "solving correctly but answering what wasn\'t asked" is which error type?',
+   ch:['Computation error','Content gap','Misread/Trap','Time management'], c:2,
+   fb:'When you solve correctly but answer the wrong question (e.g., finding x when they asked for 2x + 1), that is a Misread/Trap error — the most preventable kind.'}
+];
+
+var warmupIdx = 0, warmupAnswers = [], warmupAnswered = false;
+
+function renderWarmup() {
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map(function(_, i) {
+    var cls = 'warmup-dot';
+    if (i < warmupIdx) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    if (i === warmupIdx && warmupIdx < WARMUP_QS.length) cls += ' active';
+    return '<div class="' + cls + '"></div>';
+  }).join('');
+  var cont = document.getElementById('warmupContent');
+  if (warmupIdx >= WARMUP_QS.length) {
+    var cor = warmupAnswers.filter(Boolean).length;
+    var msg = cor === 5 ? 'Perfect recall! Module 1 knowledge is locked in.' : cor >= 3 ? 'Good recall! A couple topics to revisit.' : 'Some gaps from Module 1 — consider a quick review.';
+    cont.innerHTML = '<div class="warmup-summary"><div class="warmup-badge">Warm-Up Complete</div><div class="warmup-score">' + cor + ' / ' + WARMUP_QS.length + '</div><p style="color:var(--muted);font-size:.9rem;margin-bottom:8px">' + msg + '</p><button class="warmup-continue" onclick="goScreen(2)">Continue to Lesson →</button></div>';
+    return;
+  }
+  var q = WARMUP_QS[warmupIdx];
+  warmupAnswered = false;
+  cont.innerHTML = '<div class="warmup-q"><div class="source-tag">From ' + q.source + '</div><div class="q-text">' + q.q + '</div><div class="warmup-choices" id="warmupChoices">' + q.ch.map(function(ch, ci) { return '<div class="warmup-choice" onclick="answerWarmup(' + ci + ')">' + ch + '</div>'; }).join('') + '</div><div id="warmupFb" style="display:none"></div></div>';
+}
+
+function answerWarmup(ci) {
+  if (warmupAnswered) return;
+  warmupAnswered = true;
+  var q = WARMUP_QS[warmupIdx], correct = ci === q.c;
+  warmupAnswers.push(correct);
+  var choices = document.querySelectorAll('.warmup-choice');
+  for (var k = 0; k < choices.length; k++) {
+    choices[k].classList.add('wu-dis');
+    if (k === q.c) choices[k].classList.add('wu-correct');
+    else if (k === ci && !correct) choices[k].classList.add('wu-wrong');
+  }
+  var fb = document.getElementById('warmupFb');
+  fb.style.display = 'block';
+  fb.innerHTML = '<div class="warmup-fb">' + (correct ? '✓ ' : '✗ ') + q.fb + '</div><button class="warmup-next" onclick="warmupIdx++;renderWarmup()">' + (warmupIdx < WARMUP_QS.length - 1 ? 'Next Question →' : 'See Results →') + '</button>';
+  document.getElementById('warmupDots').innerHTML = WARMUP_QS.map(function(_, i) {
+    var cls = 'warmup-dot';
+    if (i < warmupAnswers.length) cls += warmupAnswers[i] ? ' done-correct' : ' done-wrong';
+    else if (i === warmupIdx + 1) cls += ' active';
+    return '<div class="' + cls + '"></div>';
+  }).join('');
+}
+renderWarmup();
+
+// ════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════
+function mkScore(id, correct, total) {
+  return '<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:' + (total ? correct/total*100 : 0) + '%"></div></div><div class="score-bar-val">' + correct + '/' + total + '</div></div>';
+}
+
+// ════════════════════════════════════════════════
+// EXERCISE 1: EQUATION SOLVER
+// ════════════════════════════════════════════════
 var SOLVER_QS=[
   {prompt:'Solve for x: <code>3x + 7 = 22</code>',answer:5,solution:'3x + 7 = 22 → 3x = 15 → x = 5',tier:1},
   {prompt:'Solve for x: <code>2(x − 4) = 3x + 6</code>',answer:-14,solution:'2x − 8 = 3x + 6 → −8 − 6 = 3x − 2x → x = −14',tier:1},
   {prompt:'Solve for x: <code>5x − 3 = 2x + 12</code>',answer:5,solution:'5x − 2x = 12 + 3 → 3x = 15 → x = 5',tier:1},
-  {prompt:'Solve for x: <code>(2/3)x + 4 = 10</code>',answer:9,solution:'(2/3)x = 6 → x = 6 × (3/2) → x = 9',tier:2},
+  {prompt:'Solve for x: <code>(2/3)x + 4 = 10</code>',answer:9,solution:'(2/3)x = 6 → x = 6 × (3/2) = 9',tier:2},
   {prompt:'Solve for x: <code>4(x + 1) − 2(x − 3) = 20</code>',answer:5,solution:'4x + 4 − 2x + 6 = 20 → 2x + 10 = 20 → 2x = 10 → x = 5',tier:2},
   {prompt:'A phone plan charges $30/month plus $0.10 per text. If the total cost is $52.50, how many texts were sent?',answer:225,solution:'30 + 0.10t = 52.50 → 0.10t = 22.50 → t = 225',tier:2},
 ];
 function renderSolver(){
-  document.getElementById('solverEx').innerHTML='<h3>🧮 Solve for x</h3><div class="exercise-sub">Type the value of x (or the answer). Use negative sign for negatives.</div>'+SOLVER_QS.map(function(q,i){return '<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-'+q.tier+'">Tier '+q.tier+'</span></div><div class="ex-prompt">'+q.prompt+'</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">x =</span><input class="ex-input" type="number" step="any" id="sol'+i+'" placeholder="?"><button class="ex-btn" onclick="checkSolver('+i+')">Check</button></div><div class="ex-fb" id="solFb'+i+'"></div></div>';}).join('');
+  document.getElementById('solverEx').innerHTML='<h3>🧮 Solve for x</h3><div class="exercise-sub">Type the value of x (or the answer). Use negative sign for negatives.</div>'+SOLVER_QS.map(function(q,i){return '<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-'+q.tier+'">'+(q.tier===1?'Easy':'Medium')+'</span></div><div class="ex-prompt">'+q.prompt+'</div><div class="ex-input-row"><span style="font-size:.85rem;color:var(--muted)">x =</span><input class="ex-input" type="number" step="any" id="sol'+i+'" placeholder="?"><button class="ex-btn" onclick="checkSolver('+i+')">Check</button></div><div class="ex-fb" id="solFb'+i+'"></div></div>';}).join('');
 }
 function checkSolver(i){var val=parseFloat(document.getElementById('sol'+i).value);var fb=document.getElementById('solFb'+i);var q=SOLVER_QS[i];if(isNaN(val)){fb.className='ex-fb show wrong';fb.textContent='Enter a number.';return;}if(Math.abs(val-q.answer)<0.01){fb.className='ex-fb show correct';fb.textContent='✓ Correct! '+q.solution;}else{fb.className='ex-fb show wrong';fb.textContent='✗ Not quite. '+q.solution;}}
 renderSolver();
 
-// ============ EXERCISE 2: FORM IDENTIFICATION ============
+// ════════════════════════════════════════════════
+// EXERCISE 2: FORM IDENTIFICATION
+// ════════════════════════════════════════════════
 var FORM_QS=[
   {eq:'y = 3x − 7',correct:'Slope-Intercept',fb:'y = mx + b format. m = 3, b = −7.'},
   {eq:'y − 5 = 2(x − 1)',correct:'Point-Slope',fb:'y − y₁ = m(x − x₁) format. Point (1, 5), slope 2.'},
   {eq:'4x + 3y = 24',correct:'Standard',fb:'Ax + By = C format. A = 4, B = 3, C = 24.'},
   {eq:'y = −½x + 9',correct:'Slope-Intercept',fb:'y = mx + b format. m = −½, b = 9.'},
-  {eq:'y − 3 = −4(x + 2)',correct:'Point-Slope',fb:'y − y₁ = m(x − x₁) format. Point (−2, 3), slope −4.'},
+  {eq:'y − 3 = −4(x + 2)',correct:'Point-Slope',fb:'y − y₁ = m(x − x₁). Point (−2, 3), slope −4. Note: (x + 2) = (x − (−2)).'},
   {eq:'7x − 2y = 14',correct:'Standard',fb:'Ax + By = C format. A = 7, B = −2, C = 14.'},
 ];
 var FORMS=['Slope-Intercept','Point-Slope','Standard'];var formAns={};
-function renderForms(){var total=FORM_QS.length;var correct=0;Object.entries(formAns).forEach(function(p){if(p[1]===FORM_QS[parseInt(p[0])].correct)correct++;});
-  document.getElementById('formEx').innerHTML='<h3>📐 Name That Form</h3><div class="exercise-sub">Click the correct form for each equation.</div>'+FORM_QS.map(function(q,i){var a=formAns[i];var has=a!==undefined;return '<div class="ex-item"><div class="ex-prompt" style="font-family:\'JetBrains Mono\',monospace;color:var(--math)">'+q.eq+'</div><div class="classify-opts">'+FORMS.map(function(f){var cls='classify-opt';if(has){cls+=' cl-dis';if(f===q.correct)cls+=' cl-correct';else if(f===a&&f!==q.correct)cls+=' cl-wrong';}return '<div class="'+cls+'" onclick="ansForm('+i+',\''+f+'\')">'+f+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+(has?(a===q.correct?' correct':' wrong'):'')+'">'+(has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('')+'<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(total?correct/total*100:0)+'%"></div></div><div class="score-bar-val">'+correct+'/'+total+'</div></div>';
+function renderForms(){var total=FORM_QS.length;var correct=0;Object.keys(formAns).forEach(function(i){if(formAns[i]===FORM_QS[parseInt(i)].correct)correct++;});
+  document.getElementById('formEx').innerHTML='<h3>📐 Name That Form</h3><div class="exercise-sub">Click the correct form for each equation.</div>'+FORM_QS.map(function(q,i){var a=formAns[i];var has=a!==undefined;return '<div class="ex-item"><div class="ex-prompt" style="font-family:\'JetBrains Mono\',monospace;color:var(--math)">'+q.eq+'</div><div class="classify-opts">'+FORMS.map(function(f){var cls='classify-opt';if(has){cls+=' cl-dis';if(f===q.correct)cls+=' cl-correct';else if(f===a&&f!==q.correct)cls+=' cl-wrong';}return '<div class="'+cls+'" onclick="ansForm('+i+',\''+f+'\')">'+f+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+(has?(a===q.correct?' correct':' wrong'):'')+'">'+(has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('')+mkScore('f',correct,total);
 }
 function ansForm(i,v){if(formAns[i]!==undefined)return;formAns[i]=v;renderForms();}
 renderForms();
 
-// ============ EXERCISE 3: SYSTEM CLASSIFIER ============
+// ════════════════════════════════════════════════
+// EXERCISE 3: SYSTEM CLASSIFIER
+// ════════════════════════════════════════════════
 var SYS_QS=[
-  {eq1:'y = 2x + 3',eq2:'y = 2x − 1',correct:'No Solution',fb:'Same slope (2) but different y-intercepts → parallel → no solution.'},
+  {eq1:'y = 2x + 3',eq2:'y = 2x − 1',correct:'No Solution',fb:'Same slope (2) but different y-intercepts → parallel lines → no solution.'},
   {eq1:'y = 3x + 1',eq2:'y = −x + 5',correct:'One Solution',fb:'Different slopes (3 and −1) → lines intersect at one point.'},
-  {eq1:'2x + 4y = 8',eq2:'x + 2y = 4',correct:'Infinite Solutions',fb:'Second equation × 2 = first equation. Same line.'},
-  {eq1:'y = −2x + 6',eq2:'4x + 2y = 12',correct:'Infinite Solutions',fb:'Substitute: 4x + 2(−2x + 6) = 12 → 12 = 12 ✓ Always true → infinite.'},
-  {eq1:'3x + y = 7',eq2:'6x + 2y = 10',correct:'No Solution',fb:'Second ÷ 2 = 3x + y = 5. But first says 3x + y = 7. Same left, different right → no solution.'},
-  {eq1:'y = x − 2',eq2:'y = −3x + 6',correct:'One Solution',fb:'Different slopes (1 and −3) → one intersection. Solve: x − 2 = −3x + 6 → x = 2, y = 0.'},
+  {eq1:'2x + 4y = 8',eq2:'x + 2y = 4',correct:'Infinite Solutions',fb:'First equation ÷ 2 = second equation. They\'re the same line.'},
+  {eq1:'y = −2x + 6',eq2:'4x + 2y = 12',correct:'Infinite Solutions',fb:'Substitute: 4x + 2(−2x + 6) = 4x − 4x + 12 = 12 ✓ Always true.'},
+  {eq1:'3x + y = 7',eq2:'6x + 2y = 10',correct:'No Solution',fb:'Second equation ÷ 2 = 3x + y = 5. But first says 3x + y = 7. Same left, different right → no solution.'},
+  {eq1:'y = x − 2',eq2:'y = −3x + 6',correct:'One Solution',fb:'Different slopes (1 and −3) → one intersection point. (x = 2, y = 0.)'},
 ];
 var SYS_OPTS=['One Solution','No Solution','Infinite Solutions'];var sysAns={};
-function renderSystems(){var total=SYS_QS.length;var correct=0;Object.entries(sysAns).forEach(function(p){if(p[1]===SYS_QS[parseInt(p[0])].correct)correct++;});
-  document.getElementById('systemEx').innerHTML='<h3>🔗 Classify the System</h3><div class="exercise-sub">How many solutions does each system have?</div>'+SYS_QS.map(function(q,i){var a=sysAns[i];var has=a!==undefined;return '<div class="ex-item"><div class="ex-prompt"><span style="font-family:\'JetBrains Mono\',monospace;color:var(--math)">'+q.eq1+'</span><br><span style="font-family:\'JetBrains Mono\',monospace;color:var(--math)">'+q.eq2+'</span></div><div class="classify-opts">'+SYS_OPTS.map(function(o){var cls='classify-opt';if(has){cls+=' cl-dis';if(o===q.correct)cls+=' cl-correct';else if(o===a&&o!==q.correct)cls+=' cl-wrong';}return '<div class="'+cls+'" onclick="ansSys('+i+',\''+o+'\')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+(has?(a===q.correct?' correct':' wrong'):'')+'">'+(has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('')+'<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(total?correct/total*100:0)+'%"></div></div><div class="score-bar-val">'+correct+'/'+total+'</div></div>';
+function renderSystems(){var total=SYS_QS.length;var correct=0;Object.keys(sysAns).forEach(function(i){if(sysAns[i]===SYS_QS[parseInt(i)].correct)correct++;});
+  document.getElementById('systemEx').innerHTML='<h3>🔗 Classify the System</h3><div class="exercise-sub">How many solutions does each system have?</div>'+SYS_QS.map(function(q,i){var a=sysAns[i];var has=a!==undefined;return '<div class="ex-item"><div class="ex-prompt"><span style="font-family:\'JetBrains Mono\',monospace;color:var(--math)">'+q.eq1+'</span><br><span style="font-family:\'JetBrains Mono\',monospace;color:var(--math)">'+q.eq2+'</span></div><div class="classify-opts">'+SYS_OPTS.map(function(o){var cls='classify-opt';if(has){cls+=' cl-dis';if(o===q.correct)cls+=' cl-correct';else if(o===a&&o!==q.correct)cls+=' cl-wrong';}return '<div class="'+cls+'" onclick="ansSys('+i+',\''+o.replace(/'/g,"\\'")+'\')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+(has?(a===q.correct?' correct':' wrong'):'')+'">'+(has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('')+mkScore('s',correct,total);
 }
 function ansSys(i,v){if(sysAns[i]!==undefined)return;sysAns[i]=v;renderSystems();}
 renderSystems();
 
-// ============ EXERCISE 4: INEQUALITY CHALLENGE ============
+// ════════════════════════════════════════════════
+// EXERCISE 4: INEQUALITY SOLVER
+// ════════════════════════════════════════════════
 var INEQ_QS=[
   {prompt:'Solve: <code>x + 5 &gt; 12</code>',answer:'x > 7',accept:['x>7','x > 7'],solution:'x + 5 > 12 → x > 7. No sign flip needed.',tier:1},
   {prompt:'Solve: <code>3x − 9 ≤ 6</code>',answer:'x ≤ 5',accept:['x<=5','x≤5','x <= 5','x ≤ 5'],solution:'3x ≤ 15 → x ≤ 5. Dividing by positive 3, no flip.',tier:1},
   {prompt:'Solve: <code>−2x &gt; 10</code>',answer:'x < −5',accept:['x<-5','x < -5'],solution:'Divide by −2, FLIP the sign → x < −5.',tier:2},
-  {prompt:'Solve: <code>−4x + 8 ≤ 20</code>',answer:'x ≥ −3',accept:['x>=-3','x >= -3'],solution:'−4x ≤ 12 → divide by −4, FLIP → x ≥ −3.',tier:2},
-  {prompt:'Solve: <code>5 − 3x &lt; 2x + 25</code>',answer:'x > −4',accept:['x>-4','x > -4'],solution:'5 − 3x < 2x + 25 → −5x < 20 → x > −4 (flipped!).',tier:2},
+  {prompt:'Solve: <code>−4x + 8 ≤ 20</code>',answer:'x ≥ −3',accept:['x>=-3','x >= -3','x≥-3','x ≥ -3'],solution:'−4x ≤ 12 → divide by −4, FLIP → x ≥ −3.',tier:2},
+  {prompt:'Solve: <code>5 − 3x &lt; 2x + 25</code>',answer:'x > −4',accept:['x>-4','x > -4'],solution:'5 − 3x < 2x + 25 → −5x < 20 → divide by −5, FLIP → x > −4.',tier:2},
 ];
 function renderIneq(){
-  document.getElementById('ineqEx').innerHTML='<h3>⚖️ Inequality Solver</h3><div class="exercise-sub">Type the solution (e.g., "x > 7" or "x <= 5"). Use > < >= <= symbols.</div>'+INEQ_QS.map(function(q,i){return '<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-'+q.tier+'">Tier '+q.tier+'</span></div><div class="ex-prompt">'+q.prompt+'</div><div class="ex-input-row"><input class="ex-input" type="text" id="ineq'+i+'" placeholder="x > ?" style="width:140px"><button class="ex-btn" onclick="checkIneq('+i+')">Check</button></div><div class="ex-fb" id="ineqFb'+i+'"></div></div>';}).join('');
+  document.getElementById('ineqEx').innerHTML='<h3>⚖️ Inequality Solver</h3><div class="exercise-sub">Type the solution (e.g., "x > 7" or "x <= 5"). Use > < >= <= symbols.</div>'+INEQ_QS.map(function(q,i){return '<div class="ex-item"><div style="margin-bottom:4px"><span class="tier tier-'+q.tier+'">'+(q.tier===1?'Easy':'Medium')+'</span></div><div class="ex-prompt">'+q.prompt+'</div><div class="ex-input-row"><input class="ex-input" type="text" id="ineq'+i+'" placeholder="x > ?" style="width:140px"><button class="ex-btn" onclick="checkIneq('+i+')">Check</button></div><div class="ex-fb" id="ineqFb'+i+'"></div></div>';}).join('');
 }
 function checkIneq(i){var val=document.getElementById('ineq'+i).value.trim();var fb=document.getElementById('ineqFb'+i);var q=INEQ_QS[i];if(!val){fb.className='ex-fb show wrong';fb.textContent='Enter your answer.';return;}var norm=val.replace(/\s/g,'').replace(/≤/g,'<=').replace(/≥/g,'>=');var found=false;q.accept.forEach(function(a){if(a.replace(/\s/g,'').replace(/≤/g,'<=').replace(/≥/g,'>=')==norm)found=true;});if(found){fb.className='ex-fb show correct';fb.textContent='✓ Correct! '+q.solution;}else{fb.className='ex-fb show wrong';fb.textContent='✗ The answer is '+q.answer+'. '+q.solution;}}
 renderIneq();
 
-// ============ EXERCISE 5: TRAP SPOTTER ============
+// ════════════════════════════════════════════════
+// EXERCISE 5: TRAP SPOTTER
+// ════════════════════════════════════════════════
 var TRAP_QS=[
   {q:'If <code>2x + 8 = 20</code>, what is the value of <code>x + 4</code>?',opts:['Asks for x + 4, not x','Needs to flip the sign','Uses wrong operation','No trap here'],correct:0,fb:'The trap: you might solve for x (getting 6) and choose 6. But the question asks for x + 4 = 10. Shortcut: divide the whole equation by 2 → x + 4 = 10.'},
   {q:'Solve: <code>−3x &gt; 12</code>',opts:['Asks for expression, not x','Need to flip the inequality sign','Need to distribute first','Standard solving'],correct:1,fb:'Dividing by −3 requires flipping the inequality sign. Answer: x < −4, not x > −4.'},
@@ -397,13 +691,15 @@ var TRAP_QS=[
   {q:'The question asks for <code>2x − 3y</code>. You solve the system and find x = 5 and y = 2. What is your answer?',opts:['5','2','4','The answer is 2(5) − 3(2) = 4'],correct:3,fb:'The question asks for the expression 2x − 3y, not x or y. Answer: 2(5) − 3(2) = 10 − 6 = 4. Biggest SAT trap: answering with x or y when they ask for an expression.'},
 ];
 var trapAns={};
-function renderTraps(){var total=TRAP_QS.length;var correct=0;Object.entries(trapAns).forEach(function(p){if(p[1]===TRAP_QS[parseInt(p[0])].correct)correct++;});
-  document.getElementById('trapEx').innerHTML='<h3>🎯 Spot the Trap</h3><div class="exercise-sub">Identify the key insight or trap in each problem before solving.</div>'+TRAP_QS.map(function(q,i){var a=trapAns[i];var has=a!==undefined;return '<div class="trap-item"><div class="trap-q">'+q.q+'</div><div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">What\'s the key thing to watch out for?</div><div class="trap-opts">'+q.opts.map(function(o,oi){var cls='trap-opt';if(has){cls+=' t-dis';if(oi===q.correct)cls+=' t-correct';else if(oi===a)cls+=' t-wrong';}return '<div class="'+cls+'" onclick="ansTrap('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="trap-fb '+(has?'show':'')+'">'+(has?q.fb:'')+'</div></div>';}).join('')+'<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(total?correct/total*100:0)+'%"></div></div><div class="score-bar-val">'+correct+'/'+total+'</div></div>';
+function renderTraps(){var total=TRAP_QS.length;var correct=0;Object.keys(trapAns).forEach(function(i){if(trapAns[i]===TRAP_QS[parseInt(i)].correct)correct++;});
+  document.getElementById('trapEx').innerHTML='<h3>🎯 Spot the Trap</h3><div class="exercise-sub">Identify the key insight or trap in each problem before solving.</div>'+TRAP_QS.map(function(q,i){var a=trapAns[i];var has=a!==undefined;return '<div class="trap-item"><div class="trap-q">'+q.q+'</div><div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">What\'s the key thing to watch out for?</div><div class="trap-opts">'+q.opts.map(function(o,oi){var cls='trap-opt';if(has){cls+=' t-dis';if(oi===q.correct)cls+=' t-correct';else if(oi===a)cls+=' t-wrong';}return '<div class="'+cls+'" onclick="ansTrap('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="trap-fb '+(has?'show':'')+'">'+(has?q.fb:'')+'</div></div>';}).join('')+mkScore('t',correct,total);
 }
 function ansTrap(i,v){if(trapAns[i]!==undefined)return;trapAns[i]=v;renderTraps();}
 renderTraps();
 
-// ============ EXERCISE 6: WORD PROBLEM TRANSLATOR ============
+// ════════════════════════════════════════════════
+// EXERCISE 6: WORD PROBLEM TRANSLATOR
+// ════════════════════════════════════════════════
 var WPT_QS=[
   {phrase:'"is"',correct:'=',opts:['=','+','×','÷']},
   {phrase:'"more than" / "increased by"',correct:'+',opts:['=','+','−','×']},
@@ -417,34 +713,210 @@ var WPT_QS=[
   {phrase:'"half of"',correct:'÷2',opts:['÷2','−2','½+','×½']},
 ];
 var wptAns={};
-function renderWPT(){var total=WPT_QS.length;var correct=0;Object.entries(wptAns).forEach(function(p){if(p[1]===WPT_QS[parseInt(p[0])].correct)correct++;});
-  document.getElementById('wptEx').innerHTML='<h3>🔤 → 🔢 Translate</h3><div class="exercise-sub">Select the correct mathematical operation for each English phrase.</div>'+WPT_QS.map(function(q,i){var a=wptAns[i];var has=a!==undefined;var ok=a===q.correct;return '<div class="wpt-row"><div class="wpt-phrase">'+q.phrase+'</div><div class="wpt-arrow">→</div><select class="wpt-select '+(has?(ok?'wpt-correct':'wpt-wrong'):'')+'" onchange="ansWPT('+i+',this.value)" '+(has?'disabled':'')+'><option value="">?</option>'+q.opts.map(function(o){return '<option value="'+o+'" '+(a===o?'selected':'')+'>'+o+'</option>';}).join('')+'</select>'+(has&&!ok?'<span style="font-size:.78rem;color:var(--correct);margin-left:8px">'+q.correct+'</span>':'')+'</div>';}).join('')+'<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(total?correct/total*100:0)+'%"></div></div><div class="score-bar-val">'+correct+'/'+total+'</div></div>';
+function renderWPT(){var total=WPT_QS.length;var correct=0;Object.keys(wptAns).forEach(function(i){if(wptAns[i]===WPT_QS[parseInt(i)].correct)correct++;});
+  document.getElementById('wptEx').innerHTML='<h3>🔤 → 🔢 Translate</h3><div class="exercise-sub">Select the correct mathematical operation for each English phrase.</div>'+WPT_QS.map(function(q,i){var a=wptAns[i];var has=a!==undefined;var ok=a===q.correct;return '<div class="wpt-row"><div class="wpt-phrase">'+q.phrase+'</div><div class="wpt-arrow">→</div><select class="wpt-select '+(has?(ok?'wpt-correct':'wpt-wrong'):'')+'" onchange="ansWPT('+i+',this.value)" '+(has?'disabled':'')+'><option value="">?</option>'+q.opts.map(function(o){return '<option value="'+o+'" '+(a===o?'selected':'')+'>'+o+'</option>';}).join('')+'</select>'+(has&&!ok?'<span style="font-size:.78rem;color:var(--correct);margin-left:8px">'+q.correct+'</span>':'')+'</div>';}).join('')+mkScore('w',correct,total);
 }
 function ansWPT(i,v){if(wptAns[i]!==undefined||!v)return;wptAns[i]=v;renderWPT();}
 renderWPT();
 
-// ============ SAT-STYLE PRACTICE ============
-var SAT_QS=[
-  {tier:1,topic:'2A',q:'If 4x − 8 = 2x + 6, what is the value of x?',choices:['1','5','7','14'],correct:2,fb:'4x − 8 = 2x + 6 → 2x = 14 → x = 7.'},
-  {tier:1,topic:'2B',q:'What is the slope of the line y = −3x + 12?',choices:['12','−3','3','−12'],correct:1,fb:'In y = mx + b, the slope is m. Here m = −3.'},
-  {tier:1,topic:'2D',q:'Which represents all values of x such that 3x − 5 > 7?',choices:['x > 4','x > 2','x < 4','x > 12'],correct:0,fb:'3x − 5 > 7 → 3x > 12 → x > 4.'},
-  {tier:2,topic:'2B',q:'A line passes through (2, 5) and has slope −3. What is the y-intercept?',choices:['−1','1','11','−11'],correct:2,fb:'y − 5 = −3(x − 2) → y = −3x + 6 + 5 → y = −3x + 11. Y-intercept = 11.'},
-  {tier:2,topic:'2C',q:'If 2x + y = 10 and x − y = 2, what is the value of x?',choices:['2','3','4','6'],correct:2,fb:'Add the equations: 3x = 12 → x = 4.'},
-  {tier:2,topic:'2A',q:'A gym costs $75 initiation plus $40/month. Which gives total cost C after m months?',choices:['C = 75m + 40','C = 40m + 75','C = 115m','C = 40m − 75'],correct:1,fb:'$40/month → 40m. $75 initiation → +75. C = 40m + 75.'},
-  {tier:3,topic:'2C',q:'The system 3x + ky = 12 and 9x + 15y = 36 has infinitely many solutions. What is k?',choices:['3','5','9','15'],correct:1,fb:'For infinite solutions, equations must be proportional. 9x = 3(3x), 36 = 3(12), so 15y = 3(ky) → k = 5.'},
-  {tier:3,topic:'2B',q:'Line m has equation y = (2/5)x − 3. Line n is perpendicular to m and passes through (4, 1). What is the equation of line n?',choices:['y = (2/5)x − 3/5','y = −(5/2)x + 11','y = (5/2)x − 9','y = −(2/5)x + 11/5'],correct:1,fb:'Perpendicular slope = −5/2. Using (4,1): y − 1 = −(5/2)(x − 4) → y = −(5/2)x + 10 + 1 → y = −(5/2)x + 11.'},
-  {tier:3,topic:'2A',q:'For what value of a does 3(2x − a) = 6x − 12 have infinitely many solutions?',choices:['2','4','6','12'],correct:1,fb:'Distribute: 6x − 3a = 6x − 12. For identity: −3a = −12 → a = 4. Any x works.'},
-  {tier:3,topic:'2C',q:'At a bakery, 3 muffins and 2 cookies cost $11.50. 1 muffin and 4 cookies cost $10.50. What is the cost of one cookie?',choices:['$1.75','$2.00','$2.25','$2.50'],correct:0,fb:'System: 3m + 2c = 11.50 and m + 4c = 10.50. From second: m = 10.50 − 4c. Substitute: 3(10.50 − 4c) + 2c = 11.50 → 31.50 − 12c + 2c = 11.50 → −10c = −20 → c = 2.00. Wait: check: m = 10.50 − 8 = 2.50. Check: 3(2.50) + 2(2.00) = 7.50 + 4 = 11.50 ✓. Cookie = $2.00.'},
+// ════════════════════════════════════════════════
+// TIMED PRACTICE WITH CONFIDENCE & ERROR ANALYSIS
+// ════════════════════════════════════════════════
+var PST=[
+  {t:1,tp:'2A',q:'If <code>4x − 8 = 2x + 6</code>, what is the value of x?',ch:['1','5','7','14'],c:2,fb:'4x − 8 = 2x + 6 → 2x = 14 → x = 7.',
+   trap:null,trapAnswer:0,trapDesc:'Arithmetic error'},
+  {t:1,tp:'2B',q:'What is the slope of the line <code>y = −3x + 12</code>?',ch:['12','−3','3','−12'],c:1,fb:'In y = mx + b, the slope is m. Here m = −3.',
+   trap:'wrong_target',trapAnswer:0,trapDesc:'Confused y-intercept with slope — The Wrong Target'},
+  {t:1,tp:'2D',q:'Which represents all values of x such that <code>3x − 5 > 7</code>?',ch:['x > 4','x > 2','x < 4','x > 12'],c:0,fb:'3x − 5 > 7 → 3x > 12 → x > 4.',
+   trap:null,trapAnswer:1,trapDesc:'Divided incorrectly'},
+  {t:2,tp:'2B',q:'A line passes through (2, 5) and has slope −3. What is the y-intercept?',ch:['−1','1','11','−11'],c:2,fb:'y − 5 = −3(x − 2) → y = −3x + 6 + 5 → y = −3x + 11. Y-intercept = 11.',
+   trap:'distribution_ghost',trapAnswer:3,trapDesc:'Sign error in distribution — The Distribution Ghost'},
+  {t:2,tp:'2C',q:'If <code>2x + y = 10</code> and <code>x − y = 2</code>, what is the value of x?',ch:['2','3','4','6'],c:2,fb:'Add the equations: 3x = 12 → x = 4.',
+   trap:null,trapAnswer:3,trapDesc:'Arithmetic error'},
+  {t:2,tp:'2A',q:'A gym costs $75 initiation plus $40/month. Which gives total cost C after m months?',ch:['C = 75m + 40','C = 40m + 75','C = 115m','C = 40m − 75'],c:1,fb:'$40/month → 40m. $75 initiation → +75. C = 40m + 75.',
+   trap:'wrong_target',trapAnswer:0,trapDesc:'Swapped slope and intercept — The Wrong Target'},
+  {t:3,tp:'2C',q:'The system <code>3x + ky = 12</code> and <code>9x + 15y = 36</code> has infinitely many solutions. What is k?',ch:['3','5','9','15'],c:1,fb:'For infinite solutions, equations must be proportional. 9x = 3(3x), 36 = 3(12), so 15y = 3(ky) → k = 5.',
+   trap:null,trapAnswer:0,trapDesc:'Confused ratio'},
+  {t:3,tp:'2B',q:'Line m has equation <code>y = (2/5)x − 3</code>. Line n is perpendicular to m and passes through (4, 1). What is the equation of line n?',ch:['y = (2/5)x − 3/5','y = −(5/2)x + 11','y = (5/2)x − 9','y = −(2/5)x + 11/5'],c:1,fb:'Perpendicular slope = −5/2. Using (4,1): y − 1 = −(5/2)(x − 4) → y = −(5/2)x + 10 + 1 → y = −(5/2)x + 11.',
+   trap:'imposter_subject',trapAnswer:0,trapDesc:'Used same slope instead of perpendicular — The Imposter Subject'},
+  {t:3,tp:'2A',q:'For what value of a does <code>3(2x − a) = 6x − 12</code> have infinitely many solutions?',ch:['2','4','6','12'],c:1,fb:'Distribute: 6x − 3a = 6x − 12. For identity: −3a = −12 → a = 4. Any x works.',
+   trap:'sign_flip',trapAnswer:0,trapDesc:'Sign error when distributing — The Sign Flip'},
+  {t:3,tp:'2C',q:'At a bakery, 3 muffins and 2 cookies cost $11.50. 1 muffin and 4 cookies cost $10.50. What is the cost of one cookie?',ch:['$1.75','$2.00','$2.25','$2.50'],c:1,fb:'System: 3m + 2c = 11.50 and m + 4c = 10.50. From second: m = 10.50 − 4c. Substitute: 3(10.50 − 4c) + 2c = 11.50 → 31.50 − 12c + 2c = 11.50 → −10c = −20 → c = 2.00.',
+   trap:'imposter_subject',trapAnswer:3,trapDesc:'Solved for muffin cost instead of cookie — The Imposter Subject'},
 ];
-// Fix Q10 answer
-SAT_QS[9].correct=1;
 
-var satAns={};
-function renderSAT(){
-  document.getElementById('satPractice').innerHTML=SAT_QS.map(function(q,i){var a=satAns[i];var has=a!==undefined;return '<div class="ex-item" style="border-color:'+(q.tier===1?'var(--algebra)':q.tier===2?'var(--math)':'var(--purple)')+'"><div style="margin-bottom:6px"><span class="tier tier-'+q.tier+'">Tier '+q.tier+'</span><span style="font-size:.78rem;color:var(--muted)">Topic '+q.topic+'</span></div><div class="ex-prompt">'+q.q+'</div><div class="mc-choices">'+q.choices.map(function(ch,ci){var cls='mc-choice';if(has){cls+=' mc-dis';if(ci===q.correct)cls+=' mc-correct';else if(ci===a&&ci!==q.correct)cls+=' mc-wrong';}return '<div class="'+cls+'" onclick="ansSAT('+i+','+ci+')"><div class="mc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="mc-fb'+(has?' show':'')+'">'+(has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
+var TRAP_NAMES = {'wrong_target':'🎯 Wrong Target','sign_flip':'🔄 Sign Flip','distribution_ghost':'👻 Distribution Ghost','imposter_subject':'🎭 Imposter Subject','one_case':'🔀 One-Case','percent_spiral':'🌀 Percent Spiral'};
+
+var pstA = {}, pstConf = {}, pstTime = {}, pstStartTime = null;
+
+// Timer system
+var timerEnabled = false;
+var timerInterval = null;
+var timerSeconds = 0;
+var SECS_PER_Q = 95;
+var totalTimerSecs = PST.length * SECS_PER_Q;
+
+function toggleTimer() {
+  timerEnabled = !timerEnabled;
+  var btn = document.getElementById('timerToggle');
+  btn.textContent = timerEnabled ? '⏱ Timer ON' : '⏱ Timer OFF';
+  if (timerEnabled) btn.classList.add('active'); else btn.classList.remove('active');
+  if (!timerEnabled && timerInterval) {
+    clearInterval(timerInterval); timerInterval = null;
+    document.getElementById('timerDisplay').textContent = '--:--';
+    document.getElementById('timerFill').style.width = '100%';
+  } else if (timerEnabled && currentScreen === 3) { startTimer(); }
 }
-function ansSAT(i,ci){if(satAns[i]!==undefined)return;satAns[i]=ci;renderSAT();}
-renderSAT();
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerSeconds = totalTimerSecs;
+  updateTimerDisplay();
+  timerInterval = setInterval(function() {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) { clearInterval(timerInterval); timerInterval = null; }
+  }, 1000);
+  pstStartTime = Date.now();
+}
+
+function updateTimerDisplay() {
+  var disp = document.getElementById('timerDisplay');
+  var fill = document.getElementById('timerFill');
+  var mins = Math.floor(timerSeconds / 60), secs = timerSeconds % 60;
+  disp.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  var pct = (timerSeconds / totalTimerSecs) * 100;
+  fill.style.width = pct + '%';
+  disp.className = 'timer-display'; fill.className = 'timer-fill';
+  if (pct < 15) { disp.classList.add('danger'); fill.classList.add('danger'); }
+  else if (pct < 35) { disp.classList.add('warning'); fill.classList.add('warning'); }
+}
+
+function renderPST() {
+  var answered = Object.keys(pstA).length;
+  document.getElementById('qDots').innerHTML = PST.map(function(_, i) {
+    var cls = 'q-dot';
+    if (pstA[i] !== undefined) cls += pstA[i] === PST[i].c ? ' correct' : ' wrong';
+    return '<div class="' + cls + '"></div>';
+  }).join('');
+
+  document.getElementById('satPractice').innerHTML = PST.map(function(q, i) {
+    var a = pstA[i], h = a !== undefined;
+    var conf = pstConf[i];
+    var tierLabel = q.t === 1 ? 'Easy' : q.t === 2 ? 'Medium' : 'Hard';
+    var trapName = q.trap ? TRAP_NAMES[q.trap] || '' : '';
+    var html = '<div class="ex-item" style="border-color:' + (q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)') + '">';
+    html += '<div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">';
+    html += '<span class="tier tier-' + q.t + '">' + tierLabel + '</span>';
+    html += '<span style="font-size:.75rem;color:var(--muted)">Topic ' + q.tp + '</span>';
+    if (trapName && h) html += '<span style="font-size:.72rem;color:var(--accent)">Trap: ' + trapName + '</span>';
+    html += '</div>';
+    html += '<div class="ex-prompt">' + q.q + '</div>';
+    if (!h) {
+      html += '<div class="confidence-row">';
+      html += '<div class="conf-tag ' + (conf==='guessing'?'selected':'') + '" data-conf="guessing" onclick="setConf(' + i + ',\'guessing\')">Guessing</div>';
+      html += '<div class="conf-tag ' + (conf==='unsure'?'selected':'') + '" data-conf="unsure" onclick="setConf(' + i + ',\'unsure\')">Unsure</div>';
+      html += '<div class="conf-tag ' + (conf==='confident'?'selected':'') + '" data-conf="confident" onclick="setConf(' + i + ',\'confident\')">Confident</div>';
+      html += '</div>';
+    } else {
+      html += '<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">Confidence: ' + (conf || 'not tagged') + '</div>';
+    }
+    html += '<div class="mc-choices">';
+    q.ch.forEach(function(ch, ci) {
+      var c = 'mc-choice';
+      if (h) { c += ' mc-dis'; if (ci === q.c) c += ' mc-correct'; else if (ci === a) c += ' mc-wrong'; }
+      html += '<div class="' + c + '" onclick="aPST(' + i + ',' + ci + ')"><div class="mc-letter">' + 'ABCD'[ci] + '</div><div>' + ch + '</div></div>';
+    });
+    html += '</div>';
+    var fbText = '';
+    if (h) {
+      fbText = (a === q.c ? '✓ Correct! ' : '✗ Incorrect. ') + q.fb;
+      if (a !== q.c && q.trapAnswer === a) fbText += '<br><span style="color:var(--psda)">⚠️ ' + q.trapDesc + '</span>';
+    }
+    html += '<div class="mc-fb' + (h ? ' show' : '') + '">' + fbText + '</div>';
+    html += '</div>';
+    return html;
+  }).join('');
+
+  if (answered === PST.length) {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    document.getElementById('practiceNav').style.display = 'block';
+    showPracticeResults();
+  }
+}
+
+function setConf(i, level) { if (pstA[i] !== undefined) return; pstConf[i] = level; renderPST(); }
+
+function aPST(i, v) {
+  if (pstA[i] !== undefined) return;
+  pstA[i] = v;
+  if (pstStartTime) { pstTime[i] = Date.now() - pstStartTime; pstStartTime = Date.now(); }
+  renderPST();
+}
+
+function showPracticeResults() {
+  var total = PST.length;
+  var correct = 0;
+  Object.keys(pstA).forEach(function(i) { if (pstA[i] === PST[parseInt(i)].c) correct++; });
+  var byDiff = {1:{cor:0,tot:0},2:{cor:0,tot:0},3:{cor:0,tot:0}};
+  PST.forEach(function(q, i) { byDiff[q.t].tot++; if (pstA[i] === q.c) byDiff[q.t].cor++; });
+  var matrix = {guessing:{correct:[],wrong:[]},unsure:{correct:[],wrong:[]},confident:{correct:[],wrong:[]}};
+  PST.forEach(function(q, i) { var conf = pstConf[i] || 'unsure'; matrix[conf][pstA[i] === q.c ? 'correct' : 'wrong'].push(i); });
+  var errors = {content_gap:[], trap_answer:[], careless:[], calibration:[]};
+  PST.forEach(function(q, i) {
+    if (pstA[i] === q.c) return;
+    var conf = pstConf[i] || 'unsure';
+    if (pstA[i] === q.trapAnswer) errors.trap_answer.push({i:i, desc:q.trapDesc, topic:q.tp});
+    else errors.content_gap.push({i:i, topic:q.tp});
+    if (conf === 'confident') { if (q.t === 1) errors.careless.push({i:i, topic:q.tp}); errors.calibration.push({i:i, topic:q.tp}); }
+  });
+
+  var html = '<div class="results-section"><h3>📊 Practice Results: ' + correct + '/' + total + '</h3>';
+  html += '<div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Difficulty</div>';
+  html += '<div class="difficulty-bars">';
+  html += '<div class="diff-row"><span class="diff-label" style="color:var(--algebra)">Easy</span><div class="diff-track"><div class="diff-fill" style="width:' + (byDiff[1].tot?byDiff[1].cor/byDiff[1].tot*100:0) + '%;background:var(--algebra)"></div></div><span class="diff-val" style="color:var(--algebra)">' + byDiff[1].cor + '/' + byDiff[1].tot + '</span></div>';
+  html += '<div class="diff-row"><span class="diff-label" style="color:var(--math)">Medium</span><div class="diff-track"><div class="diff-fill" style="width:' + (byDiff[2].tot?byDiff[2].cor/byDiff[2].tot*100:0) + '%;background:var(--math)"></div></div><span class="diff-val" style="color:var(--math)">' + byDiff[2].cor + '/' + byDiff[2].tot + '</span></div>';
+  html += '<div class="diff-row"><span class="diff-label" style="color:var(--advanced)">Hard</span><div class="diff-track"><div class="diff-fill" style="width:' + (byDiff[3].tot?byDiff[3].cor/byDiff[3].tot*100:0) + '%;background:var(--advanced)"></div></div><span class="diff-val" style="color:var(--advanced)">' + byDiff[3].cor + '/' + byDiff[3].tot + '</span></div>';
+  html += '</div></div>';
+
+  html += '<div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Confidence × Accuracy Matrix</div>';
+  html += '<div class="results-grid">';
+  html += '<div class="results-grid-header"></div><div class="results-grid-header">Guessing</div><div class="results-grid-header">Unsure</div><div class="results-grid-header">Confident</div>';
+  html += '<div class="results-grid-header" style="writing-mode:horizontal-tb">✓ Correct</div>';
+  html += '<div class="results-grid-cell"><div class="cell-label">Lucky</div><div class="cell-dots">' + matrix.guessing.correct.map(function(){return '<div class="cell-dot" style="background:var(--psda)"></div>';}).join('') + '</div><div style="font-size:.7rem;color:var(--muted)">' + matrix.guessing.correct.length + '</div></div>';
+  html += '<div class="results-grid-cell"><div class="cell-label">Developing</div><div class="cell-dots">' + matrix.unsure.correct.map(function(){return '<div class="cell-dot" style="background:var(--math)"></div>';}).join('') + '</div><div style="font-size:.7rem;color:var(--muted)">' + matrix.unsure.correct.length + '</div></div>';
+  html += '<div class="results-grid-cell"><div class="cell-label">Solid</div><div class="cell-dots">' + matrix.confident.correct.map(function(){return '<div class="cell-dot" style="background:var(--correct)"></div>';}).join('') + '</div><div style="font-size:.7rem;color:var(--muted)">' + matrix.confident.correct.length + '</div></div>';
+  html += '<div class="results-grid-header" style="writing-mode:horizontal-tb">✗ Wrong</div>';
+  html += '<div class="results-grid-cell"><div class="cell-label">Expected</div><div class="cell-dots">' + matrix.guessing.wrong.map(function(){return '<div class="cell-dot" style="background:var(--muted)"></div>';}).join('') + '</div><div style="font-size:.7rem;color:var(--muted)">' + matrix.guessing.wrong.length + '</div></div>';
+  html += '<div class="results-grid-cell"><div class="cell-label">Needs work</div><div class="cell-dots">' + matrix.unsure.wrong.map(function(){return '<div class="cell-dot" style="background:var(--psda)"></div>';}).join('') + '</div><div style="font-size:.7rem;color:var(--muted)">' + matrix.unsure.wrong.length + '</div></div>';
+  html += '<div class="results-grid-cell danger-cell"><div class="cell-label" style="color:var(--wrong);font-weight:700">⚠️ DANGER</div><div class="cell-dots">' + matrix.confident.wrong.map(function(){return '<div class="cell-dot" style="background:var(--wrong)"></div>';}).join('') + '</div><div style="font-size:.7rem;color:var(--wrong)">' + matrix.confident.wrong.length + '</div></div>';
+  html += '</div>';
+  if (matrix.confident.wrong.length > 0) html += '<div class="callout" style="border-color:var(--wrong);background:var(--wrong-bg)"><strong style="color:var(--wrong)">Confident + Wrong</strong> is the most dangerous category. These errors persist into test day because you won\'t self-correct what you think you already know.</div>';
+  html += '</div>';
+
+  var hasErrors = errors.trap_answer.length + errors.content_gap.length > 0;
+  if (hasErrors) {
+    html += '<div style="margin-bottom:16px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Error Pattern Analysis</div>';
+    if (errors.trap_answer.length > 0) html += '<div class="error-category" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3)"><div class="error-label" style="color:var(--psda)">🟡 Trap Answers (' + errors.trap_answer.length + ')</div><div class="error-items">' + errors.trap_answer.map(function(e){return e.desc;}).join(' · ') + '</div></div>';
+    if (errors.content_gap.length > 0) {var topics={};errors.content_gap.forEach(function(e){topics[e.topic]=true;});html += '<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">🔴 Content Gaps (' + errors.content_gap.length + ')</div><div class="error-items">Topics: ' + Object.keys(topics).join(', ') + '</div></div>';}
+    if (errors.careless.length > 0) html += '<div class="error-category" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)"><div class="error-label" style="color:var(--math)">🔵 Possible Careless Errors (' + errors.careless.length + ')</div><div class="error-items">Confident + wrong on easy questions — likely arithmetic mistakes</div></div>';
+    if (errors.calibration.length > 0) html += '<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">⚠️ Calibration Issues (' + errors.calibration.length + ')</div><div class="error-items">You were confident but wrong — review these topics carefully</div></div>';
+    html += '</div>';
+  }
+  html += '</div>';
+  document.getElementById('practiceResults').style.display = 'block';
+  document.getElementById('practiceResults').innerHTML = html;
+
+  document.getElementById('completePracticeStats').innerHTML =
+    '<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:24px;max-width:500px;width:100%;text-align:left">' +
+    '<div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Practice Results</div>' +
+    '<div style="font-family:\'JetBrains Mono\',monospace;font-size:1.4rem;font-weight:700;color:var(--correct);margin-bottom:8px">' + correct + '/' + total + ' correct</div>' +
+    '<div style="font-size:.82rem;color:var(--muted)">Easy: ' + byDiff[1].cor + '/' + byDiff[1].tot + ' · Medium: ' + byDiff[2].cor + '/' + byDiff[2].tot + ' · Hard: ' + byDiff[3].cor + '/' + byDiff[3].tot + '</div>' +
+    '</div>';
+}
+
+renderPST();
 </script>
-<script src="/translate.js"></script></body>
+<script src="/translate.js"></script>
+</body>
 </html>

@@ -6,11 +6,72 @@
 <title>Module 10: Final Review & Test Day Prep — SAT Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--adv:#a78bfa;--adv-bg:rgba(167,139,250,.1);--geotrig:#f87171;--geotrig-bg:rgba(248,113,113,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--des:#06b6d4;--des-bg:rgba(6,182,212,.1)}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--adv:#a78bfa;--adv-bg:rgba(167,139,250,.1);--geotrig:#f87171;--geotrig-bg:rgba(248,113,113,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--des:#2bc4a9;--des-bg:rgba(43,196,169,.1);--strat:#f97316;--strat-bg:rgba(249,115,22,.08);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
+
+/* ── Screen System ── */
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+/* ── Progress Dots ── */
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--accent)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(200,16,46,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
+/* ── Container ── */
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+
+/* ── Welcome Screen ── */
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--adv));color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,16,46,.3)}
+
+/* ── Retrieval Warm-Up ── */
+.warmup-container{max-width:600px;margin:0 auto;padding:60px 20px}
+.warmup-header{text-align:center;margin-bottom:32px}
+.warmup-badge{display:inline-block;background:#0891b2;color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.warmup-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.warmup-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.warmup-dot.done-correct{background:var(--correct)}
+.warmup-dot.done-wrong{background:var(--wrong)}
+.warmup-dot.active{background:#0891b2;box-shadow:0 0 8px rgba(8,145,178,.4)}
+.warmup-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.warmup-q .source-tag{font-size:.7rem;color:#0891b2;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.warmup-q .q-text{font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.warmup-choices{display:flex;flex-direction:column;gap:8px}
+.warmup-choice{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.warmup-choice:hover:not(.wu-dis){border-color:#0891b2;background:rgba(8,145,178,.05)}
+.warmup-choice.wu-correct{border-color:var(--correct);background:var(--correct-bg)}
+.warmup-choice.wu-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.warmup-choice.wu-dis{pointer-events:none;opacity:.7}
+.warmup-choice.wu-correct{opacity:1}
+.warmup-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:12px;padding:10px;background:var(--paper);border-radius:8px;border-left:3px solid var(--correct)}
+.warmup-next{padding:10px 24px;background:#0891b2;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;margin-top:12px;font-family:'Source Sans 3',sans-serif}
+.warmup-next:hover{filter:brightness(1.1)}
+.warmup-summary{text-align:center;padding:40px 20px}
+.warmup-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:#0891b2;margin:12px 0}
+.warmup-continue{padding:12px 28px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:20px;font-family:'Source Sans 3',sans-serif}
+.warmup-continue:hover{filter:brightness(1.15)}
+
+/* ── Lesson Content ── */
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
@@ -93,27 +154,68 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .final-msg h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:10px}
 .final-msg p{color:#ccc;font-size:.95rem;max-width:560px;margin:0 auto 8px;line-height:1.7}
 
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
+/* ── Complete Screen ── */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
 
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.flip-grid{grid-template-columns:1fr}.fs-grid{grid-template-columns:1fr}.tree-branches{grid-template-columns:1fr}.conf-opts{flex-direction:column}}
-</style>
-</head>
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.flip-grid{grid-template-columns:1fr}.fs-grid{grid-template-columns:1fr}.tree-branches{grid-template-columns:1fr}.conf-opts{flex-direction:column}.preview-grid{grid-template-columns:1fr 1fr}.welcome-meta{flex-wrap:wrap;gap:12px}.nav-cards{grid-template-columns:1fr}}
+</style></head>
 <body>
 <div class="top-stripe"></div>
-<div class="container">
-<a class="back-link" href="index.html">← Back to Math Course</a>
+<div class="screen-progress" id="screenProgress"></div>
 
+<!-- SCREEN 1: WELCOME -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 10 · Final</div>
+    <h1>Final Review & Test Day Prep</h1>
+    <p class="welcome-sub">Everything you need in one place. Review, rehearse, rest, and walk in ready.</p>
+    <div class="welcome-meta"><span>⏱ 1–2 sessions</span><span>🎯 Phase 4: Reflect</span><span>🏁 Capstone</span></div>
+    <div class="preview-grid">
+      <div class="preview-card"><div class="preview-icon">🔄</div><div class="preview-title">Domain Review Cards</div><div class="preview-desc">Flip-card rapid review of all four SAT math domains</div></div>
+      <div class="preview-card"><div class="preview-icon">🌳</div><div class="preview-title">Strategy Recap</div><div class="preview-desc">The 5-Second Decision Tree for every question</div></div>
+      <div class="preview-card"><div class="preview-icon">📐</div><div class="preview-title">Must-Know Formulas</div><div class="preview-desc">Essential formulas not on the reference sheet</div></div>
+      <div class="preview-card"><div class="preview-icon">🎯</div><div class="preview-title">Strategy Drill</div><div class="preview-desc">10-question confidence calibration exercise</div></div>
+      <div class="preview-card"><div class="preview-icon">⏰</div><div class="preview-title">Test Day Timeline</div><div class="preview-desc">From night before through the final answer</div></div>
+      <div class="preview-card"><div class="preview-icon">🎒</div><div class="preview-title">Packing List</div><div class="preview-desc">Interactive checklist saved to your browser</div></div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: RETRIEVAL WARM-UP -->
+<div class="screen" id="screen-warmup">
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <div class="warmup-badge">Retrieval Warm-Up</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem">Module 9 Review</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:4px">Quick recall from what you learned last time.</p>
+      <div class="warmup-dots" id="warmupDots"></div>
+    </div>
+    <div id="warmupContent"></div>
+  </div>
+</div>
+
+<!-- SCREEN 3: LESSON CONTENT -->
+<div class="screen" id="screen-lesson">
+<div class="container">
+<a class="back-link" href="index.html">← Back to SAT Math Course</a>
 <div class="mod-header">
   <div class="mod-badge">Module 10 · Final</div>
   <h1>Final Review & Test Day Prep</h1>
   <p class="subtitle">Everything you need in one place. Review, rehearse, rest, and walk in ready.</p>
-  <div class="mod-meta">
-    <span>⏱ 1–2 sessions</span>
-    <span>🎯 Phase 4: Reflect</span>
-    <span>🏁 Capstone</span>
-  </div>
+  <div class="mod-meta"><span>⏱ 1–2 sessions</span><span>🎯 Phase 4: Reflect</span><span>🏁 Capstone</span></div>
 </div>
 
 <!-- INTRO -->
@@ -271,37 +373,112 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="checklist" id="testDayCL"></div>
 </div>
 
-<!-- COURSE COMPLETION -->
-<div class="section">
-  <div class="section-label">Course Completion</div>
-  <h2>Your Journey Through the Course</h2>
-  <div class="card" style="border:2px solid var(--border)">
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center;font-size:.72rem;margin-bottom:12px">
-      <div style="background:var(--algebra-bg);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--algebra)">M1–M2</div>Diagnose + Algebra</div>
-      <div style="background:var(--adv-bg);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--adv)">M3–M4</div>Advanced Math</div>
-      <div style="background:var(--psda-bg);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--psda)">M5–M6</div>Data + Geometry</div>
-      <div style="background:var(--des-bg);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--des)">M7–M8</div>Strategy</div>
-      <div style="background:var(--accent-light);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--accent)">M9–M10</div>Reflect</div>
+<div class="section" style="text-align:center;padding:40px 0">
+  <button class="start-btn" onclick="goScreen(3)" style="background:var(--accent);color:#fff">Complete the Course →</button>
+</div>
+
+</div>
+</div>
+
+<!-- SCREEN 4: COMPLETE -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎉</div>
+    <h1>Course Complete! 🎓</h1>
+    <p class="complete-sub">You've completed the entire PantherPrep SAT Math Course.</p>
+
+    <div style="max-width:500px;width:100%;margin-bottom:28px">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--accent);text-transform:uppercase;letter-spacing:1px;text-align:left">Your Journey</div>
+      <div class="card" style="border:2px solid var(--border)">
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center;font-size:.72rem;margin-bottom:12px">
+          <div style="background:var(--algebra-bg);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--algebra)">M1–M2</div>Diagnose + Algebra</div>
+          <div style="background:var(--adv-bg);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--adv)">M3–M4</div>Advanced Math</div>
+          <div style="background:var(--psda-bg);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--psda)">M5–M6</div>Data + Geometry</div>
+          <div style="background:var(--des-bg);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--des)">M7–M8</div>Strategy</div>
+          <div style="background:var(--accent-light);border-radius:8px;padding:8px 4px"><div style="font-weight:700;color:var(--accent)">M9–M10</div>Reflect</div>
+        </div>
+        <div style="text-align:center;font-size:.88rem;color:var(--muted)">10 modules · 4 domains · 10+ interactive exercises per module · Full strategy toolkit</div>
+      </div>
     </div>
-    <div style="text-align:center;font-size:.88rem;color:var(--muted)">10 modules · 4 domains · 10+ interactive exercises per module · Full strategy toolkit</div>
+
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--accent);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Domain mastery across Algebra, Advanced Math, Problem-Solving & Data, and Geometry & Trig</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> A complete strategy toolkit: Decision Tree, Plug In, Backsolve, POOD, and LOTD</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Desmos skills for graphing, systems, sliders, and regression — your competitive advantage</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Error classification to identify and fix your specific weak spots</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Timed practice with adaptive two-pass pacing for both modules</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Test-day confidence: timeline, checklist, mental game strategies — you're ready 🐾</div>
+    </div>
+
+    <div style="max-width:500px;width:100%;margin-bottom:32px">
+      <div class="final-msg">
+        <h2>You're Ready.</h2>
+        <p>You've built content knowledge across all four domains. You've practiced with Desmos, mastered the Decision Tree, and learned to classify your errors. You know your strengths and your priorities.</p>
+        <p>Trust the preparation. Execute the strategies. Stay calm. You've got this.</p>
+        <p style="font-size:1.2rem;margin-top:12px">🐾</p>
+      </div>
+    </div>
+
+    <div class="nav-cards">
+      <a class="nav-card" href="module-9.html"><div class="nav-card-label">← Previous</div><div class="nav-card-title">Module 9: Practice Test</div></a>
+      <a class="nav-card" href="index.html" style="border-color:var(--accent)"><div class="nav-card-label">Next →</div><div class="nav-card-title">Course Home</div></a>
+    </div>
   </div>
 </div>
 
-<!-- FINAL MESSAGE -->
-<div class="final-msg">
-  <h2>You're Ready.</h2>
-  <p>You've built content knowledge across all four domains. You've practiced with Desmos, mastered the Decision Tree, and learned to classify your errors. You know your strengths and your priorities.</p>
-  <p>Trust the preparation. Execute the strategies. Stay calm. You've got this.</p>
-  <p style="font-size:1.2rem;margin-top:12px">🐾</p>
-</div>
-
-<div class="mod-nav">
-  <a href="module-9.html">← Module 9: Practice Test</a>
-  <a href="index.html">Back to Course Hub →</a>
-</div>
-</div>
-
 <script>
+// ============ SCREEN NAVIGATION ============
+const SCREENS=['screen-welcome','screen-warmup','screen-lesson','screen-complete'];
+let currentScreen=0;
+function goScreen(idx){
+  if(idx<0||idx>=SCREENS.length)return;
+  const cur=document.getElementById(SCREENS[currentScreen]),nxt=document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');cur.classList.add('fade-out');
+  setTimeout(()=>{cur.classList.remove('active','fade-out');nxt.classList.add('active','fade-in');currentScreen=idx;updateProgressDots();window.scrollTo(0,0);},300);
+}
+function updateProgressDots(){
+  const labels=['Welcome','Warm-Up','Lesson','Complete'];
+  document.getElementById('screenProgress').innerHTML=SCREENS.map((s,i)=>{let cls='screen-dot';if(i<currentScreen)cls+=' completed';if(i===currentScreen)cls+=' current';return `<div class="${cls}" onclick="${i<=currentScreen?'goScreen('+i+')':''}" title="${labels[i]}"></div>`;}).join('');
+}
+updateProgressDots();
+
+// ============ WARM-UP (Module 9 — Practice Test) ============
+const WARMUP_QS=[
+  {source:'Module 9 — SAT Structure',q:'The SAT Math section has how many total questions across both modules?',
+   ch:['22','34','44','58'],c:2,
+   fb:'The SAT Math section has 44 total questions: 22 in Module 1 and 22 in Module 2.'},
+  {source:'Module 9 — Error Analysis',q:'Classifying an error where you knew the concept but made an arithmetic mistake — which type?',
+   ch:['Content gap','Misread the question','Careless/Arithmetic','Strategy error'],c:2,
+   fb:'Arithmetic or careless errors happen when you understand the concept but slip on computation. These are the easiest to fix — slow down and double-check.'},
+  {source:'Module 9 — Score Projection',q:'The SAT score projector estimates scores on a scale of?',
+   ch:['1–36','100–500','200–800','400–1600'],c:2,
+   fb:'Each SAT section (Math and Reading/Writing) is scored on a 200–800 scale. The total score is 400–1600.'},
+  {source:'Module 9 — Test Timing',q:'Module 1 of the SAT has how many minutes?',
+   ch:['25 minutes','30 minutes','35 minutes','45 minutes'],c:2,
+   fb:'Each module of SAT Math gives you 35 minutes for 22 questions. Two modules total = 70 minutes.'},
+  {source:'Module 9 — Next Steps',q:'After taking the practice test, the most important next step is?',
+   ch:['Take another practice test immediately','Classify and analyze your errors','Memorize more formulas','Skip to test day prep'],c:1,
+   fb:'Error analysis is the highest-leverage activity after a practice test. Classify each mistake (content gap, careless, misread, strategy) to know exactly where to focus.'}
+];
+let warmupIdx=0,warmupAnswers=[],warmupAnswered=false;
+function renderWarmup(){
+  document.getElementById('warmupDots').innerHTML=WARMUP_QS.map((_,i)=>{let cls='warmup-dot';if(i<warmupIdx)cls+=warmupAnswers[i]?' done-correct':' done-wrong';if(i===warmupIdx&&warmupIdx<WARMUP_QS.length)cls+=' active';return `<div class="${cls}"></div>`;}).join('');
+  const cont=document.getElementById('warmupContent');
+  if(warmupIdx>=WARMUP_QS.length){const cor=warmupAnswers.filter(Boolean).length;cont.innerHTML=`<div class="warmup-summary"><div class="warmup-badge">Warm-Up Complete</div><div class="warmup-score">${cor} / ${WARMUP_QS.length}</div><p style="color:var(--muted);font-size:.9rem;margin-bottom:8px">${cor===5?'Perfect recall! Module 9 concepts are locked in.':cor>=3?'Good recall! A couple of concepts to revisit.':'Some gaps from Module 9 — consider a quick review.'}</p><button class="warmup-continue" onclick="goScreen(2)">Continue to Lesson →</button></div>`;return;}
+  const q=WARMUP_QS[warmupIdx];warmupAnswered=false;
+  cont.innerHTML=`<div class="warmup-q"><div class="source-tag">From ${q.source}</div><div class="q-text">${q.q}</div><div class="warmup-choices" id="warmupChoices">${q.ch.map((ch,ci)=>`<div class="warmup-choice" onclick="answerWarmup(${ci})">${ch}</div>`).join('')}</div><div id="warmupFb" style="display:none"></div></div>`;
+}
+function answerWarmup(ci){
+  if(warmupAnswered)return;warmupAnswered=true;
+  const q=WARMUP_QS[warmupIdx],correct=ci===q.c;warmupAnswers.push(correct);
+  document.querySelectorAll('.warmup-choice').forEach((ch,i)=>{ch.classList.add('wu-dis');if(i===q.c)ch.classList.add('wu-correct');else if(i===ci&&!correct)ch.classList.add('wu-wrong');});
+  const fb=document.getElementById('warmupFb');fb.style.display='block';
+  fb.innerHTML=`<div class="warmup-fb">${correct?'✓ ':'✗ '}${q.fb}</div><button class="warmup-next" onclick="warmupIdx++;renderWarmup()">${warmupIdx<WARMUP_QS.length-1?'Next Question →':'See Results →'}</button>`;
+  document.getElementById('warmupDots').innerHTML=WARMUP_QS.map((_,i)=>{let cls='warmup-dot';if(i<warmupAnswers.length)cls+=warmupAnswers[i]?' done-correct':' done-wrong';else if(i===warmupIdx+1)cls+=' active';return `<div class="${cls}"></div>`;}).join('');
+}
+renderWarmup();
+
 // ============ FLIP CARDS ============
 const FLIPS=[
   {domain:'Algebra',color:'var(--algebra)',bg:'var(--algebra-bg)',pct:'~35%',title:'Linear Equations, Inequalities & Systems',

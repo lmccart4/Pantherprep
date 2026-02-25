@@ -3,92 +3,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module 5: Problem-Solving & Data Analysis — SAT Math — PantherPrep</title>
+<title>Module 5: Data Analysis — SAT Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--adv:#a78bfa;--geotrig:#f87171;--algebra:#34d399}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--geotrig:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--psda));width:0%;transition:width .3s ease}
+
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--psda)}
+.screen-dot.current{background:var(--psda);box-shadow:0 0 8px rgba(251,191,36,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
-.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}.back-link:hover{color:var(--accent)}
+
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--psda);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--psda);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--psda);color:#000;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(251,191,36,.3)}
+
+.warmup-container{max-width:600px;margin:0 auto;padding:60px 20px}
+.warmup-header{text-align:center;margin-bottom:32px}
+.warmup-badge{display:inline-block;background:var(--advanced);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
+.warmup-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.warmup-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.warmup-dot.done-correct{background:var(--correct)}
+.warmup-dot.done-wrong{background:var(--wrong)}
+.warmup-dot.active{background:var(--advanced);box-shadow:0 0 8px rgba(167,139,250,.4)}
+.warmup-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+.warmup-q .source-tag{font-size:.7rem;color:var(--advanced);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.warmup-q .q-text{font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.warmup-choices{display:flex;flex-direction:column;gap:8px}
+.warmup-choice{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--paper);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s}
+.warmup-choice:hover:not(.wu-dis){border-color:var(--advanced);background:rgba(167,139,250,.05)}
+.warmup-choice.wu-correct{border-color:var(--correct);background:var(--correct-bg)}
+.warmup-choice.wu-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.warmup-choice.wu-dis{pointer-events:none;opacity:.7}
+.warmup-choice.wu-correct{opacity:1}
+.warmup-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:12px;padding:10px;background:var(--paper);border-radius:8px;border-left:3px solid var(--correct)}
+.warmup-next{padding:10px 24px;background:var(--advanced);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;margin-top:12px;font-family:'Source Sans 3',sans-serif}
+.warmup-next:hover{filter:brightness(1.1)}
+.warmup-summary{text-align:center;padding:40px 20px}
+.warmup-score{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700;color:var(--advanced);margin:12px 0}
+.warmup-continue{padding:12px 28px;background:var(--psda);color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:20px;font-family:'Source Sans 3',sans-serif}
+.warmup-continue:hover{filter:brightness(1.15)}
+
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
+.back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
 .mod-badge{display:inline-block;background:var(--psda);color:#000;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
 .mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
 .mod-header .subtitle{color:var(--muted);font-size:1rem}
 .mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
-.section{margin-bottom:36px}.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--psda);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.card-accent{border-left:3px solid var(--accent)}
-.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}.callout strong{color:var(--accent)}
-.callout-yellow{background:var(--psda-bg);border-color:rgba(251,191,36,.3)}.callout-yellow strong{color:var(--psda)}
-.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}.callout-blue strong{color:var(--math)}
-.topic{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden}
-.topic-header{padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .15s}.topic-header:hover{background:rgba(251,191,36,.05)}
-.topic-title{font-weight:700;font-size:.95rem}.topic-arrow{transition:transform .2s;color:var(--muted);font-size:.9rem}
-.topic.open .topic-arrow{transform:rotate(90deg)}.topic-body{display:none;padding:0 20px 20px;font-size:.9rem;color:#ccc;line-height:1.7}.topic.open .topic-body{display:block}
-.fm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:14px}
-.fm-card{background:var(--paper);border:2px solid var(--border);border-radius:10px;padding:12px;text-align:center}.fm-card:hover{border-color:var(--psda)}
-.fm-name{font-size:.8rem;color:var(--muted);margin-bottom:4px}.fm-eq{font-family:'JetBrains Mono',monospace;font-size:.92rem;color:var(--psda);font-weight:700}
-.data-table{width:100%;border-collapse:collapse;font-size:.86rem;margin-bottom:14px}
-.data-table th,.data-table td{padding:8px 10px;border:1px solid var(--border);text-align:center}
-.data-table th{background:var(--surface);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}.data-table td{color:#ccc}
-.data-table .highlight{background:var(--psda-bg);font-weight:700;color:var(--psda)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
+.callout strong{color:var(--accent)}
+.callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
+.callout-blue strong{color:var(--math)}
+.callout-yellow{background:var(--psda-bg);border-color:rgba(251,191,36,.3)}
+.callout-yellow strong{color:var(--psda)}
+.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:all .2s}
+.topic-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer}
+.topic-header:hover{background:rgba(251,191,36,.05)}
+.topic-title{font-weight:700;font-size:.95rem;flex:1}
+.topic-arrow{color:var(--muted);font-size:.9rem;transition:transform .2s;flex-shrink:0}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-body{display:none;padding:0 18px 18px;font-size:.93rem;color:#ccc;line-height:1.7}
+.topic.open .topic-body{display:block}
+.topic-body h4{color:var(--ink);font-size:.9rem;margin:14px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+.topic-body ul{padding-left:18px;margin-bottom:10px}
+.topic-body li{margin-bottom:6px}
+
+.fm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.fm-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.fm-card:hover{border-color:var(--psda)}
+.fm-name{font-weight:700;font-size:.82rem;color:var(--psda);margin-bottom:4px}
+.fm-eq{font-family:'JetBrains Mono',monospace;font-size:.88rem}
+
 .exercise{background:var(--surface);border:2px solid var(--psda);border-radius:14px;padding:22px;margin-bottom:16px}
-.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:4px}
-.exercise-sub{font-size:.85rem;color:var(--muted);margin-bottom:14px}
+.exercise h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;margin-bottom:4px}
+.exercise-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px}
 .ex-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
 .ex-num{font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px}
-.ex-prompt{font-size:.93rem;margin-bottom:10px;line-height:1.6}
-.ex-prompt code{background:var(--psda-bg);color:var(--psda);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.9rem}
+.ex-prompt{font-size:.93rem;margin-bottom:10px;line-height:1.6;color:#ddd}
+.ex-prompt code{background:var(--psda-bg);color:var(--psda);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem}
 .ex-options{display:flex;flex-wrap:wrap;gap:6px}
 .ex-opt{padding:7px 16px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .15s}
 .ex-opt:hover:not(.ex-dis){border-color:var(--psda);background:var(--psda-bg)}
 .ex-opt.ex-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
 .ex-opt.ex-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .ex-opt.ex-dis{pointer-events:none;opacity:.6}
-.ex-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.5}.ex-fb.show{display:block}
-.ex-score{text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)}
-.ex-input-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.ex-input{width:120px;padding:8px 10px;background:var(--surface);border:2px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:1rem;text-align:center}
+.ex-fb{font-size:.85rem;padding:8px 12px;border-radius:6px;margin-top:8px;display:none;line-height:1.5}
+.ex-fb.show{display:block}
+.ex-fb.correct{background:var(--correct-bg);color:var(--correct);border:1px solid var(--correct)}
+.ex-fb.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.ex-input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ex-input{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:.95rem;width:120px}
 .ex-input:focus{border-color:var(--psda);outline:none}
-.ex-input.inp-correct{border-color:var(--correct);background:var(--correct-bg)}.ex-input.inp-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.ex-check-btn{padding:7px 16px;background:var(--psda);color:#000;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600}.ex-check-btn:hover{background:#e5a920}.ex-check-btn:disabled{opacity:.4;pointer-events:none}
-.stat-exp{background:var(--paper);border:2px solid var(--psda);border-radius:12px;padding:16px;margin-bottom:14px}
-.stat-input{width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:.9rem}.stat-input:focus{border-color:var(--psda);outline:none}
-.stat-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:12px}
-.stat-result{background:var(--surface);border-radius:8px;padding:10px;text-align:center}
-.stat-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700}.stat-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-.sat-q{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
-.sat-choices{display:flex;flex-direction:column;gap:6px}
-.sat-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:.88rem;transition:all .15s}
-.sat-choice:hover:not(.sc-dis){border-color:var(--psda);background:var(--psda-bg)}
-.sat-choice.sc-correct{border-color:var(--correct);background:var(--correct-bg)}.sat-choice.sc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
-.sat-choice.sc-dis{pointer-events:none;opacity:.6}.sat-choice.sc-dis.sc-correct{opacity:1}
-.sc-letter{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--border);font-weight:700;font-size:.78rem}
-.sat-choice.sc-correct .sc-letter{background:var(--correct);color:#fff}.sat-choice.sc-wrong .sc-letter{background:var(--wrong);color:#fff}
-.sat-fb{margin-top:8px;padding:10px;border-radius:8px;font-size:.82rem;line-height:1.5;display:none}.sat-fb.show{display:block}
-.sat-fb.sfb-correct{background:var(--correct-bg);border:1px solid var(--correct)}.sat-fb.sfb-wrong{background:var(--wrong-bg);border:1px solid var(--wrong)}
-.btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}.btn:hover{background:#a00d24}
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}.mod-nav a:hover{text-decoration:underline}
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.fm-grid{grid-template-columns:1fr 1fr}.stat-results{grid-template-columns:1fr 1fr}.ex-options{flex-direction:column}}
+.ex-btn{padding:8px 16px;background:var(--psda);color:#000;border:none;border-radius:6px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600}
+.ex-btn:hover{background:#e0a800}
+.ex-score{text-align:center;padding:10px 0;font-size:.88rem;color:var(--muted)}
+.classify-opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.classify-opt{padding:6px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .15s}
+.classify-opt:hover:not(.cl-dis){border-color:var(--psda);background:var(--psda-bg)}
+.classify-opt.cl-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.classify-opt.cl-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.classify-opt.cl-dis{pointer-events:none;opacity:.7}
+
+.data-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px}
+.data-table th,.data-table td{padding:10px 12px;border:1px solid var(--border);text-align:center}
+.data-table th{background:var(--surface);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.data-table td{color:#ccc}
+.data-table .highlight{font-weight:700;color:var(--psda);background:var(--psda-bg)}
+
+.stat-exp{background:var(--surface);border:2px solid var(--psda);border-radius:14px;padding:22px;margin-bottom:16px}
+.stat-input{width:100%;padding:10px 14px;background:var(--paper);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:.95rem;margin-bottom:14px}
+.stat-input:focus{border-color:var(--psda);outline:none}
+.stat-results{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat-result{background:var(--paper);border-radius:8px;padding:12px;text-align:center}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700}
+.stat-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+.trap-taxonomy{margin-bottom:24px}
+.trap-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:all .2s}
+.trap-card:hover{border-color:var(--accent);transform:translateX(3px)}
+.trap-number{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:#fff;flex-shrink:0}
+.trap-card-body{flex:1}
+.trap-card-name{font-weight:700;font-size:.92rem;margin-bottom:3px}
+.trap-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+.trap-card-example{font-size:.78rem;color:var(--math);font-family:'JetBrains Mono',monospace;margin-top:4px}
+
+.mc-choices{display:flex;flex-direction:column;gap:6px}
+.mc-choice{padding:10px 14px;background:var(--surface);border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .15s;display:flex;align-items:center;gap:10px}
+.mc-choice:hover:not(.mc-dis){border-color:var(--psda);background:var(--psda-bg)}
+.mc-letter{font-weight:700;color:var(--muted);min-width:24px;font-family:'JetBrains Mono',monospace}
+.mc-choice.mc-correct{border-color:var(--correct);background:var(--correct-bg)}
+.mc-choice.mc-wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.mc-choice.mc-dis{pointer-events:none;opacity:.7}
+.mc-choice.mc-correct .mc-letter{color:var(--correct)}.mc-choice.mc-wrong .mc-letter{color:var(--wrong)}
+.mc-fb{font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:8px;display:none;border-left:3px solid var(--correct);background:var(--paper);padding:8px 12px;border-radius:6px}.mc-fb.show{display:block}
+.score-bar{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+.score-bar-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.score-bar-track{flex:1;height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:var(--correct);transition:width .4s ease}
+.score-bar-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--correct);min-width:36px;text-align:right}
+.tier{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-right:8px}
+.tier-1{background:rgba(52,211,153,.15);color:var(--algebra)}.tier-2{background:var(--math-bg);color:var(--math)}.tier-3{background:var(--adv-bg);color:var(--advanced)}
+
+.confidence-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.conf-tag{padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;letter-spacing:.5px}
+.conf-tag:hover{border-color:var(--psda)}
+.conf-tag.selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="guessing"].selected{border-color:var(--psda);background:rgba(251,191,36,.12);color:var(--psda)}
+.conf-tag[data-conf="unsure"].selected{border-color:var(--math);background:var(--math-bg);color:var(--math)}
+.conf-tag[data-conf="confident"].selected{border-color:var(--advanced);background:rgba(167,139,250,.12);color:var(--advanced)}
+
+.timer-bar{position:sticky;top:8px;z-index:50;background:rgba(18,18,18,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.timer-display{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--psda);min-width:60px}
+.timer-display.warning{color:var(--psda)}
+.timer-display.danger{color:var(--wrong);animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.timer-fill{height:100%;background:var(--psda);transition:width 1s linear;border-radius:2px}
+.timer-fill.warning{background:var(--psda)}
+.timer-fill.danger{background:var(--wrong)}
+.timer-toggle{padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.75rem;color:var(--muted);cursor:pointer;font-family:'Source Sans 3',sans-serif;font-weight:600}
+.timer-toggle:hover{border-color:var(--accent);color:var(--ink)}
+.timer-toggle.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.q-dots{display:flex;gap:4px}
+.q-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.q-dot.correct{background:var(--correct)}
+.q-dot.wrong{background:var(--wrong)}
+
+.results-section{margin-top:24px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.results-section h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:14px}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px;background:var(--border);border-radius:10px;overflow:hidden}
+.results-grid-header{background:var(--surface);padding:8px;text-align:center;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.results-grid-cell{background:var(--paper);padding:10px 8px;text-align:center;font-size:.78rem;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.results-grid-cell.danger-cell{background:var(--danger-bg);border:1px solid rgba(239,68,68,.3)}
+.cell-label{font-size:.65rem;color:var(--muted);font-weight:600}
+.cell-dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.cell-dot{width:8px;height:8px;border-radius:50%}
+.difficulty-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.diff-row{display:flex;align-items:center;gap:10px}
+.diff-label{font-size:.78rem;font-weight:600;min-width:60px}
+.diff-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.diff-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.diff-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;min-width:40px;text-align:right}
+.error-category{padding:12px 16px;border-radius:10px;margin-bottom:8px;font-size:.85rem;line-height:1.6}
+.error-category .error-label{font-weight:700;margin-bottom:4px}
+.error-category .error-items{color:var(--muted);font-size:.82rem}
+
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--psda);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
+
+@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.fm-grid{grid-template-columns:1fr 1fr}.stat-results{grid-template-columns:1fr 1fr}.classify-opts{gap:4px}.preview-grid{grid-template-columns:1fr 1fr}.welcome-meta{flex-wrap:wrap;gap:12px}.results-grid{grid-template-columns:1fr;gap:1px}.nav-cards{grid-template-columns:1fr}.timer-bar{flex-wrap:wrap;gap:8px}.ex-options{flex-direction:column}}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="screen-progress" id="screenProgress"></div>
+
+<!-- SCREEN 1: WELCOME -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 5</div>
+    <h1>Problem-Solving & Data Analysis</h1>
+    <p class="welcome-sub">The most word-problem-heavy domain. These questions test reasoning more than calculation.</p>
+    <div class="welcome-meta"><span>⏱ 2-3 sessions</span><span>📋 4 topics</span><span>🔨 6 exercises</span><span>🎯 10 practice Qs</span></div>
+    <div class="preview-grid">
+      <div class="preview-card"><div class="preview-icon">🔄</div><div class="preview-title">Retrieval Warm-Up</div><div class="preview-desc">5 questions from Module 4 to activate prior knowledge</div></div>
+      <div class="preview-card"><div class="preview-icon">📊</div><div class="preview-title">4 Core Topics</div><div class="preview-desc">Ratios, statistics, data interpretation, study design</div></div>
+      <div class="preview-card"><div class="preview-icon">🎯</div><div class="preview-title">Trap Taxonomy</div><div class="preview-desc">4 named traps that recur in PSDA problems</div></div>
+      <div class="preview-card"><div class="preview-icon">🧮</div><div class="preview-title">6 Exercises</div><div class="preview-desc">Ratios, percent chains, two-way tables, statistics, study design, misleading stats</div></div>
+      <div class="preview-card"><div class="preview-icon">⏱</div><div class="preview-title">Timed Practice</div><div class="preview-desc">10 SAT-style questions with optional timer</div></div>
+      <div class="preview-card"><div class="preview-icon">📈</div><div class="preview-title">Error Analysis</div><div class="preview-desc">Difficulty breakdown + confidence matrix + trap patterns</div></div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: RETRIEVAL WARM-UP -->
+<div class="screen" id="screen-warmup">
+  <div class="warmup-container">
+    <div class="warmup-header">
+      <div class="warmup-badge">Retrieval Warm-Up</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem">Module 4 Review</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:4px">Quick recall from Functions & Properties.</p>
+      <div class="warmup-dots" id="warmupDots"></div>
+    </div>
+    <div id="warmupContent"></div>
+  </div>
+</div>
+
+<!-- SCREEN 3: LESSON CONTENT -->
+<div class="screen" id="screen-lesson">
 <div class="container">
-<a class="back-link" href="index.html">← Back to Math Course</a>
+<a class="back-link" href="index.html">← Back to SAT Math Course</a>
 <div class="mod-header">
-  <div class="mod-badge">Module 5 · Problem-Solving & Data</div>
+  <div class="mod-badge">Module 5</div>
   <h1>Problem-Solving & Data Analysis</h1>
   <p class="subtitle">The most word-problem-heavy domain. These questions test reasoning more than calculation.</p>
-  <div class="mod-meta"><span>⏱ 2–3 sessions</span><span>📋 4 topics</span><span>🔨 Phase 2: Build</span></div>
+  <div class="mod-meta"><span>⏱ 2-3 sessions</span><span>📋 4 topics</span><span>🔨 Phase 2: Build</span></div>
 </div>
+
+<div class="callout-yellow callout"><strong>Why This Domain Matters:</strong> These questions are often the most "readable" on the test — word problems grounded in real-world scenarios. Students who struggle with abstract algebra sometimes <em>thrive</em> here. Accuracy in this domain is very achievable.</div>
 
 <!-- TOPIC 5A -->
 <div class="section">
@@ -103,22 +296,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     <div class="fm-card"><div class="fm-name">Percent Decrease</div><div class="fm-eq">new = old × (1 − r)</div></div>
   </div>
   <div class="topic" onclick="this.classList.toggle('open')">
-    <div class="topic-header"><div class="topic-title">Unit Conversion & Dimensional Analysis</div><div class="topic-arrow">▶</div></div>
-    <div class="topic-body">
-      <p>Multiply by conversion factors so unwanted units cancel:</p>
-      <p><strong>Example:</strong> Convert 60 mph to feet per second:</p>
-      <p><code>60 miles/hr × 5280 ft/mile × 1 hr/3600 sec = 88 ft/sec</code></p>
-      <p>Set up fractions so miles cancel with miles, hours cancel with hours.</p>
-      <p><strong>SAT tip:</strong> Watch for unit conversion traps — data in minutes but answer in hours, or miles vs. kilometers.</p>
-    </div>
+    <div class="topic-header"><div class="topic-title">Unit Conversion & Dimensional Analysis</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body"><p>Multiply by conversion factors so unwanted units cancel:</p><p><strong>Example:</strong> Convert 60 mph to feet per second:</p><p><code>60 miles/hr × 5280 ft/mile × 1 hr/3600 sec = 88 ft/sec</code></p><p>Set up fractions so miles cancel with miles, hours cancel with hours.</p><div class="callout"><strong>SAT Trap:</strong> The question gives data in minutes but asks for hours, or gives miles but asks for feet. Always check the units!</div></div>
   </div>
   <div class="topic" onclick="this.classList.toggle('open')">
-    <div class="topic-header"><div class="topic-title">Direct vs. Inverse Proportion</div><div class="topic-arrow">▶</div></div>
-    <div class="topic-body">
-      <p><strong>Direct proportion:</strong> y = kx. As x increases, y increases. Doubling x doubles y.</p>
-      <p><strong>Inverse proportion:</strong> y = k/x. As x increases, y decreases. Doubling x halves y.</p>
-      <p>To identify: if the product xy is constant → inverse. If the ratio y/x is constant → direct.</p>
-    </div>
+    <div class="topic-header"><div class="topic-title">Direct vs. Inverse Proportion</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body"><p><strong>Direct proportion:</strong> y = kx. As x increases, y increases. Doubling x doubles y.</p><p><strong>Inverse proportion:</strong> y = k/x. As x increases, y decreases. Doubling x halves y.</p><p>To identify: if the product xy is constant → inverse. If the ratio y/x is constant → direct.</p></div>
   </div>
 </div>
 
@@ -126,52 +309,33 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <div class="section">
   <div class="section-label">Interactive Exercise 1</div>
   <h2>Ratio & Percent Problems</h2>
-  <p>Solve each problem. Type your numerical answer.</p>
+  <p>Solve each problem. Type your numerical answer (no % sign needed).</p>
   <div class="exercise" id="ratioExercise"></div>
-  <div id="ratioScore" class="ex-score"></div>
 </div>
 
-<!-- NEW EXERCISE 2: PERCENT CHANGE CHAINS -->
+<!-- EXERCISE 2: PERCENT CHANGE CHAINS -->
 <div class="section">
   <div class="section-label">Interactive Exercise 2</div>
   <h2>Percent Change Chains</h2>
   <p>One of the SAT's favorite traps: chained percent changes DON'T cancel out the way you expect. A 20% increase followed by a 20% decrease does NOT get you back to the original price.</p>
   <div class="exercise" style="border-color:var(--accent)" id="chainExercise"></div>
-  <div id="chainScore" class="ex-score"></div>
 </div>
 
 <!-- TOPIC 5B -->
 <div class="section">
   <div class="section-label">Topic 5B</div>
   <h2>Statistics: Center, Spread & Shape</h2>
-  <div class="topic" onclick="this.classList.toggle('open')">
-    <div class="topic-header"><div class="topic-title">Mean vs. Median — When It Matters</div><div class="topic-arrow">▶</div></div>
-    <div class="topic-body">
-      <p><strong>Mean</strong> = sum ÷ count. Sensitive to outliers.</p>
-      <p><strong>Median</strong> = middle value (sorted). Resistant to outliers.</p>
-      <p><strong>SAT's favorite question:</strong> "A very high value is added. Which measure is more affected?" → The mean.</p>
-      <p><strong>Example:</strong> Data: 10, 12, 14, 15, 16. Mean = 13.4, Median = 14.</p>
-      <p>Add outlier (100): Mean = 27.8 (jumped!), Median = 14.5 (barely changed).</p>
-    </div>
+  <div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Mean vs. Median — When It Matters</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body"><p><strong>Mean</strong> = sum ÷ count. Sensitive to outliers.</p><p><strong>Median</strong> = middle value (sorted). Resistant to outliers.</p><p><strong>SAT's favorite question:</strong> "A very high value is added. Which measure is more affected?" → The mean.</p><p><strong>Example:</strong> Data: 10, 12, 14, 15, 16. Mean = 13.4, Median = 14.</p><p>Add outlier (100): Mean = 27.8 (jumped!), Median = 14.5 (barely changed).</p></div>
   </div>
   <div class="topic" onclick="this.classList.toggle('open')">
-    <div class="topic-header"><div class="topic-title">Standard Deviation & Spread</div><div class="topic-arrow">▶</div></div>
-    <div class="topic-body">
-      <p><strong>Range</strong> = max − min.</p>
-      <p><strong>Standard deviation</strong> = how spread out values are from the mean. You don't need to calculate it:</p>
-      <p>• Data clustered tightly → SMALL standard deviation</p>
-      <p>• Data spread far → LARGE standard deviation</p>
-      <p>• Adding/subtracting a constant to every value does NOT change the standard deviation</p>
-      <p>• Multiplying every value by a constant DOES change the standard deviation (by that factor)</p>
-    </div>
+    <div class="topic-header"><div class="topic-title">Standard Deviation & Spread</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body"><p><strong>Range</strong> = max − min.</p><p><strong>Standard deviation</strong> = how spread out values are from the mean. You don't need to calculate it:</p><ul><li>Data clustered tightly → SMALL standard deviation</li><li>Data spread far → LARGE standard deviation</li><li>Adding/subtracting a constant to every value does NOT change the standard deviation</li><li>Multiplying every value by a constant DOES change the standard deviation (by that factor)</li></ul></div>
   </div>
   <div class="topic" onclick="this.classList.toggle('open')">
-    <div class="topic-header"><div class="topic-title">Distribution Shape</div><div class="topic-arrow">▶</div></div>
-    <div class="topic-body">
-      <p><strong>Symmetric:</strong> Mean ≈ Median. Bell-shaped or uniform.</p>
-      <p><strong>Skewed right:</strong> Tail extends right. Mean &gt; Median.</p>
-      <p><strong>Skewed left:</strong> Tail extends left. Mean &lt; Median.</p>
-    </div>
+    <div class="topic-header"><div class="topic-title">Distribution Shape</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body"><p><strong>Symmetric:</strong> Mean ≈ Median. Bell-shaped or uniform.</p><p><strong>Skewed right:</strong> Tail extends right. Mean &gt; Median.</p><p><strong>Skewed left:</strong> Tail extends left. Mean &lt; Median.</p></div>
   </div>
 </div>
 
@@ -191,24 +355,13 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <div class="section">
   <div class="section-label">Topic 5C</div>
   <h2>Data Interpretation</h2>
-  <div class="topic" onclick="this.classList.toggle('open')">
-    <div class="topic-header"><div class="topic-title">Scatterplots & Line of Best Fit</div><div class="topic-arrow">▶</div></div>
-    <div class="topic-body">
-      <p><strong>Correlation:</strong> Positive (both increase), Negative (one up, other down), None.</p>
-      <p><strong>Line of best fit:</strong> Slope = rate of change. Y-intercept = starting value.</p>
-      <p><strong>Interpolation</strong> = predicting WITHIN data range (reliable). <strong>Extrapolation</strong> = BEYOND (less reliable).</p>
-      <p><strong>Residuals</strong> = actual − predicted. Random scatter = good model. Pattern = bad fit.</p>
-    </div>
+  <div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Scatterplots & Line of Best Fit</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body"><p><strong>Correlation:</strong> Positive (both increase), Negative (one up, other down), None.</p><p><strong>Line of best fit:</strong> Slope = rate of change. Y-intercept = starting value.</p><p><strong>Interpolation</strong> = predicting WITHIN data range (reliable). <strong>Extrapolation</strong> = BEYOND (less reliable).</p><p><strong>Residuals</strong> = actual − predicted. Random scatter = good model. Pattern = bad fit.</p></div>
   </div>
   <div class="topic" onclick="this.classList.toggle('open')">
-    <div class="topic-header"><div class="topic-title">Two-Way Frequency Tables</div><div class="topic-arrow">▶</div></div>
-    <div class="topic-body">
-      <p>Two-way tables organize data by two categorical variables.</p>
-      <p><strong>Marginal frequencies:</strong> The row/column totals.</p>
-      <p><strong>Joint frequencies:</strong> The values inside the table.</p>
-      <p><strong>Conditional probability:</strong> P(A|B) = (count of A AND B) / (total count of B)</p>
-      <p><strong>Critical distinction: P(A|B) ≠ P(B|A)!</strong> "Probability of having a job given you play a sport" is NOT the same as "probability of playing a sport given you have a job." The denominator changes! This trips up even medical professionals in real life.</p>
-    </div>
+    <div class="topic-header"><div class="topic-title">Two-Way Frequency Tables</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body"><p>Two-way tables organize data by two categorical variables.</p><p><strong>Marginal frequencies:</strong> The row/column totals.</p><p><strong>Joint frequencies:</strong> The values inside the table.</p><p><strong>Conditional probability:</strong> P(A|B) = (count of A AND B) / (total count of B)</p><div class="callout"><strong>SAT Trap:</strong> P(A|B) ≠ P(B|A)! "Probability of having a job given you play a sport" is NOT the same as "probability of playing a sport given you have a job." The denominator changes!</div></div>
   </div>
   <div class="callout-blue callout"><strong>Desmos Regression:</strong> Enter data as a table, then type <code>y₁ ~ mx₁ + b</code> for linear or <code>y₁ ~ ax₁² + bx₁ + c</code> for quadratic. Desmos finds the best-fit equation automatically.</div>
 </div>
@@ -229,32 +382,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     </table>
     <div id="tableQs"></div>
   </div>
-  <div id="tableScore" class="ex-score"></div>
 </div>
 
 <!-- TOPIC 5D -->
 <div class="section">
   <div class="section-label">Topic 5D</div>
   <h2>Probability & Study Design</h2>
-  <div class="topic" onclick="this.classList.toggle('open')">
-    <div class="topic-header"><div class="topic-title">Probability Basics</div><div class="topic-arrow">▶</div></div>
-    <div class="topic-body">
-      <p><strong>P(event) = favorable / total</strong></p>
-      <p>Probability is always between 0 (impossible) and 1 (certain).</p>
-      <p><strong>Complement:</strong> P(not A) = 1 − P(A)</p>
-      <p><strong>"At least one"</strong> = 1 − P(none)</p>
-    </div>
+  <div class="topic open" onclick="if(event.target.closest('.topic-body'))return;this.classList.toggle('open')">
+    <div class="topic-header"><div class="topic-title">Probability Basics</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body"><p><strong>P(event) = favorable / total</strong></p><p>Probability is always between 0 (impossible) and 1 (certain).</p><p><strong>Complement:</strong> P(not A) = 1 − P(A)</p><p><strong>"At least one"</strong> = 1 − P(none)</p></div>
   </div>
   <div class="topic" onclick="this.classList.toggle('open')">
-    <div class="topic-header"><div class="topic-title">Study Design — The SAT's Favorite Trick</div><div class="topic-arrow">▶</div></div>
-    <div class="topic-body">
-      <p><strong>1. Random sampling</strong> → results can be generalized to the population.</p>
-      <p>Not random (e.g., volunteers) → can NOT generalize.</p>
-      <p><strong>2. Random assignment to groups</strong> → causation can be established. This makes it an EXPERIMENT.</p>
-      <p><strong>3. No random assignment</strong> → only association, NOT causation.</p>
-      <p><strong>Confounding variables:</strong> Other factors that could explain the result.</p>
-      <p><strong>Margin of error:</strong> Larger sample → smaller margin of error. To halve the margin, quadruple the sample (proportional to 1/√n).</p>
-    </div>
+    <div class="topic-header"><div class="topic-title">Study Design — The SAT's Favorite Trick</div><div class="topic-arrow">▸</div></div>
+    <div class="topic-body"><p><strong>1. Random sampling</strong> → results can be generalized to the population.</p><p>Not random (e.g., volunteers) → can NOT generalize.</p><p><strong>2. Random assignment to groups</strong> → causation can be established. This makes it an EXPERIMENT.</p><p><strong>3. No random assignment</strong> → only association, NOT causation.</p><p><strong>Confounding variables:</strong> Other factors that could explain the result.</p><p><strong>Margin of error:</strong> Larger sample → smaller margin of error. To halve the margin, quadruple the sample (proportional to 1/√n).</p></div>
   </div>
 </div>
 
@@ -263,61 +403,136 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="section-label">Interactive Exercise 4</div>
   <h2>Study Design Classifier</h2>
   <p>For each scenario, decide what valid conclusions can be drawn.</p>
-  <div class="exercise" id="studyExercise" style="border-color:var(--adv)"></div>
-  <div id="studyScore" class="ex-score"></div>
+  <div class="exercise" style="border-color:var(--advanced)" id="studyExercise"></div>
 </div>
 
-<!-- NEW EXERCISE 5: SPOT THE MISLEADING STATISTIC -->
+<!-- EXERCISE 5: SPOT THE MISLEADING STATISTIC -->
 <div class="section">
   <div class="section-label">Interactive Exercise 5</div>
   <h2>Spot the Misleading Statistic</h2>
   <p>The SAT tests whether you can identify WHY a statistical claim is flawed. For each scenario, identify the specific problem with the conclusion.</p>
   <div class="exercise" style="border-color:var(--geotrig)" id="misleadEx"></div>
-  <div id="misleadScore" class="ex-score"></div>
 </div>
 
-<!-- SAT PRACTICE -->
+<!-- TRAP TAXONOMY -->
 <div class="section">
-  <div class="section-label">SAT-Style Practice</div>
-  <h2>Practice Questions</h2>
-  <p>10 questions covering all topics. 3 foundational, 4 intermediate, 3 advanced.</p>
-  <div id="satQuestions"></div>
-  <div id="satScore" class="ex-score"></div>
-</div>
-
-<!-- KEY TAKEAWAYS -->
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>Percent change = (new − old) / old × 100. The OLD value is always the denominator.</li>
-      <li>Chained percent changes DON'T cancel: 20% up then 20% down ≠ original. Multiply the factors.</li>
-      <li>Mean is sensitive to outliers; median is resistant. The SAT tests this constantly.</li>
-      <li>On scatterplots, slope = rate of change in context. Y-intercept = starting value.</li>
-      <li>P(A|B) ≠ P(B|A)! Always check which group is the denominator.</li>
-      <li>Only EXPERIMENTS with random assignment can establish causation. Everything else is correlation.</li>
-      <li>Larger sample → smaller margin of error. Quadruple the sample to halve the margin.</li>
-      <li>Always ask: "Is the sample biased? Could there be a confounding variable?"</li>
-    </ol>
+  <div class="section-label">Math Trap Taxonomy</div>
+  <h2>Four Traps That Recur in PSDA</h2>
+  <p>Learn these by name. When you spot one in a problem, you'll know exactly what to watch for.</p>
+  <div class="trap-taxonomy">
+    <div class="trap-card"><div class="trap-number" style="background:var(--psda)">1</div><div class="trap-card-body"><div class="trap-card-name">🌀 The Percent Spiral</div><div class="trap-card-desc">Successive percent changes don't cancel. A 10% increase then 10% decrease leaves you 1% below the original.</div><div class="trap-card-example">$100 → +10% = $110 → −10% = $99 (not $100)</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--wrong)">2</div><div class="trap-card-body"><div class="trap-card-name">🎯 The Wrong Target</div><div class="trap-card-desc">Used the wrong denominator in a percentage. Percent change divides by OLD value. Percent "of" divides by the whole.</div><div class="trap-card-example">$80 → $100: change = 20/80 = 25% (not 20/100 = 20%)</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--math)">3</div><div class="trap-card-body"><div class="trap-card-name">📊 The Scale Mirage</div><div class="trap-card-desc">Misreading graph axes — a bar chart with a truncated y-axis makes small differences look huge.</div><div class="trap-card-example">Y-axis starts at 90 instead of 0 → a difference of 5 looks enormous</div></div></div>
+    <div class="trap-card"><div class="trap-number" style="background:var(--advanced)">4</div><div class="trap-card-body"><div class="trap-card-name">🔀 The Conditional Swap</div><div class="trap-card-desc">Confusing P(A|B) with P(B|A). The denominator changes depending on which condition you're "given."</div><div class="trap-card-example">P(job|sport) = 45/100 ≠ P(sport|job) = 45/80</div></div></div>
   </div>
 </div>
 
-<div class="mod-nav">
-  <a href="module-4.html">← Module 4: Functions</a>
-  <a href="module-6.html">Module 6: Geometry & Trig →</a>
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(3)">Continue to Practice →</button>
 </div>
+</div>
+</div>
+
+<!-- SCREEN 4: TIMED PRACTICE -->
+<div class="screen" id="screen-practice">
+<div class="container">
+  <div class="section-label">SAT Practice</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:4px">Practice Questions</h2>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px">10 questions at three difficulty tiers. Tag your confidence before answering.</p>
+  <div class="timer-bar" id="timerBar">
+    <div class="timer-display" id="timerDisplay">--:--</div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="q-dots" id="qDots"></div>
+    <button class="timer-toggle" id="timerToggle" onclick="toggleTimer()">⏱ Timer OFF</button>
+  </div>
+  <div id="satPractice"></div>
+  <div id="practiceResults" style="display:none"></div>
+  <div id="practiceNav" style="display:none;text-align:center;padding:24px 0">
+    <button class="start-btn" onclick="goScreen(4)">View Summary & Complete Module →</button>
+  </div>
+</div>
+</div>
+
+<!-- SCREEN 5: MODULE COMPLETE -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎉</div>
+    <h1>Module 5 Complete!</h1>
+    <p class="complete-sub">You've mastered Problem-Solving & Data Analysis.</p>
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--psda);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Percent change = (new − old) / <strong>old</strong> × 100. The OLD value is always the denominator.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Chained percent changes DON'T cancel: 20% up then 20% down ≠ original. Multiply the factors.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Mean is sensitive to outliers; median is resistant. The SAT tests this constantly.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> On scatterplots, slope = rate of change in context. Y-intercept = starting value.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> P(A|B) ≠ P(B|A)! Always check which group is the denominator.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Only EXPERIMENTS with random assignment can establish causation. Everything else is correlation.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Larger sample → smaller margin of error. Quadruple the sample to halve the margin.</div>
+    </div>
+    <div id="completePracticeStats"></div>
+    <div class="nav-cards">
+      <a class="nav-card" href="module-4.html"><div class="nav-card-label">← Previous</div><div class="nav-card-title">Module 4: Functions & Properties</div></a>
+      <a class="nav-card" href="module-6.html" style="border-color:var(--psda)"><div class="nav-card-label">Next →</div><div class="nav-card-title">Module 6: Geometry & Trig</div></a>
+    </div>
+  </div>
 </div>
 
 <script>
-// ============ PROGRESS BAR ============
-window.addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-window.innerHeight;var pct=h>0?(window.scrollY/h)*100:0;document.getElementById('progressFill').style.width=pct+'%';});
+// ============ SCREEN NAVIGATION ============
+const SCREENS=['screen-welcome','screen-warmup','screen-lesson','screen-practice','screen-complete'];
+let currentScreen=0;
+function goScreen(idx){
+  if(idx<0||idx>=SCREENS.length)return;
+  const cur=document.getElementById(SCREENS[currentScreen]),nxt=document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');cur.classList.add('fade-out');
+  setTimeout(()=>{cur.classList.remove('active','fade-out');nxt.classList.add('active','fade-in');currentScreen=idx;updateProgressDots();window.scrollTo(0,0);if(idx===3&&timerEnabled)startTimer();},300);
+}
+function updateProgressDots(){
+  document.getElementById('screenProgress').innerHTML=SCREENS.map((s,i)=>{let cls='screen-dot';if(i<currentScreen)cls+=' completed';if(i===currentScreen)cls+=' current';return `<div class="${cls}" onclick="${i<=currentScreen?'goScreen('+i+')':''}" title="${['Welcome','Warm-Up','Lesson','Practice','Complete'][i]}"></div>`;}).join('');
+}
+updateProgressDots();
+
+// ============ WARM-UP (Module 4: Functions) ============
+const WARMUP_QS=[
+  {source:'Module 4 — Functions',q:'What is f(3) if f(x) = 2x² − 1?',
+   ch:['17','11','15','19'],c:0,
+   fb:'f(3) = 2(3)² − 1 = 2(9) − 1 = 18 − 1 = 17.'},
+  {source:'Module 4 — Transformations',q:'The transformation f(x − 3) shifts the graph in which direction?',
+   ch:['Left 3','Right 3','Up 3','Down 3'],c:1,
+   fb:'f(x − h) shifts RIGHT by h units. The sign is opposite to what it looks like inside the parentheses.'},
+  {source:'Module 4 — Composition',q:'If f(x) = x + 1 and g(x) = 2x, what is f(g(3))?',
+   ch:['8','7','9','5'],c:1,
+   fb:'g(3) = 2(3) = 6. Then f(6) = 6 + 1 = 7. Work inside out.'},
+  {source:'Module 4 — End Behavior',q:'A function with the highest-power term having a negative coefficient has what end behavior?',
+   ch:['Rises on both ends','Falls on both ends (even) or falls right (odd)','Falls left, rises right','Cannot determine'],c:1,
+   fb:'Negative leading coefficient: even degree falls both ends, odd degree rises left and falls right.'},
+  {source:'Module 4 — Domain',q:'The domain of f(x) = √(x − 4) requires x to be?',
+   ch:['> 4','< 4','≥ 4','≤ 4'],c:2,
+   fb:'The expression under the square root must be ≥ 0: x − 4 ≥ 0, so x ≥ 4.'}
+];
+let warmupIdx=0,warmupAnswers=[],warmupAnswered=false;
+function renderWarmup(){
+  document.getElementById('warmupDots').innerHTML=WARMUP_QS.map((_,i)=>{let cls='warmup-dot';if(i<warmupIdx)cls+=warmupAnswers[i]?' done-correct':' done-wrong';if(i===warmupIdx&&warmupIdx<WARMUP_QS.length)cls+=' active';return `<div class="${cls}"></div>`;}).join('');
+  const cont=document.getElementById('warmupContent');
+  if(warmupIdx>=WARMUP_QS.length){const cor=warmupAnswers.filter(Boolean).length;cont.innerHTML=`<div class="warmup-summary"><div class="warmup-badge" style="background:var(--advanced);color:#fff">Warm-Up Complete</div><div class="warmup-score">${cor} / ${WARMUP_QS.length}</div><p style="color:var(--muted);font-size:.9rem;margin-bottom:8px">${cor===5?'Perfect recall! Module 4 knowledge is locked in.':cor>=3?'Good recall! A couple topics to revisit.':'Some gaps from Module 4 — consider a quick review.'}</p><button class="warmup-continue" onclick="goScreen(2)">Continue to Lesson →</button></div>`;return;}
+  const q=WARMUP_QS[warmupIdx];warmupAnswered=false;
+  cont.innerHTML=`<div class="warmup-q"><div class="source-tag">From ${q.source}</div><div class="q-text">${q.q}</div><div class="warmup-choices" id="warmupChoices">${q.ch.map((ch,ci)=>`<div class="warmup-choice" onclick="answerWarmup(${ci})">${ch}</div>`).join('')}</div><div id="warmupFb" style="display:none"></div></div>`;
+}
+function answerWarmup(ci){
+  if(warmupAnswered)return;warmupAnswered=true;
+  const q=WARMUP_QS[warmupIdx],correct=ci===q.c;warmupAnswers.push(correct);
+  document.querySelectorAll('.warmup-choice').forEach((ch,i)=>{ch.classList.add('wu-dis');if(i===q.c)ch.classList.add('wu-correct');else if(i===ci&&!correct)ch.classList.add('wu-wrong');});
+  const fb=document.getElementById('warmupFb');fb.style.display='block';
+  fb.innerHTML=`<div class="warmup-fb">${correct?'✓ ':'✗ '}${q.fb}</div><button class="warmup-next" onclick="warmupIdx++;renderWarmup()">${warmupIdx<WARMUP_QS.length-1?'Next Question →':'See Results →'}</button>`;
+  document.getElementById('warmupDots').innerHTML=WARMUP_QS.map((_,i)=>{let cls='warmup-dot';if(i<warmupAnswers.length)cls+=warmupAnswers[i]?' done-correct':' done-wrong';else if(i===warmupIdx+1)cls+=' active';return `<div class="${cls}"></div>`;}).join('');
+}
+renderWarmup();
 
 // ============ HELPERS ============
-function showScore(id,ans,items){var t=items.length,a=Object.keys(ans).length,c=0;Object.entries(ans).forEach(function(p){var i=parseInt(p[0]),v=p[1];if(v===items[i].correct||v===true)c++;});document.getElementById(id).innerHTML=a===t?'<strong style="color:'+(c>=t*.75?'var(--correct)':c>=t*.5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';}
+function mkScore(id,correct,total){return `<div class="score-bar"><div class="score-bar-label">Score</div><div class="score-bar-track"><div class="score-bar-fill" style="width:${total?correct/total*100:0}%"></div></div><div class="score-bar-val">${correct}/${total}</div></div>`;}
 
 // ============ EXERCISE 1: RATIO & PERCENT ============
-var RATIOS=[
+const RATIO_QS=[
   {prompt:'A store marks up a $40 item by 25%. What is the selling price?',answer:50,solution:'$40 × 1.25 = $50.'},
   {prompt:'A shirt was $80, now $60. What is the percent decrease?',answer:25,solution:'(80 − 60)/80 × 100 = 25%. Divide by the OLD value.'},
   {prompt:'If 3 workers paint a house in 12 hours, how many hours for 4 workers?',answer:9,solution:'Inverse proportion: 3 × 12 = 36. So 4 × h = 36, h = 9.'},
@@ -325,127 +540,244 @@ var RATIOS=[
   {prompt:'A car travels 240 miles on 8 gallons. Miles per gallon?',answer:30,solution:'240 ÷ 8 = 30 mpg.'},
   {prompt:'A population grows from 5,000 to 6,500. Percent increase?',answer:30,solution:'(6500 − 5000)/5000 × 100 = 30%.'},
 ];
-var ratioAns={};
 function renderRatios(){
-  document.getElementById('ratioExercise').innerHTML='<h3>📏 Ratios & Percentages</h3><div class="exercise-sub">Type your numerical answer (no % sign for percentages).</div>'+RATIOS.map(function(r,i){var ans=ratioAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Problem '+(i+1)+'</div><div class="ex-prompt">'+r.prompt+'</div><div class="ex-input-row"><input class="ex-input'+(has?(ans?' inp-correct':' inp-wrong'):'')+'" id="rInp'+i+'" placeholder="?" '+(has?'disabled':'')+' onkeydown="if(event.key===\'Enter\')checkRatio('+i+')"><button class="ex-check-btn" onclick="checkRatio('+i+')" '+(has?'disabled':'')+'>Check</button></div><div class="ex-fb'+(has?' show':'')+'" style="'+(has?(ans?'color:var(--correct)':'color:var(--wrong)'):'')+'">'+( has?(ans?'✓ Correct! ':'✗ Incorrect. ')+r.solution:'')+'</div></div>';}).join('');
-  var t=RATIOS.length,a=Object.keys(ratioAns).length,c=0;Object.values(ratioAns).forEach(function(v){if(v)c++;});
-  document.getElementById('ratioScore').innerHTML=a===t?'<strong style="color:'+(c>=5?'var(--correct)':c>=3?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
+  document.getElementById('ratioExercise').innerHTML=`<h3>📏 Ratios & Percentages</h3><div class="exercise-sub">Type your numerical answer (no % sign for percentages).</div>`+
+    RATIO_QS.map((q,i)=>`<div class="ex-item"><div class="ex-num">Problem ${i+1}</div><div class="ex-prompt">${q.prompt}</div><div class="ex-input-row"><input class="ex-input" type="number" step="any" id="rInp${i}" placeholder="?" onkeydown="if(event.key==='Enter')checkRatio(${i})"><button class="ex-btn" onclick="checkRatio(${i})">Check</button></div><div class="ex-fb" id="rFb${i}"></div></div>`).join('');
 }
-function checkRatio(i){var v=parseFloat(document.getElementById('rInp'+i).value);ratioAns[i]=Math.abs(v-RATIOS[i].answer)<0.1;renderRatios();}
+function checkRatio(i){
+  const v=parseFloat(document.getElementById('rInp'+i).value),fb=document.getElementById('rFb'+i);
+  if(isNaN(v)){fb.className='ex-fb show wrong';fb.textContent='Enter a number.';return;}
+  if(Math.abs(v-RATIO_QS[i].answer)<0.1){fb.className='ex-fb show correct';fb.textContent='✓ Correct! '+RATIO_QS[i].solution;}
+  else{fb.className='ex-fb show wrong';fb.textContent='✗ Not quite. '+RATIO_QS[i].solution;}
+}
 renderRatios();
 
 // ============ EXERCISE 2: PERCENT CHANGE CHAINS ============
-var CHAINS=[
-  {q:'Start: $100. Increase 20%, then decrease 20%. Final price?',correct:'$99',opts:['$100','$99','$96','$104'],fb:'$100 × 1.20 = $120. Then $120 × 0.80 = $96. Wait — let me recalculate: $120 × 0.80 = $96. The answer is $96, not $99.'},
+const CHAINS=[
+  {q:'Start: $100. Increase 20%, then decrease 20%. Final price?',correct:'$96',opts:['$100','$99','$96','$104'],fb:'$100 × 1.20 = $120. Then $120 × 0.80 = $96. The 20% decrease is taken from the LARGER number, so you lose $4 not $0.'},
   {q:'Start: $200. Decrease 10%, then increase 10%. Final price?',correct:'$198',opts:['$200','$198','$202','$180'],fb:'$200 × 0.90 = $180. Then $180 × 1.10 = $198. You lose $2 — the changes never cancel!'},
   {q:'A stock increases 50% then decreases 50%. What percent of the original value remains?',correct:'75%',opts:['100%','75%','50%','0%'],fb:'Start: 100. After +50%: 150. After −50%: 75. You lost 25% of your original investment.'},
   {q:'An item is marked up 25% then discounted 20%. The final price compared to original is:',correct:'Same price',opts:['5% more','5% less','Same price','2% more'],fb:'$100 × 1.25 = $125. Then $125 × 0.80 = $100. These specific percentages DO cancel — but only because 1.25 × 0.80 = 1.00 exactly.'},
   {q:'A population doubles (100% increase) then halves (50% decrease). Result?',correct:'Back to original',opts:['Back to original','50% more','25% less','50% less'],fb:'100 × 2.00 = 200. Then 200 × 0.50 = 100. Doubling then halving returns to original.'},
   {q:'Three consecutive 10% increases. Total percent increase?',correct:'33.1%',opts:['30%','33.1%','31%','40%'],fb:'1.10 × 1.10 × 1.10 = 1.331. Total increase = 33.1%, NOT 30%. Compounding makes it more than 3 × 10%.'},
 ];
-// Fix chain Q1 - I made an error
-CHAINS[0]={q:'Start: $100. Increase 20%, then decrease 20%. Final price?',correct:'$96',opts:['$100','$99','$96','$104'],fb:'$100 × 1.20 = $120. Then $120 × 0.80 = $96. The 20% decrease is taken from the LARGER number, so you lose $4 not $0.'};
 var chainAns={};
 function ansChain(i,oi){if(chainAns[i]!==undefined)return;chainAns[i]=CHAINS[i].opts[oi];renderChains();}
 function renderChains(){
-  document.getElementById('chainExercise').innerHTML='<h3>🔗 Percent Change Chains</h3><div class="exercise-sub">What is the final result after chained percent changes?</div>'+CHAINS.map(function(q,i){var ans=chainAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Scenario '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="ex-options">'+q.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===q.correct)cls+=' ex-correct';else if(o===ans&&o!==q.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansChain('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
-  showScore('chainScore',chainAns,CHAINS);
+  const total=CHAINS.length;const correct=Object.entries(chainAns).filter(([i,v])=>v===CHAINS[i].correct).length;
+  document.getElementById('chainExercise').innerHTML='<h3>🔗 Percent Change Chains</h3><div class="exercise-sub">What is the final result after chained percent changes?</div>'+CHAINS.map(function(q,i){var ans=chainAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Scenario '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="classify-opts">'+q.opts.map(function(o,oi){var cls='classify-opt';if(has){cls+=' cl-dis';if(o===q.correct)cls+=' cl-correct';else if(o===ans&&o!==q.correct)cls+=' cl-wrong';}return '<div class="'+cls+'" onclick="ansChain('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+(has?(ans===q.correct?' correct':' wrong'):'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('')+mkScore('ch',correct,total);
 }
 renderChains();
 
 // ============ STATISTICS EXPLORER ============
 function calcStats(){
-  var raw=document.getElementById('statInput').value;
-  var nums=raw.split(',').map(function(s){return parseFloat(s.trim());}).filter(function(n){return !isNaN(n);});
-  if(nums.length===0){document.getElementById('statResults').innerHTML='';document.getElementById('statInsight').innerHTML='';return;}
-  var sorted=nums.slice().sort(function(a,b){return a-b;});
-  var n=nums.length,sum=0;nums.forEach(function(v){sum+=v;});
-  var mean=sum/n;
-  var median=n%2===1?sorted[Math.floor(n/2)]:(sorted[n/2-1]+sorted[n/2])/2;
-  var range=sorted[n-1]-sorted[0];
+  const raw=document.getElementById('statInput').value;
+  const nums=raw.split(',').map(s=>parseFloat(s.trim())).filter(n=>!isNaN(n));
+  if(!nums.length){document.getElementById('statResults').innerHTML='';document.getElementById('statInsight').innerHTML='';return;}
+  const sorted=[...nums].sort((a,b)=>a-b);
+  const n=nums.length,sum=nums.reduce((a,b)=>a+b,0),mean=sum/n;
+  const median=n%2===1?sorted[Math.floor(n/2)]:(sorted[n/2-1]+sorted[n/2])/2;
+  const range=sorted[n-1]-sorted[0];
   document.getElementById('statResults').innerHTML=[
-    {label:'Count',val:n,color:'var(--ink)'},{label:'Mean',val:Math.round(mean*100)/100,color:'var(--psda)'},
-    {label:'Median',val:Math.round(median*100)/100,color:'var(--algebra)'},{label:'Range',val:Math.round(range*100)/100,color:'var(--geotrig)'},
-    {label:'Min',val:sorted[0],color:'var(--muted)'},{label:'Max',val:sorted[n-1],color:'var(--muted)'}
-  ].map(function(s){return '<div class="stat-result"><div class="stat-val" style="color:'+s.color+'">'+s.val+'</div><div class="stat-label">'+s.label+'</div></div>';}).join('');
-  var insight='';
-  if(Math.abs(mean-median)>range*0.15){insight=mean>median?'⚠️ Mean > Median → <strong>skewed right</strong>.':'⚠️ Mean < Median → <strong>skewed left</strong>.';}
-  else{insight='✓ Mean ≈ Median → roughly <strong>symmetric</strong>.';}
+    {label:'Count',val:n,color:'var(--ink)'},{label:'Mean',val:+(mean.toFixed(2)),color:'var(--psda)'},
+    {label:'Median',val:+(median.toFixed(2)),color:'var(--algebra)'},{label:'Range',val:+(range.toFixed(2)),color:'var(--geotrig)'},
+    {label:'Min',val:sorted[0],color:'var(--muted)'},{label:'Max',val:sorted[n-1],color:'var(--muted)'},
+  ].map(s=>`<div class="stat-result"><div class="stat-val" style="color:${s.color}">${s.val}</div><div class="stat-label">${s.label}</div></div>`).join('');
+  let insight='';
+  if(Math.abs(mean-median)>range*0.15)insight=mean>median?'⚠️ Mean > Median → <strong>skewed right</strong>.':'⚠️ Mean < Median → <strong>skewed left</strong>.';
+  else insight='✓ Mean ≈ Median → roughly <strong>symmetric</strong>.';
   document.getElementById('statInsight').innerHTML=insight;
 }
 calcStats();
 
 // ============ EXERCISE 3: TWO-WAY TABLE ============
-var TABLE_QS=[
-  {q:'What proportion of ALL students play a sport?',correct:'100/200 = 0.50',opts:['100/200 = 0.50','45/200 = 0.225','100/80 = 1.25','55/200 = 0.275'],fb:'Total who play sport = 100. Total students = 200. P = 100/200 = 0.50.'},
-  {q:'What is P(has a job | plays a sport)?',correct:'45/100 = 0.45',opts:['45/200 = 0.225','45/100 = 0.45','45/80 = 0.5625','80/200 = 0.40'],fb:'Given: plays sport (100 total). Of those, 45 have a job. P = 45/100 = 0.45.'},
-  {q:'What is P(plays a sport | has a job)?',correct:'45/80 = 0.5625',opts:['45/100 = 0.45','45/200 = 0.225','45/80 = 0.5625','80/100 = 0.80'],fb:'Given: has a job (80 total). Of those, 45 play sport. P = 45/80 = 0.5625. Notice: this is DIFFERENT from the previous answer! P(A|B) ≠ P(B|A).'},
-  {q:'What fraction of non-sport students have a job?',correct:'35/100 = 0.35',opts:['35/200 = 0.175','35/100 = 0.35','65/100 = 0.65','35/80 = 0.4375'],fb:'Non-sport column = 100. Of those, 35 have a job. P = 35/100 = 0.35.'},
-  {q:'Are "plays a sport" and "has a job" independent?',correct:'No — P(job|sport) ≠ P(job)',opts:['Yes — probabilities are equal','No — P(job|sport) ≠ P(job)','Cannot be determined','Yes — both columns total 100'],fb:'P(job) = 80/200 = 0.40. P(job|sport) = 45/100 = 0.45. Since 0.40 ≠ 0.45, NOT independent.'},
-  {q:'If 50 more sport+job students are added, what is new P(job|sport)?',correct:'95/150 ≈ 0.633',opts:['95/250 = 0.38','95/150 ≈ 0.633','45/150 = 0.30','95/130 ≈ 0.731'],fb:'New sport+job = 95. New total sport = 150. P = 95/150 ≈ 0.633.'},
+const TABLE_QS=[
+  {q:'What proportion of ALL students play a sport?',opts:['100/200 = 0.50','45/200 = 0.225','100/80 = 1.25','55/200 = 0.275'],correct:0,fb:'Total who play sport = 100. Total students = 200. P = 100/200 = 0.50.'},
+  {q:'What is P(has a job | plays a sport)?',opts:['45/200 = 0.225','45/100 = 0.45','45/80 = 0.5625','80/200 = 0.40'],correct:1,fb:'Given: plays sport (100 total). Of those, 45 have a job. P = 45/100 = 0.45.'},
+  {q:'What is P(plays a sport | has a job)?',opts:['45/100 = 0.45','45/200 = 0.225','45/80 = 0.5625','80/100 = 0.80'],correct:2,fb:'Given: has a job (80 total). Of those, 45 play sport. P = 45/80 = 0.5625. Notice: this is DIFFERENT from the previous answer! P(A|B) ≠ P(B|A).'},
+  {q:'What fraction of non-sport students have a job?',opts:['35/200 = 0.175','35/100 = 0.35','65/100 = 0.65','35/80 = 0.4375'],correct:1,fb:'Non-sport column = 100. Of those, 35 have a job. P = 35/100 = 0.35.'},
+  {q:'Are "plays a sport" and "has a job" independent?',opts:['Yes — probabilities are equal','No — P(job|sport) ≠ P(job)','Cannot be determined','Yes — both columns total 100'],correct:1,fb:'P(job) = 80/200 = 0.40. P(job|sport) = 45/100 = 0.45. Since 0.40 ≠ 0.45, NOT independent.'},
+  {q:'If 50 more sport+job students are added, what is new P(job|sport)?',opts:['95/250 = 0.38','95/150 ≈ 0.633','45/150 = 0.30','95/130 ≈ 0.731'],correct:1,fb:'New sport+job = 95. New total sport = 150. P = 95/150 ≈ 0.633.'},
 ];
-var tableAns={};
-function ansTable(i,oi){if(tableAns[i]!==undefined)return;tableAns[i]=TABLE_QS[i].opts[oi];renderTable();}
+let tableAns={};
 function renderTable(){
-  document.getElementById('tableQs').innerHTML=TABLE_QS.map(function(q,i){var ans=tableAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Question '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="ex-options">'+q.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===q.correct)cls+=' ex-correct';else if(o===ans&&o!==q.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansTable('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
-  showScore('tableScore',tableAns,TABLE_QS);
+  const total=TABLE_QS.length;const correct=Object.entries(tableAns).filter(([i,v])=>v===TABLE_QS[i].correct).length;
+  document.getElementById('tableQs').innerHTML=TABLE_QS.map((q,i)=>{
+    const a=tableAns[i];const has=a!==undefined;
+    return `<div class="ex-item"><div class="ex-num">Question ${i+1}</div><div class="ex-prompt">${q.q}</div><div class="classify-opts">${q.opts.map((o,oi)=>{let cls='classify-opt';if(has){cls+=' cl-dis';if(oi===q.correct)cls+=' cl-correct';else if(oi===a&&oi!==q.correct)cls+=' cl-wrong';}return `<div class="${cls}" onclick="ansTable(${i},${oi})">${o}</div>`;}).join('')}</div><div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
+  }).join('')+mkScore('t',correct,total);
 }
+function ansTable(i,v){if(tableAns[i]!==undefined)return;tableAns[i]=v;renderTable();}
 renderTable();
 
 // ============ EXERCISE 4: STUDY DESIGN CLASSIFIER ============
-var STUDIES=[
-  {scenario:'Researchers randomly selected 500 adults from a city and found that those who exercised regularly had lower blood pressure.',correct:'Association only — can generalize to city',opts:['Causation — exercise lowers BP','Association only — can generalize to city','Association only — cannot generalize','No valid conclusion'],fb:'Random sampling → generalize. No random assignment → only association.'},
-  {scenario:'100 volunteers were randomly assigned to drink green tea or water daily for 3 months. Green tea group showed improved focus.',correct:'Causation — but only for volunteers',opts:['Causation — generalize to all adults','Causation — but only for volunteers','Association only — generalize','Association only — cannot generalize'],fb:'Random assignment → causation. But volunteers → can\'t generalize to everyone.'},
-  {scenario:'A researcher surveys students at her own school and finds correlation between screen time and lower grades.',correct:'Association only — cannot generalize',opts:['Causation — screens lower grades','Association — generalize to all students','Association only — cannot generalize','Causation — for this school only'],fb:'No random assignment → no causation. No random sampling → can\'t generalize.'},
-  {scenario:'A national org randomly selects 10,000 people and randomly assigns half to Vitamin D supplements. Supplement group has fewer colds after 1 year.',correct:'Causation — can generalize to population',opts:['Causation — can generalize to population','Association only — generalize','Causation — only for sample','Association only — cannot generalize'],fb:'Random sampling AND random assignment → both causation and generalizability. Gold standard.'},
-  {scenario:'Countries with more chocolate consumption per capita have more Nobel Prize winners.',correct:'Correlation only — confounding variables',opts:['Causation — chocolate helps','Correlation only — confounding variables','Causation — generalize globally','Association — generalize to all countries'],fb:'Wealth is a confounding variable — wealthier countries have both more chocolate AND more Nobel winners.'},
-  {scenario:'To reduce margin of error from ±5% to ±2.5%, a researcher should:',correct:'Increase sample size',opts:['Increase sample size','Use a different method','Ask more questions','Survey a different population'],fb:'Larger sample → smaller margin of error. To halve the margin, quadruple the sample size.'},
+const STUDY_QS=[
+  {scenario:'Researchers randomly selected 500 adults from a city and found that those who exercised regularly had lower blood pressure.',opts:['Causation — exercise lowers BP','Association only — can generalize to city','Association only — cannot generalize','No valid conclusion'],correct:1,fb:'Random sampling → generalize. No random assignment → only association.'},
+  {scenario:'100 volunteers were randomly assigned to drink green tea or water daily for 3 months. Green tea group showed improved focus.',opts:['Causation — generalize to all adults','Causation — but only for volunteers','Association only — generalize','Association only — cannot generalize'],correct:1,fb:'Random assignment → causation. But volunteers → can\'t generalize to everyone.'},
+  {scenario:'A researcher surveys students at her own school and finds correlation between screen time and lower grades.',opts:['Causation — screens lower grades','Association — generalize to all students','Association only — cannot generalize','Causation — for this school only'],correct:2,fb:'No random assignment → no causation. No random sampling → can\'t generalize.'},
+  {scenario:'A national org randomly selects 10,000 people and randomly assigns half to Vitamin D supplements. Supplement group has fewer colds after 1 year.',opts:['Causation — can generalize to population','Association only — generalize','Causation — only for sample','Association only — cannot generalize'],correct:0,fb:'Random sampling AND random assignment → both causation and generalizability. Gold standard.'},
+  {scenario:'Countries with more chocolate consumption per capita have more Nobel Prize winners.',opts:['Causation — chocolate helps','Correlation only — confounding variables','Causation — generalize globally','Association — generalize to all countries'],correct:1,fb:'Wealth is a confounding variable — wealthier countries have both more chocolate AND more Nobel winners.'},
+  {scenario:'To reduce margin of error from ±5% to ±2.5%, a researcher should:',opts:['Increase sample size','Use a different method','Ask more questions','Survey a different population'],correct:0,fb:'Larger sample → smaller margin of error. To halve the margin, quadruple the sample size.'},
 ];
-var studyAns={};
-function ansStudy(i,oi){if(studyAns[i]!==undefined)return;studyAns[i]=STUDIES[i].opts[oi];renderStudies();}
+let studyAns={};
 function renderStudies(){
-  document.getElementById('studyExercise').innerHTML='<h3>🔬 Study Design Classifier</h3><div class="exercise-sub">What conclusions are valid from each study?</div>'+STUDIES.map(function(s,i){var ans=studyAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Scenario '+(i+1)+'</div><div class="ex-prompt">'+s.scenario+'</div><div class="ex-options">'+s.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===s.correct)cls+=' ex-correct';else if(o===ans&&o!==s.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansStudy('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===s.correct?'✓ Correct! ':'✗ Incorrect. ')+s.fb:'')+'</div></div>';}).join('');
-  showScore('studyScore',studyAns,STUDIES);
+  const total=STUDY_QS.length;const correct=Object.entries(studyAns).filter(([i,v])=>v===STUDY_QS[i].correct).length;
+  document.getElementById('studyExercise').innerHTML=`<h3>🔬 Study Design Classifier</h3><div class="exercise-sub">What conclusions are valid from each study?</div>`+
+    STUDY_QS.map((q,i)=>{const a=studyAns[i];const has=a!==undefined;
+      return `<div class="ex-item"><div class="ex-num">Scenario ${i+1}</div><div class="ex-prompt">${q.scenario}</div><div class="classify-opts">${q.opts.map((o,oi)=>{let cls='classify-opt';if(has){cls+=' cl-dis';if(oi===q.correct)cls+=' cl-correct';else if(oi===a&&oi!==q.correct)cls+=' cl-wrong';}return `<div class="${cls}" onclick="ansStudy(${i},${oi})">${o}</div>`;}).join('')}</div><div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
+    }).join('')+mkScore('st',correct,total);
 }
+function ansStudy(i,v){if(studyAns[i]!==undefined)return;studyAns[i]=v;renderStudies();}
 renderStudies();
 
 // ============ EXERCISE 5: SPOT THE MISLEADING STATISTIC ============
-var MISLEAD=[
-  {scenario:'"9 out of 10 dentists recommend our toothpaste!" The company surveyed 10 dentists who were paid consultants.',correct:'Biased sample',opts:['Biased sample','Correlation ≠ causation','Cherry-picked data','Too small sample'],fb:'Paid consultants are not representative of all dentists. The sample is biased — they have financial incentive to recommend it.'},
-  {scenario:'A news headline: "People who eat organic food live 3 years longer!" Based on observational data from health-conscious consumers.',correct:'Confounding variables',opts:['Biased sample','Confounding variables','Misleading graph','Too small sample'],fb:'People who eat organic may also exercise more, earn more, and have better healthcare. These confounding variables — not organic food itself — could explain the difference.'},
-  {scenario:'A graph shows company revenue from $995M to $1.01B, but the y-axis starts at $990M, making the growth look dramatic.',correct:'Misleading graph axis',opts:['Cherry-picked data','Biased sample','Misleading graph axis','Correlation ≠ causation'],fb:'Starting the y-axis above zero exaggerates small changes. The actual growth is about 1.5%, but the graph makes it look like a massive increase.'},
-  {scenario:'"Our SAT prep course works! Students scored 50 points higher after taking it." But there was no control group.',correct:'No control group for comparison',opts:['Biased sample','No control group for comparison','Cherry-picked data','Confounding variables'],fb:'Without a control group, we don\'t know if students would have improved just from practice, maturity, or retaking the test. The improvement might have nothing to do with the course.'},
-  {scenario:'A politician says "Crime dropped 15% under my leadership!" but only shows data from the 2 best months out of 24.',correct:'Cherry-picked data',opts:['Biased sample','Confounding variables','Misleading graph axis','Cherry-picked data'],fb:'Selecting only the data that supports your conclusion is cherry-picking. The overall trend for all 24 months might show no change or even an increase.'},
-  {scenario:'"States that spend more on education have higher test scores." Conclusion: spending more money improves education.',correct:'Correlation ≠ causation',opts:['Biased sample','Cherry-picked data','Correlation ≠ causation','Misleading graph axis'],fb:'This is observational data. Wealthier states both spend more AND have other advantages (family income, resources). Correlation does not imply causation.'},
+const MISLEAD_QS=[
+  {scenario:'"9 out of 10 dentists recommend our toothpaste!" The company surveyed 10 dentists who were paid consultants.',opts:['Biased sample','Correlation ≠ causation','Cherry-picked data','Too small sample'],correct:0,fb:'Paid consultants are not representative of all dentists. The sample is biased — they have financial incentive to recommend it.'},
+  {scenario:'"People who eat organic food live 3 years longer!" Based on observational data from health-conscious consumers.',opts:['Biased sample','Confounding variables','Misleading graph','Too small sample'],correct:1,fb:'People who eat organic may also exercise more, earn more, and have better healthcare. These confounding variables — not organic food itself — could explain the difference.'},
+  {scenario:'A graph shows company revenue from $995M to $1.01B, but the y-axis starts at $990M, making the growth look dramatic.',opts:['Cherry-picked data','Biased sample','Misleading graph axis','Correlation ≠ causation'],correct:2,fb:'Starting the y-axis above zero exaggerates small changes. The actual growth is about 1.5%, but the graph makes it look like a massive increase.'},
+  {scenario:'"Our SAT prep course works! Students scored 50 points higher after taking it." But there was no control group.',opts:['Biased sample','No control group for comparison','Cherry-picked data','Confounding variables'],correct:1,fb:'Without a control group, we don\'t know if students would have improved just from practice, maturity, or retaking the test.'},
+  {scenario:'A politician says "Crime dropped 15% under my leadership!" but only shows data from the 2 best months out of 24.',opts:['Biased sample','Confounding variables','Misleading graph axis','Cherry-picked data'],correct:3,fb:'Selecting only the data that supports your conclusion is cherry-picking. The overall trend for all 24 months might show no change or even an increase.'},
+  {scenario:'"States that spend more on education have higher test scores." Conclusion: spending more money improves education.',opts:['Biased sample','Cherry-picked data','Correlation ≠ causation','Misleading graph axis'],correct:2,fb:'This is observational data. Wealthier states both spend more AND have other advantages (family income, resources). Correlation does not imply causation.'},
 ];
-var misleadAns={};
-function ansMislead(i,oi){if(misleadAns[i]!==undefined)return;misleadAns[i]=MISLEAD[i].opts[oi];renderMislead();}
+let misleadAns={};
 function renderMislead(){
-  document.getElementById('misleadEx').innerHTML='<h3>🚩 Spot the Problem</h3><div class="exercise-sub">What\'s wrong with each statistical claim?</div>'+MISLEAD.map(function(q,i){var ans=misleadAns[i];var has=ans!==undefined;return '<div class="ex-item"><div class="ex-num">Claim '+(i+1)+'</div><div class="ex-prompt">'+q.scenario+'</div><div class="ex-options">'+q.opts.map(function(o,oi){var cls='ex-opt';if(has){cls+=' ex-dis';if(o===q.correct)cls+=' ex-correct';else if(o===ans&&o!==q.correct)cls+=' ex-wrong';}return '<div class="'+cls+'" onclick="ansMislead('+i+','+oi+')">'+o+'</div>';}).join('')+'</div><div class="ex-fb'+(has?' show':'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
-  showScore('misleadScore',misleadAns,MISLEAD);
+  const total=MISLEAD_QS.length;const correct=Object.entries(misleadAns).filter(([i,v])=>v===MISLEAD_QS[i].correct).length;
+  document.getElementById('misleadEx').innerHTML=`<h3>🚩 Spot the Problem</h3><div class="exercise-sub">What's wrong with each statistical claim?</div>`+
+    MISLEAD_QS.map((q,i)=>{const a=misleadAns[i];const has=a!==undefined;
+      return `<div class="ex-item"><div class="ex-num">Claim ${i+1}</div><div class="ex-prompt">${q.scenario}</div><div class="classify-opts">${q.opts.map((o,oi)=>{let cls='classify-opt';if(has){cls+=' cl-dis';if(oi===q.correct)cls+=' cl-correct';else if(oi===a&&oi!==q.correct)cls+=' cl-wrong';}return `<div class="${cls}" onclick="ansMislead(${i},${oi})">${o}</div>`;}).join('')}</div><div class="ex-fb${has?' show':''}${has?(a===q.correct?' correct':' wrong'):''}">${has?(a===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:''}</div></div>`;
+    }).join('')+mkScore('ml',correct,total);
 }
+function ansMislead(i,v){if(misleadAns[i]!==undefined)return;misleadAns[i]=v;renderMislead();}
 renderMislead();
 
-// ============ SAT PRACTICE ============
-var SAT_QS=[
-  {tier:'Tier 1',q:'If 40% of 250 students passed an exam, how many passed?',choices:['40','80','100','160'],correct:2,fb:'0.40 × 250 = 100.'},
-  {tier:'Tier 1',q:'Data set: 3, 5, 7, 9, 11. What is the mean?',choices:['5','7','9','35'],correct:1,fb:'(3+5+7+9+11)/5 = 35/5 = 7.'},
-  {tier:'Tier 1',q:'A jacket costs $120 after a 20% discount. What was the original price?',choices:['$96','$140','$144','$150'],correct:3,fb:'You pay 80% of original: 0.80 × original = 120 → original = $150. Trap: $144 is 120 × 1.20 — working backwards wrong.'},
-  {tier:'Tier 2',q:'A scatterplot line of best fit: y = 2.5x + 15 (x = hours studied, y = score). What does 2.5 mean?',choices:['Minimum score','Score when x = 0','Predicted increase per hour studied','Total hours studied'],correct:2,fb:'Slope = rate of change: each additional hour → 2.5 more points.'},
-  {tier:'Tier 2',q:'Mean = 50, median = 45. The distribution is most likely:',choices:['Symmetric','Skewed left','Skewed right','Uniform'],correct:2,fb:'Mean > Median → skewed right. High values pull the mean up.'},
-  {tier:'Tier 2',q:'300 voters surveyed, margin ±4%. To reduce to ±2%, the researcher should:',choices:['Survey 600','Survey 1,200','Ask more questions','Different method'],correct:1,fb:'To halve the margin, quadruple the sample: 300 × 4 = 1,200. (Margin ∝ 1/√n.)'},
-  {tier:'Tier 2',q:'A store increases prices 10%, then offers 10% off. Compared to original:',choices:['Same','1% less','1% more','10% less'],correct:1,fb:'$100 × 1.10 = $110 × 0.90 = $99. That\'s 1% less.'},
-  {tier:'Tier 3',q:'P(A|B) = 0.6 and P(A) = 0.4. What can you conclude?',choices:['A and B are independent','A and B are not independent','P(B|A) = 0.6','P(A and B) = 0.24'],correct:1,fb:'If independent, P(A|B) = P(A). Since 0.6 ≠ 0.4, they are NOT independent.'},
-  {tier:'Tier 3',q:'Adding a constant k to every value in a data set. Which changes?',choices:['Mean changes, SD changes','Mean changes, SD stays same','Mean stays same, SD changes','Neither changes'],correct:1,fb:'Adding a constant shifts all values equally: mean increases by k, but spread doesn\'t change, so SD stays the same.'},
-  {tier:'Tier 3',q:'A sample of 400 has 52% supporting a policy, margin ±5%. Which conclusion is valid?',choices:['Majority definitely supports it','Between 47% and 57% likely support it','Exactly 52% of population supports it','The poll is too small to conclude anything'],correct:1,fb:'52% ± 5% gives a confidence interval of 47% to 57%. Since the interval includes values below 50%, we can\'t be certain a majority supports it.'},
+// ============ TIMED PRACTICE ============
+const PST=[
+  {t:1,tp:'5A',q:'If 40% of 250 students passed an exam, how many passed?',ch:['40','80','100','160'],c:2,fb:'0.40 × 250 = 100.',
+   trap:null,trapAnswer:0,trapDesc:'Confused the percent with the count'},
+  {t:1,tp:'5B',q:'Data set: 3, 5, 7, 9, 11. What is the mean?',ch:['5','7','9','35'],c:1,fb:'(3+5+7+9+11)/5 = 35/5 = 7.',
+   trap:'wrong_target',trapAnswer:3,trapDesc:'Gave the sum instead of the mean — The Wrong Target'},
+  {t:1,tp:'5A',q:'A jacket costs $120 after a 20% discount. What was the original price?',ch:['$96','$140','$144','$150'],c:3,fb:'You pay 80% of original: 0.80 × original = 120 → original = $150. Trap: $144 is 120 × 1.20 — working backwards wrong.',
+   trap:'percent_spiral',trapAnswer:2,trapDesc:'Added 20% to sale price instead of dividing — Percent Spiral'},
+  {t:2,tp:'5C',q:'A scatterplot line of best fit: <code>y = 2.5x + 15</code> (x = hours studied, y = score). What does 2.5 mean?',ch:['Minimum score','Score when x = 0','Predicted increase per hour studied','Total hours studied'],c:2,fb:'Slope = rate of change: each additional hour → 2.5 more points.',
+   trap:null,trapAnswer:1,trapDesc:'Confused slope with y-intercept'},
+  {t:2,tp:'5B',q:'Mean = 50, median = 45. The distribution is most likely:',ch:['Symmetric','Skewed left','Skewed right','Uniform'],c:2,fb:'Mean > Median → skewed right. High values pull the mean up.',
+   trap:'conditional_swap',trapAnswer:1,trapDesc:'Reversed the skew direction — Conditional Swap on mean vs median'},
+  {t:2,tp:'5D',q:'300 voters surveyed, margin ±4%. To reduce to ±2%, the researcher should:',ch:['Survey 600','Survey 1,200','Ask more questions','Different method'],c:1,fb:'To halve the margin, quadruple the sample: 300 × 4 = 1,200. (Margin ∝ 1/√n.)',
+   trap:'wrong_target',trapAnswer:0,trapDesc:'Doubled instead of quadrupled the sample — The Wrong Target'},
+  {t:2,tp:'5A',q:'A store increases prices 10%, then offers 10% off. Compared to original:',ch:['Same','1% less','1% more','10% less'],c:1,fb:'$100 × 1.10 = $110 × 0.90 = $99. That\'s 1% less.',
+   trap:'percent_spiral',trapAnswer:0,trapDesc:'Assumed successive percent changes cancel — The Percent Spiral'},
+  {t:3,tp:'5C',q:'P(A|B) = 0.6 and P(A) = 0.4. What can you conclude?',ch:['A and B are independent','A and B are not independent','P(B|A) = 0.6','P(A and B) = 0.24'],c:1,fb:'If independent, P(A|B) = P(A). Since 0.6 ≠ 0.4, they are NOT independent.',
+   trap:'conditional_swap',trapAnswer:0,trapDesc:'Assumed conditional equals marginal — The Conditional Swap'},
+  {t:3,tp:'5B',q:'Adding a constant k to every value in a data set. Which changes?',ch:['Mean changes, SD changes','Mean changes, SD stays same','Mean stays same, SD changes','Neither changes'],c:1,fb:'Adding a constant shifts all values equally: mean increases by k, but spread doesn\'t change, so SD stays the same.',
+   trap:null,trapAnswer:0,trapDesc:'Thought adding a constant changes spread'},
+  {t:3,tp:'5D',q:'A sample of 400 has 52% supporting a policy, margin ±5%. Which conclusion is valid?',ch:['Majority definitely supports it','Between 47% and 57% likely support it','Exactly 52% of population supports it','The poll is too small to conclude anything'],c:1,fb:'52% ± 5% gives a confidence interval of 47% to 57%. Since the interval includes values below 50%, we can\'t be certain a majority supports it.',
+   trap:'scale_mirage',trapAnswer:0,trapDesc:'Ignored the margin of error — The Scale Mirage'},
 ];
-var satAns={};
-function renderSAT(){
-  document.getElementById('satQuestions').innerHTML=SAT_QS.map(function(q,i){var ans=satAns[i];var has=ans!==undefined;return '<div class="sat-q"><div class="ex-num">'+q.tier+' · Question '+(i+1)+'</div><div class="ex-prompt">'+q.q+'</div><div class="sat-choices">'+q.choices.map(function(ch,ci){var cls='sat-choice';if(has){cls+=' sc-dis';if(ci===q.correct)cls+=' sc-correct';else if(ci===ans&&ci!==q.correct)cls+=' sc-wrong';}return '<div class="'+cls+'" onclick="satAns['+i+']='+ci+';renderSAT()"><div class="sc-letter">'+'ABCD'[ci]+'</div><div>'+ch+'</div></div>';}).join('')+'</div><div class="sat-fb'+(has?' show':'')+(has?(ans===q.correct?' sfb-correct':' sfb-wrong'):'')+'">'+(has?(ans===q.correct?'✓ Correct! ':'✗ Incorrect. ')+q.fb:'')+'</div></div>';}).join('');
-  var t=SAT_QS.length,a=Object.keys(satAns).length,c=0;Object.entries(satAns).forEach(function(p){if(parseInt(p[1])===SAT_QS[parseInt(p[0])].correct)c++;});
-  document.getElementById('satScore').innerHTML=a===t?'<strong style="color:'+(c>=7?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong>':a>0?a+'/'+t+' completed':'';
+
+const TRAP_NAMES={'percent_spiral':'🌀 Percent Spiral','wrong_target':'🎯 Wrong Target','scale_mirage':'📊 Scale Mirage','conditional_swap':'🔀 Conditional Swap'};
+
+let pstA={},pstConf={},pstTime={},pstStartTime=null;
+let timerEnabled=false,timerInterval=null,timerSeconds=0;
+const SECS_PER_Q=95;let totalTimerSecs=PST.length*SECS_PER_Q;
+
+function toggleTimer(){
+  timerEnabled=!timerEnabled;const btn=document.getElementById('timerToggle');
+  btn.textContent=timerEnabled?'⏱ Timer ON':'⏱ Timer OFF';btn.classList.toggle('active',timerEnabled);
+  if(!timerEnabled&&timerInterval){clearInterval(timerInterval);timerInterval=null;document.getElementById('timerDisplay').textContent='--:--';document.getElementById('timerFill').style.width='100%';}
+  else if(timerEnabled&&currentScreen===3){startTimer();}
 }
-renderSAT();
+function startTimer(){
+  if(timerInterval)clearInterval(timerInterval);timerSeconds=totalTimerSecs;updateTimerDisplay();
+  timerInterval=setInterval(()=>{timerSeconds--;updateTimerDisplay();if(timerSeconds<=0){clearInterval(timerInterval);timerInterval=null;}},1000);pstStartTime=Date.now();
+}
+function updateTimerDisplay(){
+  const disp=document.getElementById('timerDisplay'),fill=document.getElementById('timerFill');
+  const mins=Math.floor(timerSeconds/60),secs=timerSeconds%60;
+  disp.textContent=`${mins}:${secs.toString().padStart(2,'0')}`;
+  const pct=(timerSeconds/totalTimerSecs)*100;fill.style.width=pct+'%';
+  disp.className='timer-display';fill.className='timer-fill';
+  if(pct<15){disp.classList.add('danger');fill.classList.add('danger');}
+  else if(pct<35){disp.classList.add('warning');fill.classList.add('warning');}
+}
+
+function renderPST(){
+  const answered=Object.keys(pstA).length;
+  document.getElementById('qDots').innerHTML=PST.map((_,i)=>{let cls='q-dot';if(pstA[i]!==undefined)cls+=pstA[i]===PST[i].c?' correct':' wrong';return `<div class="${cls}"></div>`;}).join('');
+  document.getElementById('satPractice').innerHTML=PST.map((q,i)=>{
+    const a=pstA[i],h=a!==undefined;const conf=pstConf[i];
+    const tierLabel=q.t===1?'Easy':q.t===2?'Medium':'Hard';
+    const trapName=q.trap?TRAP_NAMES[q.trap]||'':'';
+    return `<div class="ex-item" style="border-color:${q.t===1?'var(--algebra)':q.t===2?'var(--math)':'var(--advanced)'}">
+      <div style="margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="tier tier-${q.t}">${tierLabel}</span><span style="font-size:.75rem;color:var(--muted)">Topic ${q.tp}</span>
+        ${trapName&&h?`<span style="font-size:.72rem;color:var(--accent)">Trap: ${trapName}</span>`:''}
+      </div>
+      <div class="ex-prompt">${q.q}</div>
+      ${!h?`<div class="confidence-row">
+        <div class="conf-tag ${conf==='guessing'?'selected':''}" data-conf="guessing" onclick="setConf(${i},'guessing')">Guessing</div>
+        <div class="conf-tag ${conf==='unsure'?'selected':''}" data-conf="unsure" onclick="setConf(${i},'unsure')">Unsure</div>
+        <div class="conf-tag ${conf==='confident'?'selected':''}" data-conf="confident" onclick="setConf(${i},'confident')">Confident</div>
+      </div>`:`<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">Confidence: ${conf||'not tagged'}</div>`}
+      <div class="mc-choices">${q.ch.map((ch,ci)=>{let c='mc-choice';if(h){c+=' mc-dis';if(ci===q.c)c+=' mc-correct';else if(ci===a)c+=' mc-wrong';}return `<div class="${c}" onclick="aPST(${i},${ci})"><div class="mc-letter">${'ABCD'[ci]}</div><div>${ch}</div></div>`;}).join('')}</div>
+      <div class="mc-fb${h?' show':''}">${h?(a===q.c?'✓ Correct! ':'✗ Incorrect. ')+q.fb+(a!==q.c&&q.trapAnswer===a?'<br><span style="color:var(--psda)">⚠️ '+q.trapDesc+'</span>':''):''}</div>
+    </div>`;
+  }).join('');
+  if(answered===PST.length){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}document.getElementById('practiceNav').style.display='block';showPracticeResults();}
+}
+function setConf(i,level){if(pstA[i]!==undefined)return;pstConf[i]=level;renderPST();}
+function aPST(i,v){if(pstA[i]!==undefined)return;pstA[i]=v;if(pstStartTime){pstTime[i]=Date.now()-pstStartTime;pstStartTime=Date.now();}renderPST();}
+
+function showPracticeResults(){
+  const total=PST.length,correct=Object.entries(pstA).filter(([i,v])=>v===PST[i].c).length;
+  const byDiff={1:{cor:0,tot:0},2:{cor:0,tot:0},3:{cor:0,tot:0}};
+  PST.forEach((q,i)=>{byDiff[q.t].tot++;if(pstA[i]===q.c)byDiff[q.t].cor++;});
+  const matrix={};['guessing','unsure','confident'].forEach(c=>{matrix[c]={correct:[],wrong:[]};});
+  PST.forEach((q,i)=>{const conf=pstConf[i]||'unsure';matrix[conf][pstA[i]===q.c?'correct':'wrong'].push(i);});
+  const errors={content_gap:[],trap_answer:[],careless:[],calibration:[]};
+  PST.forEach((q,i)=>{if(pstA[i]===q.c)return;const conf=pstConf[i]||'unsure';if(pstA[i]===q.trapAnswer)errors.trap_answer.push({i,desc:q.trapDesc,topic:q.tp});else errors.content_gap.push({i,topic:q.tp});if(conf==='confident'){if(q.t===1)errors.careless.push({i,topic:q.tp});errors.calibration.push({i,topic:q.tp});}});
+
+  let html=`<div class="results-section"><h3>📊 Practice Results: ${correct}/${total}</h3>
+    <div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">By Difficulty</div>
+    <div class="difficulty-bars">
+      <div class="diff-row"><span class="diff-label" style="color:var(--algebra)">Easy</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[1].tot?byDiff[1].cor/byDiff[1].tot*100:0}%;background:var(--algebra)"></div></div><span class="diff-val" style="color:var(--algebra)">${byDiff[1].cor}/${byDiff[1].tot}</span></div>
+      <div class="diff-row"><span class="diff-label" style="color:var(--math)">Medium</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[2].tot?byDiff[2].cor/byDiff[2].tot*100:0}%;background:var(--math)"></div></div><span class="diff-val" style="color:var(--math)">${byDiff[2].cor}/${byDiff[2].tot}</span></div>
+      <div class="diff-row"><span class="diff-label" style="color:var(--advanced)">Hard</span><div class="diff-track"><div class="diff-fill" style="width:${byDiff[3].tot?byDiff[3].cor/byDiff[3].tot*100:0}%;background:var(--advanced)"></div></div><span class="diff-val" style="color:var(--advanced)">${byDiff[3].cor}/${byDiff[3].tot}</span></div>
+    </div></div>`;
+  html+=`<div style="margin-bottom:20px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Confidence × Accuracy Matrix</div>
+    <div class="results-grid">
+      <div class="results-grid-header"></div><div class="results-grid-header">Guessing</div><div class="results-grid-header">Unsure</div><div class="results-grid-header">Confident</div>
+      <div class="results-grid-header">✓ Correct</div>
+      <div class="results-grid-cell"><div class="cell-label">Lucky</div><div class="cell-dots">${matrix.guessing.correct.map(()=>'<div class="cell-dot" style="background:var(--psda)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.correct.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Developing</div><div class="cell-dots">${matrix.unsure.correct.map(()=>'<div class="cell-dot" style="background:var(--math)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.correct.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Solid</div><div class="cell-dots">${matrix.confident.correct.map(()=>'<div class="cell-dot" style="background:var(--correct)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.confident.correct.length}</div></div>
+      <div class="results-grid-header">✗ Wrong</div>
+      <div class="results-grid-cell"><div class="cell-label">Expected</div><div class="cell-dots">${matrix.guessing.wrong.map(()=>'<div class="cell-dot" style="background:var(--muted)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.guessing.wrong.length}</div></div>
+      <div class="results-grid-cell"><div class="cell-label">Needs work</div><div class="cell-dots">${matrix.unsure.wrong.map(()=>'<div class="cell-dot" style="background:var(--psda)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--muted)">${matrix.unsure.wrong.length}</div></div>
+      <div class="results-grid-cell danger-cell"><div class="cell-label" style="color:var(--wrong);font-weight:700">⚠️ DANGER</div><div class="cell-dots">${matrix.confident.wrong.map(()=>'<div class="cell-dot" style="background:var(--wrong)"></div>').join('')}</div><div style="font-size:.7rem;color:var(--wrong)">${matrix.confident.wrong.length}</div></div>
+    </div>
+    ${matrix.confident.wrong.length>0?'<div class="callout" style="border-color:var(--wrong);background:var(--wrong-bg)"><strong style="color:var(--wrong)">Confident + Wrong</strong> is the most dangerous category. These errors persist because you won\'t self-correct what you think you already know.</div>':''}
+  </div>`;
+  const hasErrors=errors.trap_answer.length+errors.content_gap.length>0;
+  if(hasErrors){
+    html+=`<div style="margin-bottom:16px"><div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Error Pattern Analysis</div>`;
+    if(errors.trap_answer.length>0)html+=`<div class="error-category" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3)"><div class="error-label" style="color:var(--psda)">🟡 Trap Answers (${errors.trap_answer.length})</div><div class="error-items">${errors.trap_answer.map(e=>e.desc).join(' · ')}</div></div>`;
+    if(errors.content_gap.length>0)html+=`<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">🔴 Content Gaps (${errors.content_gap.length})</div><div class="error-items">Topics: ${[...new Set(errors.content_gap.map(e=>e.topic))].join(', ')}</div></div>`;
+    if(errors.careless.length>0)html+=`<div class="error-category" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3)"><div class="error-label" style="color:var(--math)">🔵 Possible Careless Errors (${errors.careless.length})</div><div class="error-items">Confident + wrong on easy questions — likely arithmetic mistakes</div></div>`;
+    if(errors.calibration.length>0)html+=`<div class="error-category" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3)"><div class="error-label" style="color:var(--wrong)">⚠️ Calibration Issues (${errors.calibration.length})</div><div class="error-items">You were confident but wrong — review these topics carefully</div></div>`;
+    html+=`</div>`;
+  }
+  html+=`</div>`;
+  document.getElementById('practiceResults').style.display='block';
+  document.getElementById('practiceResults').innerHTML=html;
+  document.getElementById('completePracticeStats').innerHTML=`
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:24px;max-width:500px;width:100%;text-align:left">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Practice Results</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--correct);margin-bottom:8px">${correct}/${total} correct</div>
+      <div style="font-size:.82rem;color:var(--muted)">Easy: ${byDiff[1].cor}/${byDiff[1].tot} · Medium: ${byDiff[2].cor}/${byDiff[2].tot} · Hard: ${byDiff[3].cor}/${byDiff[3].tot}</div>
+    </div>`;
+}
+renderPST();
 </script>
-<script src="/translate.js"></script></body>
+<script src="/translate.js"></script>
+</body>
 </html>

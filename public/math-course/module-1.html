@@ -6,13 +6,57 @@
 <title>Module 1: Diagnostic & Orientation — SAT Math — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--advanced:#a78bfa;--psda:#fbbf24;--geotrig:#f87171;--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12)}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--math:#60a5fa;--math-bg:rgba(96,165,250,.1);--algebra:#34d399;--algebra-bg:rgba(52,211,153,.1);--advanced:#a78bfa;--adv-bg:rgba(167,139,250,.1);--psda:#fbbf24;--psda-bg:rgba(251,191,36,.1);--geotrig:#f87171;--geotrig-bg:rgba(248,113,113,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--danger:#ef4444;--danger-bg:rgba(239,68,68,.08);--des:#2bc4a9;--des-bg:rgba(43,196,169,.1);--strat:#f97316;--strat-bg:rgba(249,115,22,.1)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
-.progress-bar{position:fixed;top:4px;left:0;right:0;height:3px;background:var(--border);z-index:99}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--math));width:0%;transition:width .3s ease}
+
+.screen{display:none;opacity:0;transition:opacity .4s ease;min-height:100vh}
+.screen.active{display:block;opacity:1}
+.screen.fade-in{animation:fadeIn .4s ease forwards}
+.screen.fade-out{animation:fadeOut .3s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+
+.screen-progress{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101;padding:6px 14px;background:rgba(18,18,18,.85);backdrop-filter:blur(8px);border-radius:20px;border:1px solid var(--border)}
+.screen-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer}
+.screen-dot.completed{background:var(--accent)}
+.screen-dot.current{background:var(--accent);box-shadow:0 0 8px rgba(200,16,46,.5);transform:scale(1.25)}
+.screen-dot:hover{transform:scale(1.3)}
+
 .container{max-width:800px;margin:0 auto;padding:20px 20px 60px}
+
+/* WELCOME SCREEN */
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.welcome-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:18px}
+.welcome-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:8px;max-width:600px}
+.welcome-sub{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+.welcome-meta{display:flex;gap:24px;justify-content:center;margin-bottom:36px;font-size:.85rem;color:var(--muted)}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:600px;width:100%;margin-bottom:40px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 14px;text-align:left;transition:all .2s}
+.preview-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.preview-icon{font-size:1.4rem;margin-bottom:8px}
+.preview-title{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.preview-desc{font-size:.72rem;color:var(--muted);line-height:1.4}
+.start-btn{padding:14px 36px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.start-btn:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,16,46,.3)}
+
+/* COMPLETE SCREEN */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+.complete-icon{font-size:4rem;margin-bottom:16px;animation:celebrateBounce .6s ease}
+@keyframes celebrateBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-screen h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:8px}
+.complete-sub{color:var(--muted);font-size:1rem;margin-bottom:28px}
+.takeaway-list{text-align:left;max-width:500px;width:100%;margin-bottom:32px}
+.takeaway-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.88rem;color:#ccc}
+.takeaway-check{color:var(--correct);flex-shrink:0;font-weight:700}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;width:100%}
+.nav-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--ink)}
+.nav-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav-card-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nav-card-title{font-weight:700;font-size:.95rem}
+
+/* LESSON CHROME */
 .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-link:hover{color:var(--accent)}
 .mod-header{padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
@@ -20,21 +64,27 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .mod-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:6px}
 .mod-header .subtitle{color:var(--muted);font-size:1rem}
 .mod-meta{display:flex;gap:20px;margin-top:14px;font-size:.82rem;color:var(--muted)}
+
 .section{margin-bottom:36px}
 .section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
 .section h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:12px}
 .section p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
 .card-accent{border-left:3px solid var(--accent)}
 .callout{background:var(--accent-light);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
 .callout strong{color:var(--accent)}
 .callout-blue{background:var(--math-bg);border-color:rgba(96,165,250,.3)}
 .callout-blue strong{color:var(--math)}
+
+/* STRUCTURE TABLE */
 .struct-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:16px}
 .struct-table th,.struct-table td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
 .struct-table th{background:var(--surface);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
 .struct-table td{color:#ccc}
 .struct-table code{background:rgba(96,165,250,.1);color:var(--math);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82rem}
+
+/* DOMAIN CARDS */
 .domain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
 .domain-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .2s;cursor:pointer}
 .domain-card:hover{transform:translateY(-2px)}
@@ -45,14 +95,15 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .dc-topics{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:4px}
 .dc-back{display:none;font-size:.85rem;color:#ccc;line-height:1.6}
 .dc-flip{font-size:.68rem;color:var(--muted);text-align:right;margin-top:6px}
-.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
-.strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
-.strat-card:hover{border-color:var(--math);transform:translateY(-2px)}
-.strat-card.flipped .sf-front{display:none}.strat-card.flipped .sf-back{display:block}
-.sf-icon{font-size:1.5rem;margin-bottom:4px}.sf-title{font-weight:700;font-size:.95rem;margin-bottom:2px}
-.sf-hint{font-size:.78rem;color:var(--muted);font-style:italic}
-.sf-flip{font-size:.68rem;color:var(--muted);text-align:right;margin-top:4px}
-.sf-back{display:none;font-size:.83rem;color:#ccc;line-height:1.5}
+
+/* ADAPTIVE VISUAL */
+.adaptive{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.adaptive-flow{display:flex;flex-direction:column;align-items:center;gap:8px}
+.adaptive-box{padding:12px 20px;border-radius:10px;text-align:center;font-size:.88rem;font-weight:600;min-width:200px}
+.adaptive-arrow{color:var(--muted);font-size:1.2rem}
+.adaptive-split{display:flex;gap:16px;width:100%}.adaptive-branch{flex:1;text-align:center}
+
+/* ROUTING SIMULATOR */
 .sim-container{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
 .sim-slider-row{display:flex;align-items:center;gap:14px;margin-bottom:16px}
 .sim-slider{flex:1;-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--wrong) 0%,var(--psda) 50%,var(--correct) 100%);outline:none}
@@ -62,6 +113,18 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .sim-result{text-align:center;padding:16px;border-radius:10px;transition:all .3s}
 .sim-meter{height:12px;border-radius:6px;background:var(--border);margin:10px 0;overflow:hidden}
 .sim-meter-fill{height:100%;border-radius:6px;transition:width .4s ease,background .4s ease}
+
+/* STRATEGY GRID */
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
+.strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
+.strat-card:hover{border-color:var(--math);transform:translateY(-2px)}
+.strat-card.flipped .sf-front{display:none}.strat-card.flipped .sf-back{display:block}
+.sf-icon{font-size:1.5rem;margin-bottom:4px}.sf-title{font-weight:700;font-size:.95rem;margin-bottom:2px}
+.sf-hint{font-size:.78rem;color:var(--muted);font-style:italic}
+.sf-flip{font-size:.68rem;color:var(--muted);text-align:right;margin-top:4px}
+.sf-back{display:none;font-size:.83rem;color:#ccc;line-height:1.5}
+
+/* MINI DIAGNOSTIC */
 .diag-q{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px}
 .diag-domain{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;display:inline-block;padding:2px 8px;border-radius:4px}
 .diag-stem{font-size:.93rem;margin-bottom:12px;color:#ddd;line-height:1.7}
@@ -80,6 +143,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .diag-conf-btn{padding:4px 12px;border-radius:6px;border:1px solid var(--border);background:var(--paper);color:var(--muted);cursor:pointer;font-size:.75rem;transition:all .15s}
 .diag-conf-btn:hover{border-color:var(--math)}
 .diag-conf-btn.active{border-color:var(--math);background:var(--math-bg);color:var(--math)}
+
+/* RESULTS DASHBOARD */
 .results{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
 .results-score{text-align:center;margin-bottom:16px}
 .results-big{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:700}
@@ -90,6 +155,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .results-domain-score{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700}
 .results-domain-bar{height:6px;border-radius:3px;background:var(--border);margin-top:6px;overflow:hidden}
 .results-domain-fill{height:100%;border-radius:3px;transition:width .6s ease}
+
+/* SCORE PROJECTOR */
 .proj-container{background:var(--surface);border:2px solid var(--psda);border-radius:14px;padding:22px;margin-bottom:16px}
 .proj-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
 .proj-field label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
@@ -97,17 +164,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .proj-field input:focus,.proj-field select:focus{border-color:var(--psda);outline:none}
 .proj-result{text-align:center;padding:16px;border-radius:10px;background:var(--paper)}
 .proj-big{font-family:'JetBrains Mono',monospace;font-size:2.4rem;font-weight:700}
-.checklist{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
-.cl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;cursor:pointer;transition:opacity .2s}
-.cl-item:last-child{border-bottom:none}.cl-item.done{opacity:.5;text-decoration:line-through}
-.cl-check{flex-shrink:0;width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .15s}
-.cl-item.done .cl-check{background:var(--correct);border-color:var(--correct);color:#fff}
-.cl-progress{font-size:.82rem;color:var(--muted);margin-top:8px;text-align:right}
-.protocol{background:var(--surface);border:2px solid var(--accent);border-radius:14px;overflow:hidden;margin-bottom:16px}
-.protocol-title{background:var(--accent);padding:12px 20px;font-weight:700;font-size:.95rem}
-.protocol-step{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;align-items:flex-start}
-.protocol-step:last-child{border-bottom:none}
-.step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent-light);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--accent);font-family:'JetBrains Mono',monospace}
+
+/* ERROR CLASSIFICATION */
 .ec-box{background:var(--surface);border:2px solid var(--math);border-radius:14px;padding:22px;margin-bottom:16px}
 .ec-item{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px}
 .ec-scenario{font-size:.92rem;line-height:1.6;margin-bottom:10px;color:#ddd}
@@ -118,6 +176,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .ec-opt.ec-wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
 .ec-opt.ec-dis{pointer-events:none;opacity:.6}
 .ec-fb{margin-top:8px;font-size:.82rem;color:var(--muted);display:none;line-height:1.4}.ec-fb.show{display:block}
+
+/* ERROR ANALYSIS WORKSHEET */
 .worksheet{background:var(--surface);border:2px solid var(--advanced);border-radius:14px;padding:22px;margin-bottom:16px}
 .ws-entry{background:var(--paper);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
 .ws-row{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;margin-bottom:6px}
@@ -127,28 +187,70 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .ws-textarea{width:100%;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--ink);font-family:inherit;font-size:.85rem;resize:vertical;min-height:40px}
 .ws-textarea:focus{border-color:var(--math);outline:none}
 .ws-actions{display:flex;gap:8px;margin-top:12px}
-.adaptive{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
-.adaptive-flow{display:flex;flex-direction:column;align-items:center;gap:8px}
-.adaptive-box{padding:12px 20px;border-radius:10px;text-align:center;font-size:.88rem;font-weight:600;min-width:200px}
-.adaptive-arrow{color:var(--muted);font-size:1.2rem}
-.adaptive-split{display:flex;gap:16px;width:100%}.adaptive-branch{flex:1;text-align:center}
+
+/* CHECKLIST */
+.checklist{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;cursor:pointer;transition:opacity .2s}
+.cl-item:last-child{border-bottom:none}.cl-item.done{opacity:.5;text-decoration:line-through}
+.cl-check{flex-shrink:0;width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .15s}
+.cl-item.done .cl-check{background:var(--correct);border-color:var(--correct);color:#fff}
+.cl-progress{font-size:.82rem;color:var(--muted);margin-top:8px;text-align:right}
+
+/* PROTOCOL STEPS */
+.protocol{background:var(--surface);border:2px solid var(--accent);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.protocol-title{background:var(--accent);padding:12px 20px;font-weight:700;font-size:.95rem}
+.protocol-step{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);font-size:.9rem;color:#ccc;align-items:flex-start}
+.protocol-step:last-child{border-bottom:none}
+.step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent-light);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--accent);font-family:'JetBrains Mono',monospace}
+
 .btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;padding:10px 24px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
 .btn:hover{background:#a00d24}.btn-sm{padding:8px 16px;font-size:.82rem}
 .btn-blue{background:var(--math)}.btn-blue:hover{background:#4b8fda}
 .btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent)}.btn-outline:hover{background:var(--accent-light)}
-.mod-nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--border);margin-top:40px}
-.mod-nav a{color:var(--accent);text-decoration:none;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.mod-nav a:hover{text-decoration:underline}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeIn .4s ease forwards}
-@media(max-width:600px){.mod-meta{flex-wrap:wrap;gap:10px}.domain-grid{grid-template-columns:1fr}.strat-grid{grid-template-columns:1fr}.adaptive-split{flex-direction:column}.ec-options{flex-direction:column}.proj-inputs{grid-template-columns:1fr}.results-domains{grid-template-columns:1fr}.diag-conf{flex-wrap:wrap}}
+
+@media(max-width:600px){
+  .mod-meta{flex-wrap:wrap;gap:10px}
+  .domain-grid{grid-template-columns:1fr}
+  .strat-grid{grid-template-columns:1fr}
+  .adaptive-split{flex-direction:column}
+  .ec-options{flex-direction:column}
+  .proj-inputs{grid-template-columns:1fr}
+  .results-domains{grid-template-columns:1fr}
+  .diag-conf{flex-wrap:wrap}
+  .preview-grid{grid-template-columns:1fr 1fr}
+  .welcome-meta{flex-wrap:wrap;gap:12px}
+  .nav-cards{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <div class="top-stripe"></div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="screen-progress" id="screenProgress"></div>
+
+<!-- ==================== SCREEN 1: WELCOME ==================== -->
+<div class="screen active fade-in" id="screen-welcome">
+  <div class="welcome-screen">
+    <div class="welcome-badge">Module 1</div>
+    <h1>Welcome to the SAT & Diagnostic</h1>
+    <p class="welcome-sub">Establish your baseline, learn the test structure, and build your personalized study plan.</p>
+    <div class="welcome-meta"><span>⏱ ~90 min + test time</span><span>📋 3 sessions</span><span>🔍 Phase 1: Diagnose</span></div>
+    <div class="preview-grid">
+      <div class="preview-card"><div class="preview-icon">📊</div><div class="preview-title">Test Structure</div><div class="preview-desc">44 questions, 70 minutes, adaptive module format</div></div>
+      <div class="preview-card"><div class="preview-icon">🔀</div><div class="preview-title">Adaptive Modules</div><div class="preview-desc">How Module 1 performance determines your score ceiling</div></div>
+      <div class="preview-card"><div class="preview-icon">🎯</div><div class="preview-title">Score Projector</div><div class="preview-desc">Estimate your scaled score from raw scores and routing</div></div>
+      <div class="preview-card"><div class="preview-icon">🩺</div><div class="preview-title">Diagnostic</div><div class="preview-desc">20-question assessment across all four domains</div></div>
+      <div class="preview-card"><div class="preview-icon">🔍</div><div class="preview-title">Error Analysis</div><div class="preview-desc">Classify mistakes to target your study time</div></div>
+      <div class="preview-card"><div class="preview-icon">📋</div><div class="preview-title">Study Plan</div><div class="preview-desc">Personalized pathway based on your results</div></div>
+    </div>
+    <button class="start-btn" onclick="goScreen(1)">Start Learning →</button>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 2: LESSON CONTENT ==================== -->
+<div class="screen" id="screen-lesson">
 <div class="container">
-<a class="back-link" href="index.html">← Back to Math Course</a>
+<a class="back-link" href="index.html">← Back to SAT Math Course</a>
+
 <div class="mod-header">
   <div class="mod-badge">Module 1</div>
   <h1>Diagnostic & Orientation</h1>
@@ -248,7 +350,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <div class="section">
   <div class="section-label">Session 1: Quick Assessment</div>
   <h2>Mini Diagnostic Assessment</h2>
-  <p>Before taking a full practice test, answer these 15 questions spanning all four domains. For each question, <strong>first rate your confidence</strong>, then select your answer. This reveals both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
+  <p>Before taking a full practice test, answer these 20 questions spanning all four domains. For each question, <strong>first rate your confidence</strong>, then select your answer. This reveals both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
   <div id="diagQuestions"></div>
   <div style="text-align:center;margin-top:16px"><button class="btn btn-blue" id="diagSubmit" onclick="scoreDiag()" style="display:none">Score My Diagnostic →</button></div>
   <div id="diagResults" style="display:none"></div>
@@ -298,7 +400,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     <div class="ws-actions">
       <button class="btn btn-blue btn-sm" onclick="addEntry()">+ Add Entry</button>
       <button class="btn btn-sm btn-outline" onclick="exportWS()">📋 Export to Clipboard</button>
-      <button class="btn btn-sm" style="background:var(--wrong)" onclick="if(confirm('Clear all entries?')){localStorage.removeItem('pp_m1_math_ws');renderWS();}">Reset</button>
+      <button class="btn btn-sm" style="background:var(--wrong)" onclick="if(confirm('Clear all entries?')){localStorage.removeItem(WS_KEY);renderWS();}">Reset</button>
     </div>
   </div>
 </div>
@@ -339,24 +441,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<!-- KEY TAKEAWAYS -->
-<div class="section">
-  <div class="section-label">Summary</div>
-  <h2>Key Takeaways</h2>
-  <div class="card card-accent">
-    <ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">
-      <li>The Digital SAT Math section has 44 questions in 70 minutes, split into two adaptive modules.</li>
-      <li>Module 1 performance determines whether you get the harder (ceiling 800) or easier (ceiling ~560–630) Module 2.</li>
-      <li>Algebra + Advanced Math = ~70% of the test. These are your highest-impact study areas.</li>
-      <li>Desmos is available on EVERY question — learning to use it strategically is a huge advantage (Module 7).</li>
-      <li>CAS calculators are banned. You can toggle between Desmos graphing and scientific modes.</li>
-      <li>Six core strategies (Plug In, Backsolve, Ballpark, Desmos, POE, POOD) apply across all content areas.</li>
-      <li>Error analysis is the foundation of improvement. Know your error type → know what to study.</li>
-      <li>Most selective colleges now require SAT scores and superscore across sittings — every point counts.</li>
-    </ol>
-  </div>
-</div>
-
 <!-- HOMEWORK -->
 <div class="section">
   <div class="section-label">Before Next Session</div>
@@ -371,19 +455,50 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   </div>
 </div>
 
-<div class="mod-nav">
-  <a href="index.html">← Course Hub</a>
-  <a href="module-2.html">Module 2: Algebra →</a>
+<div style="text-align:center;padding:24px 0">
+  <button class="start-btn" onclick="goScreen(2)">Continue to Summary →</button>
+</div>
 </div>
 </div>
 
+<!-- ==================== SCREEN 3: MODULE COMPLETE ==================== -->
+<div class="screen" id="screen-complete">
+  <div class="complete-screen">
+    <div class="complete-icon">🎉</div>
+    <h1>Module 1 Complete!</h1>
+    <p class="complete-sub">You've established your baseline and have a personalized study plan.</p>
+    <div class="takeaway-list">
+      <div style="font-weight:700;margin-bottom:12px;font-size:.85rem;color:var(--accent);text-transform:uppercase;letter-spacing:1px">Key Takeaways</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> The Digital SAT Math section has 44 questions in 70 minutes, split into two adaptive modules.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Module 1 performance determines whether you get the harder (ceiling 800) or easier (ceiling ~560–630) Module 2.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Four domains: Algebra ~35%, Advanced Math ~35%, PSDA ~15%, Geometry & Trig ~15%.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Desmos graphing calculator available on every question — CAS calculators are banned.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> No penalty for wrong answers — never leave a question blank.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> The SAT Score Projector shows how routing dramatically affects your scaled score.</div>
+      <div class="takeaway-item"><span class="takeaway-check">✓</span> Error analysis is the foundation of improvement — know your error type, know what to study.</div>
+    </div>
+    <div class="nav-cards">
+      <a class="nav-card" href="index.html"><div class="nav-card-label">← Home</div><div class="nav-card-title">Course Home</div></a>
+      <a class="nav-card" href="module-2.html" style="border-color:var(--accent)"><div class="nav-card-label">Next →</div><div class="nav-card-title">Module 2: Algebra</div></a>
+    </div>
+  </div>
+</div>
+
 <script>
-// ============ PROGRESS BAR ============
-window.addEventListener('scroll',function(){
-  var h=document.documentElement.scrollHeight-window.innerHeight;
-  var pct=h>0?(window.scrollY/h)*100:0;
-  document.getElementById('progressFill').style.width=pct+'%';
-});
+// ============ SCREEN NAVIGATION ============
+var SCREENS=['screen-welcome','screen-lesson','screen-complete'];
+var currentScreen=0;
+function goScreen(idx){
+  if(idx<0||idx>=SCREENS.length)return;
+  var cur=document.getElementById(SCREENS[currentScreen]),nxt=document.getElementById(SCREENS[idx]);
+  cur.classList.remove('fade-in');cur.classList.add('fade-out');
+  setTimeout(function(){cur.classList.remove('active','fade-out');nxt.classList.add('active','fade-in');currentScreen=idx;updateProgressDots();window.scrollTo(0,0);},300);
+}
+function updateProgressDots(){
+  var labels=['Welcome','Lesson','Complete'];
+  document.getElementById('screenProgress').innerHTML=SCREENS.map(function(s,i){var cls='screen-dot';if(i<currentScreen)cls+=' completed';if(i===currentScreen)cls+=' current';return '<div class="'+cls+'" onclick="'+(i<=currentScreen?'goScreen('+i+')':'')+'" title="'+labels[i]+'"></div>';}).join('');
+}
+updateProgressDots();
 
 // ============ ROUTING SIMULATOR ============
 function updateSim(){
@@ -427,22 +542,22 @@ var DIAG_QS=[
   {domain:'Algebra',color:'var(--algebra)',stem:'A gym charges a $50 registration fee plus $25 per month. Which equation represents the total cost <code>C</code> after <code>m</code> months?',choices:['C = 50m + 25','C = 25m + 50','C = 75m','C = 25(m + 50)'],correct:1,explain:'The fixed fee ($50) is the constant, and $25/month is the rate. C = 25m + 50.'},
   {domain:'Algebra',color:'var(--algebra)',stem:'The system <code>2x + 3y = 12</code> and <code>4x + 6y = 24</code> has how many solutions?',choices:['Zero','Exactly one','Exactly two','Infinitely many'],correct:3,explain:'The second equation is exactly 2× the first. Same line → infinitely many solutions.'},
   {domain:'Algebra',color:'var(--algebra)',stem:'If <code>−3x + 7 > 22</code>, which describes the solution?',choices:['x > −5','x < −5','x > 5','x < 5'],correct:1,explain:'Subtract 7: −3x > 15. Divide by −3 and FLIP the sign: x < −5.'},
+  {domain:'Algebra',color:'var(--algebra)',stem:'The question asks: "What is the value of <code>2x + 1</code>?" You find <code>x = 4</code>. What should your answer be?',choices:['4','8','9','Cannot be determined'],correct:2,explain:'The question asks for 2x + 1, NOT x. So: 2(4) + 1 = 9. This is the #1 most common SAT trap!'},
   {domain:'Advanced Math',color:'var(--advanced)',stem:'What are the solutions to <code>x² − 5x + 6 = 0</code>?',choices:['x = 2 and x = 3','x = −2 and x = −3','x = 1 and x = 6','x = −1 and x = −6'],correct:0,explain:'Factor: (x − 2)(x − 3) = 0. So x = 2 or x = 3.'},
   {domain:'Advanced Math',color:'var(--advanced)',stem:'If <code>f(x) = 2x² − 3</code>, what is <code>f(−4)</code>?',choices:['29','−35','5','−11'],correct:0,explain:'f(−4) = 2(−4)² − 3 = 2(16) − 3 = 32 − 3 = 29. Remember: (−4)² = 16 (positive!).'},
   {domain:'Advanced Math',color:'var(--advanced)',stem:'Which expression is equivalent to <code>(3x²)(4x³)</code>?',choices:['7x⁵','12x⁵','12x⁶','7x⁶'],correct:1,explain:'Multiply coefficients: 3 × 4 = 12. Add exponents: x² · x³ = x⁵. Answer: 12x⁵.'},
   {domain:'Advanced Math',color:'var(--advanced)',stem:'The graph of <code>y = (x − 3)² + 2</code> has its vertex at which point?',choices:['(3, 2)','(−3, 2)','(3, −2)','(−3, −2)'],correct:0,explain:'Vertex form y = a(x − h)² + k gives vertex (h, k). Here h = 3, k = 2. Watch the sign!'},
+  {domain:'Advanced Math',color:'var(--advanced)',stem:'A bacteria population triples every 4 hours starting at 200. Which models this?',choices:['200(3)^(t/4)','200(3)^(4t)','200 + 3t','600t'],correct:0,explain:'Triples every 4 hours: base 3, exponent t/4. P(t) = 200(3)^(t/4).'},
   {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A shirt originally costs $40 and is marked 30% off. What is the sale price?',choices:['$10','$12','$28','$30'],correct:2,explain:'30% of $40 = $12 discount. Sale price = $40 − $12 = $28. Or: $40 × 0.70 = $28.'},
   {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'The mean of 5 numbers is 12. If a sixth number, 30, is added, what is the new mean?',choices:['14','15','17','21'],correct:1,explain:'Sum of 5 numbers = 60. New sum = 90. New mean = 90 ÷ 6 = 15.'},
   {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A researcher surveys 200 people at a shopping mall about spending habits. What is the biggest threat to validity?',choices:['Sample too small','Mall shoppers may not represent the general population','Should be done online','200 is too many'],correct:1,explain:'This is sampling bias. Mall shoppers likely differ from the general population — it is a convenience sample.'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A scatterplot shows strong negative linear association. The correlation r is closest to:',choices:['-0.92','-0.15','0.85','0.45'],correct:0,explain:'Strong negative association means r close to -1. -0.92.'},
+  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A price increases 20% then decreases 20%. Compared to the original price, the final price is:',choices:['The same','4% less','2% less','4% more'],correct:1,explain:'$100 -> $120 -> $96. Net: 4% less. This is the successive percents trap!'},
   {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A right triangle has legs of length 5 and 12. What is the hypotenuse?',choices:['13','17','√119','15'],correct:0,explain:'5² + 12² = 25 + 144 = 169 = 13². Classic 5-12-13 right triangle.'},
   {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'A circle has equation <code>(x − 2)² + (y + 3)² = 49</code>. What is its radius?',choices:['49','24.5','7','√49'],correct:2,explain:'r² = 49, so r = 7. Common trap: choosing 49 (that is r², not r).'},
   {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'In a 30-60-90 triangle, the side opposite 30° is 5. What is the hypotenuse?',choices:['5√2','5√3','10','10√3'],correct:2,explain:'Sides ratio x : x√3 : 2x. Opposite 30° is x = 5, hypotenuse = 2x = 10.'},
-  {domain:'Algebra',color:'var(--algebra)',stem:'The question asks: "What is the value of <code>2x + 1</code>?" You find <code>x = 4</code>. What should your answer be?',choices:['4','8','9','Cannot be determined'],correct:2,explain:'The question asks for 2x + 1, NOT x. So: 2(4) + 1 = 9. This is the #1 most common SAT trap!'},
-  {domain:'Advanced Math',color:'var(--advanced)',stem:'A bacteria population triples every 4 hours starting at 200. Which models this?',choices:['200(3)^(t/4)','200(3)^(4t)','200 + 3t','600t'],correct:0,explain:'Triples every 4 hours: base 3, exponent t/4. P(t) = 200(3)^(t/4).'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A scatterplot shows strong negative linear association. The correlation r is closest to:',choices:['-0.92','-0.15','0.85','0.45'],correct:0,explain:'Strong negative association means r close to -1. -0.92.'},
-  {domain:'Problem-Solving & Data',color:'var(--psda)',stem:'A price increases 20% then decreases 20%. Compared to the original price, the final price is:',choices:['The same','4% less','2% less','4% more'],correct:1,explain:'$100 -> $120 -> $96. Net: 4% less. This is the successive percents trap!'},
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'The circle <code>(x - 3)\u00b2 + (y + 1)\u00b2 = 25</code> has its center at:',choices:['(3, -1)','(-3, 1)','(3, 1)','(-3, -1)'],correct:0,explain:'(x-h)\u00b2 + (y-k)\u00b2 = r\u00b2. h=3, k=-1. Center (3,-1). Watch the sign on (y+1)!'},
-  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'In a right triangle, sin(\u03b8) = 5/13. What is cos(\u03b8)?',choices:['5/12','12/13','5/13','13/12'],correct:1,explain:'Opp=5, hyp=13. Adjacent=12 (5-12-13 triple). cos = adj/hyp = 12/13.'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'The circle <code>(x - 3)² + (y + 1)² = 25</code> has its center at:',choices:['(3, -1)','(-3, 1)','(3, 1)','(-3, -1)'],correct:0,explain:'(x-h)² + (y-k)² = r². h=3, k=-1. Center (3,-1). Watch the sign on (y+1)!'},
+  {domain:'Geometry & Trig',color:'var(--geotrig)',stem:'In a right triangle, sin(θ) = 5/13. What is cos(θ)?',choices:['5/12','12/13','5/13','13/12'],correct:1,explain:'Opp=5, hyp=13. Adjacent=12 (5-12-13 triple). cos = adj/hyp = 12/13.'},
 ];
 var diagAnswers=[];var diagConf=[];var diagScored=false;
 for(var di=0;di<DIAG_QS.length;di++){diagAnswers.push(null);diagConf.push(null);}
@@ -488,7 +603,8 @@ function scoreDiag(){
   if(miscal.length>0){html+='<div style="margin-top:12px"><div style="font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">⚠️ Calibration Flags</div>';
     miscal.forEach(function(m){html+='<div style="font-size:.85rem;color:#ccc;padding:4px 0">Q'+m.q+': <span style="color:'+(m.type==='Overconfident'?'var(--wrong)':'var(--math)')+'">'+m.type+'</span> ('+m.domain+')</div>';});
     html+='<div style="font-size:.82rem;color:var(--muted);margin-top:8px;font-style:italic">Overconfident = sure but wrong. Underconfident = guessed but right.</div></div>';}
-  html+='<div style="margin-top:16px;font-size:.9rem;color:#ccc"><strong style="color:var(--ink)">This is just a preview.</strong> Take the full Bluebook baseline test (Session 2) for an accurate score.</div></div>';
+  html+='<div style="margin-top:16px;font-size:.9rem;color:#ccc"><strong style="color:var(--ink)">This is just a preview.</strong> Take the full Bluebook baseline test (Session 2) for an accurate score.</div>';
+  html+='<div id="studyPlanTarget"></div></div>';
   document.getElementById('diagResults').style.display='block';
   document.getElementById('diagResults').innerHTML=html;
   document.getElementById('diagResults').scrollIntoView({behavior:'smooth',block:'start'});
@@ -517,15 +633,18 @@ renderDiag();
 
 // ============ CHECKLIST ============
 var CL_ITEMS=['Bluebook app downloaded, updated, and logged in','Quiet testing environment — no distractions, door closed','Timer ready (Bluebook manages timing, but keep a clock visible)','Scratch paper and pencil available','Phone silenced and out of reach','Water and snack for break between modules','Desmos practice: spent at least 5 minutes exploring the calculator','Understand the plan: complete test → self-score → error analysis worksheet'];
-function renderChecklist(){
-  var saved=JSON.parse(localStorage.getItem('pp_mm1_cl')||'{}');var done=Object.values(saved).filter(function(v){return v;}).length;
-  document.getElementById('preChecklist').innerHTML='<h3 style="font-family:\'Cormorant Garamond\',serif;font-size:1.2rem;margin-bottom:12px">✅ Pre-Test Setup</h3>'+CL_ITEMS.map(function(item,i){return '<div class="cl-item'+(saved[i]?' done':'')+'" onclick="toggleCL('+i+')"><div class="cl-check">'+(saved[i]?'✓':'')+'</div><div>'+item+'</div></div>';}).join('')+'<div class="cl-progress">'+done+'/'+CL_ITEMS.length+' completed</div>';
+var CL_KEY='pp_mm1_cl';
+var clState=JSON.parse(localStorage.getItem(CL_KEY)||'[]');
+if(clState.length!==CL_ITEMS.length)clState=CL_ITEMS.map(function(){return false;});
+function renderCL(){
+  var done=clState.filter(Boolean).length;
+  document.getElementById('preChecklist').innerHTML='<h3 style="font-family:\'Cormorant Garamond\',serif;font-size:1.2rem;margin-bottom:12px">✅ Pre-Test Setup</h3>'+CL_ITEMS.map(function(item,i){return '<div class="cl-item'+(clState[i]?' done':'')+'" onclick="toggleCL('+i+')"><div class="cl-check">'+(clState[i]?'✓':'')+'</div><div>'+item+'</div></div>';}).join('')+'<div class="cl-progress">'+done+'/'+CL_ITEMS.length+' completed</div>';
 }
-function toggleCL(i){var s=JSON.parse(localStorage.getItem('pp_mm1_cl')||'{}');s[i]=!s[i];localStorage.setItem('pp_mm1_cl',JSON.stringify(s));renderChecklist();}
-renderChecklist();
+function toggleCL(i){clState[i]=!clState[i];localStorage.setItem(CL_KEY,JSON.stringify(clState));renderCL();}
+renderCL();
 
 // ============ ERROR CLASSIFICATION ============
-var EC_ITEMS=[
+var EC_QS=[
   {scenario:'You missed a question asking for the slope of a line perpendicular to y = 3x + 2. You chose 3 instead of −1/3 because you forgot that perpendicular slopes are negative reciprocals.',correct:'Content Gap',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'You didn\'t know the perpendicular slope rule. That\'s a content gap — review Module 2.'},
   {scenario:'On a system of equations question, you correctly set up the algebra but accidentally wrote 3 × 4 = 9 instead of 12.',correct:'Careless Error',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'You knew the math but made a simple arithmetic mistake. Double-check calculations.'},
   {scenario:'You had 3 questions left with only 1 minute remaining. You guessed randomly on all three.',correct:'Time Pressure',options:['Content Gap','Careless Error','Time Pressure','Misread/Trap','Strategy Gap'],fb:'Running out of time. Practice pacing: ~25 min first pass, ~8 min second pass, ~2 min final check.'},
@@ -539,14 +658,14 @@ var EC_ITEMS=[
 ];
 var ecAns={};
 function renderEC(){
-  document.getElementById('ecBox').innerHTML=EC_ITEMS.map(function(e,i){
+  document.getElementById('ecBox').innerHTML=EC_QS.map(function(e,i){
     var ans=ecAns[i];var has=ans!==undefined;
     return '<div class="ec-item"><div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:6px">Scenario '+(i+1)+'</div><div class="ec-scenario">'+e.scenario+'</div><div class="ec-options">'+e.options.map(function(o){
       var cls='ec-opt';if(has){cls+=' ec-dis';if(o===e.correct)cls+=' ec-correct';else if(o===ans&&o!==e.correct)cls+=' ec-wrong';}
       return '<div class="'+cls+'" onclick="ansEC('+i+',\''+o+'\')">'+o+'</div>';}).join('')+'</div><div class="ec-fb'+(has?' show':'')+'">'+(has?(ans===e.correct?'✓ Correct! ':'✗ Incorrect. ')+e.fb:'')+'</div></div>';
   }).join('');
-  var t=EC_ITEMS.length,a=Object.keys(ecAns).length,c=0;
-  Object.entries(ecAns).forEach(function(pair){if(pair[1]===EC_ITEMS[parseInt(pair[0])].correct)c++;});
+  var t=EC_QS.length,a=Object.keys(ecAns).length,c=0;
+  Object.entries(ecAns).forEach(function(pair){if(pair[1]===EC_QS[parseInt(pair[0])].correct)c++;});
   document.getElementById('ecScore').innerHTML=a===t?'<strong style="color:'+(c>=8?'var(--correct)':c>=5?'var(--psda)':'var(--wrong)')+'">'+c+'/'+t+' correct</strong> — '+(c>=8?'Excellent! Ready to classify your own errors.':c>=5?'Good — review the ones you missed.':'Review the 5 error types before analyzing your test.'):(a>0?a+'/'+t+' completed':'');
 }
 function ansEC(i,v){if(ecAns[i]!==undefined)return;ecAns[i]=v;renderEC();}
@@ -602,21 +721,22 @@ function updateScores(){
   var scaled=Math.round(200+((total/44)*600));
   var capped=Math.min(Math.max(scaled,200),800);
   var lvl,color,advice;
-  if(capped>=650){lvl='Advanced';color='var(--correct)';advice='Focus on Modules 3\u20134 (hard Advanced Math), 7 (Desmos mastery), and 8 (strategy optimization).';}
+  if(capped>=650){lvl='Advanced';color='var(--correct)';advice='Focus on Modules 3–4 (hard Advanced Math), 7 (Desmos mastery), and 8 (strategy optimization).';}
   else if(capped>=530){lvl='Proficient';color='var(--math)';advice='Solid foundation! Focus on your weakest domain and Modules 3, 4, 7, 8 to push higher.';}
-  else if(capped>=400){lvl='Approaching';color='var(--psda)';advice='Complete all modules with extra time on your weakest domain. Every raw point \u2248 14 scaled points.';}
+  else if(capped>=400){lvl='Approaching';color='var(--psda)';advice='Complete all modules with extra time on your weakest domain. Every raw point ≈ 14 scaled points.';}
   else{lvl='Developing';color='var(--wrong)';advice='Start with Modules 2, 5, 6. Priority: linear equations, basic ratios, Desmos basics.';}
   var benchPct=((530-200)/600)*100;
   var scorePct=((capped-200)/600)*100;
   el.innerHTML='<div style="font-family:JetBrains Mono,monospace;font-size:2rem;font-weight:700;color:'+color+'">'+capped+'</div>'+
-    '<div style="font-size:.82rem;color:var(--muted)">'+total+'/44 raw \u00b7 '+lvl+'</div>'+
+    '<div style="font-size:.82rem;color:var(--muted)">'+total+'/44 raw · '+lvl+'</div>'+
     '<div style="height:8px;border-radius:4px;background:var(--border);margin:12px 0;position:relative">'+
       '<div style="height:100%;border-radius:4px;background:'+color+';width:'+scorePct+'%;transition:width .4s"></div>'+
       '<div style="position:absolute;left:'+benchPct+'%;top:-6px;width:2px;height:20px;background:var(--correct);border-radius:1px" title="530 Benchmark"></div>'+
     '</div>'+
-    '<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:12px"><span>200</span><span style="color:var(--correct)">530 benchmark \u2191</span><span>800</span></div>'+
+    '<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:12px"><span>200</span><span style="color:var(--correct)">530 benchmark ↑</span><span>800</span></div>'+
     '<div style="font-size:.88rem;color:#ccc;line-height:1.6">'+advice+'</div>';
 }
 </script>
-<script src="/translate.js"></script></body>
+<script src="/translate.js"></script>
+</body>
 </html>
