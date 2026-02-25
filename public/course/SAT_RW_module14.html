@@ -6,14 +6,14 @@
 <title>Module 14: Test Strategy & Pacing — PantherPrep SAT R&W</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 button { font-family: inherit; }
 </style>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#e2e8f0'" onmouseout="this.style.color='#64748b'">← Back to SAT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to SAT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const { useState, useEffect, useCallback, useRef } = React;
@@ -23,12 +23,12 @@ const BLUE = "#3b82f6";
 const AMBER = "#f59e0b";
 const RED = "#ef4444";
 const CYAN = "#06b6d4";
-const DARK = "#0a0a0f";
-const CARD = "#13131f";
-const BORDER = "#1e293b";
+const DARK = "#121212";
+const CARD = "#1a1a1a";
+const BORDER = "#2a2a2a";
 const MUTED = "#64748b";
-const TEXT = "#e2e8f0";
-const SUB = "#94a3b8";
+const TEXT = "#f0f0f0";
+const SUB = "#999999";
 const btn = (bg, color, extra) => ({
   padding: "12px 28px",
   borderRadius: 10,
@@ -647,7 +647,7 @@ function ChallengeMode({ onComplete }) {
     var medal = accPct >= 83 && avgTime <= 50 ? "gold" : accPct >= 67 && avgTime <= 65 ? "silver" : accPct >= 50 ? "bronze" : "none";
     var medalEmoji = medal === "gold" ? "\uD83E\uDD47" : medal === "silver" ? "\uD83E\uDD48" : medal === "bronze" ? "\uD83E\uDD49" : "\uD83D\uDD04";
     var medalLabel = medal === "gold" ? "Gold \u2014 Speed Demon!" : medal === "silver" ? "Silver \u2014 Strong Work!" : medal === "bronze" ? "Bronze \u2014 Solid Effort" : "Keep Practicing!";
-    var medalColor = medal === "gold" ? "#fbbf24" : medal === "silver" ? "#94a3b8" : medal === "bronze" ? "#d97706" : MUTED;
+    var medalColor = medal === "gold" ? "#fbbf24" : medal === "silver" ? "#999999" : medal === "bronze" ? "#d97706" : MUTED;
     return React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "60px 20px", textAlign: "center" } },
       React.createElement("div", { style: { fontSize: 64, marginBottom: 12 } }, medalEmoji),
       React.createElement("h2", { style: { color: medalColor, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, medalLabel),
@@ -758,7 +758,7 @@ function ModuleComplete({ drillScore, drillTotal, onChallenge, challengeResult }
   ].map((tip, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", gap: 8, marginBottom: 6 } }, /* @__PURE__ */ React.createElement("span", { style: { color: ACCENT, fontSize: 13 } }, "✓"), /* @__PURE__ */ React.createElement("span", { style: { color: SUB, fontSize: 13, lineHeight: 1.5 } }, tip))))),
   challengeResult && React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 16, maxWidth: 480, marginBottom: 16 } },
     React.createElement("div", { style: { fontSize: 28, marginBottom: 4 } }, challengeResult === "gold" ? "\uD83E\uDD47" : challengeResult === "silver" ? "\uD83E\uDD48" : challengeResult === "bronze" ? "\uD83E\uDD49" : "\uD83D\uDD04"),
-    React.createElement("div", { style: { color: challengeResult === "gold" ? "#fbbf24" : challengeResult === "silver" ? "#94a3b8" : challengeResult === "bronze" ? "#d97706" : MUTED, fontWeight: 700, fontSize: 14 } }, challengeResult === "gold" ? "Challenge Gold!" : challengeResult === "silver" ? "Challenge Silver" : challengeResult === "bronze" ? "Challenge Bronze" : "Challenge attempted")
+    React.createElement("div", { style: { color: challengeResult === "gold" ? "#fbbf24" : challengeResult === "silver" ? "#999999" : challengeResult === "bronze" ? "#d97706" : MUTED, fontWeight: 700, fontSize: 14 } }, challengeResult === "gold" ? "Challenge Gold!" : challengeResult === "silver" ? "Challenge Silver" : challengeResult === "bronze" ? "Challenge Bronze" : "Challenge attempted")
   ),
   React.createElement("button", { onClick: onChallenge, style: btn("linear-gradient(135deg,#fbbf24," + RED + ")", DARK, { fontSize: 14, padding: "10px 24px", marginBottom: 24 }) }, challengeResult ? "Retry Challenge Mode \uD83C\uDFC6" : "Challenge Mode \uD83C\uDFC6"),
   React.createElement(Homework, null), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13 } }, "Next up: Module 15 — Expression & Strategy Boss Battle ⚔️"), React.createElement(NavLinks, null));
@@ -777,7 +777,7 @@ function App() {
       setFade(true);
     }, 350);
   }, []);
-  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
     position: "fixed",
     inset: 0,
     pointerEvents: "none",

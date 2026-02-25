@@ -4,23 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PSAT/NMSQT Full-Length Practice Test</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#f0f0f0;--paper:#121212;--accent:#C8102E;--accent-light:rgba(200,16,46,.15);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--spr:#f59e0b;--spr-bg:rgba(245,158,11,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171;--alg:#60a5fa;--adv:#a78bfa;--psda:#34d399;--geo:#fb923c}
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
 .back-to-app{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;margin-top:8px;cursor:pointer;text-decoration:none}
 .back-to-app:hover{color:var(--accent)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
 .container{max-width:860px;margin:0 auto;padding:20px}
 .landing{text-align:center;padding:50px 20px}
 .landing-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:20px;margin-bottom:18px}
-.landing h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3.2rem);margin-bottom:6px}
+.landing h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);margin-bottom:6px}
 .landing .subtitle{color:var(--muted);font-size:1.05rem;margin-bottom:24px}
 .merit-note{background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.3);border-radius:10px;padding:14px;max-width:560px;margin:0 auto 24px;font-size:.9rem;text-align:left}
 .merit-note strong{color:var(--accent)}
 .test-info{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;max-width:620px;margin:0 auto 24px;text-align:left}
-.test-info h3{font-family:'DM Serif Display',serif;margin-bottom:10px;font-size:1.1rem}
+.test-info h3{font-family:'Cormorant Garamond',serif;margin-bottom:10px;font-size:1.1rem}
 .module-list{list-style:none;padding:0}
 .module-list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:.93rem}
 .module-list li:last-child{border:none}
@@ -88,34 +88,34 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
 .reference-sheet .formulas{margin-top:8px;columns:2;column-gap:18px}
 .reference-sheet .formulas p{margin-bottom:3px;font-family:'JetBrains Mono',monospace;font-size:.78rem;break-inside:avoid}
 .module-break{text-align:center;padding:60px 20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin:20px 0}
-.module-break h2{font-family:'DM Serif Display',serif;margin-bottom:12px}
+.module-break h2{font-family:'Cormorant Garamond',serif;margin-bottom:12px}
 .module-break p{color:var(--muted);margin-bottom:20px}
 .results{text-align:center;padding:40px 0}
-.results h1{font-family:'DM Serif Display',serif;font-size:2.2rem;margin-bottom:6px}
+.results h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;margin-bottom:6px}
 .score-row{display:flex;justify-content:center;gap:30px;margin:24px 0}
 .score-circle{width:140px;height:140px;border-radius:50%;border:5px solid var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center}
 .score-circle.rw{border-color:var(--craft)}.score-circle.math{border-color:var(--adv)}.score-circle.total{border-color:var(--accent);width:160px;height:160px}
-.score-circle .score-num{font-family:'DM Serif Display',serif;font-size:2.2rem;line-height:1}
+.score-circle .score-num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;line-height:1}
 .score-circle.total .score-num{font-size:2.6rem}
 .score-circle .score-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:18px 0}
 .stat-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px}
 .stat-box .stat-val{font-size:1.4rem;font-weight:700}.stat-box .stat-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
 .section-results{text-align:left;margin:24px 0}
-.section-results h3{font-family:'DM Serif Display',serif;font-size:1.2rem;margin-bottom:12px}
+.section-results h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:12px}
 .domain-result-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
 .domain-result-row .dr-name{flex:1;font-weight:600;font-size:.88rem}
 .domain-result-row .dr-bar-wrap{flex:2;height:10px;background:var(--border);border-radius:5px;overflow:hidden}
 .domain-result-row .dr-bar{height:100%;border-radius:5px;transition:width .8s}
 .domain-result-row .dr-score{width:50px;text-align:right;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.85rem}
 .review-section{text-align:left;margin:24px 0}
-.review-section h3{font-family:'DM Serif Display',serif;font-size:1.2rem;margin-bottom:12px}
+.review-section h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:12px}
 .review-q{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px}
 .review-q .rq-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .review-q .rq-status{font-weight:700;font-size:.82rem}
 .review-q .rq-status.correct{color:var(--correct)}.review-q .rq-status.wrong{color:var(--wrong)}.review-q .rq-status.skipped{color:var(--muted)}
 .reflection-section{text-align:left;margin:24px 0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
-.reflection-section h3{font-family:'DM Serif Display',serif;margin-bottom:12px}
+.reflection-section h3{font-family:'Cormorant Garamond',serif;margin-bottom:12px}
 .reflection-q{margin-bottom:12px}
 .reflection-q label{display:block;font-weight:500;margin-bottom:4px;font-size:.9rem}
 .reflection-q textarea{width:100%;padding:9px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.86rem;resize:vertical;min-height:50px;background:var(--surface);color:var(--ink)}
@@ -734,7 +734,7 @@ function curQ(){return SECTIONS[S.si].modules[S.mi][S.qi];}
 function curMod(){return SECTIONS[S.si].modules[S.mi];}
 function render(){document.getElementById('app').innerHTML=S.screen==='landing'?rL():S.screen==='test'?rT():S.screen==='break'?rB():rR();}
 
-function rL(){return '<div class="landing"><div class="landing-badge">🐾 PantherPrep Full Practice Test</div><h1>PSAT/NMSQT Practice Test</h1><p class="subtitle">98 questions \u00b7 4 modules \u00b7 2 hours 14 minutes</p><div class="merit-note"><strong>\ud83c\udfc5 National Merit Context:</strong> The PSAT/NMSQT Selection Index (sum of R&W + Math scaled scores \u00f72, ranging 320\u20131520) is used for National Merit Scholarship qualification. Top ~1% of test-takers (Selection Index typically ~1480+) advance to Semifinalist status.</div><div class="test-info"><h3>Test Structure</h3><ul class="module-list"><li><span class="ml-name">R&W Module 1</span><span class="ml-detail">27 questions \u00b7 32 min</span></li><li><span class="ml-name">R&W Module 2 (Harder)</span><span class="ml-detail">27 questions \u00b7 32 min</span></li><li><span class="ml-name">Math Module 1</span><span class="ml-detail">22 questions \u00b7 35 min</span></li><li><span class="ml-name">Math Module 2 (Harder)</span><span class="ml-detail">22 questions \u00b7 35 min</span></li></ul></div><h3 style="font-family:DM Serif Display,serif;margin-bottom:10px">Choose Your Mode</h3><div class="mode-toggle"><button class="mode-btn'+(S.mode==='timed'?' selected':'')+'" onclick="setMode(\'timed\')"><strong>\u23f1 Timed Test</strong><span>Real simulation. Timer enforced, auto-advances modules.</span></button><button class="mode-btn'+(S.mode==='practice'?' selected':'')+'" onclick="setMode(\'practice\')"><strong>\ud83d\udcdd Practice Mode</strong><span>Timer visible but not enforced. Free navigation.</span></button></div><h3 style="font-family:DM Serif Display,serif;margin:18px 0 10px">Answer Checking</h3><div class="mode-toggle"><button class="mode-btn'+(S.checkMode==='after'?' selected':'')+'" onclick="setCheck(\'after\')"><strong>\u2705 Check Each Question</strong><span>Instant feedback with explanations.</span></button><button class="mode-btn'+(S.checkMode==='end'?' selected':'')+'" onclick="setCheck(\'end\')"><strong>\ud83d\udccb Check at End</strong><span>More realistic. Results after finishing.</span></button></div><div style="margin-top:28px"><button class="btn" onclick="startTest()">Start Test</button></div></div>';}
+function rL(){return '<div class="landing"><div class="landing-badge">🐾 PantherPrep Full Practice Test</div><h1>PSAT/NMSQT Practice Test</h1><p class="subtitle">98 questions \u00b7 4 modules \u00b7 2 hours 14 minutes</p><div class="merit-note"><strong>\ud83c\udfc5 National Merit Context:</strong> The PSAT/NMSQT Selection Index (sum of R&W + Math scaled scores \u00f72, ranging 320\u20131520) is used for National Merit Scholarship qualification. Top ~1% of test-takers (Selection Index typically ~1480+) advance to Semifinalist status.</div><div class="test-info"><h3>Test Structure</h3><ul class="module-list"><li><span class="ml-name">R&W Module 1</span><span class="ml-detail">27 questions \u00b7 32 min</span></li><li><span class="ml-name">R&W Module 2 (Harder)</span><span class="ml-detail">27 questions \u00b7 32 min</span></li><li><span class="ml-name">Math Module 1</span><span class="ml-detail">22 questions \u00b7 35 min</span></li><li><span class="ml-name">Math Module 2 (Harder)</span><span class="ml-detail">22 questions \u00b7 35 min</span></li></ul></div><h3 style="font-family:Cormorant Garamond,serif;margin-bottom:10px">Choose Your Mode</h3><div class="mode-toggle"><button class="mode-btn'+(S.mode==='timed'?' selected':'')+'" onclick="setMode(\'timed\')"><strong>\u23f1 Timed Test</strong><span>Real simulation. Timer enforced, auto-advances modules.</span></button><button class="mode-btn'+(S.mode==='practice'?' selected':'')+'" onclick="setMode(\'practice\')"><strong>\ud83d\udcdd Practice Mode</strong><span>Timer visible but not enforced. Free navigation.</span></button></div><h3 style="font-family:Cormorant Garamond,serif;margin:18px 0 10px">Answer Checking</h3><div class="mode-toggle"><button class="mode-btn'+(S.checkMode==='after'?' selected':'')+'" onclick="setCheck(\'after\')"><strong>\u2705 Check Each Question</strong><span>Instant feedback with explanations.</span></button><button class="mode-btn'+(S.checkMode==='end'?' selected':'')+'" onclick="setCheck(\'end\')"><strong>\ud83d\udccb Check at End</strong><span>More realistic. Results after finishing.</span></button></div><div style="margin-top:28px"><button class="btn" onclick="startTest()">Start Test</button></div></div>';}
 function setMode(m){S.mode=m;render();}
 function setCheck(c){S.checkMode=c;render();}
 function startTest(){S.screen='test';S.si=0;S.mi=0;S.qi=0;var tk=timerKey();S.timers[tk]=SECTIONS[0].time[0]*60;startTimer();render();}

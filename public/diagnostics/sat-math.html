@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAT Math Diagnostic — PantherPrep</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
 <style>
@@ -24,7 +24,7 @@
   --surface: #1a1a1a;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'IBM Plex Sans',sans-serif; background:var(--paper); color:var(--ink); line-height:1.6; }
+body { font-family:'Source Sans 3',sans-serif; background:var(--paper); color:var(--ink); line-height:1.6; }
 .container { max-width:820px; margin:0 auto; padding:20px; }
 .top-stripe{height:4px;background:linear-gradient(90deg,#C8102E 0%,#C8102E 50%,#fff 50%,#fff 100%);position:fixed;top:0;left:0;right:0;z-index:100}
 .back-to-app{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem;padding:8px 0;cursor:pointer;text-decoration:none;margin-bottom:12px;margin-top:8px}
@@ -33,7 +33,7 @@ body { font-family:'IBM Plex Sans',sans-serif; background:var(--paper); color:va
 /* LANDING */
 .landing { text-align:center; padding:60px 20px; }
 .landing-badge { display:inline-block; background:var(--accent); color:#fff; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:6px 16px; border-radius:20px; margin-bottom:20px; }
-.landing h1 { font-family:'DM Serif Display',serif; font-size:clamp(2rem,5vw,3.2rem); margin-bottom:8px; }
+.landing h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,5vw,3.2rem); margin-bottom:8px; }
 .landing .subtitle { color:var(--muted); font-size:1.05rem; margin-bottom:36px; }
 .spec-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; max-width:600px; margin:0 auto 36px; text-align:left; }
 .spec-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; }
@@ -100,9 +100,9 @@ body { font-family:'IBM Plex Sans',sans-serif; background:var(--paper); color:va
 
 /* RESULTS */
 .results { text-align:center; padding:40px 0; }
-.results h1 { font-family:'DM Serif Display',serif; font-size:2.2rem; margin-bottom:6px; }
+.results h1 { font-family:'Cormorant Garamond',serif; font-size:2.2rem; margin-bottom:6px; }
 .score-circle { width:160px; height:160px; border-radius:50%; border:6px solid var(--accent); display:flex; flex-direction:column; align-items:center; justify-content:center; margin:24px auto; background:var(--surface); }
-.score-circle .score-num { font-family:'DM Serif Display',serif; font-size:2.8rem; line-height:1; }
+.score-circle .score-num { font-family:'Cormorant Garamond',serif; font-size:2.8rem; line-height:1; }
 .score-circle .score-range { font-size:0.8rem; color:var(--muted); }
 .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:14px; margin:24px 0; }
 .stat-box { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
@@ -115,7 +115,7 @@ body { font-family:'IBM Plex Sans',sans-serif; background:var(--paper); color:va
 .domain-result-row .dr-bar { height:100%; border-radius:6px; transition:width 0.8s; }
 .domain-result-row .dr-score { width:60px; text-align:right; font-weight:700; font-family:'JetBrains Mono',monospace; }
 .review-section { text-align:left; margin:30px 0; }
-.review-section h3 { font-family:'DM Serif Display',serif; font-size:1.3rem; margin-bottom:16px; }
+.review-section h3 { font-family:'Cormorant Garamond',serif; font-size:1.3rem; margin-bottom:16px; }
 .review-q { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:12px; }
 .review-q .rq-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
 .review-q .rq-status { font-weight:700; font-size:0.85rem; }
@@ -123,7 +123,7 @@ body { font-family:'IBM Plex Sans',sans-serif; background:var(--paper); color:va
 .review-q .rq-status.wrong { color:var(--wrong); }
 .review-q .rq-status.skipped { color:var(--muted); }
 .reflection-section { text-align:left; margin:30px 0; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; }
-.reflection-section h3 { font-family:'DM Serif Display',serif; margin-bottom:16px; }
+.reflection-section h3 { font-family:'Cormorant Garamond',serif; margin-bottom:16px; }
 .reflection-q { margin-bottom:16px; }
 .reflection-q label { display:block; font-weight:500; margin-bottom:6px; }
 .reflection-q textarea { width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; font-family:inherit; font-size:0.9rem; resize:vertical; min-height:60px; background:var(--surface); color:var(--ink); }
@@ -982,7 +982,7 @@ function renderResults() {
       </div>
 
       <div class="domain-results">
-        <h3 style="font-family:'DM Serif Display',serif;margin-bottom:12px;">Performance by Domain</h3>
+        <h3 style="font-family:'Cormorant Garamond',serif;margin-bottom:12px;">Performance by Domain</h3>
         ${domainHtml}
       </div>
 

@@ -6,7 +6,7 @@
 <title>Module 0: Know Your Battlefield — PantherPrep SAT R&W</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#0e0e14;--accent:#f59e0b;--accent-light:rgba(245,158,11,.12);--border:#1e293b;--muted:#64748b;--sub:#94a3b8;--surface:#13131f;--sat:#a855f7;--sat-bg:rgba(168,85,247,.12);--conv:#10b981;--conv-bg:rgba(16,185,129,.12);--craft:#f59e0b;--craft-bg:rgba(245,158,11,.12);--info:#3b82f6;--info-bg:rgba(59,130,246,.12);--expr:#a855f7;--expr-bg:rgba(168,85,247,.12);--correct:#10b981;--correct-bg:rgba(16,185,129,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--sim:#06b6d4;--sim-bg:rgba(6,182,212,.12)}
+:root{--ink:#f0f0f0;--paper:#121212;--accent:#f59e0b;--accent-light:rgba(245,158,11,.12);--border:#2a2a2a;--muted:#64748b;--sub:#999999;--surface:#1a1a1a;--sat:#a855f7;--sat-bg:rgba(168,85,247,.12);--conv:#10b981;--conv-bg:rgba(16,185,129,.12);--craft:#f59e0b;--craft-bg:rgba(245,158,11,.12);--info:#3b82f6;--info-bg:rgba(59,130,246,.12);--expr:#a855f7;--expr-bg:rgba(168,85,247,.12);--correct:#10b981;--correct-bg:rgba(16,185,129,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--sim:#06b6d4;--sim-bg:rgba(6,182,212,.12)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
 input[type="range"]{width:100%}
@@ -17,14 +17,14 @@ button{font-family:inherit}
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#e2e8f0'" onmouseout="this.style.color='#64748b'">← Back to SAT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to SAT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const {useState,useEffect,useCallback,useRef,useMemo}=React;
 const e=React.createElement;
 
 // ══════════ DESIGN TOKENS ══════════
-const C={paper:"#0e0e14",surface:"#13131f",border:"#1e293b",ink:"#f0f0f0",sub:"#94a3b8",muted:"#64748b",accent:"#f59e0b",accentLight:"rgba(245,158,11,.12)",craft:"#f59e0b",craftBg:"rgba(245,158,11,.12)",info:"#3b82f6",infoBg:"rgba(59,130,246,.12)",conv:"#10b981",convBg:"rgba(16,185,129,.12)",expr:"#a855f7",exprBg:"rgba(168,85,247,.12)",sat:"#a855f7",satBg:"rgba(168,85,247,.12)",correct:"#10b981",correctBg:"rgba(16,185,129,.12)",wrong:"#ef4444",wrongBg:"rgba(239,68,68,.12)",sim:"#06b6d4",simBg:"rgba(6,182,212,.12)"};
+const C={paper:"#121212",surface:"#1a1a1a",border:"#2a2a2a",ink:"#f0f0f0",sub:"#999999",muted:"#64748b",accent:"#f59e0b",accentLight:"rgba(245,158,11,.12)",craft:"#f59e0b",craftBg:"rgba(245,158,11,.12)",info:"#3b82f6",infoBg:"rgba(59,130,246,.12)",conv:"#10b981",convBg:"rgba(16,185,129,.12)",expr:"#a855f7",exprBg:"rgba(168,85,247,.12)",sat:"#a855f7",satBg:"rgba(168,85,247,.12)",correct:"#10b981",correctBg:"rgba(16,185,129,.12)",wrong:"#ef4444",wrongBg:"rgba(239,68,68,.12)",sim:"#06b6d4",simBg:"rgba(6,182,212,.12)"};
 const sBtn=(bg,color,extra)=>({padding:"12px 28px",borderRadius:10,border:"none",background:bg,color,fontWeight:700,fontSize:15,cursor:"pointer",transition:"transform .12s, filter .12s",...(extra||{})});
 const sBtnSm=(bg,color,extra)=>sBtn(bg,color,{padding:"8px 18px",fontSize:13,...(extra||{})});
 

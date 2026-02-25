@@ -6,14 +6,14 @@
 <title>Module 5: Words in Context — PantherPrep SAT R&W</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #0a0a0f; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 button { font-family: inherit; }
 </style>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#e2e8f0'" onmouseout="this.style.color='#64748b'">← Back to SAT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to SAT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const { useState, useEffect, useCallback, useRef } = React;
@@ -24,12 +24,12 @@ const ACCENT = "#10b981";
 const BLUE = "#3b82f6";
 const PURPLE = "#a855f7";
 const RED = "#ef4444";
-const DARK = "#0a0a0f";
-const CARD = "#13131f";
-const BORDER = "#1e293b";
+const DARK = "#121212";
+const CARD = "#1a1a1a";
+const BORDER = "#2a2a2a";
 const MUTED = "#64748b";
-const TEXT = "#e2e8f0";
-const SUB = "#94a3b8";
+const TEXT = "#f0f0f0";
+const SUB = "#999999";
 const btn = (bg, color, extra) => ({
   padding: "12px 28px", borderRadius: 10, border: "none", background: bg,
   color, fontWeight: 700, fontSize: 15, cursor: "pointer", transition: "transform .12s", ...extra
@@ -622,7 +622,7 @@ function App() {
     setTimeout(() => { setScreen(to); window.scrollTo(0, 0); setFade(true); }, 350);
   }, []);
 
-  return e("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }},
+  return e("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }},
     e("div", { style: { position: "fixed", inset: 0, pointerEvents: "none", opacity: 0.03,
       backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)", backgroundSize: "40px 40px" }}),
     e("div", { style: { position: "relative", zIndex: 1, transition: "opacity .35s,transform .35s", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(8px)" }},
