@@ -295,12 +295,6 @@ body{background:var(--bg-deep);background-image:radial-gradient(ellipse at 30% 0
 .class-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .class-chip{padding:6px 14px;border-radius:20px;font-size:.8rem;cursor:pointer;border:1px solid var(--border);background:var(--bg-surface);color:var(--text-muted);transition:all .2s}
 .class-chip.active{border-color:var(--panther-red);color:var(--panther-red);background:rgba(200,16,46,.1)}
-.class-tabs{display:flex;gap:4px;background:var(--bg-surface);border-radius:10px;padding:4px;flex-wrap:wrap;margin-bottom:20px}
-.class-tab{padding:8px 18px;border-radius:7px;border:none;background:transparent;color:var(--text-muted);font-family:var(--font-body);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s}
-.class-tab:hover{color:var(--text-primary);background:rgba(200,16,46,0.06)}
-.class-tab.active{background:linear-gradient(135deg,rgba(200,16,46,0.15),rgba(200,16,46,0.06));color:var(--panther-red);box-shadow:0 1px 4px rgba(0,0,0,0.2),0 0 16px rgba(200,16,46,0.1)}
-.class-tab-add{border:1px dashed var(--border);color:var(--text-muted)}
-.class-tab-add:hover{border-color:var(--panther-red);color:var(--panther-red)}
 .class-detail-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;transition:all .25s}
 .class-detail-card:hover{border-color:var(--panther-red)}
 .class-detail-code{font-family:var(--font-mono);font-size:2rem;font-weight:700;letter-spacing:.2em;color:var(--panther-red);text-align:center;padding:16px;background:var(--bg-surface);border-radius:var(--radius-md);cursor:pointer;user-select:all;transition:all .2s;margin:16px 0}
@@ -1828,31 +1822,40 @@ stuClasses.map(function(c){return h('span',{key:c.id,className:'class-chip activ
 h('span',{className:'class-chip',onClick:function(){setShowJoin(!showJoin)},style:{cursor:'pointer'}},showJoin?'Cancel':'+ Join Class')):
 h('span',{className:'class-chip',onClick:function(){setShowJoin(!showJoin)},style:{cursor:'pointer'}},showJoin?'Cancel':'🏫 Join a Class')),
 !isTchr&&showJoin&&h(JoinClassCard,{user:user,onJoined:function(){setShowJoin(false);loadStudentClasses(user.uid).then(function(c){setStuClasses(c)})}}),
-// Teacher: class tabs + create class + dashboard link
-isTchr&&h('div',{style:{marginBottom:'24px'}},
-// Class tabs row
-h('div',{className:'class-tabs'},
-tchrClasses.map(function(c){var count=(c.studentUids||[]).length;return h('button',{key:c.id,className:'class-tab'+(selClassTab===c.id?' active':''),onClick:function(){setSelClassTab(c.id);setShowCreateClass(false)}},'📚 '+c.name+' ('+count+')')}),
-h('button',{className:'class-tab class-tab-add'+(showCreateClass?' active':''),onClick:function(){setShowCreateClass(!showCreateClass);setSelClassTab(null)}},'+ New Class')),
-// Create class form (shown when + New Class clicked)
-showCreateClass&&h('div',{className:'class-create-form'},
+// Teacher: inline create class form (shown when + New Class clicked)
+isTchr&&showCreateClass&&h('div',{className:'class-create-form'},
 h('div',{style:{fontSize:'2rem',marginBottom:'8px'}},'🏫'),
 h('div',{style:{fontWeight:600,fontSize:'1.1rem',marginBottom:'4px'}},'Create a New Class'),
 h('div',{style:{color:'var(--text-muted)',fontSize:'.9rem',marginBottom:'16px'}},'Your students will use a join code to enroll.'),
 h('input',{value:newClassName,onChange:function(e){setNewClassName(e.target.value)},placeholder:'e.g. Period 3 SAT Prep',onKeyDown:function(e){if(e.key==='Enter')handleCreateClassHome()}}),
-h('div',null,h('button',{className:'btn btn-primary',onClick:handleCreateClassHome,disabled:creatingClass,style:{padding:'10px 28px'}},creatingClass?'Creating...':'Create Class'))),
-// Selected class detail card
-selClassTab&&!showCreateClass&&function(){var cls=tchrClasses.find(function(c){return c.id===selClassTab});if(!cls)return null;var count=(cls.studentUids||[]).length;return h('div',{className:'class-detail-card'},
+h('div',null,h('button',{className:'btn btn-primary',onClick:handleCreateClassHome,disabled:creatingClass,style:{padding:'10px 28px'}},creatingClass?'Creating...':'Create Class'),
+h('button',{onClick:function(){setShowCreateClass(false);setNewClassName('')},style:{marginLeft:'12px',background:'none',border:'none',color:'var(--text-muted)',cursor:'pointer',fontFamily:'var(--font-body)',fontSize:'.9rem'}},'Cancel'))),
+// Teacher: class detail card (shown when a class is selected)
+isTchr&&selClassTab&&!showCreateClass&&function(){var cls=tchrClasses.find(function(c){return c.id===selClassTab});if(!cls)return null;var count=(cls.studentUids||[]).length;return h('div',{className:'class-detail-card',style:{marginBottom:'20px'}},
 h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'8px'}},
 h('div',null,h('div',{style:{fontWeight:600,fontSize:'1.2rem'}},cls.name),h('div',{style:{color:'var(--text-muted)',fontSize:'.9rem',marginTop:'4px'}},count+' student'+(count!==1?'s':'')+' enrolled')),
-h('button',{className:'class-dashboard-link',onClick:function(){setView('dashboard')}},'📊 Open Dashboard →')),
+h('div',{style:{display:'flex',gap:'12px',alignItems:'center'}},
+h('button',{className:'class-dashboard-link',onClick:function(){setView('dashboard')}},'📊 Dashboard'),
+h('button',{onClick:function(){setSelClassTab(null)},style:{background:'none',border:'none',color:'var(--text-muted)',cursor:'pointer',fontSize:'1.1rem'}},'✕'))),
 h('div',{style:{fontSize:'.75rem',color:'var(--text-muted)',textAlign:'center',textTransform:'uppercase',letterSpacing:'.1em',marginTop:'12px'}},'Join Code — share with students'),
 h('div',{className:'class-detail-code',onClick:function(){copyClassCode(cls.code,cls.id)},title:'Click to copy'},cls.code+(copiedCode===cls.id?' ✓ Copied!':'')))}(),
-// Empty state: no classes and not creating
-tchrClasses.length===0&&!showCreateClass&&h('div',{style:{textAlign:'center',padding:'20px',color:'var(--text-muted)',fontSize:'.9rem'}},'No classes yet. Click "+ New Class" to get started.')),
-// Dashboard quick access (smaller, below classes)
-isTchr&&h('div',{className:'mode-card',onClick:()=>setView('dashboard'),style:{marginBottom:'24px',borderColor:'var(--panther-red)',maxWidth:'400px'}},h('div',{className:'mode-card-icon'},'📊'),h('div',{className:'mode-card-title'},'Teacher Dashboard'),h('div',{className:'mode-card-desc'},'View student analytics, manage questions, and class details.')),
-h('div',{className:'test-grid'},Object.entries(TESTS).map(([k,v])=>{const mq=QS.filter(q=>q.test===k&&q.sec==='math').length;const rq=QS.filter(q=>q.test===k&&q.sec==='rw').length;return h('div',{key:k,className:'test-card',style:{'--card-accent':'var(--panther-red)'},onClick:()=>{setSelTest(k);setView('mode')}},h('div',{className:'test-card-title'},v.name),h('div',{className:'test-card-desc'},v.desc),h('div',{className:'test-card-stats'},h('span',{className:'test-stat'},h('strong',null,mq),' math'),h('span',{className:'test-stat'},h('strong',null,rq),' R&W')))})));
+// Grid: class cards + new class button + dashboard + tests
+h('div',{className:'test-grid'},
+// Teacher class cards in the grid
+isTchr&&tchrClasses.map(function(c){var count=(c.studentUids||[]).length;return h('div',{key:'cls-'+c.id,className:'test-card',style:{borderColor:selClassTab===c.id?'var(--panther-red)':'',cursor:'pointer'},onClick:function(){setSelClassTab(selClassTab===c.id?null:c.id);setShowCreateClass(false)}},
+h('div',{className:'test-card-title'},'📚 '+c.name),
+h('div',{className:'test-card-desc'},count+' student'+(count!==1?'s':'')+' enrolled'),
+h('div',{className:'test-card-stats'},h('span',{className:'test-stat'},'Code: '),h('span',{className:'test-stat'},h('strong',null,c.code))))}),
+// + New Class button card
+isTchr&&h('div',{className:'test-card',style:{cursor:'pointer',borderStyle:'dashed',display:'flex',alignItems:'center',justifyContent:'center',minHeight:'120px'},onClick:function(){setShowCreateClass(!showCreateClass);setSelClassTab(null)}},
+h('div',{style:{textAlign:'center'}},h('div',{style:{fontSize:'2rem',marginBottom:'8px'}},'+'),h('div',{className:'test-card-desc',style:{marginBottom:0,color:'var(--text-muted)'}},'New Class'))),
+// Dashboard card
+isTchr&&h('div',{className:'test-card',style:{borderColor:'var(--panther-red)',cursor:'pointer'},onClick:function(){setView('dashboard')}},
+h('div',{className:'test-card-title'},'📊 Dashboard'),
+h('div',{className:'test-card-desc'},'View student analytics, manage questions, and class details.')),
+// Test cards
+Object.entries(TESTS).map(([k,v])=>{const mq=QS.filter(q=>q.test===k&&q.sec==='math').length;const rq=QS.filter(q=>q.test===k&&q.sec==='rw').length;return h('div',{key:k,className:'test-card',style:{'--card-accent':'var(--panther-red)'},onClick:()=>{setSelTest(k);setView('mode')}},h('div',{className:'test-card-title'},v.name),h('div',{className:'test-card-desc'},v.desc),h('div',{className:'test-card-stats'},h('span',{className:'test-stat'},h('strong',null,mq),' math'),h('span',{className:'test-stat'},h('strong',null,rq),' R&W')))})),
+);
 
 else if(view==='mode'){const info=TESTS[selTest];content=h('div',{className:'animate-in'},h('div',{className:'mode-header'},h('button',{className:'back-btn',onClick:goHome},'←'),h('div',{className:'mode-title'},info.name)),h('div',{className:'mode-grid'},h('div',{className:'mode-card',onClick:()=>setView('domain')},h('div',{className:'mode-card-icon'},'🎯'),h('div',{className:'mode-card-title'},'Practice Mode'),h('div',{className:'mode-card-desc'},'Choose a domain. Instant feedback after each question.')),h('div',{className:'mode-card',onClick:()=>setView('test')},h('div',{className:'mode-card-icon'},'⏱️'),h('div',{className:'mode-card-title'},'Test Mode'),h('div',{className:'mode-card-desc'},`${info.mins}-minute timed module. Mixed domains, scored at the end.`)),
 h('div',{className:'mode-card',onClick:function(){setView('diagpick')},style:{borderColor:'#a78bfa'}},h('div',{className:'mode-card-icon'},'🩺'),h('div',{className:'mode-card-title'},'Diagnostic Test'),h('div',{className:'mode-card-desc'},'Full-length diagnostic with adaptive modules, scoring, and detailed analysis.')),
