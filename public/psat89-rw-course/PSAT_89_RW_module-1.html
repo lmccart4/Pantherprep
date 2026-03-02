@@ -121,6 +121,12 @@ select {
   padding-right: 32px !important;
 }
 textarea { resize: vertical; }
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
@@ -887,7 +893,7 @@ function DiagnosticScreen(props) {
     DIAG_QS.map(function(q, i) {
       var answered = answers[i] !== null;
       var isCorrect = answered && answers[i] === q.correct;
-      return ce("div",{key:i,style:glass({padding:20,marginBottom:14,transition:"all .3s",opacity:scored&&answered?0.85:1,borderColor:scored&&answered?(isCorrect?"rgba(34,197,94,.15)":"rgba(239,68,68,.12)"):C.glassBorder})},
+      return ce("div",{key:i,style:glass({padding:20,marginBottom:14,transition:"all .3s",opacity:scored&&answered?0.85:1,borderColor:scored&&answered?(isCorrect?"rgba(34,197,94,.15)":"rgba(239,68,68,.07)"):C.glassBorder})},
         ce("div",{style:{fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:8,display:"inline-block",padding:"3px 10px",borderRadius:6,background:q.color+"15",color:q.color}},q.domain),
         ce("div",{style:{fontSize:14,color:"#a0a0b0",lineHeight:1.85,padding:"14px 18px",background:C.paper,borderRadius:10,marginBottom:14,borderLeft:"3px solid "+C.border,fontStyle:"italic",whiteSpace:"pre-line"}},q.passage),
         ce("div",{style:{fontSize:14,marginBottom:14,color:"#d4d4de",lineHeight:1.7,fontWeight:500}},q.stem),
@@ -906,12 +912,12 @@ function DiagnosticScreen(props) {
             var letter = String.fromCharCode(65+ci);
             var st = {padding:"11px 15px",background:C.paper,border:"1px solid "+C.border,borderRadius:10,cursor:scored?"default":"pointer",fontSize:14,transition:"all .2s",display:"flex",alignItems:"flex-start",gap:10,textAlign:"left",width:"100%",color:"#bcbcc8"};
             if (scored) {
-              if (ci === q.correct) { st.borderColor = "rgba(34,197,94,.3)"; st.background = C.correctBg; st.boxShadow="0 0 16px rgba(34,197,94,.06)"; }
-              else if (answers[i] === ci) { st.borderColor = "rgba(239,68,68,.3)"; st.background = C.wrongBg; }
+              if (ci === q.correct) { st.borderColor = "rgba(34,197,94,.2)"; st.background = C.correctBg; st.boxShadow="0 0 16px rgba(34,197,94,.06)"; }
+              else if (answers[i] === ci) { st.borderColor = "rgba(239,68,68,.2)"; st.background = C.wrongBg; }
               st.pointerEvents = "none"; st.opacity = 0.5;
               if (ci === q.correct) st.opacity = 1;
             } else if (answers[i] === ci) {
-              st.borderColor = "rgba(34,197,94,.3)"; st.background = C.correctBg;
+              st.borderColor = "rgba(34,197,94,.2)"; st.background = C.correctBg;
             }
             return ce("button",{key:ci,onClick:function(){pickAnswer(i, ci);},style:st,
               onMouseOver:function(e){if(!scored&&answers[i]!==ci){e.currentTarget.style.borderColor=C.borderHover;e.currentTarget.style.background=C.surface;}},
@@ -1031,8 +1037,8 @@ function ClassifyScreen(props) {
             var st = {padding:"7px 16px",background:C.surface,border:"1px solid "+C.border,borderRadius:10,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .2s",fontWeight:500};
             if (h) {
               st.opacity = 0.4; st.pointerEvents = "none";
-              if (oi === q.correct) { st.borderColor = "rgba(34,197,94,.3)"; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; st.boxShadow="0 0 12px rgba(34,197,94,.08)"; }
-              else if (oi === a) { st.borderColor = "rgba(239,68,68,.3)"; st.background = C.wrongBg; st.color = C.wrong; st.opacity=0.7; }
+              if (oi === q.correct) { st.borderColor = "rgba(34,197,94,.2)"; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; st.boxShadow="0 0 12px rgba(34,197,94,.08)"; }
+              else if (oi === a) { st.borderColor = "rgba(239,68,68,.2)"; st.background = C.wrongBg; st.color = C.wrong; st.opacity=0.7; }
             }
             return ce("button",{key:oi,onClick:function(){pick(i, oi);},style:st,
               onMouseOver:function(e){if(!h){e.currentTarget.style.borderColor=C.borderHover;e.currentTarget.style.background=C.surfaceAlt;}},

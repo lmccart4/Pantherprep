@@ -6,10 +6,16 @@
 <title>Module 4: Central Ideas, Details & Inferences — PSAT 8/9 R&W — PantherPrep</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+body { background: #08080c; color: #eaeaef; font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 button { font-family: inherit; }
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
@@ -25,13 +31,13 @@ var useRef = React.useRef;
 
 /* ── design tokens ── */
 var C = {
-  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
-  sub:"#999", muted:"#666", accent:"#0891b2",
-  mod:"#60a5fa", modBg:"rgba(96,165,250,.12)",
+  paper:"#08080c", surface:"#0f0f16", border:"#1c1c2c", ink:"#eaeaef",
+  sub:"#9898a8", muted:"#666", accent:"#0891b2",
+  mod:"#60a5fa", modBg:"rgba(96,165,250,.07)",
   craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
   rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
-  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
-  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.07)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.07)"
 };
 var btn = function(bg, color, extra) {
   return Object.assign({
@@ -470,7 +476,7 @@ function EvidenceExercise(props) {
     createElement("p",{style:{color:C.sub,fontSize:13,marginBottom:20}},"For each claim, classify: Directly Stated, Valid Inference, or Not Supported by the passage."),
     EVI.map(function(block, bi) {
       return createElement("div",{key:bi,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:12}},
-        createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"12px 16px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:14,borderLeft:"3px solid "+C.rw,fontFamily:"Georgia,serif"}},block.passage),
+        createElement("div",{style:{fontSize:14,color:"#7a7a8e",lineHeight:1.8,padding:"12px 16px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:14,borderLeft:"3px solid "+C.rw,fontFamily:"Georgia,serif"}},block.passage),
         block.claims.map(function(cl, ci) {
           var key = bi + "_" + ci;
           var a = answers[key], h = a !== undefined;
@@ -568,7 +574,7 @@ function QuizEngine(props) {
         else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
         else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
         return createElement("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
-          createElement("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          createElement("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#08080c":C.muted}},letter),
           createElement("span",{style:{color:tc,fontSize:14,lineHeight:1.5}},c)
         );
       })
@@ -626,7 +632,7 @@ function Exercises(props) {
       subtitle:"Which choice best states the central idea of the passage?",
       items:CEN, borderColor:C.mod,
       renderStimulus:function(q){
-        return createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"12px 16px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:12,borderLeft:"3px solid "+C.mod,fontFamily:"Georgia,serif"}},q.passage);
+        return createElement("div",{style:{fontSize:14,color:"#7a7a8e",lineHeight:1.8,padding:"12px 16px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:12,borderLeft:"3px solid "+C.mod,fontFamily:"Georgia,serif"}},q.passage);
       },
       onComplete:function(){ setStep(1); }
     });
@@ -643,7 +649,7 @@ function Exercises(props) {
       items:INF, options:INF_OPTS, borderColor:C.accent,
       renderStimulus:function(q){
         return createElement("div",null,
-          createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"10px 14px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:8,borderLeft:"3px solid "+C.accent,fontFamily:"Georgia,serif"}},q.passage),
+          createElement("div",{style:{fontSize:14,color:"#7a7a8e",lineHeight:1.8,padding:"10px 14px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:8,borderLeft:"3px solid "+C.accent,fontFamily:"Georgia,serif"}},q.passage),
           createElement("div",{style:{fontSize:13,color:"#ddd",marginBottom:8,lineHeight:1.6}},"\u201c"+q.claim+"\u201d")
         );
       },
@@ -657,10 +663,10 @@ function Exercises(props) {
       items:AUT, options:AUT_OPTS, borderColor:C.expr,
       renderStimulus:function(q){
         return createElement("div",null,
-          createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"10px 14px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.expr,fontFamily:"Georgia,serif"}},q.passage),
+          createElement("div",{style:{fontSize:14,color:"#7a7a8e",lineHeight:1.8,padding:"10px 14px",background:"rgba(96,165,250,.04)",borderRadius:8,marginBottom:10,borderLeft:"3px solid "+C.expr,fontFamily:"Georgia,serif"}},q.passage),
           createElement("div",{style:{padding:"6px 12px",borderRadius:6,background:C.wrongBg,border:"1px solid "+C.wrong,fontSize:13,marginBottom:10,display:"inline-block"}},
             createElement("span",{style:{color:C.wrong,fontWeight:700}},"Wrong answer: "),
-            createElement("span",{style:{color:"#ccc"}},"\u201c"+q.wrong+"\u201d")
+            createElement("span",{style:{color:"#9898a8"}},"\u201c"+q.wrong+"\u201d")
           )
         );
       },

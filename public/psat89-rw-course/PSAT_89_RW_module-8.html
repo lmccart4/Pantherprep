@@ -6,10 +6,16 @@
 <title>Module 8: Transitions — PSAT 8/9 R&W — PantherPrep</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+body { background: #08080c; color: #eaeaef; font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 button { font-family: inherit; }
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
@@ -22,13 +28,13 @@ var useState = React.useState, useEffect = React.useEffect, useCallback = React.
 
 /* ── design tokens ── */
 var C = {
-  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
-  sub:"#999", muted:"#666", accent:"#0891b2",
+  paper:"#08080c", surface:"#0f0f16", border:"#1c1c2c", ink:"#eaeaef",
+  sub:"#9898a8", muted:"#666", accent:"#0891b2",
   mod:"#fb923c", modBg:"rgba(251,146,60,.12)",
   craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
   rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
-  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
-  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.07)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.07)"
 };
 var btn = function(bg, color, extra) {
   return Object.assign({
@@ -260,7 +266,7 @@ function LessonViewer(props) {
           cats.map(function(cat,i){
             return e("div",{key:i,style:{background:C.paper,border:"2px solid "+cat.color+"55",borderRadius:10,padding:"10px 12px",textAlign:"center"}},
               e("div",{style:{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,color:cat.color,marginBottom:6}},cat.name),
-              e("div",{style:{fontSize:12,color:"#ccc",lineHeight:1.5}},cat.words)
+              e("div",{style:{fontSize:12,color:"#9898a8",lineHeight:1.5}},cat.words)
             );
           })
         )
@@ -272,12 +278,12 @@ function LessonViewer(props) {
         e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
           e("div",{style:{background:C.paper,border:"2px solid #34d399"+"55",borderRadius:10,padding:14}},
             e("div",{style:{color:"#34d399",fontWeight:700,fontSize:13,marginBottom:8}},"\u2795 Addition"),
-            e("div",{style:{fontSize:12,color:"#ccc",lineHeight:1.6,marginBottom:8}},"Idea 2 is ANOTHER point supporting the same argument."),
+            e("div",{style:{fontSize:12,color:"#9898a8",lineHeight:1.6,marginBottom:8}},"Idea 2 is ANOTHER point supporting the same argument."),
             e("div",{style:{fontSize:12,color:"#aaa",fontStyle:"italic",lineHeight:1.5,background:"#34d399"+"08",padding:"8px 10px",borderRadius:6}},"\"Dolphins are intelligent. Furthermore, they display complex social behaviors.\"")
           ),
           e("div",{style:{background:C.paper,border:"2px solid #60a5fa"+"55",borderRadius:10,padding:14}},
             e("div",{style:{color:"#60a5fa",fontWeight:700,fontSize:13,marginBottom:8}},"\u27A1\uFE0F Cause / Effect"),
-            e("div",{style:{fontSize:12,color:"#ccc",lineHeight:1.6,marginBottom:8}},"Idea 1 CAUSES or LEADS TO Idea 2."),
+            e("div",{style:{fontSize:12,color:"#9898a8",lineHeight:1.6,marginBottom:8}},"Idea 1 CAUSES or LEADS TO Idea 2."),
             e("div",{style:{fontSize:12,color:"#aaa",fontStyle:"italic",lineHeight:1.5,background:"#60a5fa"+"08",padding:"8px 10px",borderRadius:6}},"\"The drought destroyed crops. Consequently, food prices rose sharply.\"")
           )
         ),
@@ -489,7 +495,7 @@ function QuizEngine(props) {
         else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
         else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
         return e("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
-          e("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          e("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#08080c":C.muted}},letter),
           e("span",{style:{color:tc,fontSize:14,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace"}},c)
         );
       })
@@ -558,7 +564,7 @@ function SpeedRound(props) {
     SPD.map(function(q,i){
       var a = answers[i], h = a !== undefined;
       return e("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:"10px 14px",marginBottom:10}},
-        e("div",{style:{fontSize:13,color:"#bbb",lineHeight:1.6,marginBottom:8}},
+        e("div",{style:{fontSize:13,color:"#7a7a8e",lineHeight:1.6,marginBottom:8}},
           q.s1," ",e("span",{style:{color:C.mod,fontWeight:700}},"___")," ",q.s2
         ),
         e("div",{style:{display:"flex",flexWrap:"wrap",gap:6}},
@@ -664,7 +670,7 @@ function Exercises(props) {
       subtitle:"Read both sentences, then identify the logical relationship.",
       items:REL, options:REL_OPTS, borderColor:C.info,
       renderStimulus:function(q){
-        return e("div",{style:{fontSize:13,color:"#bbb",lineHeight:1.7,marginBottom:10}},
+        return e("div",{style:{fontSize:13,color:"#7a7a8e",lineHeight:1.7,marginBottom:10}},
           e("div",{style:{padding:"8px 12px",background:C.info+"06",borderLeft:"3px solid "+C.info,borderRadius:"0 8px 8px 0",marginBottom:6}},
             e("strong",{style:{color:C.ink}},"S1: "),q.s1
           ),

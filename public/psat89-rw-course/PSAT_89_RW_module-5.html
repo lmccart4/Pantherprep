@@ -6,10 +6,16 @@
 <title>Module 5: Command of Evidence — PSAT 8/9 R&W — PantherPrep</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+body { background: #08080c; color: #eaeaef; font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 button { font-family: inherit; }
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
@@ -21,13 +27,13 @@ var useState = React.useState, useEffect = React.useEffect, useCallback = React.
 
 /* ── design tokens ── */
 var C = {
-  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
-  sub:"#999", muted:"#666", accent:"#0891b2",
+  paper:"#08080c", surface:"#0f0f16", border:"#1c1c2c", ink:"#eaeaef",
+  sub:"#9898a8", muted:"#666", accent:"#0891b2",
   mod:"#34d399", modBg:"rgba(52,211,153,.12)",
   craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
   rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
-  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
-  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)"
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.07)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.07)"
 };
 var btn = function(bg, color, extra) {
   return Object.assign({
@@ -265,7 +271,7 @@ var KEY_TAKEAWAYS = [
 function DataTable(props) {
   var headers = props.headers, rows = props.rows;
   var thStyle = {padding:"8px 10px",border:"1px solid "+C.border,textAlign:"center",background:C.surface,fontWeight:700,color:C.sec,fontSize:".75rem",textTransform:"uppercase",letterSpacing:".5px"};
-  var tdStyle = {padding:"8px 10px",border:"1px solid "+C.border,textAlign:"center",color:"#ccc",fontSize:".82rem"};
+  var tdStyle = {padding:"8px 10px",border:"1px solid "+C.border,textAlign:"center",color:"#9898a8",fontSize:".82rem"};
   return React.createElement("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:".82rem",margin:"12px 0"}},
     React.createElement("thead",null,
       React.createElement("tr",null,
@@ -290,7 +296,7 @@ function BarChart(props) {
     labels.map(function(label,i){
       var pct = Math.round(values[i]/max*100);
       return React.createElement("div",{key:i,style:{display:"flex",alignItems:"center",gap:8,marginBottom:6}},
-        React.createElement("div",{style:{fontSize:".78rem",color:"#ccc",minWidth:80,textAlign:"right"}},label),
+        React.createElement("div",{style:{fontSize:".78rem",color:"#9898a8",minWidth:80,textAlign:"right"}},label),
         React.createElement("div",{style:{flex:1,height:18,background:C.paper,borderRadius:4,overflow:"hidden",position:"relative"}},
           React.createElement("div",{style:{height:"100%",borderRadius:4,width:pct+"%",background:color,transition:"width .4s"}})
         ),
@@ -445,7 +451,7 @@ function TextEvMatcher(props) {
             }
             return React.createElement("button",{key:ci,onClick:function(){pick(i,ci);},style:st},
               React.createElement("span",{style:{fontWeight:700,color:h&&ci===q.c?C.correct:h&&ci===a?C.wrong:C.muted,minWidth:20,flexShrink:0}},"ABCD"[ci]),
-              React.createElement("span",{style:{fontSize:12,fontStyle:"italic",color:"#ccc"}},ch)
+              React.createElement("span",{style:{fontSize:12,fontStyle:"italic",color:"#9898a8"}},ch)
             );
           })
         ),
@@ -542,7 +548,7 @@ function GraphPassageConnector(props) {
       var a = answers[i], h = a !== undefined;
       return React.createElement("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:16,marginBottom:10}},
         React.createElement(BarChart,{title:q.barTitle,labels:q.barLabels,values:q.barValues,max:q.barMax,color:q.barColor}),
-        React.createElement("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"12px 16px",background:C.mod+"06",borderRadius:8,marginBottom:12,borderLeft:"3px solid "+C.mod}},q.passage),
+        React.createElement("div",{style:{fontSize:14,color:"#7a7a8e",lineHeight:1.8,padding:"12px 16px",background:C.mod+"06",borderRadius:8,marginBottom:12,borderLeft:"3px solid "+C.mod}},q.passage),
         React.createElement("div",{style:{fontSize:14,color:"#ddd",lineHeight:1.7,marginBottom:12}},q.q),
         React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:6,marginBottom:h?8:0}},
           q.ch.map(function(ch,ci){
@@ -601,11 +607,11 @@ function TrapSpotter(props) {
         React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:8,marginBottom:10}},
           React.createElement("div",{style:{padding:"8px 12px",borderRadius:6,background:C.wrongBg,border:"1px solid "+C.wrong,fontSize:13}},
             React.createElement("span",{style:{color:C.wrong,fontWeight:700}},"\u2717 Trap: "),
-            React.createElement("span",{style:{color:"#ccc",fontStyle:"italic"}},q.wrong)
+            React.createElement("span",{style:{color:"#9898a8",fontStyle:"italic"}},q.wrong)
           ),
           React.createElement("div",{style:{padding:"8px 12px",borderRadius:6,background:C.correctBg,border:"1px solid "+C.correct,fontSize:13}},
             React.createElement("span",{style:{color:C.correct,fontWeight:700}},"\u2713 Best: "),
-            React.createElement("span",{style:{color:"#ccc",fontStyle:"italic"}},q.right)
+            React.createElement("span",{style:{color:"#9898a8",fontStyle:"italic"}},q.right)
           )
         ),
         React.createElement("div",{style:{fontSize:13,color:C.expr,marginBottom:8}},
@@ -699,7 +705,7 @@ function QuizEngine(props) {
         else if (confirmed && isSel && !isCorr) { bg = C.wrong+"18"; bdr = "2px solid "+C.wrong; tc = C.wrong; }
         else if (isSel && !confirmed) { bg = C.mod+"15"; bdr = "2px solid "+C.mod; tc = C.mod; }
         return React.createElement("button",{key:ci,onClick:function(){ if(!confirmed)setSelected(ci); },disabled:confirmed,style:{display:"flex",alignItems:"flex-start",gap:12,padding:"14px 18px",borderRadius:12,background:bg,border:bdr,cursor:confirmed?"default":"pointer",textAlign:"left",width:"100%"}},
-          React.createElement("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#121212":C.muted}},letter),
+          React.createElement("span",{style:{minWidth:28,height:28,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:13,flexShrink:0,marginTop:1,background:confirmed&&isCorr?C.correct:confirmed&&isSel&&!isCorr?C.wrong:isSel?C.mod:C.border,color:isSel||confirmed?"#08080c":C.muted}},letter),
           React.createElement("span",{style:{color:tc,fontSize:14,lineHeight:1.5}},c)
         );
       })

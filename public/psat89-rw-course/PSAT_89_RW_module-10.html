@@ -6,10 +6,16 @@
 <title>Module 10: Full Test Strategy & Timed Practice — PSAT 8/9 R&W — PantherPrep</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+body { background: #08080c; color: #eaeaef; font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 button { font-family: inherit; }
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
@@ -25,13 +31,13 @@ var useCallback = React.useCallback;
 
 /* ── design tokens ── */
 var C = {
-  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
-  sub:"#999", muted:"#666", accent:"#f43f5e",
+  paper:"#08080c", surface:"#0f0f16", border:"#1c1c2c", ink:"#eaeaef",
+  sub:"#9898a8", muted:"#666", accent:"#f43f5e",
   mod:"#f43f5e", modBg:"rgba(244,63,94,.12)",
   craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
   rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
-  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
-  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.07)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.07)",
   strat:"#f59e0b", stratBg:"rgba(245,158,11,.08)",
   domCI:"#c084fc", domCV:"#34d399", domEI:"#60a5fa", domSEC:"#f472b6"
 };
@@ -307,7 +313,7 @@ function NotesCard(props) {
   return h("div", {style:{background:C.paper, border:"2px solid "+C.rw, borderRadius:12, padding:"14px 16px", marginBottom:12}},
     h("div", {style:{fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:1.5, color:C.rw, marginBottom:8}}, title),
     bullets.map(function(b, i) {
-      return h("div", {key:i, style:{display:"flex", gap:8, marginBottom:6, fontSize:13, color:"#ccc", lineHeight:1.6}},
+      return h("div", {key:i, style:{display:"flex", gap:8, marginBottom:6, fontSize:13, color:"#9898a8", lineHeight:1.6}},
         h("span", {style:{color:C.rw, fontWeight:700, flexShrink:0}}, "\u2022"),
         h("span", null, b)
       );
@@ -333,7 +339,7 @@ function DataTable(props) {
         data.map(function(row, ri) {
           return h("tr", {key:ri},
             row.map(function(cell, ci) {
-              return h("td", {key:ci, style:{padding:"8px 10px", border:"1px solid "+C.border, textAlign:"center", color:"#ccc"}}, cell);
+              return h("td", {key:ci, style:{padding:"8px 10px", border:"1px solid "+C.border, textAlign:"center", color:"#9898a8"}}, cell);
             })
           );
         })
@@ -348,7 +354,7 @@ function Checklist(props) {
   return h("div", null,
     items.map(function(item, i) {
       var isDone = checked[i];
-      return h("div", {key:i, style:{display:"flex", alignItems:"flex-start", gap:10, padding:"8px 0", borderBottom:"1px solid rgba(255,255,255,.05)", fontSize:14, color:"#ccc"}},
+      return h("div", {key:i, style:{display:"flex", alignItems:"flex-start", gap:10, padding:"8px 0", borderBottom:"1px solid rgba(255,255,255,.05)", fontSize:14, color:"#9898a8"}},
         h("div", {onClick:function() { setChecked(function(prev) { var n = Object.assign({}, prev); n[i] = !n[i]; return n; }); },
           style:{flexShrink:0, width:20, height:20, border:"2px solid "+(isDone?C.correct:C.border), borderRadius:4, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, background:isDone?C.correct:"transparent", color:isDone?"#fff":"transparent", transition:"all .2s"}},
           isDone ? "\u2713" : ""
@@ -417,7 +423,7 @@ function LessonViewer(props) {
           return h("div", {key:ci, style:{background:C.surface, border:"2px solid "+card.color, borderRadius:12, padding:16, fontSize:13}},
             h("h4", {style:{color:card.color, marginBottom:8, fontSize:14}}, card.label),
             card.items.map(function(item, ii) {
-              return h("div", {key:ii, style:{display:"flex", gap:6, marginBottom:4, color:"#ccc", lineHeight:1.5}},
+              return h("div", {key:ii, style:{display:"flex", gap:6, marginBottom:4, color:"#9898a8", lineHeight:1.5}},
                 h("span", {style:{color:card.color, flexShrink:0}}, "\u2022"),
                 h("span", null, item)
               );
@@ -437,7 +443,7 @@ function LessonViewer(props) {
         checkpoints.map(function(cp, i) {
           return h("div", {key:i, style:{display:"flex", alignItems:"stretch", gap:0, marginBottom:8}},
             h("div", {style:{width:38, minHeight:38, borderRadius:"10px 0 0 10px", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:700, fontSize:13, color:"#fff", flexShrink:0, background:cp.color}}, cp.time),
-            h("div", {style:{flex:1, padding:"10px 14px", borderRadius:"0 10px 10px 0", fontSize:13, lineHeight:1.5, border:"1px solid "+C.border, borderLeft:"none", color:"#ccc"}}, cp.text)
+            h("div", {style:{flex:1, padding:"10px 14px", borderRadius:"0 10px 10px 0", fontSize:13, lineHeight:1.5, border:"1px solid "+C.border, borderLeft:"none", color:"#9898a8"}}, cp.text)
           );
         })
       );
@@ -884,7 +890,7 @@ function CompleteScreen(props) {
         weak.length === 0 ?
           h("p", {style:{color:C.correct, fontSize:14}}, "All domains above 70% \u2014 strong performance! Focus on reducing careless errors and practicing under timed conditions.") :
           h("div", null,
-            h("p", {style:{color:"#ccc", marginBottom:10, fontSize:14}}, "These domains scored below 70% \u2014 review them before test day:"),
+            h("p", {style:{color:"#9898a8", marginBottom:10, fontSize:14}}, "These domains scored below 70% \u2014 review them before test day:"),
             weak.map(function(d, i) {
               return h("div", {key:i, style:{padding:"8px 0", borderBottom:"1px solid rgba(255,255,255,.05)", fontSize:14}},
                 h("strong", {style:{color:C.wrong}}, d.n),
@@ -895,7 +901,7 @@ function CompleteScreen(props) {
             })
           ),
         h("h3", {style:{marginTop:16, marginBottom:10, color:C.ink, fontSize:"1.1rem"}}, "Your Path: PSAT 8/9 \u2192 PSAT 10 \u2192 SAT"),
-        h("div", {style:{fontSize:14, color:"#ccc", lineHeight:1.8}},
+        h("div", {style:{fontSize:14, color:"#9898a8", lineHeight:1.8}},
           h("strong", null, "Now \u2192 Test Day:"), " Review weak domains. Redo practice questions you missed. Focus on the error types that cost you the most points.", h("br"),
           h("strong", null, "After PSAT 8/9:"), " Your score report will show specific skill areas. Use it to target your PSAT 10 prep.", h("br"),
           h("strong", null, "10th Grade:"), " The PSAT 10 covers the same content at slightly higher difficulty. Every vocabulary word, grammar rule, and strategy carries forward.", h("br"),
@@ -904,8 +910,8 @@ function CompleteScreen(props) {
       ),
       h("div", {style:{background:C.surface, border:"1px solid "+C.accent, borderRadius:12, padding:20, marginTop:20, borderLeft:"3px solid "+C.accent}},
         h("h3", {style:{marginBottom:10, color:C.ink}}, "You Did It!"),
-        h("p", {style:{fontSize:15, lineHeight:1.7, color:"#ccc", marginBottom:8}}, "You\u2019ve completed the entire PSAT 8/9 Reading & Writing course \u2014 from diagnostic through practice test. Whether you scored exactly where you wanted or have room to grow, remember: this is your starting line, not your finish line."),
-        h("p", {style:{fontSize:15, lineHeight:1.7, color:"#ccc", marginBottom:8}}, "The PSAT 8/9 \u2192 PSAT 10 \u2192 PSAT/NMSQT \u2192 SAT is a progression. Every skill you\u2019ve built here \u2014 vocabulary, evidence, grammar, transitions, synthesis \u2014 carries forward to every test in the pipeline."),
+        h("p", {style:{fontSize:15, lineHeight:1.7, color:"#9898a8", marginBottom:8}}, "You\u2019ve completed the entire PSAT 8/9 Reading & Writing course \u2014 from diagnostic through practice test. Whether you scored exactly where you wanted or have room to grow, remember: this is your starting line, not your finish line."),
+        h("p", {style:{fontSize:15, lineHeight:1.7, color:"#9898a8", marginBottom:8}}, "The PSAT 8/9 \u2192 PSAT 10 \u2192 PSAT/NMSQT \u2192 SAT is a progression. Every skill you\u2019ve built here \u2014 vocabulary, evidence, grammar, transitions, synthesis \u2014 carries forward to every test in the pipeline."),
         h("p", {style:{fontSize:15, lineHeight:1.7, color:C.mod, fontWeight:700}}, "Keep going. You\u2019ve got this. \uD83D\uDC3E")
       )
     ),
