@@ -6,15 +6,128 @@
 <title>Module 1: Welcome & Diagnostic — PSAT 8/9 Reading & Writing — PantherPrep</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-button { font-family: inherit; }
+html { scroll-behavior: smooth; }
+body {
+  background: #08080c;
+  color: #eaeaef;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+button { font-family: inherit; cursor: pointer; }
+::selection { background: rgba(6,182,212,0.35); color: #fff; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #252535; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #353548; }
+
+/* Ambient Background Orbs */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 900px 700px at 8% 15%, rgba(6,182,212,0.055) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 600px at 92% 12%, rgba(167,139,250,0.045) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 500px at 45% 92%, rgba(6,214,160,0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grain Overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.018;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+#root { position: relative; z-index: 1; }
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(6,182,212,0.12); }
+  50% { box-shadow: 0 0 50px rgba(6,182,212,0.25), 0 0 100px rgba(6,182,212,0.08); }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Range Input */
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  height: 6px; border-radius: 3px; outline: none; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(6,182,212,0.5), 0 2px 8px rgba(0,0,0,0.4);
+  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 18px rgba(6,182,212,0.7), 0 2px 12px rgba(0,0,0,0.5);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 50%; border: none;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(6,182,212,0.5), 0 2px 8px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+
+/* Number Input */
+input[type="number"] { -moz-appearance: textfield; }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Focus */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: rgba(6,182,212,0.5) !important;
+  box-shadow: 0 0 0 3px rgba(6,182,212,0.08), 0 0 24px rgba(6,182,212,0.06) !important;
+}
+
+/* Select */
+select {
+  -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a6e' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px !important;
+}
+textarea { resize: vertical; }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#e2e8f0'" onmouseout="this.style.color='#64748b'">← Back to PSAT 8/9 R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#5a5a6e;font-size:.85rem;padding:12px 24px;margin-top:4px;text-decoration:none;font-family:Manrope,-apple-system,sans-serif;font-weight:500;letter-spacing:0.2px;transition:color .2s,transform .2s;position:relative;z-index:1" onmouseover="this.style.color='#eaeaef';this.style.transform='translateX(-2px)'" onmouseout="this.style.color='#5a5a6e';this.style.transform='translateX(0)'">← Back to PSAT 8/9 R&amp;W Course</a>
 <div id="root"></div>
 <script>
 var ce = React.createElement;
@@ -25,19 +138,29 @@ var useRef = React.useRef;
 
 /* ── design tokens ── */
 var C = {
-  paper:"#121212", surface:"#1a1a1a", border:"#2a2a2a", ink:"#f0f0f0",
-  sub:"#999", muted:"#666", accent:"#0891b2",
-  mod:"#0891b2", modBg:"rgba(8,145,178,.12)",
+  paper:"#08080c", surface:"#0f0f16", surfaceAlt:"#141420", border:"#1c1c2c", borderHover:"#2a2a3e",
+  ink:"#eaeaef", sub:"#9898a8", muted:"#5a5a6e", accent:"#06b6d4",
+  mod:"#06b6d4", modBg:"rgba(6,182,212,.07)", modGlow:"rgba(6,182,212,.15)",
   craft:"#f472b6", info:"#60a5fa", sec:"#34d399", expr:"#fbbf24",
-  rw:"#c084fc", rwBg:"rgba(192,132,252,.1)",
-  correct:"#22c55e", correctBg:"rgba(34,197,94,.12)",
-  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.12)",
-  grow:"#06d6a0"
+  rw:"#a78bfa", rwBg:"rgba(167,139,250,.07)", rwGlow:"rgba(167,139,250,.15)",
+  correct:"#22c55e", correctBg:"rgba(34,197,94,.07)",
+  wrong:"#ef4444", wrongBg:"rgba(239,68,68,.07)",
+  grow:"#06d6a0",
+  glass:"rgba(15,15,22,.75)", glassBorder:"rgba(255,255,255,.05)"
 };
 var btn = function(bg, color, extra) {
   return Object.assign({
-    padding:"12px 28px", borderRadius:10, border:"none", background:bg,
-    color:color, fontWeight:700, fontSize:15, cursor:"pointer", transition:"transform .12s"
+    padding:"14px 32px", borderRadius:12, border:"none", background:bg,
+    color:color, fontWeight:700, fontSize:15, cursor:"pointer",
+    transition:"all .2s ease",
+    boxShadow:"0 2px 16px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.03)"
+  }, extra || {});
+};
+var glass = function(extra) {
+  return Object.assign({
+    background:C.glass, backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)",
+    border:"1px solid "+C.glassBorder, borderRadius:18,
+    boxShadow:"0 4px 32px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.03)"
   }, extra || {});
 };
 var NAV = {
@@ -226,28 +349,38 @@ var KEY_TAKEAWAYS = [
 function Welcome(props) {
   var _s = useState(false), show = _s[0], setShow = _s[1];
   useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
-  return ce("div", {style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",transition:"all .7s",opacity:show?1:0,transform:show?"translateY(0)":"translateY(16px)"}},
-    ce("div", {style:{background:C.modBg,border:"1px solid "+C.mod+"44",borderRadius:12,padding:"6px 18px",fontSize:13,letterSpacing:1.5,textTransform:"uppercase",color:C.mod,marginBottom:12,fontWeight:600}}, "Phase 1 \u00B7 Module 1"),
-    ce("h1", {style:{fontSize:"clamp(1.7rem,4.5vw,3rem)",fontWeight:800,background:"linear-gradient(135deg,"+C.mod+","+C.rw+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1.1,textAlign:"center",marginBottom:16,fontFamily:"'Cormorant Garamond',serif"}}, "Welcome to the PSAT 8/9 Reading & Writing"),
-    ce("p", {style:{color:C.sub,fontSize:18,maxWidth:560,textAlign:"center",lineHeight:1.6,marginBottom:12}}, "Understand the test, see how questions actually work, establish your baseline, and build your study plan."),
-    ce("div", {style:{background:C.modBg,border:"1px solid "+C.mod+"33",borderRadius:12,padding:"14px 22px",maxWidth:540,marginBottom:40,fontSize:14,color:C.sub,lineHeight:1.6,textAlign:"center"}},
+  var stagger = function(i){ return {animation:show?"fadeInUp .7s cubic-bezier(.16,1,.3,1) forwards":"none",animationDelay:(i*0.1)+"s",opacity:0}; };
+  return ce("div", {style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"0 24px",position:"relative",overflow:"hidden"}},
+    /* Ambient light orb */
+    ce("div",{style:{position:"absolute",top:"-15%",left:"50%",transform:"translateX(-50%)",width:"700px",height:"500px",background:"radial-gradient(ellipse, rgba(6,182,212,0.1) 0%, rgba(167,139,250,0.05) 40%, transparent 70%)",filter:"blur(60px)",pointerEvents:"none",animation:"breathe 6s ease-in-out infinite"}}),
+    ce("div", {style:Object.assign({},stagger(0),{background:C.modBg,border:"1px solid rgba(6,182,212,.2)",borderRadius:100,padding:"7px 20px",fontSize:12,letterSpacing:2,textTransform:"uppercase",color:C.mod,marginBottom:16,fontWeight:700})}, "Phase 1 \u00B7 Module 1"),
+    ce("h1", {style:Object.assign({},stagger(1),{fontSize:"clamp(2rem,5vw,3.4rem)",fontWeight:700,background:"linear-gradient(135deg,"+C.mod+" 0%,"+C.rw+" 50%,#f472b6 100%)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1.08,textAlign:"center",marginBottom:20,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.02em"})}, "Welcome to the PSAT 8/9 Reading & Writing"),
+    ce("p", {style:Object.assign({},stagger(2),{color:C.sub,fontSize:17,maxWidth:540,textAlign:"center",lineHeight:1.7,marginBottom:16,fontWeight:400})}, "Understand the test, see how questions actually work, establish your baseline, and build your study plan."),
+    ce("div", {style:Object.assign({},glass({maxWidth:540,marginBottom:44,padding:"16px 24px",fontSize:14,color:C.sub,lineHeight:1.7,textAlign:"center",borderColor:"rgba(6,182,212,.15)"}),stagger(3))},
       ce("strong", {style:{color:C.mod}}, "Your First Step: "),
       "This module covers everything you need to know about the PSAT 8/9 R&W section \u2014 format, question types, strategies, and your diagnostic baseline."
     ),
-    ce("div", {style:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:16,maxWidth:700,width:"100%",marginBottom:48}},
+    ce("div", {style:Object.assign({},stagger(4),{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(155px,1fr))",gap:14,maxWidth:720,width:"100%",marginBottom:48})},
       [{icon:"\uD83D\uDCCB",title:"Test Structure",desc:"Format, timing, scoring"},
        {icon:"\uD83D\uDD0D",title:"Question Anatomy",desc:"4 question types walkthrough"},
        {icon:"\uD83C\uDFAF",title:"Strategy Toolkit",desc:"6 core strategies"},
        {icon:"\uD83D\uDCDD",title:"12-Q Diagnostic",desc:"Find your baseline"},
        {icon:"\uD83D\uDCC8",title:"Study Plan",desc:"Personalized next steps"}
-      ].map(function(c,i){ return ce("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:20,textAlign:"center"}},
-        ce("div",{style:{fontSize:28,marginBottom:6}},c.icon),
-        ce("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4}},c.title),
-        ce("div",{style:{color:C.muted,fontSize:12,lineHeight:1.4}},c.desc)
+      ].map(function(c,i){ return ce("div",{key:i,style:glass({padding:22,textAlign:"center",transition:"all .25s ease",cursor:"default"}),
+        onMouseOver:function(e){e.currentTarget.style.borderColor="rgba(255,255,255,.12)";e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow="0 8px 40px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.05)";},
+        onMouseOut:function(e){e.currentTarget.style.borderColor=C.glassBorder;e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="0 4px 32px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.03)";}},
+        ce("div",{style:{fontSize:30,marginBottom:8,filter:"drop-shadow(0 2px 8px rgba(0,0,0,.3))"}},c.icon),
+        ce("div",{style:{color:C.ink,fontWeight:700,fontSize:14,marginBottom:4,letterSpacing:"0.01em"}},c.title),
+        ce("div",{style:{color:C.muted,fontSize:12,lineHeight:1.5}},c.desc)
       );})
     ),
-    ce("button", {onClick:props.onNext, style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff"), onMouseOver:function(e){e.currentTarget.style.transform="scale(1.04)";}, onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";}}, "Start Learning \u2192"),
-    ce("div", {style:{color:C.muted,fontSize:13,marginTop:24}}, "\u23F1 ~60 min \u00B7 All 4 R&W Domains")
+    ce("div",{style:Object.assign({},stagger(5))},
+      ce("button", {onClick:props.onNext, style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff"),{animation:"pulseGlow 3s ease-in-out infinite",fontSize:16,padding:"16px 40px",borderRadius:14,letterSpacing:"0.02em"}),
+        onMouseOver:function(e){e.currentTarget.style.transform="scale(1.05)";e.currentTarget.style.boxShadow="0 4px 24px rgba(6,182,212,.3), 0 0 60px rgba(6,182,212,.15)";},
+        onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";e.currentTarget.style.boxShadow="";}
+      }, "Start Learning \u2192")
+    ),
+    ce("div", {style:Object.assign({},stagger(6),{color:C.muted,fontSize:13,marginTop:28,fontWeight:500,letterSpacing:"0.03em"})}, "\u23F1 ~60 min \u00B7 All 4 R&W Domains")
   );
 }
 
@@ -277,19 +410,28 @@ function LessonViewer(props) {
     "Interactive Tool \u2014 Score Projector"
   ];
 
-  return ce("div",{style:{maxWidth:760,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
-    ce("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:32}},
+  return ce("div",{style:{maxWidth:780,margin:"0 auto",padding:"48px 24px",minHeight:"100vh"}},
+    ce("div",{style:{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:36}},
       Array.from({length:total}).map(function(_,i){
-        return ce("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?24:8,height:8,borderRadius:4,background:i===idx?C.mod:i<idx?C.mod+"66":C.border,cursor:"pointer",transition:"all .3s"}});
+        return ce("div",{key:i,onClick:function(){setIdx(i);},style:{width:i===idx?28:8,height:8,borderRadius:4,background:i===idx?"linear-gradient(135deg,"+C.mod+","+C.rw+")":i<idx?C.mod+"55":C.border,cursor:"pointer",transition:"all .35s cubic-bezier(.16,1,.3,1)",boxShadow:i===idx?"0 0 12px "+C.modGlow:"none"}});
       })
     ),
-    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8,textAlign:"center"}}, subtitles[idx]),
+    ce("div",{style:{color:C.mod,fontSize:11,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:12,textAlign:"center",opacity:0.8}}, subtitles[idx]),
     renderSlide(),
-    ce("div",{style:{display:"flex",justifyContent:"space-between",marginTop:32}},
-      ce("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#444":C.sub),{border:"1px solid "+C.border,padding:"10px 20px",fontSize:14})},"\u2190 Back"),
+    ce("div",{style:{display:"flex",justifyContent:"space-between",marginTop:36}},
+      ce("button",{onClick:function(){setIdx(Math.max(0,idx-1));},disabled:idx===0,style:Object.assign({},btn("transparent",idx===0?"#333":C.sub),{border:"1px solid "+(idx===0?"#1a1a28":C.border),padding:"11px 22px",fontSize:14,boxShadow:"none",opacity:idx===0?0.4:1}),
+        onMouseOver:function(e){if(idx>0){e.currentTarget.style.borderColor=C.borderHover;e.currentTarget.style.background=C.surface;}},
+        onMouseOut:function(e){e.currentTarget.style.borderColor=C.border;e.currentTarget.style.background="transparent";}
+      },"\u2190 Back"),
       idx < total-1
-        ? ce("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"10px 20px"})},"Next \u2192")
-        : ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Start Diagnostic \u2192")
+        ? ce("button",{onClick:function(){setIdx(idx+1);},style:btn(C.mod,"#fff",{fontSize:14,padding:"11px 24px"}),
+            onMouseOver:function(e){e.currentTarget.style.transform="scale(1.03)";e.currentTarget.style.boxShadow="0 4px 20px "+C.modGlow;},
+            onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";e.currentTarget.style.boxShadow="0 2px 16px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.03)";}
+          },"Next \u2192")
+        : ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"11px 28px"}),
+            onMouseOver:function(e){e.currentTarget.style.transform="scale(1.03)";e.currentTarget.style.boxShadow="0 4px 24px "+C.modGlow;},
+            onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";e.currentTarget.style.boxShadow="0 2px 16px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.03)";}
+          },"Start Diagnostic \u2192")
     )
   );
 }
@@ -306,33 +448,36 @@ function SlideTestStructure() {
     ["Scoring","120\u2013720 R&W section score (no penalty for wrong answers)"],
     ["Digital Tools","Highlighting, annotation, answer eliminator, Mark for Review"]
   ];
-  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"Digital PSAT 8/9 R&W: Structure & Format"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"The PSAT 8/9 is the first test in the SAT Suite \u2014 the same adaptive format and question style as the PSAT 10 and SAT, but calibrated for 8th and 9th graders. Simpler vocabulary, more accessible passages, more straightforward analysis. Everything you need is either already in your literacy toolkit or covered in this course."),
-    ce("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:14,marginBottom:16}},
-      ce("thead",null,ce("tr",null,
-        ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"Feature"),
-        ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"Details")
-      )),
-      ce("tbody",null, rows.map(function(r,i){
-        return ce("tr",{key:i},
-          ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc",fontWeight:600}},r[0]),
-          ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc"}},
-            r[0]==="Total Questions" ? ce("span",null,ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"54")," (27 per module)") :
-            r[0]==="Total Time" ? ce("span",null,ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"64 minutes")," (32 per module)") :
-            r[0]==="Time per Question" ? ce("span",null,"~",ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"71 seconds")," average") :
-            r[0]==="Passages" ? ce("span",null,ce("strong",null,"25\u2013150 words")," each \u00B7 Literature, History, Humanities, Science") :
-            r[0]==="Scoring" ? ce("span",null,ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"120\u2013720")," R&W section score (no penalty for wrong answers)") :
-            r[1]
-          )
-        );
-      }))
+  var codeTag = function(text){ return ce("code",{style:{background:C.rwBg,color:C.rw,padding:"2px 8px",borderRadius:6,fontFamily:"'JetBrains Mono',monospace",fontSize:13,fontWeight:500}},text); };
+  return ce("div",{style:glass({padding:32,animation:"fadeInUp .5s cubic-bezier(.16,1,.3,1) forwards"})},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.7rem)",fontWeight:700,marginBottom:10,lineHeight:1.15,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Digital PSAT 8/9 R&W: Structure & Format"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:20}},"The PSAT 8/9 is the first test in the SAT Suite \u2014 the same adaptive format and question style as the PSAT 10 and SAT, but calibrated for 8th and 9th graders. Simpler vocabulary, more accessible passages, more straightforward analysis. Everything you need is either already in your literacy toolkit or covered in this course."),
+    ce("div",{style:{borderRadius:14,overflow:"hidden",border:"1px solid "+C.border,marginBottom:20}},
+      ce("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:14}},
+        ce("thead",null,ce("tr",null,
+          ce("th",{style:{padding:"12px 16px",borderBottom:"1px solid "+C.border,textAlign:"left",background:C.surfaceAlt,fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:C.muted}},"Feature"),
+          ce("th",{style:{padding:"12px 16px",borderBottom:"1px solid "+C.border,textAlign:"left",background:C.surfaceAlt,fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:C.muted}},"Details")
+        )),
+        ce("tbody",null, rows.map(function(r,i){
+          return ce("tr",{key:i},
+            ce("td",{style:{padding:"12px 16px",borderBottom:i<rows.length-1?"1px solid "+C.border:"none",color:C.sub,fontWeight:600,whiteSpace:"nowrap"}},r[0]),
+            ce("td",{style:{padding:"12px 16px",borderBottom:i<rows.length-1?"1px solid "+C.border:"none",color:"#bcbcc8"}},
+              r[0]==="Total Questions" ? ce("span",null,codeTag("54")," (27 per module)") :
+              r[0]==="Total Time" ? ce("span",null,codeTag("64 minutes")," (32 per module)") :
+              r[0]==="Time per Question" ? ce("span",null,"~",codeTag("71 seconds")," average") :
+              r[0]==="Passages" ? ce("span",null,ce("strong",null,"25\u2013150 words")," each \u00B7 Literature, History, Humanities, Science") :
+              r[0]==="Scoring" ? ce("span",null,codeTag("120\u2013720")," R&W section score (no penalty for wrong answers)") :
+              r[1]
+            )
+          );
+        }))
+      )
     ),
-    ce("div",{style:{background:C.rwBg,border:"1px solid rgba(192,132,252,.3)",borderRadius:10,padding:"14px 18px",marginBottom:12,fontSize:14,lineHeight:1.6}},
+    ce("div",{style:{background:C.rwBg,border:"1px solid rgba(167,139,250,.2)",borderRadius:12,padding:"16px 20px",marginBottom:14,fontSize:14,lineHeight:1.7}},
       ce("strong",{style:{color:C.rw}},"One passage, one question. "),
       "Every question comes with its own short passage of 25\u2013150 words. You'll never face a long 5-page reading passage. This means you need to read fast, extract meaning quickly, and move on. It's a sprint, not a marathon."
     ),
-    ce("div",{style:{background:C.modBg,border:"1px solid rgba(8,145,178,.3)",borderRadius:10,padding:"14px 18px",fontSize:14,lineHeight:1.6}},
+    ce("div",{style:{background:C.modBg,border:"1px solid rgba(6,182,212,.2)",borderRadius:12,padding:"16px 20px",fontSize:14,lineHeight:1.7}},
       ce("strong",{style:{color:C.mod}},"No wrong-answer penalty "),
       "means you should ",
       ce("strong",null,"answer every single question"),
@@ -372,52 +517,57 @@ function SlideAnatomy() {
     return parts.map(function(p, i) {
       if (p.type === "text") return ce("span", {key:i}, p.content);
       return ce("span", {key:i, onClick:function(){ setAnnotation(p.note); },
-        style:{background:"rgba(192,132,252,.2)",borderBottom:"2px solid "+C.rw,padding:"0 2px",cursor:"pointer",transition:"all .2s"}
+        style:{background:"rgba(167,139,250,.12)",borderBottom:"2px solid "+C.rw,padding:"1px 3px",borderRadius:2,cursor:"pointer",transition:"all .2s"},
+        onMouseOver:function(e){e.currentTarget.style.background="rgba(167,139,250,.22)";},
+        onMouseOut:function(e){e.currentTarget.style.background="rgba(167,139,250,.12)";}
       }, p.content);
     });
   }
 
-  return ce("div",{style:{background:C.surface,border:"2px solid "+C.rw,borderRadius:14,overflow:"hidden"}},
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,padding:"20px 24px 0",lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"Anatomy of a PSAT R&W Question"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,padding:"8px 24px 0"}},"This is what you'll see on test day \u2014 a short passage on the left, a question on the right. Click the highlighted portions of the passage to see annotations, then try answering. Use the tabs to explore all four question types."),
-    ce("div",{style:{display:"flex",gap:0,borderBottom:"2px solid "+C.border,margin:"16px 0 0"}},
+  return ce("div",{style:glass({overflow:"hidden",borderColor:"rgba(167,139,250,.15)",boxShadow:"0 4px 32px rgba(0,0,0,.2), 0 0 40px "+C.rwGlow+", inset 0 1px 0 rgba(255,255,255,.03)",animation:"fadeInUp .5s cubic-bezier(.16,1,.3,1) forwards"})},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.7rem)",fontWeight:700,padding:"24px 28px 0",lineHeight:1.15,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Anatomy of a PSAT R&W Question"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,padding:"10px 28px 0"}},"This is what you'll see on test day \u2014 a short passage on the left, a question on the right. Click the highlighted portions of the passage to see annotations, then try answering. Use the tabs to explore all four question types."),
+    ce("div",{style:{display:"flex",gap:0,borderBottom:"1px solid "+C.border,margin:"18px 0 0",padding:"0 8px"}},
       ANAT_QS.map(function(aq, i){
         return ce("div",{key:i,onClick:function(){ setTabIdx(i); setAnnotation(null); },
-          style:{padding:"10px 18px",fontSize:13,fontWeight:600,cursor:"pointer",color:i===tabIdx?C.rw:C.muted,borderBottom:"2px solid "+(i===tabIdx?C.rw:"transparent"),marginBottom:-2,transition:"all .15s"}
+          style:{padding:"12px 20px",fontSize:13,fontWeight:i===tabIdx?700:500,cursor:"pointer",color:i===tabIdx?C.rw:C.muted,borderBottom:"2px solid "+(i===tabIdx?C.rw:"transparent"),marginBottom:-1,transition:"all .2s ease",letterSpacing:"0.01em"}
         }, aq.tab);
       })
     ),
-    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:0,minHeight:200}},
-      ce("div",{style:{padding:20,borderRight:"1px solid "+C.border}},
-        ce("span",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:C.rw,display:"block",marginBottom:10}},"Passage"),
-        ce("div",{style:{fontSize:14,lineHeight:1.8,color:"#ccc"}}, renderPassageWithHighlights())
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:0,minHeight:220}},
+      ce("div",{style:{padding:24,borderRight:"1px solid "+C.border}},
+        ce("span",{style:{fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:C.rw,display:"block",marginBottom:12,opacity:0.8}},"Passage"),
+        ce("div",{style:{fontSize:14,lineHeight:1.85,color:"#bcbcc8"}}, renderPassageWithHighlights())
       ),
-      ce("div",{style:{padding:20}},
-        ce("span",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:C.mod,display:"block",marginBottom:10}},"Question"),
-        ce("div",{style:{fontSize:14,fontWeight:600,marginBottom:14,color:"#ddd",lineHeight:1.6}}, q.stem),
-        ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+      ce("div",{style:{padding:24}},
+        ce("span",{style:{fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:C.mod,display:"block",marginBottom:12,opacity:0.8}},"Question"),
+        ce("div",{style:{fontSize:14,fontWeight:600,marginBottom:16,color:"#d4d4de",lineHeight:1.65}}, q.stem),
+        ce("div",{style:{display:"flex",flexDirection:"column",gap:8}},
           q.choices.map(function(c,ci){
             var letter = String.fromCharCode(65+ci);
-            var st = {padding:"8px 12px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,fontSize:14,color:"#ccc",cursor:answered?"default":"pointer",transition:"all .15s",display:"flex",alignItems:"flex-start",gap:8,textAlign:"left",width:"100%"};
+            var st = {padding:"10px 14px",background:C.paper,border:"1px solid "+C.border,borderRadius:10,fontSize:14,color:"#bcbcc8",cursor:answered?"default":"pointer",transition:"all .2s ease",display:"flex",alignItems:"flex-start",gap:10,textAlign:"left",width:"100%"};
+            if (!answered) { st.cursor="pointer"; }
             if (answered) {
-              st.opacity = 0.7; st.pointerEvents = "none";
-              if (ci === q.correct) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; }
-              else if (answers[tabIdx] === ci) { st.borderColor = C.wrong; st.background = C.wrongBg; }
+              st.opacity = 0.5; st.pointerEvents = "none";
+              if (ci === q.correct) { st.borderColor = C.correct; st.background = C.correctBg; st.opacity = 1; st.boxShadow="0 0 16px rgba(34,197,94,.08)"; }
+              else if (answers[tabIdx] === ci) { st.borderColor = C.wrong; st.background = C.wrongBg; st.opacity=0.8; }
             }
-            return ce("button",{key:ci,onClick:function(){pickAnswer(ci);},style:st},
-              ce("span",{style:{fontWeight:700,color:answered&&ci===q.correct?C.correct:answered&&answers[tabIdx]===ci?C.wrong:C.muted,minWidth:18,flexShrink:0}},letter+")"),
+            return ce("button",{key:ci,onClick:function(){pickAnswer(ci);},style:st,
+              onMouseOver:function(e){if(!answered){e.currentTarget.style.borderColor=C.borderHover;e.currentTarget.style.background=C.surface;}},
+              onMouseOut:function(e){if(!answered){e.currentTarget.style.borderColor=C.border;e.currentTarget.style.background=C.paper;}}},
+              ce("span",{style:{fontWeight:700,color:answered&&ci===q.correct?C.correct:answered&&answers[tabIdx]===ci?C.wrong:C.muted,minWidth:20,flexShrink:0,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},letter+")"),
               ce("span",null,c)
             );
           })
         ),
-        answered && ce("div",{style:{marginTop:10,padding:12,background:C.paper,borderRadius:8,fontSize:13,color:C.muted,lineHeight:1.6,borderLeft:"3px solid "+C.correct}},
+        answered && ce("div",{style:{marginTop:12,padding:"14px 16px",background:C.paper,borderRadius:10,fontSize:13,color:C.sub,lineHeight:1.7,borderLeft:"3px solid "+C.correct,animation:"fadeInUp .3s ease forwards"}},
           (isCorrect ? "\u2705 Correct! " : "\u274C Incorrect. ") + q.explain
         )
       )
     ),
-    ce("div",{style:{fontSize:13,padding:"14px 20px",color:C.muted,lineHeight:1.6,minHeight:40,borderTop:"1px solid "+C.border}},
+    ce("div",{style:{fontSize:13,padding:"14px 24px",color:C.muted,lineHeight:1.65,minHeight:44,borderTop:"1px solid "+C.border,background:"rgba(0,0,0,.15)"}},
       annotation
-        ? ce("span",null, ce("span",{style:{color:C.rw}},"\uD83D\uDCA1 Annotation: "), annotation)
+        ? ce("span",null, ce("span",{style:{color:C.rw,fontWeight:600}},"\uD83D\uDCA1 Annotation: "), annotation)
         : answered
           ? ce("span",null, ce("span",{style:{color:C.rw}},"\u2713 "+q.domain), " \u2014 ", tabIdx < ANAT_QS.length-1 ? "Try the next tab \u2192" : "You've completed the walkthrough!")
           : "\uD83D\uDC46 Click a highlighted phrase in the passage to see why it matters, then answer the question."
@@ -439,60 +589,60 @@ function SlideAdaptive() {
   var sim = getSimData(simVal);
   var meterPct = ((sim.ceil - 120) / 600) * 100;
 
-  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"The Adaptive Module System"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"The PSAT 8/9 uses multistage adaptive testing. Your Module 1 performance determines which version of Module 2 you get \u2014 and that determines your maximum possible score."),
+  return ce("div",{style:glass({padding:32,animation:"fadeInUp .5s cubic-bezier(.16,1,.3,1) forwards"})},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.7rem)",fontWeight:700,marginBottom:10,lineHeight:1.15,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"The Adaptive Module System"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:20}},"The PSAT 8/9 uses multistage adaptive testing. Your Module 1 performance determines which version of Module 2 you get \u2014 and that determines your maximum possible score."),
     /* Flow diagram */
-    ce("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:8,marginBottom:20}},
-      ce("div",{style:{padding:"12px 20px",borderRadius:10,textAlign:"center",fontSize:14,fontWeight:600,minWidth:200,background:C.modBg,border:"2px solid "+C.mod}},
+    ce("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:10,marginBottom:24}},
+      ce("div",{style:{padding:"14px 24px",borderRadius:14,textAlign:"center",fontSize:14,fontWeight:600,minWidth:220,background:C.modBg,border:"1px solid rgba(6,182,212,.25)",boxShadow:"0 0 24px "+C.modGlow}},
         "Module 1: Mixed Difficulty",
         ce("br"),
-        ce("span",{style:{fontSize:12,color:C.muted}},"27 questions \u00B7 32 minutes \u00B7 Easy \u2192 Hard within each skill group")
+        ce("span",{style:{fontSize:12,color:C.muted,fontWeight:400}},"27 questions \u00B7 32 minutes \u00B7 Easy \u2192 Hard within each skill group")
       ),
-      ce("div",{style:{color:C.muted,fontSize:"1.2rem"}},"\u2193 Your performance determines\u2026"),
+      ce("div",{style:{color:C.muted,fontSize:"1.1rem",padding:"4px 0"}},"\u2193 Your performance determines\u2026"),
       ce("div",{style:{display:"flex",gap:16,width:"100%"}},
         ce("div",{style:{flex:1,textAlign:"center"}},
-          ce("div",{style:{padding:"12px 20px",borderRadius:10,textAlign:"center",fontSize:14,fontWeight:600,background:C.correctBg,border:"2px solid "+C.correct}},
+          ce("div",{style:{padding:"14px 20px",borderRadius:14,textAlign:"center",fontSize:14,fontWeight:600,background:C.correctBg,border:"1px solid rgba(34,197,94,.25)",boxShadow:"0 0 20px rgba(34,197,94,.08)"}},
             "Module 2: ", ce("strong",null,"Harder"), ce("br"),
-            ce("span",{style:{fontSize:12,color:C.muted}},"Unlocks scores up to 720")
+            ce("span",{style:{fontSize:12,color:C.muted,fontWeight:400}},"Unlocks scores up to 720")
           )
         ),
         ce("div",{style:{flex:1,textAlign:"center"}},
-          ce("div",{style:{padding:"12px 20px",borderRadius:10,textAlign:"center",fontSize:14,fontWeight:600,background:C.wrongBg,border:"2px solid "+C.wrong}},
+          ce("div",{style:{padding:"14px 20px",borderRadius:14,textAlign:"center",fontSize:14,fontWeight:600,background:C.wrongBg,border:"1px solid rgba(239,68,68,.2)"}},
             "Module 2: ", ce("strong",null,"Easier"), ce("br"),
-            ce("span",{style:{fontSize:12,color:C.muted}},"Score ceiling ~480\u2013560")
+            ce("span",{style:{fontSize:12,color:C.muted,fontWeight:400}},"Score ceiling ~480\u2013560")
           )
         )
       )
     ),
     /* Simulator */
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:12}},"Use the slider below to see how your Module 1 accuracy affects your routing and score ceiling:"),
-    ce("div",{style:{background:C.paper,border:"2px solid "+C.mod,borderRadius:14,padding:22}},
-      ce("div",{style:{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted,marginBottom:10}},"Module 1 Routing Simulator"),
-      ce("div",{style:{display:"flex",alignItems:"center",gap:14,marginBottom:16}},
-        ce("span",{style:{fontSize:12,color:C.muted}},"0"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:14}},"Use the slider below to see how your Module 1 accuracy affects your routing and score ceiling:"),
+    ce("div",{style:{background:C.paper,border:"1px solid rgba(6,182,212,.2)",borderRadius:16,padding:24,boxShadow:"0 0 32px "+C.modGlow}},
+      ce("div",{style:{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:2,color:C.muted,marginBottom:14}},"Module 1 Routing Simulator"),
+      ce("div",{style:{display:"flex",alignItems:"center",gap:16,marginBottom:18}},
+        ce("span",{style:{fontSize:12,color:C.muted,fontFamily:"'JetBrains Mono',monospace"}},"0"),
         ce("input",{type:"range",min:0,max:27,value:simVal,onChange:function(e){setSimVal(parseInt(e.target.value));},
-          style:{flex:1,WebkitAppearance:"none",appearance:"none",height:8,borderRadius:4,background:"linear-gradient(90deg,"+C.wrong+" 0%,"+C.expr+" 50%,"+C.correct+" 100%)",outline:"none",cursor:"pointer"}
+          style:{flex:1,height:6,borderRadius:3,background:"linear-gradient(90deg,"+C.wrong+" 0%,"+C.expr+" 50%,"+C.correct+" 100%)"}
         }),
-        ce("span",{style:{fontSize:12,color:C.muted}},"27"),
-        ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.4rem",fontWeight:700,minWidth:60,textAlign:"center",color:C.ink}},simVal)
+        ce("span",{style:{fontSize:12,color:C.muted,fontFamily:"'JetBrains Mono',monospace"}},"27"),
+        ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.5rem",fontWeight:700,minWidth:56,textAlign:"center",color:C.ink}},simVal)
       ),
-      ce("div",{style:{textAlign:"center",padding:16,borderRadius:10,background:sim.bg,transition:"all .3s"}},
-        ce("div",{style:{fontSize:16,fontWeight:700,color:sim.color,marginBottom:4}},simVal+"/27 correct \u2192 "+sim.route),
-        ce("div",{style:{fontSize:14,color:C.muted}},"Estimated score range: "+sim.floor+"\u2013"+sim.ceil)
+      ce("div",{style:{textAlign:"center",padding:18,borderRadius:12,background:sim.bg,transition:"all .35s ease"}},
+        ce("div",{style:{fontSize:16,fontWeight:700,color:sim.color,marginBottom:6}},simVal+"/27 correct \u2192 "+sim.route),
+        ce("div",{style:{fontSize:14,color:C.sub}},"Estimated score range: "+sim.floor+"\u2013"+sim.ceil)
       ),
-      ce("div",{style:{marginTop:12}},
-        ce("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted,marginBottom:4}},
+      ce("div",{style:{marginTop:14}},
+        ce("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted,marginBottom:6,fontWeight:500}},
           ce("span",null,"Score Floor"),
-          ce("span",null,sim.floor+"\u2013"+sim.ceil),
+          ce("span",{style:{fontFamily:"'JetBrains Mono',monospace"}},sim.floor+"\u2013"+sim.ceil),
           ce("span",null,"Score Ceiling")
         ),
-        ce("div",{style:{height:12,borderRadius:6,background:C.border,overflow:"hidden"}},
-          ce("div",{style:{height:"100%",borderRadius:6,width:meterPct+"%",background:sim.color,transition:"width .4s ease, background .4s ease"}})
+        ce("div",{style:{height:10,borderRadius:5,background:C.border,overflow:"hidden"}},
+          ce("div",{style:{height:"100%",borderRadius:5,width:meterPct+"%",background:"linear-gradient(90deg,"+sim.color+","+sim.color+"cc)",transition:"width .4s ease, background .4s ease",boxShadow:"0 0 12px "+sim.color+"44"}})
         )
       )
     ),
-    ce("div",{style:{background:C.wrongBg,border:"1px solid rgba(239,68,68,.3)",borderRadius:10,padding:"14px 18px",marginTop:16,fontSize:14,lineHeight:1.6}},
+    ce("div",{style:{background:C.wrongBg,border:"1px solid rgba(239,68,68,.2)",borderRadius:12,padding:"16px 20px",marginTop:18,fontSize:14,lineHeight:1.7}},
       ce("strong",{style:{color:C.wrong}},"Module 1 is make-or-break. "),
       "Missing just 2\u20133 extra questions can drop you from the harder Module 2 to the easier one \u2014 and cap your maximum score by 150+ points. Accuracy in Module 1 matters more than speed."
     )
@@ -504,31 +654,33 @@ function SlideDomains() {
   var _s = useState({}), flipped = _s[0], setFlipped = _s[1];
   function toggle(i) { setFlipped(function(prev){ var n = Object.assign({}, prev); n[i] = !n[i]; return n; }); }
 
-  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"The Four Content Domains"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"Questions appear in this exact order within each module. Click each domain card to flip it and see the specific skills tested."),
-    ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12,marginBottom:16}},
+  return ce("div",{style:glass({padding:32,animation:"fadeInUp .5s cubic-bezier(.16,1,.3,1) forwards"})},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.7rem)",fontWeight:700,marginBottom:10,lineHeight:1.15,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"The Four Content Domains"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:20}},"Questions appear in this exact order within each module. Click each domain card to flip it and see the specific skills tested."),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:14,marginBottom:18}},
       DOMAINS.map(function(d, i){
         var isFlipped = flipped[i];
-        return ce("div",{key:i,onClick:function(){toggle(i);},style:{background:C.paper,border:"1px solid "+C.border,borderRadius:12,padding:16,cursor:"pointer",transition:"all .3s"}},
+        return ce("div",{key:i,onClick:function(){toggle(i);},style:{background:C.paper,border:"1px solid "+(isFlipped?d.color+"33":C.border),borderRadius:14,padding:18,cursor:"pointer",transition:"all .3s ease",boxShadow:isFlipped?"0 0 20px "+d.color+"11":"none"},
+          onMouseOver:function(e){e.currentTarget.style.borderColor=d.color+"44";e.currentTarget.style.transform="translateY(-2px)";},
+          onMouseOut:function(e){e.currentTarget.style.borderColor=isFlipped?d.color+"33":C.border;e.currentTarget.style.transform="translateY(0)";}},
           !isFlipped
             ? ce("div",null,
-                ce("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
+                ce("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:10}},
                   ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.3rem",fontWeight:700,color:d.color}},d.pct),
-                  ce("div",{style:{fontWeight:700,fontSize:15}},d.name)
+                  ce("div",{style:{fontWeight:700,fontSize:15,color:C.ink}},d.name)
                 ),
-                ce("div",{style:{fontSize:13,color:C.muted}},d.qs),
-                ce("div",{style:{fontSize:13,color:C.muted,lineHeight:1.5,marginTop:4}},d.front),
-                ce("div",{style:{fontSize:11,color:C.muted,textAlign:"right",marginTop:6}},"tap to see sub-skills \u2192")
+                ce("div",{style:{fontSize:13,color:C.muted,fontWeight:500}},d.qs),
+                ce("div",{style:{fontSize:13,color:C.muted,lineHeight:1.6,marginTop:6}},d.front),
+                ce("div",{style:{fontSize:11,color:d.color,textAlign:"right",marginTop:8,opacity:0.7,fontWeight:500}},"tap to see sub-skills \u2192")
               )
             : ce("div",null,
-                ce("div",{style:{fontSize:14,color:"#ccc",lineHeight:1.6},dangerouslySetInnerHTML:{__html:d.back}}),
-                ce("div",{style:{fontSize:11,color:C.muted,textAlign:"right",marginTop:6}},"\u2190 tap to flip back")
+                ce("div",{style:{fontSize:14,color:"#bcbcc8",lineHeight:1.7},dangerouslySetInnerHTML:{__html:d.back}}),
+                ce("div",{style:{fontSize:11,color:d.color,textAlign:"right",marginTop:8,opacity:0.7,fontWeight:500}},"\u2190 tap to flip back")
               )
         );
       })
     ),
-    ce("div",{style:{background:C.rwBg,border:"1px solid rgba(192,132,252,.3)",borderRadius:10,padding:"14px 18px",fontSize:14,lineHeight:1.6}},
+    ce("div",{style:{background:C.rwBg,border:"1px solid rgba(167,139,250,.2)",borderRadius:12,padding:"16px 20px",fontSize:14,lineHeight:1.7}},
       ce("strong",{style:{color:C.rw}},"Key Insight: "),
       "Craft & Structure and Standard English Conventions together make up roughly ",
       ce("strong",null,"54%"),
@@ -542,21 +694,23 @@ function SlideStrategy() {
   var _s = useState({}), flipped = _s[0], setFlipped = _s[1];
   function toggle(i) { setFlipped(function(prev){ var n = Object.assign({}, prev); n[i] = !n[i]; return n; }); }
 
-  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"The PSAT 8/9 R&W Strategy Toolkit"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"These six strategies will be your tools throughout the course. Click each card to learn more. We'll practice all of them in depth in Modules 2\u20139."),
-    ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}},
+  return ce("div",{style:glass({padding:32,animation:"fadeInUp .5s cubic-bezier(.16,1,.3,1) forwards"})},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.7rem)",fontWeight:700,marginBottom:10,lineHeight:1.15,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"The PSAT 8/9 R&W Strategy Toolkit"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:20}},"These six strategies will be your tools throughout the course. Click each card to learn more. We'll practice all of them in depth in Modules 2\u20139."),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:12}},
       STRATS.map(function(s, i){
         var isFlipped = flipped[i];
-        return ce("div",{key:i,onClick:function(){toggle(i);},style:{background:C.paper,border:"1px solid "+C.border,borderRadius:12,padding:14,cursor:"pointer",transition:"all .2s"}},
+        return ce("div",{key:i,onClick:function(){toggle(i);},style:{background:C.paper,border:"1px solid "+(isFlipped?C.mod+"33":C.border),borderRadius:14,padding:16,cursor:"pointer",transition:"all .25s ease",boxShadow:isFlipped?"0 0 20px "+C.modGlow:"none"},
+          onMouseOver:function(e){e.currentTarget.style.borderColor=C.mod+"44";e.currentTarget.style.transform="translateY(-2px)";},
+          onMouseOut:function(e){e.currentTarget.style.borderColor=isFlipped?C.mod+"33":C.border;e.currentTarget.style.transform="translateY(0)";}},
           !isFlipped
             ? ce("div",{style:{textAlign:"center"}},
-                ce("div",{style:{fontSize:"2rem",marginBottom:6}},s.icon),
-                ce("div",{style:{fontWeight:700,fontSize:14,color:C.ink,marginBottom:4}},s.title),
-                ce("div",{style:{fontSize:12,color:C.muted}},s.hint),
-                ce("div",{style:{fontSize:11,color:C.mod,marginTop:8,textTransform:"uppercase",letterSpacing:1}},"tap to flip")
+                ce("div",{style:{fontSize:"2.2rem",marginBottom:8,filter:"drop-shadow(0 2px 8px rgba(0,0,0,.3))"}},s.icon),
+                ce("div",{style:{fontWeight:700,fontSize:14,color:C.ink,marginBottom:5,letterSpacing:"0.01em"}},s.title),
+                ce("div",{style:{fontSize:12,color:C.muted,lineHeight:1.5}},s.hint),
+                ce("div",{style:{fontSize:10,color:C.mod,marginTop:10,textTransform:"uppercase",letterSpacing:1.5,fontWeight:600,opacity:0.7}},"tap to flip")
               )
-            : ce("div",{style:{fontSize:14,color:"#ccc",lineHeight:1.6}},s.back)
+            : ce("div",{style:{fontSize:14,color:"#bcbcc8",lineHeight:1.7}},s.back)
         );
       })
     )
@@ -572,44 +726,46 @@ function SlideGrowth() {
     {name:"SAT", range:"200\u2013800", diff:"College-level texts, sophisticated analysis", color:C.rw, flex:1.3}
   ];
 
-  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"Your Growth Trajectory"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"The PSAT 8/9 is your starting line, not your finish line. Every test in the SAT Suite shares the same scale \u2014 so a 500 here means the same thing as a 500 on the SAT."),
-    ce("div",{style:{background:C.paper,border:"2px solid "+C.grow,borderRadius:14,padding:22}},
+  return ce("div",{style:glass({padding:32,animation:"fadeInUp .5s cubic-bezier(.16,1,.3,1) forwards"})},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.7rem)",fontWeight:700,marginBottom:10,lineHeight:1.15,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Your Growth Trajectory"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:20}},"The PSAT 8/9 is your starting line, not your finish line. Every test in the SAT Suite shares the same scale \u2014 so a 500 here means the same thing as a 500 on the SAT."),
+    ce("div",{style:{background:C.paper,border:"1px solid rgba(6,214,160,.2)",borderRadius:16,padding:24,boxShadow:"0 0 24px rgba(6,214,160,.06)"}},
       /* Progress bar */
-      ce("div",{style:{display:"flex",alignItems:"center",height:40,borderRadius:8,overflow:"hidden",margin:"14px 0"}},
+      ce("div",{style:{display:"flex",alignItems:"center",height:44,borderRadius:10,overflow:"hidden",margin:"14px 0",boxShadow:"0 2px 12px rgba(0,0,0,.2)"}},
         tests.map(function(t,i){
           return ce("div",{key:i,style:{height:"100%",flex:t.flex,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,color:"#fff",letterSpacing:.5,background:t.color}},t.name);
         })
       ),
-      ce("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted}},
+      ce("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted,fontWeight:500}},
         ce("span",null,"8th\u20139th Grade"),
         ce("span",null,"10th Grade"),
         ce("span",null,"11th Grade"),
         ce("span",null,"11th\u201312th Grade")
       ),
       /* Table */
-      ce("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:14,marginTop:16}},
-        ce("thead",null,ce("tr",null,
-          ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"Test"),
-          ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"R&W Score Range"),
-          ce("th",{style:{padding:"10px 12px",border:"1px solid "+C.border,textAlign:"left",background:C.surface,fontWeight:700,fontSize:12,textTransform:"uppercase",letterSpacing:.5,color:C.muted}},"Key Difference")
-        )),
-        ce("tbody",null,tests.map(function(t,i){
-          return ce("tr",{key:i},
-            ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:t.color,fontWeight:700}},t.name),
-            ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc"}},ce("code",{style:{background:C.rwBg,color:C.rw,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},t.range)),
-            ce("td",{style:{padding:"10px 12px",border:"1px solid "+C.border,color:"#ccc"}},t.diff)
-          );
-        }))
+      ce("div",{style:{borderRadius:12,overflow:"hidden",border:"1px solid "+C.border,marginTop:18}},
+        ce("table",{style:{width:"100%",borderCollapse:"collapse",fontSize:14}},
+          ce("thead",null,ce("tr",null,
+            ce("th",{style:{padding:"12px 16px",borderBottom:"1px solid "+C.border,textAlign:"left",background:C.surfaceAlt,fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:C.muted}},"Test"),
+            ce("th",{style:{padding:"12px 16px",borderBottom:"1px solid "+C.border,textAlign:"left",background:C.surfaceAlt,fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:C.muted}},"R&W Score Range"),
+            ce("th",{style:{padding:"12px 16px",borderBottom:"1px solid "+C.border,textAlign:"left",background:C.surfaceAlt,fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:C.muted}},"Key Difference")
+          )),
+          ce("tbody",null,tests.map(function(t,i){
+            return ce("tr",{key:i},
+              ce("td",{style:{padding:"12px 16px",borderBottom:i<tests.length-1?"1px solid "+C.border:"none",color:t.color,fontWeight:700}},t.name),
+              ce("td",{style:{padding:"12px 16px",borderBottom:i<tests.length-1?"1px solid "+C.border:"none",color:"#bcbcc8"}},ce("code",{style:{background:C.rwBg,color:C.rw,padding:"2px 8px",borderRadius:6,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},t.range)),
+              ce("td",{style:{padding:"12px 16px",borderBottom:i<tests.length-1?"1px solid "+C.border:"none",color:"#bcbcc8"}},t.diff)
+            );
+          }))
+        )
       ),
-      ce("div",{style:{marginTop:14,textAlign:"center",fontSize:14,color:"#ccc"}},
+      ce("div",{style:{marginTop:16,textAlign:"center",fontSize:14,color:"#bcbcc8"}},
         ce("strong",{style:{color:C.grow}},"College Readiness Benchmark (R&W): 480"),
         ce("br"),
         ce("span",{style:{fontSize:13,color:C.muted}},"For 8th graders, the on-track benchmark is 390. For 9th graders, it's 410. These are your first targets.")
       )
     ),
-    ce("div",{style:{background:"rgba(6,214,160,.08)",border:"1px solid rgba(6,214,160,.3)",borderRadius:10,padding:"14px 18px",marginTop:16,fontSize:14,lineHeight:1.6}},
+    ce("div",{style:{background:"rgba(6,214,160,.06)",border:"1px solid rgba(6,214,160,.2)",borderRadius:12,padding:"16px 20px",marginTop:18,fontSize:14,lineHeight:1.7}},
       ce("strong",{style:{color:C.grow}},"Why this matters: "),
       "Every skill you build now transfers directly to harder tests ahead. The vocabulary, grammar rules, and reading strategies you master for the PSAT 8/9 are the same skills tested on the SAT \u2014 just at an easier starting level."
     )
@@ -637,40 +793,40 @@ function SlideScoreProjector() {
     result = {total:total, capped:capped, lvl:lvl, color:color, advice:advice, bench9Pct:bench9Pct, scorePct:scorePct};
   }
 
-  return ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:20,overflow:"hidden",padding:28}},
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.2rem,3vw,1.6rem)",fontWeight:800,marginBottom:8,lineHeight:1.2,fontFamily:"'Cormorant Garamond',serif"}},"Score Projector"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"Enter your raw scores after a practice test to estimate your scaled score and see where you stand relative to the college readiness benchmarks."),
-    ce("div",{style:{background:C.paper,border:"2px solid "+C.grow,borderRadius:14,padding:22}},
-      ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}},
+  return ce("div",{style:glass({padding:32,animation:"fadeInUp .5s cubic-bezier(.16,1,.3,1) forwards"})},
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.7rem)",fontWeight:700,marginBottom:10,lineHeight:1.15,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Score Projector"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:20}},"Enter your raw scores after a practice test to estimate your scaled score and see where you stand relative to the college readiness benchmarks."),
+    ce("div",{style:{background:C.paper,border:"1px solid rgba(6,214,160,.2)",borderRadius:16,padding:24,boxShadow:"0 0 24px rgba(6,214,160,.06)"}},
+      ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,marginBottom:20}},
         ce("div",null,
-          ce("div",{style:{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted,marginBottom:6}},"Module 1 Raw Score"),
+          ce("div",{style:{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:2,color:C.muted,marginBottom:8}},"Module 1 Raw Score"),
           ce("input",{type:"number",placeholder:"/27",min:0,max:27,value:m1,onChange:function(e){setM1(e.target.value);},
-            style:{width:80,padding:8,background:C.surface,border:"1px solid "+C.border,borderRadius:8,color:C.ink,fontFamily:"'JetBrains Mono',monospace",fontSize:"1.2rem",textAlign:"center"}
+            style:{width:88,padding:"10px 12px",background:C.surface,border:"1px solid "+C.border,borderRadius:10,color:C.ink,fontFamily:"'JetBrains Mono',monospace",fontSize:"1.3rem",textAlign:"center",transition:"all .2s"}
           })
         ),
         ce("div",null,
-          ce("div",{style:{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted,marginBottom:6}},"Module 2 Raw Score"),
+          ce("div",{style:{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:2,color:C.muted,marginBottom:8}},"Module 2 Raw Score"),
           ce("input",{type:"number",placeholder:"/27",min:0,max:27,value:m2,onChange:function(e){setM2(e.target.value);},
-            style:{width:80,padding:8,background:C.surface,border:"1px solid "+C.border,borderRadius:8,color:C.ink,fontFamily:"'JetBrains Mono',monospace",fontSize:"1.2rem",textAlign:"center"}
+            style:{width:88,padding:"10px 12px",background:C.surface,border:"1px solid "+C.border,borderRadius:10,color:C.ink,fontFamily:"'JetBrains Mono',monospace",fontSize:"1.3rem",textAlign:"center",transition:"all .2s"}
           })
         )
       ),
       result
-        ? ce("div",{style:{textAlign:"center"}},
-            ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"2rem",fontWeight:700,color:result.color}},result.capped),
-            ce("div",{style:{fontSize:13,color:C.muted}},result.total+"/54 raw \u00B7 "+result.lvl),
-            ce("div",{style:{height:8,borderRadius:4,background:C.border,margin:"12px 0",position:"relative"}},
-              ce("div",{style:{height:"100%",borderRadius:4,background:result.color,width:result.scorePct+"%",transition:"width .4s"}}),
-              ce("div",{style:{position:"absolute",left:result.bench9Pct+"%",top:-6,width:2,height:20,background:C.grow,borderRadius:1},title:"410 Benchmark (9th)"})
+        ? ce("div",{style:{textAlign:"center",animation:"scaleIn .4s cubic-bezier(.16,1,.3,1) forwards"}},
+            ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"2.4rem",fontWeight:700,color:result.color,textShadow:"0 0 30px "+result.color+"44"}},result.capped),
+            ce("div",{style:{fontSize:13,color:C.sub,marginTop:4}},result.total+"/54 raw \u00B7 "+result.lvl),
+            ce("div",{style:{height:10,borderRadius:5,background:C.border,margin:"16px 0",position:"relative"}},
+              ce("div",{style:{height:"100%",borderRadius:5,background:"linear-gradient(90deg,"+result.color+","+result.color+"cc)",width:result.scorePct+"%",transition:"width .5s ease",boxShadow:"0 0 12px "+result.color+"33"}}),
+              ce("div",{style:{position:"absolute",left:result.bench9Pct+"%",top:-8,width:2,height:26,background:C.grow,borderRadius:1},title:"410 Benchmark (9th)"})
             ),
-            ce("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted}},
+            ce("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:C.muted,fontFamily:"'JetBrains Mono',monospace"}},
               ce("span",null,"120"),
-              ce("span",{style:{color:C.grow}},"410 (9th grade) \u2191"),
+              ce("span",{style:{color:C.grow,fontFamily:"'Manrope',sans-serif",fontWeight:600}},"410 (9th grade) \u2191"),
               ce("span",null,"720")
             ),
-            ce("div",{style:{marginTop:12,fontSize:14,color:"#ccc"}},result.advice)
+            ce("div",{style:{marginTop:16,fontSize:14,color:"#bcbcc8",lineHeight:1.7}},result.advice)
           )
-        : ce("div",{style:{textAlign:"center",fontSize:14,color:C.muted}},"Enter both scores to see your estimated scaled score.")
+        : ce("div",{style:{textAlign:"center",fontSize:14,color:C.muted,padding:"20px 0"}},"Enter both scores to see your estimated scaled score.")
     )
   );
 }
@@ -723,116 +879,124 @@ function DiagnosticScreen(props) {
   var domColors = {"Craft & Structure":C.craft, "Information & Ideas":C.info, "Std. English Conventions":C.sec, "Expression of Ideas":C.expr};
   var confLabels = ["Guessing","Unsure","Confident"];
 
-  return ce("div",{style:{maxWidth:760,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
-    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Session 2: Diagnostic"),
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Mini Diagnostic Assessment"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:24}},"Answer these 12 questions spanning all four R&W domains. For each question, first rate your confidence, then select your answer. This helps identify both skill gaps and calibration gaps."),
+  return ce("div",{style:{maxWidth:780,margin:"0 auto",padding:"48px 24px",minHeight:"100vh"}},
+    ce("div",{style:{color:C.mod,fontSize:11,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:10,opacity:0.8}},"Session 2: Diagnostic"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.4rem,3.5vw,2rem)",fontWeight:700,marginBottom:10,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Mini Diagnostic Assessment"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:28}},"Answer these 12 questions spanning all four R&W domains. For each question, first rate your confidence, then select your answer. This helps identify both skill gaps and calibration gaps."),
 
     DIAG_QS.map(function(q, i) {
       var answered = answers[i] !== null;
       var isCorrect = answered && answers[i] === q.correct;
-      return ce("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:18,marginBottom:12,transition:"all .3s",opacity:scored&&answered?0.85:1}},
-        ce("div",{style:{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6,display:"inline-block",padding:"2px 8px",borderRadius:4,background:q.color+"22",color:q.color}},q.domain),
-        ce("div",{style:{fontSize:14,color:"#bbb",lineHeight:1.8,padding:"12px 16px",background:C.paper,borderRadius:8,marginBottom:12,borderLeft:"3px solid "+C.border,fontStyle:"italic",whiteSpace:"pre-line"}},q.passage),
-        ce("div",{style:{fontSize:14,marginBottom:12,color:"#ddd",lineHeight:1.7}},q.stem),
-        !scored && ce("div",{style:{marginBottom:8}},
-          ce("div",{style:{fontSize:12,color:C.muted,marginBottom:6}},"How confident are you?"),
-          ce("div",{style:{display:"flex",gap:6}},
+      return ce("div",{key:i,style:glass({padding:20,marginBottom:14,transition:"all .3s",opacity:scored&&answered?0.85:1,borderColor:scored&&answered?(isCorrect?"rgba(34,197,94,.15)":"rgba(239,68,68,.12)"):C.glassBorder})},
+        ce("div",{style:{fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:8,display:"inline-block",padding:"3px 10px",borderRadius:6,background:q.color+"15",color:q.color}},q.domain),
+        ce("div",{style:{fontSize:14,color:"#a0a0b0",lineHeight:1.85,padding:"14px 18px",background:C.paper,borderRadius:10,marginBottom:14,borderLeft:"3px solid "+C.border,fontStyle:"italic",whiteSpace:"pre-line"}},q.passage),
+        ce("div",{style:{fontSize:14,marginBottom:14,color:"#d4d4de",lineHeight:1.7,fontWeight:500}},q.stem),
+        !scored && ce("div",{style:{marginBottom:10}},
+          ce("div",{style:{fontSize:11,color:C.muted,marginBottom:7,fontWeight:600,letterSpacing:0.5}},"How confident are you?"),
+          ce("div",{style:{display:"flex",gap:8}},
             confLabels.map(function(c, ci) {
               return ce("button",{key:ci,onClick:function(){pickConf(i, ci);},
-                style:{padding:"4px 12px",borderRadius:6,border:"1px solid "+(conf[i]===ci?C.mod:C.border),background:conf[i]===ci?C.modBg:C.paper,color:conf[i]===ci?C.mod:C.muted,cursor:"pointer",fontSize:12,transition:"all .15s"}
+                style:{padding:"5px 14px",borderRadius:8,border:"1px solid "+(conf[i]===ci?"rgba(6,182,212,.3)":C.border),background:conf[i]===ci?C.modBg:C.paper,color:conf[i]===ci?C.mod:C.muted,cursor:"pointer",fontSize:12,transition:"all .2s",fontWeight:conf[i]===ci?600:400}
               },c);
             })
           )
         ),
-        ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+        ce("div",{style:{display:"flex",flexDirection:"column",gap:8}},
           q.choices.map(function(c, ci) {
             var letter = String.fromCharCode(65+ci);
-            var st = {padding:"10px 14px",background:C.paper,border:"2px solid "+C.border,borderRadius:8,cursor:scored?"default":"pointer",fontSize:14,transition:"all .15s",display:"flex",alignItems:"flex-start",gap:10,textAlign:"left",width:"100%",color:"#ccc"};
+            var st = {padding:"11px 15px",background:C.paper,border:"1px solid "+C.border,borderRadius:10,cursor:scored?"default":"pointer",fontSize:14,transition:"all .2s",display:"flex",alignItems:"flex-start",gap:10,textAlign:"left",width:"100%",color:"#bcbcc8"};
             if (scored) {
-              if (ci === q.correct) { st.borderColor = C.correct; st.background = C.correctBg; }
-              else if (answers[i] === ci) { st.borderColor = C.wrong; st.background = C.wrongBg; }
-              st.pointerEvents = "none"; st.opacity = 0.7;
+              if (ci === q.correct) { st.borderColor = "rgba(34,197,94,.3)"; st.background = C.correctBg; st.boxShadow="0 0 16px rgba(34,197,94,.06)"; }
+              else if (answers[i] === ci) { st.borderColor = "rgba(239,68,68,.3)"; st.background = C.wrongBg; }
+              st.pointerEvents = "none"; st.opacity = 0.5;
               if (ci === q.correct) st.opacity = 1;
             } else if (answers[i] === ci) {
-              st.borderColor = C.correct; st.background = C.correctBg;
+              st.borderColor = "rgba(34,197,94,.3)"; st.background = C.correctBg;
             }
-            return ce("button",{key:ci,onClick:function(){pickAnswer(i, ci);},style:st},
-              ce("span",{style:{fontWeight:700,color:scored&&ci===q.correct?C.correct:scored&&answers[i]===ci?C.wrong:C.muted,minWidth:20,flexShrink:0}},letter+")"),
+            return ce("button",{key:ci,onClick:function(){pickAnswer(i, ci);},style:st,
+              onMouseOver:function(e){if(!scored&&answers[i]!==ci){e.currentTarget.style.borderColor=C.borderHover;e.currentTarget.style.background=C.surface;}},
+              onMouseOut:function(e){if(!scored&&answers[i]!==ci){e.currentTarget.style.borderColor=C.border;e.currentTarget.style.background=C.paper;}}},
+              ce("span",{style:{fontWeight:700,color:scored&&ci===q.correct?C.correct:scored&&answers[i]===ci?C.wrong:C.muted,minWidth:20,flexShrink:0,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},letter+")"),
               ce("span",null,c)
             );
           })
         ),
-        scored && ce("div",{style:{marginTop:10,padding:12,background:C.paper,borderRadius:8,fontSize:14,color:C.muted,lineHeight:1.6,borderLeft:"3px solid "+C.correct}},
+        scored && ce("div",{style:{marginTop:12,padding:"14px 16px",background:C.paper,borderRadius:10,fontSize:14,color:C.sub,lineHeight:1.7,borderLeft:"3px solid "+C.correct,animation:"fadeInUp .3s ease forwards"}},
           (isCorrect ? "\u2705 Correct! " : "\u274C Incorrect. ") + q.explain
         )
       );
     }),
 
-    !scored && allAnswered && ce("div",{style:{textAlign:"center",marginTop:16}},
-      ce("button",{onClick:scoreDiag,style:btn("linear-gradient(135deg,"+C.rw+","+C.mod+")","#fff")},"Score My Diagnostic \u2192")
+    !scored && allAnswered && ce("div",{style:{textAlign:"center",marginTop:20}},
+      ce("button",{onClick:scoreDiag,style:btn("linear-gradient(135deg,"+C.rw+","+C.mod+")","#fff"),
+        onMouseOver:function(e){e.currentTarget.style.transform="scale(1.04)";e.currentTarget.style.boxShadow="0 4px 24px "+C.rwGlow;},
+        onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";e.currentTarget.style.boxShadow="0 2px 16px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.03)";}
+      },"Score My Diagnostic \u2192")
     ),
 
-    results && ce("div",{style:{marginTop:24}},
-      ce("div",{style:{background:C.surface,border:"2px solid "+C.mod,borderRadius:14,padding:22}},
-        ce("div",{style:{textAlign:"center",marginBottom:16}},
-          ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"3rem",fontWeight:700,color:Math.round(results.total/12*100)>=80?C.correct:Math.round(results.total/12*100)>=60?C.expr:C.wrong}},results.total+"/12"),
-          ce("div",{style:{fontSize:14,color:C.muted}},Math.round(results.total/12*100)+"% correct")
+    results && ce("div",{style:{marginTop:28,animation:"fadeInUp .5s cubic-bezier(.16,1,.3,1) forwards"}},
+      ce("div",{style:glass({padding:28,borderColor:"rgba(6,182,212,.15)",boxShadow:"0 4px 32px rgba(0,0,0,.2), 0 0 40px "+C.modGlow})},
+        ce("div",{style:{textAlign:"center",marginBottom:20}},
+          ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"3.2rem",fontWeight:700,color:Math.round(results.total/12*100)>=80?C.correct:Math.round(results.total/12*100)>=60?C.expr:C.wrong,textShadow:"0 0 40px "+(Math.round(results.total/12*100)>=80?C.correct:Math.round(results.total/12*100)>=60?C.expr:C.wrong)+"33"}},results.total+"/12"),
+          ce("div",{style:{fontSize:14,color:C.sub,marginTop:4}},Math.round(results.total/12*100)+"% correct")
         ),
-        ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10,marginBottom:16}},
+        ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12,marginBottom:18}},
           Object.keys(results.domScores).map(function(d) {
             var s = results.domScores[d], t = results.domTotals[d], p = Math.round((s/t)*100);
             var clr = p >= 80 ? C.correct : p >= 50 ? C.expr : C.wrong;
-            return ce("div",{key:d,style:{padding:12,background:C.paper,borderRadius:8,textAlign:"center"}},
-              ce("div",{style:{fontSize:12,color:domColors[d],textTransform:"uppercase",letterSpacing:1,marginBottom:4}},d),
-              ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.2rem",fontWeight:700,color:clr}},s+"/"+t),
-              ce("div",{style:{height:6,borderRadius:3,background:C.border,marginTop:6,overflow:"hidden"}},
-                ce("div",{style:{height:"100%",borderRadius:3,width:p+"%",background:clr,transition:"width .6s ease"}})
+            return ce("div",{key:d,style:{padding:14,background:C.paper,borderRadius:12,textAlign:"center",border:"1px solid "+C.border}},
+              ce("div",{style:{fontSize:10,color:domColors[d],textTransform:"uppercase",letterSpacing:1.5,marginBottom:6,fontWeight:700}},d),
+              ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"1.3rem",fontWeight:700,color:clr}},s+"/"+t),
+              ce("div",{style:{height:6,borderRadius:3,background:C.border,marginTop:8,overflow:"hidden"}},
+                ce("div",{style:{height:"100%",borderRadius:3,width:p+"%",background:"linear-gradient(90deg,"+clr+","+clr+"cc)",transition:"width .8s cubic-bezier(.16,1,.3,1)",boxShadow:"0 0 8px "+clr+"33"}})
               )
             );
           })
         ),
-        results.miscal.length > 0 && ce("div",{style:{marginTop:12}},
-          ce("div",{style:{fontSize:13,fontWeight:700,color:C.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:8}},"\u26A0\uFE0F Calibration Flags"),
+        results.miscal.length > 0 && ce("div",{style:{marginTop:14}},
+          ce("div",{style:{fontSize:11,fontWeight:700,color:C.muted,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10}},"\u26A0\uFE0F Calibration Flags"),
           results.miscal.map(function(m, mi) {
-            return ce("div",{key:mi,style:{fontSize:14,color:"#ccc",padding:"4px 0"}},
+            return ce("div",{key:mi,style:{fontSize:14,color:"#bcbcc8",padding:"5px 0"}},
               "Q"+m.q+": ",
               ce("span",{style:{color:m.type==="Overconfident"?C.wrong:C.mod}}, ce("strong",null,m.type)),
               " ("+m.domain+")"
             );
           }),
-          ce("div",{style:{fontSize:13,color:C.muted,marginTop:8,fontStyle:"italic"}},"Overconfident = you felt sure but got it wrong (dangerous on test day!). Underconfident = you guessed right (you know more than you think).")
+          ce("div",{style:{fontSize:13,color:C.muted,marginTop:10,fontStyle:"italic",lineHeight:1.6}},"Overconfident = you felt sure but got it wrong (dangerous on test day!). Underconfident = you guessed right (you know more than you think).")
         ),
-        ce("div",{style:{marginTop:16,fontSize:14,color:"#ccc"}},
+        ce("div",{style:{marginTop:18,fontSize:14,color:"#bcbcc8",lineHeight:1.7}},
           ce("strong",{style:{color:C.ink}},"Next step: "),
           "Use these results alongside your full Bluebook baseline to identify your priority domains for the course."
         ),
-        studyPlan && ce("div",{style:{marginTop:16,padding:16,background:C.paper,borderRadius:12,border:"2px solid "+C.mod}},
-          ce("div",{style:{fontSize:13,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.mod,marginBottom:8}},"Your Study Plan"),
+        studyPlan && ce("div",{style:{marginTop:18,padding:18,background:C.paper,borderRadius:14,border:"1px solid rgba(6,182,212,.2)"}},
+          ce("div",{style:{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:2,color:C.mod,marginBottom:10}},"Your Study Plan"),
           studyPlan.weak.length > 0 && ce("div",null,
-            ce("div",{style:{marginBottom:8}},ce("strong",{style:{color:C.wrong}},"Priority Review:")),
+            ce("div",{style:{marginBottom:10}},ce("strong",{style:{color:C.wrong}},"Priority Review:")),
             studyPlan.weak.map(function(w, wi) {
-              return ce("div",{key:wi,style:{padding:"4px 0",fontSize:14,color:"#ccc"}},
+              return ce("div",{key:wi,style:{padding:"5px 0",fontSize:14,color:"#bcbcc8"}},
                 "\u2022 ", ce("strong",null,w.d), " ("+w.pct+"%) \u2192 Focus on ", ce("strong",null,w.m)
               );
             })
           ),
           studyPlan.strong.length > 0 && ce("div",null,
-            ce("div",{style:{margin:"8px 0"}},ce("strong",{style:{color:C.correct}},"Strong Areas:")),
+            ce("div",{style:{margin:"10px 0"}},ce("strong",{style:{color:C.correct}},"Strong Areas:")),
             studyPlan.strong.map(function(s, si) {
-              return ce("div",{key:si,style:{padding:"4px 0",fontSize:14,color:"#ccc"}},
+              return ce("div",{key:si,style:{padding:"5px 0",fontSize:14,color:"#bcbcc8"}},
                 "\u2022 "+s.d+" ("+s.pct+"%) \u2014 review briefly"
               );
             })
           ),
-          studyPlan.weak.length === 0 && studyPlan.strong.length === 0 && ce("div",{style:{fontSize:14,color:"#ccc"}},"All domains around 60\u201380%. Work through all modules with equal attention."),
-          ce("div",{style:{marginTop:10,fontSize:14,color:C.muted}},
+          studyPlan.weak.length === 0 && studyPlan.strong.length === 0 && ce("div",{style:{fontSize:14,color:"#bcbcc8"}},"All domains around 60\u201380%. Work through all modules with equal attention."),
+          ce("div",{style:{marginTop:12,fontSize:14,color:C.muted}},
             ce("em",null,"For a full baseline, take the Bluebook practice test (54 questions) described in the worksheet section.")
           )
         )
       ),
-      ce("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
-        ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Continue to Error Classification \u2192")
+      ce("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:24}},
+        ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"11px 28px"}),
+          onMouseOver:function(e){e.currentTarget.style.transform="scale(1.03)";},
+          onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";}
+        },"Continue to Error Classification \u2192")
       )
     )
   );
@@ -850,41 +1014,47 @@ function ClassifyScreen(props) {
     setAnswers(function(prev){ var n = Object.assign({}, prev); n[i] = v; return n; });
   }
 
-  return ce("div",{style:{maxWidth:760,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
-    ce("div",{style:{color:C.rw,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Interactive Exercise"),
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Error Classification Practice"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:20}},"Before analyzing your own mistakes, practice classifying these common PSAT 8/9 R&W errors. Correctly identifying why you missed a question is the key to knowing what to study."),
-    ce("div",{style:{display:"flex",justifyContent:"flex-end",marginBottom:12}},
-      ce("span",{style:{color:C.muted,fontSize:13}},correct+"/"+total+" correct")
+  return ce("div",{style:{maxWidth:780,margin:"0 auto",padding:"48px 24px",minHeight:"100vh"}},
+    ce("div",{style:{color:C.rw,fontSize:11,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:10,opacity:0.8}},"Interactive Exercise"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.4rem,3.5vw,2rem)",fontWeight:700,marginBottom:10,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Error Classification Practice"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:24}},"Before analyzing your own mistakes, practice classifying these common PSAT 8/9 R&W errors. Correctly identifying why you missed a question is the key to knowing what to study."),
+    ce("div",{style:{display:"flex",justifyContent:"flex-end",marginBottom:14}},
+      ce("span",{style:{color:C.muted,fontSize:13,fontFamily:"'JetBrains Mono',monospace",fontWeight:500}},correct+"/"+total+" correct")
     ),
     EC_QS.map(function(q, i) {
       var a = answers[i], h = a !== undefined;
       var isCorrect = h && a === q.correct;
-      return ce("div",{key:i,style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,padding:18,marginBottom:12}},
-        ce("div",{style:{fontSize:14,lineHeight:1.6,marginBottom:10,color:"#ddd"}},q.scenario),
-        ce("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:h?8:0}},
+      return ce("div",{key:i,style:glass({padding:20,marginBottom:14})},
+        ce("div",{style:{fontSize:14,lineHeight:1.7,marginBottom:12,color:"#d4d4de"}},q.scenario),
+        ce("div",{style:{display:"flex",flexWrap:"wrap",gap:8,marginBottom:h?10:0}},
           q.options.map(function(o, oi) {
-            var st = {padding:"6px 14px",background:C.surface,border:"2px solid "+C.border,borderRadius:8,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .15s"};
+            var st = {padding:"7px 16px",background:C.surface,border:"1px solid "+C.border,borderRadius:10,cursor:h?"default":"pointer",fontSize:13,color:C.ink,transition:"all .2s",fontWeight:500};
             if (h) {
-              st.opacity = 0.6; st.pointerEvents = "none";
-              if (oi === q.correct) { st.borderColor = C.correct; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; }
-              else if (oi === a) { st.borderColor = C.wrong; st.background = C.wrongBg; st.color = C.wrong; }
+              st.opacity = 0.4; st.pointerEvents = "none";
+              if (oi === q.correct) { st.borderColor = "rgba(34,197,94,.3)"; st.background = C.correctBg; st.color = C.correct; st.opacity = 1; st.boxShadow="0 0 12px rgba(34,197,94,.08)"; }
+              else if (oi === a) { st.borderColor = "rgba(239,68,68,.3)"; st.background = C.wrongBg; st.color = C.wrong; st.opacity=0.7; }
             }
-            return ce("button",{key:oi,onClick:function(){pick(i, oi);},style:st},o);
+            return ce("button",{key:oi,onClick:function(){pick(i, oi);},style:st,
+              onMouseOver:function(e){if(!h){e.currentTarget.style.borderColor=C.borderHover;e.currentTarget.style.background=C.surfaceAlt;}},
+              onMouseOut:function(e){if(!h){e.currentTarget.style.borderColor=C.border;e.currentTarget.style.background=C.surface;}}
+            },o);
           })
         ),
-        h && ce("div",{style:{fontSize:13,padding:"8px 10px",borderRadius:6,marginTop:6,lineHeight:1.5,background:isCorrect?C.correctBg:C.wrongBg,color:isCorrect?C.correct:C.wrong},dangerouslySetInnerHTML:{__html:(isCorrect?"\u2713 ":"\u2717 ")+q.fb}})
+        h && ce("div",{style:{fontSize:13,padding:"10px 14px",borderRadius:10,marginTop:8,lineHeight:1.6,background:isCorrect?C.correctBg:C.wrongBg,color:isCorrect?C.correct:C.wrong,border:"1px solid "+(isCorrect?"rgba(34,197,94,.15)":"rgba(239,68,68,.15)"),animation:"fadeInUp .3s ease forwards"},dangerouslySetInnerHTML:{__html:(isCorrect?"\u2713 ":"\u2717 ")+q.fb}})
       );
     }),
-    ce("div",{style:{display:"flex",alignItems:"center",gap:10,marginTop:14,paddingTop:10,borderTop:"1px solid "+C.border}},
-      ce("div",{style:{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:C.muted}},"Score"),
+    ce("div",{style:{display:"flex",alignItems:"center",gap:12,marginTop:18,paddingTop:14,borderTop:"1px solid "+C.border}},
+      ce("div",{style:{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,color:C.muted}},"Score"),
       ce("div",{style:{flex:1,height:6,borderRadius:3,background:C.border,overflow:"hidden"}},
-        ce("div",{style:{height:"100%",borderRadius:3,background:C.correct,width:(total?correct/total*100:0)+"%",transition:"width .4s"}})
+        ce("div",{style:{height:"100%",borderRadius:3,background:"linear-gradient(90deg,"+C.correct+","+C.correct+"cc)",width:(total?correct/total*100:0)+"%",transition:"width .5s cubic-bezier(.16,1,.3,1)",boxShadow:"0 0 8px rgba(34,197,94,.2)"}})
       ),
       ce("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:14,fontWeight:700,color:C.correct,minWidth:36,textAlign:"right"}},correct+"/"+total)
     ),
-    done && ce("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
-      ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Continue to Worksheet \u2192")
+    done && ce("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:24}},
+      ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"11px 28px"}),
+        onMouseOver:function(e){e.currentTarget.style.transform="scale(1.03)";},
+        onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";}
+      },"Continue to Worksheet \u2192")
     )
   );
 }
@@ -959,18 +1129,18 @@ function WorksheetScreen(props) {
   var domainOptions = ["","Craft & Structure","Information & Ideas","Std. English Conventions","Expression of Ideas"];
   var errorOptions = ["","Vocabulary Gap","Grammar Rule Gap","Didn't Use Evidence","Misread the Question","Trap Answer","Time Pressure","Careless Error","Unfamiliar Format"];
   var rereadOptions = ["","Yes","No","I didn't read carefully the first time"];
-  var inputSt = {padding:"6px 10px",background:C.surface,border:"1px solid "+C.border,borderRadius:6,color:C.ink,fontFamily:"inherit",fontSize:14};
-  var labelSt = {fontSize:12,fontWeight:700,color:C.muted,textTransform:"uppercase",letterSpacing:.5,whiteSpace:"nowrap"};
+  var inputSt = {padding:"8px 12px",background:C.surface,border:"1px solid "+C.border,borderRadius:8,color:C.ink,fontFamily:"inherit",fontSize:14,transition:"all .2s"};
+  var labelSt = {fontSize:10,fontWeight:700,color:C.muted,textTransform:"uppercase",letterSpacing:1.5,whiteSpace:"nowrap"};
 
-  return ce("div",{style:{maxWidth:760,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
+  return ce("div",{style:{maxWidth:780,margin:"0 auto",padding:"48px 24px",minHeight:"100vh"}},
 
     /* ── Baseline Protocol ── */
-    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Session 3: Full Baseline"),
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Baseline Assessment Protocol"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:20}},"After the mini diagnostic, take a full-length PSAT 8/9 Reading & Writing section using the Bluebook app. This establishes your true baseline score."),
+    ce("div",{style:{color:C.mod,fontSize:11,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:10,opacity:0.8}},"Session 3: Full Baseline"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.4rem,3.5vw,2rem)",fontWeight:700,marginBottom:10,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Baseline Assessment Protocol"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:24}},"After the mini diagnostic, take a full-length PSAT 8/9 Reading & Writing section using the Bluebook app. This establishes your true baseline score."),
 
-    ce("div",{style:{background:C.surface,border:"2px solid "+C.mod,borderRadius:14,overflow:"hidden",marginBottom:24}},
-      ce("div",{style:{background:C.mod,padding:"12px 20px",fontWeight:700,fontSize:15,color:"#fff"}},"Full Baseline Protocol"),
+    ce("div",{style:glass({overflow:"hidden",marginBottom:28,borderColor:"rgba(6,182,212,.15)",boxShadow:"0 4px 32px rgba(0,0,0,.2), 0 0 30px "+C.modGlow})},
+      ce("div",{style:{background:"linear-gradient(135deg,"+C.mod+",rgba(6,182,212,.8))",padding:"14px 24px",fontWeight:700,fontSize:15,color:"#fff",letterSpacing:"0.02em"}},"Full Baseline Protocol"),
       [
         ["1","Open the Bluebook app and select a PSAT 8/9 practice test. Take only the Reading & Writing section (54 questions, 64 minutes)."],
         ["2","Practice using the digital tools during the baseline \u2014 highlighting, annotation, and answer eliminator. This establishes your current comfort level."],
@@ -979,8 +1149,8 @@ function WorksheetScreen(props) {
         ["5","Review your score report. Note which domain(s) had the most errors."],
         ["6","Complete the Error Analysis Worksheet below for every missed and uncertain question."]
       ].map(function(step, i) {
-        return ce("div",{key:i,style:{display:"flex",gap:14,padding:"14px 20px",borderBottom:i<5?"1px solid "+C.border:"none",fontSize:14,color:"#ccc",alignItems:"flex-start"}},
-          ce("div",{style:{flexShrink:0,width:28,height:28,borderRadius:"50%",background:C.modBg,border:"1px solid "+C.mod,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:13,color:C.mod,fontFamily:"'JetBrains Mono',monospace"}},step[0]),
+        return ce("div",{key:i,style:{display:"flex",gap:16,padding:"16px 24px",borderBottom:i<5?"1px solid "+C.border:"none",fontSize:14,color:"#bcbcc8",alignItems:"flex-start",lineHeight:1.7}},
+          ce("div",{style:{flexShrink:0,width:30,height:30,borderRadius:"50%",background:C.modBg,border:"1px solid rgba(6,182,212,.25)",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:13,color:C.mod,fontFamily:"'JetBrains Mono',monospace"}},step[0]),
           ce("div",null,
             i === 0
               ? ce("span",null,"Open the ",ce("a",{href:"https://bluebook.collegeboard.org/",target:"_blank",style:{color:C.mod}},"Bluebook app")," and select a PSAT 8/9 practice test. Take only the Reading & Writing section (54 questions, 64 minutes).")
@@ -995,32 +1165,34 @@ function WorksheetScreen(props) {
     ),
 
     /* ── Pre-Test Checklist ── */
-    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Preparation"),
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:12,fontFamily:"'Cormorant Garamond',serif"}},"Pre-Test Checklist"),
-    ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:20,marginBottom:24}},
-      ce("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:12}},"\u2705 Before Your Baseline Test"),
+    ce("div",{style:{color:C.mod,fontSize:11,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:10,opacity:0.8}},"Preparation"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.4rem,3.5vw,2rem)",fontWeight:700,marginBottom:14,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Pre-Test Checklist"),
+    ce("div",{style:glass({padding:22,marginBottom:28})},
+      ce("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:14,fontWeight:600}},"\u2705 Before Your Baseline Test"),
       CL_ITEMS.map(function(item, i) {
-        return ce("div",{key:i,onClick:function(){toggleCL(i);},style:{display:"flex",alignItems:"flex-start",gap:10,padding:"7px 0",borderBottom:i<CL_ITEMS.length-1?"1px solid "+C.border:"none",fontSize:14,color:clState[i]?"#666":"#ccc",cursor:"pointer",textDecoration:clState[i]?"line-through":"none",transition:"all .2s"}},
-          ce("div",{style:{flexShrink:0,width:22,height:22,border:"2px solid "+(clState[i]?C.correct:C.border),borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,background:clState[i]?C.correct:"transparent",color:clState[i]?"#fff":"transparent",transition:"all .15s"}},clState[i]?"\u2713":""),
+        return ce("div",{key:i,onClick:function(){toggleCL(i);},style:{display:"flex",alignItems:"flex-start",gap:12,padding:"9px 0",borderBottom:i<CL_ITEMS.length-1?"1px solid "+C.border:"none",fontSize:14,color:clState[i]?C.muted:"#bcbcc8",cursor:"pointer",textDecoration:clState[i]?"line-through":"none",transition:"all .25s"}},
+          ce("div",{style:{flexShrink:0,width:22,height:22,border:"1px solid "+(clState[i]?"rgba(34,197,94,.4)":C.border),borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,background:clState[i]?C.correct:"transparent",color:clState[i]?"#fff":"transparent",transition:"all .2s ease",boxShadow:clState[i]?"0 0 8px rgba(34,197,94,.15)":"none"}},clState[i]?"\u2713":""),
           ce("div",null,item)
         );
       }),
-      ce("div",{style:{fontSize:13,color:C.muted,marginTop:8,textAlign:"right"}},clDone+"/"+CL_ITEMS.length+" complete")
+      ce("div",{style:{fontSize:13,color:C.muted,marginTop:10,textAlign:"right",fontFamily:"'JetBrains Mono',monospace",fontWeight:500}},clDone+"/"+CL_ITEMS.length+" complete")
     ),
 
     /* ── Error Analysis Worksheet ── */
-    ce("div",{style:{color:C.rw,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Session 3: Interactive Tool"),
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:8,fontFamily:"'Cormorant Garamond',serif"}},"Error Analysis Worksheet"),
-    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.75,marginBottom:16}},"For every missed or uncertain question on your baseline test, fill in one entry. Data saves in your browser."),
+    ce("div",{style:{color:C.rw,fontSize:11,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:10,opacity:0.8}},"Session 3: Interactive Tool"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.4rem,3.5vw,2rem)",fontWeight:700,marginBottom:10,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Error Analysis Worksheet"),
+    ce("p",{style:{color:C.sub,fontSize:14,lineHeight:1.8,marginBottom:20}},"For every missed or uncertain question on your baseline test, fill in one entry. Data saves in your browser."),
 
-    ce("div",{style:{background:C.surface,border:"2px solid "+C.rw,borderRadius:14,padding:22,marginBottom:24}},
-      ce("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:4}},"\uD83D\uDCCA PSAT 8/9 R&W Error Analysis"),
-      ce("div",{style:{fontSize:14,color:C.muted,marginBottom:14}},"Complete one entry per missed/uncertain question"),
+    ce("div",{style:glass({padding:24,marginBottom:28,borderColor:"rgba(167,139,250,.15)",boxShadow:"0 4px 32px rgba(0,0,0,.2), 0 0 30px "+C.rwGlow})},
+      ce("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:6,fontWeight:600}},"\uD83D\uDCCA PSAT 8/9 R&W Error Analysis"),
+      ce("div",{style:{fontSize:14,color:C.muted,marginBottom:16}},"Complete one entry per missed/uncertain question"),
       wsEntries.map(function(e, i) {
-        return ce("div",{key:i,style:{background:C.paper,borderRadius:10,padding:14,marginBottom:10,border:"1px solid "+C.border}},
-          ce("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
-            ce("div",{style:{fontWeight:700,fontSize:14,color:C.rw}},"Question "+(i+1)),
-            ce("button",{onClick:function(){removeEntry(i);},style:{background:"none",border:"none",color:C.muted,cursor:"pointer",fontSize:13}},"\u2715 Remove")
+        return ce("div",{key:i,style:{background:C.paper,borderRadius:12,padding:16,marginBottom:12,border:"1px solid "+C.border,transition:"border-color .2s"},
+          onMouseOver:function(ev){ev.currentTarget.style.borderColor=C.borderHover;},
+          onMouseOut:function(ev){ev.currentTarget.style.borderColor=C.border;}},
+          ce("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}},
+            ce("div",{style:{fontWeight:700,fontSize:14,color:C.rw,letterSpacing:"0.02em"}},"Question "+(i+1)),
+            ce("button",{onClick:function(){removeEntry(i);},style:{background:"none",border:"none",color:C.muted,cursor:"pointer",fontSize:13,transition:"color .2s"},onMouseOver:function(ev){ev.currentTarget.style.color=C.wrong;},onMouseOut:function(ev){ev.currentTarget.style.color=C.muted;}},"\u2715 Remove")
           ),
           ce("div",{style:{display:"grid",gridTemplateColumns:"auto 1fr",gap:"8px 12px",alignItems:"center",marginBottom:6}},
             ce("div",{style:labelSt},"Q #"),
@@ -1051,17 +1223,24 @@ function WorksheetScreen(props) {
           )
         );
       }),
-      ce("div",{style:{display:"flex",gap:8,marginTop:12,flexWrap:"wrap"}},
-        ce("button",{onClick:addEntry,style:btn(C.rw,"#fff",{padding:"8px 16px",fontSize:13})},"\u002B Add Entry"),
-        ce("button",{onClick:exportWS,style:Object.assign({},btn("transparent",C.mod,{padding:"8px 16px",fontSize:13}),{border:"2px solid "+C.mod})},"\uD83D\uDCCB Export to Clipboard"),
-        ce("button",{onClick:function(){if(confirm("Clear all entries?")){localStorage.removeItem(WS_KEY);setWsEntries([{qnum:"",domain:"",skill:"",errorType:"",shouldHave:"",reread:""}]);}},style:btn(C.wrong,"#fff",{padding:"8px 16px",fontSize:13})},"Reset")
+      ce("div",{style:{display:"flex",gap:10,marginTop:16,flexWrap:"wrap"}},
+        ce("button",{onClick:addEntry,style:btn(C.rw,"#fff",{padding:"9px 18px",fontSize:13,borderRadius:10}),
+          onMouseOver:function(e){e.currentTarget.style.transform="scale(1.03)";},onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";}
+        },"\u002B Add Entry"),
+        ce("button",{onClick:exportWS,style:Object.assign({},btn("transparent",C.mod,{padding:"9px 18px",fontSize:13,borderRadius:10}),{border:"1px solid rgba(6,182,212,.3)"}),
+          onMouseOver:function(e){e.currentTarget.style.borderColor="rgba(6,182,212,.5)";e.currentTarget.style.background=C.modBg;},
+          onMouseOut:function(e){e.currentTarget.style.borderColor="rgba(6,182,212,.3)";e.currentTarget.style.background="transparent";}
+        },"\uD83D\uDCCB Export to Clipboard"),
+        ce("button",{onClick:function(){if(confirm("Clear all entries?")){localStorage.removeItem(WS_KEY);setWsEntries([{qnum:"",domain:"",skill:"",errorType:"",shouldHave:"",reread:""}]);}},style:btn("transparent",C.wrong,{padding:"9px 18px",fontSize:13,borderRadius:10,border:"1px solid rgba(239,68,68,.25)"}),
+          onMouseOver:function(e){e.currentTarget.style.background=C.wrongBg;},onMouseOut:function(e){e.currentTarget.style.background="transparent";}
+        },"Reset")
       )
     ),
 
     /* ── Homework ── */
-    ce("div",{style:{color:C.mod,fontSize:12,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},"Action Items"),
-    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.3rem,3vw,1.8rem)",fontWeight:800,marginBottom:12,fontFamily:"'Cormorant Garamond',serif"}},"Homework"),
-    ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:12,borderLeft:"3px solid "+C.mod,padding:"18px 20px",marginBottom:24}},
+    ce("div",{style:{color:C.mod,fontSize:11,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:10,opacity:0.8}},"Action Items"),
+    ce("h2",{style:{color:C.ink,fontSize:"clamp(1.4rem,3.5vw,2rem)",fontWeight:700,marginBottom:14,fontFamily:"'Cormorant Garamond',serif",letterSpacing:"-0.01em"}},"Homework"),
+    ce("div",{style:glass({borderLeft:"3px solid "+C.mod,padding:"20px 24px",marginBottom:28})},
       [
         ["1. Complete Your Baseline Test","Full 54 questions, 64 minutes, official Bluebook practice test under test conditions."],
         ["2. Self-Score & Mark Uncertain Questions","Score yourself before reviewing. Flag every question you weren't sure about."],
@@ -1070,43 +1249,57 @@ function WorksheetScreen(props) {
         ["5. Identify Your Top 3 Priority Areas","Based on the error analysis, what domains/skills cost you the most points?"],
         ["6. Start a Vocabulary Journal","Write down 5 unfamiliar words from the practice test with definitions and example sentences."]
       ].map(function(h, i) {
-        return ce("p",{key:i,style:{fontSize:14,color:"#ccc",marginBottom:i<5?12:0}},
+        return ce("p",{key:i,style:{fontSize:14,color:"#bcbcc8",marginBottom:i<5?14:0,lineHeight:1.7}},
           ce("strong",{style:{color:C.ink}},h[0]),
           " \u2014 " + h[1]
         );
       })
     ),
 
-    ce("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:8}},
-      ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"10px 24px"})},"Finish Module \u2192")
+    ce("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:12}},
+      ce("button",{onClick:props.onComplete,style:btn("linear-gradient(135deg,"+C.mod+","+C.rw+")","#fff",{fontSize:14,padding:"11px 28px"}),
+        onMouseOver:function(e){e.currentTarget.style.transform="scale(1.03)";},
+        onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";}
+      },"Finish Module \u2192")
     )
   );
 }
 
 /* ── NavLinks ── */
 function NavLinks() {
-  return ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:32,paddingTop:24,borderTop:"1px solid "+C.border}},
-    ce("a",{href:"index.html",style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"10px 20px"})},"\u2190 Course Home"),
-    NAV.next && ce("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"10px 20px"})},NAV.next.label+" \u2192")
+  return ce("div",{style:{display:"flex",justifyContent:"center",gap:14,marginTop:36,paddingTop:28,borderTop:"1px solid "+C.border}},
+    ce("a",{href:"index.html",style:Object.assign({},btn("transparent",C.sub),{border:"1px solid "+C.border,textDecoration:"none",fontSize:13,padding:"11px 22px",boxShadow:"none"}),
+      onMouseOver:function(e){e.currentTarget.style.borderColor=C.borderHover;e.currentTarget.style.background=C.surface;},
+      onMouseOut:function(e){e.currentTarget.style.borderColor=C.border;e.currentTarget.style.background="transparent";}
+    },"\u2190 Course Home"),
+    NAV.next && ce("a",{href:NAV.next.file,style:Object.assign({},btn("linear-gradient(135deg,"+C.mod+","+C.rw+")",C.ink),{textDecoration:"none",fontSize:13,padding:"11px 22px"}),
+      onMouseOver:function(e){e.currentTarget.style.transform="scale(1.03)";e.currentTarget.style.boxShadow="0 4px 20px "+C.modGlow;},
+      onMouseOut:function(e){e.currentTarget.style.transform="scale(1)";e.currentTarget.style.boxShadow="0 2px 16px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.03)";}
+    },NAV.next.label+" \u2192")
   );
 }
 
 /* ── ModuleComplete ── */
 function ModuleComplete() {
-  return ce("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 20px",minHeight:"100vh"}},
-    ce("div",{style:{fontSize:64,marginBottom:16}},"\uD83C\uDFC6"),
-    ce("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,4vw,2.4rem)",fontWeight:800,marginBottom:8,textAlign:"center",color:C.ink}},"Module 1 Complete!"),
-    ce("p",{style:{color:C.sub,fontSize:15,marginBottom:32,textAlign:"center",maxWidth:500}},"You've learned the PSAT 8/9 R&W structure, explored all four question types, completed your diagnostic assessment, and built your personalized study plan."),
-    ce("div",{style:{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:24,maxWidth:520,width:"100%",marginBottom:32,textAlign:"left"}},
-      ce("div",{style:{color:C.mod,fontWeight:700,fontSize:15,marginBottom:12}},"\uD83D\uDCCB Key Takeaways"),
+  var _s = useState(false), show = _s[0], setShow = _s[1];
+  useEffect(function(){ setTimeout(function(){ setShow(true); }, 100); }, []);
+  var stagger = function(i){ return {animation:show?"fadeInUp .7s cubic-bezier(.16,1,.3,1) forwards":"none",animationDelay:(i*0.12)+"s",opacity:0}; };
+  return ce("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",padding:"60px 24px",minHeight:"100vh",position:"relative"}},
+    /* Ambient celebration glow */
+    ce("div",{style:{position:"absolute",top:"5%",left:"50%",transform:"translateX(-50%)",width:"600px",height:"400px",background:"radial-gradient(ellipse, rgba(6,182,212,0.08) 0%, rgba(167,139,250,0.04) 40%, transparent 70%)",filter:"blur(60px)",pointerEvents:"none",animation:"breathe 5s ease-in-out infinite"}}),
+    ce("div",{style:Object.assign({},stagger(0),{fontSize:72,marginBottom:20,filter:"drop-shadow(0 4px 20px rgba(0,0,0,.3))"})},"\uD83C\uDFC6"),
+    ce("h1",{style:Object.assign({},stagger(1),{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.6rem,4.5vw,2.6rem)",fontWeight:700,marginBottom:10,textAlign:"center",color:C.ink,letterSpacing:"-0.02em"})},"Module 1 Complete!"),
+    ce("p",{style:Object.assign({},stagger(2),{color:C.sub,fontSize:15,marginBottom:36,textAlign:"center",maxWidth:520,lineHeight:1.7})},"You've learned the PSAT 8/9 R&W structure, explored all four question types, completed your diagnostic assessment, and built your personalized study plan."),
+    ce("div",{style:Object.assign({},glass({padding:28,maxWidth:540,width:"100%",marginBottom:36,textAlign:"left"}),stagger(3))},
+      ce("div",{style:{color:C.mod,fontWeight:700,fontSize:14,marginBottom:14,letterSpacing:"0.02em"}},"\uD83D\uDCCB Key Takeaways"),
       KEY_TAKEAWAYS.map(function(t,i){
-        return ce("div",{key:i,style:{display:"flex",gap:8,marginBottom:8,fontSize:13,lineHeight:1.6,color:C.sub}},
-          ce("span",{style:{color:C.correct,flexShrink:0}},"\u2713"),
+        return ce("div",{key:i,style:{display:"flex",gap:10,marginBottom:10,fontSize:13,lineHeight:1.65,color:C.sub}},
+          ce("span",{style:{color:C.correct,flexShrink:0,fontWeight:600}},"\u2713"),
           ce("span",null,t)
         );
       })
     ),
-    ce(NavLinks, null)
+    ce("div",{style:stagger(4)}, ce(NavLinks, null))
   );
 }
 
@@ -1128,7 +1321,7 @@ function App() {
   else if (screen === "worksheet") content = ce(WorksheetScreen, {onComplete:function(){go("complete");}});
   else if (screen === "complete") content = ce(ModuleComplete, null);
 
-  return ce("div",{style:{transition:"opacity .35s ease, transform .35s ease",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)"}},content);
+  return ce("div",{style:{transition:"opacity .4s cubic-bezier(.16,1,.3,1), transform .4s cubic-bezier(.16,1,.3,1), filter .4s ease",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.99)",filter:vis?"blur(0px)":"blur(4px)"}},content);
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(ce(App));
