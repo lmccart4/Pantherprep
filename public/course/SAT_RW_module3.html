@@ -4,23 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Module 3: Modifiers, Parallelism & Structure — PantherPrep SAT R&W</title>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#121212;color:#f0f0f0;font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
+body{background:#08080c;color:#eaeaef;font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.65}
 input[type="range"]{width:100%}
 button{font-family:inherit}
 a{color:#10b981;text-decoration:none}
 a:hover{text-decoration:underline}
 ::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:#121212}
+::-webkit-scrollbar-track{background:#08080c}
 ::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:3px}
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(168,85,247,.05),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(16,185,129,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to SAT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#eaeaef'" onmouseout="this.style.color='#5a5a6e'">← Back to SAT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const{useState,useEffect,useCallback,useRef}=React;
@@ -30,8 +36,8 @@ const e=React.createElement;
 // DESIGN TOKENS
 // ══════════════════════════════════════════
 const T={
-  dark:'#121212',card:'#1a1a1a',border:'#2a2a2a',
-  text:'#f0f0f0',sub:'#999999',muted:'#64748b',dim:'#475569',
+  dark:'#08080c',card:'#0f0f16',border:'#1c1c2c',
+  text:'#eaeaef',sub:'#9898a8',muted:'#5a5a6e',dim:'#475569',
   accent:'#10b981',accentDark:'#059669',
   amber:'#f59e0b',blue:'#3b82f6',purple:'#a855f7',
   red:'#ef4444',pink:'#ec4899',
@@ -924,7 +930,7 @@ function App(){
     setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},300);
   },[]);
 
-  return e('div',{style:{minHeight:'100vh',background:T.dark,color:T.text,fontFamily:"'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}},
+  return e('div',{style:{minHeight:'100vh',background:T.dark,color:T.text,fontFamily:"'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}},
     // Grid background
     e('div',{style:{position:'fixed',inset:0,pointerEvents:'none',opacity:.03,
       backgroundImage:'linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)',

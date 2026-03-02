@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Module 8: Connecting the Dots — PSAT/NMSQT R&W — PantherPrep</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.1);--info:#34d399;--info-bg:rgba(52,211,153,.1);--conv:#fbbf24;--conv-bg:rgba(251,191,36,.1);--expr:#f472b6;--expr-bg:rgba(244,114,182,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.1)}
+:root{--ink:#eaeaef;--paper:#08080c;--accent:#06b6d4;--accent-light:rgba(6,182,212,.07);--accent-glow:rgba(6,182,212,.15);--border:#1c1c2c;--border-hover:#2a2a3e;--muted:#5a5a6e;--surface:#0f0f16;--surface-alt:#141420;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.07);--info:#34d399;--info-bg:rgba(52,211,153,.07);--conv:#fbbf24;--conv-bg:rgba(251,191,36,.07);--expr:#f472b6;--expr-bg:rgba(244,114,182,.07);--correct:#22c55e;--correct-bg:rgba(34,197,94,.07);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.07);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.07);--glass:rgba(15,15,22,.75);--glass-border:rgba(255,255,255,.05)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
+body{font-family:'Manrope',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 /* Top stripe */
 .top-stripe{height:4px;background:linear-gradient(90deg,var(--craft) 0%,var(--craft) 28%,var(--info) 28%,var(--info) 54%,var(--conv) 54%,var(--conv) 80%,var(--expr) 80%);position:fixed;top:0;left:0;right:0;z-index:100}
 /* Step indicator */
@@ -27,19 +27,19 @@ h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margi
 h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:10px}
 .section-label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--expr);margin-bottom:6px}
 .subtitle{color:var(--muted);font-size:1rem}
-p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
+p{color:#9898a8;font-size:.93rem;margin-bottom:12px;line-height:1.7}
 /* Badges */
 .mod-badge{display:inline-block;background:var(--expr);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:16px;margin-bottom:14px}
 .nm-badge{display:inline-block;background:var(--nm);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:12px;margin-bottom:12px}
 /* Cards */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.card{background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:14px;padding:20px 22px;margin-bottom:12px;box-shadow:0 4px 24px rgba(0,0,0,.15)}
 .card-accent{border-left:3px solid var(--expr)}
 .callout{border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.9rem}
-.callout-expr{background:var(--expr-bg);border:1px solid rgba(244,114,182,.3)}.callout-expr strong{color:var(--expr)}
+.callout-expr{background:var(--expr-bg);border:1px solid rgba(244,114,182,.2)}.callout-expr strong{color:var(--expr)}
 .callout-red{background:var(--wrong-bg);border:1px solid rgba(239,68,68,.3)}.callout-red strong{color:var(--wrong)}
 .rule-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;border-left:3px solid var(--expr)}
 .rule-card h4{font-family:'Cormorant Garamond',serif;font-size:1.05rem;margin-bottom:6px;color:var(--expr)}
-.rule-card p{font-size:.88rem;color:#ccc;margin-bottom:0;line-height:1.6}
+.rule-card p{font-size:.88rem;color:#9898a8;margin-bottom:0;line-height:1.6}
 /* Interactive visuals */
 .iv-container{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin:16px 0}
 .iv-label{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;color:var(--expr)}
@@ -108,7 +108,7 @@ p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
 .results-domain{padding:12px;background:var(--paper);border-radius:8px;text-align:center}
 .results-domain-name{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .results-domain-score{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700}
-.results-tier{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:14px;font-size:.88rem;color:#ccc;line-height:1.7}
+.results-tier{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:14px;font-size:.88rem;color:#9898a8;line-height:1.7}
 .results-tier strong{color:var(--ink)}
 .error-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .error-item{background:var(--paper);border-radius:8px;padding:10px;border:1px solid var(--border)}
@@ -131,6 +131,21 @@ p{color:#ccc;font-size:.93rem;margin-bottom:12px;line-height:1.7}
 /* Challenge section */
 .nm-section{background:var(--nm-bg);border:2px solid rgba(167,139,250,.4);border-radius:14px;padding:22px;margin-bottom:16px}
 @media(max-width:600px){.results-domains{grid-template-columns:1fr}.showdown-pair{grid-template-columns:1fr}.error-breakdown{grid-template-columns:1fr}.welcome-grid{grid-template-columns:1fr 1fr}}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes breathe{0%,100%{opacity:.5}50%{opacity:.8}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 8px rgba(6,182,212,.2)}50%{box-shadow:0 0 16px rgba(6,182,212,.35)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+input:focus,textarea:focus{border-color:#06b6d4!important;outline:none;box-shadow:0 0 0 3px rgba(6,182,212,.1)}
+select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235a5a6e'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+input[type="range"]{-webkit-appearance:none;height:6px;border-radius:3px;background:#1c1c2c;outline:none}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#06b6d4;cursor:pointer;box-shadow:0 0 6px rgba(6,182,212,.3)}
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 </head>
 <body>
@@ -367,7 +382,7 @@ var relAns=new Array(REL.length).fill(undefined);
 
 function renderMethodScreen(){
   var h='<div class="screen fade-in"><div class="section-label">Session 3: Relationship-First Method (10 min)</div><h2>Name the Relationship Before You Choose</h2>';
-  h+='<div class="card card-accent" style="font-size:.9rem;color:#ccc;line-height:1.8">'+
+  h+='<div class="card card-accent" style="font-size:.9rem;color:#9898a8;line-height:1.8">'+
   '<strong style="color:var(--expr)">Step 1:</strong> Read the sentence BEFORE the blank. What idea does it express?<br>'+
   '<strong style="color:var(--expr)">Step 2:</strong> Read the sentence AFTER the blank. What idea does it express?<br>'+
   '<strong style="color:var(--expr)">Step 3:</strong> Name the relationship: addition? contrast? cause/effect? example?<br>'+
@@ -627,8 +642,8 @@ var chbAns=new Array(CHB.length).fill(undefined);var chbStarted=false;var chbTim
 function renderChallengeScreen(){
   var h='<div class="screen fade-in"><div class="nm-section"><div class="nm-badge">⭐ Challenge Mode</div>'+
   '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;margin-bottom:6px">Subtle Contrasts & Speed Round</h2>'+
-  '<p style="font-size:.9rem;color:#ccc;margin-bottom:4px"><strong>Part A:</strong> 4 questions where "however," "nevertheless," "conversely," and "in contrast" are ALL options but only one is precise.</p>'+
-  '<p style="font-size:.9rem;color:#ccc;margin-bottom:16px"><strong>Part B:</strong> 6 rapid-fire transitions. Beat the 5-minute clock.</p></div>';
+  '<p style="font-size:.9rem;color:#9898a8;margin-bottom:4px"><strong>Part A:</strong> 4 questions where "however," "nevertheless," "conversely," and "in contrast" are ALL options but only one is precise.</p>'+
+  '<p style="font-size:.9rem;color:#9898a8;margin-bottom:16px"><strong>Part B:</strong> 6 rapid-fire transitions. Beat the 5-minute clock.</p></div>';
   /* Part A */
   h+='<h3 style="color:var(--nm);margin-bottom:10px">Part A: Subtle Contrast Precision</h3>';
   for(var i=0;i<CHA.length;i++)h+=renderQ(CHA[i],i,chaAns[i],'cha','var(--nm)','Challenge — Contrast Precision');
@@ -673,7 +688,7 @@ function renderCompleteScreen(){
   h+='<p style="max-width:500px;margin:0 auto 32px;font-size:1rem">You\'ve mastered the transition system — six relationships, one method, and the precision to distinguish even the trickiest contrast words.</p>';
   /* Summary */
   h+='<div style="text-align:left;max-width:600px;margin:0 auto"><div class="section-label">Key Takeaways</div>';
-  h+='<div class="card card-accent"><ol style="padding-left:18px;font-size:.93rem;color:#ccc;line-height:2">';
+  h+='<div class="card card-accent"><ol style="padding-left:18px;font-size:.93rem;color:#9898a8;line-height:2">';
   h+='<li>Every transition expresses one of six relationships: <strong>addition, contrast, cause/effect, example, sequence, summary</strong>.</li>';
   h+='<li>Always identify the <strong>relationship FIRST</strong>, then match the transition.</li>';
   h+='<li><strong>"However"</strong> = unexpected contrast. <strong>"Therefore"</strong> = logical result. <strong>"For example"</strong> = specific instance. <strong>"Moreover"</strong> = additional similar point.</li>';

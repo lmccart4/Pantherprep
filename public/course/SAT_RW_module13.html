@@ -6,14 +6,20 @@
 <title>Module 13: Rhetorical Synthesis & Expression — PantherPrep SAT R&W</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #121212; color: #f0f0f0; font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+body { background: #08080c; color: #eaeaef; font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 button { font-family: inherit; }
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(168,85,247,.05),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(16,185,129,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to SAT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#eaeaef'" onmouseout="this.style.color='#5a5a6e'">← Back to SAT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const { useState, useEffect, useCallback, useRef } = React;
@@ -24,12 +30,12 @@ const BLUE = "#3b82f6";
 const AMBER = "#f59e0b";
 const RED = "#ef4444";
 const CYAN = "#06b6d4";
-const DARK = "#121212";
-const CARD = "#1a1a1a";
-const BORDER = "#2a2a2a";
-const MUTED = "#64748b";
-const TEXT = "#f0f0f0";
-const SUB = "#999999";
+const DARK = "#08080c";
+const CARD = "#0f0f16";
+const BORDER = "#1c1c2c";
+const MUTED = "#5a5a6e";
+const TEXT = "#eaeaef";
+const SUB = "#9898a8";
 const btn = (bg, color, extra) => ({
   padding: "12px 28px",
   borderRadius: 10,
@@ -868,7 +874,7 @@ function ChallengeMode({ onComplete }) {
     var medal = accPct >= 83 && avgTime <= 60 ? "gold" : accPct >= 67 && avgTime <= 75 ? "silver" : accPct >= 50 ? "bronze" : "none";
     var medalEmoji = medal === "gold" ? "🥇" : medal === "silver" ? "🥈" : medal === "bronze" ? "🥉" : "🔄";
     var medalLabel = medal === "gold" ? "Gold — Speed Demon!" : medal === "silver" ? "Silver — Strong Work!" : medal === "bronze" ? "Bronze — Solid Effort" : "Keep Practicing!";
-    var medalColor = medal === "gold" ? "#fbbf24" : medal === "silver" ? "#999999" : medal === "bronze" ? "#d97706" : MUTED;
+    var medalColor = medal === "gold" ? "#fbbf24" : medal === "silver" ? "#9898a8" : medal === "bronze" ? "#d97706" : MUTED;
     return React.createElement("div", { style: { maxWidth: 600, margin: "0 auto", padding: "60px 20px", textAlign: "center" } },
       React.createElement("div", { style: { fontSize: 64, marginBottom: 12 } }, medalEmoji),
       React.createElement("h2", { style: { color: medalColor, fontSize: 28, fontWeight: 800, marginBottom: 8 } }, medalLabel),
@@ -972,7 +978,7 @@ function ModuleComplete({ quizScore, quizTotal, quizResults, onChallenge, challe
   return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "0 24px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 64, marginBottom: 16 } }, "🎉"), /* @__PURE__ */ React.createElement("h1", { style: { color: PURPLE, fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 800, marginBottom: 8 } }, "Module 13 Complete"), /* @__PURE__ */ React.createElement("p", { style: { color: SUB, fontSize: 16, marginBottom: 32, maxWidth: 480 } }, "You've mastered rhetorical synthesis, transitions, and effective expression."), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: 32, marginBottom: 32, minWidth: 280 } }, /* @__PURE__ */ React.createElement("div", { style: { color: PURPLE, fontSize: 56, fontWeight: 900 } }, quizScore, "/", quizTotal), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 14, marginTop: 4 } }, "Practice Quiz Score (", pct, "%)"), /* @__PURE__ */ React.createElement("div", { style: { height: 8, background: BORDER, borderRadius: 4, marginTop: 16, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${pct}%`, background: `linear-gradient(90deg,${PURPLE},${CYAN})`, borderRadius: 4 } }))), React.createElement(ErrorBreakdown, { results: quizResults, accentColor: PURPLE, tips: M13_ERROR_TIPS }), /* @__PURE__ */ React.createElement("div", { style: { background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: 20, maxWidth: 480, marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { color: TEXT, fontWeight: 700, fontSize: 15, marginBottom: 8 } }, "Key Takeaways"), /* @__PURE__ */ React.createElement("div", { style: { color: SUB, fontSize: 13, lineHeight: 1.7, textAlign: "left" } }, pct >= 80 ? "Strong writing skills! You're matching synthesis to purpose, choosing precise transitions, and evaluating effective expression. Module 14 covers Test Strategy & Pacing — the meta-skills that turn knowledge into a high score." : pct >= 60 ? "Good progress. For synthesis, always read the GOAL first — it tells you which notes matter. For transitions, cover the word and identify the relationship before looking at choices. For expression, match the answer to the EXACT stated objective." : "Focus on the core strategies. Synthesis: goal first, then relevant notes. Transitions: identify the logical relationship (addition, contrast, cause/effect, example). Expression: the goal word tells you everything — emphasize, qualify, compare, etc.")),
   challengeResult && React.createElement("div", { style: { background: CARD, border: "1px solid " + BORDER, borderRadius: 16, padding: 16, maxWidth: 480, marginBottom: 16 } },
     React.createElement("div", { style: { fontSize: 28, marginBottom: 4 } }, challengeResult === "gold" ? "🥇" : challengeResult === "silver" ? "🥈" : challengeResult === "bronze" ? "🥉" : "🔄"),
-    React.createElement("div", { style: { color: challengeResult === "gold" ? "#fbbf24" : challengeResult === "silver" ? "#999999" : challengeResult === "bronze" ? "#d97706" : MUTED, fontWeight: 700, fontSize: 14 } }, challengeResult === "gold" ? "Challenge Gold!" : challengeResult === "silver" ? "Challenge Silver" : challengeResult === "bronze" ? "Challenge Bronze" : "Challenge attempted")
+    React.createElement("div", { style: { color: challengeResult === "gold" ? "#fbbf24" : challengeResult === "silver" ? "#9898a8" : challengeResult === "bronze" ? "#d97706" : MUTED, fontWeight: 700, fontSize: 14 } }, challengeResult === "gold" ? "Challenge Gold!" : challengeResult === "silver" ? "Challenge Silver" : challengeResult === "bronze" ? "Challenge Bronze" : "Challenge attempted")
   ),
   React.createElement("button", { onClick: onChallenge, style: btn("linear-gradient(135deg,#fbbf24," + RED + ")", DARK, { fontSize: 14, padding: "10px 24px", marginBottom: 24 }) }, challengeResult ? "Retry Challenge Mode 🏆" : "Challenge Mode 🏆"),
   React.createElement(Homework, null), /* @__PURE__ */ React.createElement("div", { style: { color: MUTED, fontSize: 13 } }, "Next up: Module 14 — Test Strategy & Pacing"), React.createElement(NavLinks, null));
@@ -992,7 +998,7 @@ function App() {
       setFade(true);
     }, 350);
   }, []);
-  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" } }, /* @__PURE__ */ React.createElement("div", { style: {
     position: "fixed",
     inset: 0,
     pointerEvents: "none",

@@ -4,19 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Module 3: The Grammar Playbook, Part II — PSAT/NMSQT R&W — PantherPrep</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#0e0e14;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#64748b;--sub:#999999;--surface:#1a1a1a;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.1);--info:#34d399;--conv:#fbbf24;--conv-bg:rgba(251,191,36,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.1);--expr:#f472b6}
+:root{--ink:#eaeaef;--paper:#08080c;--accent:#06b6d4;--accent-light:rgba(6,182,212,.07);--accent-glow:rgba(6,182,212,.15);--border:#1c1c2c;--border-hover:#2a2a3e;--muted:#5a5a6e;--sub:#5a5a6e999;--surface:#0f0f16;--surface-alt:#141420;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.07);--info:#34d399;--conv:#fbbf24;--conv-bg:rgba(251,191,36,.07);--correct:#22c55e;--correct-bg:rgba(34,197,94,.07);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.07);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.07);--expr:#f472b6;--glass:rgba(15,15,22,.75);--glass-border:rgba(255,255,255,.05)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Manrope',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 input[type="range"]{width:100%}
 button{font-family:inherit}
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Source Sans 3,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to PSAT/NMSQT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Manrope,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#eaeaef'" onmouseout="this.style.color='#64748b'">← Back to PSAT/NMSQT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const {useState,useEffect,useCallback,useRef,useMemo}=React;
@@ -24,10 +30,10 @@ const e=React.createElement;
 
 // ══════════ DESIGN TOKENS ══════════
 const C={
-  paper:"#0e0e14",surface:"#1a1a1a",border:"#2a2a2a",ink:"#f0f0f0",sub:"#999999",muted:"#64748b",
-  craft:"#60a5fa",craftBg:"rgba(96,165,250,.1)",accent:"#0891b2",accentLight:"rgba(8,145,178,.12)",
-  correct:"#22c55e",correctBg:"rgba(34,197,94,.12)",wrong:"#ef4444",wrongBg:"rgba(239,68,68,.12)",
-  conv:"#fbbf24",convBg:"rgba(251,191,36,.1)",nm:"#a78bfa",nmBg:"rgba(167,139,250,.1)",
+  paper:"#08080c",surface:"#0f0f16",border:"#1c1c2c",ink:"#eaeaef",sub:"#999999",muted:"#64748b",
+  craft:"#60a5fa",craftBg:"rgba(96,165,250,.07)",accent:"#06b6d4",accentLight:"rgba(6,182,212,.07)",
+  correct:"#22c55e",correctBg:"rgba(34,197,94,.07)",wrong:"#ef4444",wrongBg:"rgba(239,68,68,.07)",
+  conv:"#fbbf24",convBg:"rgba(251,191,36,.07)",nm:"#a78bfa",nmBg:"rgba(167,139,250,.07)",
   info:"#34d399",expr:"#f472b6",rw:"#c084fc"
 };
 const btn=(bg,color,extra)=>({padding:"12px 28px",borderRadius:10,border:"none",background:bg,color,fontWeight:700,fontSize:15,cursor:"pointer",transition:"transform .12s, filter .12s",...extra});
@@ -59,23 +65,23 @@ const WARMUP=[
 
 // --- SUBJECT-VERB SURGERY ---
 const SV_DATA=[
-  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">analysis</b> <i style="color:#64748b">of the experimental results from three independent laboratories</i>',opts:['suggest','suggests'],correct:1,
+  {before:'The <b style="background:rgba(96,165,250,.2);padding:1px 4px;border-radius:3px">analysis</b> <i style="color:#64748b">of the experimental results from three independent laboratories</i>',opts:['suggest','suggests'],correct:1,
    explain:'Subject = "analysis" (singular). "Results" and "laboratories" are inside prepositional phrases.'},
-  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">paintings</b> <i style="color:#64748b">hanging in the west gallery of the modern art museum</i>',opts:['was restored','were restored'],correct:1,
+  {before:'The <b style="background:rgba(96,165,250,.2);padding:1px 4px;border-radius:3px">paintings</b> <i style="color:#64748b">hanging in the west gallery of the modern art museum</i>',opts:['was restored','were restored'],correct:1,
    explain:'Subject = "paintings" (plural). "Gallery" and "museum" are distractors inside prepositional phrases.'},
-  {before:'Each <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">student</b> <i style="color:#64748b">in the advanced placement classes offered by the district</i>',opts:['are required','is required'],correct:1,
+  {before:'Each <b style="background:rgba(96,165,250,.2);padding:1px 4px;border-radius:3px">student</b> <i style="color:#64748b">in the advanced placement classes offered by the district</i>',opts:['are required','is required'],correct:1,
    explain:'"Each" is always singular. "Students," "classes," and "district" are all distractors.'},
-  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">collection</b> <i style="color:#64748b">of ancient coins, manuscripts, and ceramic artifacts discovered during the excavation</i>',opts:['have attracted','has attracted'],correct:1,
+  {before:'The <b style="background:rgba(96,165,250,.2);padding:1px 4px;border-radius:3px">collection</b> <i style="color:#64748b">of ancient coins, manuscripts, and ceramic artifacts discovered during the excavation</i>',opts:['have attracted','has attracted'],correct:1,
    explain:'Subject = "collection" (singular). The list "coins, manuscripts, and ceramic artifacts" is inside the prepositional phrase.'},
-  {before:'Neither the <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">director</b> nor the <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">producers</b> <i style="color:#64748b">of the critically acclaimed documentary</i>',opts:['was available','were available'],correct:1,
+  {before:'Neither the <b style="background:rgba(96,165,250,.2);padding:1px 4px;border-radius:3px">director</b> nor the <b style="background:rgba(96,165,250,.2);padding:1px 4px;border-radius:3px">producers</b> <i style="color:#64748b">of the critically acclaimed documentary</i>',opts:['was available','were available'],correct:1,
    explain:'With "neither…nor," the verb agrees with the nearer subject: "producers" (plural) → "were."'},
-  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">series</b> <i style="color:#64748b">of lectures on quantum mechanics that Professor Walsh delivered last semester</i>',opts:['were recorded','was recorded'],correct:1,
+  {before:'The <b style="background:rgba(96,165,250,.2);padding:1px 4px;border-radius:3px">series</b> <i style="color:#64748b">of lectures on quantum mechanics that Professor Walsh delivered last semester</i>',opts:['were recorded','was recorded'],correct:1,
    explain:'"Series" is singular (even though it ends in -s). "Lectures" is inside a prepositional phrase.'},
-  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">data</b> <i style="color:#64748b">collected from the three-year longitudinal study of urban bird populations</i>',opts:['indicates','indicate'],correct:1,
+  {before:'The <b style="background:rgba(96,165,250,.2);padding:1px 4px;border-radius:3px">data</b> <i style="color:#64748b">collected from the three-year longitudinal study of urban bird populations</i>',opts:['indicates','indicate'],correct:1,
    explain:'In formal/academic English, "data" is plural (singular: "datum"). The PSAT follows this convention.'},
   {before:'Every one <i style="color:#64748b">of the proposals submitted by the engineering firms competing for the contract</i>',opts:['meet the requirements','meets the requirements'],correct:1,
    explain:'"Every one" is singular. "Proposals," "firms," and "contract" are all prepositional phrase distractors.'},
-  {before:'The <b style="background:rgba(96,165,250,.3);padding:1px 4px;border-radius:3px">committee</b> <i style="color:#64748b">responsible for reviewing applications from prospective members across all regional chapters</i>',opts:['have announced','has announced'],correct:1,
+  {before:'The <b style="background:rgba(96,165,250,.2);padding:1px 4px;border-radius:3px">committee</b> <i style="color:#64748b">responsible for reviewing applications from prospective members across all regional chapters</i>',opts:['have announced','has announced'],correct:1,
    explain:'Collective nouns like "committee" are singular when acting as a unit (which is almost always on the PSAT).'},
   {before:'A number <i style="color:#64748b">of recent studies conducted at universities in Europe and Asia</i>',opts:['has shown','have shown'],correct:1,
    explain:'"A number of" = plural (it means "several/many"). Contrast with "the number of" = singular.'}
@@ -266,7 +272,7 @@ function Callout({children,color,style:s}){
 }
 
 function QuizChoice({letter,text,onClick,disabled,state}){
-  let bg=C.paper,bdr=`2px solid ${C.border}`,tc="#ccc";
+  let bg=C.paper,bdr=`2px solid ${C.border}`,tc="#9898a8";
   if(state==="correct"){bg=C.correctBg;bdr=`2px solid ${C.correct}`;tc=C.correct;}
   else if(state==="wrong"){bg=C.wrongBg;bdr=`2px solid ${C.wrong}`;tc=C.wrong;}
   else if(state==="selected"){bg=C.convBg;bdr=`2px solid ${C.conv}`;tc=C.conv;}
@@ -331,7 +337,7 @@ function WarmupScreen({onComplete}){
   return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
     e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 1 • Retrieval Warm-Up (5 min)"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Boundaries Review from Module 2"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7}},"6 Boundaries questions to keep Module 2 skills sharp while we layer on new material."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:24,lineHeight:1.7}},"6 Boundaries questions to keep Module 2 skills sharp while we layer on new material."),
     WARMUP.map((q,qi)=>{
       const answered=answers[qi]!==null;
       return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1,transition:"all .3s"}},
@@ -374,36 +380,36 @@ function SVASession({onDone}){
   return e("div",null,
     e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 2 • Subject-Verb Surgery (12 min)"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Agreement Across the Distance"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:6,lineHeight:1.7}},"The PSAT's favorite trick is to put a long phrase between the subject and verb — often a prepositional phrase containing a noun of a different number. Your job: mentally cross out the distractor and connect the true subject to its verb."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:6,lineHeight:1.7}},"The PSAT's favorite trick is to put a long phrase between the subject and verb — often a prepositional phrase containing a noun of a different number. Your job: mentally cross out the distractor and connect the true subject to its verb."),
     // Rule cards
     e(Card,{accent:C.conv},
       e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:6}},"Subject-Verb Agreement"),
-      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},"The verb must match the ",e("strong",null,"subject")," in number — not the nearest noun."),
+      e("div",{style:{color:"#9898a8",fontSize:14,lineHeight:1.7}},"The verb must match the ",e("strong",null,"subject")," in number — not the nearest noun."),
       e("div",{style:{fontSize:13,color:C.muted,fontStyle:"italic",padding:"6px 10px",background:C.paper,borderRadius:6,marginTop:8,lineHeight:1.6}},
         e("span",{style:{color:C.wrong,textDecoration:"line-through"}},"The collection of rare manuscripts are valuable."),e("br",null),
         e("span",{style:{color:C.correct}},"The collection of rare manuscripts is valuable."),e("br",null),
         e("span",{style:{color:C.muted}},'Subject = "collection" (singular). "Manuscripts" is inside a prepositional phrase.'))),
     e(Card,{accent:C.conv},
       e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:6}},"Verb Tense Consistency"),
-      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},"Verbs should maintain a ",e("strong",null,"consistent tense"),' unless a time marker signals a shift ("previously," "now," "by next year").'),
+      e("div",{style:{color:"#9898a8",fontSize:14,lineHeight:1.7}},"Verbs should maintain a ",e("strong",null,"consistent tense"),' unless a time marker signals a shift ("previously," "now," "by next year").'),
       e("div",{style:{fontSize:13,color:C.muted,fontStyle:"italic",padding:"6px 10px",background:C.paper,borderRadius:6,marginTop:8,lineHeight:1.6}},
         e("span",{style:{color:C.wrong,textDecoration:"line-through"}},"The team analyzed the data and discovers a pattern."),e("br",null),
         e("span",{style:{color:C.correct}},"The team analyzed the data and discovered a pattern."))),
     e(Card,{accent:C.conv},
       e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:6}},"Modifiers Must Touch What They Modify"),
-      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},"A modifier (especially one that opens a sentence) must be ",e("strong",null,"immediately followed by the thing it describes"),"."),
+      e("div",{style:{color:"#9898a8",fontSize:14,lineHeight:1.7}},"A modifier (especially one that opens a sentence) must be ",e("strong",null,"immediately followed by the thing it describes"),"."),
       e("div",{style:{fontSize:13,color:C.muted,fontStyle:"italic",padding:"6px 10px",background:C.paper,borderRadius:6,marginTop:8,lineHeight:1.6}},
         e("span",{style:{color:C.wrong,textDecoration:"line-through"}},"Running through the data, an error was discovered by the analyst."),e("br",null),
         e("span",{style:{color:C.correct}},"Running through the data, the analyst discovered an error."))),
     e(Card,{accent:C.conv},
       e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:6}},"Parallel Structure"),
-      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},"Items in a list or comparison must share the ",e("strong",null,"same grammatical form"),"."),
+      e("div",{style:{color:"#9898a8",fontSize:14,lineHeight:1.7}},"Items in a list or comparison must share the ",e("strong",null,"same grammatical form"),"."),
       e("div",{style:{fontSize:13,color:C.muted,fontStyle:"italic",padding:"6px 10px",background:C.paper,borderRadius:6,marginTop:8,lineHeight:1.6}},
         e("span",{style:{color:C.wrong,textDecoration:"line-through"}},"The program teaches students to read critically, writing persuasively, and to speak confidently."),e("br",null),
         e("span",{style:{color:C.correct}},"The program teaches students to read critically, to write persuasively, and to speak confidently."))),
     // Practice
     e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",margin:"20px 0 10px"}},"Subject-Verb Surgery Practice"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"In each sentence below, the subject is highlighted in blue and the distractor is dimmed. Select the correct verb form."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:16,lineHeight:1.7}},"In each sentence below, the subject is highlighted in blue and the distractor is dimmed. Select the correct verb form."),
     SV_DATA.map((q,qi)=>{
       const answered=answers[qi]!==null;
       return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:16,marginBottom:10}},
@@ -414,7 +420,7 @@ function SVASession({onDone}){
             let st=null;
             if(answered&&oi===q.correct)st="correct";
             else if(answered&&answers[qi]===oi)st="wrong";
-            let bg=C.paper,bdr=`2px solid ${C.border}`,tc="#ccc";
+            let bg=C.paper,bdr=`2px solid ${C.border}`,tc="#9898a8";
             if(st==="correct"){bg=C.correctBg;bdr=`2px solid ${C.correct}`;tc=C.correct;}
             else if(st==="wrong"){bg=C.wrongBg;bdr=`2px solid ${C.wrong}`;tc=C.wrong;}
             return e("button",{key:oi,onClick:()=>pick(qi,oi),disabled:answered,style:{padding:"6px 14px",background:bg,border:bdr,borderRadius:8,cursor:answered?"default":"pointer",fontSize:14,color:tc,transition:"all .15s"}},o);
@@ -439,7 +445,7 @@ function BuilderSession({onDone}){
   return e("div",null,
     e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 2B • Conventions Builder (8 min)"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Build the Correct Sentence"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:20,lineHeight:1.7}},"Here you ",e("strong",null,"construct")," the correct sentence by choosing the right form for the blank. Read the context, then pick the best completion."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:20,lineHeight:1.7}},"Here you ",e("strong",null,"construct")," the correct sentence by choosing the right form for the blank. Read the context, then pick the best completion."),
     BUILDER.map((q,i)=>{
       const s=selected[i];const c=confirmed[i];
       const isCorrect=c&&q.correct.includes(s);
@@ -452,7 +458,7 @@ function BuilderSession({onDone}){
           q.left," ",e("strong",{style:{color:c?(isCorrect?C.correct:C.wrong):C.conv,borderBottom:`2px solid ${C.conv}`}},s!==null?q.opts[s]:"______")," ",q.right),
         e("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}},
           q.opts.map((o,oi)=>{
-            let bg=C.paper,border=`2px solid ${C.border}`,color="#ccc";
+            let bg=C.paper,border=`2px solid ${C.border}`,color="#9898a8";
             if(c){
               if(oi===q.best){bg=C.correctBg;border=`2px solid ${C.correct}`;color=C.correct;}
               else if(q.correct.includes(oi)){bg="rgba(34,197,94,.06)";border=`1px solid rgba(34,197,94,.4)`;color=C.correct;}
@@ -503,7 +509,7 @@ function ModifierMatch(){
 
   return e("div",null,
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.3rem",fontWeight:700,marginBottom:8}},"Fix the Modifier"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"Each sentence has a ",e("strong",null,"misplaced or dangling modifier"),". Click a sentence from the bank, then click the matching corrected version."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:16,lineHeight:1.7}},"Each sentence has a ",e("strong",null,"misplaced or dangling modifier"),". Click a sentence from the bank, then click the matching corrected version."),
     e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,padding:12,background:C.surface,border:`1px solid ${C.border}`,borderRadius:10,marginBottom:12,minHeight:48}},
       remaining.length>0?remaining.map(m=>e("div",{key:m.idx,onClick:()=>setDragIdx(m.idx),style:{display:"inline-block",padding:"6px 12px",background:dragIdx===m.idx?C.convBg:C.surface,border:`2px solid ${dragIdx===m.idx?C.conv:C.border}`,borderRadius:8,cursor:"pointer",fontSize:13,margin:3,transition:"all .15s",userSelect:"none"}},m.wrong)):
       e("span",{style:{fontSize:13,color:C.muted}},"All matched!")),
@@ -550,7 +556,7 @@ function ParallelSort(){
 
   return e("div",null,
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.3rem",fontWeight:700,marginBottom:8}},"Parallel or Not?"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"Click a sentence, then click the correct category to sort it."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:16,lineHeight:1.7}},"Click a sentence, then click the correct category to sort it."),
     e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,padding:12,background:C.surface,border:`1px solid ${C.border}`,borderRadius:10,marginBottom:12,minHeight:48}},
       remaining.length>0?remaining.map(p=>e("div",{key:p.text,onClick:()=>setSelected(p.text),style:{display:"inline-block",padding:"6px 12px",background:selected===p.text?C.convBg:C.surface,border:`2px solid ${selected===p.text?C.conv:C.border}`,borderRadius:8,cursor:"pointer",fontSize:13,margin:3,transition:"all .15s"}},p.text)):
       e("span",{style:{fontSize:13,color:C.muted}},"All sorted!")),
@@ -633,7 +639,7 @@ function TimedPractice({onComplete}){
     return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}},
       e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 4 • Timed Practice (20 min)"),
       e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8,textAlign:"center"}},"Boundaries + Form, Structure & Sense"),
-      e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7,textAlign:"center",maxWidth:560}},"14 PSAT-format questions ",e("strong",null,"interleaving both Conventions sub-types")," — exactly how they appear on the real test. You have ",e("strong",null,"80 seconds per question"),"."),
+      e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:24,lineHeight:1.7,textAlign:"center",maxWidth:560}},"14 PSAT-format questions ",e("strong",null,"interleaving both Conventions sub-types")," — exactly how they appear on the real test. You have ",e("strong",null,"80 seconds per question"),"."),
       e("button",{onClick:start,style:btn(`linear-gradient(135deg,${C.conv},#d97706)`,C.paper,{fontSize:17,padding:"14px 36px"})},"Start Timed Practice (18:40) →"));
   }
 
@@ -673,7 +679,7 @@ function RulesScreen({practiceScore,practiceTotal,onComplete}){
   return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
     e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 5 • Reference Sheet"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"The 10 Rules That Cover 90%"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:20,lineHeight:1.7}},"After two modules of Conventions, here's your cheat sheet. These 10 rules cover the vast majority of Standard English Conventions questions on the PSAT."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:20,lineHeight:1.7}},"After two modules of Conventions, here's your cheat sheet. These 10 rules cover the vast majority of Standard English Conventions questions on the PSAT."),
     e("div",{style:{background:C.surface,border:`2px solid ${C.conv}`,borderRadius:14,padding:22,marginBottom:24}},
       e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:12,color:C.conv}},"📋 Your Conventions Cheat Sheet"),
       RULES.map(r=>e("div",{key:r.num,style:{display:"flex",alignItems:"flex-start",gap:10,padding:10,background:C.paper,borderRadius:8,marginBottom:6,border:`1px solid ${C.border}`}},
@@ -712,14 +718,14 @@ function ChallengeMode({onComplete}){
     e("div",{style:{background:C.nmBg,border:`2px solid ${C.nm}66`,borderRadius:14,padding:22,marginBottom:24}},
       e("div",{style:{display:"inline-block",background:C.nm,color:"#fff",fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",padding:"4px 12px",borderRadius:12,marginBottom:12}},"⭐ Challenge Mode"),
       e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.4rem",fontWeight:700,marginBottom:12}},"Pronoun Case & Literary Passages"),
-      e("p",{style:{fontSize:14,color:"#ccc",lineHeight:1.7}},"The hardest Form, Structure & Sense questions use complex pronoun constructions and inverted or archaic syntax. These are the questions that separate 700+ from 650.")),
+      e("p",{style:{fontSize:14,color:"#9898a8",lineHeight:1.7}},"The hardest Form, Structure & Sense questions use complex pronoun constructions and inverted or archaic syntax. These are the questions that separate 700+ from 650.")),
     // Who vs Whom rules
     e(Card,{accent:C.nm},
       e("div",{style:{color:C.nm,fontWeight:700,fontSize:15,marginBottom:6}},"Who vs. Whom"),
-      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},e("code",{style:{background:C.nmBg,color:C.nm,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"Who")," = subject. ",e("code",{style:{background:C.nmBg,color:C.nm,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"Whom")," = object. Test: replace with he/she → who, or him/her → whom.")),
+      e("div",{style:{color:"#9898a8",fontSize:14,lineHeight:1.7}},e("code",{style:{background:C.nmBg,color:C.nm,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"Who")," = subject. ",e("code",{style:{background:C.nmBg,color:C.nm,padding:"1px 6px",borderRadius:4,fontFamily:"'JetBrains Mono',monospace",fontSize:13}},"Whom")," = object. Test: replace with he/she → who, or him/her → whom.")),
     e(Card,{accent:C.nm},
       e("div",{style:{color:C.nm,fontWeight:700,fontSize:15,marginBottom:6}},"Comparisons with Implied Verbs"),
-      e("div",{style:{color:"#ccc",fontSize:14,lineHeight:1.7}},'"She is taller than ',e("strong",null,"I"),' [am]." Complete the implied verb to test the case.')),
+      e("div",{style:{color:"#9898a8",fontSize:14,lineHeight:1.7}},'"She is taller than ',e("strong",null,"I"),' [am]." Complete the implied verb to test the case.')),
     !started?e("div",{style:{textAlign:"center",marginTop:16}},
       e("button",{onClick:start,style:btn(C.nm,"#fff")},"Start Challenge Sprint (8 min) →")):
     e("div",null,
@@ -778,7 +784,7 @@ function ModuleComplete({practiceScore,practiceTotal,challengeScore}){
         "Keep building! Review the 4 rule cards from this module daily. Practice identifying the true subject in long sentences, and watch for modifier placement. The 10 Rules sheet is your lifeline.")),
     e(Card,{accent:C.conv,style:{maxWidth:520,textAlign:"left",marginTop:8}},
       e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:8}},"Homework"),
-      e("div",{style:{color:"#ccc",fontSize:13,lineHeight:1.9}},
+      e("div",{style:{color:"#9898a8",fontSize:13,lineHeight:1.9}},
         e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"1. Subject-Verb Hunt")," — In any textbook or article, find 5 sentences where the subject and verb are separated by 5+ words. Identify the true subject and confirm agreement."),
         e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"2. Parallelism Repair")," — Write 3 sentences with intentional parallelism errors, then fix them. Share with a partner."),
         e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"3. Review the 10 Rules")," — Read through the reference sheet once. Circle any rule you don't feel 100% confident on."),
@@ -803,7 +809,7 @@ function App(){
     setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},350);
   },[]);
 
-  return e("div",{style:{minHeight:"100vh",background:C.paper,color:C.ink,fontFamily:"'Source Sans 3',sans-serif"}},
+  return e("div",{style:{minHeight:"100vh",background:C.paper,color:C.ink,fontFamily:"'Manrope',sans-serif"}},
     e(ProgressBar,{current:screenIdx,total:totalScreens-1}),
     e("div",{style:{position:"fixed",inset:0,pointerEvents:"none",opacity:.02,backgroundImage:"linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",backgroundSize:"40px 40px"}}),
     e("div",{style:{position:"relative",zIndex:1,transition:"opacity .35s,transform .35s",opacity:fade?1:0,transform:fade?"translateY(0)":"translateY(8px)",paddingTop:12}},

@@ -4,21 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Module 2: The Grammar Playbook, Part I — PSAT/NMSQT Reading & Writing — PantherPrep</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#121212;color:#f0f0f0;font-family:'Source Sans 3',sans-serif}
+body{background:#08080c;color:#eaeaef;font-family:'Manrope',sans-serif}
 button{font-family:inherit}
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Source Sans 3,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to PSAT/NMSQT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Manrope,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#eaeaef'" onmouseout="this.style.color='#64748b'">← Back to PSAT/NMSQT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const{useState,useEffect,useCallback,useRef}=React;const e=React.createElement;
-const C={paper:'#121212',surface:'#1a1a1a',border:'#2a2a2a',ink:'#f0f0f0',muted:'#999',sub:'#ccc',accent:'#0891b2',conv:'#fbbf24',convBg:'rgba(251,191,36,.1)',craft:'#60a5fa',info:'#34d399',expr:'#f472b6',correct:'#22c55e',correctBg:'rgba(34,197,94,.12)',wrong:'#ef4444',wrongBg:'rgba(239,68,68,.12)',nm:'#a78bfa',nmBg:'rgba(167,139,250,.1)'};
+const C={paper:'#08080c',surface:'#0f0f16',border:'#1c1c2c',ink:'#eaeaef',muted:'#5a5a6e',sub:'#9898a8',accent:'#06b6d4',conv:'#fbbf24',convBg:'rgba(251,191,36,.07)',craft:'#60a5fa',info:'#34d399',expr:'#f472b6',correct:'#22c55e',correctBg:'rgba(34,197,94,.07)',wrong:'#ef4444',wrongBg:'rgba(239,68,68,.07)',nm:'#a78bfa',nmBg:'rgba(167,139,250,.07)'};
 const F={serif:"'Cormorant Garamond',serif",mono:"'JetBrains Mono',monospace"};
 const btn=(bg,c,x)=>({padding:'10px 24px',borderRadius:8,border:'none',background:bg,color:c,fontWeight:600,fontSize:'.9rem',cursor:'pointer',transition:'all .15s',fontFamily:'inherit',...x});
 const crd=(x)=>({background:C.surface,border:'1px solid '+C.border,borderRadius:12,padding:'18px 20px',marginBottom:12,...x});
@@ -108,7 +114,7 @@ q.domain&&e('div',{style:{fontSize:'.68rem',fontWeight:700,letterSpacing:1.5,tex
 e('div',{style:psg},q.passage),
 e('div',{style:{fontSize:'.93rem',marginBottom:12,color:'#ddd',lineHeight:1.7}},q.stem||'Which choice completes the text so that it conforms to the conventions of Standard English?'),
 e('div',{style:{display:'flex',flexDirection:'column',gap:6}},q.choices.map(function(ch,ci){
-var bg=C.paper,bc=C.border,tc='#ccc';
+var bg=C.paper,bc=C.border,tc='#9898a8';
 if(answered){if(ci===q.correct){bg=C.correctBg;bc=C.correct;tc=C.correct;}else if(userAns===ci){bg=C.wrongBg;bc=C.wrong;tc=C.wrong;}}
 return e('button',{key:ci,onClick:function(){if(!answered)onAns(ci);},disabled:answered,style:{display:'flex',alignItems:'flex-start',gap:10,padding:'10px 14px',background:bg,border:'2px solid '+bc,borderRadius:8,cursor:answered?'default':'pointer',fontSize:'.88rem',textAlign:'left',width:'100%',transition:'all .15s'}},
 e('span',{style:{fontWeight:700,color:answered?(ci===q.correct?C.correct:userAns===ci?C.wrong:C.muted):C.muted,minWidth:20,flexShrink:0}},'ABCD'[ci]),
@@ -124,14 +130,14 @@ e('div',{style:{fontSize:'.72rem',fontWeight:700,textTransform:'uppercase',lette
 items.map(function(t,i){return e('div',{key:i,onClick:function(){setRev(function(p){var n={};for(var k in p)n[k]=p[k];n[i]=true;return n;});},
 style:{background:C.paper,border:'1px solid '+C.border,borderRadius:8,padding:'10px 12px',marginBottom:6,cursor:'pointer'}},
 e('div',{style:{fontSize:'.85rem',color:'#ddd',fontFamily:F.serif,lineHeight:1.6}},t.left,' ',e('span',{style:{color:C.conv,fontWeight:900,fontSize:'1.1rem'}},mark),' ',t.right),
-rev[i]?e('div',{style:{fontSize:'.78rem',fontWeight:600,marginTop:6,padding:'4px 8px',borderRadius:4,background:t.ok?'rgba(34,197,94,.12)':'rgba(239,68,68,.12)',color:t.ok?C.correct:C.wrong}},t.reason)
+rev[i]?e('div',{style:{fontSize:'.78rem',fontWeight:600,marginTop:6,padding:'4px 8px',borderRadius:4,background:t.ok?'rgba(34,197,94,.07)':'rgba(239,68,68,.07)',color:t.ok?C.correct:C.wrong}},t.reason)
 :e('div',{style:{fontSize:'.72rem',color:C.muted,marginTop:4}},'Tap to check'));}));}
 
 function ClauseChecker(){var s=useState({});var a=s[0],setA=s[1];
 return e('div',{style:{padding:'12px 0'}},
 e('div',{style:{fontSize:'.72rem',fontWeight:700,textTransform:'uppercase',letterSpacing:1,color:C.conv,marginBottom:8}},'\u26a1 Quick Check: Independent or Dependent?'),
 CLAUSE_ITEMS.map(function(item,i){var done=a[i]!==undefined;var ok=done&&a[i]===item.ic;
-return e('div',{key:i,style:{display:'flex',alignItems:'center',gap:8,marginBottom:6,padding:'6px 10px',background:done?(ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'):'transparent',borderRadius:6}},
+return e('div',{key:i,style:{display:'flex',alignItems:'center',gap:8,marginBottom:6,padding:'6px 10px',background:done?(ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.07)'):'transparent',borderRadius:6}},
 e('span',{style:{flex:1,fontSize:'.85rem',color:'#ddd',fontFamily:F.serif}},item.text),
 e('button',{onClick:function(){if(!done)setA(function(p){var n={};for(var k in p)n[k]=p[k];n[i]=true;return n;});},disabled:done,
 style:{padding:'3px 8px',borderRadius:5,border:'1px solid '+(done&&a[i]===true?(ok?C.correct:C.wrong):C.border),background:'transparent',color:done&&a[i]===true?(ok?C.correct:C.wrong):C.muted,fontSize:'.72rem',fontWeight:600,cursor:done?'default':'pointer'}},'Independent'),
@@ -405,7 +411,7 @@ var s5=useState(null),cS=s5[0],setCS=s5[1];
 var s6=useState(8),cT=s6[0],setCT=s6[1];
 var go=useCallback(function(to){setFade(false);setTimeout(function(){setScreen(to);window.scrollTo(0,0);setFade(true);},350);},[]);
 var showDT=screen==='practice'||screen==='challenge';
-return e('div',{style:{minHeight:'100vh',background:C.paper,color:C.ink,fontFamily:"'Source Sans 3',sans-serif"}},
+return e('div',{style:{minHeight:'100vh',background:C.paper,color:C.ink,fontFamily:"'Manrope',sans-serif"}},
 e('div',{style:{height:4,background:'linear-gradient(90deg,'+C.craft+' 0%,'+C.craft+' 28%,'+C.info+' 28%,'+C.info+' 54%,'+C.conv+' 54%,'+C.conv+' 80%,'+C.expr+' 80%)',position:'fixed',top:0,left:0,right:0,zIndex:100}}),
 e(FloatingDT,{show:showDT}),
 e('div',{style:{position:'relative',zIndex:1,transition:'opacity .35s,transform .35s',opacity:fade?1:0,transform:fade?'translateY(0)':'translateY(8px)'}},

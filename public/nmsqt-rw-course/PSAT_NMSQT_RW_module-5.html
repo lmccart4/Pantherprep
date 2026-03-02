@@ -4,23 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Module 5: What's the Point? — PSAT/NMSQT Reading & Writing — PantherPrep</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#121212;color:#f0f0f0;font-family:'Source Sans 3',sans-serif;line-height:1.65}
+body{background:#08080c;color:#eaeaef;font-family:'Manrope',sans-serif;line-height:1.65}
 input[type="range"]{width:100%}
 button{font-family:inherit}
-a{color:#0891b2;text-decoration:none}
+a{color:#06b6d4;text-decoration:none}
 a:hover{text-decoration:underline}
 ::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:#1a1a1a}
+::-webkit-scrollbar-track{background:#0f0f16}
 ::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Source Sans 3,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to PSAT/NMSQT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Manrope,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#eaeaef'" onmouseout="this.style.color='#64748b'">← Back to PSAT/NMSQT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const{useState,useEffect,useCallback,useRef,useMemo}=React;
@@ -30,16 +36,16 @@ const e=React.createElement;
 // DESIGN TOKENS
 // ══════════════════════════════════════════
 const T={
-  paper:'#121212',surface:'#1a1a1a',card:'#1e1e1e',border:'#2a2a2a',
-  ink:'#f0f0f0',sub:'#ccc',muted:'#999',dim:'#666',
-  accent:'#0891b2',accentBg:'rgba(8,145,178,.12)',
-  info:'#34d399',infoBg:'rgba(52,211,153,.1)',
-  craft:'#60a5fa',craftBg:'rgba(96,165,250,.1)',
-  conv:'#fbbf24',convBg:'rgba(251,191,36,.1)',
+  paper:'#08080c',surface:'#0f0f16',card:'#141420',border:'#1c1c2c',
+  ink:'#eaeaef',sub:'#9898a8',muted:'#5a5a6e',dim:'#5a5a6e',
+  accent:'#06b6d4',accentBg:'rgba(6,182,212,.07)',
+  info:'#34d399',infoBg:'rgba(52,211,153,.07)',
+  craft:'#60a5fa',craftBg:'rgba(96,165,250,.07)',
+  conv:'#fbbf24',convBg:'rgba(251,191,36,.07)',
   expr:'#f472b6',
-  correct:'#22c55e',correctBg:'rgba(34,197,94,.12)',
-  wrong:'#ef4444',wrongBg:'rgba(239,68,68,.12)',
-  nm:'#a78bfa',nmBg:'rgba(167,139,250,.1)',
+  correct:'#22c55e',correctBg:'rgba(34,197,94,.07)',
+  wrong:'#ef4444',wrongBg:'rgba(239,68,68,.07)',
+  nm:'#a78bfa',nmBg:'rgba(167,139,250,.07)',
 };
 
 // ══════════════════════════════════════════
@@ -316,7 +322,7 @@ function QuizQ({q,index,selected,confirmed,onSelect,onConfirm,tagLabel,tagColor,
       q.choices.map((c,ci)=>{
         const isSel=selected===ci;
         const isCorr=ci===q.correct;
-        let bg=T.paper,bdr=`2px solid ${T.border}`,tc='#ccc';
+        let bg=T.paper,bdr=`2px solid ${T.border}`,tc='#9898a8';
         if(confirmed&&isCorr){bg=T.correctBg;bdr=`2px solid ${T.correct}`;tc=T.correct;}
         else if(confirmed&&isSel&&!isCorr){bg=T.wrongBg;bdr=`2px solid ${T.wrong}`;tc=T.wrong;}
         else if(isSel&&!confirmed){bg=T.infoBg;bdr=`2px solid ${T.info}`;tc=T.info;}
@@ -701,7 +707,7 @@ function InferenceLab({onComplete}){
         e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
           q.choices.map((c,ci)=>{
             const isSel=sel===ci;const isCorr=ci===q.correct;
-            let bg=T.paper,bdr=`2px solid ${T.border}`,tc='#ccc';
+            let bg=T.paper,bdr=`2px solid ${T.border}`,tc='#9898a8';
             if(conf&&isCorr){bg=T.correctBg;bdr=`2px solid ${T.correct}`;tc=T.correct;}
             else if(conf&&isSel&&!isCorr){bg=T.wrongBg;bdr=`2px solid ${T.wrong}`;tc=T.wrong;}
             else if(isSel&&!conf){bg=T.infoBg;bdr=`2px solid ${T.info}`;tc=T.info;}
@@ -1022,7 +1028,7 @@ function App(){
     background:`linear-gradient(90deg,${T.craft} 0%,${T.craft} 28%,${T.info} 28%,${T.info} 54%,${T.conv} 54%,${T.conv} 80%,${T.expr} 80%)`,
     position:'fixed',top:0,left:0,right:0,zIndex:100}});
 
-  return e('div',{style:{minHeight:'100vh',background:T.paper,color:T.ink,fontFamily:"'Source Sans 3',sans-serif"}},
+  return e('div',{style:{minHeight:'100vh',background:T.paper,color:T.ink,fontFamily:"'Manrope',sans-serif"}},
     stripe,
     e('div',{style:{position:'relative',zIndex:1,transition:'opacity .3s,transform .3s',
       opacity:fade?1:0,transform:fade?'translateY(0)':'translateY(8px)'}},

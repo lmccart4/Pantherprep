@@ -4,19 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Module 4: Words Are Weapons — PSAT/NMSQT R&W — PantherPrep</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#0e0e14;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#64748b;--sub:#999999;--surface:#1a1a1a;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.1);--info:#34d399;--conv:#fbbf24;--conv-bg:rgba(251,191,36,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.1);--expr:#f472b6}
+:root{--ink:#eaeaef;--paper:#08080c;--accent:#06b6d4;--accent-light:rgba(6,182,212,.07);--accent-glow:rgba(6,182,212,.15);--border:#1c1c2c;--border-hover:#2a2a3e;--muted:#5a5a6e;--sub:#5a5a6e999;--surface:#0f0f16;--surface-alt:#141420;--craft:#60a5fa;--craft-bg:rgba(96,165,250,.07);--info:#34d399;--conv:#fbbf24;--conv-bg:rgba(251,191,36,.07);--correct:#22c55e;--correct-bg:rgba(34,197,94,.07);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.07);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.07);--expr:#f472b6;--glass:rgba(15,15,22,.75);--glass-border:rgba(255,255,255,.05)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65}
+body{font-family:'Manrope',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;overflow-x:hidden}
 input[type="range"]{width:100%}
 button{font-family:inherit}
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Source Sans 3,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to PSAT/NMSQT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Manrope,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#eaeaef'" onmouseout="this.style.color='#64748b'">← Back to PSAT/NMSQT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const {useState,useEffect,useCallback,useRef,useMemo}=React;
@@ -24,10 +30,10 @@ const e=React.createElement;
 
 // ══════════ DESIGN TOKENS ══════════
 const C={
-  paper:"#0e0e14",surface:"#1a1a1a",border:"#2a2a2a",ink:"#f0f0f0",sub:"#999999",muted:"#64748b",
-  craft:"#60a5fa",craftBg:"rgba(96,165,250,.1)",accent:"#0891b2",accentLight:"rgba(8,145,178,.12)",
-  correct:"#22c55e",correctBg:"rgba(34,197,94,.12)",wrong:"#ef4444",wrongBg:"rgba(239,68,68,.12)",
-  conv:"#fbbf24",convBg:"rgba(251,191,36,.1)",nm:"#a78bfa",nmBg:"rgba(167,139,250,.1)",
+  paper:"#08080c",surface:"#0f0f16",border:"#1c1c2c",ink:"#eaeaef",sub:"#999999",muted:"#64748b",
+  craft:"#60a5fa",craftBg:"rgba(96,165,250,.07)",accent:"#06b6d4",accentLight:"rgba(6,182,212,.07)",
+  correct:"#22c55e",correctBg:"rgba(34,197,94,.07)",wrong:"#ef4444",wrongBg:"rgba(239,68,68,.07)",
+  conv:"#fbbf24",convBg:"rgba(251,191,36,.07)",nm:"#a78bfa",nmBg:"rgba(167,139,250,.07)",
   info:"#34d399",expr:"#f472b6"
 };
 const btn=(bg,color,extra)=>({padding:"12px 28px",borderRadius:10,border:"none",background:bg,color,fontWeight:700,fontSize:15,cursor:"pointer",transition:"transform .12s, filter .12s",...extra});
@@ -242,7 +248,7 @@ function Callout({children,color,style:s}){
 }
 
 function QuizChoice({letter,text,onClick,disabled,state}){
-  let bg=C.paper,bdr=`2px solid ${C.border}`,tc="#ccc";
+  let bg=C.paper,bdr=`2px solid ${C.border}`,tc="#9898a8";
   if(state==="correct"){bg=C.correctBg;bdr=`2px solid ${C.correct}`;tc=C.correct;}
   else if(state==="wrong"){bg=C.wrongBg;bdr=`2px solid ${C.wrong}`;tc=C.wrong;}
   else if(state==="selected"){bg=C.craftBg;bdr=`2px solid ${C.craft}`;tc=C.craft;}
@@ -302,7 +308,7 @@ function WarmupScreen({onComplete}){
   return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
     e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 1 • Retrieval Warm-Up (5 min)"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Conventions Review from Modules 2–3"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7}},"6 mixed Boundaries and Form/Structure/Sense questions — keeping your grammar skills sharp while we shift to vocabulary."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:24,lineHeight:1.7}},"6 mixed Boundaries and Form/Structure/Sense questions — keeping your grammar skills sharp while we shift to vocabulary."),
     WARMUP.map((q,qi)=>{
       const answered=answers[qi]!==null;
       return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1,transition:"all .3s"}},
@@ -341,13 +347,13 @@ function MorphologySession({onDone}){
   return e("div",null,
     e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 2 • Morphology Toolkit (12 min)"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Build Words from Parts"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:6,lineHeight:1.7}},"Most English academic vocabulary is built from Latin and Greek roots with prefixes and suffixes. If you know 20 roots and 10 common affixes, you can decode hundreds of unfamiliar words. This is the highest-yield vocabulary strategy for the PSAT."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:6,lineHeight:1.7}},"Most English academic vocabulary is built from Latin and Greek roots with prefixes and suffixes. If you know 20 roots and 10 common affixes, you can decode hundreds of unfamiliar words. This is the highest-yield vocabulary strategy for the PSAT."),
     e(Callout,{color:C.craft},
       e("strong",{style:{color:C.craft}},"Two question formats: "),"Most WIC questions ask you to \"complete the text with the most logical and precise word.\" A smaller number ask you to interpret a word's meaning in context. Both reward the same skill: reading context carefully and matching meaning precisely."),
     // Interactive: Inline root explorer
     e(RootExplorer,null),
     e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.1rem",margin:"20px 0 10px"}},"Word Assembly Challenge"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"For each prompt, select the correct prefix, root, and/or suffix to build the target word. Click pieces to add them; click placed pieces to remove them."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:16,lineHeight:1.7}},"For each prompt, select the correct prefix, root, and/or suffix to build the target word. Click pieces to add them; click placed pieces to remove them."),
     e(MorphBuilder,null),
     e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
       e("button",{onClick:onDone,style:btn(C.craft,C.paper)},"Continue to Connotation Spectrum →")));
@@ -406,11 +412,11 @@ function ConnotationSession({onDone}){
   return e("div",null,
     e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 3 • Connotation Spectrum (10 min)"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Why Synonyms Aren't Interchangeable"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:12,lineHeight:1.7}},"On the PSAT, all four answer choices often mean roughly the same thing — but they differ in connotation (the emotional shade) and precision (how exactly it fits). The right answer matches both meaning AND tone."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:12,lineHeight:1.7}},"On the PSAT, all four answer choices often mean roughly the same thing — but they differ in connotation (the emotional shade) and precision (how exactly it fits). The right answer matches both meaning AND tone."),
     // Interactive inline visual: denotation vs connotation demo
     e(ConnotationDemo,null),
     e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.1rem",margin:"20px 0 10px"}},"Spectrum Sorting"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"For each group, place the words in order from most ",e("strong",{style:{color:C.correct}},"positive")," to most ",e("strong",{style:{color:C.wrong}},"negative")," connotation. Click a word, then click the slot to place it."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:16,lineHeight:1.7}},"For each group, place the words in order from most ",e("strong",{style:{color:C.correct}},"positive")," to most ",e("strong",{style:{color:C.wrong}},"negative")," connotation. Click a word, then click the slot to place it."),
     e(SpectrumExercises,null),
     e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
       e("button",{onClick:onDone,style:btn(C.craft,C.paper)},"Continue to Prediction Method →")));
@@ -424,7 +430,7 @@ function ConnotationDemo(){
   return e("div",{style:{marginBottom:20}},
     e("div",{style:{color:C.conv,fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:10}},"Interactive: Denotation vs. Connotation"),
     e(Card,{accent:C.craft},
-      e("p",{style:{color:"#ccc",fontSize:14,marginBottom:8,lineHeight:1.6}},e("strong",{style:{color:C.craft}},"Denotation")," = dictionary definition. ",e("strong",{style:{color:C.craft}},"Connotation")," = emotional association."),
+      e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:8,lineHeight:1.6}},e("strong",{style:{color:C.craft}},"Denotation")," = dictionary definition. ",e("strong",{style:{color:C.craft}},"Connotation")," = emotional association."),
       e("p",{style:{color:C.sub,fontSize:13,marginBottom:12}},"All five words below mean \"careful with money\" — but watch how the feeling shifts:"),
       e("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}},
         words.map((w,i)=>e("button",{key:i,onClick:()=>setStep(i),style:{padding:"8px 16px",borderRadius:20,border:`2px solid ${step===i?colors[i]:C.border}`,background:step===i?`${colors[i]}18`:"transparent",color:step===i?colors[i]:C.sub,fontSize:14,fontWeight:600,cursor:"pointer",transition:"all .2s"}},w))),
@@ -487,11 +493,11 @@ function PredictionMethodSession({onDone}){
   return e("div",null,
     e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 4 • The Prediction Method (8 min)"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Predict Before You Peek"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:12,lineHeight:1.7}},"The single most effective strategy for Words in Context: ",e("strong",null,"read the passage, cover the answer choices, and predict your own word")," before looking at the options."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:12,lineHeight:1.7}},"The single most effective strategy for Words in Context: ",e("strong",null,"read the passage, cover the answer choices, and predict your own word")," before looking at the options."),
     // Interactive inline: animated step-through
     e(PredictionStepDemo,null),
     e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.1rem",margin:"20px 0 10px"}},"Prediction Practice"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:16,lineHeight:1.7}},"For each passage, type your predicted word BEFORE revealing the answer choices. Then compare your prediction."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:16,lineHeight:1.7}},"For each passage, type your predicted word BEFORE revealing the answer choices. Then compare your prediction."),
     e(PredictionExercises,null),
     e("div",{style:{display:"flex",justifyContent:"flex-end",marginTop:20}},
       e("button",{onClick:onDone,style:btn(`linear-gradient(135deg,${C.craft},${C.accent})`,C.paper)},"Start Timed Practice →")));
@@ -607,7 +613,7 @@ function TimedPractice({onComplete}){
         e("div",{style:{fontFamily:"'JetBrains Mono',monospace",fontSize:"3rem",fontWeight:700,color:scorePct>=75?C.correct:scorePct>=50?C.craft:C.wrong}},score,"/",PRACTICE.length),
         e("div",{style:{fontSize:14,color:C.muted,marginTop:4}},scorePct,"% correct · Words in Context Practice")),
       e(Card,{accent:C.craft},
-        e("div",{style:{fontSize:14,color:"#ccc",lineHeight:1.7}},
+        e("div",{style:{fontSize:14,color:"#9898a8",lineHeight:1.7}},
           score>=12?"Excellent! Your vocabulary instincts are sharp. Focus on the Challenge Mode for precision at the 700+ level.":
           score>=9?"Solid foundation. Review the prediction method for any questions where you were drawn to a wrong answer.":
           "Keep building! Add every missed word to your vocabulary journal and practice the prediction method before each question.")),
@@ -630,7 +636,7 @@ function TimedPractice({onComplete}){
     return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}},
       e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 5 • Timed Practice (20 min)"),
       e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8,textAlign:"center"}},"WIC Practice Set"),
-      e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7,textAlign:"center",maxWidth:560}},"14 PSAT-format Words in Context questions across difficulty levels. You have ",e("strong",null,"70 seconds per question")," — the real test pace. After each question, you'll see why every distractor is wrong."),
+      e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:24,lineHeight:1.7,textAlign:"center",maxWidth:560}},"14 PSAT-format Words in Context questions across difficulty levels. You have ",e("strong",null,"70 seconds per question")," — the real test pace. After each question, you'll see why every distractor is wrong."),
       e("button",{onClick:start,style:btn(`linear-gradient(135deg,${C.craft},${C.accent})`,C.paper,{fontSize:17,padding:"14px 36px"})},"Start Timed Practice (16:20) →"));
   }
 
@@ -690,7 +696,7 @@ function VocabJournal({onComplete}){
   return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
     e("div",{style:{color:C.craft,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 6 • Vocabulary Journal (5 min)"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Start Your Word Collection"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:20,lineHeight:1.7}},"For every word you miss or find unfamiliar during practice, create an entry below. This running journal becomes your personal study tool — review it before every module. Data saves in your browser."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:20,lineHeight:1.7}},"For every word you miss or find unfamiliar during practice, create an entry below. This running journal becomes your personal study tool — review it before every module. Data saves in your browser."),
     e("div",{style:{background:C.surface,border:`2px solid ${C.craft}`,borderRadius:14,padding:22,marginBottom:24}},
       e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:4,color:C.craft}},"📖 Vocabulary Journal"),
       e("div",{style:{fontSize:13,color:C.muted,marginBottom:14}},"One entry per unfamiliar or missed word"),
@@ -729,7 +735,7 @@ function ChallengeMode({onComplete}){
     e("div",{style:{background:C.nmBg,border:`2px solid ${C.nm}66`,borderRadius:14,padding:22,marginBottom:24}},
       e("div",{style:{display:"inline-block",background:C.nm,color:"#fff",fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",padding:"4px 12px",borderRadius:12,marginBottom:12}},"⭐ Challenge Mode"),
       e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.4rem",fontWeight:700,marginBottom:12}},"Secondary Meanings & Precision Discrimination"),
-      e("p",{style:{fontSize:14,color:"#ccc",lineHeight:1.7}},"The hardest WIC questions don't use obscure vocabulary — they use ",e("strong",null,"common words in uncommon ways"),". The trap is choosing the familiar meaning when the passage demands a secondary one.")),
+      e("p",{style:{fontSize:14,color:"#9898a8",lineHeight:1.7}},"The hardest WIC questions don't use obscure vocabulary — they use ",e("strong",null,"common words in uncommon ways"),". The trap is choosing the familiar meaning when the passage demands a secondary one.")),
     // Phase navigation
     e("div",{style:{display:"flex",gap:8,marginBottom:24}},
       e("button",{onClick:()=>setPhase(0),style:{...btnSm(phase===0?C.nm:"transparent",phase===0?C.paper:C.nm),border:`2px solid ${C.nm}`}},"Part A: Secondary Meanings"),
@@ -760,7 +766,7 @@ function ChallengeMode({onComplete}){
 
     phase===1&&e("div",null,
       e("h3",{style:{fontSize:15,color:C.nm,marginBottom:6}},"Part B: Precision Discrimination (4 questions)"),
-      e("p",{style:{fontSize:13,color:"#ccc",marginBottom:16}},"All four choices are legitimate synonyms. Only one is precisely right. This is what separates 720+ from 680."),
+      e("p",{style:{fontSize:13,color:"#9898a8",marginBottom:16}},"All four choices are legitimate synonyms. Only one is precisely right. This is what separates 720+ from 680."),
       CHALL_B.map((q,qi)=>{
         const answered=answersB[qi]!==null;
         return e("div",{key:qi,style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1}},
@@ -820,7 +826,7 @@ function ModuleComplete({practiceScore,practiceTotal,challengeA,challengeB}){
     // Homework
     e(Card,{accent:C.conv,style:{maxWidth:520,textAlign:"left",marginTop:8}},
       e("div",{style:{color:C.conv,fontWeight:700,fontSize:15,marginBottom:8}},"Homework"),
-      e("div",{style:{color:"#ccc",fontSize:13,lineHeight:1.9}},
+      e("div",{style:{color:"#9898a8",fontSize:13,lineHeight:1.9}},
         e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"1. Root-a-Day Practice")," — Pick one root from the table each day. Find 3 words that use it and write a sentence for each."),
         e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"2. Read One Challenging Article")," — Read an article from The Atlantic, Scientific American, or The Economist. Underline 5 unfamiliar words and add them to your vocabulary journal with context and morphology notes."),
         e("div",{style:{marginBottom:6}},e("strong",{style:{color:C.ink}},"3. Connotation Journal")," — Find 2 sets of near-synonyms in your reading and rank them by connotation (positive → negative)."),
@@ -846,7 +852,7 @@ function App(){
     setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},350);
   },[]);
 
-  return e("div",{style:{minHeight:"100vh",background:C.paper,color:C.ink,fontFamily:"'Source Sans 3',sans-serif"}},
+  return e("div",{style:{minHeight:"100vh",background:C.paper,color:C.ink,fontFamily:"'Manrope',sans-serif"}},
     e(ProgressBar,{current:screenIdx,total:totalScreens-1}),
     // Grid background
     e("div",{style:{position:"fixed",inset:0,pointerEvents:"none",opacity:.02,backgroundImage:"linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",backgroundSize:"40px 40px"}}),

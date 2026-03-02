@@ -4,25 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Module 2: Agreement & Verb Tense — SAT R&W — PantherPrep</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#121212;color:#f0f0f0;font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+body{background:#08080c;color:#eaeaef;font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 input[type="range"]{width:100%}
 button{font-family:inherit}
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(168,85,247,.05),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(16,185,129,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 </head>
 <body>
-<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#f0f0f0'" onmouseout="this.style.color='#64748b'">← Back to SAT R&amp;W Course</a>
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:.9rem;padding:8px 20px;margin-top:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" onmouseover="this.style.color='#eaeaef'" onmouseout="this.style.color='#5a5a6e'">← Back to SAT R&amp;W Course</a>
 <div id="root"></div>
 <script>
 const{useState,useEffect,useCallback,useRef,useMemo}=React;
 const e=React.createElement;
 
 // ══════════ DESIGN TOKENS ══════════
-const ACCENT="#10b981",ACCENT2="#f59e0b",BLUE="#3b82f6",RED="#ef4444",DARK="#121212",CARD="#1a1a1a",BORDER="#2a2a2a",MUTED="#64748b",TEXT="#f0f0f0",SUB="#999999",PURPLE="#a855f7";
+const ACCENT="#10b981",ACCENT2="#f59e0b",BLUE="#3b82f6",RED="#ef4444",DARK="#08080c",CARD="#0f0f16",BORDER="#1c1c2c",MUTED="#5a5a6e",TEXT="#eaeaef",SUB="#9898a8",PURPLE="#a855f7";
 const btn=(bg,color,extra)=>({padding:"12px 28px",borderRadius:10,border:"none",background:bg,color,fontWeight:700,fontSize:15,cursor:"pointer",transition:"transform .12s, filter .12s",...extra});
 const btnSm=(bg,color,extra)=>btn(bg,color,{padding:"8px 18px",fontSize:13,...extra});
 
@@ -353,7 +359,7 @@ function WarmupScreen({onComplete}){
   return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
     e("div",{style:{color:ACCENT,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 1 • Retrieval Warm-Up (5 min)"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Boundaries Review from Module 1"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:24,lineHeight:1.7}},"6 boundary questions — keeping your punctuation skills sharp while we shift to agreement and verb tense."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:24,lineHeight:1.7}},"6 boundary questions — keeping your punctuation skills sharp while we shift to agreement and verb tense."),
     WARMUP.map((q,qi)=>{
       const answered=answers[qi]!==null;
       return e("div",{key:qi,style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:12,padding:18,marginBottom:12,opacity:answered?.85:1,transition:"all .3s"}},
@@ -695,7 +701,7 @@ function ChallengeMode({onComplete}){
     e("div",{style:{background:`${PURPLE}15`,border:`2px solid ${PURPLE}44`,borderRadius:14,padding:22,marginBottom:24}},
       e("div",{style:{display:"inline-block",background:PURPLE,color:"#fff",fontSize:10,fontWeight:700,letterSpacing:2,textTransform:"uppercase",padding:"4px 12px",borderRadius:12,marginBottom:12}},"⭐ Challenge Mode"),
       e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.4rem",fontWeight:700,marginBottom:8}},"770+ Agreement Questions"),
-      e("p",{style:{fontSize:14,color:"#ccc",lineHeight:1.7}},"These questions layer multiple traps simultaneously — wrong subject + wrong number + wrong tense in a single sentence. They test whether you can apply the full decision framework under pressure.")),
+      e("p",{style:{fontSize:14,color:"#9898a8",lineHeight:1.7}},"These questions layer multiple traps simultaneously — wrong subject + wrong number + wrong tense in a single sentence. They test whether you can apply the full decision framework under pressure.")),
     e("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
       e("span",{style:{color:TEXT,fontWeight:800,fontSize:15}},"Question ",idx+1," of ",total),
       e(DiffBadge,{diff:q.diff})),
@@ -737,7 +743,7 @@ function ErrorJournal({onComplete,quizScore,quizTotal,quizAnswers,challengeScore
   return e("div",{style:{maxWidth:700,margin:"0 auto",padding:"48px 20px",minHeight:"100vh"}},
     e("div",{style:{color:ACCENT,fontSize:12,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}},"Session 7 • Error Pattern Journal"),
     e("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.5rem",fontWeight:700,marginBottom:8}},"Track Your Weak Spots"),
-    e("p",{style:{color:"#ccc",fontSize:14,marginBottom:20,lineHeight:1.7}},"For every question you missed, log the trap type and what fooled you. Over time, this journal reveals your personal error patterns — so you know exactly what to watch for on test day. Data saves in your browser."),
+    e("p",{style:{color:"#9898a8",fontSize:14,marginBottom:20,lineHeight:1.7}},"For every question you missed, log the trap type and what fooled you. Over time, this journal reveals your personal error patterns — so you know exactly what to watch for on test day. Data saves in your browser."),
     e("div",{style:{background:CARD,border:`2px solid ${ACCENT}`,borderRadius:14,padding:22,marginBottom:24}},
       e("h3",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.2rem",marginBottom:4,color:ACCENT}},"📋 Error Pattern Journal"),
       e("div",{style:{fontSize:13,color:MUTED,marginBottom:14}},"One entry per missed question or pattern you want to track"),
@@ -792,7 +798,7 @@ function ModuleComplete({quizScore,quizTotal,challengeScore,challengeTotal}){
     // Homework
     e("div",{style:{background:CARD,border:`1px solid ${BORDER}`,borderRadius:16,padding:20,maxWidth:520,marginBottom:16,textAlign:"left",borderLeft:`4px solid ${ACCENT2}`}},
       e("div",{style:{color:ACCENT2,fontWeight:700,fontSize:15,marginBottom:8}},"Homework"),
-      e("div",{style:{color:"#ccc",fontSize:13,lineHeight:1.9}},
+      e("div",{style:{color:"#9898a8",fontSize:13,lineHeight:1.9}},
         e("div",{style:{marginBottom:6}},e("strong",{style:{color:TEXT}},"1. Error Journal Review")," — Look at your Error Pattern Journal. Which trap type appears most? Write the rule for it on a sticky note and keep it visible while you practice."),
         e("div",{style:{marginBottom:6}},e("strong",{style:{color:TEXT}},"2. Cross-Out Practice")," — Read 3 sentences from any article. For each, identify the main subject and verb. Circle the subject, cross out any intervening material."),
         e("div",{style:{marginBottom:6}},e("strong",{style:{color:TEXT}},"3. Tense Spotting")," — Find one news article and one historical article. Identify the primary tense of each and note any justified shifts."),
@@ -815,7 +821,7 @@ function App(){
     setFade(false);
     setTimeout(()=>{setScreen(to);window.scrollTo(0,0);setFade(true);},350);
   },[]);
-  return e("div",{style:{minHeight:"100vh",background:DARK,color:TEXT,fontFamily:"'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}},
+  return e("div",{style:{minHeight:"100vh",background:DARK,color:TEXT,fontFamily:"'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}},
     e(ProgressBar,{current:screenIdx,total:SCREENS.length-1}),
     e("div",{style:{position:"fixed",inset:0,pointerEvents:"none",opacity:.03,backgroundImage:"linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px)",backgroundSize:"40px 40px"}}),
     e("div",{style:{position:"relative",zIndex:1,transition:"opacity .35s,transform .35s",opacity:fade?1:0,transform:fade?"translateY(0)":"translateY(8px)",paddingTop:12}},

@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAT Reading & Writing — PantherPrep</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#a855f7;--accent-light:rgba(168,85,247,.12);--border:#2a2a2a;--muted:#999999;--muted-dim:#64748b;--surface:#1a1a1a;--surface-hover:#16162a;--sat:#a855f7;--sat-bg:rgba(168,85,247,.15);--conv:#10b981;--conv-bg:rgba(16,185,129,.12);--craft:#f59e0b;--craft-bg:rgba(245,158,11,.12);--info:#3b82f6;--info-bg:rgba(59,130,246,.12);--expr:#a855f7;--expr-bg:rgba(168,85,247,.12);--sim:#06b6d4;--sim-bg:rgba(6,182,212,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--finale:#eab308;--finale-bg:rgba(234,179,8,.12);--neutral:#999999;--neutral-bg:rgba(100,116,139,.15)}
+:root{--ink:#eaeaef;--paper:#08080c;--accent:#a855f7;--accent-light:rgba(168,85,247,.07);--border:#1c1c2c;--muted:#999999;--muted-dim:#5a5a6e;--surface:#0f0f16;--surface-alt:#141420;--surface-hover:#16162a;--sat:#a855f7;--sat-bg:rgba(168,85,247,.07);--conv:#10b981;--conv-bg:rgba(16,185,129,.07);--craft:#f59e0b;--craft-bg:rgba(245,158,11,.07);--info:#3b82f6;--info-bg:rgba(59,130,246,.07);--expr:#a855f7;--expr-bg:rgba(168,85,247,.07);--sim:#06b6d4;--sim-bg:rgba(6,182,212,.07);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.07);--finale:#eab308;--finale-bg:rgba(234,179,8,.07);--neutral:#9898a8;--neutral-bg:rgba(100,116,139,.07);--glass:rgba(15,15,22,.75);--glass-border:rgba(255,255,255,.05)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;min-height:100vh}
+body{font-family:'Manrope',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;min-height:100vh}
 
 /* Grid background (original SAT feel) */
 .grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.03;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:40px 40px}
@@ -20,7 +20,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 /* ── Header ── */
 .header{text-align:center;margin-bottom:12px}
-.header .badge{display:inline-block;padding:6px 18px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;background:var(--sat-bg);border:1px solid rgba(168,85,247,.3);color:var(--sat);margin-bottom:18px}
+.header .badge{display:inline-block;padding:6px 18px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;background:var(--sat-bg);border:1px solid rgba(168,85,247,.2);color:var(--sat);margin-bottom:18px}
 .header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;line-height:1.2;margin-bottom:10px}
 .header h1 span{color:var(--sat)}
 .header p{color:var(--muted);font-size:1.05rem;max-width:560px;margin:0 auto;line-height:1.6}
@@ -52,7 +52,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 
 /* ── Module cards ── */
 .modules{display:flex;flex-direction:column;gap:8px;padding-left:18px}
-.module-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-decoration:none;color:inherit;transition:all .2s;cursor:pointer;position:relative;overflow:hidden}
+.module-card{display:flex;align-items:center;gap:14px;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,.1);padding:14px 18px;text-decoration:none;color:inherit;transition:all .2s;cursor:pointer;position:relative;overflow:hidden}
 .module-card:hover{border-color:rgba(168,85,247,.4);transform:translateX(4px);background:var(--surface-hover)}
 .module-card .num-badge{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
 .module-card .info{flex:1;min-width:0}
@@ -112,6 +112,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .unit:nth-of-type(4){animation-delay:.2s}
 .unit:nth-of-type(5){animation-delay:.25s}
 .unit:nth-of-type(6){animation-delay:.3s}
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(168,85,247,.05),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(16,185,129,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 </head>
 <body>
@@ -360,7 +366,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 <!-- UNIT 4: Expression & Strategy -->
 <div class="unit">
   <div class="phase-label expression-phase">Phase 3 — Integration</div>
-  <div class="unit-header" style="background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.15)">
+  <div class="unit-header" style="background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.07)">
     <div class="unit-num" style="background:var(--expr-bg);color:var(--expr)">4</div>
     <div class="unit-info">
       <h2>Expression & Strategy</h2>

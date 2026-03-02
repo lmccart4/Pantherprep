@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PSAT/NMSQT Reading & Writing — PantherPrep</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#f0f0f0;--paper:#121212;--accent:#0891b2;--accent-light:rgba(8,145,178,.12);--border:#2a2a2a;--muted:#999;--surface:#1a1a1a;--rw:#c084fc;--rw-bg:rgba(192,132,252,.1);--craft:#60a5fa;--craft-bg:rgba(96,165,250,.1);--info:#34d399;--info-bg:rgba(52,211,153,.1);--conv:#fbbf24;--conv-bg:rgba(251,191,36,.1);--expr:#f472b6;--expr-bg:rgba(244,114,182,.1);--correct:#22c55e;--correct-bg:rgba(34,197,94,.12);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.12);--grow:#06d6a0;--gold:#d4a843;--gold-bg:rgba(212,168,67,.1);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.1)}
+:root{--ink:#eaeaef;--paper:#08080c;--accent:#06b6d4;--accent-light:rgba(6,182,212,.07);--accent-glow:rgba(6,182,212,.15);--border:#1c1c2c;--border-hover:#2a2a3e;--muted:#5a5a6e;--surface:#0f0f16;--surface-alt:#141420;--rw:#c084fc;--rw-bg:rgba(192,132,252,.07);--craft:#60a5fa;--craft-bg:rgba(96,165,250,.07);--info:#34d399;--info-bg:rgba(52,211,153,.07);--conv:#fbbf24;--conv-bg:rgba(251,191,36,.07);--expr:#f472b6;--expr-bg:rgba(244,114,182,.07);--correct:#22c55e;--correct-bg:rgba(34,197,94,.07);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.07);--grow:#06d6a0;--gold:#d4a843;--gold-bg:rgba(212,168,67,.07);--nm:#a78bfa;--nm-bg:rgba(167,139,250,.07);--glass:rgba(15,15,22,.75);--glass-border:rgba(255,255,255,.05)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;min-height:100vh}
+body{font-family:'Manrope',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;min-height:100vh}
 
 /* Top stripe */
 .top-stripe{height:4px;background:linear-gradient(90deg,var(--craft) 0%,var(--craft) 28%,var(--info) 28%,var(--info) 54%,var(--conv) 54%,var(--conv) 80%,var(--expr) 80%);position:fixed;top:0;left:0;right:0;z-index:100}
@@ -111,6 +111,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .phase:nth-of-type(2){animation-delay:.1s}
 .phase:nth-of-type(3){animation-delay:.2s}
 .phase:nth-of-type(4){animation-delay:.3s}
+
+/* ── Ambient Background ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(6,182,212,.06),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.04),transparent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#3a3a4e}
+#root{position:relative;z-index:1}
 </style>
 </head>
 <body>
@@ -316,7 +322,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
   <div class="phase">
     <div class="phase-label assessment">Phase 4 — Assessment</div>
     <div class="module-grid">
-      <a class="mod-card phase-4" href="PSAT_NMSQT_RW_module-12.html" style="border:1px solid rgba(244,114,182,.3);background:linear-gradient(135deg,var(--surface),rgba(244,114,182,.04))">
+      <a class="mod-card phase-4" href="PSAT_NMSQT_RW_module-12.html" style="border:1px solid rgba(244,114,182,.2);background:linear-gradient(135deg,var(--surface),rgba(244,114,182,.04))">
         <div class="mod-num" style="color:var(--expr)">12</div>
         <div class="mod-info">
           <h3>🏆 Final Assessment & Battle Plan</h3>
