@@ -1,14 +1,12 @@
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
-import { NeuralParticles } from "@/components/layout/neural-particles";
 
 export function LoginScreen() {
   const { signIn, error, loading } = useAuth();
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-8 text-center relative">
-      <NeuralParticles count={90} connectionDist={130} speed={0.3} entropy={0.01} fireChance={0.003} />
 
       <div className="relative z-10">
         {/* Logo mark */}

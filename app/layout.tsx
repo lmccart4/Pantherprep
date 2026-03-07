@@ -52,7 +52,7 @@ export default function RootLayout({
     <html lang="en" className={`${manrope.variable} ${cormorant.variable} ${jetbrains.variable}`}>
       <body className="font-body">
         <TopStripe />
-        <NeuralParticles count={70} connectionDist={120} speed={0.25} entropy={0.008} fireChance={0.001} />
+        <NeuralParticles count={70} connectionDist={120} speed={0.15} entropy={0.005} fireChance={0.0003} />
         <div className="relative z-[1]">{children}</div>
       </body>
     </html>
