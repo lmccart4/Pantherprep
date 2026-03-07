@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAT R&W Diagnostic — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
 <style>
 :root{--ink:#eaeaef;--paper:#08080c;--accent:#C8102E;--accent-light:rgba(200,16,46,.07);--correct:#22c55e;--correct-bg:rgba(34,197,94,.07);--wrong:#ef4444;--wrong-bg:rgba(239,68,68,.07);--spr:#f59e0b;--spr-bg:rgba(245,158,11,.07);--border:#1c1c2c;--muted:#5a5a6e;--surface:#0f0f16;--craft:#60a5fa;--info:#34d399;--express:#fbbf24;--convention:#f87171;--glass:rgba(15,15,22,.75);--glass-border:rgba(255,255,255,.05)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -509,9 +507,9 @@ explanations:{A:"Present tense, inconsistent with past-tense 'found' and 'showed
 // ============================================================
 // APP STATE & RENDERING
 // ============================================================
-let S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:false,exp:{},tl:0,timerRef:null};
+let S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:{},exp:{},tl:0,timerRef:null};
 function fmtTimer(s){var m=Math.floor(s/60),sec=s%60;return m+':'+(sec<10?'0':'')+sec;}
-function startTimer(secs){clearInterval(S.timerRef);S.tl=secs;S.timerRef=setInterval(function(){S.tl--;if(S.tl<=0){clearInterval(S.timerRef);S.tl=0;}var el=document.getElementById('diagTimer');if(el)el.textContent=fmtTimer(S.tl);if(S.tl<=60&&el)el.style.color='var(--wrong)';else if(S.tl<=300&&el)el.style.color='var(--spr)';},1000);}
+function startTimer(secs){clearInterval(S.timerRef);S.tl=secs;S.timerRef=setInterval(function(){S.tl--;if(S.tl<=0){clearInterval(S.timerRef);S.tl=0;finish();}var el=document.getElementById('diagTimer');if(el)el.textContent=fmtTimer(S.tl);if(S.tl<=60&&el)el.style.color='var(--wrong)';else if(S.tl<=300&&el)el.style.color='var(--spr)';},1000);}
 window.addEventListener('beforeunload',function(e){if(S.screen==='test'){e.preventDefault();e.returnValue='';}});
 function render(){document.getElementById('app').innerHTML=S.screen==='landing'?renderLanding():S.screen==='test'?renderTest():renderResults();}
 
@@ -549,7 +547,7 @@ function startTest(){S.screen='test';S.cq=0;S.st=Date.now();S.mst=Date.now();sta
 
 function renderTest(){
 const q=Q[S.cq],mod=q.module,modQs=Q.filter(x=>x.module===mod),modIdx=modQs.indexOf(q);
-const isSub=S.sub,ua=S.ans[q.num],isFl=S.flags.has(q.num),shExp=S.exp[q.num];
+const isSub=S.sub[q.num],ua=S.ans[q.num],isFl=S.flags.has(q.num),shExp=S.exp[q.num];
 const dc=q.domain==='Craft and Structure'?'craft':q.domain==='Information and Ideas'?'info':q.domain==='Expression of Ideas'?'express':'convention';
 const si=mod===1?0:27,ei=mod===1?27:54;
 let nav='';for(let i=si;i<ei;i++){const n=Q[i].num;let c='';if(i===S.cq)c='current';else if(S.ans[n]!==undefined)c='answered';if(S.flags.has(n)&&i!==S.cq)c+=' flagged';nav+=`<button class="${c}" onclick="goTo(${i})">${n}</button>`;}
@@ -573,12 +571,12 @@ ${isSub&&!shExp?`<div style="text-align:center;margin-bottom:14px"><button class
 ${S.cq<53?`<button class="btn btn-sm" onclick="next()">Next \u2192</button>`:`<button class="btn btn-sm" style="background:#16a34a" onclick="finish()">Finish Test</button>`}</div>
 ${S.cq===26&&mod===1?`<div style="text-align:center;margin-top:18px;padding:14px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);border-radius:10px;color:#a78bfa"><strong>End of Module 1.</strong> Click "Next" to begin Module 2 (harder).</div>`:''}`;}
 
-function sel(L){if(S.sub)return;S.ans[Q[S.cq].num]=L;render();}
-function chk(){if(S.ans[Q[S.cq].num]===undefined)return;S.sub=true;S.exp[Q[S.cq].num]=true;render();}
+function sel(L){if(S.sub[Q[S.cq].num])return;S.ans[Q[S.cq].num]=L;render();}
+function chk(){if(S.ans[Q[S.cq].num]===undefined)return;S.sub[Q[S.cq].num]=true;S.exp[Q[S.cq].num]=true;render();}
 function tExp(n){S.exp[n]=!S.exp[n];render();}
-function next(){if(S.cq===26){S.m1t=Date.now()-S.mst;S.mst=Date.now();startTimer(32*60);}S.cq=Math.min(53,S.cq+1);S.sub=false;render();scrollTo(0,0);}
-function prev(){S.cq=Math.max(0,S.cq-1);S.sub=S.ans[Q[S.cq].num]!==undefined;render();scrollTo(0,0);}
-function goTo(i){S.cq=i;S.sub=S.ans[Q[S.cq].num]!==undefined;render();scrollTo(0,0);}
+function next(){if(S.cq===26){S.m1t=Date.now()-S.mst;S.mst=Date.now();startTimer(32*60);}S.cq=Math.min(53,S.cq+1);render();scrollTo(0,0);}
+function prev(){S.cq=Math.max(0,S.cq-1);render();scrollTo(0,0);}
+function goTo(i){S.cq=i;render();scrollTo(0,0);}
 function flag(n){S.flags.has(n)?S.flags.delete(n):S.flags.add(n);render();}
 function finish(){clearInterval(S.timerRef);S.m2t=Date.now()-S.mst;S.screen='results';render();scrollTo(0,0);}
 function renderResults(){
@@ -624,8 +622,8 @@ return '<div class="results">'
 +'</div>'
 +'<div style="text-align:center;margin-top:28px"><button class="btn btn-outline" onclick="retake()">\u21bb Retake Test</button></div>'
 +'</div>';}
-function retake(){S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:false,exp:{}};render();scrollTo(0,0);}
+function retake(){clearInterval(S.timerRef);S={screen:'landing',cq:0,ans:{},flags:new Set(),st:null,mst:null,m1t:null,m2t:null,sub:{},exp:{},tl:0,timerRef:null};render();scrollTo(0,0);}
 render();
 </script>
-<script src="/translate.js"></script></body>
+</body>
 </html>

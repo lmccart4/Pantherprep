@@ -409,7 +409,7 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;hei
 <div class="section">
   <div class="section-label">Session 2: Diagnostic</div>
   <h2>Mini Diagnostic Assessment</h2>
-  <p>Answer these 12 questions spanning all four domains. For each question, first rate your confidence, then select your answer. This helps identify both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
+  <p>Answer these 20 questions spanning all four domains. For each question, first rate your confidence, then select your answer. This helps identify both skill gaps <em>and</em> calibration gaps (questions you felt confident about but got wrong).</p>
   <div id="diagQuestions"></div>
   <div style="text-align:center;margin-top:16px">
     <button class="btn btn-blue" id="diagSubmit" onclick="scoreDiag()" style="display:none">Score My Diagnostic →</button>
@@ -962,6 +962,6 @@ function renderCL(){
 function toggleCL(i){clState[i]=!clState[i];localStorage.setItem(CL_KEY,JSON.stringify(clState));renderCL();}
 renderCL();
 </script>
-<script src="/translate.js"></script>
+
 </body>
 </html>

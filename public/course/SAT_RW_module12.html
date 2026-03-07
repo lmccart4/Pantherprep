@@ -48,7 +48,7 @@ const btn = (bg, color, extra) => ({
   transition: "transform .12s",
   ...extra
 });
-const NAV = { prev: { label: "Module 11: Logical Reasoning", file: "SAT RW module11.html" }, next: { label: "Module 13: Expression", file: "SAT RW module13.html" } };
+const NAV = { prev: { label: "Module 11: Logical Reasoning", file: "SAT_RW_module11.html" }, next: { label: "Module 13: Expression", file: "SAT_RW_module13.html" } };
 function NavLinks() {
   return React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12, marginTop: 32, paddingTop: 24, borderTop: "1px solid " + BORDER } },
     NAV.prev && React.createElement("a", { href: NAV.prev.file, style: { ...btn("transparent", SUB), border: "1px solid " + BORDER, textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, "\u2190 " + NAV.prev.label),

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PantherPrep — Neural Particle Background Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0b;
+    overflow: hidden;
+    font-family: 'Manrope', sans-serif;
+    color: #fff;
+  }
+
+  canvas#neural-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  /* Demo overlay content to show how it looks behind UI */
+  .demo-overlay {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  .demo-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 3rem 4rem;
+    text-align: center;
+    max-width: 520px;
+  }
+
+  .demo-card h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+
+  .demo-card h1 span {
+    color: #e63946;
+  }
+
+  .demo-card p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .demo-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #c8102e 0%, #e63946 100%);
+    color: #fff;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    box-shadow: 0 4px 24px rgba(200, 16, 46, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .demo-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 32px rgba(200, 16, 46, 0.45);
+  }
+
+  .controls {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(12px);
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .controls button {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .controls button:hover {
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+  }
+
+  .controls button.active {
+    background: rgba(200, 16, 46, 0.3);
+    border-color: rgba(200, 16, 46, 0.5);
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="neural-bg"></canvas>
+
+<div class="demo-overlay">
+  <div class="demo-card">
+    <h1>Panther<span>Prep</span></h1>
+    <p>Neural network particle background mockup. Toggle variants below to preview different density and entropy levels.</p>
+    <button class="demo-btn">Get Started</button>
+  </div>
+</div>
+
+<div class="controls">
+  <button onclick="setPreset('sparse')" id="btn-sparse">Sparse</button>
+  <button onclick="setPreset('default')" id="btn-default" class="active">Default</button>
+  <button onclick="setPreset('dense')" id="btn-dense">Dense</button>
+  <button onclick="setPreset('chaos')" id="btn-chaos">Chaos</button>
+  <button onclick="toggleFiring()" id="btn-fire">Firing: ON</button>
+</div>
+
+<script>
+const canvas = document.getElementById('neural-bg');
+const ctx = canvas.getContext('2d');
+
+let W, H, dpr;
+let particles = [];
+let mouse = { x: -9999, y: -9999 };
+let firingEnabled = true;
+let animId;
+
+// ---------- CONFIG ----------
+const presets = {
+  sparse:  { count: 60,  connectionDist: 160, speed: 0.3, entropy: 0.008, fireChance: 0.001 },
+  default: { count: 110, connectionDist: 140, speed: 0.4, entropy: 0.015, fireChance: 0.003 },
+  dense:   { count: 200, connectionDist: 120, speed: 0.35, entropy: 0.012, fireChance: 0.005 },
+  chaos:   { count: 150, connectionDist: 150, speed: 0.7, entropy: 0.04,  fireChance: 0.008 },
+};
+
+let cfg = { ...presets.default };
+
+// ---------- PARTICLE ----------
+class Particle {
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.baseRadius = 1.2 + Math.random() * 1.8;
+    this.radius = this.baseRadius;
+    this.vx = (Math.random() - 0.5) * cfg.speed * 2;
+    this.vy = (Math.random() - 0.5) * cfg.speed * 2;
+    this.opacity = 0.3 + Math.random() * 0.5;
+    this.fireIntensity = 0;
+    this.fireDecay = 0.015 + Math.random() * 0.01;
+  }
+
+  update() {
+    // Brownian entropy — stochastic velocity perturbation
+    this.vx += (Math.random() - 0.5) * cfg.entropy;
+    this.vy += (Math.random() - 0.5) * cfg.entropy;
+
+    // Soft speed clamping with drag
+    const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+    const maxSpeed = cfg.speed * 2.5;
+    if (speed > maxSpeed) {
+      this.vx *= 0.98;
+      this.vy *= 0.98;
+    }
+
+    this.x += this.vx;
+    this.y += this.vy;
+
+    // Wrap edges with padding
+    const pad = 20;
+    if (this.x < -pad) this.x = W + pad;
+    if (this.x > W + pad) this.x = -pad;
+    if (this.y < -pad) this.y = H + pad;
+    if (this.y > H + pad) this.y = -pad;
+
+    // Mouse repulsion
+    const dx = this.x - mouse.x;
+    const dy = this.y - mouse.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 120) {
+      const force = (120 - dist) / 120 * 0.8;
+      this.vx += (dx / dist) * force;
+      this.vy += (dy / dist) * force;
+    }
+
+    // Fire decay
+    if (this.fireIntensity > 0) {
+      this.fireIntensity -= this.fireDecay;
+      if (this.fireIntensity < 0) this.fireIntensity = 0;
+    }
+
+    // Radius pulses with fire
+    this.radius = this.baseRadius + this.fireIntensity * 3;
+  }
+
+  fire() {
+    this.fireIntensity = 1;
+  }
+
+  draw() {
+    const r = this.fireIntensity;
+    const red = Math.floor(200 + r * 55);
+    const green = Math.floor(255 - r * 240);
+    const blue = Math.floor(255 - r * 220);
+    const alpha = this.opacity + r * 0.4;
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+    ctx.fill();
+
+    // Glow for fired nodes
+    if (r > 0.1) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius + 6 * r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(230, 57, 70, ${r * 0.25})`;
+      ctx.fill();
+    }
+  }
+}
+
+// ---------- CONNECTIONS ----------
+function drawConnections() {
+  const maxDist = cfg.connectionDist;
+  const maxDistSq = maxDist * maxDist;
+
+  for (let i = 0; i < particles.length; i++) {
+    const a = particles[i];
+    for (let j = i + 1; j < particles.length; j++) {
+      const b = particles[j];
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      const distSq = dx * dx + dy * dy;
+
+      if (distSq > maxDistSq) continue;
+
+      const dist = Math.sqrt(distSq);
+      const t = 1 - dist / maxDist;
+
+      // Fire propagation — if one node is firing and close, ignite neighbor
+      if (firingEnabled) {
+        if (a.fireIntensity > 0.5 && b.fireIntensity < 0.1 && t > 0.3) {
+          b.fire();
+        } else if (b.fireIntensity > 0.5 && a.fireIntensity < 0.1 && t > 0.3) {
+          a.fire();
+        }
+      }
+
+      const fireBlend = Math.max(a.fireIntensity, b.fireIntensity);
+
+      // Line color: white baseline with red shift during firing
+      const baseAlpha = t * 0.15;
+      const fireAlpha = fireBlend * t * 0.4;
+
+      // White line
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = `rgba(255, 255, 255, ${baseAlpha})`;
+      ctx.lineWidth = 0.5 + t * 0.5;
+      ctx.stroke();
+
+      // Red overlay during firing
+      if (fireBlend > 0.05) {
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = `rgba(200, 16, 46, ${fireAlpha})`;
+        ctx.lineWidth = 0.8 + t * 1.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+// ---------- INIT ----------
+function resize() {
+  dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function initParticles() {
+  particles = [];
+  for (let i = 0; i < cfg.count; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function loop() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Spontaneous firing
+  if (firingEnabled) {
+    for (const p of particles) {
+      if (p.fireIntensity === 0 && Math.random() < cfg.fireChance) {
+        p.fire();
+      }
+    }
+  }
+
+  for (const p of particles) {
+    p.update();
+  }
+
+  drawConnections();
+
+  for (const p of particles) {
+    p.draw();
+  }
+
+  animId = requestAnimationFrame(loop);
+}
+
+// ---------- EVENTS ----------
+window.addEventListener('resize', () => {
+  resize();
+  initParticles();
+});
+
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+window.addEventListener('mouseleave', () => {
+  mouse.x = -9999;
+  mouse.y = -9999;
+});
+
+// ---------- PRESET CONTROLS ----------
+function setPreset(name) {
+  cfg = { ...presets[name] };
+  initParticles();
+  document.querySelectorAll('.controls button').forEach(b => {
+    if (b.id.startsWith('btn-') && b.id !== 'btn-fire') b.classList.remove('active');
+  });
+  document.getElementById('btn-' + name).classList.add('active');
+}
+
+function toggleFiring() {
+  firingEnabled = !firingEnabled;
+  const btn = document.getElementById('btn-fire');
+  btn.textContent = 'Firing: ' + (firingEnabled ? 'ON' : 'OFF');
+  btn.classList.toggle('active', firingEnabled);
+}
+
+// ---------- START ----------
+resize();
+initParticles();
+loop();
+</script>
+</body>
+</html>

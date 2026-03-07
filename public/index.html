@@ -4,7 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PantherPrep</title>
-<meta name="theme-color" content="#08080c">
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#CC0000" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -47,12 +52,17 @@ body{background:var(--bg-deep);background-image:radial-gradient(ellipse at 30% 0
 .login-btn:hover{background:var(--panther-dark-red);box-shadow:0 0 24px var(--panther-red-glow);transform:translateY(-1px)}
 .login-error{margin-top:1rem;padding:12px 20px;background:var(--accent-red-soft);border:1px solid rgba(239,68,68,.2);border-radius:var(--radius-sm);color:var(--accent-red);font-size:.9rem}
 .login-school{margin-top:1.5rem;font-size:.85rem;color:var(--text-muted)}
-.login-paw{font-size:6rem;margin-bottom:1rem;opacity:0.15}
+.login-mark{width:96px;height:96px;margin-bottom:1.5rem;filter:drop-shadow(0 0 32px rgba(214,40,40,0.25));animation:logoEntrance .8s cubic-bezier(.16,1,.3,1) forwards;will-change:transform,opacity}
+.login-mark img{width:100%;height:100%;object-fit:contain;border-radius:16px}
+@keyframes logoEntrance{0%{opacity:0;transform:scale(.85) translateY(10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.login-mark-loading{width:72px;height:72px;animation:pulse 1.5s infinite}
+.login-mark-loading img{width:100%;height:100%;object-fit:contain;border-radius:12px}
 
 /* App Shell */
 .app-shell{display:flex;flex-direction:column;min-height:100vh}
 .top-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:rgba(15,15,22,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.top-bar-brand{font-family:var(--font-display);font-size:1.6rem;letter-spacing:0.04em;color:var(--white);cursor:pointer;display:flex;align-items:center;gap:4px}
+.top-bar-brand{font-family:var(--font-display);font-size:1.6rem;letter-spacing:0.04em;color:var(--white);cursor:pointer;display:flex;align-items:center;gap:10px}
+.top-bar-brand img{width:28px;height:28px;border-radius:6px;flex-shrink:0}
 .top-bar-brand span{color:var(--panther-red)}
 .top-bar-right{display:flex;align-items:center;gap:12px}
 .top-bar-role{padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
@@ -316,19 +326,112 @@ textarea.qm-form-input{min-height:80px;resize:vertical;font-family:var(--font-bo
 .qm-form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
 
 @media(max-width:768px){
-.main-content{padding:20px 16px}.login-logo{font-size:3rem}.welcome-greeting{font-size:1.6rem}
+.main-content{padding:20px 16px}.login-logo{font-size:3rem}.login-mark{width:76px;height:76px;margin-bottom:1.25rem}.welcome-greeting{font-size:1.6rem}
 .test-grid,.mode-grid{grid-template-columns:1fr}.domain-grid{grid-template-columns:1fr}
 .nav-dot{width:28px;height:28px;font-size:.7rem}.stat-grid{grid-template-columns:repeat(2,1fr)}
+.bg-orb{filter:blur(60px)}.bg-orb-1{width:400px;height:300px}.bg-orb-2{width:350px;height:250px}.bg-orb-3{width:250px;height:200px}
 }
 
-/* ── Ambient Background ── */
-body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 20% 20%,rgba(214,40,40,.04),transparent),radial-gradient(ellipse 500px 300px at 80% 80%,rgba(167,139,250,.03),transparent)}
+/* ── Animated Ambient Orbs ── */
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);will-change:transform,opacity}
+.bg-orb-1{width:700px;height:500px;top:-10%;left:-5%;background:radial-gradient(ellipse at center,rgba(214,40,40,.10),transparent 70%);animation:orb1Move 55s ease-in-out infinite,orbPulse1 8s ease-in-out infinite}
+.bg-orb-2{width:550px;height:400px;bottom:-8%;right:-5%;background:radial-gradient(ellipse at center,rgba(168,85,247,.08),transparent 70%);animation:orb2Move 48s ease-in-out infinite,orbPulse2 10s ease-in-out infinite}
+.bg-orb-3{width:400px;height:350px;top:40%;left:50%;background:radial-gradient(ellipse at center,rgba(59,130,246,.05),transparent 70%);animation:orb3Move 62s ease-in-out infinite,orbPulse3 12s ease-in-out infinite}
+@keyframes orb1Move{0%,100%{transform:translate(0,0)}25%{transform:translate(60px,40px)}50%{transform:translate(20px,80px)}75%{transform:translate(-40px,30px)}}
+@keyframes orb2Move{0%,100%{transform:translate(0,0)}25%{transform:translate(-50px,-30px)}50%{transform:translate(-20px,-70px)}75%{transform:translate(40px,-25px)}}
+@keyframes orb3Move{0%,100%{transform:translate(0,0)}25%{transform:translate(35px,-45px)}50%{transform:translate(-30px,25px)}75%{transform:translate(-50px,-35px)}}
+@keyframes orbPulse1{0%,100%{opacity:1}50%{opacity:.6}}
+@keyframes orbPulse2{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes orbPulse3{0%,100%{opacity:1}50%{opacity:.55}}
+.page-login .bg-orb-1{background:radial-gradient(ellipse at center,rgba(214,40,40,.22),transparent 70%)}
+.page-login .bg-orb-2{background:radial-gradient(ellipse at center,rgba(168,85,247,.16),transparent 70%)}
+.page-login .bg-orb-3{background:radial-gradient(ellipse at center,rgba(59,130,246,.10),transparent 70%)}
+@media(prefers-reduced-motion:reduce){.bg-orb{animation:none!important}}
 body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;opacity:.018;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 /* ── Root Layer ── */
 #root{position:relative;z-index:1}
+
+/* ── Premium Animations & Micro-interactions ── */
+
+/* Reduced motion override */
+@media(prefers-reduced-motion:reduce){
+.animate-in,.view-exiting,.cardRise,.btn-ripple::before,
+.opt-btn.opt-correct,.opt-btn.opt-wrong,.score-circle,
+.skeleton,.skeleton-card,.skeleton-stat,.skeleton-row,
+.test-card::after,.mode-card::after,.welcome-greeting,.score-title,.login-logo{
+animation:none!important;transition:none!important}
+}
+@property --angle{syntax:'<angle>';initial-value:0deg;inherits:false}
+
+/* Button press states */
+.btn:active,.login-btn:active,.back-btn:active,.flag-btn:active,
+.dash-tab:active,.opt-btn:active:not(.opt-locked),.stats-btn:active,.nav-dot:active{transform:scale(0.97)}
+
+/* Shimmer sweep on primary buttons */
+.btn-primary,.login-btn{position:relative;overflow:hidden}
+.btn-primary::after,.login-btn::after{content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;
+background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+transform:skewX(-20deg);transition:none;pointer-events:none;opacity:0}
+.btn-primary:hover::after,.login-btn:hover::after{opacity:1;animation:shimmerSweep .6s ease forwards}
+@keyframes shimmerSweep{to{left:125%}}
+
+/* Ripple effect */
+@keyframes rippleExpand{0%{transform:translate(-50%,-50%) scale(0);opacity:.35}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+.btn-ripple::before{content:'';position:absolute;width:200%;padding-top:200%;border-radius:50%;
+background:rgba(255,255,255,.3);left:var(--ripple-x,50%);top:var(--ripple-y,50%);
+animation:rippleExpand .5s ease-out forwards;pointer-events:none}
+
+/* Card animated gradient border */
+@keyframes rotateBorder{to{--angle:360deg}}
+.test-card::after,.mode-card::after{content:'';position:absolute;inset:-1px;border-radius:inherit;
+padding:1px;background:conic-gradient(from var(--angle),var(--panther-red),var(--accent-purple),var(--accent-blue),var(--panther-red));
+-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+opacity:0;transition:opacity .3s;animation:rotateBorder 3s linear infinite paused;pointer-events:none;z-index:0}
+.test-card:hover::after,.mode-card:hover::after{opacity:1;animation-play-state:running}
+.mode-card{position:relative;overflow:hidden}
+
+/* Staggered card entrance */
+@keyframes cardRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.test-card,.mode-card,.domain-card,.stat-card,.badge-card,.domain-stat,.history-item{opacity:0}
+.test-card.visible,.mode-card.visible,.domain-card.visible,.stat-card.visible,
+.badge-card.visible,.domain-stat.visible,.history-item.visible{
+animation:cardRise .45s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(var(--i,0) * 80ms)}
+
+/* Answer feedback */
+@keyframes correctBounce{0%{transform:scale(1)}30%{transform:scale(1.03)}60%{transform:scale(0.98)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.opt-btn.opt-correct{animation:correctBounce .4s ease}
+.opt-btn.opt-wrong{animation:wrongShake .4s ease}
+
+/* Score circle entrance */
+@keyframes scoreCircleIn{0%{transform:scale(0);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.score-circle{animation:scoreCircleIn .6s cubic-bezier(.34,1.56,.64,1) forwards}
+
+/* XP bar spring */
+.xp-bar-fill{transition:width .8s cubic-bezier(.34,1.56,.64,1)!important}
+
+/* Gradient text */
+.welcome-greeting,.score-title,.login-logo{background:linear-gradient(135deg,var(--text-primary) 0%,var(--panther-light-red) 50%,var(--text-primary) 100%);
+-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.login-logo .login-logo-accent{-webkit-text-fill-color:var(--panther-red)}
+
+/* Skeleton loading */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--bg-card) 25%,var(--bg-card-hover) 50%,var(--bg-card) 75%);
+background-size:800px 100%;animation:shimmer 1.5s infinite linear;border-radius:var(--radius-md)}
+.skeleton-card{height:120px;border-radius:var(--radius-md);margin-bottom:16px}
+.skeleton-stat{height:100px;border-radius:var(--radius-md)}
+.skeleton-row{height:52px;border-radius:var(--radius-md);margin-bottom:8px}
+
+/* View exit animation */
+@keyframes fadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-8px)}}
+.view-exiting{animation:fadeOut .2s ease-in forwards;pointer-events:none}
 </style>
 </head>
 <body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
 <div id="root"></div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
 <script type="module">
@@ -382,6 +485,95 @@ else{result.push(out[i])}}
 return result}
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
 function fmtTime(s){return`${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`}
+
+// ── Premium Animation Utilities ──
+const _prefersReducedMotion=window.matchMedia('(prefers-reduced-motion:reduce)');
+
+function attachRipple(el){
+if(el._rippleAttached||_prefersReducedMotion.matches)return;
+el._rippleAttached=true;
+el.addEventListener('click',function(e){
+const r=el.getBoundingClientRect();
+el.style.setProperty('--ripple-x',(e.clientX-r.left)+'px');
+el.style.setProperty('--ripple-y',(e.clientY-r.top)+'px');
+el.classList.remove('btn-ripple');void el.offsetWidth;el.classList.add('btn-ripple');
+setTimeout(()=>el.classList.remove('btn-ripple'),500)})}
+
+function applyRipples(){
+document.querySelectorAll('.btn-primary,.login-btn').forEach(attachRipple)}
+
+let _cardObserver=null;
+function getCardObserver(){
+if(_cardObserver)return _cardObserver;
+_cardObserver=new IntersectionObserver(function(entries){
+entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');_cardObserver.unobserve(e.target)}})
+},{threshold:0.1,rootMargin:'0px 0px -30px 0px'});
+return _cardObserver}
+
+function observeCards(){
+if(_prefersReducedMotion.matches){
+document.querySelectorAll('.test-card,.mode-card,.domain-card,.stat-card,.badge-card,.domain-stat,.history-item').forEach(function(el){el.classList.add('visible')});return}
+const obs=getCardObserver();
+const cards=document.querySelectorAll('.test-card,.mode-card,.domain-card,.stat-card,.badge-card,.domain-stat,.history-item');
+let idx=0;
+cards.forEach(function(el){if(!el._cardObserved){el._cardObserved=true;el.style.setProperty('--i',Math.min(idx,8));obs.observe(el);idx++}})}
+
+function animateCounter(el,target,duration,suffix){
+if(_prefersReducedMotion.matches){el.textContent=target+suffix;return}
+const start=performance.now();
+const numTarget=parseFloat(target)||0;
+const isInt=Number.isInteger(numTarget);
+function tick(now){
+const t=Math.min((now-start)/duration,1);
+const ease=1-Math.pow(1-t,3);
+const val=isInt?Math.round(ease*numTarget):(ease*numTarget).toFixed(1);
+el.textContent=val+suffix;
+if(t<1)requestAnimationFrame(tick)}
+requestAnimationFrame(tick)}
+
+function applyCounters(){
+document.querySelectorAll('.stat-val,.score-pct').forEach(function(el){
+if(el._counterDone||_prefersReducedMotion.matches)return;
+const txt=el.textContent.trim();
+const m=txt.match(/^([\d,.]+)(%?)$/);
+if(!m)return;
+el._counterDone=true;
+const num=parseFloat(m[1].replace(/,/g,''));
+animateCounter(el,num,800,m[2])})}
+
+function wordReveal(el,delayMs){
+if(!el||el._wordRevealed||_prefersReducedMotion.matches)return;
+el._wordRevealed=true;
+const text=el.textContent;
+el.textContent='';
+const words=text.split(/(\s+)/);
+words.forEach(function(w,i){
+const span=document.createElement('span');
+span.textContent=w;
+span.style.cssText='display:inline-block;opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;transition-delay:'+(delayMs+i*40)+'ms';
+el.appendChild(span);
+requestAnimationFrame(function(){requestAnimationFrame(function(){span.style.opacity='1';span.style.transform='translateY(0)'})})})}
+
+// ── useTilt Hook + TiltCard ──
+function useTilt(ref){
+useEffect(function(){
+const el=ref.current;
+if(!el||_prefersReducedMotion.matches||'ontouchstart' in window)return;
+function onMove(e){
+const r=el.getBoundingClientRect();
+const x=(e.clientX-r.left)/r.width-.5;
+const y=(e.clientY-r.top)/r.height-.5;
+el.style.transform='perspective(800px) rotateX('+(-y*6)+'deg) rotateY('+(x*6)+'deg) translateY(-3px)';
+el.style.transition='transform .1s ease'}
+function onLeave(){el.style.transform='';el.style.transition='transform .4s ease'}
+el.addEventListener('mousemove',onMove);
+el.addEventListener('mouseleave',onLeave);
+return function(){el.removeEventListener('mousemove',onMove);el.removeEventListener('mouseleave',onLeave)}})}
+
+function TiltCard({children,...rest}){
+const ref=useRef(null);
+useTilt(ref);
+return h('div',Object.assign({},rest,{ref}),children)}
 
 // QUESTIONS
 const QS=[
@@ -470,7 +662,7 @@ const QS=[
 {id:'p89m78',test:'psat89',sec:'math',domain:'Geometry',diff:'medium',type:'mc',text:'Triangle: angles 48° and 67°. Third angle?',opts:['45°','65°','115°','245°'],ans:1,expl:'$180 - 48 - 67 = 65°$.',skill:'Triangles — angle sum'},
 {id:'p89m79',test:'psat89',sec:'math',domain:'Geometry',diff:'medium',type:'mc',text:'Circle radius 6 cm. Area of 90° sector? ($\\pi \\approx 3.14$)',opts:['9.42 cm²','28.26 cm²','56.52 cm²','113.04 cm²'],ans:1,expl:'$\\frac{90}{360} \\times \\pi(36) = \\frac{1}{4} \\times 36\\pi \\approx 28.26$.',skill:'Circles — sectors'},
 {id:'p89m80',test:'psat89',sec:'math',domain:'Geometry',diff:'medium',type:'gridin',text:'Ladder: base 5 ft from wall, reaches 12 ft up. Ladder length?',ans:'13',accept:['13'],expl:'$5^2 + 12^2 = 169 \\Rightarrow \\sqrt{169} = 13$. The 5-12-13 triple.',skill:'Pythagorean theorem'},
-{id:'p89m81',test:'psat89',sec:'math',domain:'Geometry',diff:'medium',type:'mc',text:'Parallel lines + transversal. One angle 125°. Which could NOT be another angle?',opts:['55°','125°','135°','55°'],ans:2,expl:'All angles are either 125° or 55° (supplement). 135° is impossible.',skill:'Parallel lines and transversals'},
+{id:'p89m81',test:'psat89',sec:'math',domain:'Geometry',diff:'medium',type:'mc',text:'Parallel lines + transversal. One angle 125°. Which could NOT be another angle?',opts:['55°','125°','135°','145°'],ans:2,expl:'All angles are either 125° or 55° (supplement). 135° is impossible.',skill:'Parallel lines and transversals'},
 // ==================== PSAT 8/9 R&W (existing) ====================
 {id:'p89r1',test:'psat89',sec:'rw',domain:'Craft and Structure',diff:'easy',type:'mc',text:'"The scientist\'s meticulous approach ensured reliable results." Meticulous means?',opts:['Careless','Thorough and precise','Quick','Innovative'],ans:1,expl:'Meticulous = great attention to detail.',skill:'Vocabulary in context'},
 {id:'p89r2',test:'psat89',sec:'rw',domain:'Standard English Conventions',diff:'easy',type:'mc',text:'"Neither the students _____ the teacher was prepared."',opts:['or','and','nor','but'],ans:2,expl:'Neither...nor is the correct correlative conjunction pair.',skill:'Standard English conventions'},
@@ -1720,7 +1912,11 @@ h('div',{className:'dash-tabs'},tabs.map(t=>h('button',{key:t,className:'dash-ta
 h('span',{className:'class-chip'+(selClassId==='my'||selClassId==='all'?' active':''),onClick:function(){setSelClassId(amAdmin&&adminMode?'all':'my')}},amAdmin&&adminMode?'All Students':'All My Classes'),
 classes.map(function(c){return h('span',{key:c.id,className:'class-chip'+(selClassId===c.id?' active':''),onClick:function(){setSelClassId(c.id)}},c.name+' ('+((c.studentUids||[]).length)+')')})):null,
 tab==='overview'&&h(Fragment,null,
-loading?h('div',{className:'empty-state'},h('div',{className:'empty-icon'},'⏳'),h('div',{className:'empty-text'},'Loading data...')):
+loading?h(Fragment,null,
+h('div',{className:'stat-grid'},
+h('div',{className:'skeleton skeleton-stat'}),h('div',{className:'skeleton skeleton-stat'}),
+h('div',{className:'skeleton skeleton-stat'}),h('div',{className:'skeleton skeleton-stat'})),
+h('div',{className:'skeleton skeleton-card'}),h('div',{className:'skeleton skeleton-card'})):
 h(Fragment,null,
 h('div',{className:'stat-grid'},
 h('div',{className:'stat-card'},h('div',{className:'stat-label'},'Questions'),h('div',{className:'stat-val'},QS.length),h('div',{className:'stat-sub'},'All tests')),
@@ -1742,7 +1938,9 @@ return h('div',{key:i,className:'history-item'},
 h('div',null,h('div',{style:{fontWeight:500}},s.name||'Student'),h('div',{className:'history-meta'},(TESTS[s.test]?.name||s.test)+' — '+(s.domain||'Mixed')+' — '+(s.mode==='test'?'🕐 Test':'Practice'))),
 h('div',{className:'history-score',style:{color:col}},(s.pct||0)+'%  ('+s.correct+'/'+s.total+')'))})))),
 tab==='students'&&h(Fragment,null,
-loading?h('div',{className:'empty-state'},h('div',{className:'empty-icon'},'⏳'),h('div',{className:'empty-text'},'Loading students...')):
+loading?h(Fragment,null,
+h('div',{className:'skeleton skeleton-row'}),h('div',{className:'skeleton skeleton-row'}),
+h('div',{className:'skeleton skeleton-row'}),h('div',{className:'skeleton skeleton-row'})):
 selStudent?h('div',{className:'animate-in'},
 h('div',{style:{display:'flex',alignItems:'center',gap:'12px',marginBottom:'20px'}},
 h('button',{className:'back-btn',onClick:closeStudent},'←'),
@@ -1788,7 +1986,17 @@ setErr('Login error ('+e.code+'): '+e.message);
 if(e.code==='auth/popup-blocked'||e.code==='auth/cancelled-popup-request'){
 try{await signInWithRedirect(auth,gp)}catch(e2){setErr('Login failed: '+e2.code+' - '+e2.message)}}}};
 const logout=async()=>{if(auth)await signOut(auth);else setUser(null);goHome()};
-const goHome=()=>{setView('home');setSelTest(null);setSelDom(null)};
+const transitionView=function(setter,newVal,extras){
+if(_prefersReducedMotion.matches){setter(newVal);if(extras)extras();return}
+const mc=document.querySelector('.main-content');
+if(mc)mc.classList.add('view-exiting');
+setTimeout(function(){setter(newVal);if(extras)extras();if(mc)mc.classList.remove('view-exiting')},200)};
+const goHome=()=>transitionView(setView,'home',function(){setSelTest(null);setSelDom(null)});
+// Toggle login-page ambient orb brightness
+useEffect(function(){document.body.classList.toggle('page-login',!user&&!loading)},[user,loading]);
+// Animation effects — runs after every render
+useEffect(function(){applyRipples();observeCards();applyCounters();
+var logo=document.querySelector('.login-logo');if(logo)wordReveal(logo,200)});
 // Load student's classes for non-teachers
 useEffect(()=>{if(!user||!user.uid)return;if(!isTchr){loadStudentClasses(user.uid).then(function(c){setStuClasses(c)})}},[user,isTchr]);
 // Load teacher's classes
@@ -1796,10 +2004,10 @@ useEffect(()=>{if(!user||!user.uid||!isTchr)return;loadTeacherClasses(user.uid).
 // Teacher: create class from home page
 const handleCreateClassHome=async function(){if(!newClassName.trim())return;setCreatingClass(true);var cls=await createClass(newClassName.trim(),user.uid,user.email||'',user.displayName||'');setCreatingClass(false);if(cls){setTchrClasses(function(prev){return prev.concat([cls])});setNewClassName('');setShowCreateClass(false)}else{alert('Failed to create class.')}};
 const handleDeleteClassHome=async function(cls){if(!confirm('Delete "'+cls.name+'"? This will remove all '+((cls.studentUids||[]).length)+' students from the class. This cannot be undone.'))return;var ok=await deleteClass(cls.id);if(ok){setTchrClasses(function(prev){return prev.filter(function(c){return c.id!==cls.id})})}else{alert('Failed to delete class.')}};
-if(loading)return h('div',{className:'login-screen'},h('div',{className:'login-logo',style:{animation:'pulse 1.5s infinite'}},'PANTHER',h('span',{className:'login-logo-accent'},'PREP')));
+if(loading)return h('div',{className:'login-screen'},h('div',{className:'login-mark-loading'},h('img',{src:'/android-chrome-192x192.png',alt:'PantherPrep',width:72,height:72})),h('div',{className:'login-logo',style:{animation:'pulse 1.5s infinite'}},'PANTHER',h('span',{className:'login-logo-accent'},'PREP')));
 
 if(!user)return h(Fragment,null,h('div',{className:'top-stripe'}),h('div',{className:'login-screen animate-in'},
-h('div',{className:'login-paw'},'🐾'),
+h('div',{className:'login-mark'},h('img',{src:'/android-chrome-192x192.png',alt:'PantherPrep logo',width:96,height:96})),
 h('div',{className:'login-logo'},'PANTHER',h('span',{className:'login-logo-accent'},'PREP')),
 h('div',{className:'login-tagline'},'Perth Amboy High School'),
 h('div',{className:'login-subtitle'},'Your personalized test prep practice hub for PSAT 8/9, PSAT/NMSQT, and SAT.'),
@@ -1811,7 +2019,7 @@ const name=(user.displayName||'Panther').split(' ')[0];
 const uid=user.uid||'demo';
 let content;
 
-if(view==='home')content=h(Fragment,null,
+if(view==='home')content=h('div',{className:'animate-in'},
 h('div',null,h('div',{className:'welcome-greeting'},`HEY, ${name.toUpperCase()} 🐾`),h('div',{className:'welcome-sub'},isTchr?'Manage your classes and choose a test to practice.':'Choose a test to start practicing.')),
 h(GamiBar,{uid,onStatsClick:()=>setView('stats')}),
 // Student: show classes and join button
@@ -1842,11 +2050,11 @@ isTchr&&h('div',{className:'test-card',style:{borderColor:'var(--panther-red)',c
 h('div',{className:'test-card-title'},'📊 Dashboard'),
 h('div',{className:'test-card-desc'},'View student analytics, manage questions, and class details.')),
 // Test cards
-Object.entries(TESTS).map(([k,v])=>{const mq=QS.filter(q=>q.test===k&&q.sec==='math').length;const rq=QS.filter(q=>q.test===k&&q.sec==='rw').length;return h('div',{key:k,className:'test-card',style:{'--card-accent':'var(--panther-red)'},onClick:()=>{setSelTest(k);setView('mode')}},h('div',{className:'test-card-title'},v.name),h('div',{className:'test-card-desc'},v.desc),h('div',{className:'test-card-stats'},h('span',{className:'test-stat'},h('strong',null,mq),' math'),h('span',{className:'test-stat'},h('strong',null,rq),' R&W')))})),
+Object.entries(TESTS).map(([k,v])=>{const mq=QS.filter(q=>q.test===k&&q.sec==='math').length;const rq=QS.filter(q=>q.test===k&&q.sec==='rw').length;return h(TiltCard,{key:k,className:'test-card',style:{'--card-accent':'var(--panther-red)'},onClick:()=>{setSelTest(k);transitionView(setView,'mode')}},h('div',{className:'test-card-title'},v.name),h('div',{className:'test-card-desc'},v.desc),h('div',{className:'test-card-stats'},h('span',{className:'test-stat'},h('strong',null,mq),' math'),h('span',{className:'test-stat'},h('strong',null,rq),' R&W')))})),
 );
 
-else if(view==='mode'){const info=TESTS[selTest];content=h('div',{className:'animate-in'},h('div',{className:'mode-header'},h('button',{className:'back-btn',onClick:goHome},'←'),h('div',{className:'mode-title'},info.name)),h('div',{className:'mode-grid'},h('div',{className:'mode-card',onClick:()=>setView('domain')},h('div',{className:'mode-card-icon'},'🎯'),h('div',{className:'mode-card-title'},'Practice Mode'),h('div',{className:'mode-card-desc'},'Choose a domain. Instant feedback after each question.')),h('div',{className:'mode-card',onClick:()=>setView('test')},h('div',{className:'mode-card-icon'},'⏱️'),h('div',{className:'mode-card-title'},'Test Mode'),h('div',{className:'mode-card-desc'},`${info.mins}-minute timed module. Mixed domains, scored at the end.`)),
-h('div',{className:'mode-card',onClick:function(){setView('diagpick')},style:{borderColor:'#a78bfa'}},h('div',{className:'mode-card-icon'},'🩺'),h('div',{className:'mode-card-title'},'Diagnostic Test'),h('div',{className:'mode-card-desc'},'Full-length diagnostic with adaptive modules, scoring, and detailed analysis.')),
+else if(view==='mode'){const info=TESTS[selTest];content=h('div',{className:'animate-in'},h('div',{className:'mode-header'},h('button',{className:'back-btn',onClick:goHome},'←'),h('div',{className:'mode-title'},info.name)),h('div',{className:'mode-grid'},h(TiltCard,{className:'mode-card',onClick:()=>setView('domain')},h('div',{className:'mode-card-icon'},'🎯'),h('div',{className:'mode-card-title'},'Practice Mode'),h('div',{className:'mode-card-desc'},'Choose a domain. Instant feedback after each question.')),h(TiltCard,{className:'mode-card',onClick:()=>setView('test')},h('div',{className:'mode-card-icon'},'⏱️'),h('div',{className:'mode-card-title'},'Test Mode'),h('div',{className:'mode-card-desc'},`${info.mins}-minute timed module. Mixed domains, scored at the end.`)),
+h(TiltCard,{className:'mode-card',onClick:function(){setView('diagpick')},style:{borderColor:'#a78bfa'}},h('div',{className:'mode-card-icon'},'🩺'),h('div',{className:'mode-card-title'},'Diagnostic Test'),h('div',{className:'mode-card-desc'},'Full-length diagnostic with adaptive modules, scoring, and detailed analysis.')),
 FULL_FILES[selTest]&&h('a',{href:FULL_FILES[selTest],className:'mode-card',style:{borderColor:'#22c55e',textDecoration:'none',color:'inherit',display:'block'}},h('div',{className:'mode-card-icon'},'📝'),h('div',{className:'mode-card-title'},'Full Practice Test'),h('div',{className:'mode-card-desc'},'Complete timed test with all sections, adaptive modules, and score report.')),selTest==='sat'&&h('a',{href:'/course/index.html',className:'mode-card',style:{borderColor:'var(--accent-purple)',textDecoration:'none',color:'inherit',display:'block'}},h('div',{className:'mode-card-icon'},'📚'),h('div',{className:'mode-card-title'},'SAT R&W Course'),h('div',{className:'mode-card-desc'},'18-module prep program covering every question type on the digital SAT Reading & Writing section.')),selTest==='sat'&&h('a',{href:'/math-course/index.html',className:'mode-card',style:{borderColor:'#60a5fa',textDecoration:'none',color:'inherit',display:'block'}},h('div',{className:'mode-card-icon'},'📐'),h('div',{className:'mode-card-title'},'SAT Math Course'),h('div',{className:'mode-card-desc'},'10-module prep program with Desmos mastery, strategy toolkit, tiered practice, and error analysis.')),selTest==='psat89'&&h('a',{href:'/psat89-rw-course/index.html',className:'mode-card',style:{borderColor:'var(--accent-purple)',textDecoration:'none',color:'inherit',display:'block'}},h('div',{className:'mode-card-icon'},'📚'),h('div',{className:'mode-card-title'},'PSAT 8/9 R&W Course'),h('div',{className:'mode-card-desc'},'10-module prep program with strategies, domain mastery, interactive exercises, and practice questions.')),selTest==='psat89'&&h('a',{href:'/psat89-math-course/index.html',className:'mode-card',style:{borderColor:'#60a5fa',textDecoration:'none',color:'inherit',display:'block'}},h('div',{className:'mode-card-icon'},'📐'),h('div',{className:'mode-card-title'},'PSAT 8/9 Math Course'),h('div',{className:'mode-card-desc'},'8-module math prep covering Algebra, Advanced Math, Problem-Solving & Data Analysis, and Geometry.')),selTest==='nmsqt'&&h('a',{href:'/nmsqt-rw-course/index.html',className:'mode-card',style:{borderColor:'var(--accent-purple)',textDecoration:'none',color:'inherit',display:'block'}},h('div',{className:'mode-card-icon'},'📚'),h('div',{className:'mode-card-title'},'PSAT/NMSQT R&W Course'),h('div',{className:'mode-card-desc'},'12-module prep program covering Craft & Structure, Information & Ideas, Expression of Ideas, and Conventions.')),selTest==='nmsqt'&&h('a',{href:'/nmsqt-math-course/index.html',className:'mode-card',style:{borderColor:'#60a5fa',textDecoration:'none',color:'inherit',display:'block'}},h('div',{className:'mode-card-icon'},'📐'),h('div',{className:'mode-card-title'},'PSAT/NMSQT Math Course'),h('div',{className:'mode-card-desc'},'8-module math prep covering Algebra, Advanced Math, Problem-Solving & Data Analysis, and Geometry & Trig.'))))}
 
 else if(view==='diagpick'){var dInfo=TESTS[selTest];var dFiles=DIAG_FILES[selTest]||{};
@@ -1858,11 +2066,11 @@ h('div',{className:'mode-grid'},
 hasMath&&h('a',{href:dFiles.math,className:'mode-card',style:{borderColor:'#60a5fa',textDecoration:'none',color:'inherit',display:'block'}},
 h('div',{className:'mode-card-icon'},'📐'),
 h('div',{className:'mode-card-title'},'Math'),
-h('div',{className:'mode-card-desc'},'44 questions · 2 adaptive modules · 70 minutes')),
+h('div',{className:'mode-card-desc'},selTest==='psat89'?'38 questions · 2 adaptive modules · 60 minutes':'44 questions · 2 adaptive modules · 70 minutes')),
 hasRW&&h('a',{href:dFiles.rw,className:'mode-card',style:{borderColor:'#a78bfa',textDecoration:'none',color:'inherit',display:'block'}},
 h('div',{className:'mode-card-icon'},'📖'),
 h('div',{className:'mode-card-title'},'Reading & Writing'),
-h('div',{className:'mode-card-desc'},'54 questions · 2 adaptive modules · 64 minutes'))))}
+h('div',{className:'mode-card-desc'},selTest==='psat89'?'40 questions · 2 adaptive modules · 60 minutes':'54 questions · 2 adaptive modules · 64 minutes'))))}
 
 else if(view==='domain'){const info=TESTS[selTest];const allD=[...new Set(QS.filter(q=>q.test===selTest).map(q=>q.domain))];const md=allD.filter(d=>MDOMS.includes(d));const rd=allD.filter(d=>RDOMS.includes(d));
 const sec=(t,ds)=>ds.length?h(Fragment,null,h('div',{className:'section-label'},t),h('div',{className:'domain-grid'},ds.map(d=>{const c=QS.filter(q=>q.test===selTest&&q.domain===d).length;return h('div',{key:d,className:'domain-card',onClick:()=>{setSelDom(d);setView('practice')}},h('div',{className:'domain-card-name'},d),h('div',{className:'domain-card-count'},c+' questions'))}))):null;
@@ -1874,10 +2082,10 @@ else if(view==='stats')content=h(StatsPage,{uid,onBack:goHome});
 else if(view==='dashboard')content=h(Dashboard,{onBack:goHome,user:user,initClasses:tchrClasses,setInitClasses:setTchrClasses});
 
 return h(Fragment,null,h('div',{className:'top-stripe'}),h('div',{className:'app-shell'},
-h('div',{className:'top-bar'},h('div',{className:'top-bar-brand',onClick:goHome},'PANTHER',h('span',null,'PREP')),h('div',{className:'top-bar-right'},h('span',{className:`top-bar-role ${isTchr?'role-teacher':'role-student'}`},isTchr?'Teacher':'Student'),h('span',{className:'user-name'},name),h('button',{className:'logout-btn',onClick:logout},'Sign Out'))),
+h('div',{className:'top-bar'},h('div',{className:'top-bar-brand',onClick:goHome},h('img',{src:'/android-chrome-192x192.png',alt:'',width:28,height:28}),'PANTHER',h('span',null,'PREP')),h('div',{className:'top-bar-right'},h('span',{className:`top-bar-role ${isTchr?'role-teacher':'role-student'}`},isTchr?'Teacher':'Student'),h('span',{className:'user-name'},name),h('button',{className:'logout-btn',onClick:logout},'Sign Out'))),
 h('div',{className:'main-content'},content)))}
 
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
 </script>
-<script src="/translate.js"></script></body>
+</body>
 </html>

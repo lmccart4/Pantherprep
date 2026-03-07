@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAT Math Diagnostic — PantherPrep</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
 <style>
 :root {
   --ink: #eaeaef;
@@ -292,13 +290,13 @@ D:"Linear model, not exponential. Bacteria don't grow at a constant rate."}},
 
 {num:13,module:1,type:"MC",passage:"",
 question:"If p(x) = x³ + 2x² − 5x − 6, which of the following is a factor of p(x)?",
-A:"(x − 1)",B:"(x + 1)",C:"(x − 3)",D:"(x + 3)",
+A:"(x − 1)",B:"(x + 4)",C:"(x − 3)",D:"(x + 3)",
 correct:"D",domain:"Advanced Math",skill:"Polynomial functions",
 explanations:{
 A:"p(1) = 1+2−5−6 = −8 ≠ 0.",
-B:"p(−1) = −1+2+5−6 = 0. Wait — this is also a factor! But let's check D.",
+B:"p(−4) = −64+32+20−6 = −18 ≠ 0.",
 C:"p(3) = 27+18−15−6 = 24 ≠ 0.",
-D:"p(−3) = −27+18+15−6 = 0. So (x+3) is a factor. ✓ (Note: (x+1) is also a factor; the polynomial factors as (x+1)(x−2)(x+3).)"}},
+D:"p(−3) = −27+18+15−6 = 0. So (x+3) is a factor. ✓ The polynomial factors as (x+1)(x−2)(x+3)."}},
 
 {num:14,module:1,type:"SPR",passage:"",
 question:'If (2x + 5)(x − 3) = 2x² + bx − 15, what is the value of b?',
@@ -622,14 +620,14 @@ let state = {
   moduleStartTime: null,
   module1Time: null,
   module2Time: null,
-  submitted: false,
+  submitted: {},
   showExplanation: {},
   timeLeft: 0,
   timerRef: null
 };
 
 function fmtTimer(s){var m=Math.floor(s/60),sec=s%60;return m+':'+(sec<10?'0':'')+sec;}
-function startTimer(secs){clearInterval(state.timerRef);state.timeLeft=secs;state.timerRef=setInterval(function(){state.timeLeft--;if(state.timeLeft<=0){clearInterval(state.timerRef);state.timeLeft=0;}var el=document.getElementById('diagTimer');if(el)el.textContent=fmtTimer(state.timeLeft);if(state.timeLeft<=60&&el)el.style.color='var(--wrong)';else if(state.timeLeft<=300&&el)el.style.color='var(--spr)';},1000);}
+function startTimer(secs){clearInterval(state.timerRef);state.timeLeft=secs;state.timerRef=setInterval(function(){state.timeLeft--;if(state.timeLeft<=0){clearInterval(state.timerRef);state.timeLeft=0;finishTest();}var el=document.getElementById('diagTimer');if(el)el.textContent=fmtTimer(state.timeLeft);if(state.timeLeft<=60&&el)el.style.color='var(--wrong)';else if(state.timeLeft<=300&&el)el.style.color='var(--spr)';},1000);}
 window.addEventListener('beforeunload',function(e){if(state.screen==='test'){e.preventDefault();e.returnValue='';}});
 
 function render() {
@@ -688,7 +686,7 @@ function renderTest() {
   const module = q.module;
   const moduleQs = ALL_QUESTIONS.filter(x => x.module === module);
   const moduleIdx = moduleQs.indexOf(q);
-  const isSubmitted = state.submitted;
+  const isSubmitted = state.submitted[q.num];
   const userAnswer = state.answers[q.num];
   const isFlagged = state.flags.has(q.num);
   const showExp = state.showExplanation[q.num];
@@ -815,9 +813,8 @@ function renderTest() {
 }
 
 function selectAnswer(letter) {
-  if(state.submitted) return;
+  if(state.submitted[ALL_QUESTIONS[state.currentQ].num]) return;
   state.answers[ALL_QUESTIONS[state.currentQ].num] = letter;
-  state.submitted = false;
   render();
 }
 
@@ -841,7 +838,7 @@ function handleSPRKey(e) {
 function checkAnswer() {
   const q = ALL_QUESTIONS[state.currentQ];
   if(state.answers[q.num] === undefined) return;
-  state.submitted = true;
+  state.submitted[q.num] = true;
   state.showExplanation[q.num] = true;
   render();
 }
@@ -866,21 +863,18 @@ function nextQ() {
     startTimer(35*60);
   }
   state.currentQ = Math.min(43, state.currentQ + 1);
-  state.submitted = false;
   render();
   window.scrollTo(0, 0);
 }
 
 function prevQ() {
   state.currentQ = Math.max(0, state.currentQ - 1);
-  state.submitted = state.answers[ALL_QUESTIONS[state.currentQ].num] !== undefined;
   render();
   window.scrollTo(0, 0);
 }
 
 function goToQ(idx) {
   state.currentQ = idx;
-  state.submitted = state.answers[ALL_QUESTIONS[state.currentQ].num] !== undefined;
   render();
   window.scrollTo(0, 0);
 }
@@ -1050,10 +1044,11 @@ function renderResults() {
 }
 
 function retakeTest() {
+  clearInterval(state.timerRef);
   state = {
     screen:'landing', currentQ:0, answers:{}, flags:new Set(),
     startTime:null, moduleStartTime:null, module1Time:null, module2Time:null,
-    submitted:false, showExplanation:{}
+    submitted:{}, showExplanation:{}, timeLeft:0, timerRef:null
   };
   render();
   window.scrollTo(0,0);
@@ -1062,5 +1057,5 @@ function retakeTest() {
 // Initialize
 render();
 </script>
-<script src="/translate.js"></script></body>
+</body>
 </html>

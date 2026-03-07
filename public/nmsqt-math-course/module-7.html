@@ -790,7 +790,7 @@ const DT_QS=[
   {q:'A car goes ~55 mph for 3.75 hours. Distance? Choices: 105, 165, 206, 412',correct:2,opts:['Solve Directly','Plug In','Ballpark + POE','Desmos'],fb:'~55\u00d74=220. Closest is 206. Exact: 55\u00d73.75=206.25.'},
   {q:'Which graph represents y = \u2212(x + 2)\u00b2 + 3?',correct:3,opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Graph it in Desmos and match. Vertex (\u22122, 3), opens down.'},
   {q:'For all x, which equals 2(3x \u2212 1) + 4(x + 5)? Choices have variables.',correct:1,opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Variables in choices \u2192 Plug In. Try x=2: 2(5)+4(7)=38. Test each.'},
-  {q:'Rectangle area = 48, length = width + 3. Width? Choices: 3, 4, 5, 6',correct:2,opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Number answers \u2192 Backsolve. Try 5: 5\u00d78=40 (too small). Try 6: 6\u00d79=54 (too big). Between 5 and 6.'},
+  {q:'Rectangle area = 40, length = width + 3. Width? Choices: 3, 4, 5, 6',correct:2,opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Number answers \u2192 Backsolve. Try 5: 5\u00d78=40. \u2713 Width = 5.'},
   {q:'If f(x) = 3x + 2, what is f(f(1))?',correct:0,opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'f(1)=5, f(5)=17. Direct solve is fastest.'},
   {q:'Find the line of best fit for 10 data points.',correct:3,opts:['Solve Directly','Plug In','Backsolve','Desmos'],fb:'Regression \u2192 Desmos table + y\u2081 ~ mx\u2081 + b. Only option.'},
 ];
@@ -996,6 +996,6 @@ function showPracticeResults(){
 }
 renderPST();
 </script>
-<script src="/translate.js"></script>
+
 </body>
 </html>

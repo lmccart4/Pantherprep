@@ -734,6 +734,10 @@ A:"Quadrant I",B:"Quadrant II",C:"Quadrant III",D:"Quadrant IV",correct:"B",
 explanations:{A:"QI: both positive.",B:"QII: x negative, y positive. (\u22123,4) \u2713",C:"QIII: both negative.",D:"QIV: x positive, y negative."}},
 ];
 const ALL=[...RW,...MATH];
+const SECTIONS=[
+{name:'Reading & Writing',short:'R&W',modules:[RW.filter(q=>q.module===1),RW.filter(q=>q.module===2)],time:[32,32]},
+{name:'Math',short:'Math',modules:[MATH.filter(q=>q.module===1),MATH.filter(q=>q.module===2)],time:[35,35]}
+];
 let S={screen:'landing',mode:'practice',checkMode:'after',si:0,mi:0,qi:0,ans:{},flags:new Set(),timers:{},timerInt:null,sub:{},exp:{},done:false};
 function qid(q){return q.sec+q.module+'_'+q.num;}
 function curQ(){return SECTIONS[S.si].modules[S.mi][S.qi];}
@@ -835,5 +839,5 @@ function setRTab(t){S._rTab=t;render();}
 function retake(){S={screen:'landing',mode:'practice',checkMode:'after',si:0,mi:0,qi:0,ans:{},flags:new Set(),timers:{},timerInt:null,sub:{},exp:{},done:false};render();scrollTo(0,0);}
 render();
 </script>
-<script src="/translate.js"></script></body>
+</body>
 </html>

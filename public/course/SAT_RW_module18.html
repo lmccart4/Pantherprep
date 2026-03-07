@@ -49,7 +49,7 @@ const btn = (bg, color, extra) => ({
   transition: "transform .12s",
   ...extra
 });
-const NAV = { prev: { label: "Module 17: Practice Test 2", file: "SAT RW module17.html" }, next: null };
+const NAV = { prev: { label: "Module 17: Practice Test 2", file: "SAT_RW_module17.html" }, next: null };
 function NavLinks() {
   return React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12, marginTop: 32, paddingTop: 24, borderTop: "1px solid " + BORDER } },
     NAV.prev && React.createElement("a", { href: NAV.prev.file, style: { ...btn("transparent", SUB), border: "1px solid " + BORDER, textDecoration: "none", fontSize: 13, padding: "10px 20px" } }, "\u2190 " + NAV.prev.label),
@@ -122,7 +122,7 @@ const DIAGNOSTIC = [
   {
     id: 3,
     domain: "conventions",
-    passage: "Neither the intense heat of the Sahara ______ the subzero temperatures of Antarctica has prevented extremophile bacteria from establishing thriving colonies in conditions once thought incompatible with life.",
+    passage: "Neither the intense heat of the Sahara ______ the subzero temperatures of Antarctica have prevented extremophile bacteria from establishing thriving colonies in conditions once thought incompatible with life.",
     stem: "Which choice completes the text so that it conforms to the conventions of Standard English?",
     choices: ["or", "and", "nor", "but"],
     answer: 2,

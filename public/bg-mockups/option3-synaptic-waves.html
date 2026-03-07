@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PantherPrep - Synaptic Waves Background</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f9f8f6;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: 'Manrope', sans-serif;
+  }
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+  }
+  .overlay {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 2rem;
+  }
+  .badge {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #d62828;
+    background: rgba(214, 40, 40, 0.08);
+    border: 1px solid rgba(214, 40, 40, 0.15);
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5.5rem;
+    font-weight: 400;
+    color: #1a1a1a;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  h1 span { color: #d62828; }
+  .subtitle {
+    font-size: 1.1rem;
+    color: #777;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 2.5rem;
+  }
+  .sample-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 16px;
+    padding: 2rem 3rem;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    max-width: 500px;
+    text-align: left;
+  }
+  .sample-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+  }
+  .sample-card p {
+    font-size: 0.9rem;
+    color: #888;
+    line-height: 1.7;
+  }
+  .label {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: #aaa;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    z-index: 10;
+    background: rgba(255,255,255,0.7);
+    padding: 8px 20px;
+    border-radius: 100px;
+    backdrop-filter: blur(8px);
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="overlay">
+  <div class="badge">Option 3 - Synaptic Waves</div>
+  <h1>Panther<span>Prep</span></h1>
+  <p class="subtitle">Your Path to Success</p>
+  <div class="sample-card">
+    <h3>Sample Content Card</h3>
+    <p>This is how content would appear overlaid on the synaptic wave background. Flowing neural signals propagate in layered wave patterns.</p>
+  </div>
+</div>
+<div class="label">Synaptic Waves - Neural Signal Propagation</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let w, h;
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+function resize() {
+  w = canvas.width = window.innerWidth * DPR;
+  h = canvas.height = window.innerHeight * DPR;
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+}
+
+// Wave layer config
+const waveLayers = [
+  { yBase: 0.20, amplitude: 40, frequency: 0.003, speed: 0.0008, opacity: 0.04, width: 2.5, color: [214, 40, 40] },
+  { yBase: 0.30, amplitude: 55, frequency: 0.002, speed: 0.0006, opacity: 0.06, width: 2, color: [214, 40, 40] },
+  { yBase: 0.40, amplitude: 35, frequency: 0.004, speed: 0.001, opacity: 0.03, width: 1.5, color: [214, 40, 40] },
+  { yBase: 0.50, amplitude: 65, frequency: 0.0015, speed: 0.0005, opacity: 0.07, width: 3, color: [214, 40, 40] },
+  { yBase: 0.60, amplitude: 45, frequency: 0.0025, speed: 0.0009, opacity: 0.04, width: 2, color: [200, 30, 30] },
+  { yBase: 0.70, amplitude: 50, frequency: 0.002, speed: 0.0007, opacity: 0.05, width: 2.5, color: [214, 40, 40] },
+  { yBase: 0.80, amplitude: 30, frequency: 0.0035, speed: 0.0012, opacity: 0.03, width: 1.5, color: [230, 60, 60] },
+  { yBase: 0.85, amplitude: 60, frequency: 0.0018, speed: 0.0004, opacity: 0.06, width: 2, color: [214, 40, 40] },
+];
+
+// Synaptic pulse: a bright spot traveling along a wave
+class SynapticPulse {
+  constructor(layerIdx) {
+    this.layerIdx = layerIdx;
+    this.x = -50;
+    this.speed = (Math.random() * 2 + 1.5) * DPR;
+    this.size = Math.random() * 4 + 3;
+    this.opacity = Math.random() * 0.3 + 0.2;
+    this.alive = true;
+  }
+  update() {
+    this.x += this.speed;
+    if (this.x > w + 50) this.alive = false;
+  }
+}
+
+let pulses = [];
+
+function getWaveY(layer, x, t) {
+  const baseY = layer.yBase * h;
+  const y = baseY
+    + Math.sin(x * layer.frequency + t * layer.speed * 1000) * layer.amplitude * DPR
+    + Math.sin(x * layer.frequency * 1.7 + t * layer.speed * 700 + 1.3) * layer.amplitude * 0.4 * DPR
+    + Math.sin(x * layer.frequency * 0.5 + t * layer.speed * 400 + 2.7) * layer.amplitude * 0.6 * DPR;
+  return y;
+}
+
+function drawWave(layer, t) {
+  ctx.beginPath();
+  for (let x = 0; x <= w; x += 2) {
+    const y = getWaveY(layer, x, t);
+    if (x === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  const [r, g, b] = layer.color;
+  ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${layer.opacity})`;
+  ctx.lineWidth = layer.width * DPR;
+  ctx.stroke();
+
+  // Fill below wave with gradient
+  ctx.lineTo(w, h);
+  ctx.lineTo(0, h);
+  ctx.closePath();
+  const grad = ctx.createLinearGradient(0, layer.yBase * h, 0, layer.yBase * h + 200 * DPR);
+  grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${layer.opacity * 0.3})`);
+  grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+  ctx.fillStyle = grad;
+  ctx.fill();
+}
+
+function drawPulses(t) {
+  pulses.forEach(pulse => {
+    pulse.update();
+    const layer = waveLayers[pulse.layerIdx];
+    const y = getWaveY(layer, pulse.x, t);
+
+    // Glow
+    const grad = ctx.createRadialGradient(pulse.x, y, 0, pulse.x, y, pulse.size * DPR * 6);
+    grad.addColorStop(0, `rgba(214, 40, 40, ${pulse.opacity * 0.4})`);
+    grad.addColorStop(0.5, `rgba(214, 40, 40, ${pulse.opacity * 0.1})`);
+    grad.addColorStop(1, 'rgba(214, 40, 40, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(pulse.x - pulse.size * 6 * DPR, y - pulse.size * 6 * DPR, pulse.size * 12 * DPR, pulse.size * 12 * DPR);
+
+    // Core
+    ctx.beginPath();
+    ctx.arc(pulse.x, y, pulse.size * DPR, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(214, 40, 40, ${pulse.opacity})`;
+    ctx.fill();
+  });
+  pulses = pulses.filter(p => p.alive);
+}
+
+function animate(t) {
+  ctx.clearRect(0, 0, w, h);
+
+  // Draw waves back to front
+  waveLayers.forEach((layer, i) => drawWave(layer, t));
+
+  // Spawn pulses
+  if (Math.random() < 0.02) {
+    const idx = Math.floor(Math.random() * waveLayers.length);
+    pulses.push(new SynapticPulse(idx));
+  }
+
+  drawPulses(t);
+
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', resize);
+resize();
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

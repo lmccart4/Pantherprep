@@ -628,7 +628,7 @@ function scoreDiag(){
   buildStudyPlan(domScores,domTotals);
 }
 function buildStudyPlan(domScores,domTotals){
-  var mods={'Algebra':'Module 2','Advanced Math':'Module 3','Problem-Solving & Data':'Module 4','Geometry & Trig':'Module 5'};
+  var mods={'Algebra':'Module 2','Advanced Math':'Module 3','Problem-Solving & Data':'Module 5','Geometry & Trig':'Module 6'};
   var weak=[],strong=[];
   Object.keys(domTotals).forEach(function(d){
     var pct=domTotals[d]>0?domScores[d]/domTotals[d]:1;
@@ -754,6 +754,6 @@ function updateScores(){
     '<div style="font-size:.88rem;color:#ccc;line-height:1.6">'+advice+'</div>';
 }
 </script>
-<script src="/translate.js"></script>
+
 </body>
 </html>

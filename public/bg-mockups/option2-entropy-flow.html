@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PantherPrep - Entropy Flow Background</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #faf9f7;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: 'Manrope', sans-serif;
+  }
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+  }
+  .overlay {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 2rem;
+  }
+  .badge {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #d62828;
+    background: rgba(214, 40, 40, 0.08);
+    border: 1px solid rgba(214, 40, 40, 0.15);
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5.5rem;
+    font-weight: 400;
+    color: #1a1a1a;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  h1 span { color: #d62828; }
+  .subtitle {
+    font-size: 1.1rem;
+    color: #777;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 2.5rem;
+  }
+  .sample-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 16px;
+    padding: 2rem 3rem;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    max-width: 500px;
+    text-align: left;
+  }
+  .sample-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+  }
+  .sample-card p {
+    font-size: 0.9rem;
+    color: #888;
+    line-height: 1.7;
+  }
+  .label {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: #aaa;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    z-index: 10;
+    background: rgba(255,255,255,0.7);
+    padding: 8px 20px;
+    border-radius: 100px;
+    backdrop-filter: blur(8px);
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="overlay">
+  <div class="badge">Option 2 - Entropy Flow</div>
+  <h1>Panther<span>Prep</span></h1>
+  <p class="subtitle">Your Path to Success</p>
+  <div class="sample-card">
+    <h3>Sample Content Card</h3>
+    <p>This is how content would appear overlaid on the entropy flow background. Particles scatter and recollect like heat dissipation patterns.</p>
+  </div>
+</div>
+<div class="label">Entropy Flow - Organic Particle Dissipation</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let w, h;
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+function resize() {
+  w = canvas.width = window.innerWidth * DPR;
+  h = canvas.height = window.innerHeight * DPR;
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+}
+
+// Entropy sources - points that emit particles
+class EntropySource {
+  constructor() {
+    this.reset();
+    this.life = Math.random() * 600 + 200;
+    this.maxLife = this.life;
+  }
+  reset() {
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+    this.life = Math.random() * 600 + 200;
+    this.maxLife = this.life;
+    this.emitRate = Math.random() * 0.3 + 0.1;
+  }
+  update() {
+    this.life--;
+    if (this.life <= 0) this.reset();
+  }
+}
+
+class Particle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.size = Math.random() * 3 + 0.5;
+    this.life = Math.random() * 300 + 100;
+    this.maxLife = this.life;
+    // Brownian motion parameters
+    this.vx = (Math.random() - 0.5) * 1.2;
+    this.vy = (Math.random() - 0.5) * 1.2;
+    this.entropy = Math.random(); // randomness factor
+    this.trail = [];
+    this.maxTrail = Math.floor(Math.random() * 8) + 3;
+  }
+  update() {
+    // Brownian / entropic motion
+    this.vx += (Math.random() - 0.5) * 0.15 * this.entropy;
+    this.vy += (Math.random() - 0.5) * 0.15 * this.entropy;
+    // Damping
+    this.vx *= 0.995;
+    this.vy *= 0.995;
+    // Slight upward drift (heat rises)
+    this.vy -= 0.008;
+
+    this.trail.push({ x: this.x, y: this.y });
+    if (this.trail.length > this.maxTrail) this.trail.shift();
+
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life--;
+  }
+  draw() {
+    const lifeRatio = this.life / this.maxLife;
+    const alpha = Math.sin(lifeRatio * Math.PI) * 0.5;
+
+    // Trail
+    if (this.trail.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(this.trail[0].x, this.trail[0].y);
+      for (let i = 1; i < this.trail.length; i++) {
+        ctx.lineTo(this.trail[i].x, this.trail[i].y);
+      }
+      ctx.lineTo(this.x, this.y);
+      ctx.strokeStyle = `rgba(214, 40, 40, ${alpha * 0.15})`;
+      ctx.lineWidth = this.size * 0.5;
+      ctx.stroke();
+    }
+
+    // Particle
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * DPR, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(214, 40, 40, ${alpha})`;
+    ctx.fill();
+
+    // Soft glow
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * DPR * 4, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(214, 40, 40, ${alpha * 0.05})`;
+    ctx.fill();
+  }
+  isDead() {
+    return this.life <= 0 || this.x < -50 || this.x > w + 50 || this.y < -50 || this.y > h + 50;
+  }
+}
+
+let sources = [];
+let particles = [];
+const MAX_PARTICLES = 400;
+
+function init() {
+  resize();
+  sources = Array.from({ length: 6 }, () => new EntropySource());
+  particles = [];
+}
+
+function animate(t) {
+  // Slight fade for motion blur effect
+  ctx.fillStyle = 'rgba(250, 249, 247, 0.12)';
+  ctx.fillRect(0, 0, w, h);
+
+  // Update sources and emit
+  sources.forEach(s => {
+    s.update();
+    if (Math.random() < s.emitRate && particles.length < MAX_PARTICLES) {
+      const spread = 40 * DPR;
+      const px = s.x + (Math.random() - 0.5) * spread;
+      const py = s.y + (Math.random() - 0.5) * spread;
+      particles.push(new Particle(px, py));
+    }
+  });
+
+  // Draw and update particles
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  // Remove dead particles
+  particles = particles.filter(p => !p.isDead());
+
+  // Occasional "entropy burst" - cluster of particles
+  if (Math.random() < 0.005) {
+    const bx = Math.random() * w;
+    const by = Math.random() * h;
+    const count = Math.floor(Math.random() * 15) + 5;
+    for (let i = 0; i < count && particles.length < MAX_PARTICLES; i++) {
+      const p = new Particle(
+        bx + (Math.random() - 0.5) * 20 * DPR,
+        by + (Math.random() - 0.5) * 20 * DPR
+      );
+      p.vx = (Math.random() - 0.5) * 3;
+      p.vy = (Math.random() - 0.5) * 3;
+      p.entropy = 0.8 + Math.random() * 0.2;
+      particles.push(p);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', init);
+init();
+// Clear initial frame
+ctx.fillStyle = '#faf9f7';
+ctx.fillRect(0, 0, w, h);
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
