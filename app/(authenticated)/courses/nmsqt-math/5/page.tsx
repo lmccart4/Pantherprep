@@ -562,7 +562,7 @@ const MODULE_CONFIG: ModuleConfig = {
     },
     {
       source: "Module 4 — Scatterplots",
-      stem: "In a line of best fit y = 2.5x + 15 (x = hours studied, y = test score), what does 2.5 represent?",
+      stem: "In a line of best fit $y = 2$.5x + 15 ($x = hours$ studied, $y = test$ score), what does 2.5 represent?",
       choices: ["The minimum score", "Total hours studied", "The starting score", "The predicted increase per hour"],
       correct: 3,
       explanation: "The slope (2.5) represents the rate of change — each additional hour predicts a 2.5-point increase.",

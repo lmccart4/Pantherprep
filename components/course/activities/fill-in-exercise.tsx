@@ -32,9 +32,9 @@ export function FillInExercise({
   const [answers, setAnswers] = useState<Record<number, { value: string; checked: boolean; correct: boolean }>>({});
 
   const total = items.length;
-  const checked = Object.values(answers).filter((a) => a.checked).length;
-  const correct = Object.values(answers).filter((a) => a.correct).length;
-  const allDone = checked === total;
+  const checked = items.filter((_, i) => answers[i]?.checked).length;
+  const correct = items.filter((_, i) => answers[i]?.correct).length;
+  const allDone = checked >= total;
 
   function checkAnswer(i: number) {
     const a = answers[i];
@@ -64,6 +64,7 @@ export function FillInExercise({
       <div className="space-y-4">
         {items.map((item, i) => {
           const a = answers[i];
+          const isText = typeof item.answer === "string";
           return (
             <div key={i} className="rounded-xl border border-border-default bg-bg-surface p-4">
               {item.tier && (
@@ -81,8 +82,8 @@ export function FillInExercise({
               <div className="flex items-center gap-3">
                 <span className="text-[.85rem] text-text-muted">Answer:</span>
                 <input
-                  type="number"
-                  step="any"
+                  type={isText ? "text" : "number"}
+                  step={isText ? undefined : "any"}
                   placeholder="?"
                   value={a?.value ?? ""}
                   onChange={(e) =>
@@ -92,7 +93,7 @@ export function FillInExercise({
                     }))
                   }
                   disabled={a?.checked}
-                  className="w-24 rounded-lg border border-border-default bg-bg-deep px-3 py-2 font-mono text-base text-text-primary focus:border-[var(--color-accent-blue)] focus:outline-none disabled:opacity-60"
+                  className={`${isText ? "w-36" : "w-24"} rounded-lg border border-border-default bg-bg-deep px-3 py-2 font-mono text-base text-text-primary focus:border-[var(--color-accent-blue)] focus:outline-none disabled:opacity-60`}
                 />
                 {!a?.checked && (
                   <button

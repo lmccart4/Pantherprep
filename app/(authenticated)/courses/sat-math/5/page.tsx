@@ -98,12 +98,12 @@ const RATIO_QS_EXERCISE_DATA: FillInItem[] = [
   {
     "prompt": "If 3 workers paint a house in 12 hours, how many hours for 4 workers?",
     "answer": 9,
-    "solution": "Inverse proportion: 3 × 12 = 36. So 4 × h = 36, h = 9."
+    "solution": "Inverse proportion: 3 × 12 = 36. So 4 × $h = 36$, $h = 9$."
   },
   {
     "prompt": "A recipe for 6 servings uses 2 cups of flour. How many cups for 15 servings?",
     "answer": 5,
-    "solution": "2/6 = x/15. Cross multiply: 6x = 30, x = 5 cups."
+    "solution": "2/6 = x/15. Cross multiply: $6x = 30$, $x = 5$ cups."
   },
   {
     "prompt": "A car travels 240 miles on 8 gallons. Miles per gallon?",
@@ -485,7 +485,7 @@ const MODULE_CONFIG: ModuleConfig = {
       visual: "formula-grid",
       body: [
         "Key formulas:",
-        "\u2022 **Proportion:** a/b = c/d \u2192 ad = bc",
+        "\u2022 **Proportion:** $a/b = c/d$ \u2192 ad = bc",
         "\u2022 **Unit Rate:** \"per\" = \u00F7",
         "\u2022 **Percent:** part/whole \u00D7 100",
         "\u2022 **Percent Change:** (new \u2212 old)/old \u00D7 100",
@@ -509,9 +509,9 @@ const MODULE_CONFIG: ModuleConfig = {
       title: "Direct vs. Inverse Proportion",
       subtitle: "Recognizing the relationship pattern",
       body: [
-        "**Direct proportion:** y = kx. As x increases, y increases. Doubling x doubles y.",
-        "**Inverse proportion:** y = k/x. As x increases, y decreases. Doubling x halves y.",
-        "To identify: if the product xy is constant \u2192 inverse. If the ratio y/x is constant \u2192 direct.",
+        "**Direct proportion:** $y = kx$. As x increases, y increases. Doubling x doubles y.",
+        "**Inverse proportion:** $y = k/x$. As x increases, y decreases. Doubling x halves y.",
+        "To identify: if the product xy is constant \u2192 inverse. If the ratio $y/x$ is constant \u2192 direct.",
       ],
     },
 
@@ -662,9 +662,9 @@ const MODULE_CONFIG: ModuleConfig = {
       skill: "ratios_rates",
     },
     {
-      stem: "A scatterplot line of best fit: y = 2.5x + 15 (x = hours studied, y = score). What does 2.5 mean?",
+      stem: "A scatterplot line of best fit: $y = 2$.5x + 15 ($x = hours$ studied, $y = score$). What does 2.5 mean?",
       choices: [
-        "Score when x = 0",
+        "Score when $x = 0$",
         "Total hours studied",
         "Predicted increase per hour studied",
         "Minimum score"

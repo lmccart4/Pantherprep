@@ -23,10 +23,10 @@ const DT_QS_EXERCISE: MatchingItem[] = [
       "Solve Directly"
     ],
     "correct": 1,
-    "explanation": "Variables in answer choices → Plug In. Try a=3: (9−4)/1=5. Check: a+2=5 ✓."
+    "explanation": "Variables in answer choices → Plug In. Try $a=3$: (9−4)/1=5. Check: $a+2=5$ ✓."
   },
   {
-    "prompt": "What is x if 5x − 3 = 2x + 9? Choices: 2, 3, 4, 5",
+    "prompt": "What is x if $5x − 3 = 2x + 9$? Choices: 2, 3, 4, 5",
     "options": [
       "Desmos",
       "Plug In",
@@ -37,7 +37,7 @@ const DT_QS_EXERCISE: MatchingItem[] = [
     "explanation": "Number answers → Backsolve. Try 4: 5(4)−3=17, 2(4)+9=17. ✓"
   },
   {
-    "prompt": "At what point do y = x² − 1 and y = 2x + 1 intersect?",
+    "prompt": "At what point do $y = x² − 1$ and $y = 2x + 1$ intersect?",
     "options": [
       "Desmos",
       "Solve Directly",
@@ -70,7 +70,7 @@ const DT_QS_EXERCISE: MatchingItem[] = [
     "explanation": "~55×4=220. Closest is 206. Exact: 55×3.75=206.25."
   },
   {
-    "prompt": "Which graph represents y = −(x + 2)² + 3?",
+    "prompt": "Which graph represents $y =$ −(x + 2)² + 3?",
     "options": [
       "Desmos",
       "Solve Directly",
@@ -89,7 +89,7 @@ const DT_QS_EXERCISE: MatchingItem[] = [
       "Solve Directly"
     ],
     "correct": 1,
-    "explanation": "Variables in choices → Plug In. Try x=2: 2(5)+4(7)=38. Test each."
+    "explanation": "Variables in choices → Plug In. Try $x=2$: 2(5)+4(7)=38. Test each."
   },
   {
     "prompt": "Rectangle area = 40, length = width + 3. Width? Choices: 3, 4, 5, 6",
@@ -136,7 +136,7 @@ const PI_QS_EXERCISE: MatchingItem[] = [
       "n + 1"
     ],
     "correct": 3,
-    "explanation": "Plug In n=3: (9+3)/3=4. n+1=4 ✓, n²=9 ✗, n−1=2 ✗, 2n=6 ✗."
+    "explanation": "Plug In $n=3$: (9+3)/3=4. $n+1=4$ ✓, $n²=9$ ✗, $n−1=2$ ✗, $2n=6$ ✗."
   },
   {
     "prompt": "Store reduces prices by p%. Item costs d dollars. Sale price?",
@@ -147,10 +147,10 @@ const PI_QS_EXERCISE: MatchingItem[] = [
       "dp/100"
     ],
     "correct": 2,
-    "explanation": "Plug In d=100, p=20: price=$80. d(1−p/100)=100(0.8)=80 ✓."
+    "explanation": "Plug In $d=100$, $p=20$: price=$80. d(1−p/100)=100(0.8)=80 ✓."
   },
   {
-    "prompt": "If x > 0, which equals <code>√(4x²)</code>?",
+    "prompt": "If $x > 0$, which equals <code>√(4x²)</code>?",
     "options": [
       "4x",
       "4x²",
@@ -158,7 +158,7 @@ const PI_QS_EXERCISE: MatchingItem[] = [
       "2x"
     ],
     "correct": 3,
-    "explanation": "Plug In x=3: √(36)=6. 2x=6 ✓, 4x=12 ✗."
+    "explanation": "Plug In $x=3$: √(36)=6. $2x=6$ ✓, $4x=12$ ✗."
   },
   {
     "prompt": "Which equals <code>(a + b)² − (a − b)²</code>?",
@@ -169,13 +169,13 @@ const PI_QS_EXERCISE: MatchingItem[] = [
       "4ab"
     ],
     "correct": 3,
-    "explanation": "Plug In a=2, b=3: 25−1=24. 4ab=24 ✓."
+    "explanation": "Plug In $a=2$, $b=3$: 25−1=24. 4ab=24 ✓."
   }
 ];
 
 const BS_QS_EXERCISE: MatchingItem[] = [
   {
-    "prompt": "If 2x + 5 = 17, what is x?",
+    "prompt": "If $2x + 5 = 17$, what is x?",
     "options": [
       "7",
       "6",
@@ -197,7 +197,7 @@ const BS_QS_EXERCISE: MatchingItem[] = [
     "explanation": "Try 8: 2(8)+3=19 ✓."
   },
   {
-    "prompt": "If x² − 5x = 14, what is a positive value of x?",
+    "prompt": "If $x² − 5x = 14$, what is a positive value of x?",
     "options": [
       "5",
       "14",
@@ -280,13 +280,13 @@ const BP_QS_EXERCISE: MatchingItem[] = [
 
 const GI_QS_EXERCISE: MatchingItem[] = [
   {
-    "prompt": "\"Find 2x if 3x = 15.\" Student entered: 5",
+    "prompt": "\"Find 2x if $3x = 15$.\" Student entered: 5",
     "options": [
       "Correct",
       "Trap!"
     ],
     "correct": 1,
-    "explanation": "x=5, but asked for 2x=10. Student answered x, not 2x!"
+    "explanation": "$x=5$, but asked for $2x=10$. Student answered x, not 2x!"
   },
   {
     "prompt": "\"What is 3/7 as a decimal?\" Student entered: 0.428",
@@ -298,13 +298,13 @@ const GI_QS_EXERCISE: MatchingItem[] = [
     "explanation": "3/7=0.42857… Truncated to 0.428 is accepted. Could also enter 3/7."
   },
   {
-    "prompt": "\"How many solutions does x²+4=0 have?\" Student entered: 2",
+    "prompt": "\"How many solutions does $x²+4=0$ have?\" Student entered: 2",
     "options": [
       "Correct",
       "Trap!"
     ],
     "correct": 1,
-    "explanation": "x²=−4 has NO real solutions. Answer: 0."
+    "explanation": "$x²=−4$ has NO real solutions. Answer: 0."
   },
   {
     "prompt": "\"What is the y-intercept?\" Student entered: (0, 5)",
@@ -322,10 +322,10 @@ const GI_QS_EXERCISE: MatchingItem[] = [
       "Correct"
     ],
     "correct": 1,
-    "explanation": "x=10 or x=−4. Grid-in accepts any correct value. 10 works."
+    "explanation": "$x=10$ or $x=−4$. Grid-in accepts any correct value. 10 works."
   },
   {
-    "prompt": "\"Positive difference between roots of x²−5x+6=0.\" Student entered: 3",
+    "prompt": "\"Positive difference between roots of $x²−5x+6=0$.\" Student entered: 3",
     "options": [
       "Correct",
       "Trap!"
@@ -345,10 +345,10 @@ const MIX_QS_EXERCISE: MatchingItem[] = [
       "k − 1"
     ],
     "correct": 0,
-    "explanation": "Plug In k=2: (8−2)/2=3. k²−1=3 ✓. Or simplify: k(k²−1)/k=k²−1."
+    "explanation": "Plug In $k=2$: (8−2)/2=3. $k²−1=3$ ✓. Or simplify: k(k²−1)/k=k²−1."
   },
   {
-    "prompt": "If 4x − 3 = 2x + 7, what is x?",
+    "prompt": "If $4x − 3 = 2x + 7$, what is x?",
     "options": [
       "2",
       "4",
@@ -356,7 +356,7 @@ const MIX_QS_EXERCISE: MatchingItem[] = [
       "5"
     ],
     "correct": 3,
-    "explanation": "Backsolve D) x=5: 4(5)−3=17, 2(5)+7=17. ✓"
+    "explanation": "Backsolve D) $x=5$: 4(5)−3=17, 2(5)+7=17. ✓"
   },
   {
     "prompt": "A circle has radius 8. Which is closest to its area?",
@@ -378,7 +378,7 @@ const MIX_QS_EXERCISE: MatchingItem[] = [
       "5"
     ],
     "correct": 1,
-    "explanation": "Desmos: Graph y=2^x and y=10. Intersection at x≈3.32."
+    "explanation": "Desmos: Graph y=2^x and $y=10$. Intersection at x≈3.32."
   }
 ];
 
@@ -559,10 +559,10 @@ const MODULE_CONFIG: ModuleConfig = {
     },
     {
       source: "Module 6 — Solutions",
-      stem: "How many real solutions does x² − 4x + 5 = 0 have? (Use Desmos approach)",
+      stem: "How many real solutions does $x² − 4x + 5 = 0$ have? (Use Desmos approach)",
       choices: ["1 — parabola touches x-axis once", "2 — parabola crosses x-axis twice", "0 — graph it, parabola stays above x-axis", "Cannot determine with Desmos"],
       correct: 2,
-      explanation: "Graph y = x² − 4x + 5 in Desmos. The parabola sits entirely above the x-axis — no x-intercepts, so 0 real solutions. Discriminant: 16−20 = −4 < 0.",
+      explanation: "Graph $y = x² − 4x + 5$ in Desmos. The parabola sits entirely above the x-axis — no x-intercepts, so 0 real solutions. Discriminant: 16−20 = −4 < 0.",
     },
     {
       source: "Module 6 — Shortcuts",
@@ -586,16 +586,16 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If a is a positive integer, which expression equals <code>(a² − 4)/(a − 2)</code>?",
       choices: ["a² − 2", "a − 2", "2a", "a + 2"],
       correct: 3,
-      explanation: "<strong>Plug In a=3:</strong> (9−4)/(3−2) = 5/1 = 5. a+2 = 5 ✓. Or factor: (a−2)(a+2)/(a−2) = a+2.",
+      explanation: "<strong>Plug In $a=3$:</strong> (9−4)/(3−2) = 5/1 = 5. $a+2 = 5$ ✓. Or factor: (a−2)(a+2)/(a−2) = a+2.",
       trap: "wrong_variable",
       trapAnswer: 1,
       trapDesc: "Picked a−2 instead of a+2 — solved for the wrong part of the factoring",
     },
     {
-      stem: "If 4x − 3 = 2x + 7, what is x?",
+      stem: "If $4x − 3 = 2x + 7$, what is x?",
       choices: ["2", "4", "3", "5"],
       correct: 3,
-      explanation: "<strong>Backsolve D) x=5:</strong> 4(5)−3=17, 2(5)+7=17. ✓ Equal!",
+      explanation: "<strong>Backsolve D) $x=5$:</strong> 4(5)−3=17, 2(5)+7=17. ✓ Equal!",
       trap: "intermediate_answer",
       trapAnswer: 2,
       trapDesc: "Stopped at an intermediate step instead of finishing the calculation",
@@ -613,7 +613,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "For what value of x does 2<sup>x</sup> = 10?",
       choices: ["10", "3.32", "3", "5"],
       correct: 1,
-      explanation: "<strong>Desmos:</strong> Graph y=2^x and y=10. Intersection at x≈3.32.",
+      explanation: "<strong>Desmos:</strong> Graph y=2^x and $y=10$. Intersection at x≈3.32.",
       trap: "negation_miss",
       trapAnswer: 0,
       trapDesc: "Rounded too aggressively — 3 is close but not precise enough",
@@ -622,7 +622,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "Worker earns d dollars/hr, works h hrs/week. Monthly (4-week) earnings?",
       choices: ["d + 4h", "4d + h", "dh/4", "4dh"],
       correct: 3,
-      explanation: "<strong>Plug In d=10, h=20:</strong> Weekly=$200, Monthly=$800. 4dh=800 ✓.",
+      explanation: "<strong>Plug In $d=10$, $h=20$:</strong> Weekly=$200, Monthly=$800. 4dh=800 ✓.",
       trap: "axis_scale",
       trapAnswer: 1,
       trapDesc: "Divided instead of multiplied — confused weekly-to-monthly direction",
@@ -649,7 +649,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If f(x) = x² − 6x + 5, for what value of x is f(x) at its minimum?",
       choices: ["−4", "5", "1", "3"],
       correct: 3,
-      explanation: "<strong>Desmos:</strong> Graph it, click vertex → (3, −4). The x-value is 3. <strong>Algebra:</strong> x = −(−6)/(2·1) = 3.",
+      explanation: "<strong>Desmos:</strong> Graph it, click vertex → (3, −4). The x-value is 3. <strong>Algebra:</strong> $x =$ −(−6)/(2·1) = 3.",
       trap: "at_least_vs_more",
       trapAnswer: 3,
       trapDesc: "Entered the minimum VALUE of f(x) instead of the x-value where the minimum occurs",

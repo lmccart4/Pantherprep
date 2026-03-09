@@ -5,6 +5,7 @@ import type { ModuleConfig } from "@/types/module";
 import { MatchingExercise, type MatchingItem } from "@/components/course/activities/matching-exercise";
 import { RoutingSimulator } from "@/components/course/activities/routing-simulator";
 import { ErrorAnalysisWorksheet } from "@/components/course/activities/error-analysis-worksheet";
+import { ScoreProjector } from "@/components/course/activities/score-projector";
 import { MiniDiagnostic } from "@/components/course/mini-diagnostic";
 import { CompleteScreen } from "@/components/course/complete-screen";
 import { WorksheetScreen } from "./worksheet-screen";
@@ -151,6 +152,16 @@ export default function PSAT89RWModule1() {
         "worksheet": (goNext: () => void) => (
           <WorksheetScreen onComplete={goNext} />
         ),
+        "score-projector": (goNext: () => void) => (
+          <ScoreProjector
+            testType="psat89"
+            section="rw"
+            maxM1={27}
+            maxM2={27}
+            accentColor={MODULE_CONFIG.accentColor}
+            onComplete={goNext}
+          />
+        ),
         "complete": () => (
           <CompleteScreen
             title="Module 1 Complete!"
@@ -196,6 +207,7 @@ const MODULE_CONFIG: ModuleConfig = {
     { id: "exercise-ec-qs", label: "Error Classification", icon: "zap" },
     { id: "error-worksheet", label: "Error Analysis Worksheet", icon: "zap" },
     { id: "worksheet", label: "Worksheet", icon: "clipboard" },
+    { id: "score-projector", label: "Score Projector", icon: "chart" },
     { id: "complete", label: "Complete", icon: "trophy" },
   ],
 
@@ -253,15 +265,6 @@ const MODULE_CONFIG: ModuleConfig = {
         "The PSAT 8/9 is your starting line, not your finish line. Every test in the SAT Suite shares the same scale \u2014 so a 500 here means the same thing as a 500 on the SAT.",
       ],
       visual: "growth",
-    },
-    {
-      id: "score-projector",
-      title: "Score Projector",
-      subtitle: "Interactive Tool",
-      body: [
-        "Enter your raw scores after a practice test to estimate your scaled score and see where you stand relative to the college readiness benchmarks.",
-      ],
-      visual: "score-projector",
     },
   ],
 

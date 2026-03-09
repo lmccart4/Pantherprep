@@ -22,7 +22,7 @@ const SKILL_QS_EXERCISE: MatchingItem[] = [
       "Graph the function"
     ],
     "correct": 3,
-    "explanation": "Graph y = 2x² − 5x − 3 and click the x-intercepts. Desmos gives exact solutions."
+    "explanation": "Graph $y = 2x² − 5x − 3$ and click the x-intercepts. Desmos gives exact solutions."
   },
   {
     "prompt": "A data table shows 8 points. Find the best-fit line equation.",
@@ -44,7 +44,7 @@ const SKILL_QS_EXERCISE: MatchingItem[] = [
       "Use a slider"
     ],
     "correct": 3,
-    "explanation": "Graph y = x² and y = kx + 2 with a slider for k. Adjust until the line is tangent to the parabola."
+    "explanation": "Graph $y = x²$ and $y = kx + 2$ with a slider for k. Adjust until the line is tangent to the parabola."
   },
   {
     "prompt": "Graph the solution region for <code>y < 3x − 1</code> AND <code>y ≥ −x + 4</code>.",
@@ -123,10 +123,10 @@ const DD_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "Find the vertex of f(x) = 3x² − 12x + 7.",
     "answer": "Desmos",
-    "solution": "Graph it → Desmos labels the vertex. Faster than computing −b/2a and plugging in."
+    "solution": "Graph it → Desmos labels the vertex. Faster than computing $−b/2a$ and plugging in."
   },
   {
-    "prompt": "Solve the system: y = 2x − 1, y = −x + 5.",
+    "prompt": "Solve the system: $y = 2x − 1$, $y = −x + 5$.",
     "answer": "Desmos",
     "solution": "Graph both, click intersection. 3 seconds."
   },
@@ -136,7 +136,7 @@ const DD_QS_EXERCISE: FillInItem[] = [
     "solution": "25% = ¼. 400/4 = 100. Instant mental math."
   },
   {
-    "prompt": "How many solutions does x² + 4x + 5 = 0 have?",
+    "prompt": "How many solutions does $x² + 4x + 5 = 0$ have?",
     "answer": "Desmos",
     "solution": "Graph it. Parabola above x-axis → 0 solutions. Faster than discriminant."
   },
@@ -151,7 +151,7 @@ const DD_QS_EXERCISE: FillInItem[] = [
     "solution": "Combine like terms: x² + 6x. No calculator needed."
   },
   {
-    "prompt": "Where do y = |x − 3| and y = 2 intersect?",
+    "prompt": "Where do $y =$ |x − 3| and $y = 2$ intersect?",
     "answer": "Desmos",
     "solution": "Absolute value intersections are messy. Graph both and click."
   },
@@ -161,9 +161,9 @@ const DD_QS_EXERCISE: FillInItem[] = [
     "solution": "7 + 3 = 10. Don't even open the calculator."
   },
   {
-    "prompt": "For what value of a does y = ax² pass through (3, 18)?",
+    "prompt": "For what value of a does $y = ax²$ pass through (3, 18)?",
     "answer": "Desmos",
-    "solution": "Type y = ax² with slider. Adjust until curve hits (3, 18). Or algebra: 18 = 9a → a = 2."
+    "solution": "Type $y = ax²$ with slider. Adjust until curve hits (3, 18). Or algebra: 18 = 9a → $a = 2$."
   }
 ];
 
@@ -284,14 +284,14 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "The equation (x+2)² + (y−3)² = 16 represents a circle. What is the center?",
       choices: ["(2, −3)", "(−2, −3)", "(−2, 3)", "(2, 3)"],
       correct: 2,
-      explanation: "Standard form: (x−h)²+(y−k)²=r². Here h=−2, k=3. Center is (−2, 3). The signs flip inside the parentheses!",
+      explanation: "Standard form: (x−h)²+(y−k)²=r². Here $h=−2$, $k=3$. Center is (−2, 3). The signs flip inside the parentheses!",
     },
     {
       source: "Module 5 — Volume",
       stem: "A cone has the same base and height as a cylinder with volume 60π. What is the cone's volume?",
       choices: ["30π", "20π", "60π", "180π"],
       correct: 1,
-      explanation: "Cone volume = ⅓ × cylinder volume = ⅓ × 60π = 20π. Cones are always one-third of their corresponding cylinder.",
+      explanation: "Cone volume = ⅓ × cylinder volume = ⅓ × $60π = 20π$. Cones are always one-third of their corresponding cylinder.",
     },
     {
       source: "Module 5 — Trigonometry",
@@ -305,7 +305,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If sin(x) = cos(55°), what is x?",
       choices: ["125°", "55°", "45°", "35°"],
       correct: 3,
-      explanation: "sin(x) = cos(90°−x). So if sin(x) = cos(55°), then x = 90° − 55° = 35°. Complementary angles!",
+      explanation: "sin(x) = cos(90°−x). So if sin(x) = cos(55°), then $x =$ 90° − 55° = 35°. Complementary angles!",
     },
   ],
 
@@ -313,9 +313,9 @@ const MODULE_CONFIG: ModuleConfig = {
   quiz: [
     {
       stem: "What are the solutions of <code>x² − 3x − 10 = 0</code>?",
-      choices: ["x = −2 and x = 5", "x = 2 and x = 5", "x = 2 and x = −5", "x = −2 and x = −5"],
+      choices: ["$x = −2$ and $x = 5$", "$x = 2$ and $x = 5$", "$x = 2$ and $x = −5$", "$x = −2$ and $x = −5$"],
       correct: 0,
-      explanation: "<strong>Desmos:</strong> Graph y = x² − 3x − 10, click x-intercepts → (−2, 0) and (5, 0). <strong>Algebra:</strong> Factor (x−5)(x+2) = 0.",
+      explanation: "<strong>Desmos:</strong> Graph $y = x² − 3x − 10$, click x-intercepts → (−2, 0) and (5, 0). <strong>Algebra:</strong> Factor (x−5)(x+2) = 0.",
       trap: "intersection_misread",
       trapAnswer: 3,
       trapDesc: "Misread the signs of the x-intercepts — Intersection Misread",
@@ -324,7 +324,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "At what point do <code>y = 3x − 2</code> and <code>y = −x + 6</code> intersect?",
       choices: ["(1, 1)", "(3, 7)", "(4, 2)", "(2, 4)"],
       correct: 3,
-      explanation: "<strong>Desmos:</strong> Graph both, click intersection → (2, 4). <strong>Algebra:</strong> 3x−2 = −x+6 → 4x = 8 → x=2, y=4.",
+      explanation: "<strong>Desmos:</strong> Graph both, click intersection → (2, 4). <strong>Algebra:</strong> $3x−2 = −x+6$ → $4x = 8$ → $x=2$, $y=4$.",
       trapAnswer: 0,
       trapDesc: "Graphing both lines finds the intersection instantly",
     },
@@ -332,7 +332,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "What is the vertex of <code>f(x) = −2x² + 8x − 3</code>?",
       choices: ["(2, −3)", "(−2, −27)", "(4, −3)", "(2, 5)"],
       correct: 3,
-      explanation: "<strong>Desmos:</strong> Graph it, click vertex → (2, 5). <strong>Algebra:</strong> x = −8/(2·−2) = 2, f(2) = −8+16−3 = 5.",
+      explanation: "<strong>Desmos:</strong> Graph it, click vertex → (2, 5). <strong>Algebra:</strong> $x =$ −8/(2·−2) = 2, f(2) = −8+16−3 = 5.",
       trap: "setup_trap",
       trapAnswer: 3,
       trapDesc: "Tried algebra and made a sign error — Setup Trap: Desmos was faster here",
@@ -341,14 +341,14 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "How many real solutions does <code>2x² − 4x + 5 = 0</code> have?",
       choices: ["2", "0", "Cannot determine", "1"],
       correct: 1,
-      explanation: "<strong>Desmos:</strong> Graph y = 2x² − 4x + 5. Parabola stays above x-axis → 0 solutions. <strong>Algebra:</strong> Disc = 16 − 40 = −24 < 0.",
+      explanation: "<strong>Desmos:</strong> Graph $y = 2x² − 4x + 5$. Parabola stays above x-axis → 0 solutions. <strong>Algebra:</strong> Disc = 16 − 40 = −24 < 0.",
       trap: "mental_math",
       trapAnswer: 2,
       trapDesc: "Assumed 2 solutions without checking — Mental Math Trap",
     },
     {
       stem: "The data points (1,3), (2,5), (3,8), (4,10), (5,13) are best modeled by:",
-      choices: ["y = x² + 2", "y = 3x − 1", "y = 2x + 1", "y = 2.5x + 0.5"],
+      choices: ["$y = x² + 2$", "$y = 3x − 1$", "$y = 2x + 1$", "$y = 2$.5x + 0.5"],
       correct: 3,
       explanation: "<strong>Desmos:</strong> Enter as table, run y₁ ~ mx₁ + b → m ≈ 2.5, b ≈ 0.5. Always use regression for best-fit.",
       trap: "cas_illusion",
@@ -368,16 +368,16 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If <code>f(x) = x³ − 6x² + 11x − 6</code>, how many positive x-intercepts?",
       choices: ["3", "2", "0", "1"],
       correct: 0,
-      explanation: "<strong>Desmos:</strong> Graph it. Three crossings at x=1, 2, 3. All positive. <strong>Algebra:</strong> Factor (x−1)(x−2)(x−3)=0.",
+      explanation: "<strong>Desmos:</strong> Graph it. Three crossings at $x=1$, 2, 3. All positive. <strong>Algebra:</strong> Factor (x−1)(x−2)(x−3)=0.",
       trap: "intersection_misread",
       trapAnswer: 1,
       trapDesc: "Only zoomed in enough to see one crossing — Intersection Misread",
     },
     {
       stem: "Where does <code>y = |x − 4| + 1</code> intersect <code>y = 5</code>?",
-      choices: ["x = 0 only", "x = 0 and x = 8", "x = −1 and x = 9", "x = 4 only"],
+      choices: ["$x = 0$ only", "$x = 0$ and $x = 8$", "$x = −1$ and $x = 9$", "$x = 4$ only"],
       correct: 1,
-      explanation: "<strong>Desmos:</strong> Graph both, click intersections. <strong>Algebra:</strong> |x−4|+1=5 → |x−4|=4 → x−4=±4 → x=0 or x=8.",
+      explanation: "<strong>Desmos:</strong> Graph both, click intersections. <strong>Algebra:</strong> |x−4|+1=5 → |x−4|=4 → x−4=±4 → $x=0$ or $x=8$.",
       trap: "setup_trap",
       trapAnswer: 1,
       trapDesc: "Forgot the absolute value creates two solutions — Setup Trap",

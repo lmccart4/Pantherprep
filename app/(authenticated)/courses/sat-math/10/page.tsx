@@ -53,7 +53,7 @@ export default function SATMathModule10() {
 
 const CONF_EXERCISE_DATA: MatchingItem[] = [
   {
-    "prompt": "The equation 3x + 7 = 22 asks you to solve for x.",
+    "prompt": "The equation $3x + 7 = 22$ asks you to solve for x.",
     "options": [
       "Backsolve",
       "Solve algebraically (fast arithmetic)",
@@ -61,7 +61,7 @@ const CONF_EXERCISE_DATA: MatchingItem[] = [
       "Graph in Desmos"
     ],
     "correct": 1,
-    "explanation": "This is simple algebra: 3x = 15, x = 5. No need for Desmos on single-step problems."
+    "explanation": "This is simple algebra: $3x = 15$, $x = 5$. No need for Desmos on single-step problems."
   },
   {
     "prompt": "If f(x) = ax² + 3 and f(2) = 11, find a.",
@@ -72,7 +72,7 @@ const CONF_EXERCISE_DATA: MatchingItem[] = [
       "Flag and skip"
     ],
     "correct": 1,
-    "explanation": "f(2) = 4a + 3 = 11 → 4a = 8 → a = 2. Algebra is fast here, or use a Desmos slider."
+    "explanation": "f(2) = $4a + 3 = 11$ → $4a = 8$ → $a = 2$. Algebra is fast here, or use a Desmos slider."
   },
   {
     "prompt": "Which expression is equivalent to (2x−1)(x+3)/(x+3)?",
@@ -86,7 +86,7 @@ const CONF_EXERCISE_DATA: MatchingItem[] = [
     "explanation": "Cancel (x+3): answer is (2x−1). Direct simplification is fastest."
   },
   {
-    "prompt": "For all x > 0, which is equivalent to √(x³·y⁶)?",
+    "prompt": "For all $x > 0$, which is equivalent to √(x³·y⁶)?",
     "options": [
       "Graph in Desmos",
       "Solve algebraically",
@@ -94,10 +94,10 @@ const CONF_EXERCISE_DATA: MatchingItem[] = [
       "Backsolve"
     ],
     "correct": 2,
-    "explanation": "Variables in choices → Plug In! Try x = 4, y = 1: √(64·1) = 8. Test each choice with x=4, y=1."
+    "explanation": "Variables in choices → Plug In! Try $x = 4$, $y = 1$: √(64·1) = 8. Test each choice with $x=4$, $y=1$."
   },
   {
-    "prompt": "At what point do y = x² − 4x + 3 and y = x − 1 intersect?",
+    "prompt": "At what point do $y = x² − 4x + 3$ and $y = x − 1$ intersect?",
     "options": [
       "Solve algebraically",
       "Plug In",
@@ -119,7 +119,7 @@ const CONF_EXERCISE_DATA: MatchingItem[] = [
     "explanation": "Sum = 5 × 12 = 60. New sum = 90. New mean = 90/6 = 15. Quick arithmetic."
   },
   {
-    "prompt": "What value of x satisfies: x/3 + x/4 = 7?",
+    "prompt": "What value of x satisfies: $x/3 + x/4 = 7$?",
     "options": [
       "Flag and skip",
       "Plug In",
@@ -127,7 +127,7 @@ const CONF_EXERCISE_DATA: MatchingItem[] = [
       "Backsolve from choices"
     ],
     "correct": 3,
-    "explanation": "If choices are numbers, try each one. x = 12: 12/3 + 12/4 = 4 + 3 = 7 ✓. Backsolve wins."
+    "explanation": "If choices are numbers, try each one. $x = 12$: 12/3 + 12/4 = 4 + 3 = 7 ✓. Backsolve wins."
   },
   {
     "prompt": "A study randomly surveyed 500 people and found a correlation between sleep and GPA. What can be concluded?",
@@ -141,7 +141,7 @@ const CONF_EXERCISE_DATA: MatchingItem[] = [
     "explanation": "This is a study design question. No random assignment → no causation. Only association. Random sample → can generalize. No calculation required."
   },
   {
-    "prompt": "How many real solutions does x⁴ − 5x² + 4 = 0 have?",
+    "prompt": "How many real solutions does $x⁴ − 5x² + 4 = 0$ have?",
     "options": [
       "Plug In",
       "Graph in Desmos",
@@ -149,10 +149,10 @@ const CONF_EXERCISE_DATA: MatchingItem[] = [
       "Solve algebraically"
     ],
     "correct": 1,
-    "explanation": "Graph y = x⁴ − 5x² + 4. Count x-intercepts: 4 solutions at x = ±1, ±2. Desmos shows this instantly."
+    "explanation": "Graph $y = x⁴ − 5x² + 4$. Count x-intercepts: 4 solutions at $x =$ ±1, ±2. Desmos shows this instantly."
   },
   {
-    "prompt": "For the numbers in answer choices A through D, which value of k makes the system y = kx + 2 and y = x² have no solution?",
+    "prompt": "For the numbers in answer choices A through D, which value of k makes the system $y = kx + 2$ and $y = x²$ have no solution?",
     "options": [
       "Backsolve",
       "Plug In",
@@ -160,7 +160,7 @@ const CONF_EXERCISE_DATA: MatchingItem[] = [
       "Desmos slider for k"
     ],
     "correct": 3,
-    "explanation": "Graph y = x² and y = kx + 2 with a slider for k. Adjust until the line doesn't touch the parabola. Visual + fast."
+    "explanation": "Graph $y = x²$ and $y = kx + 2$ with a slider for k. Adjust until the line doesn't touch the parabola. Visual + fast."
   }
 ];
 
@@ -382,7 +382,7 @@ const MODULE_CONFIG: ModuleConfig = {
       ],
       correct: 0,
       explanation:
-        "Plug In x=4, y=1: $\\sqrt{64 \\cdot 1} = 8$. $4^{3/2} \\cdot 1^3 = 8$ ✓. Or: $\\sqrt{x^3 y^6} = x^{3/2} y^3$.",
+        "Plug In $x=4$, $y=1$: $\\sqrt{64 \\cdot 1} = 8$. $4^{3/2} \\cdot 1^3 = 8$ ✓. Or: $\\sqrt{x^3 y^6} = x^{3/2} y^3$.",
       difficulty: "medium",
       domain: "Algebra",
       skill: "linear_equations",
@@ -412,7 +412,7 @@ const MODULE_CONFIG: ModuleConfig = {
       choices: ["8", "14", "12", "10"],
       correct: 2,
       explanation:
-        "Backsolve: x = 12: 12/3 + 12/4 = 4 + 3 = 7 ✓.",
+        "Backsolve: $x = 12$: 12/3 + 12/4 = 4 + 3 = 7 ✓.",
       difficulty: "medium",
       domain: "Algebra",
       skill: "linear_equations",

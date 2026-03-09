@@ -19,7 +19,7 @@ const RAT_EXERCISE: FillInItem[] = [
   {
     "prompt": "A recipe needs 3 cups of flour for every 2 cups of sugar. If you use 9 cups of flour, how many cups of sugar?",
     "answer": 6,
-    "solution": "3/2 = 9/x → 3x = 18 → x = 6.",
+    "solution": "3/2 = $9/x$ → $3x = 18$ → $x = 6$.",
     "tier": 1
   },
   {
@@ -49,7 +49,7 @@ const RAT_EXERCISE: FillInItem[] = [
   {
     "prompt": "If 40% of a number is 28, what is the number?",
     "answer": 70,
-    "solution": "0.40n = 28 → n = 70.",
+    "solution": "0.40n = 28 → $n = 70$.",
     "tier": 2
   },
   {
@@ -409,7 +409,7 @@ const MODULE_CONFIG: ModuleConfig = {
       subtitle: "Correlation, Regression & Predictions",
       visual: "scatterplots",
       body: [
-        "The slope of the line of best fit represents the rate of change in context. The y-intercept is the predicted value when x = 0.",
+        "The slope of the line of best fit represents the rate of change in context. The y-intercept is the predicted value when $x = 0$.",
         "Interpolation (within data range) is reliable. Extrapolation (beyond data range) is unreliable \u2014 the trend may not continue.",
       ],
     },
@@ -446,9 +446,9 @@ const MODULE_CONFIG: ModuleConfig = {
     {
       source: "Module 3 — Quadratics",
       stem: "What are the x-intercepts of <code>f(x) = (x−3)(x+5)</code>?",
-      choices: ["x = 3 and x = −5", "x = −3 and x = −5", "x = 3 and x = 5", "x = −3 and x = 5"],
+      choices: ["$x = 3$ and $x = −5$", "$x = −3$ and $x = −5$", "$x = 3$ and $x = 5$", "$x = −3$ and $x = 5$"],
       correct: 0,
-      explanation: "Set each factor to 0: x−3=0 → x=3, x+5=0 → x=−5.",
+      explanation: "Set each factor to 0: $x−3=0$ → $x=3$, $x+5=0$ → $x=−5$.",
     },
     {
       source: "Module 3 — Vertex Form",
@@ -462,7 +462,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "How many real solutions does <code>x² + 6x + 10 = 0</code> have?",
       choices: ["2", "0", "3", "1"],
       correct: 1,
-      explanation: "b²−4ac = 36−40 = −4 < 0 → no real solutions.",
+      explanation: "$b²−4ac = 36−40$ = −4 < 0 → no real solutions.",
     },
     {
       source: "Module 3 — Growth/Decay",
@@ -503,9 +503,9 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If boys to girls is 3:5 and there are 24 boys, how many girls?",
       choices: ["30", "45", "35", "40"],
       correct: 3,
-      explanation: "3/5 = 24/g → g = 40.",
+      explanation: "3/5 = $24/g$ → $g = 40$.",
       trapAnswer: 2,
-      trapDesc: "Cross-multiply correctly: 3g=5×24=120, g=40 is correct",
+      trapDesc: "Cross-multiply correctly: 3g=5×24=120, $g=40$ is correct",
     },
     {
       stem: "A store raises prices 20% then gives 20% off. Compared to original, the final price is:",
@@ -560,7 +560,7 @@ const MODULE_CONFIG: ModuleConfig = {
   ],
   takeaways: [
     "PSDA is ~15% of the test but built on skills from middle school -- highest ROI for study time.",
-    "Cross-multiply to solve proportions: a/b = c/d -> ad = bc.",
+    "Cross-multiply to solve proportions: $a/b = c/d$ -> ad = bc.",
     "Percent multiplier shortcut: increase = x (1 + rate), decrease = x (1 - rate).",
     "Successive percent changes don't cancel! Each change applies to the new amount.",
     "Mean is pulled by outliers. Median resists them. This is the PSAT's favorite stat question.",

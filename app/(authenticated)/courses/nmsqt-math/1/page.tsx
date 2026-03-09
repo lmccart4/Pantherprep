@@ -86,7 +86,7 @@ export default function NMSQTMathModule1() {
 
 const EC_QS_EXERCISE_DATA: MatchingItem[] = [
   {
-    "prompt": "A student solved 3x \u2212 7 = 14 and got x = 3. When checking: 3(3) \u2212 7 = 2 \u2260 14. They made an arithmetic error dividing 21 by 3.",
+    "prompt": "A student solved 3x \u2212 7 = 14 and got $x = 3$. When checking: 3(3) \u2212 7 = 2 \u2260 14. They made an arithmetic error dividing 21 by 3.",
     "options": [
       "Careless Error",
       "Content Gap",
@@ -97,7 +97,7 @@ const EC_QS_EXERCISE_DATA: MatchingItem[] = [
     "explanation": "This is a Careless Error. The student knows the method but made a simple calculation mistake. Fix: slow down and check by substituting back."
   },
   {
-    "prompt": "A student sees \u201cwhat is the value of 3x + 2?\u201d and solves for x instead. They get x = 4, choose 4, and it\u2019s wrong. The answer was 3(4)+2 = 14.",
+    "prompt": "A student sees \u201cwhat is the value of 3x + 2?\u201d and solves for x instead. They get $x = 4$, choose 4, and it\u2019s wrong. The answer was 3(4)+2 = 14.",
     "options": [
       "Misread/Trap",
       "Content Gap",
@@ -108,7 +108,7 @@ const EC_QS_EXERCISE_DATA: MatchingItem[] = [
     "explanation": "This is a Misread/Trap. The student solved for x but the question asked for 3x + 2. This is the #1 most common PSAT math trap. Fix: circle or underline exactly what the question asks for."
   },
   {
-    "prompt": "A student can\u2019t remember how to find the vertex of a quadratic in standard form. They guess by plugging in x = 0.",
+    "prompt": "A student can\u2019t remember how to find the vertex of a quadratic in standard form. They guess by plugging in $x = 0$.",
     "options": [
       "Careless Error",
       "Time Pressure",
@@ -116,7 +116,7 @@ const EC_QS_EXERCISE_DATA: MatchingItem[] = [
       "Strategy Gap"
     ],
     "correct": 2,
-    "explanation": "This is a Content Gap. The student doesn\u2019t know the vertex formula (x = \u2212b/2a). Fix: study quadratic forms in Module 3."
+    "explanation": "This is a Content Gap. The student doesn\u2019t know the vertex formula ($x =$ \u2212b/2a). Fix: study quadratic forms in Module 3."
   },
   {
     "prompt": "A student runs out of time with 4 questions left. They had spent 3+ minutes on a hard question earlier that they ended up guessing on anyway.",
@@ -130,7 +130,7 @@ const EC_QS_EXERCISE_DATA: MatchingItem[] = [
     "explanation": "This is a Time Pressure error caused by poor time management. Fix: use the two-pass strategy \u2014 skip hard questions on the first pass, return with remaining time."
   },
   {
-    "prompt": "A student multiplies both sides of \u22122x > 8 by \u22121 and gets x > \u22124. The correct answer is x < \u22124.",
+    "prompt": "A student multiplies both sides of \u22122x > 8 by \u22121 and gets $x >$ \u22124. The correct answer is $x <$ \u22124.",
     "options": [
       "Careless Error",
       "Time Pressure",
@@ -175,10 +175,10 @@ const MODULE_CONFIG: ModuleConfig = {
     { id: "lesson", label: "Lesson", icon: "lesson" },
     { id: "checklist", label: "Checklist", icon: "clipboard" },
     { id: "activity-routing", label: "Routing Simulator", icon: "zap" },
-    { id: "score-projector", label: "Score Projector", icon: "chart" },
     { id: "quiz", label: "Practice Quiz", icon: "target" },
     { id: "exercise-ec-qs", label: "Error Classification", icon: "zap" },
     { id: "error-worksheet", label: "Error Analysis Worksheet", icon: "zap" },
+    { id: "score-projector", label: "Score Projector", icon: "chart" },
     { id: "complete", label: "Complete", icon: "complete" },
   ],
   lessons: [
@@ -248,9 +248,8 @@ const MODULE_CONFIG: ModuleConfig = {
       id: "baseline-protocol",
       title: "Baseline Assessment & Study Plan",
       subtitle: "Full Baseline",
-      visual: "score-projector",
       body: [
-        "After the diagnostic, take a full-length PSAT Math section using the Bluebook app. Enter your raw scores in the projector above to estimate your scaled score.",
+        "After the diagnostic, take a full-length PSAT Math section using the Bluebook app. You'll use the Score Projector (coming up after your error analysis) to estimate your scaled score.",
         "Complete an Error Analysis for every missed AND uncertain question: record the question number, domain, topic, error type, and what you should have done differently.",
         "Identify your top 3 priority areas based on error analysis. These will guide which modules to focus the most attention on throughout the course.",
       ],
@@ -263,7 +262,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If <code>3(2x − 5) = 4x + 7</code>, what is the value of <code>x</code>?",
       choices: ["22/6", "11", "8", "9"],
       correct: 1,
-      explanation: "Distribute: 6x − 15 = 4x + 7. Subtract 4x: 2x = 22. x = 11.",
+      explanation: "Distribute: $6x − 15 = 4x + 7$. Subtract 4x: $2x = 22$. $x = 11$.",
       domain: "Algebra",
     },
     {
@@ -284,21 +283,21 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "The line through (−1, 4) and (3, 12) has slope:",
       choices: ["1/2", "−2", "4", "2"],
       correct: 3,
-      explanation: "m = (12−4)/(3−(−1)) = 8/4 = 2.",
+      explanation: "$m =$ (12−4)/(3−(−1)) = 8/4 = 2.",
       domain: "Algebra",
     },
     {
       stem: "If <code>|2x − 5| = 9</code>, what is the sum of all solutions?",
       choices: ["5", "9", "7", "12"],
       correct: 0,
-      explanation: "2x−5=9 → x=7. 2x−5=−9 → x=−2. Sum = 7+(−2) = 5.",
+      explanation: "$2x−5=9$ → $x=7$. $2x−5=−9$ → $x=−2$. Sum = 7+(−2) = 5.",
       domain: "Algebra",
     },
     {
       stem: "What are the solutions to <code>x² − 5x + 6 = 0</code>?",
-      choices: ["x = −2 and x = −3", "x = −1 and x = −6", "x = 2 and x = 3", "x = 1 and x = 6"],
+      choices: ["$x = −2$ and $x = −3$", "$x = −1$ and $x = −6$", "$x = 2$ and $x = 3$", "$x = 1$ and $x = 6$"],
       correct: 2,
-      explanation: "Factor: (x−2)(x−3) = 0. x = 2 or x = 3.",
+      explanation: "Factor: (x−2)(x−3) = 0. $x = 2$ or $x = 3$.",
       domain: "Advanced Math",
     },
     {
@@ -319,7 +318,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "The vertex of <code>y = x² − 8x + 12</code> is at:",
       choices: ["(4, 12)", "(−4, 4)", "(4, −4)", "(8, 12)"],
       correct: 2,
-      explanation: "x = −b/2a = 8/2 = 4. y = 16−32+12 = −4. Vertex (4,−4).",
+      explanation: "$x = −b/2a$ = 8/2 = 4. $y = 16−32+12$ = −4. Vertex (4,−4).",
       domain: "Advanced Math",
     },
     {
@@ -375,7 +374,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "A circle has area 36π. Its circumference?",
       choices: ["12π", "18π", "6π", "36π"],
       correct: 0,
-      explanation: "r²=36 → r=6. C=2πr=12π.",
+      explanation: "$r²=36$ → $r=6$. C=2πr=12π.",
       domain: "Geometry & Trig",
     },
     {
@@ -389,7 +388,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "The circle <code>(x−3)² + (y+1)² = 25</code> has center:",
       choices: ["(−3, 1)", "(3, −1)", "(3, 1)", "(−3, −1)"],
       correct: 1,
-      explanation: "(x−h)²+(y−k)²=r². h=3, k=−1. Center (3,−1).",
+      explanation: "(x−h)²+(y−k)²=r². $h=3$, $k=−1$. Center (3,−1).",
       domain: "Geometry & Trig",
     },
     {

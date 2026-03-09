@@ -107,7 +107,7 @@ const SPD_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: <code>x + 5 = 12</code>",
     "answer": "Algebra",
-    "solution": "One-step — just subtract 5 mentally. x = 7. Desmos is overkill."
+    "solution": "One-step — just subtract 5 mentally. $x = 7$. Desmos is overkill."
   },
   {
     "prompt": "Solve the system: <code>3x − 2y = 7</code> and <code>5x + y = 19</code>",
@@ -122,7 +122,7 @@ const SPD_EXERCISE: FillInItem[] = [
   {
     "prompt": "Find the vertex of <code>y = 2x² − 12x + 22</code>",
     "answer": "Desmos",
-    "solution": "Graph it and click the vertex point. Instant. Algebra would require −b/2a then substitution."
+    "solution": "Graph it and click the vertex point. Instant. Algebra would require $−b/2a$ then substitution."
   },
   {
     "prompt": "A study finds a correlation between exercise and grades. Can we conclude exercise causes better grades?",
@@ -132,7 +132,7 @@ const SPD_EXERCISE: FillInItem[] = [
   {
     "prompt": "Find x: <code>|2x − 6| = 10</code>",
     "answer": "Desmos",
-    "solution": "Graph y = |2x − 6| and y = 10, click both intersections. Avoids the two-case algebra."
+    "solution": "Graph $y =$ |2x − 6| and $y = 10$, click both intersections. Avoids the two-case algebra."
   },
   {
     "prompt": "If f(x) = x² + 3x − 10, what is f(−2)?",
@@ -142,7 +142,7 @@ const SPD_EXERCISE: FillInItem[] = [
   {
     "prompt": "Where do <code>y = x² − 1</code> and <code>y = 2x + 2</code> intersect?",
     "answer": "Desmos",
-    "solution": "Graph both, click dots. The algebraic method (x² − 2x − 3 = 0 → factor) works too, but Desmos is faster."
+    "solution": "Graph both, click dots. The algebraic method ($x² − 2x − 3 = 0$ → factor) works too, but Desmos is faster."
   },
   {
     "prompt": "In a two-way table, what is P(Math | 9th grade)?",
@@ -152,7 +152,7 @@ const SPD_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: <code>2(x+3) = 4x − 8</code>",
     "answer": "Algebra",
-    "solution": "Distribute, combine: 2x + 6 = 4x − 8 → 14 = 2x → x = 7. Quick enough algebraically."
+    "solution": "Distribute, combine: $2x + 6 = 4x − 8$ → 14 = 2x → $x = 7$. Quick enough algebraically."
   }
 ];
 
@@ -327,7 +327,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "The equation <code>(x−2)²+(y+3)²=25</code> has center:",
       choices: ["(2, 3)", "(−2, 3)", "(2, −3)", "(−2, −3)"],
       correct: 2,
-      explanation: "(x−2) → h=2. (y+3) = (y−(−3)) → k=−3. Center: (2, −3).",
+      explanation: "(x−2) → $h=2$. (y+3) = (y−(−3)) → $k=−3$. Center: (2, −3).",
     },
     {
       source: "Module 5 — Special Triangles",
@@ -401,7 +401,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "What is the y-intercept of <code>y = 3x − 7</code>?",
       choices: ["7", "−3", "3", "−7"],
       correct: 3,
-      explanation: "Graph it. The line crosses the y-axis at (0, −7). Or: plug in x=0 → y = −7.",
+      explanation: "Graph it. The line crosses the y-axis at (0, −7). Or: plug in $x=0$ → $y = −7$.",
       trapAnswer: 0,
       trapDesc: "3 is the slope, not the y-intercept",
     },
@@ -415,7 +415,7 @@ const MODULE_CONFIG: ModuleConfig = {
     },
     {
       stem: "The quadratic <code>y = x² − 4x − 5</code> has zeros at:",
-      choices: ["x = 1 and x = −5", "x = 1 and x = 5", "x = −1 and x = −5", "x = −1 and x = 5"],
+      choices: ["$x = 1$ and $x = −5$", "$x = 1$ and $x = 5$", "$x = −1$ and $x = −5$", "$x = −1$ and $x = 5$"],
       correct: 3,
       explanation: "Graph it. The parabola crosses x-axis at (−1, 0) and (5, 0).",
       trapAnswer: 0,
@@ -425,7 +425,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "What is the vertex of <code>y = −x² + 6x − 5</code>?",
       choices: ["(6, −5)", "(3, −4)", "(−3, 4)", "(3, 4)"],
       correct: 3,
-      explanation: "Graph and click the peak → (3, 4). Maximum because a < 0.",
+      explanation: "Graph and click the peak → (3, 4). Maximum because $a < 0$.",
       trapAnswer: 1,
       trapDesc: "(−3,4) — flipped the sign of h in vertex form",
     },
@@ -433,15 +433,15 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "The line <code>y = mx + 2</code> passes through (4, 10). What is m?",
       choices: ["4", "8", "3", "2"],
       correct: 3,
-      explanation: "Slider: set y = mx + 2, slide m until it passes through (4,10). Or: 10 = 4m + 2 → m = 2.",
+      explanation: "Slider: set $y = mx + 2$, slide m until it passes through (4,10). Or: 10 = 4m + 2 → $m = 2$.",
       trapAnswer: 2,
-      trapDesc: "Plugged in wrong: 10=4m+2, m=2 not 4",
+      trapDesc: "Plugged in wrong: 10=4m+2, $m=2$ not 4",
     },
     {
       stem: "Which value of x satisfies <code>|2x − 8| = 6</code>? Select all.",
-      choices: ["x = 1", "x = 1 and x = 7", "x = 7", "x = −1 and x = 7"],
+      choices: ["x = 1", "$x = 1$ and $x = 7$", "x = 7", "$x = −1$ and $x = 7$"],
       correct: 1,
-      explanation: "Graph y = |2x−8| and y = 6. Intersections at x = 1 and x = 7.",
+      explanation: "Graph $y =$ |2x−8| and $y = 6$. Intersections at $x = 1$ and $x = 7$.",
       trapAnswer: 0,
       trapDesc: "Only found one solution, missed the second",
     },
@@ -449,25 +449,25 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "The inequality <code>y > −x + 5</code> is satisfied by which point?",
       choices: ["(1, 2)", "(0, 5)", "(2, 5)", "(0, 3)"],
       correct: 2,
-      explanation: "Graph y > −x + 5. Shading is above the line. (2,5): 5 > −2+5 = 3 ✓.",
+      explanation: "Graph $y > −x + 5$. Shading is above the line. (2,5): 5 > −2+5 = 3 ✓.",
       trapAnswer: 1,
       trapDesc: "(0,5) is ON the boundary, not above it (strict inequality)",
     },
     {
       stem: "For what value of k does the system <code>y = 2x + k</code> and <code>y = 2x − 3</code> have no solution?",
-      choices: ["k = 3", "k = 0", "Any k ≠ −3", "k = −3"],
+      choices: ["k = 3", "k = 0", "Any $k ≠ −3$", "k = −3"],
       correct: 2,
-      explanation: "Same slope (2) → parallel. No solution unless same line. Any k ≠ −3 → parallel (no solution).",
+      explanation: "Same slope (2) → parallel. No solution unless same line. Any $k ≠ −3$ → parallel (no solution).",
       trapAnswer: 0,
-      trapDesc: "k=−3 would make them the same line (infinite solutions, not zero)",
+      trapDesc: "$k=−3$ would make them the same line (infinite solutions, not zero)",
     },
     {
       stem: "Data: (1,2), (2,5), (3,7), (4,10), (5,13). The regression line y₁~mx₁+b gives approximately:",
-      choices: ["y = 3x − 1", "y = 2.5x + 0.5", "y = 2.7x − 0.7", "y = 2x + 1"],
+      choices: ["$y = 3x − 1$", "$y = 2$.5x + 0.5", "$y = 2$.7x − 0.7", "$y = 2x + 1$"],
       correct: 2,
-      explanation: "Enter table, run regression. m ≈ 2.7, b ≈ −0.7. Close to but not exactly y = 3x − 1.",
+      explanation: "Enter table, run regression. m ≈ 2.7, b ≈ −0.7. Close to but not exactly $y = 3x − 1$.",
       trapAnswer: 1,
-      trapDesc: "y=3x−1 is too steep — regression gives m≈2.7, not 3",
+      trapDesc: "$y=3x−1$ is too steep — regression gives m≈2.7, not 3",
     },
   ],
   takeaways: [

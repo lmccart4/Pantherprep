@@ -106,7 +106,7 @@ const EVALS_EXERCISE_DATA: FillInItem[] = [
   {
     "prompt": "f(x) = (x + 1)(x − 3). Find f(3).",
     "answer": 0,
-    "solution": "(3+1)(3−3) = (4)(0) = 0. x = 3 is a zero of f!"
+    "solution": "(3+1)(3−3) = (4)(0) = 0. $x = 3$ is a zero of f!"
   },
   {
     "prompt": "g(x) = |2x − 8|. Find g(1).",
@@ -124,13 +124,13 @@ const DR_QS_EXERCISE_DATA: MatchingItem[] = [
   {
     "prompt": "f(x) = 1/(x − 3). What is the domain?",
     "options": [
-      "All real numbers except x = 3",
+      "All real numbers except $x = 3$",
       "x > 0",
       "x ≥ 3",
       "All real numbers"
     ],
     "correct": 0,
-    "explanation": "Denominator can't be 0. x − 3 = 0 when x = 3, so exclude x = 3."
+    "explanation": "Denominator can't be 0. $x − 3 = 0$ when $x = 3$, so exclude $x = 3$."
   },
   {
     "prompt": "f(x) = √(x − 5). What is the domain?",
@@ -141,7 +141,7 @@ const DR_QS_EXERCISE_DATA: MatchingItem[] = [
       "x ≥ 0"
     ],
     "correct": 0,
-    "explanation": "Expression under square root must be ≥ 0. x − 5 ≥ 0 → x ≥ 5."
+    "explanation": "Expression under square root must be ≥ 0. $x − 5 ≥ 0$ → $x ≥ 5$."
   },
   {
     "prompt": "f(x) = x² + 1. What is the range?",
@@ -152,7 +152,7 @@ const DR_QS_EXERCISE_DATA: MatchingItem[] = [
       "y ≥ 1"
     ],
     "correct": 3,
-    "explanation": "x² is always ≥ 0, so x² + 1 ≥ 1. Minimum output is 1 (when x = 0)."
+    "explanation": "x² is always ≥ 0, so $x² + 1 ≥ 1$. Minimum output is 1 (when $x = 0$)."
   },
   {
     "prompt": "f(x) = −(x − 2)² + 9. What is the range?",
@@ -163,7 +163,7 @@ const DR_QS_EXERCISE_DATA: MatchingItem[] = [
       "y ≥ 9"
     ],
     "correct": 0,
-    "explanation": "Vertex at (2, 9), opens downward (a = −1). Maximum output is 9."
+    "explanation": "Vertex at (2, 9), opens downward ($a = −1$). Maximum output is 9."
   },
   {
     "prompt": "A function models the height of a ball: h(t) = −16t² + 64t. What is a reasonable domain?",
@@ -174,7 +174,7 @@ const DR_QS_EXERCISE_DATA: MatchingItem[] = [
       "All real numbers"
     ],
     "correct": 1,
-    "explanation": "In context, time can't be negative. The ball hits the ground at t = 4, so 0 ≤ t ≤ 4 is the most precise domain (but t ≥ 0 is the contextual minimum)."
+    "explanation": "In context, time can't be negative. The ball hits the ground at $t = 4$, so 0 ≤ $t ≤ 4$ is the most precise domain (but $t ≥ 0$ is the contextual minimum)."
   },
   {
     "prompt": "f(x) = |x|. What is the range?",
@@ -185,7 +185,7 @@ const DR_QS_EXERCISE_DATA: MatchingItem[] = [
       "y ≥ 1"
     ],
     "correct": 1,
-    "explanation": "Absolute value is always non-negative. |x| ≥ 0 for all x. Range is y ≥ 0."
+    "explanation": "Absolute value is always non-negative. |x| ≥ 0 for all x. Range is $y ≥ 0$."
   }
 ];
 
@@ -333,10 +333,10 @@ const BEH_QS_EXERCISE_DATA: MatchingItem[] = [
       "Increases then decreases"
     ],
     "correct": 0,
-    "explanation": "Linear with positive slope (m = 3). Always increasing."
+    "explanation": "Linear with positive slope ($m = 3$). Always increasing."
   },
   {
-    "prompt": "f(x) = −x² + 4. On the interval x > 0, f(x)…",
+    "prompt": "f(x) = −x² + 4. On the interval $x > 0$, f(x)…",
     "options": [
       "Decreases",
       "Increases then decreases",
@@ -344,7 +344,7 @@ const BEH_QS_EXERCISE_DATA: MatchingItem[] = [
       "Increases"
     ],
     "correct": 0,
-    "explanation": "This is a downward parabola with vertex at (0, 4). For x > 0, we're on the right side of the vertex → decreasing."
+    "explanation": "This is a downward parabola with vertex at (0, 4). For $x > 0$, we're on the right side of the vertex → decreasing."
   },
   {
     "prompt": "f(x) = 2ˣ. As x → −∞, f(x) approaches…",
@@ -358,26 +358,26 @@ const BEH_QS_EXERCISE_DATA: MatchingItem[] = [
     "explanation": "Exponential growth: as x gets very negative, 2ˣ gets tiny (0.5, 0.25, 0.125…) → approaches 0. The x-axis is a horizontal asymptote."
   },
   {
-    "prompt": "f(x) = 1/x. The graph has…",
+    "prompt": "f(x) = $1/x$. The graph has…",
     "options": [
-      "A horizontal asymptote at y = 1",
+      "A horizontal asymptote at $y = 1$",
       "No asymptotes",
-      "A hole at x = 0",
-      "A vertical asymptote at x = 0"
+      "A hole at $x = 0$",
+      "A vertical asymptote at $x = 0$"
     ],
     "correct": 3,
-    "explanation": "Can't divide by 0, so x = 0 is a vertical asymptote. The graph approaches but never touches the y-axis."
+    "explanation": "Can't divide by 0, so $x = 0$ is a vertical asymptote. The graph approaches but never touches the y-axis."
   },
   {
     "prompt": "f(x) = |x − 3|. The minimum value of f(x) is…",
     "options": [
-      "−3, occurring at x = 0",
-      "0, occurring at x = 3",
-      "3, occurring at x = 0",
+      "−3, occurring at $x = 0$",
+      "0, occurring at $x = 3$",
+      "3, occurring at $x = 0$",
       "No minimum"
     ],
     "correct": 1,
-    "explanation": "|x − 3| ≥ 0 always. It equals 0 when x = 3. The vertex of the V-shape is at (3, 0)."
+    "explanation": "|x − 3| ≥ 0 always. It equals 0 when $x = 3$. The vertex of the V-shape is at (3, 0)."
   },
   {
     "prompt": "f(x) = x³. The end behavior is…",
@@ -496,7 +496,7 @@ const MODULE_CONFIG: ModuleConfig = {
         "**f(5)** means: substitute 5 for x \u2192 2(5) + 3 = 13.",
         "**f(a + 1)** means: substitute (a + 1) for every x \u2192 2(a + 1) + 3 = 2a + 5.",
         "**f(x) = 0** means: find which x values make the output zero (the zeros/roots).",
-        "You can evaluate functions from equations, tables, or graphs. On a graph, f(3) means \"go to x = 3 and read the y-value.\"",
+        "You can evaluate functions from equations, tables, or graphs. On a graph, f(3) means \"go to $x = 3$ and read the y-value.\"",
       ],
     },
     {
@@ -540,8 +540,8 @@ const MODULE_CONFIG: ModuleConfig = {
         "\u2022 **f(x) \u2212 k** \u2192 Shift DOWN k units",
         "\u2022 **f(x \u2212 h)** \u2192 Shift RIGHT h units",
         "\u2022 **f(x + h)** \u2192 Shift LEFT h units",
-        "\u2022 **a\u00B7f(x)**, a > 1 \u2192 Vertical stretch (steeper/taller)",
-        "\u2022 **a\u00B7f(x)**, 0 < a < 1 \u2192 Vertical compression (flatter/shorter)",
+        "\u2022 **a\u00B7f(x)**, $a > 1$ \u2192 Vertical stretch (steeper/taller)",
+        "\u2022 **a\u00B7f(x)**, 0 < $a < 1$ \u2192 Vertical compression (flatter/shorter)",
         "\u2022 **\u2212f(x)** \u2192 Reflect over x-axis",
         "\u2022 **f(\u2212x)** \u2192 Reflect over y-axis",
         "**The #1 Trap:** Horizontal transformations work *backward*. `f(x \u2212 3)` shifts **RIGHT** 3, not left. The input needs to be 3 bigger to get the same output, so the graph moves right.",
@@ -680,7 +680,7 @@ const MODULE_CONFIG: ModuleConfig = {
       ],
       correct: 1,
       explanation:
-        "When x = 0, f(0) = \u22124 (minimum). As x increases, f(x) increases. Range: y \u2265 \u22124.",
+        "When $x = 0$, f(0) = \u22124 (minimum). As x increases, f(x) increases. Range: y \u2265 \u22124.",
       difficulty: "medium",
       type: "4A",
       trap: "imposter_domain",
@@ -691,12 +691,12 @@ const MODULE_CONFIG: ModuleConfig = {
       skill: "exponential_functions",
     },
     {
-      stem: "y = f(x) is reflected over the x-axis and shifted up 3. The result is:",
+      stem: "$y =$ f(x) is reflected over the x-axis and shifted up 3. The result is:",
       choices: [
-        "y = \u2212f(x + 3)",
-        "y = f(\u2212x + 3)",
-        "y = f(\u2212x) + 3",
-        "y = \u2212f(x) + 3"
+        "$y =$ \u2212f(x + 3)",
+        "$y =$ f(\u2212x + 3)",
+        "$y =$ f(\u2212x) + 3",
+        "$y =$ \u2212f(x) + 3"
       ],
       correct: 3,
       explanation:
@@ -731,11 +731,11 @@ const MODULE_CONFIG: ModuleConfig = {
       skill: "exponential_functions",
     },
     {
-      stem: "The system y = x\u00B2 + 2 and y = 4x \u2212 1 has how many real solutions?",
+      stem: "The system $y =$ x\u00B2 + 2 and $y = 4x$ \u2212 1 has how many real solutions?",
       choices: ["2", "Infinitely many", "1", "0"],
       correct: 0,
       explanation:
-        "Set equal: x\u00B2 + 2 = 4x \u2212 1 \u2192 x\u00B2 \u2212 4x + 3 = 0 \u2192 (x\u22121)(x\u22123) = 0. Two solutions.",
+        "Set equal: x\u00B2 + 2 = 4x \u2212 1 \u2192 x\u00B2 \u2212 $4x + 3 = 0$ \u2192 (x\u22121)(x\u22123) = 0. Two solutions.",
       difficulty: "hard",
       type: "4D",
       domain: "Advanced Math",
@@ -756,11 +756,11 @@ const MODULE_CONFIG: ModuleConfig = {
       skill: "exponential_functions",
     },
     {
-      stem: "The graph of y = f(x) passes through (2, 5). After the transformation y = 3f(x \u2212 1) + 2, what point must be on the new graph?",
+      stem: "The graph of $y =$ f(x) passes through (2, 5). After the transformation $y =$ 3f(x \u2212 1) + 2, what point must be on the new graph?",
       choices: ["(3, 17)", "(2, 17)", "(3, 15)", "(1, 17)"],
       correct: 0,
       explanation:
-        "x \u2212 1 = 2 \u2192 x = 3. y = 3\u00B7f(2) + 2 = 3(5) + 2 = 17. The point (3, 17) is on the new graph.",
+        "x \u2212 1 = 2 \u2192 $x = 3$. $y =$ 3\u00B7f(2) + 2 = 3(5) + 2 = 17. The point (3, 17) is on the new graph.",
       difficulty: "hard",
       type: "4B",
       trap: "horizontal_flip",

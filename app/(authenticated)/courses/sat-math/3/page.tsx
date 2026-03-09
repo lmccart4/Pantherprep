@@ -17,12 +17,12 @@ const FORM_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: f(x) = 2(x − 3)(x + 1)",
     "answer": "Factored",
-    "solution": "x-intercepts at x = 3 and x = −1"
+    "solution": "x-intercepts at $x = 3$ and $x = −1$"
   },
   {
     "prompt": "Solve: f(x) = x² − 6x + 8",
     "answer": "Standard",
-    "solution": "y-intercept at (0, 8), opens upward (a = 1 > 0)"
+    "solution": "y-intercept at (0, 8), opens upward ($a = 1$ > 0)"
   },
   {
     "prompt": "Solve: f(x) = −3(x + 2)² + 7",
@@ -32,22 +32,22 @@ const FORM_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: g(x) = (x − 5)(x − 5)",
     "answer": "Factored",
-    "solution": "Double root at x = 5 — parabola touches x-axis once. Also vertex form: (x−5)²"
+    "solution": "Double root at $x = 5$ — parabola touches x-axis once. Also vertex form: (x−5)²"
   },
   {
     "prompt": "Solve: h(x) = 4x² + 12x − 7",
     "answer": "Standard",
-    "solution": "y-intercept at (0, −7), opens upward (a = 4 > 0)"
+    "solution": "y-intercept at (0, −7), opens upward ($a = 4$ > 0)"
   },
   {
-    "prompt": "Solve: y = −(x − 1)² − 4",
+    "prompt": "Solve: $y =$ −(x − 1)² − 4",
     "answer": "Vertex",
     "solution": "Vertex at (1, −4), opens downward, −4 is the maximum"
   },
   {
     "prompt": "Solve: p(x) = ½(x + 6)(x − 2)",
     "answer": "Factored",
-    "solution": "x-intercepts at x = −6 and x = 2"
+    "solution": "x-intercepts at $x = −6$ and $x = 2$"
   },
   {
     "prompt": "Solve: f(x) = 5(x − 4)² + 0",
@@ -70,7 +70,7 @@ const WF_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "The question asks: \"What is the initial height of the projectile?\"",
     "answer": "Standard",
-    "solution": "Initial height = value when x = 0 = y-intercept → Standard Form f(x) = ax² + bx + c. The y-intercept is c."
+    "solution": "Initial height = value when $x = 0$ = y-intercept → Standard Form f(x) = ax² + bx + c. The y-intercept is c."
   },
   {
     "prompt": "The question asks: \"Does the parabola open upward or downward?\"",
@@ -78,14 +78,14 @@ const WF_QS_EXERCISE: FillInItem[] = [
     "solution": "Direction is determined by the sign of a. While all three forms show a, Standard Form makes it most immediately visible."
   },
   {
-    "prompt": "The question gives: \"f(x) = 0 when x = −3 and x = 7\" and asks for the equation.",
+    "prompt": "The question gives: \"f(x) = 0 when $x = −3$ and $x =$ 7\" and asks for the equation.",
     "answer": "Factored",
     "solution": "Given the zeros/roots → build Factored Form: f(x) = a(x + 3)(x − 7). If they give another point, solve for a."
   },
   {
-    "prompt": "The question asks: \"How many real solutions does 2x² − 5x + 4 = 0 have?\"",
+    "prompt": "The question asks: \"How many real solutions does $2x² − 5x + 4 = 0$ have?\"",
     "answer": "Standard",
-    "solution": "Number of solutions → Discriminant → needs a, b, c from Standard Form. b² − 4ac = 25 − 32 = −7 < 0 → no real solutions."
+    "solution": "Number of solutions → Discriminant → needs a, b, c from Standard Form. $b² − 4ac = 25 − 32$ = −7 < 0 → no real solutions."
   },
   {
     "prompt": "The question gives a graph with vertex at (3, −2) and asks for the equation.",
@@ -95,7 +95,7 @@ const WF_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "The question asks: \"What value of x gives the minimum value of f(x) = x² − 8x + 12?\"",
     "answer": "Vertex",
-    "solution": "Minimum value → vertex x-coordinate → use x = −b/2a = −(−8)/2(1) = 4. Or convert to vertex form."
+    "solution": "Minimum value → vertex x-coordinate → use $x = −b/2a$ = −(−8)/2(1) = 4. Or convert to vertex form."
   }
 ];
 
@@ -108,7 +108,7 @@ const FACTOR_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "Factor: x² − 16",
     "answer": "(x+4)(x-4)",
-    "solution": "x² − 16 = (x + 4)(x − 4) (Difference of Squares)"
+    "solution": "$x² − 16 =$ (x + 4)(x − 4) (Difference of Squares)"
   },
   {
     "prompt": "Factor: 2x² + 6x",
@@ -123,7 +123,7 @@ const FACTOR_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "Factor: x² + 10x + 25",
     "answer": "(x+5)^2",
-    "solution": "x² + 10x + 25 = (x + 5)² [perfect square: 5² = 25, 2(5) = 10] (Perfect Square)"
+    "solution": "$x² + 10x + 25 =$ (x + 5)² [perfect square: 5² = 25, 2(5) = 10] (Perfect Square)"
   },
   {
     "prompt": "Factor: 4x² − 9",
@@ -487,17 +487,17 @@ const MODULE_CONFIG: ModuleConfig = {
   warmup: [
     {
       source: "Module 2 — Slope",
-      stem: "What is the slope of the line y = 3x − 7?",
+      stem: "What is the slope of the line $y = 3x − 7$?",
       choices: ["−7", "−3", "7", "3"],
       correct: 3,
-      explanation: "In y = mx + b, the slope is m. Here m = 3. The −7 is the y-intercept.",
+      explanation: "In $y = mx + b$, the slope is m. Here $m = 3$. The −7 is the y-intercept.",
     },
     {
       source: "Module 2 — Systems",
       stem: "A system with the same slope but different y-intercepts has how many solutions?",
       choices: ["Infinite solutions", "One solution", "0 (no solution)", "Cannot determine"],
       correct: 2,
-      explanation: "Same slope + different y-intercepts = parallel lines = no solution. They never intersect.",
+      explanation: "Same slope + different $y-intercepts = parallel$ lines = no solution. They never intersect.",
     },
     {
       source: "Module 2 — Inequalities",
@@ -526,9 +526,9 @@ const MODULE_CONFIG: ModuleConfig = {
   quiz: [
     {
       stem: "What are the solutions of <code>x² − 5x + 6 = 0</code>?",
-      choices: ["x = −2 and x = −3", "x = −1 and x = −6", "x = 2 and x = 3", "x = 1 and x = 6"],
+      choices: ["$x = −2$ and $x = −3$", "$x = −1$ and $x = −6$", "$x = 2$ and $x = 3$", "$x = 1$ and $x = 6$"],
       correct: 2,
-      explanation: "Factor: (x − 2)(x − 3) = 0, so x = 2 or x = 3.",
+      explanation: "Factor: (x − 2)(x − 3) = 0, so $x = 2$ or $x = 3$.",
       trapAnswer: 1,
       trapDesc: "Sign error on factors",
     },
@@ -536,7 +536,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "What is the y-intercept of <code>f(x) = 3x² − 7x + 4</code>?",
       choices: ["(0, −7)", "(0, 4)", "(0, 0)", "(0, 3)"],
       correct: 1,
-      explanation: "In standard form, the y-intercept is c. Here c = 4, so the y-intercept is (0, 4).",
+      explanation: "In standard form, the y-intercept is c. Here $c = 4$, so the y-intercept is (0, 4).",
       trap: "wrong_target",
       trapAnswer: 0,
       trapDesc: "Confused leading coefficient with y-intercept — The Wrong Target",
@@ -553,7 +553,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "The function <code>f(x) = −2(x − 4)² + 18</code> models the height of a ball. What is the maximum height?",
       choices: ["18", "20", "−2", "4"],
       correct: 0,
-      explanation: "Vertex form: vertex is (4, 18). Since a = −2 < 0, the parabola opens downward, so 18 is the maximum.",
+      explanation: "Vertex form: vertex is (4, 18). Since $a = −2$ < 0, the parabola opens downward, so 18 is the maximum.",
       trap: "wrong_target",
       trapAnswer: 0,
       trapDesc: "Picked the x-coordinate instead of the y-coordinate — The Wrong Target",
@@ -585,16 +585,16 @@ const MODULE_CONFIG: ModuleConfig = {
       trapDesc: "Used linear model for exponential situation — Form Mismatch",
     },
     {
-      stem: "If <code>f(x) = ax² + bx + c</code> has roots at x = −1 and x = 5, and passes through (0, −10), what is a?",
+      stem: "If <code>f(x) = ax² + bx + c</code> has roots at $x = −1$ and $x = 5$, and passes through (0, −10), what is a?",
       choices: ["a = 1", "a = 2", "a = −2", "a = −10"],
       correct: 1,
-      explanation: "Factored form: f(x) = a(x + 1)(x − 5). Plug in (0, −10): −10 = a(1)(−5) = −5a → a = 2.",
+      explanation: "Factored form: f(x) = a(x + 1)(x − 5). Plug in (0, −10): −10 = a(1)(−5) = −5a → $a = 2$.",
       trap: "distribution_ghost",
       trapAnswer: 1,
       trapDesc: "Sign error when plugging in — The Distribution Ghost",
     },
     {
-      stem: "If x² + bx + 7 = 0 has roots r and s, what is the value of r² + s²?",
+      stem: "If $x² + bx + 7 = 0$ has roots r and s, what is the value of r² + s²?",
       choices: ["$b^2 - 14$", "$b^2 + 14$", "$b^2 - 7$", "Cannot be determined"],
       correct: 0,
       explanation: "By Vieta's: $r + s = -b$ and $rs = 7$. Then $r^2 + s^2 = (r + s)^2 - 2rs = b^2 - 14$.",
@@ -603,9 +603,9 @@ const MODULE_CONFIG: ModuleConfig = {
     },
     {
       stem: "A projectile's height is <code>h(t) = −16t² + 96t + 5</code>. At what time does it reach maximum height, and what is that height?",
-      choices: ["t = 3, h = 144", "t = 3, h = 149", "t = 6, h = 5", "t = 96, h = 5"],
+      choices: ["$t = 3$, $h = 144$", "$t = 3$, $h = 149$", "$t = 6$, $h = 5$", "$t = 96$, $h = 5$"],
       correct: 1,
-      explanation: "Vertex x = −b/2a = −96/(2·−16) = 3. h(3) = −16(9) + 96(3) + 5 = −144 + 288 + 5 = 149. Max height is 149 at t = 3.",
+      explanation: "Vertex $x = −b/2a$ = −96/(2·−16) = 3. h(3) = −16(9) + 96(3) + 5 = −144 + 288 + 5 = 149. Max height is 149 at $t = 3$.",
       trap: "wrong_target",
       trapAnswer: 2,
       trapDesc: "Forgot the +5 constant — The Wrong Target",

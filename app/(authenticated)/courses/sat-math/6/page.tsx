@@ -131,7 +131,7 @@ const ANGLE_QS_EXERCISE_DATA: MatchingItem[] = [
       "30°"
     ],
     "correct": 0,
-    "explanation": "Exterior angle = sum of remote interiors. 120 = 2x → x = 60°."
+    "explanation": "Exterior angle = sum of remote interiors. 120 = 2x → $x =$ 60°."
   },
   {
     "prompt": "Vertical angles: one is (3x + 10)° and the other is (5x − 20)°. Find x.",
@@ -142,7 +142,7 @@ const ANGLE_QS_EXERCISE_DATA: MatchingItem[] = [
       "10"
     ],
     "correct": 1,
-    "explanation": "Vertical angles equal: 3x + 10 = 5x − 20 → 30 = 2x → x = 15."
+    "explanation": "Vertical angles equal: $3x + 10 = 5x − 20$ → 30 = 2x → $x = 15$."
   },
   {
     "prompt": "30-60-90: side opposite 30° = 5. Hypotenuse = ?",
@@ -189,7 +189,7 @@ const CIRCLE_QS_EXERCISE_DATA: MatchingItem[] = [
       "(3, −2)"
     ],
     "correct": 3,
-    "explanation": "h=3, k=−2 (the +2 means k=−2). Center: (3, −2)."
+    "explanation": "$h=3$, $k=−2$ (the +2 means $k=−2$). Center: (3, −2)."
   },
   {
     "prompt": "<code>(x − 3)² + (y + 2)² = 49</code>. Radius?",
@@ -200,7 +200,7 @@ const CIRCLE_QS_EXERCISE_DATA: MatchingItem[] = [
       "14"
     ],
     "correct": 0,
-    "explanation": "r² = 49, so r = 7. Trap: equation gives r², not r!"
+    "explanation": "$r² = 49$, so $r = 7$. Trap: equation gives r², not r!"
   },
   {
     "prompt": "Center (0, 5), radius 3. Equation?",
@@ -208,10 +208,10 @@ const CIRCLE_QS_EXERCISE_DATA: MatchingItem[] = [
       "x² + (y+5)² = 9",
       "x² + (y−5)² = 9",
       "x² + (y−5)² = 3",
-      "(x−5)² + y² = 9"
+      "(x−5)² + $y² = 9$"
     ],
     "correct": 1,
-    "explanation": "h=0, k=5, r²=9. Answer: x² + (y−5)² = 9."
+    "explanation": "$h=0$, $k=5$, $r²=9$. Answer: x² + (y−5)² = 9."
   },
   {
     "prompt": "Radius 10, central angle 90°. Arc length?",
@@ -222,7 +222,7 @@ const CIRCLE_QS_EXERCISE_DATA: MatchingItem[] = [
       "20π"
     ],
     "correct": 1,
-    "explanation": "Arc = (90/360) × 2π(10) = ¼ × 20π = 5π."
+    "explanation": "Arc = (90/360) × 2π(10) = ¼ × $20π = 5π$."
   },
   {
     "prompt": "Radius 6. Area of a 60° sector?",
@@ -233,7 +233,7 @@ const CIRCLE_QS_EXERCISE_DATA: MatchingItem[] = [
       "36π"
     ],
     "correct": 0,
-    "explanation": "Sector = (60/360) × π(6²) = ⅙ × 36π = 6π."
+    "explanation": "Sector = (60/360) × π(6²) = ⅙ × $36π = 6π$."
   },
   {
     "prompt": "<code>x² + y² − 10x + 6y + 18 = 0</code>. Radius?",
@@ -266,10 +266,10 @@ const FORMULA_QS_EXERCISE_DATA: MatchingItem[] = [
       "A = \u00bdbh",
       "(θ/360)×2πr",
       "SOH-CAH-TOA",
-      "a² + b² = c²"
+      "$a² + b² = c²$"
     ],
     "correct": 3,
-    "explanation": "Pythagorean theorem: 7²+24²=625 → c=25."
+    "explanation": "Pythagorean theorem: 7²+24²=625 → $c=25$."
   },
   {
     "prompt": "Arc length, central angle 120\u00b0, radius 9.",
@@ -299,7 +299,7 @@ const FORMULA_QS_EXERCISE_DATA: MatchingItem[] = [
       "sin(\u03b8) = opp/hyp",
       "cos(θ) = adj/hyp",
       "tan(θ) = opp/adj",
-      "a² + b² = c²"
+      "$a² + b² = c²$"
     ],
     "correct": 2,
     "explanation": "Have angle+adjacent, need opposite → tangent."
@@ -584,7 +584,7 @@ const MODULE_CONFIG: ModuleConfig = {
       subtitle: "The most frequently tested geometry facts on the SAT",
       visual: "special-triangles",
       body: [
-        "**Pythagorean Theorem:** $a^2 + b^2 = c^2$ (c = hypotenuse, always the longest side, opposite the right angle)",
+        "**Pythagorean Theorem:** $a^2 + b^2 = c^2$ ($c = hypotenuse$, always the longest side, opposite the right angle)",
         "**30-60-90 Triangle:** Sides in ratio $1 : \\sqrt{3} : 2$ (short leg : long leg : hypotenuse)",
         "**45-45-90 Triangle:** Sides in ratio $1 : 1 : \\sqrt{2}$ (leg : leg : hypotenuse)",
         "**Common Pythagorean Triples (memorize!):**",
@@ -705,7 +705,7 @@ const MODULE_CONFIG: ModuleConfig = {
       body: [
         "**sin(x) = cos(90\u00B0 \u2212 x)** and **cos(x) = sin(90\u00B0 \u2212 x)**.",
         "In a right triangle, the two acute angles add to 90\u00B0. The side opposite one angle is adjacent to the other.",
-        "**SAT question type:** \"If sin(x) = cos(32\u00B0), what is x?\" \u2192 x = 90\u00B0 \u2212 32\u00B0 = 58\u00B0.",
+        "**SAT question type:** \"If sin(x) = cos(32\u00B0), what is x?\" \u2192 $x =$ 90\u00B0 \u2212 32\u00B0 = 58\u00B0.",
       ],
     },
 
@@ -718,7 +718,7 @@ const MODULE_CONFIG: ModuleConfig = {
       body: [
         "**Trap 1: The Wrong Target** \u2014 Solved for the wrong measurement \u2014 found diameter when they asked for radius, found area when they asked for circumference. Diameter = 10 \u2192 Area = \u03C0(5\u00B2) = 25\u03C0 (not \u03C0(10\u00B2) = 100\u03C0).",
         "**Trap 2: The Phantom Height** \u2014 Used the slant height instead of the actual height in a volume or area formula. The height must be perpendicular to the base.",
-        "**Trap 3: The Sign Flip** \u2014 In circle equations, (x+3)\u00B2 means h = \u22123, not h = 3. The sign inside the parentheses is opposite to the center coordinate.",
+        "**Trap 3: The Sign Flip** \u2014 In circle equations, (x+3)\u00B2 means $h =$ \u22123, not $h = 3$. The sign inside the parentheses is opposite to the center coordinate.",
         "**Trap 4: The Unit Mismatch** \u2014 Mixed up degrees and radians, or used inches for one dimension and feet for another. sin(30) in Desmos = sin(30 radians) \u2260 sin(30\u00B0).",
       ],
     },
@@ -781,7 +781,7 @@ const MODULE_CONFIG: ModuleConfig = {
       choices: ["60\u00B0", "40\u00B0", "90\u00B0", "50\u00B0"],
       correct: 3,
       explanation:
-        "sin(x) = cos(90\u00B0\u2212x). So cos(40\u00B0) = sin(50\u00B0). x = 50\u00B0.",
+        "sin(x) = cos(90\u00B0\u2212x). So cos(40\u00B0) = sin(50\u00B0). $x =$ 50\u00B0.",
       difficulty: "medium",
       type: "6D",
       domain: "Geometry & Trig",
@@ -796,7 +796,7 @@ const MODULE_CONFIG: ModuleConfig = {
       choices: ["10", "4", "8", "6"],
       correct: 0,
       explanation:
-        "Plug in x=\u22121: (0)\u00B2+(y\u22124)\u00B2=36 \u2192 y\u22124=\u00B16 \u2192 y=10 or y=\u22122. Positive: y=10.",
+        "Plug in x=\u22121: (0)\u00B2+(y\u22124)\u00B2=36 \u2192 y\u22124=\u00B16 \u2192 $y=10$ or y=\u22122. Positive: $y=10$.",
       difficulty: "medium",
       type: "6B",
       domain: "Geometry & Trig",
@@ -870,7 +870,7 @@ const MODULE_CONFIG: ModuleConfig = {
       ],
       correct: 2,
       explanation:
-        "Square = 100. Circle r=5, area = 25\u03C0. Shaded = 100 \u2212 25\u03C0. Composite shape!",
+        "Square = 100. Circle $r=5$, area = 25\u03C0. Shaded = 100 \u2212 25\u03C0. Composite shape!",
       difficulty: "hard",
       type: "6C",
       domain: "Geometry & Trig",

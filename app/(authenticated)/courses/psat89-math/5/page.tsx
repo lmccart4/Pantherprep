@@ -108,7 +108,7 @@ const ANG_EXERCISE: FillInItem[] = [
   {
     "prompt": "A triangle has sides 7, 10, and x. What is the largest possible integer value of x?",
     "answer": 16,
-    "solution": "Triangle inequality: x < 7 + 10 = 17. Largest integer: 16.",
+    "solution": "Triangle inequality: $x < 7 + 10$ = 17. Largest integer: 16.",
     "tier": 3
   }
 ];

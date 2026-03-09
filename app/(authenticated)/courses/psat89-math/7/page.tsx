@@ -83,7 +83,7 @@ const DT_EXERCISE_DATA: MatchingItem[] = [
       "Direct Solve"
     ],
     "correct": 4,
-    "explanation": "Distribute and simplify — straightforward algebra. 2x+6−x = x+6."
+    "explanation": "Distribute and simplify — straightforward algebra. $2x+6−x = x+6$."
   },
   {
     "prompt": "If <code>3x−5=22</code>, what is x?<br>A) 7 B) 9 C) 11 D) 13",
@@ -107,7 +107,7 @@ const DT_EXERCISE_DATA: MatchingItem[] = [
       "Ballpark"
     ],
     "correct": 1,
-    "explanation": "Variables in answers → PIYON. Try a=3: (9−3)/3=2. A) 2 ✓."
+    "explanation": "Variables in answers → PIYON. Try $a=3$: (9−3)/3=2. A) 2 ✓."
   },
   {
     "prompt": "Where do <code>y=x²−4</code> and <code>y=x+2</code> intersect?",
@@ -181,10 +181,10 @@ const PIY_EXERCISE_DATA: MatchingItem[] = [
       "n + 1"
     ],
     "correct": 3,
-    "explanation": "Plug in n=2: (4+2)/2 = 3. A) 2+1=3 ✓. (Or simplify: n+1.)"
+    "explanation": "Plug in $n=2$: (4+2)/2 = 3. A) 2+1=3 ✓. (Or simplify: n+1.)"
   },
   {
-    "prompt": "If x = 5, which expression has the greatest value?",
+    "prompt": "If $x = 5$, which expression has the greatest value?",
     "options": [
       "x + 7",
       "2x + 1",
@@ -192,7 +192,7 @@ const PIY_EXERCISE_DATA: MatchingItem[] = [
       "3(x − 1)"
     ],
     "correct": 3,
-    "explanation": "x=5: A) 11, B) 5, C) 12, D) 12. C and D tie — but C = 3(4)=12, D = 12. Check another: x=10: C=27, D=17. C wins."
+    "explanation": "$x=5$: A) 11, B) 5, C) 12, D) 12. C and D tie — but C = 3(4)=12, D = 12. Check another: $x=10$: C=27, D=17. C wins."
   },
   {
     "prompt": "A store marks up items by p percent. If an item costs $c, the selling price is:",
@@ -203,7 +203,7 @@ const PIY_EXERCISE_DATA: MatchingItem[] = [
       "cp/100"
     ],
     "correct": 0,
-    "explanation": "Plug in c=100, p=20: price should be $120. B) 100(1.20) = 120 ✓."
+    "explanation": "Plug in $c=100$, $p=20$: price should be $120. B) 100(1.20) = 120 ✓."
   },
   {
     "prompt": "If a rectangle has length 2w and width w, its perimeter is:",
@@ -214,7 +214,7 @@ const PIY_EXERCISE_DATA: MatchingItem[] = [
       "3w"
     ],
     "correct": 0,
-    "explanation": "Plug in w=5: length=10, width=5. P = 2(10+5)=30. C) 6(5)=30 ✓."
+    "explanation": "Plug in $w=5$: length=10, width=5. P = 2(10+5)=30. C) 6(5)=30 ✓."
   }
 ];
 
@@ -261,7 +261,7 @@ const BS_EXERCISE_DATA: MatchingItem[] = [
       "7"
     ],
     "correct": 3,
-    "explanation": "Try C: 49−35=14 ✓. (Negative solution x=−2 also works but question asks for positive.)"
+    "explanation": "Try C: 49−35=14 ✓. (Negative solution $x=−2$ also works but question asks for positive.)"
   }
 ];
 
@@ -297,7 +297,7 @@ const BP_EXERCISE_DATA: MatchingItem[] = [
       "314"
     ],
     "correct": 3,
-    "explanation": "r=10, A=pi(100) ≈ 314. Eliminate A (too small), D (way too big). C is exact."
+    "explanation": "$r=10$, A=pi(100) ≈ 314. Eliminate A (too small), D (way too big). C is exact."
   },
   {
     "prompt": "If 3/8 of a class of 200 students play sports, how many play sports?",
@@ -314,7 +314,7 @@ const BP_EXERCISE_DATA: MatchingItem[] = [
 
 const TRP_EXERCISE_DATA: MatchingItem[] = [
   {
-    "prompt": "Solve <code>2x + 4 = 12</code>. What is <code>3x − 1</code>?<br>A student solves x = 4 and picks 4. What went wrong?",
+    "prompt": "Solve <code>2x + 4 = 12</code>. What is <code>3x − 1</code>?<br>A student solves $x = 4$ and picks 4. What went wrong?",
     "options": [
       "Wrong equation",
       "Arithmetic error",
@@ -333,7 +333,7 @@ const TRP_EXERCISE_DATA: MatchingItem[] = [
       "Wrong point"
     ],
     "correct": 1,
-    "explanation": "Each grid line = 50, not 1. The point is at y = 150, not 3."
+    "explanation": "Each grid line = 50, not 1. The point is at $y = 150$, not 3."
   },
   {
     "prompt": "\"Which of the following is NOT a solution?\" A student picks a correct solution. What went wrong?",
@@ -358,7 +358,7 @@ const TRP_EXERCISE_DATA: MatchingItem[] = [
     "explanation": "The question asks for the FINAL price (after tax), not the intermediate discounted price."
   },
   {
-    "prompt": "\"At least 18 students passed.\" A student writes the inequality as x > 18. What went wrong?",
+    "prompt": "\"At least 18 students passed.\" A student writes the inequality as $x > 18$. What went wrong?",
     "options": [
       "Arithmetic error",
       "At least means >=, not >",
@@ -366,10 +366,10 @@ const TRP_EXERCISE_DATA: MatchingItem[] = [
       "Mixed up x and y"
     ],
     "correct": 1,
-    "explanation": "\"At least 18\" means 18 or more → x >= 18, not x > 18."
+    "explanation": "\"At least 18\" means 18 or more → $x >= 18$, not $x > 18$."
   },
   {
-    "prompt": "The answer to a problem is x = −5. A student enters 5 in the SPR box. What went wrong?",
+    "prompt": "The answer to a problem is $x = −5$. A student enters 5 in the SPR box. What went wrong?",
     "options": [
       "Wrong equation",
       "Dropped the negative sign",

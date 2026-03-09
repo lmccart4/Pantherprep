@@ -83,7 +83,7 @@ const EC_EXERCISE: ClassificationItem[] = [
   {
     "prompt": "You identified center (3,−2) from (x−3)²+(y+2)²=16, but chose radius=16 instead of 4.",
     "correct": "Concept Gap",
-    "explanation": "r²=16 means r=4. Review circles."
+    "explanation": "$r²=16$ means $r=4$. Review circles."
   },
   {
     "prompt": "You solved a system correctly but wrote (3,5) when they asked for x+y. Answer was 8.",
@@ -91,7 +91,7 @@ const EC_EXERCISE: ClassificationItem[] = [
     "explanation": "Classic trap — re-read what they ask for."
   },
   {
-    "prompt": "Variables in all choices. Spent 3 min on algebra. Plugging in x=2 would take 30 sec.",
+    "prompt": "Variables in all choices. Spent 3 min on algebra. Plugging in $x=2$ would take 30 sec.",
     "correct": "Strategy Gap",
     "explanation": "Variables in choices = Plug In. Review Decision Tree."
   },

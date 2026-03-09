@@ -39,6 +39,29 @@ function resolveIcon(icon?: string): string {
   return icon;
 }
 
+/** Collapse the full screen list into 4-5 summary cards for the welcome view. */
+function summarizeScreens(screens: ModuleScreen[]): ModuleScreen[] {
+  const hidden = new Set(["welcome", "complete"]);
+  const result: ModuleScreen[] = [];
+  let exerciseCount = 0;
+
+  for (const s of screens) {
+    if (hidden.has(s.id)) continue;
+    const isExercise = s.id.startsWith("exercise-") || s.id === "checklist" ||
+      s.id.startsWith("activity-") || s.id === "error-worksheet" ||
+      s.id === "score-projector" || s.id === "challenge";
+    if (isExercise) {
+      exerciseCount++;
+      if (exerciseCount === 1) {
+        result.push({ id: "_practice", label: "Practice", icon: "exercise" });
+      }
+    } else {
+      result.push(s);
+    }
+  }
+  return result;
+}
+
 interface WelcomeScreenProps {
   moduleNum: number;
   title: string;
@@ -68,7 +91,7 @@ export function WelcomeScreen({ moduleNum, title, subtitle, accentColor, screens
       <p className="mx-auto mb-8 max-w-[500px] text-[1.05rem] text-text-muted">{subtitle}</p>
 
       <div className="mb-10 grid w-full max-w-[640px] grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3">
-        {screens.map((s) => (
+        {summarizeScreens(screens).map((s) => (
           <div
             key={s.id}
             className="rounded-[14px] border border-white/[0.06] bg-white/[0.03] p-4 text-center backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.12] hover:bg-white/[0.05]"

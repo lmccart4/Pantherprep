@@ -62,12 +62,12 @@ export default function SATMathModule1() {
             onComplete={goNext}
           />
         ),
-        "exercise-ec-qs": (
+        "exercise-ec-qs": (goNext: () => void) => (
           <MatchingExercise
             items={EC_QS_EXERCISE_DATA}
             title="Error Classification"
             accentColor={MODULE_CONFIG.accentColor}
-            onComplete={() => {}}
+            onComplete={goNext}
           />
         ),
         "error-worksheet": (goNext: () => void) => (
@@ -85,7 +85,7 @@ export default function SATMathModule1() {
 
 const EC_QS_EXERCISE_DATA: MatchingItem[] = [
   {
-    "prompt": "You missed a question asking for the slope of a line perpendicular to y = 3x + 2. You chose 3 instead of \u22121/3 because you forgot that perpendicular slopes are negative reciprocals.",
+    "prompt": "You missed a question asking for the slope of a line perpendicular to $y = 3x + 2$. You chose 3 instead of \u22121/3 because you forgot that perpendicular slopes are negative reciprocals.",
     "options": [
       "Misread/Trap",
       "Content Gap",
@@ -121,7 +121,7 @@ const EC_QS_EXERCISE_DATA: MatchingItem[] = [
     "explanation": "Running out of time. Practice pacing: ~25 min first pass, ~8 min second pass, ~2 min final check."
   },
   {
-    "prompt": "A question asked for the value of 2x, not x. You correctly solved for x = 5 but entered 5 instead of 10.",
+    "prompt": "A question asked for the value of 2x, not x. You correctly solved for $x = 5$ but entered 5 instead of 10.",
     "options": [
       "Time Pressure",
       "Content Gap",
@@ -230,9 +230,9 @@ const MODULE_CONFIG: ModuleConfig = {
     { id: "lesson", label: "Lesson", icon: "lesson" },
     { id: "checklist", label: "Checklist", icon: "clipboard" },
     { id: "activity-routing", label: "Routing Simulator", icon: "zap" },
-    { id: "score-projector", label: "Score Projector", icon: "chart" },
     { id: "exercise-ec-qs", label: "Error Classification", icon: "zap" },
     { id: "error-worksheet", label: "Error Analysis Worksheet", icon: "zap" },
+    { id: "score-projector", label: "Score Projector", icon: "chart" },
     { id: "quiz", label: "Practice Quiz", icon: "target" },
     { id: "complete", label: "Complete", icon: "complete" },
   ],
@@ -313,12 +313,11 @@ const MODULE_CONFIG: ModuleConfig = {
       id: "baseline-protocol",
       title: "Baseline Assessment & Study Plan",
       subtitle: "Sessions 2 & 3",
-      visual: "score-projector",
       body: [
         "Take a full-length SAT Math section using an official College Board practice test in the Bluebook app (Tests 4--6; save Tests 7--10 for later). Use the built-in Desmos calculator. Simulate test conditions: no phone, no notes, timed modules.",
         "After completion, self-score BEFORE the instructor reviews results. Mark every question you were unsure about, even if you got it correct -- 'lucky correct' answers mask skill gaps.",
         "Complete the Error Analysis Worksheet for every missed AND uncertain question: record the question number, domain, topic, error type, what you should have done, and whether Desmos could have helped.",
-        "Use the SAT Score Projector to estimate your scaled score. Enter your Module 1 and Module 2 raw scores along with your routing path (harder or easier Module 2) to see how routing dramatically affects your scaled score.",
+        "After your error analysis, use the SAT Score Projector to estimate your scaled score. Enter your Module 1 and Module 2 raw scores along with your routing path (harder or easier Module 2) to see how routing dramatically affects your scaled score.",
         "Identify your top 3 priority areas based on error analysis. These will guide which modules to focus the most attention on throughout the course.",
         "Explore Desmos at desmos.com/calculator -- spend 15 minutes graphing equations, making tables, and finding intersection points.",
       ],
@@ -343,7 +342,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If <code>3(2x − 5) = 4x + 7</code>, what is the value of <code>x</code>?",
       choices: ["22", "11", "8", "9"],
       correct: 1,
-      explanation: "Distribute: 6x − 15 = 4x + 7. Subtract 4x: 2x − 15 = 7. Add 15: 2x = 22. Divide: x = 11.",
+      explanation: "Distribute: $6x − 15 = 4x + 7$. Subtract 4x: $2x − 15 = 7$. Add 15: $2x = 22$. Divide: $x = 11$.",
       domain: "Algebra",
     },
     {
@@ -364,7 +363,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If <code>−3x + 7 > 22</code>, which describes the solution?",
       choices: ["x > 5", "x < 5", "x < −5", "x > −5"],
       correct: 2,
-      explanation: "Subtract 7: −3x > 15. Divide by −3 and FLIP the sign: x < −5.",
+      explanation: "Subtract 7: $−3x > 15$. Divide by −3 and FLIP the sign: $x < −5$.",
       domain: "Algebra",
     },
     {
@@ -376,9 +375,9 @@ const MODULE_CONFIG: ModuleConfig = {
     },
     {
       stem: "What are the solutions to <code>x² − 5x + 6 = 0</code>?",
-      choices: ["x = −2 and x = −3", "x = −1 and x = −6", "x = 2 and x = 3", "x = 1 and x = 6"],
+      choices: ["$x = −2$ and $x = −3$", "$x = −1$ and $x = −6$", "$x = 2$ and $x = 3$", "$x = 1$ and $x = 6$"],
       correct: 2,
-      explanation: "Factor: (x − 2)(x − 3) = 0. So x = 2 or x = 3.",
+      explanation: "Factor: (x − 2)(x − 3) = 0. So $x = 2$ or $x = 3$.",
       domain: "Advanced Math",
     },
     {
@@ -392,14 +391,14 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "Which expression is equivalent to <code>(3x²)(4x³)</code>?",
       choices: ["12x⁶", "7x⁵", "7x⁶", "12x⁵"],
       correct: 3,
-      explanation: "Multiply coefficients: 3 × 4 = 12. Add exponents: x² · x³ = x⁵. Answer: 12x⁵.",
+      explanation: "Multiply coefficients: 3 × 4 = 12. Add exponents: $x² · x³ =$ x⁵. Answer: 12x⁵.",
       domain: "Advanced Math",
     },
     {
       stem: "The graph of <code>y = (x − 3)² + 2</code> has its vertex at which point?",
       choices: ["(3, −2)", "(3, 2)", "(−3, 2)", "(−3, −2)"],
       correct: 1,
-      explanation: "Vertex form y = a(x − h)² + k gives vertex (h, k). Here h = 3, k = 2. Watch the sign!",
+      explanation: "Vertex form $y =$ a(x − h)² + k gives vertex (h, k). Here $h = 3$, $k = 2$. Watch the sign!",
       domain: "Advanced Math",
     },
     {
@@ -455,21 +454,21 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "A circle has equation <code>(x − 2)² + (y + 3)² = 49</code>. What is its radius?",
       choices: ["24.5", "√49", "49", "7"],
       correct: 3,
-      explanation: "r² = 49, so r = 7. Common trap: choosing 49 (that is r², not r).",
+      explanation: "$r² = 49$, so $r = 7$. Common trap: choosing 49 (that is r², not r).",
       domain: "Geometry & Trig",
     },
     {
       stem: "In a 30-60-90 triangle, the side opposite 30° is 5. What is the hypotenuse?",
       choices: ["5√2", "5√3", "10√3", "10"],
       correct: 3,
-      explanation: "Sides ratio x : x√3 : 2x. Opposite 30° is x = 5, hypotenuse = 2x = 10.",
+      explanation: "Sides ratio x : x√3 : 2x. Opposite 30° is $x = 5$, hypotenuse = $2x = 10$.",
       domain: "Geometry & Trig",
     },
     {
       stem: "The circle <code>(x - 3)² + (y + 1)² = 25</code> has its center at:",
       choices: ["(-3, -1)", "(3, -1)", "(3, 1)", "(-3, 1)"],
       correct: 1,
-      explanation: "(x-h)² + (y-k)² = r². h=3, k=-1. Center (3,-1). Watch the sign on (y+1)!",
+      explanation: "(x-h)² + (y-k)² = r². $h=3$, $k=-1$. Center (3,-1). Watch the sign on (y+1)!",
       domain: "Geometry & Trig",
     },
     {

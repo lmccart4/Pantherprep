@@ -28,12 +28,12 @@ const RATIO_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "If 3 workers paint a house in 12 hours, how many hours for 4 workers? (Inverse proportion)",
     "answer": 9,
-    "solution": "workers × hours = constant. 3 × 12 = 36. So 4 × h = 36, h = 9."
+    "solution": "workers × hours = constant. 3 × 12 = 36. So 4 × $h = 36$, $h = 9$."
   },
   {
     "prompt": "A recipe for 6 servings uses 2 cups of flour. How many cups for 15 servings?",
     "answer": 5,
-    "solution": "2/6 = x/15. Cross multiply: 6x = 30, x = 5 cups."
+    "solution": "2/6 = x/15. Cross multiply: $6x = 30$, $x = 5$ cups."
   },
   {
     "prompt": "A car travels 240 miles on 8 gallons. Miles per gallon?",
@@ -405,7 +405,7 @@ const MODULE_CONFIG: ModuleConfig = {
       subtitle: "Topic 4C",
       visual: "scatterplots",
       body: [
-        "Scatterplot questions ask you to interpret slope, y-intercept, and correlation in real-world context. Remember: slope is the rate of change, and the y-intercept is the starting value when x = 0.",
+        "Scatterplot questions ask you to interpret slope, y-intercept, and correlation in real-world context. Remember: slope is the rate of change, and the y-intercept is the starting value when $x = 0$.",
       ],
     },
     {
@@ -458,7 +458,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "For $f(x) = 2x^2 - 8x + 3$, the x-coordinate of the vertex is:",
       choices: ["x = 8", "x = −2", "x = 2", "x = 4"],
       correct: 2,
-      explanation: "Vertex x = −b/2a = −(−8)/2(2) = 8/4 = 2.",
+      explanation: "Vertex $x = −b/2a$ = −(−8)/2(2) = 8/4 = 2.",
     },
     {
       source: "Module 3 — Exponents",
@@ -514,8 +514,8 @@ const MODULE_CONFIG: ModuleConfig = {
       trapDesc: "Added 20% to sale price instead of dividing — Percent Spiral",
     },
     {
-      stem: "A scatterplot shows the line of best fit: <code>y = 2.5x + 15</code>, where x = hours studied and y = test score. What does 2.5 represent?",
-      choices: ["The predicted score increase per hour", "The score when x = 0", "The total hours studied", "The minimum score"],
+      stem: "A scatterplot shows the line of best fit: <code>y = 2.5x + 15</code>, where $x = hours$ studied and $y = test$ score. What does 2.5 represent?",
+      choices: ["The predicted score increase per hour", "The score when $x = 0$", "The total hours studied", "The minimum score"],
       correct: 0,
       explanation: "Slope = rate of change. Each additional hour predicts a 2.5-point score increase.",
       trapAnswer: 1,

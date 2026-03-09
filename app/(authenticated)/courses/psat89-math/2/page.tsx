@@ -38,7 +38,7 @@ const PREREQ_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: <code>x/4 = 3</code>",
     "answer": 12,
-    "solution": "Multiply both sides by 4: x = 12."
+    "solution": "Multiply both sides by 4: $x = 12$."
   },
   {
     "prompt": "Compute: <code>2/3 + 1/4</code> (enter as fraction like 11/12)",
@@ -51,71 +51,71 @@ const SOLV_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: <code>3x + 7 = 22</code>",
     "answer": 5,
-    "solution": "3x = 15 → x = 5.",
+    "solution": "$3x = 15$ → $x = 5$.",
     "tier": 1
   },
   {
     "prompt": "Solve: <code>2(x − 4) = 14</code>",
     "answer": 11,
-    "solution": "2x − 8 = 14 → 2x = 22 → x = 11.",
+    "solution": "$2x − 8 = 14$ → $2x = 22$ → $x = 11$.",
     "tier": 1
   },
   {
     "prompt": "Solve: <code>5x − 3 = 2x + 12</code>",
     "answer": 5,
-    "solution": "3x = 15 → x = 5.",
+    "solution": "$3x = 15$ → $x = 5$.",
     "tier": 1
   },
   {
     "prompt": "Solve: <code>−4x + 10 = 2</code>",
     "answer": 2,
-    "solution": "−4x = −8 → x = 2.",
+    "solution": "$−4x = −8$ → $x = 2$.",
     "tier": 1
   },
   {
     "prompt": "Solve: <code>3(2x + 1) − 4 = 5x + 6</code>",
     "answer": 7,
-    "solution": "6x + 3 − 4 = 5x + 6 → x = 7.",
+    "solution": "$6x + 3 − 4 = 5x + 6$ → $x = 7$.",
     "tier": 2
   },
   {
     "prompt": "If <code>2x + 8 = 20</code>, what is <code>x + 4</code>?<br><span style=\"font-size:.78rem;color:var(--psda)\">🎯 Watch out — The Wrong Target!</span>",
     "answer": 10,
-    "solution": "Shortcut: divide whole equation by 2 → x + 4 = 10. Don't solve for x first!",
+    "solution": "Shortcut: divide whole equation by 2 → $x + 4 = 10$. Don't solve for x first!",
     "tier": 2
   }
 ];
 
 const FORMS_EXERCISE: FillInItem[] = [
   {
-    "prompt": "Solve: y = 4x − 7",
+    "prompt": "Solve: $y = 4x − 7$",
     "answer": "Slope-Intercept",
-    "solution": "y = mx + b pattern."
+    "solution": "$y = mx + b$ pattern."
   },
   {
-    "prompt": "Solve: y − 3 = 2(x − 5)",
+    "prompt": "Solve: $y − 3 =$ 2(x − 5)",
     "answer": "Point-Slope",
     "solution": "y − y₁ = m(x − x₁) pattern."
   },
   {
-    "prompt": "Solve: 3x + 2y = 12",
+    "prompt": "Solve: $3x + 2y = 12$",
     "answer": "Standard",
     "solution": "Ax + By = C pattern."
   },
   {
-    "prompt": "Solve: y = −½x + 9",
+    "prompt": "Solve: $y =$ −½x + 9",
     "answer": "Slope-Intercept",
-    "solution": "y = mx + b. The ½ is the slope."
+    "solution": "$y = mx + b$. The ½ is the slope."
   },
   {
-    "prompt": "Solve: x − 4y = 8",
+    "prompt": "Solve: $x − 4y = 8$",
     "answer": "Standard",
     "solution": "Ax + By = C."
   },
   {
-    "prompt": "Solve: y − 1 = −3(x + 2)",
+    "prompt": "Solve: $y − 1 =$ −3(x + 2)",
     "answer": "Point-Slope",
-    "solution": "y − y₁ = m(x − x₁). Note: x + 2 = x − (−2), so the point is (−2, 1)."
+    "solution": "y − y₁ = m(x − x₁). Note: $x + 2 = x −$ (−2), so the point is (−2, 1)."
   }
 ];
 
@@ -131,7 +131,7 @@ const SYS_EXERCISE: ClassificationItem[] = [
     "explanation": "Same slope (2), different intercepts → parallel lines."
   },
   {
-    "prompt": "System:\n2x + 4y = 8\nx + 2y = 4",
+    "prompt": "System:\n2x + $4y =$ 8\nx + $2y = 4$",
     "correct": "Infinitely Many",
     "explanation": "Second equation × 2 = first. Same line."
   },
@@ -141,9 +141,9 @@ const SYS_EXERCISE: ClassificationItem[] = [
     "explanation": "Different slopes → one intersection."
   },
   {
-    "prompt": "System:\n3x − y = 6\n6x − 2y = 10",
+    "prompt": "System:\n3x − $y =$ 6\n6x − $2y = 10$",
     "correct": "No Solution",
-    "explanation": "First × 2 = 6x − 2y = 12 ≠ 10. Parallel."
+    "explanation": "First × 2 = $6x − 2y = 12$ ≠ 10. Parallel."
   }
 ];
 
@@ -151,31 +151,31 @@ const INQ_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: <code>2x + 3 > 11</code>",
     "answer": "x > 4",
-    "solution": "2x > 8 → x > 4.",
+    "solution": "$2x > 8$ → $x > 4$.",
     "tier": 1
   },
   {
     "prompt": "Solve: <code>−x ≤ 5</code>",
     "answer": "x ≥ −5",
-    "solution": "Multiply by −1 and FLIP: x ≥ −5. 🎯 <strong>Sign Flip</strong> trap!",
+    "solution": "Multiply by −1 and FLIP: $x ≥ −5$. 🎯 <strong>Sign Flip</strong> trap!",
     "tier": 1
   },
   {
     "prompt": "Solve: <code>4x − 7 < 2x + 9</code>",
     "answer": "x < 8",
-    "solution": "2x < 16 → x < 8.",
+    "solution": "$2x < 16$ → $x < 8$.",
     "tier": 1
   },
   {
     "prompt": "Solve: <code>−2x + 6 ≥ 10</code>",
     "answer": "x ≤ −2",
-    "solution": "−2x ≥ 4 → FLIP → x ≤ −2. 🎯 <strong>Sign Flip</strong> trap!",
+    "solution": "$−2x ≥ 4$ → FLIP → $x ≤ −2$. 🎯 <strong>Sign Flip</strong> trap!",
     "tier": 2
   },
   {
     "prompt": "Solve: <code>5 − 3x &lt; 2x + 25</code>",
     "answer": "x > −4",
-    "solution": "−5x < 20 → FLIP → x > −4.",
+    "solution": "$−5x < 20$ → FLIP → $x > −4$.",
     "tier": 2
   }
 ];
@@ -190,7 +190,7 @@ const TRP_EXERCISE: MatchingItem[] = [
       "🎯 Wrong Target"
     ],
     "correct": 3,
-    "explanation": "<strong>Wrong Target.</strong> You might solve for x=6 and pick 6. But question asks for x+4=10. Shortcut: divide whole equation by 2."
+    "explanation": "<strong>Wrong Target.</strong> You might solve for $x=6$ and pick 6. But question asks for $x+4=10$. Shortcut: divide whole equation by 2."
   },
   {
     "prompt": "Solve: <code>−3x &gt; 12</code>",
@@ -201,7 +201,7 @@ const TRP_EXERCISE: MatchingItem[] = [
       "🎯 Wrong Target"
     ],
     "correct": 2,
-    "explanation": "<strong>Sign Flip.</strong> Dividing by −3 requires flipping the sign. x < −4, not x > −4."
+    "explanation": "<strong>Sign Flip.</strong> Dividing by −3 requires flipping the sign. $x < −4$, not $x > −4$."
   },
   {
     "prompt": "A store sells shirts for $15 and pants for $25. A customer buys 8 items for $160. How many shirts?",
@@ -212,18 +212,18 @@ const TRP_EXERCISE: MatchingItem[] = [
       "Two equations needed"
     ],
     "correct": 3,
-    "explanation": "Two unknowns need two equations: s + p = 8 AND 15s + 25p = 160. Not a named trap, but a setup recognition."
+    "explanation": "Two unknowns need two equations: $s + p = 8$ AND $15s + 25p = 160$. Not a named trap, but a setup recognition."
   },
   {
     "prompt": "Line <code>y = 3x − 7</code> passes through (2, k). What is k?",
     "options": [
-      "Just plug in x=2",
+      "Just plug in $x=2$",
       "🎯 Wrong Target",
       "🎭 Imposter Subject",
       "🔄 Sign Flip"
     ],
     "correct": 0,
-    "explanation": "Just substitute: k = 3(2) − 7 = −1. Don't overcomplicate it."
+    "explanation": "Just substitute: $k =$ 3(2) − 7 = −1. Don't overcomplicate it."
   },
   {
     "prompt": "Lines m and n are parallel. Line m has slope 4. Line n goes through (1,3) and (3,k). Find k.",
@@ -234,7 +234,7 @@ const TRP_EXERCISE: MatchingItem[] = [
       "Use slope formula with parallel slope"
     ],
     "correct": 3,
-    "explanation": "Parallel → same slope 4. (k−3)/(3−1) = 4 → k = 11. The <strong>Imposter Subject</strong> trap would be confusing parallel with perpendicular."
+    "explanation": "Parallel → same slope 4. (k−3)/(3−1) = 4 → $k = 11$. The <strong>Imposter Subject</strong> trap would be confusing parallel with perpendicular."
   }
 ];
 
@@ -471,7 +471,7 @@ const MODULE_CONFIG: ModuleConfig = {
       visual: "linear-equations",
       body: [
         "Isolate the variable using inverse operations. Whatever you do to one side, do to the other. Distribute first, then combine like terms.",
-        "Number of solutions: one solution (normal), no solution (contradiction like 3 = 5), infinitely many (identity like 2x = 2x).",
+        "Number of solutions: one solution (normal), no solution (contradiction like $3 = 5$), infinitely many (identity like $2x = 2x$).",
         "For absolute value: $|ax + b| = c$ produces TWO cases: $ax + b = c$ AND $ax + b = -c$.",
       ],
     },
@@ -561,7 +561,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If <code>4x − 8 = 2x + 6</code>, what is x?",
       choices: ["5", "14", "1", "7"],
       correct: 3,
-      explanation: "2x = 14 → x = 7.",
+      explanation: "$2x = 14$ → $x = 7$.",
       trapAnswer: 0,
       trapDesc: "Arithmetic error",
     },
@@ -569,7 +569,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "What is the slope of <code>y = −3x + 12</code>?",
       choices: ["3", "4", "12", "−3"],
       correct: 3,
-      explanation: "In y = mx + b, slope = m = −3.",
+      explanation: "In $y = mx + b$, slope = $m = −3$.",
       trap: "wrong_target",
       trapAnswer: 0,
       trapDesc: "Confused y-intercept with slope",
@@ -578,7 +578,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "Which represents all x where <code>3x − 5 > 7</code>?",
       choices: ["x > 12", "x > 2", "x < 4", "x > 4"],
       correct: 3,
-      explanation: "3x > 12 → x > 4.",
+      explanation: "$3x > 12$ → $x > 4$.",
       trapAnswer: 1,
       trapDesc: "Divided incorrectly",
     },
@@ -595,7 +595,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "A line through (2, 5) with slope −3 has what y-intercept?",
       choices: ["−11", "11", "−1", "1"],
       correct: 1,
-      explanation: "y − 5 = −3(x − 2) → y = −3x + 11. Intercept = 11.",
+      explanation: "$y − 5 =$ −3(x − 2) → $y = −3x + 11$. Intercept = 11.",
       trap: "distribution_ghost",
       trapAnswer: 3,
       trapDesc: "Sign error in distribution — The Distribution Ghost",
@@ -604,7 +604,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If <code>2x + y = 10</code> and <code>x − y = 2</code>, what is x?",
       choices: ["4", "3", "6", "2"],
       correct: 0,
-      explanation: "Add equations: 3x = 12 → x = 4.",
+      explanation: "Add equations: $3x = 12$ → $x = 4$.",
       trapAnswer: 3,
       trapDesc: "Arithmetic error",
     },
@@ -612,7 +612,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If <code>3(x − 2) = 2(x + 4)</code>, what is x?",
       choices: ["6", "2", "10", "14"],
       correct: 3,
-      explanation: "3x − 6 = 2x + 8 → x = 14.",
+      explanation: "$3x − 6 = 2x + 8$ → $x = 14$.",
       trap: "distribution_ghost",
       trapAnswer: 0,
       trapDesc: "Forgot to distribute to second term — The Distribution Ghost",
@@ -629,15 +629,15 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "<code>3x + ky = 12</code> and <code>9x + 15y = 36</code> have infinitely many solutions. What is k?",
       choices: ["3", "9", "5", "15"],
       correct: 2,
-      explanation: "Second = 3 × first. 15 = 3k → k = 5.",
+      explanation: "Second = 3 × first. 15 = 3k → $k = 5$.",
       trapAnswer: 0,
       trapDesc: "Confused ratio",
     },
     {
       stem: "Line p: <code>y = (2/5)x − 3</code>. Line q is perpendicular to p and goes through (4, 1). What is line q?",
-      choices: ["y = −(2/5)x + 11/5", "y = (5/2)x − 9", "y = −(5/2)x + 11", "y = (2/5)x − 3/5"],
+      choices: ["$y =$ −(2/5)x + 11/5", "$y =$ (5/2)x − 9", "$y =$ −(5/2)x + 11", "$y =$ (2/5)x − 3/5"],
       correct: 2,
-      explanation: "Perpendicular slope = −5/2. y − 1 = −(5/2)(x − 4) → y = −(5/2)x + 11.",
+      explanation: "Perpendicular slope = −5/2. $y − 1 =$ −(5/2)(x − 4) → $y =$ −(5/2)x + 11.",
       trap: "imposter_subject",
       trapAnswer: 0,
       trapDesc: "Used same slope instead of perpendicular — The Imposter Subject",

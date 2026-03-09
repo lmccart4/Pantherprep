@@ -18,12 +18,12 @@ const FORM_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: f(x) = 2(x − 3)(x + 1)",
     "answer": "Factored",
-    "solution": "x-intercepts at x = 3 and x = −1"
+    "solution": "x-intercepts at $x = 3$ and $x = −1$"
   },
   {
     "prompt": "Solve: $f(x) = x^2 - 6x + 8$",
     "answer": "Standard",
-    "solution": "y-intercept at (0, 8), opens upward (a = 1 > 0)"
+    "solution": "y-intercept at (0, 8), opens upward ($a = 1$ > 0)"
   },
   {
     "prompt": "Solve: $f(x) = -3(x + 2)^2 + 7$",
@@ -38,7 +38,7 @@ const FORM_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: $h(x) = 4x^2 + 12x - 7$",
     "answer": "Standard",
-    "solution": "y-intercept at (0, −7), opens upward (a = 4 > 0)"
+    "solution": "y-intercept at (0, −7), opens upward ($a = 4$ > 0)"
   },
   {
     "prompt": "Solve: $y = -(x - 1)^2 - 4$",
@@ -48,7 +48,7 @@ const FORM_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: $p(x) = \\frac{1}{2}(x + 6)(x - 2)$",
     "answer": "Factored",
-    "solution": "x-intercepts at x = −6 and x = 2"
+    "solution": "x-intercepts at $x = −6$ and $x = 2$"
   },
   {
     "prompt": "Solve: $f(x) = 5(x - 4)^2 + 0$",
@@ -71,12 +71,12 @@ const WF_QS_EXERCISE: FillInItem[] = [
   {
     "prompt": "The question asks: \"What are the zeros of the function?\"",
     "answer": "Factored",
-    "solution": "Factored form f(x) = a(x−r)(x−s) gives you the zeros directly: x = r and x = s."
+    "solution": "Factored form f(x) = a(x−r)(x−s) gives you the zeros directly: $x = r$ and $x = s$."
   },
   {
     "prompt": "The question asks: \"At what x-value does the function reach its minimum?\"",
     "answer": "Vertex",
-    "solution": "Vertex form gives you the vertex (h, k). The min occurs at x = h. Or from standard: x = −b/2a."
+    "solution": "Vertex form gives you the vertex (h, k). The min occurs at $x = h$. Or from standard: $x = −b/2a$."
   },
   {
     "prompt": "The question asks: \"Does the graph cross the x-axis?\"",
@@ -440,24 +440,24 @@ const MODULE_CONFIG: ModuleConfig = {
   warmup: [
     {
       source: "Module 2 — Slope",
-      stem: "What is the slope of the line y = −3x + 7?",
+      stem: "What is the slope of the line $y = −3x + 7$?",
       choices: ["3", "−7", "7", "−3"],
       correct: 3,
-      explanation: "In y = mx + b, the slope is m. Here m = −3. The 7 is the y-intercept.",
+      explanation: "In $y = mx + b$, the slope is m. Here $m = −3$. The 7 is the y-intercept.",
     },
     {
       source: "Module 2 — Systems",
       stem: "If two lines have the same slope but different y-intercepts, how many solutions does the system have?",
       choices: ["Infinite solutions", "Cannot determine", "No solution", "One solution"],
       correct: 2,
-      explanation: "Same slope + different y-intercepts = parallel lines = no solution. They never intersect.",
+      explanation: "Same slope + different $y-intercepts = parallel$ lines = no solution. They never intersect.",
     },
     {
       source: "Module 2 — Inequalities",
-      stem: "When solving −5x > 20, what happens to the inequality sign?",
+      stem: "When solving $−5x > 20$, what happens to the inequality sign?",
       choices: ["It disappears", "It becomes an equals sign", "It flips direction", "It stays the same"],
       correct: 2,
-      explanation: "When you divide (or multiply) by a negative number, you must FLIP the inequality sign. −5x > 20 → x < −4.",
+      explanation: "When you divide (or multiply) by a negative number, you must FLIP the inequality sign. $−5x > 20$ → $x < −4$.",
     },
     {
       source: "Module 2 — Sign Flip Trap",
@@ -479,9 +479,9 @@ const MODULE_CONFIG: ModuleConfig = {
   quiz: [
     {
       stem: "What are the solutions of $x^2 - 5x + 6 = 0$?",
-      choices: ["x = −2 and x = −3", "x = −1 and x = −6", "x = 2 and x = 3", "x = 1 and x = 6"],
+      choices: ["$x = −2$ and $x = −3$", "$x = −1$ and $x = −6$", "$x = 2$ and $x = 3$", "$x = 1$ and $x = 6$"],
       correct: 2,
-      explanation: "Factor: (x − 2)(x − 3) = 0, so x = 2 or x = 3.",
+      explanation: "Factor: (x − 2)(x − 3) = 0, so $x = 2$ or $x = 3$.",
       trapAnswer: 1,
       trapDesc: "Sign error on factors",
     },
@@ -489,7 +489,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "What is the y-intercept of $f(x) = 3x^2 - 7x + 4$?",
       choices: ["(0, −7)", "(0, 4)", "(0, 0)", "(0, 3)"],
       correct: 1,
-      explanation: "In standard form, the y-intercept is c. Here c = 4, so the y-intercept is (0, 4).",
+      explanation: "In standard form, the y-intercept is c. Here $c = 4$, so the y-intercept is (0, 4).",
       trap: "wrong_target",
       trapAnswer: 0,
       trapDesc: "Confused leading coefficient with y-intercept — The Wrong Target",
@@ -506,7 +506,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "The function $f(x) = -2(x - 4)^2 + 18$ models the height of a ball. What is the maximum height?",
       choices: ["18", "20", "−2", "4"],
       correct: 0,
-      explanation: "Vertex form: vertex is (4, 18). Since a = −2 < 0, the parabola opens downward, so 18 is the maximum.",
+      explanation: "Vertex form: vertex is (4, 18). Since $a = −2$ < 0, the parabola opens downward, so 18 is the maximum.",
       trap: "wrong_target",
       trapAnswer: 0,
       trapDesc: "Picked the x-coordinate instead of the y-coordinate — The Wrong Target",
@@ -532,7 +532,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "If $f(x) = ax^2 + bx + c$ has roots at $x = -1$ and $x = 5$, and passes through $(0, -10)$, what is the value of $a$?",
       choices: ["a = 1", "a = 2", "a = −2", "a = −10"],
       correct: 1,
-      explanation: "Factored form: f(x) = a(x + 1)(x − 5). Plug in (0, −10): −10 = a(1)(−5) = −5a → a = 2.",
+      explanation: "Factored form: f(x) = a(x + 1)(x − 5). Plug in (0, −10): −10 = a(1)(−5) = −5a → $a = 2$.",
       trap: "distribution_ghost",
       trapAnswer: 1,
       trapDesc: "Sign error when plugging in — The Distribution Ghost",
@@ -541,7 +541,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "A population of 2,000 bacteria triples every 4 hours. Which function models the population P after t hours?",
       choices: ["P = 2000 + 3t", "P = 2000(3)^(4t)", "P = 2000(3)^(t/4)", "P = 6000t"],
       correct: 2,
-      explanation: "Triples = multiply by 3. Every 4 hours means the exponent is t/4 (so when t=4, one full tripling). P = 2000(3)^(t/4).",
+      explanation: "Triples = multiply by 3. Every 4 hours means the exponent is t/4 (so when $t=4$, one full tripling). P = 2000(3)^(t/4).",
       trap: "form_mismatch",
       trapAnswer: 1,
       trapDesc: "Used linear model for exponential situation — Form Mismatch",
@@ -551,7 +551,7 @@ const MODULE_CONFIG: ModuleConfig = {
   takeaways: [
     "Know the three quadratic forms and what each reveals: standard (y-intercept), factored (zeros), vertex (min/max).",
     "The discriminant (b^2 - 4ac) tells you how many solutions -- positive = 2, zero = 1, negative = 0.",
-    "Vertex x-coordinate shortcut: x = -b/2a. The y-coordinate is always the min or max value.",
+    "Vertex x-coordinate shortcut: $x = -b/2a$. The y-coordinate is always the min or max value.",
     "Master all five factoring techniques -- GCF, difference of squares, perfect square, trinomial, grouping.",
     "Memorize the exponent rules cold. They show up in nearly every Advanced Math question.",
     "Linear = constant amount of change. Exponential = constant percent change.",

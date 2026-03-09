@@ -196,7 +196,7 @@ const EC_ITEMS: ClassificationItem[] = [
   },
   {
     prompt:
-      "Variables in all choices. Spent 3 min on algebra. Plugging in x=2 would take 30 sec.",
+      "Variables in all choices. Spent 3 min on algebra. Plugging in $x=2$ would take 30 sec.",
     correct: 4,
     explanation:
       "Variables in choices = Plug In. Review Decision Tree.",
@@ -229,7 +229,7 @@ const QUIZ: ModuleConfig["quiz"] = [
     stem: "If 3(2x \u2212 4) = 18, what is x?",
     choices: ["3", "5", "4", "6"],
     correct: 1,
-    explanation: "6x\u221212=18. 6x=30. x=5.",
+    explanation: "6x\u221212=18. $6x=30$. $x=5$.",
     difficulty: "easy" as const,
     type: "Algebra",
     trap: null,
@@ -293,10 +293,10 @@ const QUIZ: ModuleConfig["quiz"] = [
     trapDesc: "Exponential decay",
     },
   {
-    stem: "The system y = 3x \u2212 1 and y = kx \u2212 1 has infinitely many solutions when k = ?",
+    stem: "The system $y = 3x$ \u2212 1 and $y = kx$ \u2212 1 has infinitely many solutions when $k =$?",
     choices: ["3", "1", "\u22123", "\u22121"],
     correct: 0,
-    explanation: "Same line \u2192 same slope AND intercept. k=3.",
+    explanation: "Same line \u2192 same slope AND intercept. $k=3$.",
     difficulty: "medium" as const,
     type: "Algebra",
     trap: null,
@@ -338,7 +338,7 @@ const QUIZ: ModuleConfig["quiz"] = [
     },
   {
     stem: 'Which represents "the cost is at least $50 but no more than $120"?',
-    choices: ["50 \u2264 c \u2264 120", "c > 50 or c < 120", "50 < c < 120", "c \u2265 50 and c > 120"],
+    choices: ["50 \u2264 c \u2264 120", "$c > 50$ or $c < 120$", "50 < $c < 120$", "c \u2265 50 and $c > 120$"],
     correct: 0,
     explanation: '"At least" = \u2265, "no more than" = \u2264. 50 \u2264 c \u2264 120.',
     difficulty: "easy" as const,
@@ -383,7 +383,7 @@ const QUIZ: ModuleConfig["quiz"] = [
     trapDesc: "Vertex form minimum",
     },
   {
-    stem: "The graph of y = |x \u2212 3| + 2 has its vertex at:",
+    stem: "The graph of $y =$ |x \u2212 3| + 2 has its vertex at:",
     choices: ["(3, \u22122)", "(3, 2)", "(\u22123, 2)", "(2, 3)"],
     correct: 1,
     explanation: "|x\u2212h|+k \u2192 vertex at (h,k) = (3,2).",
@@ -436,7 +436,7 @@ const QUIZ: ModuleConfig["quiz"] = [
     choices: ["3", "6", "2", "1"],
     correct: 2,
     explanation:
-      "ax\u22122x=3a\u22123. x(a\u22122)=3(a\u22121). If a=2: 0=3. No solution (contradiction).",
+      "ax\u22122x=3a\u22123. x(a\u22122)=3(a\u22121). If $a=2$: 0=3. No solution (contradiction).",
     difficulty: "hard" as const,
     type: "Algebra",
     trap: null,
@@ -478,11 +478,11 @@ const QUIZ: ModuleConfig["quiz"] = [
     trapDesc: "Vertex form maximum",
     },
   {
-    stem: "Solve the system: 2x + 3y = 1 and 4x \u2212 y = 9. What is x?",
+    stem: "Solve the system: $2x + 3y = 1$ and 4x \u2212 $y = 9$. What is x?",
     choices: ["3", "4", "2", "1"],
     correct: 2,
     explanation:
-      "From eq2: y=4x\u22129. Sub: 2x+3(4x\u22129)=1 \u2192 14x\u221227=1 \u2192 x=2.",
+      "From eq2: y=4x\u22129. Sub: 2x+3(4x\u22129)=1 \u2192 14x\u221227=1 \u2192 $x=2$.",
     difficulty: "medium" as const,
     type: "Algebra",
     trap: null,
@@ -533,7 +533,7 @@ const QUIZ: ModuleConfig["quiz"] = [
     stem: "The function f(x) = 3x + 7. If f(a) = 22, what is f(2a)?",
     choices: ["47", "37", "52", "44"],
     correct: 1,
-    explanation: "3a+7=22 \u2192 a=5. f(10)=30+7=37.",
+    explanation: "$3a+7=22$ \u2192 $a=5$. f(10)=30+7=37.",
     difficulty: "medium" as const,
     type: "Algebra",
     trap: null,
@@ -678,7 +678,7 @@ const QUIZ: ModuleConfig["quiz"] = [
     choices: ["1", "2", "5", "2.5"],
     correct: 3,
     explanation:
-      "f(3x)=6x+3. f(x)+10=2x+13. 6x+3=2x+13 \u2192 4x=10 \u2192 x=2.5.",
+      "f(3x)=6x+3. f(x)+10=2x+13. $6x+3=2x+13$ \u2192 $4x=10$ \u2192 $x=2$.5.",
     difficulty: "hard" as const,
     type: "Algebra",
     trap: null,
@@ -686,12 +686,12 @@ const QUIZ: ModuleConfig["quiz"] = [
     trapDesc: "Function equation",
     },
   {
-    stem: "Which function has a horizontal asymptote at y = 3?",
+    stem: "Which function has a horizontal asymptote at $y = 3$?",
     choices: [
       "f(x) = (3x+1)/(x+1)",
       "f(x) = 3x/(x+1)",
       "f(x) = x + 3",
-      "f(x) = 3/x"
+      "f(x) = $3/x$"
     ],
     correct: 0,
     explanation:
@@ -703,10 +703,10 @@ const QUIZ: ModuleConfig["quiz"] = [
     trapDesc: "Horizontal asymptote",
     },
   {
-    stem: "Convert: 72 km/hr to m/s.",
+    stem: "Convert: 72 km/hr to $m/s$.",
     choices: ["12", "720", "20", "72"],
     correct: 2,
-    explanation: "$72 \\times 1000/3600 = 72000/3600 = 20$ m/s.",
+    explanation: "$72 \\times 1000/3600 = 72000/3600 = 20$ $m/s$.",
     difficulty: "medium" as const,
     type: "Data Analysis",
     trap: null,
@@ -727,14 +727,14 @@ const QUIZ: ModuleConfig["quiz"] = [
   {
     stem: "If the graph of $y = ax^2 + bx + c$ opens downward and has vertex $(2, 7)$, which must be true?",
     choices: [
-      "a > 0 and c = 7",
-      "a > 0 and max value is 7",
-      "a < 0 and min value is 7",
-      "a < 0 and max value is 7"
+      "$a > 0$ and $c = 7$",
+      "$a > 0$ and max value is 7",
+      "$a < 0$ and min value is 7",
+      "$a < 0$ and max value is 7"
     ],
     correct: 3,
     explanation:
-      "Opens down \u2192 a < 0. Vertex is maximum when a < 0. Max value = 7.",
+      "Opens down \u2192 $a < 0$. Vertex is maximum when $a < 0$. Max value = 7.",
     difficulty: "medium" as const,
     type: "Algebra",
     trap: null,

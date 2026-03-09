@@ -74,7 +74,7 @@ const QF_EXERCISE: FillInItem[] = [
   {
     "prompt": "Solve: f(x) = (x − 3)(x − 7)",
     "answer": "Factored",
-    "solution": "Zeros at x=3 and x=7."
+    "solution": "Zeros at $x=3$ and $x=7$."
   }
 ];
 
@@ -97,7 +97,7 @@ const WF_EXERCISE: FillInItem[] = [
   {
     "prompt": "Determine if the parabola opens <strong>up or down</strong>.",
     "answer": "Standard",
-    "solution": "Any form works, but standard makes it easy: if a > 0, opens up; a < 0, opens down."
+    "solution": "Any form works, but standard makes it easy: if $a > 0$, opens up; $a < 0$, opens down."
   },
   {
     "prompt": "Find the <strong>axis of symmetry</strong>.",
@@ -329,7 +329,7 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "What is the slope of the line <code>y = −3x + 12</code>?",
       choices: ["3", "4", "12", "−3"],
       correct: 3,
-      explanation: "In y = mx + b, slope = m = −3. The 12 is the y-intercept, not the slope.",
+      explanation: "In $y = mx + b$, slope = $m = −3$. The 12 is the y-intercept, not the slope.",
     },
     {
       source: "Module 2 — Systems",
@@ -343,14 +343,14 @@ const MODULE_CONFIG: ModuleConfig = {
       stem: "When solving <code>−2x > 8</code>, what happens to the inequality sign?",
       choices: ["You drop the sign", "It becomes an equals sign", "It flips direction", "Nothing changes"],
       correct: 2,
-      explanation: "Dividing by a negative number FLIPS the inequality sign. −2x > 8 → x < −4. This is The Sign Flip trap!",
+      explanation: "Dividing by a negative number FLIPS the inequality sign. $−2x > 8$ → $x < −4$. This is The Sign Flip trap!",
     },
     {
       source: "Module 2 — Trap Taxonomy",
-      stem: "If 2x + 8 = 20, what is x + 4?",
+      stem: "If $2x + 8 = 20$, what is x + 4?",
       choices: ["6", "10", "20", "14"],
       correct: 1,
-      explanation: "Divide the whole equation by 2: x + 4 = 10. Don't solve for x first — that's The Wrong Target trap!",
+      explanation: "Divide the whole equation by 2: $x + 4 = 10$. Don't solve for x first — that's The Wrong Target trap!",
     },
     {
       source: "Module 2 — Word Problems",
@@ -373,9 +373,9 @@ const MODULE_CONFIG: ModuleConfig = {
     },
     {
       stem: "What are the solutions to <code>x² − x − 12 = 0</code>?",
-      choices: ["x = −3 and x = −4", "x = −3 and x = 4", "x = 3 and x = 4", "x = 3 and x = −4"],
+      choices: ["$x = −3$ and $x = −4$", "$x = −3$ and $x = 4$", "$x = 3$ and $x = 4$", "$x = 3$ and $x = −4$"],
       correct: 1,
-      explanation: "Factor: (x−4)(x+3) = 0 → x = 4 or x = −3.",
+      explanation: "Factor: (x−4)(x+3) = 0 → $x = 4$ or $x = −3$.",
       trap: "one_case",
       trapAnswer: 0,
       trapDesc: "Got the factor numbers but missed the signs — The One-Case Trap",
@@ -405,7 +405,7 @@ const MODULE_CONFIG: ModuleConfig = {
       explanation: "Vertex form: $a(x-h)^2+k$. Vertex is $(h, k) = (3, 8)$.",
       trap: "form_mismatch",
       trapAnswer: 1,
-      trapDesc: "Flipped the sign of h — in (x−3), h=3 not −3 — The Form Mismatch",
+      trapDesc: "Flipped the sign of h — in (x−3), $h=3$ not −3 — The Form Mismatch",
     },
     {
       stem: "A car purchased for $20,000 loses 15% of its value each year. Which models its value after t years?",
@@ -441,13 +441,13 @@ const MODULE_CONFIG: ModuleConfig = {
       trapDesc: "Horizontal shifts feel backwards — f(x−2) shifts RIGHT, not left — The Form Mismatch",
     },
     {
-      stem: "If one x-intercept of <code>f(x) = x² + bx − 12</code> is x = 3, what is b?",
+      stem: "If one x-intercept of <code>f(x) = x² + bx − 12</code> is $x = 3$, what is b?",
       choices: ["4", "−1", "1", "−4"],
       correct: 2,
-      explanation: "If x=3 is a root: 9 + 3b − 12 = 0 → 3b − 3 = 0 → b = 1. Check: factors as (x+4)(x−3), so other root is −4.",
+      explanation: "If $x=3$ is a root: 9 + $3b − 12 = 0$ → $3b − 3 = 0$ → $b = 1$. Check: factors as (x+4)(x−3), so other root is −4.",
       trap: "wrong_target",
       trapAnswer: 0,
-      trapDesc: "Got 3b = 3 but then picked −1 instead of 1 — sign error",
+      trapDesc: "Got $3b = 3$ but then picked −1 instead of 1 — sign error",
     },
   ],
   takeaways: [
