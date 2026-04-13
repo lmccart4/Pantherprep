@@ -178,13 +178,14 @@ export function NeuralParticles({
           ctx.lineWidth = 0.5 + t * 0.5;
           ctx.stroke();
 
-          // Red overlay during firing
+          // Cool-white glow during firing — a subtle pulse, NOT a color shift.
+          // The previous red tint read as error/warning against dark content.
           if (fireBlend > 0.05) {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(200,16,46,${fireBlend * t * 0.25})`;
-            ctx.lineWidth = 0.8 + t * 1.5;
+            ctx.strokeStyle = `rgba(230,240,255,${fireBlend * t * 0.3})`;
+            ctx.lineWidth = 0.8 + t * 1.2;
             ctx.stroke();
           }
         }
@@ -193,20 +194,19 @@ export function NeuralParticles({
       // Draw particles
       for (const p of particles) {
         const r = p.fireIntensity;
-        const red = Math.floor(200 + r * 55);
-        const green = Math.floor(255 - r * 240);
-        const blue = Math.floor(255 - r * 220);
-        const alpha = p.opacity + r * 0.25;
+        // Firing pulse stays cool-white instead of shifting to red — fires now
+        // read as "neurons lighting up" rather than "alerts popping".
+        const alpha = p.opacity + r * 0.4;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${red},${green},${blue},${alpha})`;
+        ctx.fillStyle = `rgba(230,240,255,${alpha})`;
         ctx.fill();
 
         if (r > 0.1) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius + 6 * r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(230,57,70,${r * 0.15})`;
+          ctx.fillStyle = `rgba(200,220,255,${r * 0.18})`;
           ctx.fill();
         }
       }

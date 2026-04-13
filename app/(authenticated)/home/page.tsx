@@ -219,39 +219,45 @@ export default function HomePage() {
           {/* Welcome + Gamification Bar */}
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="font-display text-[2.2rem] tracking-[0.02em] text-white">
+              <h2 className="font-display text-3xl tracking-[0.02em] text-white sm:text-[2.2rem]">
                 Welcome, {user?.displayName?.split(" ")[0]}
               </h2>
-              <p className="text-base text-text-secondary">Choose a test to start practicing.</p>
+              <p className="text-base text-text-secondary">
+                {role === "student"
+                  ? "Choose a test to start practicing."
+                  : "Pick a section to review your classes and adaptive insights."}
+              </p>
             </div>
 
-            {/* XP / Level / Streak */}
-            <div className="flex items-center gap-5">
-              <div className="text-right">
-                <div className="text-xs font-semibold uppercase tracking-wider text-text-muted">Level</div>
-                <div className="text-sm font-bold text-white">{currentLevel.name}</div>
-              </div>
-              <div className="w-32">
-                <div className="mb-1 flex justify-between text-xs text-text-muted">
-                  <span>{profile?.xp ?? 0} XP</span>
-                  {nextLevel && <span>{nextLevel.min} XP</span>}
+            {/* XP / Level / Streak — students only. Teachers don't need gamification. */}
+            {role === "student" && (
+              <div className="flex items-center gap-5">
+                <div className="text-right">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-text-muted">Level</div>
+                  <div className="text-sm font-bold text-white">{currentLevel.name}</div>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-white/5">
-                  <div
-                    className="h-full rounded-full bg-panther-red transition-[width] duration-500"
-                    style={{ width: `${Math.round(xpProgress * 100)}%` }}
-                  />
+                <div className="w-32">
+                  <div className="mb-1 flex justify-between text-xs text-text-muted">
+                    <span>{profile?.xp ?? 0} XP</span>
+                    {nextLevel && <span>{nextLevel.min} XP</span>}
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-white/5">
+                    <div
+                      className="h-full rounded-full bg-panther-red transition-[width] duration-500"
+                      style={{ width: `${Math.round(xpProgress * 100)}%` }}
+                    />
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-accent-amber">{profile?.streak ?? 0}</div>
+                  <div className="text-xs text-text-muted">Streak</div>
                 </div>
               </div>
-              <div className="text-center">
-                <div className="text-lg font-bold text-accent-amber">{profile?.streak ?? 0}</div>
-                <div className="text-xs text-text-muted">Streak</div>
-              </div>
-            </div>
+            )}
           </div>
 
-          {/* Test Cards */}
-          <div className="mb-10 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5">
+          {/* Test Cards — fixed breakpoints for stable responsive layout */}
+          <div className="mb-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {(Object.entries(TESTS) as [TestType, typeof TESTS.sat][]).map(([key, test]) => (
               <GlassCard
                 key={key}
@@ -431,17 +437,11 @@ export default function HomePage() {
               </div>
 
               <div className="mt-4 flex gap-3">
-                <button
-                  onClick={() => setView("dashboard")}
-                  className="rounded-radius-md border border-border-default px-5 py-2.5 text-sm text-text-secondary transition-colors hover:border-border-light"
-                >
-                  Open Dashboard
-                </button>
                 <a
                   href="/dashboard"
-                  className="rounded-radius-md border border-panther-red/30 bg-panther-red/10 px-5 py-2.5 text-sm text-panther-red transition-colors hover:bg-panther-red/20"
+                  className="rounded-radius-md border border-panther-red/30 bg-panther-red/10 px-5 py-2.5 text-sm font-semibold text-panther-red transition-colors hover:bg-panther-red/20"
                 >
-                  Adaptive Dashboard
+                  Open Adaptive Dashboard →
                 </a>
               </div>
             </div>

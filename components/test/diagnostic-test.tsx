@@ -319,7 +319,7 @@ export function DiagnosticTest({
           <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: accentColor }}>
             Diagnostic Test
           </div>
-          <h1 className="mb-2 font-display text-[2.4rem] tracking-[0.02em] text-white">
+          <h1 className="mb-2 font-display text-4xl tracking-[0.02em] text-white sm:text-[2.4rem]">
             {title}
           </h1>
           <p className="mb-8 text-text-secondary">
@@ -327,33 +327,34 @@ export function DiagnosticTest({
           </p>
 
           <GlassCard className="mb-6">
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-1 gap-4 text-sm xs:grid-cols-2 sm:grid-cols-2">
               <div>
-                <span className="text-text-muted">Questions</span>
+                <span className="text-xs uppercase tracking-wider text-text-muted">Questions</span>
                 <p className="text-lg font-semibold text-white">
                   {questions.length > 0 ? questions.length : "~44"}
                 </p>
               </div>
               <div>
-                <span className="text-text-muted">Time Limit</span>
-                <p className="text-lg font-semibold text-white">
-                  {section === "math" ? "70" : "64"} min (2 modules)
+                <span className="text-xs uppercase tracking-wider text-text-muted">Time Limit</span>
+                <p className="text-lg font-semibold leading-tight text-white">
+                  {section === "math" ? "70" : "64"} min
+                  <span className="block text-xs font-normal text-text-muted">2 modules</span>
                 </p>
               </div>
               <div>
-                <span className="text-text-muted">Score Range</span>
+                <span className="text-xs uppercase tracking-wider text-text-muted">Score Range</span>
                 <p className="text-lg font-semibold text-white">
                   {SCORE_RANGES[testType].min}&ndash;{SCORE_RANGES[testType].max}
                 </p>
               </div>
               <div>
-                <span className="text-text-muted">Format</span>
+                <span className="text-xs uppercase tracking-wider text-text-muted">Format</span>
                 <p className="text-lg font-semibold text-white">
                   {section === "math" ? "MC + SPR" : "Multiple Choice"}
                 </p>
               </div>
               <div>
-                <span className="text-text-muted">Domains</span>
+                <span className="text-xs uppercase tracking-wider text-text-muted">Domains</span>
                 <p className="text-lg font-semibold text-white">{domains.length}</p>
               </div>
             </div>

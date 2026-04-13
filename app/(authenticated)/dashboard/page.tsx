@@ -130,16 +130,28 @@ function StudentView({ uid, course }: { uid: string; course: Course }) {
 
   if (!profile) {
     return (
-      <GlassCard className="mx-auto max-w-lg text-center">
-        <div className="mb-4 text-5xl">&#128202;</div>
-        <h2 className="mb-2 text-lg font-bold">No Adaptive Data Yet</h2>
-        <p className="mb-5 text-sm text-text-muted">
-          Complete some practice modules to start building your adaptive profile.
-        </p>
-        <button onClick={refresh} className="rounded-lg bg-panther-red px-6 py-2.5 text-sm font-semibold text-white">
-          Check Again
-        </button>
-      </GlassCard>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="mx-auto w-full max-w-2xl">
+          <GlassCard className="text-center">
+            <div className="mb-4 text-5xl">&#128202;</div>
+            <h2 className="mb-2 font-display text-2xl text-white">No Adaptive Data Yet</h2>
+            <p className="mb-6 text-sm text-text-muted">
+              Take a diagnostic or a few practice modules and your mastery map will populate here.
+            </p>
+            <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <a href="/diagnostics/sat-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">SAT Math</a>
+              <a href="/diagnostics/sat-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">SAT R&amp;W</a>
+              <a href="/diagnostics/nmsqt-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">NMSQT Math</a>
+              <a href="/diagnostics/nmsqt-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">NMSQT R&amp;W</a>
+              <a href="/diagnostics/psat89-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">PSAT 8/9 Math</a>
+              <a href="/diagnostics/psat89-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">PSAT 8/9 R&amp;W</a>
+            </div>
+            <button onClick={refresh} className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold text-text-muted transition hover:text-text-primary">
+              Check again
+            </button>
+          </GlassCard>
+        </div>
+      </div>
     );
   }
 
