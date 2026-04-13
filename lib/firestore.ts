@@ -23,6 +23,7 @@ import type {
   ClassDoc,
   CustomQuestion,
 } from "@/types/firestore";
+import type { UserRole } from "@/types/auth";
 
 // ── Student Profiles ──
 
@@ -36,6 +37,27 @@ export async function updateStudentProfile(
   data: Partial<Omit<StudentProfile, "uid" | "createdAt">>
 ): Promise<void> {
   await setDoc(doc(db, "students", uid), { ...data, updatedAt: serverTimestamp() }, { merge: true });
+}
+
+// ── Admin helpers ──
+
+export async function listAllUsers(): Promise<(StudentProfile & { id: string })[]> {
+  const snap = await getDocs(
+    query(collection(db, "students"), orderBy("updatedAt", "desc"))
+  );
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as StudentProfile) }));
+}
+
+export async function updateUserRole(uid: string, role: UserRole): Promise<void> {
+  await setDoc(
+    doc(db, "students", uid),
+    { role, updatedAt: serverTimestamp() },
+    { merge: true }
+  );
+}
+
+export async function deleteUser(uid: string): Promise<void> {
+  await deleteDoc(doc(db, "students", uid));
 }
 
 // ── Sessions ──
