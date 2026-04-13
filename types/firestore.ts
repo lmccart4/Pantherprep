@@ -1,10 +1,12 @@
 import type { Timestamp } from "firebase/firestore";
+import type { UserRole } from "./auth";
 
 export interface StudentProfile {
   uid: string;
   email: string;
   displayName: string;
   photoURL?: string;
+  role?: UserRole;
   xp: number;
   level: number;
   streak: number;
