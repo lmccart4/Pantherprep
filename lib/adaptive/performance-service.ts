@@ -36,6 +36,12 @@ export interface AnswerData {
   errorCategory?: string | null;
   timeSpent?: number;
   sessionId?: string;
+
+  // Snapshot fields — let us render this answer later without the original question registry
+  stem: string;
+  choices: { key: string; text: string }[];
+  explanation: string;
+  testSessionId: string;
 }
 
 export async function logAnswer(uid: string, answer: AnswerData): Promise<string | null> {
@@ -58,6 +64,10 @@ export async function logAnswer(uid: string, answer: AnswerData): Promise<string
       timeSpent: answer.timeSpent || 0,
       timestamp: serverTimestamp(),
       sessionId: answer.sessionId || "",
+      stem: answer.stem || "",
+      choices: answer.choices || [],
+      explanation: answer.explanation || "",
+      testSessionId: answer.testSessionId || "",
     });
     return docRef.id;
   } catch (e) {
@@ -66,11 +76,16 @@ export async function logAnswer(uid: string, answer: AnswerData): Promise<string
   }
 }
 
-export async function logAnswerBatch(uid: string, answers: AnswerData[]): Promise<number> {
+export async function logAnswerBatch(
+  uid: string,
+  answers: AnswerData[],
+  opts: { overrideTimestamp?: Timestamp } = {}
+): Promise<number> {
   if (!uid || !answers.length) return 0;
   try {
     const batch = writeBatch(db);
     const colRef = collection(db, "performanceLog", uid, "answers");
+    const ts = opts.overrideTimestamp ?? Timestamp.now();
     let count = 0;
 
     for (const answer of answers) {
@@ -89,8 +104,12 @@ export async function logAnswerBatch(uid: string, answers: AnswerData[]): Promis
         errorCode: answer.errorCode || null,
         errorCategory: answer.errorCategory || null,
         timeSpent: answer.timeSpent || 0,
-        timestamp: Timestamp.now(),
+        timestamp: ts,
         sessionId: answer.sessionId || "",
+        stem: answer.stem || "",
+        choices: answer.choices || [],
+        explanation: answer.explanation || "",
+        testSessionId: answer.testSessionId || "",
       });
       count++;
     }

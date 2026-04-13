@@ -44,6 +44,10 @@ class AdaptiveBridge {
     correctAnswer?: string;
     errorCode?: string;
     errorCategory?: string;
+    stem?: string;
+    choices?: { key: string; text: string }[];
+    explanation?: string;
+    testSessionId?: string;
   }) {
     if (!this.initialized) {
       console.warn("[Adaptive] Not initialized. Call init() first.");
@@ -68,6 +72,10 @@ class AdaptiveBridge {
       errorCategory: data.errorCategory || this._inferErrorCategory(data),
       timeSpent,
       sessionId: this.sessionId!,
+      stem: data.stem || "",
+      choices: data.choices || [],
+      explanation: data.explanation || "",
+      testSessionId: data.testSessionId || "",
     };
 
     this.answers.push(answer);
