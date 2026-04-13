@@ -12,19 +12,38 @@ import {
   joinClass,
   getClassByCode,
 } from "@/lib/firestore";
+import { getAdaptiveProfile } from "@/lib/adaptive/performance-service";
+import type { AdaptiveProfile } from "@/lib/adaptive/performance-service";
 import { GlassCard } from "@/components/ui/glass-card";
 import { TopBar } from "@/components/layout/top-bar";
 import type { TestType } from "@/types/question";
 import type { StudentProfile, Session, ClassDoc } from "@/types/firestore";
 
-type View = "home" | "test-detail" | "dashboard" | "class-detail";
+type View = "home" | "test-detail" | "dashboard" | "class-detail" | "student-detail";
 
 type ClassStudentRow = {
   uid: string;
   displayName: string;
   email: string;
+  profile: StudentProfile | null;
   sessions: (Session & { id: string })[];
 };
+
+function masteryColor(m: number): string {
+  if (m >= 0.8) return "text-emerald-400";
+  if (m >= 0.6) return "text-lime-400";
+  if (m >= 0.4) return "text-amber-400";
+  if (m >= 0.2) return "text-orange-400";
+  return "text-red-400";
+}
+
+function masteryBarColor(m: number): string {
+  if (m >= 0.8) return "bg-emerald-400";
+  if (m >= 0.6) return "bg-lime-400";
+  if (m >= 0.4) return "bg-amber-400";
+  if (m >= 0.2) return "bg-orange-400";
+  return "bg-red-400";
+}
 
 const LEVELS = [
   { name: "Cub", min: 0 },
@@ -61,6 +80,11 @@ export default function HomePage() {
   const [selectedClass, setSelectedClass] = useState<(ClassDoc & { id: string }) | null>(null);
   const [classStudents, setClassStudents] = useState<ClassStudentRow[]>([]);
   const [classLoading, setClassLoading] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<ClassStudentRow | null>(null);
+  const [studentAdaptive, setStudentAdaptive] = useState<AdaptiveProfile | null>(null);
+  const [studentAdaptiveLoading, setStudentAdaptiveLoading] = useState(false);
+  const [studentFilter, setStudentFilter] = useState<string>("all");
+  const [expandedSessionIds, setExpandedSessionIds] = useState<Set<string>>(new Set());
 
   // Load profile & sessions
   useEffect(() => {
@@ -140,7 +164,7 @@ export default function HomePage() {
     const uids = cls.students || [];
     const rows = await Promise.all(
       uids.map(async (uid) => {
-        const [profile, sessions] = await Promise.all([
+        const [profile, sessionList] = await Promise.all([
           getStudentProfile(uid),
           getSessions(uid, 50),
         ]);
@@ -148,12 +172,34 @@ export default function HomePage() {
           uid,
           displayName: profile?.displayName || profile?.email || uid,
           email: profile?.email || "",
-          sessions,
+          profile,
+          sessions: sessionList,
         };
       })
     );
     setClassStudents(rows);
     setClassLoading(false);
+  };
+
+  const handleSelectStudent = async (row: ClassStudentRow) => {
+    setSelectedStudent(row);
+    setView("student-detail");
+    setStudentFilter("all");
+    setExpandedSessionIds(new Set());
+    setStudentAdaptive(null);
+    setStudentAdaptiveLoading(true);
+    const ap = await getAdaptiveProfile(row.uid);
+    setStudentAdaptive(ap);
+    setStudentAdaptiveLoading(false);
+  };
+
+  const toggleSessionExpanded = (id: string) => {
+    setExpandedSessionIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   };
 
   const formatTestType = (raw: string): string => {
@@ -604,10 +650,14 @@ export default function HomePage() {
                       )
                     : null;
                 return (
-                  <GlassCard key={row.uid}>
+                  <GlassCard
+                    key={row.uid}
+                    className="cursor-pointer"
+                    onClick={() => handleSelectStudent(row)}
+                  >
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <div>
-                        <h4 className="font-semibold text-white">{row.displayName}</h4>
+                        <h4 className="font-semibold text-white hover:text-panther-red">{row.displayName}</h4>
                         {row.email && (
                           <p className="text-xs text-text-muted">{row.email}</p>
                         )}
@@ -680,6 +730,322 @@ export default function HomePage() {
                             </div>
                           );
                         })}
+                      </div>
+                    )}
+                  </GlassCard>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Student Detail View ──
+  if (view === "student-detail" && selectedStudent) {
+    const s = selectedStudent;
+    const allSessions = s.sessions;
+    // Build list of unique testType values for filter chips
+    const testTypes = Array.from(new Set(allSessions.map((x) => x.testType))).sort();
+    const filtered =
+      studentFilter === "all" ? allSessions : allSessions.filter((x) => x.testType === studentFilter);
+    const totalS = allSessions.length;
+    const overallAvg =
+      allSessions.length > 0
+        ? Math.round(
+            allSessions.reduce((sum, x) => sum + (x.percentage ?? 0), 0) / allSessions.length
+          )
+        : 0;
+
+    // Adaptive mastery derived
+    const domainEntries = studentAdaptive
+      ? Object.entries(studentAdaptive.domains || {})
+      : [];
+    const avgDomainMastery =
+      domainEntries.length > 0
+        ? domainEntries.reduce((sum, [, d]) => sum + (d.mastery || 0), 0) / domainEntries.length
+        : 0;
+
+    return (
+      <div className="min-h-screen">
+        <TopBar />
+        <div className="mx-auto max-w-4xl px-6 py-8">
+          <button
+            onClick={() => {
+              setView("class-detail");
+              setSelectedStudent(null);
+              setStudentAdaptive(null);
+              setStudentFilter("all");
+              setExpandedSessionIds(new Set());
+            }}
+            className="mb-6 flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-text-secondary"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="rotate-180">
+              <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Back to {selectedClass?.name ?? "class"}
+          </button>
+
+          <div className="mb-6">
+            <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
+              Student
+            </div>
+            <h1 className="mb-1 font-display text-[2.2rem] tracking-[0.02em] text-white">
+              {s.displayName}
+            </h1>
+            {s.email && <p className="text-sm text-text-secondary">{s.email}</p>}
+          </div>
+
+          {/* Overall stats */}
+          <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <GlassCard className="text-center">
+              <div className="text-2xl font-bold text-white">{totalS}</div>
+              <div className="text-xs text-text-muted">Sessions</div>
+            </GlassCard>
+            <GlassCard className="text-center">
+              <div className="text-2xl font-bold text-white">{overallAvg}%</div>
+              <div className="text-xs text-text-muted">Avg Accuracy</div>
+            </GlassCard>
+            <GlassCard className="text-center">
+              <div className="text-2xl font-bold text-white">{s.profile?.xp ?? 0}</div>
+              <div className="text-xs text-text-muted">XP</div>
+            </GlassCard>
+            <GlassCard className="text-center">
+              <div className="text-2xl font-bold text-white">{s.profile?.streak ?? 0}</div>
+              <div className="text-xs text-text-muted">Day Streak</div>
+            </GlassCard>
+          </div>
+
+          {/* Adaptive Mastery */}
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">
+            Adaptive Mastery
+          </h3>
+          {studentAdaptiveLoading ? (
+            <p className="mb-6 text-sm text-text-muted">Loading adaptive profile…</p>
+          ) : !studentAdaptive ? (
+            <GlassCard className="mb-6">
+              <p className="text-sm text-text-muted">
+                No adaptive data yet. The adaptive engine populates once the student completes course modules
+                — diagnostic and practice-test sessions don&apos;t feed mastery.
+              </p>
+            </GlassCard>
+          ) : (
+            <div className="mb-6">
+              <GlassCard className="mb-3">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="text-xs text-text-muted">
+                      {studentAdaptive.totalAnswers ?? 0} answers · {studentAdaptive.streakDays ?? 0} day streak
+                    </div>
+                    <div className="text-xs text-text-muted">
+                      Last active: {studentAdaptive.lastActiveDate || "Unknown"}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className={`text-3xl font-bold ${masteryColor(avgDomainMastery)}`}>
+                      {Math.round(avgDomainMastery * 100)}%
+                    </div>
+                    <div className="text-xs text-text-muted">Overall Mastery</div>
+                  </div>
+                </div>
+              </GlassCard>
+
+              {domainEntries.length > 0 && (
+                <div className="mb-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {domainEntries.map(([domain, data]) => (
+                    <GlassCard key={domain} className="!p-4">
+                      <div className="mb-2 flex justify-between">
+                        <span className="text-sm font-semibold text-white">{domain}</span>
+                        <span className={`font-bold ${masteryColor(data.mastery || 0)}`}>
+                          {Math.round((data.mastery || 0) * 100)}%
+                        </span>
+                      </div>
+                      <div className="mb-2 h-1.5 overflow-hidden rounded-full bg-border-default">
+                        <div
+                          className={`h-full rounded-full ${masteryBarColor(data.mastery || 0)}`}
+                          style={{ width: `${(data.mastery || 0) * 100}%` }}
+                        />
+                      </div>
+                      <div className="text-xs text-text-muted">
+                        {data.totalCorrect}/{data.totalAnswers} correct
+                      </div>
+                      {data.weakestSkills?.length > 0 && (
+                        <div className="mt-1 text-[11px] text-red-400">
+                          Weak: {data.weakestSkills.join(", ")}
+                        </div>
+                      )}
+                      {data.strongestSkills?.length > 0 && (
+                        <div className="mt-0.5 text-[11px] text-emerald-400">
+                          Strong: {data.strongestSkills.join(", ")}
+                        </div>
+                      )}
+                    </GlassCard>
+                  ))}
+                </div>
+              )}
+
+              {studentAdaptive.recommendations && studentAdaptive.recommendations.length > 0 && (
+                <GlassCard>
+                  <h4 className="mb-2 text-sm font-semibold text-white">Recommended Next Steps</h4>
+                  <div className="flex flex-col gap-1.5">
+                    {studentAdaptive.recommendations.slice(0, 5).map((rec, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-2.5 rounded-md border border-border-default bg-bg-card p-2.5 text-sm"
+                      >
+                        <span className="w-6 font-bold text-panther-red">#{rec.priority}</span>
+                        <span className="font-semibold text-white">{rec.skill}</span>
+                        <span className="flex-1 text-xs text-text-muted">{rec.reason}</span>
+                      </div>
+                    ))}
+                  </div>
+                </GlassCard>
+              )}
+            </div>
+          )}
+
+          {/* Session history with filter */}
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-text-muted">
+              Session History
+            </h3>
+            {testTypes.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  onClick={() => setStudentFilter("all")}
+                  className={`rounded-full px-3 py-1 text-xs transition-colors ${
+                    studentFilter === "all"
+                      ? "bg-panther-red text-white"
+                      : "bg-bg-card text-text-muted hover:text-text-secondary"
+                  }`}
+                >
+                  All ({allSessions.length})
+                </button>
+                {testTypes.map((t) => {
+                  const count = allSessions.filter((x) => x.testType === t).length;
+                  return (
+                    <button
+                      key={t}
+                      onClick={() => setStudentFilter(t)}
+                      className={`rounded-full px-3 py-1 text-xs transition-colors ${
+                        studentFilter === t
+                          ? "bg-panther-red text-white"
+                          : "bg-bg-card text-text-muted hover:text-text-secondary"
+                      }`}
+                    >
+                      {formatTestType(t)} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {filtered.length === 0 ? (
+            <GlassCard>
+              <p className="text-sm text-text-muted">
+                {allSessions.length === 0
+                  ? "No sessions yet."
+                  : "No sessions match the selected filter."}
+              </p>
+            </GlassCard>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {filtered.map((sess) => {
+                const isOpen = expandedSessionIds.has(sess.id);
+                const when = sess.createdAt
+                  ? // @ts-expect-error Firestore Timestamp vs serialized
+                    (sess.createdAt?.toDate?.() ?? new Date(sess.createdAt)).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  : "";
+                return (
+                  <GlassCard key={sess.id} className="!p-0">
+                    <button
+                      onClick={() => toggleSessionExpanded(sess.id)}
+                      className="flex w-full items-center justify-between p-4 text-left"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate text-sm font-semibold text-white">
+                          {formatTestType(sess.testType)}
+                        </div>
+                        <div className="text-xs text-text-muted">{when}</div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        {sess.scaledScore != null && (
+                          <span className="font-mono text-xs text-text-secondary">
+                            {sess.scaledScore}
+                          </span>
+                        )}
+                        <span className="font-mono text-xs text-text-secondary">
+                          {sess.score}/{sess.total}
+                        </span>
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                            sess.percentage >= 80
+                              ? "bg-accent-green-soft text-accent-green"
+                              : sess.percentage >= 60
+                                ? "bg-accent-amber-soft text-accent-amber"
+                                : "bg-accent-red-soft text-accent-red"
+                          }`}
+                        >
+                          {sess.percentage}%
+                        </span>
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          className={`transition-transform ${isOpen ? "rotate-90" : ""}`}
+                        >
+                          <path
+                            d="M6 3l5 5-5 5"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+
+                    {isOpen && (
+                      <div className="border-t border-border-default p-4">
+                        {sess.answers && sess.answers.length > 0 ? (
+                          <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-1.5">
+                            {sess.answers.map((a, idx) => (
+                              <div
+                                key={idx}
+                                className={`flex items-center justify-between rounded-sm border px-2 py-1 text-[11px] ${
+                                  a.correct
+                                    ? "border-emerald-500/30 bg-emerald-500/5 text-emerald-300"
+                                    : "border-red-500/30 bg-red-500/5 text-red-300"
+                                }`}
+                                title={`Answer: ${a.userAnswer ?? "—"} · ${a.correct ? "Correct" : "Incorrect"}${a.timeSpent ? ` · ${a.timeSpent}s` : ""}`}
+                              >
+                                <span className="font-mono">Q{idx + 1}</span>
+                                <span className="font-mono text-[10px] opacity-80">
+                                  {a.userAnswer ?? "—"}
+                                </span>
+                                <span>{a.correct ? "✓" : "✗"}</span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-text-muted">
+                            No per-answer detail recorded for this session.
+                          </p>
+                        )}
+                        <div className="mt-3 flex flex-wrap gap-4 text-[11px] text-text-muted">
+                          <span>Mode: <span className="text-text-secondary">{sess.mode}</span></span>
+                          {sess.timeSpent != null && (
+                            <span>Time: <span className="text-text-secondary">{sess.timeSpent}s</span></span>
+                          )}
+                          <span className="font-mono opacity-60">session {sess.id}</span>
+                        </div>
                       </div>
                     )}
                   </GlassCard>
