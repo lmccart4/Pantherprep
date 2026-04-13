@@ -14,6 +14,7 @@ import {
 } from "@/lib/firestore";
 import { getAdaptiveProfile } from "@/lib/adaptive/performance-service";
 import type { AdaptiveProfile } from "@/lib/adaptive/performance-service";
+import { getUserRole } from "@/lib/auth-utils";
 import { GlassCard } from "@/components/ui/glass-card";
 import { TopBar } from "@/components/layout/top-bar";
 import type { TestType } from "@/types/question";
@@ -92,10 +93,12 @@ export default function HomePage() {
     getStudentProfile(user.uid).then((p) => {
       if (p) setProfile(p);
       else {
-        // Create initial profile
+        // Create initial profile — resolve role from heuristic so teachers
+        // see the teacher UI from their very first login.
         updateStudentProfile(user.uid, {
           email: user.email,
           displayName: user.displayName,
+          role: getUserRole(user.email),
           xp: 0,
           level: 0,
           streak: 0,
