@@ -3,7 +3,8 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { getPracticeTestQuestions } from "@/lib/questions";
-import { saveSession, saveProgress } from "@/lib/firestore";
+import { saveProgress } from "@/lib/firestore";
+import { completeTestSession } from "@/lib/test-persistence";
 import { GlassCard } from "@/components/ui/glass-card";
 import { QuestionCard } from "@/components/test/question-card";
 import { Timer } from "@/components/test/timer";
@@ -239,25 +240,25 @@ export function PracticeTest({
     if (!user || sections.length === 0) return;
     const allQ = sections.flatMap((s) => s.modules.flat());
     const timeSpent = Math.round((Date.now() - startTimeRef.current) / 1000);
-    const sessionAnswers = allQ.map((q) => ({
-      questionId: q.id,
-      correct: isCorrect(q, answers[qid(q)]),
-      userAnswer: answers[qid(q)] ?? "",
-    }));
-    const correct = sessionAnswers.filter((a) => a.correct).length;
 
-    saveSession({
+    const answersByIndex: Record<number, string> = {};
+    allQ.forEach((q, i) => {
+      answersByIndex[i] = answers[qid(q)] ?? "";
+    });
+    const course = `${testType}-combined`;
+
+    completeTestSession({
       uid: user.uid,
-      email: user.email,
-      testType: `${testType}-practice-test`,
-      mode: "practice-test",
-      score: correct,
-      total: allQ.length,
-      percentage: Math.round((correct / allQ.length) * 100),
+      email: user.email ?? "",
+      testType: `${testType}-practice`,
+      mode: "practice",
+      course,
+      questions: allQ,
+      answers: answersByIndex,
       timeSpent,
-      answers: sessionAnswers,
+      scaledScore: undefined,
     }).catch((err) => {
-      console.error("saveSession failed:", err);
+      console.error("completeTestSession failed:", err);
       setSaveError(true);
     });
   }, [user, sections, answers, testType, checkMode]);
