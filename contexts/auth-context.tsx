@@ -12,7 +12,7 @@ import {
 import { auth } from "@/lib/firebase";
 import { db } from "@/lib/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { isPapsEmail, getUserRole } from "@/lib/auth-utils";
+import { isPapsEmail, isAllowedAuthEmail, getUserRole } from "@/lib/auth-utils";
 import type { AppUser, UserRole } from "@/types/auth";
 
 interface AuthContextValue {
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
-      if (fbUser && isPapsEmail(fbUser.email)) {
+      if (fbUser && isAllowedAuthEmail(fbUser.email)) {
         setFirebaseUser(fbUser);
         // Resolve role BEFORE flipping loading to false so consumers that
         // branch on role (e.g., /admin) don't see the placeholder "student"
