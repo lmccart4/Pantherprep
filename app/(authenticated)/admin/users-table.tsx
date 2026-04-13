@@ -5,6 +5,7 @@ import { listAllUsers } from "@/lib/firestore";
 import { GlassCard } from "@/components/ui/glass-card";
 import type { StudentProfile } from "@/types/firestore";
 import { RoleDropdown } from "./role-dropdown";
+import { DeleteUserModal } from "./delete-user-modal";
 import { useAuth } from "@/hooks/use-auth";
 import type { UserRole } from "@/types/auth";
 
@@ -31,6 +32,7 @@ export function UsersTable() {
   const [roleFilter, setRoleFilter] = useState<"all" | "student" | "teacher" | "admin">("all");
   const [newThisWeek, setNewThisWeek] = useState(false);
   const { user: currentUser } = useAuth();
+  const [deleteTarget, setDeleteTarget] = useState<UserRow | null>(null);
 
   useEffect(() => {
     listAllUsers()
@@ -41,6 +43,10 @@ export function UsersTable() {
 
   function applyRoleChange(uid: string, newRole: UserRole) {
     setUsers((prev) => prev.map((u) => (u.id === uid ? { ...u, role: newRole } : u)));
+  }
+
+  function handleDeleted(uid: string) {
+    setUsers((prev) => prev.filter((u) => u.id !== uid));
   }
 
   if (loading) return <GlassCard><p className="text-text-muted">Loading users…</p></GlassCard>;
@@ -138,12 +144,34 @@ export function UsersTable() {
                     />
                   </td>
                   <td className="px-4 py-3 text-text-muted">{formatRelative(u.updatedAt)}</td>
-                  <td className="px-4 py-3 text-right text-text-muted">—</td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      type="button"
+                      onClick={() => setDeleteTarget(u)}
+                      disabled={currentUser?.uid === u.id}
+                      title={currentUser?.uid === u.id ? "Can't delete your own account" : "Delete user"}
+                      className={`rounded-radius-sm px-2 py-1 text-xs transition-colors ${
+                        currentUser?.uid === u.id
+                          ? "text-text-muted/40 cursor-not-allowed"
+                          : "text-accent-red hover:bg-accent-red/10"
+                      }`}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </GlassCard>
+      )}
+      {deleteTarget && (
+        <DeleteUserModal
+          uid={deleteTarget.id}
+          email={deleteTarget.email}
+          onClose={() => setDeleteTarget(null)}
+          onDeleted={handleDeleted}
+        />
       )}
     </div>
   );
