@@ -24,6 +24,9 @@ export function UsersTable() {
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState<"all" | "student" | "teacher" | "admin">("all");
+  const [newThisWeek, setNewThisWeek] = useState(false);
 
   useEffect(() => {
     listAllUsers()
@@ -34,9 +37,6 @@ export function UsersTable() {
 
   if (loading) return <GlassCard><p className="text-text-muted">Loading users…</p></GlassCard>;
   if (error) return <GlassCard><p className="text-accent-red">Error: {error}</p></GlassCard>;
-  if (users.length === 0) {
-    return <GlassCard><p className="text-text-muted">No users yet. As people sign in, they&apos;ll appear here.</p></GlassCard>;
-  }
 
   const counts = {
     total: users.length,
@@ -45,36 +45,91 @@ export function UsersTable() {
     admins: users.filter((u) => u.role === "admin").length,
   };
 
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const filtered = users.filter((u) => {
+    if (roleFilter !== "all" && (u.role ?? "student") !== roleFilter) return false;
+    if (search) {
+      const q = search.toLowerCase();
+      const match =
+        u.email?.toLowerCase().includes(q) ||
+        (u.displayName ?? "").toLowerCase().includes(q);
+      if (!match) return false;
+    }
+    if (newThisWeek) {
+      const ts = u.updatedAt as unknown as { toDate?: () => Date } | undefined;
+      if (!ts?.toDate) return false;
+      if (ts.toDate().getTime() < weekAgo) return false;
+    }
+    return true;
+  });
+
+  const chipClass = (active: boolean) =>
+    `rounded-radius-sm px-3 py-1.5 text-xs transition-colors ${
+      active
+        ? "bg-panther-red text-white"
+        : "border border-border-default text-text-secondary hover:border-border-light"
+    }`;
+
   return (
     <div>
       <p className="mb-4 text-sm text-text-muted">
         {counts.total} total · {counts.teachers} teachers · {counts.admins} admins · {counts.students} students
       </p>
-      <GlassCard className="overflow-x-auto p-0">
-        <table className="w-full text-left text-sm">
-          <thead className="border-b border-border-default text-xs uppercase tracking-wider text-text-muted">
-            <tr>
-              <th className="px-4 py-3">User</th>
-              <th className="px-4 py-3">Role</th>
-              <th className="px-4 py-3">Last active</th>
-              <th className="px-4 py-3 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((u) => (
-              <tr key={u.id} className="border-b border-border-default/50 last:border-0">
-                <td className="px-4 py-3">
-                  <div className="text-white">{u.email}</div>
-                  <div className="text-xs text-text-muted">{u.displayName || "—"}</div>
-                </td>
-                <td className="px-4 py-3 text-text-secondary">{u.role ?? "student"}</td>
-                <td className="px-4 py-3 text-text-muted">{formatRelative(u.updatedAt)}</td>
-                <td className="px-4 py-3 text-right text-text-muted">—</td>
+
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search email or name…"
+          aria-label="Search users"
+          className="flex-1 min-w-[200px] rounded-radius-sm border border-border-default bg-bg-surface px-3 py-2 text-sm text-white outline-none focus:border-panther-red"
+        />
+        <button type="button" onClick={() => setRoleFilter("all")} className={chipClass(roleFilter === "all")}>All</button>
+        <button type="button" onClick={() => setRoleFilter("student")} className={chipClass(roleFilter === "student")}>Students</button>
+        <button type="button" onClick={() => setRoleFilter("teacher")} className={chipClass(roleFilter === "teacher")}>Teachers</button>
+        <button type="button" onClick={() => setRoleFilter("admin")} className={chipClass(roleFilter === "admin")}>Admins</button>
+        <label className="flex items-center gap-2 text-xs text-text-secondary">
+          <input type="checkbox" checked={newThisWeek} onChange={(e) => setNewThisWeek(e.target.checked)} />
+          New this week
+        </label>
+      </div>
+
+      {filtered.length === 0 ? (
+        <GlassCard>
+          <p className="text-text-muted">
+            {users.length === 0
+              ? "No users yet. As people sign in, they\u2019ll appear here."
+              : "No users match your filters."}
+          </p>
+        </GlassCard>
+      ) : (
+        <GlassCard className="overflow-x-auto p-0">
+          <table className="w-full text-left text-sm" aria-label="Users">
+            <thead className="border-b border-border-default text-xs uppercase tracking-wider text-text-muted">
+              <tr>
+                <th scope="col" className="px-4 py-3">User</th>
+                <th scope="col" className="px-4 py-3">Role</th>
+                <th scope="col" className="px-4 py-3">Last active</th>
+                <th scope="col" className="px-4 py-3 text-right">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </GlassCard>
+            </thead>
+            <tbody>
+              {filtered.map((u) => (
+                <tr key={u.id} className="border-b border-border-default/50 last:border-0">
+                  <td className="px-4 py-3">
+                    <div className="text-white">{u.email}</div>
+                    <div className="text-xs text-text-muted">{u.displayName || "—"}</div>
+                  </td>
+                  <td className="px-4 py-3 text-text-secondary">{u.role ?? "student"}</td>
+                  <td className="px-4 py-3 text-text-muted">{formatRelative(u.updatedAt)}</td>
+                  <td className="px-4 py-3 text-right text-text-muted">—</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </GlassCard>
+      )}
     </div>
   );
 }
