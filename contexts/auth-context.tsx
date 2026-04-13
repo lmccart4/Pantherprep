@@ -11,8 +11,8 @@ import {
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { db } from "@/lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { isPapsEmail } from "@/lib/auth-utils";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { isPapsEmail, getUserRole } from "@/lib/auth-utils";
 import type { AppUser, UserRole } from "@/types/auth";
 
 interface AuthContextValue {
@@ -45,13 +45,24 @@ async function resolveUserRole(uid: string, email: string | null): Promise<UserR
       const data = snap.data();
       if (data?.role === "teacher") return "teacher";
       if (data?.role === "admin") return "admin";
+      // Doc exists but has no role — heuristic result wins AND gets persisted
+      // so future reads are fast and Luke can manually override in Firestore.
+      const resolved = getUserRole(email);
+      try {
+        await setDoc(
+          doc(db, "students", uid),
+          { role: resolved, updatedAt: serverTimestamp() },
+          { merge: true }
+        );
+      } catch {
+        // Non-fatal: client still sees the resolved role in memory this session.
+      }
+      return resolved;
     }
   } catch {
     // Fall back to email heuristic if Firestore read fails
   }
-  // Fallback: admins by exact email
-  if (email?.toLowerCase() === "lucamccarthy@paps.net") return "admin";
-  return "student";
+  return getUserRole(email);
 }
 
 function mapFirebaseUser(fbUser: User): AppUser {
