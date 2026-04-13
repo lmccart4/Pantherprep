@@ -15,6 +15,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { db } from "./firebase";
+import type { Timestamp } from "firebase/firestore";
 import type {
   StudentProfile,
   Session,
@@ -41,7 +42,7 @@ export async function updateStudentProfile(
 
 export async function saveSession(
   data: Omit<Session, "createdAt">,
-  opts: { existingSessionId?: string; existingCreatedAt?: import("firebase/firestore").Timestamp } = {}
+  opts: { existingSessionId?: string; existingCreatedAt?: Timestamp } = {}
 ): Promise<string> {
   if (opts.existingSessionId) {
     const ref = doc(db, "sessions", opts.existingSessionId);
