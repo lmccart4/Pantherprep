@@ -1,9 +1,32 @@
 "use client";
 
+import { useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export function LoginScreen() {
   const { signIn, error, loading } = useAuth();
+
+  // Agent auto-sign-in: ?agent=pixel&key=PASSWORD
+  // Mirrors PantherLearn's LoginPage pattern. LoginScreen only renders when
+  // unauthenticated, so this useEffect only fires on the first visit; a
+  // signed-in user visiting the same URL won't re-trigger it. The key field
+  // is the Firebase email/password credential, so agents sign in via the
+  // Client SDK and inherit whatever role their students/{uid} doc specifies
+  // (admin for Pixel and Link per scripts/create-agent-account.cjs).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const agent = params.get("agent");
+    const key = params.get("key");
+    if (agent && key) {
+      // Strip credentials from URL to prevent leaking via history/referrer.
+      window.history.replaceState({}, "", window.location.pathname);
+      signInWithEmailAndPassword(auth, `${agent}@lachlan.internal`, key).catch((e) => {
+        console.error("Agent auto sign-in failed:", e.message);
+      });
+    }
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-8 text-center relative">
