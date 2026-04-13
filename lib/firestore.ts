@@ -45,7 +45,7 @@ export async function listAllUsers(): Promise<(StudentProfile & { id: string })[
   const snap = await getDocs(
     query(collection(db, "students"), orderBy("updatedAt", "desc"))
   );
-  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as StudentProfile) }));
+  return snap.docs.map((d) => ({ ...(d.data() as StudentProfile), id: d.id }));
 }
 
 export async function updateUserRole(uid: string, role: UserRole): Promise<void> {
