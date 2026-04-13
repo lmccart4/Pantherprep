@@ -31,10 +31,16 @@ function formatDate(ts: FirestoreTimestamp | string | number | null | undefined)
   });
 }
 
+const TEST_TYPE_ABBREVS = new Set(["sat", "psat", "psat89", "nmsqt", "rw"]);
+
 function formatTestType(tt: string): string {
   return tt
     .split("-")
-    .map((p) => (p.length <= 3 ? p.toUpperCase() : p[0].toUpperCase() + p.slice(1)))
+    .map((p) =>
+      TEST_TYPE_ABBREVS.has(p.toLowerCase())
+        ? p.toUpperCase()
+        : p[0].toUpperCase() + p.slice(1)
+    )
     .join(" ");
 }
 
