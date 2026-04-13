@@ -85,12 +85,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser && isPapsEmail(fbUser.email)) {
         setFirebaseUser(fbUser);
-        const baseUser = mapFirebaseUser(fbUser);
-        setUser(baseUser);
-        setLoading(false);
-        // Resolve role from Firestore and update
+        // Resolve role BEFORE flipping loading to false so consumers that
+        // branch on role (e.g., /admin) don't see the placeholder "student"
+        // role during the Firestore round-trip.
         const role = await resolveUserRole(fbUser.uid, fbUser.email);
-        setUser((prev) => (prev ? { ...prev, role } : prev));
+        setUser({ ...mapFirebaseUser(fbUser), role });
+        setLoading(false);
       } else {
         setFirebaseUser(null);
         setUser(null);
