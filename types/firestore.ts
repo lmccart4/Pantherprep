@@ -1,10 +1,12 @@
 import type { Timestamp } from "firebase/firestore";
+import type { UserRole } from "./auth";
 
 export interface StudentProfile {
   uid: string;
   email: string;
   displayName: string;
   photoURL?: string;
+  role?: UserRole;
   xp: number;
   level: number;
   streak: number;
@@ -25,8 +27,11 @@ export interface Session {
   percentage: number;
   scaledScore?: number;
   timeSpent: number;
-  answers: SessionAnswer[];
+  testSessionId?: string; // NEW — joins to performanceLog answers
   createdAt: Timestamp;
+  // Legacy: older session docs include `answers: SessionAnswer[]`.
+  // New writes do not populate this field. Readers ignore it.
+  answers?: SessionAnswer[];
 }
 
 export interface SessionAnswer {

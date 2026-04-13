@@ -39,7 +39,18 @@ export async function updateStudentProfile(
 
 // ── Sessions ──
 
-export async function saveSession(data: Omit<Session, "createdAt">): Promise<string> {
+export async function saveSession(
+  data: Omit<Session, "createdAt">,
+  opts: { existingSessionId?: string; existingCreatedAt?: import("firebase/firestore").Timestamp } = {}
+): Promise<string> {
+  if (opts.existingSessionId) {
+    const ref = doc(db, "sessions", opts.existingSessionId);
+    await setDoc(ref, {
+      ...data,
+      createdAt: opts.existingCreatedAt ?? serverTimestamp(),
+    });
+    return opts.existingSessionId;
+  }
   const ref = doc(collection(db, "sessions"));
   await setDoc(ref, { ...data, createdAt: serverTimestamp() });
   return ref.id;
