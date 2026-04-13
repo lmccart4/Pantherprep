@@ -207,6 +207,36 @@ function PastTestDetail({
   const wrongCount = answers.filter((a) => !a.correct && a.selectedAnswer !== "").length;
   const skippedCount = answers.filter((a) => a.selectedAnswer === "").length;
 
+  // Breakdown by domain — correct / total per domain, ordered by weakest first
+  const domainBreakdown: { domain: string; correct: number; total: number }[] = (() => {
+    const map = new Map<string, { correct: number; total: number }>();
+    for (const a of answers) {
+      const d = a.domain || "Uncategorized";
+      const row = map.get(d) ?? { correct: 0, total: 0 };
+      row.total += 1;
+      if (a.correct) row.correct += 1;
+      map.set(d, row);
+    }
+    return Array.from(map.entries())
+      .map(([domain, row]) => ({ domain, ...row }))
+      .sort((a, b) => a.correct / a.total - b.correct / b.total);
+  })();
+
+  // Breakdown by skill — same shape, same weakest-first ordering
+  const skillBreakdown: { skill: string; correct: number; total: number }[] = (() => {
+    const map = new Map<string, { correct: number; total: number }>();
+    for (const a of answers) {
+      const s = a.skill || "Uncategorized";
+      const row = map.get(s) ?? { correct: 0, total: 0 };
+      row.total += 1;
+      if (a.correct) row.correct += 1;
+      map.set(s, row);
+    }
+    return Array.from(map.entries())
+      .map(([skill, row]) => ({ skill, ...row }))
+      .sort((a, b) => a.correct / a.total - b.correct / b.total);
+  })();
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -230,6 +260,93 @@ function PastTestDetail({
             <div className="text-sm text-text-muted">
               {summary.percentage ?? 0}% &middot; {formatDate(summary.createdAt)}
               {summary.scaledScore != null && ` · Scaled ${summary.scaledScore}`}
+            </div>
+          </div>
+        </GlassCard>
+      )}
+
+      {answers.length > 0 && (
+        <GlassCard>
+          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-text-muted">
+            Breakdown — weakest first
+          </h4>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-text-muted">
+                By Domain
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {domainBreakdown.map((d) => {
+                  const pct = d.total > 0 ? d.correct / d.total : 0;
+                  const barColor =
+                    pct >= 0.8
+                      ? "bg-emerald-400"
+                      : pct >= 0.6
+                      ? "bg-lime-400"
+                      : pct >= 0.4
+                      ? "bg-amber-400"
+                      : pct >= 0.2
+                      ? "bg-orange-400"
+                      : "bg-red-400";
+                  return (
+                    <div key={d.domain} className="flex items-center gap-2 text-xs">
+                      <span className="w-32 truncate text-text-secondary" title={d.domain}>
+                        {d.domain}
+                      </span>
+                      <div className="flex-1 overflow-hidden rounded-full bg-bg-secondary">
+                        <div
+                          className={`h-1.5 ${barColor}`}
+                          style={{ width: `${Math.max(pct * 100, 3)}%` }}
+                        />
+                      </div>
+                      <span className="w-12 text-right font-mono text-text-muted">
+                        {d.correct}/{d.total}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div>
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-text-muted">
+                By Skill
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {skillBreakdown.slice(0, 10).map((sk) => {
+                  const pct = sk.total > 0 ? sk.correct / sk.total : 0;
+                  const barColor =
+                    pct >= 0.8
+                      ? "bg-emerald-400"
+                      : pct >= 0.6
+                      ? "bg-lime-400"
+                      : pct >= 0.4
+                      ? "bg-amber-400"
+                      : pct >= 0.2
+                      ? "bg-orange-400"
+                      : "bg-red-400";
+                  return (
+                    <div key={sk.skill} className="flex items-center gap-2 text-xs">
+                      <span className="w-32 truncate text-text-secondary" title={sk.skill}>
+                        {sk.skill}
+                      </span>
+                      <div className="flex-1 overflow-hidden rounded-full bg-bg-secondary">
+                        <div
+                          className={`h-1.5 ${barColor}`}
+                          style={{ width: `${Math.max(pct * 100, 3)}%` }}
+                        />
+                      </div>
+                      <span className="w-12 text-right font-mono text-text-muted">
+                        {sk.correct}/{sk.total}
+                      </span>
+                    </div>
+                  );
+                })}
+                {skillBreakdown.length > 10 && (
+                  <p className="mt-1 text-[10px] text-text-muted">
+                    Showing 10 weakest of {skillBreakdown.length} skills
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </GlassCard>
