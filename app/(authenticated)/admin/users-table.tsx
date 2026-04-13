@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { listAllUsers } from "@/lib/firestore";
 import { GlassCard } from "@/components/ui/glass-card";
 import type { StudentProfile } from "@/types/firestore";
+import { RoleDropdown } from "./role-dropdown";
+import { useAuth } from "@/hooks/use-auth";
+import type { UserRole } from "@/types/auth";
 
 type UserRow = StudentProfile & { id: string };
 
@@ -27,6 +30,7 @@ export function UsersTable() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState<"all" | "student" | "teacher" | "admin">("all");
   const [newThisWeek, setNewThisWeek] = useState(false);
+  const { user: currentUser } = useAuth();
 
   useEffect(() => {
     listAllUsers()
@@ -34,6 +38,10 @@ export function UsersTable() {
       .catch((e: Error) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
+
+  function applyRoleChange(uid: string, newRole: UserRole) {
+    setUsers((prev) => prev.map((u) => (u.id === uid ? { ...u, role: newRole } : u)));
+  }
 
   if (loading) return <GlassCard><p className="text-text-muted">Loading users…</p></GlassCard>;
   if (error) return <GlassCard><p className="text-accent-red">Error: {error}</p></GlassCard>;
@@ -121,7 +129,14 @@ export function UsersTable() {
                     <div className="text-white">{u.email}</div>
                     <div className="text-xs text-text-muted">{u.displayName || "—"}</div>
                   </td>
-                  <td className="px-4 py-3 text-text-secondary">{u.role ?? "student"}</td>
+                  <td className="px-4 py-3">
+                    <RoleDropdown
+                      uid={u.id}
+                      currentRole={(u.role ?? "student") as UserRole}
+                      isSelf={currentUser?.uid === u.id}
+                      onChange={(next) => applyRoleChange(u.id, next)}
+                    />
+                  </td>
                   <td className="px-4 py-3 text-text-muted">{formatRelative(u.updatedAt)}</td>
                   <td className="px-4 py-3 text-right text-text-muted">—</td>
                 </tr>
