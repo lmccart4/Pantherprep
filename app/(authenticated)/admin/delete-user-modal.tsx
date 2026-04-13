@@ -47,8 +47,10 @@ export function DeleteUserModal({ uid, email, onClose, onDeleted }: DeleteUserMo
           Delete user
         </h2>
         <p className="mb-4 text-sm text-text-secondary">
-          This permanently deletes the student profile for{" "}
-          <span className="font-mono text-white">{email}</span>.
+          This removes the student profile for{" "}
+          <span className="font-mono text-white">{email}</span>.{" "}
+          Past test sessions, progress, and class memberships remain in the
+          database — they re-link automatically if the user signs back in.{" "}
           Any classes this user owns will become orphaned.
         </p>
         <p className="mb-2 text-xs text-text-muted">Type the email to confirm:</p>
