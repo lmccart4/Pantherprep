@@ -90,7 +90,7 @@ export async function getSessions(
     limit(maxResults)
   );
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Session) }));
+  return snap.docs.map((d) => ({ ...(d.data() as Session), id: d.id }));
 }
 
 // ── Question Stats ──
@@ -163,7 +163,7 @@ export async function getClassByCode(code: string): Promise<(ClassDoc & { id: st
   const snap = await getDocs(q);
   if (snap.empty) return null;
   const d = snap.docs[0];
-  return { id: d.id, ...(d.data() as ClassDoc) };
+  return { ...(d.data() as ClassDoc), id: d.id };
 }
 
 export async function getTeacherClasses(
@@ -175,7 +175,7 @@ export async function getTeacherClasses(
     orderBy("createdAt", "desc")
   );
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as ClassDoc) }));
+  return snap.docs.map((d) => ({ ...(d.data() as ClassDoc), id: d.id }));
 }
 
 // ── Custom Questions ──
@@ -198,5 +198,5 @@ export async function getCustomQuestions(
     q = query(collection(db, "customQuestions"));
   }
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as CustomQuestion) }));
+  return snap.docs.map((d) => ({ ...(d.data() as CustomQuestion), id: d.id }));
 }
