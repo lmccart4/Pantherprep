@@ -8,7 +8,7 @@ export function LoginScreen() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-8 text-center relative">
 
-      <div className="relative z-10">
+      <div className="relative z-10 w-full sm:max-w-[560px] md:max-w-[640px]">
         {/* Logo mark */}
         <div className="mb-6 flex justify-center">
           <div className="h-24 w-24 animate-[logoEntrance_0.8s_cubic-bezier(.16,1,.3,1)_forwards] drop-shadow-[0_0_32px_rgba(214,40,40,0.25)]">
@@ -27,14 +27,34 @@ export function LoginScreen() {
         <p className="mb-2 text-[0.95rem] font-medium uppercase tracking-[0.15em] text-text-muted">
           Test Prep Platform
         </p>
-        <p className="mx-auto mb-10 max-w-[420px] text-[1.05rem] leading-relaxed text-text-secondary">
+        <p className="mx-auto mb-8 max-w-[420px] text-[1.05rem] leading-relaxed text-text-secondary">
           Practice for the SAT, PSAT/NMSQT, and PSAT 8/9 with targeted questions and detailed explanations.
         </p>
+
+        {/* Value proposition */}
+        <div className="mx-auto mb-10 w-full max-w-[400px] rounded-2xl border border-white/10 bg-[rgba(15,15,22,.6)] px-6 py-5 text-left backdrop-blur-[20px] md:max-w-full">
+          <ul className="flex flex-col gap-3 text-sm text-text-secondary">
+            <li className="flex items-start gap-2.5">
+              <span className="mt-0.5 shrink-0 text-panther-red">&#9656;</span>
+              <span>Full SAT, PSAT/NMSQT, and PSAT&nbsp;8/9 practice tests with score estimates</span>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <span className="mt-0.5 shrink-0 text-panther-red">&#9656;</span>
+              <span>Adaptive practice that targets your weak areas automatically</span>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <span className="mt-0.5 shrink-0 text-panther-red">&#9656;</span>
+              <span>Detailed explanations for every question — built for Perth Amboy students</span>
+            </li>
+          </ul>
+        </div>
 
         {/* Sign-in button */}
         <button
           onClick={signIn}
           disabled={loading}
+          aria-label={loading ? "Signing in..." : "Sign in with Google"}
+          aria-busy={loading}
           className="mx-auto flex items-center gap-3 rounded-radius-md border border-panther-red bg-panther-red px-8 py-3.5 font-body text-base font-semibold text-white transition-all duration-200 hover:-translate-y-px hover:bg-panther-dark-red hover:shadow-[0_0_24px_rgba(214,40,40,0.15)] disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">

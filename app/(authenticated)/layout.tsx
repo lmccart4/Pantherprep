@@ -3,6 +3,7 @@
 import { AuthProvider } from "@/contexts/auth-context";
 import { useAuth } from "@/hooks/use-auth";
 import { LoginScreen } from "@/components/auth/login-screen";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 
 function AuthGate({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -34,8 +35,10 @@ export default function AuthenticatedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
-      <AuthGate>{children}</AuthGate>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <AuthGate>{children}</AuthGate>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

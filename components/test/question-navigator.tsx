@@ -47,6 +47,8 @@ export function QuestionNavigator({
             <button
               key={i}
               onClick={() => onJump(i)}
+              aria-label={`Go to question ${i + 1}${isFlagged ? " (flagged)" : ""}${isAnswered ? " (answered)" : ""}`}
+              aria-current={isCurrent ? "true" : undefined}
               className={cn(
                 "flex h-9 w-9 items-center justify-center rounded-radius-sm text-xs font-semibold transition-all duration-150",
                 isCurrent && "bg-panther-red text-white shadow-md",

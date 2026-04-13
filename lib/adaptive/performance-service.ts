@@ -238,9 +238,20 @@ export async function saveAdaptiveProfile(uid: string, profile: Partial<Adaptive
   }
 }
 
-export async function getAllAdaptiveProfiles(): Promise<AdaptiveProfile[]> {
+export async function getAllAdaptiveProfiles(uids?: string[]): Promise<AdaptiveProfile[]> {
   try {
-    const snap = await getDocs(collection(db, "adaptiveProfile"));
+    // If specific UIDs are provided, fetch only those documents (avoids full collection scan)
+    if (uids && uids.length > 0) {
+      const results = await Promise.all(
+        uids.map((uid) => getDoc(doc(db, "adaptiveProfile", uid)))
+      );
+      return results
+        .filter((d) => d.exists())
+        .map((d) => ({ uid: d.id, ...d.data() } as AdaptiveProfile));
+    }
+    // Fall back to bounded collection scan (max 200 docs)
+    const q = query(collection(db, "adaptiveProfile"), limit(200));
+    const snap = await getDocs(q);
     return snap.docs.map((d) => ({ uid: d.id, ...d.data() } as AdaptiveProfile));
   } catch (e) {
     console.warn("getAllAdaptiveProfiles error:", e);

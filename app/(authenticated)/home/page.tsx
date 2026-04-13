@@ -17,7 +17,14 @@ import { TopBar } from "@/components/layout/top-bar";
 import type { TestType } from "@/types/question";
 import type { StudentProfile, Session, ClassDoc } from "@/types/firestore";
 
-type View = "home" | "test-detail" | "dashboard";
+type View = "home" | "test-detail" | "dashboard" | "class-detail";
+
+type ClassStudentRow = {
+  uid: string;
+  displayName: string;
+  email: string;
+  sessions: (Session & { id: string })[];
+};
 
 const LEVELS = [
   { name: "Cub", min: 0 },
@@ -51,6 +58,9 @@ export default function HomePage() {
   const [showJoin, setShowJoin] = useState(false);
   const [newClassName, setNewClassName] = useState("");
   const [showCreate, setShowCreate] = useState(false);
+  const [selectedClass, setSelectedClass] = useState<(ClassDoc & { id: string }) | null>(null);
+  const [classStudents, setClassStudents] = useState<ClassStudentRow[]>([]);
+  const [classLoading, setClassLoading] = useState(false);
 
   // Load profile & sessions
   useEffect(() => {
@@ -120,6 +130,47 @@ export default function HomePage() {
   const handleDeleteClass = async (classId: string) => {
     await deleteClass(classId);
     setClasses((prev) => prev.filter((c) => c.id !== classId));
+  };
+
+  const handleSelectClass = async (cls: ClassDoc & { id: string }) => {
+    setSelectedClass(cls);
+    setView("class-detail");
+    setClassLoading(true);
+    setClassStudents([]);
+    const uids = cls.students || [];
+    const rows = await Promise.all(
+      uids.map(async (uid) => {
+        const [profile, sessions] = await Promise.all([
+          getStudentProfile(uid),
+          getSessions(uid, 50),
+        ]);
+        return {
+          uid,
+          displayName: profile?.displayName || profile?.email || uid,
+          email: profile?.email || "",
+          sessions,
+        };
+      })
+    );
+    setClassStudents(rows);
+    setClassLoading(false);
+  };
+
+  const formatTestType = (raw: string): string => {
+    // Sessions written from diagnostic-test.tsx have a mangled testType
+    // like "psat89-math-diagnostic" — format it for display.
+    const map: Record<string, string> = {
+      "sat-math-diagnostic": "SAT Math Diagnostic",
+      "sat-rw-diagnostic": "SAT R&W Diagnostic",
+      "nmsqt-math-diagnostic": "PSAT/NMSQT Math Diagnostic",
+      "nmsqt-rw-diagnostic": "PSAT/NMSQT R&W Diagnostic",
+      "psat89-math-diagnostic": "PSAT 8/9 Math Diagnostic",
+      "psat89-rw-diagnostic": "PSAT 8/9 R&W Diagnostic",
+      sat: "SAT",
+      nmsqt: "PSAT/NMSQT",
+      psat89: "PSAT 8/9",
+    };
+    return map[raw] || raw;
   };
 
   // ── Home View ──
@@ -310,11 +361,18 @@ export default function HomePage() {
 
               <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
                 {classes.map((cls) => (
-                  <GlassCard key={cls.id}>
+                  <GlassCard
+                    key={cls.id}
+                    className="cursor-pointer transition-all hover:border-border-light"
+                    onClick={() => handleSelectClass(cls)}
+                  >
                     <div className="mb-2 flex items-center justify-between">
                       <h4 className="font-semibold text-white">{cls.name}</h4>
                       <button
-                        onClick={() => handleDeleteClass(cls.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteClass(cls.id);
+                        }}
                         className="text-xs text-text-muted transition-colors hover:text-accent-red"
                       >
                         Delete
@@ -325,7 +383,7 @@ export default function HomePage() {
                         {cls.code}
                       </span>
                       <span className="text-xs text-text-muted">
-                        {cls.students.length} student{cls.students.length !== 1 ? "s" : ""}
+                        {(cls.students || []).length} student{(cls.students || []).length !== 1 ? "s" : ""}
                       </span>
                     </div>
                   </GlassCard>
@@ -453,6 +511,182 @@ export default function HomePage() {
               </GlassCard>
             </a>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Class Detail View ──
+  if (view === "class-detail" && selectedClass) {
+    const totalStudents = classStudents.length;
+    const studentsWithActivity = classStudents.filter((s) => s.sessions.length > 0).length;
+    const allSessions = classStudents.flatMap((s) => s.sessions);
+    const classAvg =
+      allSessions.length > 0
+        ? Math.round(
+            allSessions.reduce((sum, x) => sum + (x.percentage ?? 0), 0) / allSessions.length
+          )
+        : 0;
+
+    return (
+      <div className="min-h-screen">
+        <TopBar />
+        <div className="mx-auto max-w-4xl px-6 py-8">
+          <button
+            onClick={() => {
+              setView("home");
+              setSelectedClass(null);
+              setClassStudents([]);
+            }}
+            className="mb-6 flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-text-secondary"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="rotate-180">
+              <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Back
+          </button>
+
+          <div className="mb-6">
+            <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
+              Class
+            </div>
+            <h1 className="mb-2 font-display text-[2.2rem] tracking-[0.02em] text-white">
+              {selectedClass.name}
+            </h1>
+            <div className="flex items-center gap-4 text-sm text-text-secondary">
+              <span className="rounded-radius-sm bg-bg-surface px-3 py-1 font-mono tracking-widest text-white">
+                {selectedClass.code}
+              </span>
+              <span>Share this code for students to join</span>
+            </div>
+          </div>
+
+          {/* Class stats */}
+          <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <GlassCard className="text-center">
+              <div className="text-2xl font-bold text-white">{totalStudents}</div>
+              <div className="text-xs text-text-muted">Students</div>
+            </GlassCard>
+            <GlassCard className="text-center">
+              <div className="text-2xl font-bold text-white">{studentsWithActivity}</div>
+              <div className="text-xs text-text-muted">Active</div>
+            </GlassCard>
+            <GlassCard className="text-center">
+              <div className="text-2xl font-bold text-white">{allSessions.length}</div>
+              <div className="text-xs text-text-muted">Sessions</div>
+            </GlassCard>
+            <GlassCard className="text-center">
+              <div className="text-2xl font-bold text-white">{classAvg}%</div>
+              <div className="text-xs text-text-muted">Class Avg</div>
+            </GlassCard>
+          </div>
+
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">
+            Students
+          </h3>
+
+          {classLoading ? (
+            <p className="text-sm text-text-muted">Loading student results…</p>
+          ) : totalStudents === 0 ? (
+            <GlassCard>
+              <p className="text-sm text-text-muted">
+                No students yet. Share the class code <span className="font-mono text-white">{selectedClass.code}</span> so students can join.
+              </p>
+            </GlassCard>
+          ) : (
+            <div className="flex flex-col gap-3">
+              {classStudents.map((row) => {
+                const rowAvg =
+                  row.sessions.length > 0
+                    ? Math.round(
+                        row.sessions.reduce((sum, s) => sum + (s.percentage ?? 0), 0) /
+                          row.sessions.length
+                      )
+                    : null;
+                return (
+                  <GlassCard key={row.uid}>
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                      <div>
+                        <h4 className="font-semibold text-white">{row.displayName}</h4>
+                        {row.email && (
+                          <p className="text-xs text-text-muted">{row.email}</p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-3 text-xs">
+                        <span className="text-text-muted">
+                          {row.sessions.length} session{row.sessions.length !== 1 ? "s" : ""}
+                        </span>
+                        {rowAvg !== null && (
+                          <span
+                            className={`rounded-full px-2 py-0.5 font-semibold ${
+                              rowAvg >= 80
+                                ? "bg-accent-green-soft text-accent-green"
+                                : rowAvg >= 60
+                                  ? "bg-accent-amber-soft text-accent-amber"
+                                  : "bg-accent-red-soft text-accent-red"
+                            }`}
+                          >
+                            avg {rowAvg}%
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {row.sessions.length === 0 ? (
+                      <p className="text-xs text-text-muted">No activity yet.</p>
+                    ) : (
+                      <div className="flex flex-col gap-1.5">
+                        {row.sessions.map((s) => {
+                          const when = s.createdAt
+                            ? // @ts-expect-error Firestore Timestamp vs serialized
+                              (s.createdAt?.toDate?.() ?? new Date(s.createdAt)).toLocaleDateString(undefined, {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              })
+                            : "";
+                          return (
+                            <div
+                              key={s.id}
+                              className="flex items-center justify-between rounded-radius-sm border border-border-default bg-bg-card px-3 py-2"
+                            >
+                              <div className="min-w-0 flex-1">
+                                <div className="truncate text-sm text-white">
+                                  {formatTestType(s.testType)}
+                                </div>
+                                <div className="text-[0.7rem] text-text-muted">{when}</div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                {s.scaledScore != null && (
+                                  <span className="font-mono text-xs text-text-secondary">
+                                    {s.scaledScore}
+                                  </span>
+                                )}
+                                <span className="font-mono text-xs text-text-secondary">
+                                  {s.score}/{s.total}
+                                </span>
+                                <span
+                                  className={`rounded-full px-2 py-0.5 text-[0.65rem] font-semibold ${
+                                    s.percentage >= 80
+                                      ? "bg-accent-green-soft text-accent-green"
+                                      : s.percentage >= 60
+                                        ? "bg-accent-amber-soft text-accent-amber"
+                                        : "bg-accent-red-soft text-accent-red"
+                                  }`}
+                                >
+                                  {s.percentage}%
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </GlassCard>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     );

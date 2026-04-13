@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
-import { NeuralParticles } from "@/components/layout/neural-particles";
+import { ParticlesWrapper } from "@/components/layout/particles-wrapper";
 import { TopStripe } from "@/components/layout/top-stripe";
 import "katex/dist/katex.min.css";
 import "./globals.css";
@@ -52,8 +52,8 @@ export default function RootLayout({
     <html lang="en" className={`${manrope.variable} ${cormorant.variable} ${jetbrains.variable}`}>
       <body className="font-body">
         <TopStripe />
-        <NeuralParticles count={70} connectionDist={120} speed={0.15} entropy={0.005} fireChance={0.0003} />
-        <div className="relative z-[1]">{children}</div>
+        <ParticlesWrapper />
+        <main className="relative z-[1]">{children}</main>
       </body>
     </html>
   );

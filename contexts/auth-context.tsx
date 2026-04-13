@@ -10,7 +10,9 @@ import {
   type User,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { isPapsEmail, getUserRole } from "@/lib/auth-utils";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { isPapsEmail } from "@/lib/auth-utils";
 import type { AppUser, UserRole } from "@/types/auth";
 
 interface AuthContextValue {
@@ -36,12 +38,28 @@ export const AuthContext = createContext<AuthContextValue>({
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ hd: "paps.net" });
 
+async function resolveUserRole(uid: string, email: string | null): Promise<UserRole> {
+  try {
+    const snap = await getDoc(doc(db, "students", uid));
+    if (snap.exists()) {
+      const data = snap.data();
+      if (data?.role === "teacher") return "teacher";
+      if (data?.role === "admin") return "admin";
+    }
+  } catch {
+    // Fall back to email heuristic if Firestore read fails
+  }
+  // Fallback: admins by exact email
+  if (email?.toLowerCase() === "lucamccarthy@paps.net") return "admin";
+  return "student";
+}
+
 function mapFirebaseUser(fbUser: User): AppUser {
   return {
     uid: fbUser.uid,
     email: fbUser.email!,
     displayName: fbUser.displayName || fbUser.email!.split("@")[0],
-    role: getUserRole(fbUser.email),
+    role: "student", // placeholder; resolved async in onAuthStateChanged
     photoURL: fbUser.photoURL || undefined,
   };
 }
@@ -53,15 +71,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (fbUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser && isPapsEmail(fbUser.email)) {
         setFirebaseUser(fbUser);
-        setUser(mapFirebaseUser(fbUser));
+        const baseUser = mapFirebaseUser(fbUser);
+        setUser(baseUser);
+        setLoading(false);
+        // Resolve role from Firestore and update
+        const role = await resolveUserRole(fbUser.uid, fbUser.email);
+        setUser((prev) => (prev ? { ...prev, role } : prev));
       } else {
         setFirebaseUser(null);
         setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
     return unsubscribe;
   }, []);

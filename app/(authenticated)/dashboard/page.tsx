@@ -16,6 +16,7 @@ import {
 } from "@/lib/adaptive/adaptive-engine";
 import { getAllAdaptiveProfiles } from "@/lib/adaptive/performance-service";
 import type { AdaptiveProfile } from "@/lib/adaptive/performance-service";
+import { getTeacherClasses } from "@/lib/firestore";
 
 type Course = "sat-math" | "sat-rw" | "nmsqt-math" | "nmsqt-rw" | "psat89-math" | "psat89-rw";
 type Tab = "overview" | "skills" | "history" | "practice";
@@ -505,6 +506,7 @@ function StudentPractice({ profile }: { profile: AdaptiveProfile }) {
 // ============================================================
 
 function TeacherView({ course }: { course: Course }) {
+  const { user } = useAuth();
   const [profiles, setProfiles] = useState<AdaptiveProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<TeacherTab>("overview");
@@ -515,12 +517,22 @@ function TeacherView({ course }: { course: Course }) {
 
   useEffect(() => {
     loadData();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid]);
 
   async function loadData() {
     setLoading(true);
     try {
-      const all = await getAllAdaptiveProfiles();
+      // Fetch only students in this teacher's classes to avoid full collection scan
+      let studentUids: string[] | undefined;
+      if (user?.uid) {
+        const classes = await getTeacherClasses(user.uid);
+        const allStudents = classes.flatMap((c) => c.students || []);
+        if (allStudents.length > 0) {
+          studentUids = [...new Set(allStudents)];
+        }
+      }
+      const all = await getAllAdaptiveProfiles(studentUids);
       setProfiles(all);
     } catch (e) {
       console.warn("TeacherDashboard load error:", e);

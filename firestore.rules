@@ -35,7 +35,8 @@ service cloud.firestore {
     match /classes/{classId} {
       allow read: if isPapsUser();
       allow create: if isPapsUser();
-      allow update: if isPapsUser();
+      allow update: if isPapsUser() && request.auth.uid == resource.data.teacherUid;
+      allow delete: if isPapsUser() && request.auth.uid == resource.data.teacherUid;
     }
     // Questions - seeded via admin SDK, read-only for authenticated users
     match /questions/{qId} {

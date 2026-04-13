@@ -116,6 +116,7 @@ export function DiagnosticTest({
   const [reflections, setReflections] = useState<Record<number, string>>({});
   const [timerKey, setTimerKey] = useState(0);
   const [currentModule, setCurrentModule] = useState(1);
+  const [saveError, setSaveError] = useState(false);
   const startTimeRef = useRef<number>(0);
   const progressKey = `${testType}-${section}-diag`;
 
@@ -249,7 +250,10 @@ export function DiagnosticTest({
       scaledScore: scaled,
       timeSpent,
       answers: sessionAnswers,
-    }).catch(console.error);
+    }).catch((err) => {
+      console.error("saveSession failed:", err);
+      setSaveError(true);
+    });
   }, [user, questions, answers, testType, section]);
 
   const handleAnswer = (answer: string) => {
@@ -582,6 +586,12 @@ export function DiagnosticTest({
         <h1 className="mb-8 font-display text-[2.2rem] tracking-[0.02em] text-white">
           {title} Results
         </h1>
+
+        {saveError && (
+          <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">
+            Your score couldn&apos;t be saved. Check your connection and try reloading if you need to review this session.
+          </div>
+        )}
 
         {/* Scaled Score */}
         <GlassCard className="mb-8 text-center">
