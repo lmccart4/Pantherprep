@@ -1,9 +1,15 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper: authenticated paps.net user
+    // Helper: authenticated paps.net OR lachlan.internal agent user.
+    // Agents (pixel, link, etc.) sign in via Firebase email/password from the
+    // login screen using ?agent=&key= URL params and get teacher-level
+    // access for visual QA, integration checks, and nightly builds.
     function isPapsUser() {
-      return request.auth != null && request.auth.token.email.matches('.*@paps\\.net$');
+      return request.auth != null && (
+        request.auth.token.email.matches('.*@paps\\.net$') ||
+        request.auth.token.email.matches('.*@lachlan\\.internal$')
+      );
     }
 
     // Students can write their own profile

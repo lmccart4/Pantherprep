@@ -12,7 +12,7 @@ import {
 import { auth } from "@/lib/firebase";
 import { db } from "@/lib/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { isPapsEmail, getUserRole } from "@/lib/auth-utils";
+import { isPapsEmail, isAllowedUser, getUserRole } from "@/lib/auth-utils";
 import type { AppUser, UserRole } from "@/types/auth";
 
 interface AuthContextValue {
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
-      if (fbUser && isPapsEmail(fbUser.email)) {
+      if (fbUser && isAllowedUser(fbUser.email)) {
         setFirebaseUser(fbUser);
         const baseUser = mapFirebaseUser(fbUser);
         setUser(baseUser);

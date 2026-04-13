@@ -1,9 +1,32 @@
 "use client";
 
+import { useEffect } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { useAuth } from "@/hooks/use-auth";
 
 export function LoginScreen() {
   const { signIn, error, loading } = useAuth();
+
+  // Agent auto-sign-in via URL params — same pattern as pantherlearn's
+  // LoginPage. Visual QA, integration checks, and nightly builds hit the
+  // site with ?agent=pixel&key=<password> and get signed in as
+  // pixel@lachlan.internal via Firebase email/password auth. We strip the
+  // params from the URL immediately so the credentials don't leak through
+  // browser history or referrer headers.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const agent = params.get("agent");
+    const key = params.get("key");
+    if (agent && key) {
+      window.history.replaceState({}, "", window.location.pathname);
+      signInWithEmailAndPassword(auth, `${agent}@lachlan.internal`, key).catch(
+        (err) => {
+          console.warn("Agent sign-in failed:", err);
+        }
+      );
+    }
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-8 text-center relative">
