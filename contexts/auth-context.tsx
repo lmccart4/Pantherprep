@@ -45,6 +45,7 @@ async function resolveUserRole(uid: string, email: string | null): Promise<UserR
       const data = snap.data();
       if (data?.role === "teacher") return "teacher";
       if (data?.role === "admin") return "admin";
+      if (data?.role === "student") return "student";
       // Doc exists but has no role — heuristic result wins AND gets persisted
       // so future reads are fast and Luke can manually override in Firestore.
       const resolved = getUserRole(email);
