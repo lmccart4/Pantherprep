@@ -1,6 +1,22 @@
 import type { UserRole } from "@/types/auth";
 
-const ADMIN_EMAILS = ["lucamccarthy@paps.net"];
+// Bootstrap allowlist: emails that resolve to admin on first login.
+// Order of authority: stored Firestore role wins over this list (so a manual
+// demote via the /admin UI sticks), but any email here auto-admins when the
+// doc has no role yet. Agent accounts are pre-authorized so Luke can create
+// them via PAPS IT later without touching code — they'll gain admin on the
+// very first sign-in. Agents are the Lachlan team (CTO + 6 specialists).
+const ADMIN_EMAILS = [
+  "lucamccarthy@paps.net",
+  // Lachlan agent team (may not exist in Google Workspace yet)
+  "lachlan@paps.net",
+  "atlas@paps.net",
+  "parker@paps.net",
+  "kit@paps.net",
+  "mack@paps.net",
+  "pixel@paps.net",
+  "link@paps.net",
+];
 
 export function isPapsEmail(email: string | null | undefined): boolean {
   if (!email) return false;
