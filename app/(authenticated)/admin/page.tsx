@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { TopBar } from "@/components/layout/top-bar";
-import { GlassCard } from "@/components/ui/glass-card";
+import { UsersTable } from "./users-table";
 
 export default function AdminPage() {
   const { role, loading } = useAuth();
@@ -36,9 +36,7 @@ export default function AdminPage() {
       <main className="mx-auto max-w-6xl px-6 pb-16 pt-24">
         <h1 className="mb-2 text-3xl font-bold text-white">Admin — Users</h1>
         <p className="mb-8 text-sm text-text-muted">Manage user roles and accounts.</p>
-        <GlassCard>
-          <p className="text-text-muted">Users table loads here…</p>
-        </GlassCard>
+        <UsersTable />
       </main>
     </div>
   );
