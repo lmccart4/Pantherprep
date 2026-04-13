@@ -19,8 +19,11 @@ export function RoleDropdown({ uid, currentRole, isSelf, onChange }: RoleDropdow
     const next = e.target.value as UserRole;
     if (next === currentRole) return;
 
-    // Self-demote guard: admin flipping themselves to non-admin
-    if (isSelf && currentRole === "admin" && next !== "admin") {
+    // Self-demote: admin flipping themselves to non-admin. Confirm, then full
+    // reload on success so the auth context re-reads role from Firestore and
+    // AdminGuard redirects us away from /admin instead of holding stale state.
+    const isSelfDemote = isSelf && currentRole === "admin" && next !== "admin";
+    if (isSelfDemote) {
       const ok = window.confirm(
         "Demoting yourself will log you out of this admin panel. Continue?"
       );
@@ -36,6 +39,11 @@ export function RoleDropdown({ uid, currentRole, isSelf, onChange }: RoleDropdow
     onChange(next); // optimistic
     try {
       await updateUserRole(uid, next);
+      if (isSelfDemote) {
+        // Full reload forces auth-context to re-resolve role from Firestore.
+        window.location.href = "/home";
+        return;
+      }
     } catch {
       setError(true);
       onChange(previous); // revert
