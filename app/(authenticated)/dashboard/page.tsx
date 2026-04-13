@@ -7,8 +7,8 @@ import { TopBar } from "@/components/layout/top-bar";
 import { GlassCard } from "@/components/ui/glass-card";
 import {
   useAdaptiveProfile,
-  useRecentAnswers,
 } from "@/hooks/use-adaptive";
+import { PastTestsView } from "@/components/dashboard/past-tests-view";
 import {
   MATH_SKILLS,
   RW_SKILLS,
@@ -19,7 +19,7 @@ import type { AdaptiveProfile } from "@/lib/adaptive/performance-service";
 import { getTeacherClasses } from "@/lib/firestore";
 
 type Course = "sat-math" | "sat-rw" | "nmsqt-math" | "nmsqt-rw" | "psat89-math" | "psat89-rw";
-type Tab = "overview" | "skills" | "history" | "practice";
+type Tab = "overview" | "skills" | "past-tests" | "practice";
 type TeacherTab = "overview" | "students" | "alerts" | "heatmap";
 
 const COURSES: { value: Course; label: string }[] = [
@@ -104,7 +104,6 @@ export default function DashboardPage() {
 
 function StudentView({ uid, course }: { uid: string; course: Course }) {
   const { profile, loading, error, refresh } = useAdaptiveProfile(uid);
-  const { answers: recentAnswers } = useRecentAnswers(uid, 200);
   const [tab, setTab] = useState<Tab>("overview");
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
 
@@ -147,7 +146,7 @@ function StudentView({ uid, course }: { uid: string; course: Course }) {
   const tabs: { key: Tab; label: string }[] = [
     { key: "overview", label: "Overview" },
     { key: "skills", label: "Skills" },
-    { key: "history", label: "History" },
+    { key: "past-tests", label: "Past Tests" },
     { key: "practice", label: "Practice" },
   ];
 
@@ -195,7 +194,7 @@ function StudentView({ uid, course }: { uid: string; course: Course }) {
           onSelectDomain={setSelectedDomain}
         />
       )}
-      {tab === "history" && <StudentHistory answers={recentAnswers} />}
+      {tab === "past-tests" && <PastTestsView uid={uid} />}
       {tab === "practice" && <StudentPractice profile={profile} />}
     </div>
   );
@@ -405,57 +404,6 @@ function SkillRow({ skillKey, data }: { skillKey: string; data: any }) {
         </div>
       )}
     </GlassCard>
-  );
-}
-
-// ---- Student History Tab ----
-
-function StudentHistory({ answers }: { answers: any[] }) {
-  const [filter, setFilter] = useState<"all" | "correct" | "incorrect">("all");
-
-  const filtered = useMemo(() => {
-    if (filter === "correct") return answers.filter((a) => a.correct);
-    if (filter === "incorrect") return answers.filter((a) => !a.correct);
-    return answers;
-  }, [answers, filter]);
-
-  return (
-    <div>
-      <div className="mb-4 flex gap-2">
-        {(["all", "correct", "incorrect"] as const).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`rounded-full px-3 py-1 text-xs font-semibold capitalize transition ${
-              f === filter
-                ? "bg-panther-red text-white"
-                : "border border-border-primary bg-bg-secondary text-text-muted"
-            }`}
-          >
-            {f} ({f === "all" ? answers.length : answers.filter((a) => f === "correct" ? a.correct : !a.correct).length})
-          </button>
-        ))}
-      </div>
-
-      <div className="flex max-h-[600px] flex-col gap-1 overflow-y-auto">
-        {filtered.slice(0, 100).map((ans, i) => (
-          <div key={i} className={`flex items-center gap-2.5 rounded-md bg-bg-secondary px-3 py-2 text-sm border-l-[3px] ${
-            ans.correct ? "border-l-emerald-400" : "border-l-red-400"
-          }`}>
-            <span className={`w-5 font-bold ${ans.correct ? "text-emerald-400" : "text-red-400"}`}>
-              {ans.correct ? "\u2713" : "\u2717"}
-            </span>
-            <span className="flex-1 text-text-muted">{skillLabel(ans.skill || "unknown")}</span>
-            <span className="w-14 text-right text-xs text-text-muted">
-              {ans.timeSpent ? `${ans.timeSpent}s` : "\u2014"}
-            </span>
-          </div>
-        ))}
-        {filtered.length === 0 && (
-          <p className="py-10 text-center text-sm text-text-muted">No answers to show.</p>
-        )}
-      </div>
-    </div>
   );
 }
 
