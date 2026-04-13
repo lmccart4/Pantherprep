@@ -772,6 +772,7 @@ function TeacherStudentDrillDown({
   profile: AdaptiveProfile;
   onBack: () => void;
 }) {
+  const [drillTab, setDrillTab] = useState<"mastery" | "past-tests">("mastery");
   const dm = Object.values(profile.domains || {}).map((d: any) => d.mastery || 0);
   const avgM = dm.length > 0 ? dm.reduce((s, v) => s + v, 0) / dm.length : 0;
 
@@ -781,59 +782,82 @@ function TeacherStudentDrillDown({
         &larr; Back to Students
       </button>
 
-      <GlassCard className="mb-4">
-        <div className="flex items-start justify-between">
-          <div>
-            <h2 className="mb-1 text-xl font-bold">{profile.uid}</h2>
-            <p className="text-sm text-text-muted">
-              {profile.totalAnswers} answers &middot; {profile.streakDays || 0} streak &middot;
-              Last active: {profile.lastActiveDate || "Unknown"}
-            </p>
-          </div>
-          <div className="text-right">
-            <div className={`text-3xl font-bold ${masteryColor(avgM)}`}>{Math.round(avgM * 100)}%</div>
-            <div className="text-xs text-text-muted">Overall Mastery</div>
-          </div>
-        </div>
-      </GlassCard>
-
-      <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {Object.entries(profile.domains || {}).map(([domain, data]: [string, any]) => (
-          <GlassCard key={domain} className="!p-4">
-            <div className="mb-2 flex justify-between">
-              <span className="text-sm font-semibold">{domain}</span>
-              <span className={`font-bold ${masteryColor(data.mastery || 0)}`}>{Math.round((data.mastery || 0) * 100)}%</span>
-            </div>
-            <div className="mb-2 h-1.5 overflow-hidden rounded-full bg-border-primary">
-              <div className={`h-full rounded-full ${masteryBarColor(data.mastery || 0)}`} style={{ width: `${(data.mastery || 0) * 100}%` }} />
-            </div>
-            <div className="text-xs text-text-muted">{data.totalCorrect}/{data.totalAnswers} correct</div>
-            {data.weakestSkills?.length > 0 && (
-              <div className="mt-1 text-[11px] text-red-400">Weak: {data.weakestSkills.map(skillLabel).join(", ")}</div>
-            )}
-            {data.strongestSkills?.length > 0 && (
-              <div className="mt-0.5 text-[11px] text-emerald-400">Strong: {data.strongestSkills.map(skillLabel).join(", ")}</div>
-            )}
-          </GlassCard>
+      {/* Sub-tab strip */}
+      <div className="mb-4 flex gap-2">
+        {(["mastery", "past-tests"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setDrillTab(t)}
+            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
+              drillTab === t
+                ? "bg-panther-red text-white"
+                : "bg-bg-secondary text-text-muted hover:text-text-primary"
+            }`}
+          >
+            {t === "mastery" ? "Mastery" : "Past Tests"}
+          </button>
         ))}
       </div>
 
-      <GlassCard>
-        <h3 className="mb-3 text-base font-bold">Recommended Next Steps</h3>
-        {profile.recommendations?.length > 0 ? (
-          <div className="flex flex-col gap-1.5">
-            {profile.recommendations.slice(0, 5).map((rec: any, i: number) => (
-              <div key={i} className="flex items-center gap-2.5 rounded-md border border-border-primary bg-bg-primary p-2.5 text-sm">
-                <span className="w-6 font-bold text-panther-red">#{rec.priority}</span>
-                <span className="font-semibold">{skillLabel(rec.skill)}</span>
-                <span className="flex-1 text-xs text-text-muted">{rec.reason}</span>
+      {drillTab === "mastery" && (
+        <>
+          <GlassCard className="mb-4">
+            <div className="flex items-start justify-between">
+              <div>
+                <h2 className="mb-1 text-xl font-bold">{profile.uid}</h2>
+                <p className="text-sm text-text-muted">
+                  {profile.totalAnswers} answers &middot; {profile.streakDays || 0} streak &middot;
+                  Last active: {profile.lastActiveDate || "Unknown"}
+                </p>
               </div>
+              <div className="text-right">
+                <div className={`text-3xl font-bold ${masteryColor(avgM)}`}>{Math.round(avgM * 100)}%</div>
+                <div className="text-xs text-text-muted">Overall Mastery</div>
+              </div>
+            </div>
+          </GlassCard>
+
+          <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {Object.entries(profile.domains || {}).map(([domain, data]: [string, any]) => (
+              <GlassCard key={domain} className="!p-4">
+                <div className="mb-2 flex justify-between">
+                  <span className="text-sm font-semibold">{domain}</span>
+                  <span className={`font-bold ${masteryColor(data.mastery || 0)}`}>{Math.round((data.mastery || 0) * 100)}%</span>
+                </div>
+                <div className="mb-2 h-1.5 overflow-hidden rounded-full bg-border-primary">
+                  <div className={`h-full rounded-full ${masteryBarColor(data.mastery || 0)}`} style={{ width: `${(data.mastery || 0) * 100}%` }} />
+                </div>
+                <div className="text-xs text-text-muted">{data.totalCorrect}/{data.totalAnswers} correct</div>
+                {data.weakestSkills?.length > 0 && (
+                  <div className="mt-1 text-[11px] text-red-400">Weak: {data.weakestSkills.map(skillLabel).join(", ")}</div>
+                )}
+                {data.strongestSkills?.length > 0 && (
+                  <div className="mt-0.5 text-[11px] text-emerald-400">Strong: {data.strongestSkills.map(skillLabel).join(", ")}</div>
+                )}
+              </GlassCard>
             ))}
           </div>
-        ) : (
-          <p className="text-sm text-text-muted">No recommendations yet.</p>
-        )}
-      </GlassCard>
+
+          <GlassCard>
+            <h3 className="mb-3 text-base font-bold">Recommended Next Steps</h3>
+            {profile.recommendations?.length > 0 ? (
+              <div className="flex flex-col gap-1.5">
+                {profile.recommendations.slice(0, 5).map((rec: any, i: number) => (
+                  <div key={i} className="flex items-center gap-2.5 rounded-md border border-border-primary bg-bg-primary p-2.5 text-sm">
+                    <span className="w-6 font-bold text-panther-red">#{rec.priority}</span>
+                    <span className="font-semibold">{skillLabel(rec.skill)}</span>
+                    <span className="flex-1 text-xs text-text-muted">{rec.reason}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-text-muted">No recommendations yet.</p>
+            )}
+          </GlassCard>
+        </>
+      )}
+
+      {drillTab === "past-tests" && <PastTestsView uid={profile.uid} />}
     </div>
   );
 }
