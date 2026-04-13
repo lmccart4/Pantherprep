@@ -3,7 +3,8 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { getDiagnosticQuestions } from "@/lib/questions";
-import { saveSession, saveProgress, loadProgress } from "@/lib/firestore";
+import { saveProgress, loadProgress } from "@/lib/firestore";
+import { completeTestSession } from "@/lib/test-persistence";
 import { GlassCard } from "@/components/ui/glass-card";
 import { QuestionCard } from "@/components/test/question-card";
 import { Timer } from "@/components/test/timer";
@@ -230,28 +231,24 @@ export function DiagnosticTest({
     if (!user || questions.length === 0) return;
 
     const timeSpent = Math.round((Date.now() - startTimeRef.current) / 1000);
-    const sessionAnswers = questions.map((q, i) => ({
-      questionId: q.id,
-      correct: isCorrect(q, answers[i]),
-      userAnswer: answers[i] ?? "",
-    }));
-    const correct = sessionAnswers.filter((a) => a.correct).length;
-
+    const correct = questions.filter((q, i) => isCorrect(q, answers[i])).length;
     const scaled = computeScaledScore(testType, correct, questions.length);
 
-    saveSession({
+    // Derive course id from testType + section (e.g. "sat" + "math" → "sat-math")
+    const course = `${testType}-${section}`;
+
+    completeTestSession({
       uid: user.uid,
-      email: user.email,
+      email: user.email ?? "",
       testType: `${testType}-${section}-diagnostic`,
       mode: "diagnostic",
-      score: correct,
-      total: questions.length,
-      percentage: Math.round((correct / questions.length) * 100),
-      scaledScore: scaled,
+      course,
+      questions,
+      answers,
       timeSpent,
-      answers: sessionAnswers,
+      scaledScore: scaled,
     }).catch((err) => {
-      console.error("saveSession failed:", err);
+      console.error("completeTestSession failed:", err);
       setSaveError(true);
     });
   }, [user, questions, answers, testType, section]);
