@@ -1,0 +1,48 @@
+{
+  "taxonomyKey": "polynomial_operations",
+  "skillLabel": "Polynomial operations",
+  "domain": "Advanced Math",
+  "conceptBlurb": "Polynomial operations are the algebra of expressions like $3x^2 - 5x + 2$. You add and subtract by combining like terms, multiply by distributing every term, and factor by running that multiplication in reverse. The SAT leans hard on three patterns: the difference of squares $a^2 - b^2 = (a-b)(a+b)$, trinomial factoring like $x^2 + bx + c$, and polynomial long division. Most questions ask you to simplify an expression or pick the equivalent form out of four answer choices.",
+  "conceptExplanation": "A **polynomial** is a sum of terms, each built from a number and a variable raised to a whole-number power. To **add or subtract** polynomials, line up like terms (same variable, same exponent) and combine their coefficients. Watch the sign on every term in a subtraction — distribute the minus across the whole second polynomial.\n\nTo **multiply**, distribute every term in the first polynomial across every term in the second. For two binomials, FOIL works: $(x+3)(x-5) = x^2 - 5x + 3x - 15 = x^2 - 2x - 15$. For bigger products, be systematic so you do not miss a cross term.\n\n**Factoring** is multiplication in reverse. Three patterns cover most SAT questions:\n\n- **Difference of squares:** $a^2 - b^2 = (a-b)(a+b)$. Spot it when you see a subtraction of two perfect squares, like $9x^2 - 25 = (3x-5)(3x+5)$.\n- **Trinomials $x^2 + bx + c$:** find two numbers that multiply to $c$ and add to $b$. For $x^2 - 2x - 15$, the numbers are $-5$ and $3$, so it factors as $(x-5)(x+3)$.\n- **Leading coefficient trinomials $ax^2 + bx + c$:** multiply $a \\cdot c$, find factors of that product that add to $b$, then split the middle term and factor by grouping.\n\n**Polynomial long division** handles expressions like $\\frac{x^2 + 5x + 3}{x + 2}$. Divide the leading term, multiply back, subtract, bring down the next term, repeat. The result is a quotient plus a remainder over the divisor.\n\nOn multiple-choice problems, if factoring feels slow, plug a value like $x = 2$ into the original expression and each answer choice. The one that matches is the equivalent form.",
+  "workedExamples": [
+    {
+      "prompt": "Which expression is equivalent to $(2x^2 - 3x + 4) - (x^2 + 5x - 7)$?",
+      "steps": [
+        "Distribute the minus sign across the second polynomial: $2x^2 - 3x + 4 - x^2 - 5x + 7$.",
+        "Group like terms: $(2x^2 - x^2) + (-3x - 5x) + (4 + 7)$.",
+        "Combine each group: $x^2 - 8x + 11$."
+      ],
+      "answer": "$x^2 - 8x + 11$",
+      "takeaway": "Subtraction flips every sign in the second polynomial — distribute the minus before you combine like terms."
+    },
+    {
+      "prompt": "The expression $16x^2 - 49$ is equivalent to which of the following?",
+      "steps": [
+        "Check for the difference of squares pattern $a^2 - b^2$.",
+        "Rewrite each term as a square: $16x^2 = (4x)^2$ and $49 = 7^2$.",
+        "Apply $a^2 - b^2 = (a-b)(a+b)$ with $a = 4x$ and $b = 7$: $(4x - 7)(4x + 7)$."
+      ],
+      "answer": "$(4x - 7)(4x + 7)$",
+      "takeaway": "Any subtraction of two perfect squares factors instantly as $(a-b)(a+b)$ — always check for this pattern first."
+    },
+    {
+      "prompt": "What is the remainder when $x^2 + 5x + 3$ is divided by $x + 2$?",
+      "steps": [
+        "Divide the leading term: $x^2 \\div x = x$. Multiply back: $x(x+2) = x^2 + 2x$.",
+        "Subtract: $(x^2 + 5x + 3) - (x^2 + 2x) = 3x + 3$.",
+        "Divide again: $3x \\div x = 3$. Multiply back: $3(x+2) = 3x + 6$.",
+        "Subtract: $(3x + 3) - (3x + 6) = -3$. The quotient is $x + 3$ and the remainder is $-3$."
+      ],
+      "answer": "$-3$",
+      "takeaway": "Polynomial long division works exactly like long division of numbers — divide, multiply, subtract, bring down, repeat."
+    }
+  ],
+  "hintTemplates": [
+    "Before factoring, scan for a common factor you can pull out of every term — it makes the rest of the work much easier.",
+    "If you see a subtraction of two perfect squares, factor it immediately using $a^2 - b^2 = (a-b)(a+b)$.",
+    "When subtracting polynomials, distribute the minus sign across every term in the second polynomial before combining like terms."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

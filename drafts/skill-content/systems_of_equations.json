@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "systems_of_equations",
+  "skillLabel": "Systems of equations",
+  "domain": "Algebra",
+  "conceptBlurb": "A system of equations is two (or more) equations that share the same variables, and the solution is any point that satisfies all of them at once. On the SAT, you'll mostly see two linear equations solved by substitution or elimination, plus the occasional linear-quadratic system. A linear system has one solution (lines cross), no solution (parallel lines, same slope but different intercepts), or infinitely many solutions (same line). Linear-quadratic systems are solved by substituting the linear equation into the quadratic and using the quadratic formula or factoring. The #1 trap is arithmetic errors in elimination when you have to multiply a whole equation first.",
+  "conceptExplanation": "## The two methods\n\n**Substitution** works best when one equation is already solved for a variable (or easy to solve). Solve one equation for $x$ or $y$, then plug that expression into the other.\n\n**Elimination** works best when coefficients line up. Add or subtract the equations so one variable cancels. If they don't line up, multiply one or both equations by constants first.\n\nExample of elimination:\n$$\\begin{cases} 3x + 2y = 12 \\\\ 5x - 2y = 4 \\end{cases}$$\nAdd them: $8x = 16$, so $x = 2$. Plug back in: $y = 3$.\n\n## How many solutions?\n\nFor a linear system $ax + by = c$ and $dx + ey = f$:\n\n- **One solution** — the lines have different slopes. They cross at one point.\n- **No solution** — same slope, different intercept. The equations reduce to something like $0 = 5$, which is false.\n- **Infinitely many solutions** — same line. One equation is a multiple of the other. You'll get $0 = 0$.\n\nQuick test: put both equations in $y = mx + b$ form. Same $m$ and same $b$ means infinitely many. Same $m$, different $b$ means none. Different $m$ means one.\n\n## Linear-quadratic systems\n\nWhen one equation is linear and the other is quadratic, always substitute. Solve the linear equation for $y$, plug into the quadratic, and solve the resulting quadratic for $x$. You'll get 0, 1, or 2 $x$-values — one $(x, y)$ point per solution.\n\n$$\\begin{cases} y = x + 3 \\\\ y = x^2 + 1 \\end{cases}$$\nSet equal: $x^2 + 1 = x + 3$, so $x^2 - x - 2 = 0$, which factors to $(x-2)(x+1) = 0$. Two solutions: $(2, 5)$ and $(-1, 2)$.\n\n## The arithmetic trap\n\nWhen elimination requires multiplying, **multiply every term** in the equation, including the constant on the right. Forgetting the constant is the single most common mistake on SAT systems problems.",
+  "workedExamples": [
+    {
+      "prompt": "Solve the system: $4x + 3y = 18$ and $2x - 5y = -4$.",
+      "steps": [
+        "Elimination: multiply the second equation by $2$ to match the $x$ coefficient. That gives $4x - 10y = -8$.",
+        "Subtract from the first: $(4x + 3y) - (4x - 10y) = 18 - (-8)$, which gives $13y = 26$, so $y = 2$.",
+        "Plug $y = 2$ into $2x - 5y = -4$: $2x - 10 = -4$, so $2x = 6$ and $x = 3$.",
+        "Check in the first equation: $4(3) + 3(2) = 12 + 6 = 18$. Good."
+      ],
+      "answer": "$(x, y) = (3, 2)$",
+      "takeaway": "When you multiply an equation to set up elimination, multiply the constant too — the $-4$ becoming $-8$ is where points get lost."
+    },
+    {
+      "prompt": "For what value of $k$ does the system $2x + 3y = 7$ and $6x + ky = 15$ have no solution?",
+      "steps": [
+        "No solution means the lines are parallel — same slope, different intercept.",
+        "Write both in slope form. First: $y = -\\frac{2}{3}x + \\frac{7}{3}$. Second: $y = -\\frac{6}{k}x + \\frac{15}{k}$.",
+        "Slopes equal: $-\\frac{2}{3} = -\\frac{6}{k}$, so $2k = 18$ and $k = 9$.",
+        "Check the intercepts are different: $\\frac{7}{3} \\neq \\frac{15}{9} = \\frac{5}{3}$. Yes, different. So $k = 9$ gives no solution."
+      ],
+      "answer": "$k = 9$",
+      "takeaway": "No solution = matching slopes but different intercepts. Always verify the intercepts differ, or you might land on 'infinitely many' instead."
+    },
+    {
+      "prompt": "Solve the system: $y = 2x - 1$ and $y = x^2 - 4$.",
+      "steps": [
+        "Substitute the linear into the quadratic: $2x - 1 = x^2 - 4$.",
+        "Move everything to one side: $x^2 - 2x - 3 = 0$.",
+        "Factor: $(x - 3)(x + 1) = 0$, so $x = 3$ or $x = -1$.",
+        "Plug each back into $y = 2x - 1$: $x = 3 \\rightarrow y = 5$, and $x = -1 \\rightarrow y = -3$."
+      ],
+      "answer": "$(3, 5)$ and $(-1, -3)$",
+      "takeaway": "Linear-quadratic systems give you up to two intersection points. Always plug $x$ back into the linear equation (easier) to get $y$."
+    }
+  ],
+  "hintTemplates": [
+    "Which method is faster here — substitution or elimination? If one equation is already solved for a variable, substitute. If coefficients line up (or can be made to), eliminate.",
+    "If you're multiplying an equation to set up elimination, multiply every term, including the constant on the right side. That's the #1 arithmetic slip on these problems.",
+    "For 'no solution' or 'infinitely many' questions, put both equations in $y = mx + b$ form and compare slopes and intercepts. Same slope + different intercept = no solution. Same slope + same intercept = infinitely many."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

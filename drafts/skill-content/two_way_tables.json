@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "two_way_tables",
+  "skillLabel": "Two-way tables",
+  "domain": "Problem Solving and Data Analysis",
+  "conceptBlurb": "A two-way frequency table shows counts for two categorical variables at once — rows for one variable, columns for the other. The cells give joint counts, the row/column sums give marginal counts, and the bottom-right corner is the grand total. Every probability question on these tables is really a 'what am I dividing by?' question. Joint = cell / total. Marginal = margin / total. Conditional = cell / row or column total, depending on what's 'given'.",
+  "conceptExplanation": "A two-way table organizes counts for two categorical variables. Rows are one variable (say, age group), columns are the other (say, survey response), and every cell holds the count of people in that combination. The sums of each row and column are called **marginal totals**, and the single number in the bottom-right corner is the **grand total** of everyone in the table.\n\nThe SAT tests three kinds of probabilities on these tables, and they differ only in what you divide by.\n\n**Joint probability** — P(A and B). A person falls in one specific cell. Divide that cell count by the **grand total**.\n$$P(A \\text{ and } B) = \\frac{\\text{cell count}}{\\text{grand total}}$$\n\n**Marginal probability** — P(A). A person belongs to one entire row or column. Divide the row or column sum by the **grand total**.\n$$P(A) = \\frac{\\text{row or column total}}{\\text{grand total}}$$\n\n**Conditional probability** — P(A given B). You already know B is true, so your world shrinks. Divide the cell count by the **row or column total that matches what's given**.\n$$P(A \\mid B) = \\frac{\\text{cell count}}{\\text{total of the B row or column}}$$\n\n**The trap.** Most wrong answers on two-way table questions come from dividing by the grand total when the word 'given' appears. If a question says 'given that the student is a senior,' your denominator is the senior row total — not the whole school. 'Given' shrinks the population.\n\n**How to read the question.** Underline the word after 'given' or 'of the' — that phrase tells you the denominator. Then find the cell that matches the other condition. Divide. Done. Simplify the fraction or convert to percent only if the answer choices demand it.\n\nIf no word like 'given' shows up, you're probably looking for a joint or marginal probability, and the denominator is the grand total.",
+  "workedExamples": [
+    {
+      "prompt": "A survey asked 200 students whether they prefer online or in-person classes. The results are in the table below.\n\n| | Online | In-person | Total |\n|---|---|---|---|\n| **Freshmen** | 30 | 50 | 80 |\n| **Seniors** | 70 | 50 | 120 |\n| **Total** | 100 | 100 | 200 |\n\nGiven that a randomly selected student is a senior, what is the probability that the student prefers online classes?",
+      "steps": [
+        "The word 'given' tells you the population shrinks to seniors only. Denominator is the senior row total: $120$.",
+        "The numerator is the cell where 'Senior' meets 'Online': $70$.",
+        "Write the conditional probability: $P(\\text{Online} \\mid \\text{Senior}) = \\dfrac{70}{120}$.",
+        "Simplify: $\\dfrac{70}{120} = \\dfrac{7}{12} \\approx 0.583$."
+      ],
+      "answer": "$\\dfrac{7}{12}$ (about 58.3%)",
+      "takeaway": "'Given that' = row or column total as denominator. Don't divide by 200."
+    },
+    {
+      "prompt": "The table shows the number of passed and failed inspections for two models of car at a dealership.\n\n| | Passed | Failed | Total |\n|---|---|---|---|\n| **Model A** | 45 | 15 | 60 |\n| **Model B** | 60 | 30 | 90 |\n| **Total** | 105 | 45 | 150 |\n\nOf the cars that failed inspection, what fraction were Model B?",
+      "steps": [
+        "'Of the cars that failed' means the population is restricted to the failed column. Denominator: $45$.",
+        "Numerator: cars that are Model B *and* failed: $30$.",
+        "$P(\\text{Model B} \\mid \\text{Failed}) = \\dfrac{30}{45}$.",
+        "Simplify: $\\dfrac{30}{45} = \\dfrac{2}{3}$."
+      ],
+      "answer": "$\\dfrac{2}{3}$",
+      "takeaway": "'Of the ___' is the same signal as 'given' — shrink the population to that subgroup."
+    },
+    {
+      "prompt": "A town surveyed 500 residents about a new park. The results by age group are shown.\n\n| | Support | Oppose | No opinion | Total |\n|---|---|---|---|---|\n| **Under 18** | 80 | 10 | 10 | 100 |\n| **18-64** | 180 | 70 | 50 | 300 |\n| **65+** | 40 | 40 | 20 | 100 |\n| **Total** | 300 | 120 | 80 | 500 |\n\nWhat is the probability that a randomly selected resident is 18-64 *and* opposes the park?",
+      "steps": [
+        "There's no 'given' here — this is a **joint** probability. Denominator is the grand total: $500$.",
+        "Numerator: the cell where '18-64' meets 'Oppose': $70$.",
+        "$P(\\text{18-64 and Oppose}) = \\dfrac{70}{500}$.",
+        "Simplify: $\\dfrac{70}{500} = \\dfrac{7}{50} = 0.14$."
+      ],
+      "answer": "$\\dfrac{7}{50}$ or $14\\%$",
+      "takeaway": "Joint probability ('A and B') always uses the grand total as the denominator."
+    }
+  ],
+  "hintTemplates": [
+    "Underline the word 'given' or 'of the' in the question. Whatever comes after it is your denominator — that's the row or column total, not the grand total.",
+    "No 'given' in the question? Then it's a joint or marginal probability, and you divide by the grand total in the bottom-right corner.",
+    "Before computing, say out loud: 'I'm dividing ___ by ___.' If the denominator isn't the row total, column total, or grand total, you've misread the question."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

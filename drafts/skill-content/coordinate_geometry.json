@@ -1,0 +1,49 @@
+{
+  "taxonomyKey": "coordinate_geometry",
+  "skillLabel": "Coordinate geometry",
+  "domain": "Geometry and Trigonometry",
+  "conceptBlurb": "Coordinate geometry puts shapes on the $xy$-plane so you can measure them with formulas instead of rulers. You need four tools cold: distance, midpoint, slope, and the equation of a line. SAT questions usually chain two of these together — midpoint plus perpendicular slope, or distance plus line equation. If you know the formulas and can switch between slope-intercept and point-slope form quickly, you can beat almost every question in this skill.",
+  "conceptExplanation": "Every coordinate geometry question on the SAT comes back to the same four formulas. Memorize them and know when each one applies.\n\n**Distance between two points** $(x_1, y_1)$ and $(x_2, y_2)$:\n$$d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$\nThis is just the Pythagorean theorem with the horizontal and vertical legs.\n\n**Midpoint** of the segment connecting $(x_1, y_1)$ and $(x_2, y_2)$:\n$$M = \\left(\\frac{x_1 + x_2}{2}, \\frac{y_1 + y_2}{2}\\right)$$\nAverage the $x$'s, average the $y$'s.\n\n**Slope** between two points:\n$$m = \\frac{y_2 - y_1}{x_2 - x_1}$$\nRise over run. A horizontal line has slope $0$. A vertical line has undefined slope.\n\n**Line equations** — you need to move between these fluently:\n- Slope-intercept: $y = mx + b$\n- Point-slope: $y - y_1 = m(x - x_1)$\n- Standard: $Ax + By = C$\n\n**Parallel and perpendicular** are the chained-skill traps. Parallel lines have the same slope. Perpendicular lines have slopes that are **negative reciprocals** — if one line has slope $\\frac{3}{4}$, the perpendicular line has slope $-\\frac{4}{3}$. Flip it and flip the sign.\n\nWhen a question mixes skills — \"find the midpoint, then write the equation of the line perpendicular to the segment through that midpoint\" — write down what you need in order. Midpoint first. Slope of the original segment second. Flip it for the perpendicular slope. Then plug into point-slope form. Don't try to do it all in one step.",
+  "workedExamples": [
+    {
+      "prompt": "Points $A(-3, 5)$ and $B(7, -1)$ are the endpoints of a segment. What is the length of $\\overline{AB}$?",
+      "steps": [
+        "Apply the distance formula: $d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$.",
+        "Plug in the coordinates: $d = \\sqrt{(7 - (-3))^2 + (-1 - 5)^2} = \\sqrt{10^2 + (-6)^2}$.",
+        "Simplify under the radical: $d = \\sqrt{100 + 36} = \\sqrt{136}$.",
+        "Factor out the perfect square: $\\sqrt{136} = \\sqrt{4 \\cdot 34} = 2\\sqrt{34}$."
+      ],
+      "answer": "$2\\sqrt{34}$",
+      "takeaway": "Distance is Pythagorean theorem in disguise — square the differences, add, and take the root."
+    },
+    {
+      "prompt": "A line passes through $(2, -4)$ and is perpendicular to the line $3x + 2y = 12$. Write the equation of the line in slope-intercept form.",
+      "steps": [
+        "Solve the given equation for $y$ to find its slope: $2y = -3x + 12$, so $y = -\\frac{3}{2}x + 6$. The slope is $-\\frac{3}{2}$.",
+        "The perpendicular slope is the negative reciprocal: $m = \\frac{2}{3}$.",
+        "Use point-slope form with the point $(2, -4)$: $y - (-4) = \\frac{2}{3}(x - 2)$.",
+        "Distribute and solve for $y$: $y + 4 = \\frac{2}{3}x - \\frac{4}{3}$, so $y = \\frac{2}{3}x - \\frac{4}{3} - 4 = \\frac{2}{3}x - \\frac{16}{3}$."
+      ],
+      "answer": "$y = \\frac{2}{3}x - \\frac{16}{3}$",
+      "takeaway": "For perpendicular lines, flip the slope and flip the sign — then plug into point-slope form."
+    },
+    {
+      "prompt": "The midpoint of segment $\\overline{PQ}$ is $(4, -2)$. If $P = (-1, 3)$, what are the coordinates of $Q$?",
+      "steps": [
+        "Use the midpoint formula: $\\left(\\frac{-1 + x_Q}{2}, \\frac{3 + y_Q}{2}\\right) = (4, -2)$.",
+        "Set the $x$-components equal: $\\frac{-1 + x_Q}{2} = 4$, so $-1 + x_Q = 8$ and $x_Q = 9$.",
+        "Set the $y$-components equal: $\\frac{3 + y_Q}{2} = -2$, so $3 + y_Q = -4$ and $y_Q = -7$."
+      ],
+      "answer": "$Q = (9, -7)$",
+      "takeaway": "If you know the midpoint and one endpoint, reverse the midpoint formula one coordinate at a time."
+    }
+  ],
+  "hintTemplates": [
+    "Identify which of the four tools the question needs — distance, midpoint, slope, or line equation. If it asks for length, use distance. If it asks for a center or a missing endpoint, use midpoint. If it asks for steepness or direction, use slope. If it asks for an equation, pick the form that matches what you're given.",
+    "When a question chains two skills, write down the sub-steps before touching numbers. For example: 'Step 1: find the slope of the original line. Step 2: flip it for perpendicular. Step 3: point-slope form.' Order matters more than speed.",
+    "Convert between $y = mx + b$, $y - y_1 = m(x - x_1)$, and $Ax + By = C$ depending on what the question gives you. If you have a point and a slope, start with point-slope. If you need to compare slopes, solve for $y$ to get slope-intercept."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

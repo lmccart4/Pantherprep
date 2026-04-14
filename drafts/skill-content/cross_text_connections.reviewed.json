@@ -1,0 +1,41 @@
+{
+  "taxonomyKey": "cross_text_connections",
+  "skillLabel": "Cross-text connections",
+  "domain": "Craft and Structure",
+  "conceptBlurb": "Cross-text questions give you two short passages and ask how the authors relate to each other. Usually they agree, disagree, qualify, or build on the same topic from different angles. Your job is to nail down each author's stance separately, then figure out exactly how one would respond to the other. The trap is blending them together — treat them as two separate voices before you compare.",
+  "conceptExplanation": "Cross-text connection questions are the only reading questions on the digital SAT that give you two passages at once. They always sit in the Craft and Structure domain, and they always ask about the *relationship* between the two authors — not the topic itself.\n\nThe most common question stems:\n- \"The author of Passage 2 would most likely respond to the underlined claim in Passage 1 by...\"\n- \"Based on the texts, how would the author of Passage 1 most likely characterize the conclusion in Passage 2?\"\n- \"Which choice best describes a difference between the two authors' perspectives?\"\n\n**The process:**\n\n1. **Read Passage 1. Stop. Summarize the author's stance in one sentence in your head.** What do they *claim*? What do they *want you to believe*?\n2. **Read Passage 2. Stop. Do the same thing.** Do not let Passage 1 color your reading — treat Author 2 like a separate person walking into the room.\n3. **Compare the stances.** Do they agree, disagree, partially agree, or talk past each other? Where exactly is the friction?\n4. **Re-read the specific line or claim the question points to.** The question is rarely about the passages overall — it's about one specific claim.\n5. **Predict the response before looking at answers.** If you're guessing what Author 2 would say, say it out loud (in your head) first.\n\n**Common wrong-answer traps:**\n- Answers that are true about Passage 1 or Passage 2 alone but don't describe the *relationship*\n- Answers that flip which author holds which view\n- Answers that make the disagreement sound stronger or weaker than it actually is (full rejection vs. mild qualification)\n- Answers that introduce a topic neither author mentioned\n\n**The core skill:** keeping two voices separate in your head long enough to put them in conversation. If you rush and mush them together, every answer choice will sound plausible.",
+  "workedExamples": [
+    {
+      "prompt": "Passage 1: Recent studies suggest that requiring school uniforms significantly reduces bullying. Students at uniform schools report feeling less pressure about clothing brands, and administrators note fewer clothing-related conflicts. These findings support making uniforms standard district policy.\n\nPassage 2: Uniform policies may reduce clothing-based teasing, but bullying shifts rather than disappears. Researchers who tracked students for three years found that total bullying rates at uniform schools matched those at non-uniform schools — the targets and methods simply changed. Policy decisions should account for this displacement effect.\n\nQuestion: How would the author of Passage 2 most likely respond to the recommendation in the final sentence of Passage 1?",
+      "steps": [
+        "Passage 1's stance: uniforms reduce bullying → therefore make them district policy.",
+        "Passage 2's stance: uniforms reduce *one kind* of bullying, but total bullying stays the same. The problem shifts, it doesn't go away.",
+        "The question points to Passage 1's final claim: 'make uniforms standard district policy.'",
+        "Passage 2 doesn't say uniforms are harmful, and doesn't fully reject the policy — but the author clearly thinks Passage 1 is missing something important. They'd push back on the *reasoning*, not necessarily the outcome.",
+        "Predict: 'Passage 2 would say the evidence Passage 1 uses is incomplete — the drop in clothing conflicts doesn't mean bullying overall went down.' Eliminate traps: answers that say Passage 2 agrees fully (wrong — there's friction), answers that say Passage 2 thinks uniforms cause bullying (too strong), answers that focus only on one author's view."
+      ],
+      "answer": "The author of Passage 2 would argue that Passage 1's recommendation rests on incomplete evidence, because a decrease in clothing-related conflicts does not necessarily mean total bullying has decreased.",
+      "takeaway": "When one author qualifies or complicates the other, the right answer usually describes the *specific* thing the second author thinks is missing — not a total rejection."
+    },
+    {
+      "prompt": "Passage 1: The rise of electric vehicles marks a clear environmental win. EVs produce zero tailpipe emissions, and as the electric grid incorporates more renewable energy, their lifetime carbon footprint continues to shrink. Mass adoption is the fastest path to cutting transportation emissions.\n\nPassage 2: Electric vehicles have real climate benefits, but framing them as a simple 'win' ignores supply-chain costs. Lithium and cobalt mining cause significant environmental damage, and battery manufacturing is energy-intensive. A full accounting — not just tailpipe numbers — is needed before declaring victory.\n\nQuestion: Which choice best describes the relationship between the two passages?",
+      "steps": [
+        "Passage 1's stance: EVs are a clear environmental win, push mass adoption.",
+        "Passage 2's stance: EVs have real benefits BUT the picture isn't that simple — mining and manufacturing costs matter too.",
+        "Passage 2 doesn't say Passage 1 is wrong. It says Passage 1 is incomplete.",
+        "Predict: 'Passage 2 agrees EVs help but argues Passage 1's framing oversimplifies by ignoring supply-chain costs.'",
+        "Eliminate: answers that say the passages fully disagree (too strong — Passage 2 grants real benefits), answers that say they fully agree (misses the friction), answers that frame Passage 1 as skeptical (wrong direction). The right answer will capture 'partial agreement + specific complication.'"
+      ],
+      "answer": "Passage 2 accepts Passage 1's basic claim that EVs offer environmental benefits but argues that Passage 1 oversimplifies by excluding the environmental costs of battery production.",
+      "takeaway": "'Partial agreement with a specific complication' is one of the most common cross-text relationships. Look for the word or phrase that marks where Author 2 draws the line."
+    }
+  ],
+  "hintTemplates": [
+    "Summarize each passage in one sentence before looking at the answers — what does each author actually *claim*?",
+    "Check which specific line or claim the question points to. Cross-text questions are almost always about one targeted claim, not the whole passage.",
+    "Watch the strength of the relationship. Is it full disagreement, partial agreement, a qualification, or just a shift in emphasis? Wrong answers usually overshoot or undershoot."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

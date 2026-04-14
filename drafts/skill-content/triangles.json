@@ -1,0 +1,49 @@
+{
+  "taxonomyKey": "triangles",
+  "skillLabel": "Triangles",
+  "domain": "Geometry and Trigonometry",
+  "conceptBlurb": "The interior angles of any triangle sum to $180°$, and that single fact powers most triangle questions on the SAT. Isosceles triangles have two equal sides and two equal base angles; equilateral triangles have three $60°$ angles. Similar triangles have equal corresponding angles and proportional corresponding sides, so you can set up ratios to solve for missing lengths. The triangle inequality says any side must be shorter than the sum of the other two.",
+  "conceptExplanation": "Almost every SAT triangle question uses one of four rules. Know all four cold.\n\n**1. Interior angles sum to $180°$.**\n$$\\angle A + \\angle B + \\angle C = 180°$$\nIf you know two angles, subtract from $180°$ to get the third. Exterior angles equal the sum of the two non-adjacent interior angles — a useful shortcut when an angle sits outside the triangle.\n\n**2. Isosceles triangles.**\nTwo equal sides force the two base angles (the angles opposite those sides) to be equal. If one base angle is $70°$, the other is $70°$, and the vertex angle is $180° - 140° = 40°$. Equilateral is just the special case where all three sides are equal and all three angles are $60°$.\n\n**3. Similar triangles.**\nTwo triangles are similar if their corresponding angles are equal. When they are, corresponding sides are proportional:\n$$\\frac{a_1}{a_2} = \\frac{b_1}{b_2} = \\frac{c_1}{c_2}$$\nThe SAT loves figures with a small triangle nested inside a bigger one sharing a vertex, or parallel lines creating two similar triangles. Find the scale factor with one pair of known sides, then multiply or divide to get the others.\n\n**4. Triangle inequality.**\nFor sides $a$, $b$, $c$:\n$$|a - b| < c < a + b$$\nThe third side must be bigger than the difference of the other two and smaller than their sum. A question asking \"which of the following could be the third side\" is testing this rule.\n\n**Right triangles** layer on the Pythagorean theorem ($a^2 + b^2 = c^2$) and a few common triples: $3\\text{-}4\\text{-}5$, $5\\text{-}12\\text{-}13$, and the $30\\text{-}60\\text{-}90$ and $45\\text{-}45\\text{-}90$ ratios from the reference sheet. Recognize those and you skip most of the arithmetic.",
+  "workedExamples": [
+    {
+      "prompt": "In triangle $ABC$, angle $A$ measures $48°$ and angle $B$ measures $62°$. What is the measure of the exterior angle at vertex $C$?",
+      "steps": [
+        "Find angle $C$ using the interior angle sum: $\\angle C = 180° - 48° - 62° = 70°$.",
+        "The exterior angle at $C$ is supplementary to the interior angle at $C$, so it equals $180° - 70° = 110°$.",
+        "Check with the shortcut: an exterior angle equals the sum of the two non-adjacent interior angles, so $48° + 62° = 110°$. Matches."
+      ],
+      "answer": "$110°$",
+      "takeaway": "Interior angles sum to $180°$, and an exterior angle equals the sum of the two far interior angles."
+    },
+    {
+      "prompt": "Triangle $PQR$ is isosceles with $PQ = PR$. The angle at vertex $P$ measures $34°$. What is the measure of angle $Q$?",
+      "steps": [
+        "Since $PQ = PR$, the base angles $Q$ and $R$ (opposite the equal sides) are equal.",
+        "The three angles sum to $180°$: $\\angle P + \\angle Q + \\angle R = 180°$.",
+        "Substitute: $34° + 2\\angle Q = 180°$.",
+        "Solve: $2\\angle Q = 146°$, so $\\angle Q = 73°$."
+      ],
+      "answer": "$73°$",
+      "takeaway": "In an isosceles triangle, the two base angles (opposite the equal sides) are equal — set up an equation and solve."
+    },
+    {
+      "prompt": "Triangles $ABC$ and $DEF$ are similar, with $\\angle A = \\angle D$, $\\angle B = \\angle E$, and $\\angle C = \\angle F$. Side $AB = 6$, side $BC = 9$, and the corresponding side $DE = 10$. What is the length of side $EF$?",
+      "steps": [
+        "Since the triangles are similar, corresponding sides are proportional: $\\frac{AB}{DE} = \\frac{BC}{EF}$.",
+        "Plug in the known values: $\\frac{6}{10} = \\frac{9}{EF}$.",
+        "Cross-multiply: $6 \\cdot EF = 10 \\cdot 9 = 90$.",
+        "Solve: $EF = \\frac{90}{6} = 15$."
+      ],
+      "answer": "$EF = 15$",
+      "takeaway": "Set up a proportion between corresponding sides, cross-multiply, and solve — similarity is just ratios."
+    }
+  ],
+  "hintTemplates": [
+    "Start with the interior angle sum: every triangle's three angles add to $180°$, so if you know two, subtract to find the third.",
+    "If two sides are equal, the angles opposite those sides are equal too — use that to set up an equation for the unknown angle.",
+    "For similar triangles, write a proportion between corresponding sides ($\\frac{a_1}{a_2} = \\frac{b_1}{b_2}$) and cross-multiply to solve for the missing length."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

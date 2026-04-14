@@ -1,0 +1,48 @@
+{
+  "taxonomyKey": "linear_functions",
+  "skillLabel": "Linear functions",
+  "domain": "Algebra",
+  "conceptBlurb": "A linear function has the form $f(x) = mx + b$, where $m$ is the slope and $b$ is the $y$-intercept. The notation $f(a)$ means 'plug $a$ in for $x$ and compute the output.' Given two points, you can find the rule by computing the slope and solving for $b$. The SAT loves to test whether you know the difference between $f(a)$ (find an output) and $f(x) = a$ (find an input).",
+  "conceptExplanation": "A linear function is any rule that can be written as $f(x) = mx + b$. The slope $m$ tells you how much the output changes for every one-unit increase in $x$. The intercept $b$ is the output when $x = 0$.\n\n**Function notation, the easy trap.** $f(a)$ does not mean $f$ times $a$. It means: wherever you see $x$ in the rule, write $a$ instead, then simplify. So if $f(x) = 3x - 7$, then $f(4) = 3(4) - 7 = 5$. On the flip side, $f(x) = 11$ is a different question — it is asking which input $x$ produces an output of $11$. Solve $3x - 7 = 11$ to get $x = 6$.\n\n**Finding the rule from two points.** If you are told $f(2) = 5$ and $f(6) = 17$, treat those as the points $(2, 5)$ and $(6, 17)$. Slope is $m = \\frac{17 - 5}{6 - 2} = 3$. Plug one point into $y = 3x + b$ to get $5 = 3(2) + b$, so $b = -1$. The function is $f(x) = 3x - 1$.\n\n**Reading tables.** A table is linear if the output changes by the same amount every time the input increases by one. If $x$ jumps by $2$ and $y$ jumps by $6$ each row, the slope is $\\frac{6}{2} = 3$.\n\n**Interpreting slope and intercept in context.** If $C(t) = 45t + 120$ is the cost in dollars of renting equipment for $t$ hours, the slope $45$ is the cost per hour and the intercept $120$ is the flat fee before any hours are billed. The SAT almost always asks you to name the units.",
+  "workedExamples": [
+    {
+      "prompt": "The function $f$ is defined by $f(x) = -4x + 19$. What is the value of $f(7)$?",
+      "steps": [
+        "Replace every $x$ in the rule with $7$: $f(7) = -4(7) + 19$.",
+        "Multiply: $-4(7) = -28$.",
+        "Add: $-28 + 19 = -9$."
+      ],
+      "answer": "$f(7) = -9$",
+      "takeaway": "$f(\\text{something})$ means substitute that thing in for $x$ and simplify."
+    },
+    {
+      "prompt": "A linear function $g$ satisfies $g(3) = 14$ and $g(8) = 39$. What is $g(x)$?",
+      "steps": [
+        "Treat the values as the points $(3, 14)$ and $(8, 39)$ and compute the slope: $m = \\frac{39 - 14}{8 - 3} = \\frac{25}{5} = 5$.",
+        "Plug one point into $g(x) = 5x + b$ using $(3, 14)$: $14 = 5(3) + b$, so $b = -1$.",
+        "Write the rule: $g(x) = 5x - 1$.",
+        "Check with the other point: $g(8) = 5(8) - 1 = 39$. Matches."
+      ],
+      "answer": "$g(x) = 5x - 1$",
+      "takeaway": "Two points give you slope first, then solve for the intercept."
+    },
+    {
+      "prompt": "A phone plan charges a flat monthly fee plus a fixed rate per gigabyte of data. The total cost $C$, in dollars, for a month in which $d$ gigabytes are used is given by $C(d) = 8d + 25$. What does the number $25$ represent?",
+      "steps": [
+        "Identify the form: $C(d) = md + b$ with slope $m = 8$ and intercept $b = 25$.",
+        "The slope $8$ is the cost per additional gigabyte — it changes as $d$ changes.",
+        "The intercept $25$ is the value of $C$ when $d = 0$, meaning the cost before any data is used."
+      ],
+      "answer": "The flat monthly fee, in dollars, when no data is used.",
+      "takeaway": "In context, the intercept is the starting value and the slope is the per-unit rate."
+    }
+  ],
+  "hintTemplates": [
+    "Is the question asking for an output ($f(a) = ?$) or an input ($f(x) = a$, solve for $x$)? Those are opposite moves.",
+    "If you have two points or two input-output pairs, compute the slope first with $m = \\frac{y_2 - y_1}{x_2 - x_1}$, then plug one point back in to find $b$.",
+    "In word problems, slope is a per-unit rate (per hour, per gigabyte) and the intercept is the starting value when the input is zero."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "punctuation_boundaries",
+  "skillLabel": "Punctuation and boundaries",
+  "domain": "Standard English Conventions",
+  "conceptBlurb": "Boundary punctuation questions are about where one idea ends and the next begins. The test gives you a sentence with a blank and four punctuation choices (usually some mix of comma, semicolon, colon, dash, or nothing). Your job is to figure out what the two sides of the blank are — two independent clauses, a fragment plus a clause, a list intro, a description — and then pick the mark that matches. Most wrong answers are either comma splices or unnecessary punctuation. If you can label what's on each side of the blank, the answer is almost always forced.",
+  "conceptExplanation": "Every boundary question comes down to one question: what's on each side of the blank? Label it, and the punctuation is almost automatic.\n\n**The four main options:**\n\n1. **Comma** — joins an independent clause to a dependent clause, phrase, or introductory element. Also used before a FANBOYS conjunction (for, and, nor, but, or, yet, so) when joining two independent clauses. A comma **alone** cannot join two independent clauses — that's a comma splice and it's always wrong.\n\n2. **Semicolon** — joins two independent clauses that are closely related. Both sides must be able to stand alone as full sentences. Test it: cover the semicolon and check that each side is a complete sentence. If either side is a fragment, semicolon is wrong.\n\n3. **Colon** — follows a complete independent clause and introduces something: a list, an explanation, a definition, or a specific example. The side **before** the colon must be a full sentence. The side after doesn't have to be.\n\n4. **Dash (em dash)** — works like a colon for introducing or like a pair of commas for inserting extra info. On the SAT, a single dash usually introduces an explanation or example after an independent clause. A pair of dashes sets off a non-essential aside.\n\n5. **No punctuation** — often the right answer. If the sentence flows without a mark and adding one would break a phrase that belongs together (like a subject from its verb, or a verb from its object), pick \"no punctuation.\"\n\n**The method:**\n- Read the sentence. Mentally split it at the blank.\n- Ask: is the left side an independent clause? Is the right side?\n- Two independent clauses → semicolon, colon, dash, or comma + FANBOYS.\n- Independent + fragment → comma, colon, dash, or nothing (depends on what the fragment is doing).\n- Fragment + independent → comma or nothing.\n- Never leave a comma splice standing.",
+  "workedExamples": [
+    {
+      "prompt": "The researchers collected soil samples from three sites ____ a riverbank, a forest floor, and an abandoned farm field.\n\nA) samples,\nB) samples;\nC) samples:\nD) samples",
+      "steps": [
+        "Label each side. Left: 'The researchers collected soil samples from three sites' — that's a complete independent clause.",
+        "Right: 'a riverbank, a forest floor, and an abandoned farm field' — that's a list, not a sentence.",
+        "Independent clause introducing a list → colon is the textbook fit.",
+        "Eliminate the others: comma (A) would be fine in casual writing but weaker than the colon when you're formally introducing a list after a full sentence. Semicolon (B) is wrong because the right side isn't an independent clause. No punctuation (D) runs the sentence into the list with no signal."
+      ],
+      "answer": "C) samples:",
+      "takeaway": "When a complete sentence introduces a list, use a colon."
+    },
+    {
+      "prompt": "Marine biologists once believed octopuses were solitary ____ recent observations at a site off Australia show the animals living in dense, interactive communities.\n\nA) creatures,\nB) creatures;\nC) creatures:\nD) creatures and",
+      "steps": [
+        "Label each side. Left: 'Marine biologists once believed octopuses were solitary creatures' — complete sentence.",
+        "Right: 'recent observations at a site off Australia show the animals living in dense, interactive communities' — also a complete sentence.",
+        "Two independent clauses, closely related, with a contrast. Options that can join two independent clauses: semicolon, colon, dash, or comma + FANBOYS.",
+        "A) comma alone → comma splice, wrong. C) colon → the right side isn't an explanation or list; it's a contrasting claim, so colon is awkward. D) 'creatures and' has no comma before 'and', and even with one, 'and' doesn't signal the contrast. B) semicolon cleanly joins two related independent clauses — correct."
+      ],
+      "answer": "B) creatures;",
+      "takeaway": "Two independent clauses with no conjunction = semicolon. A comma alone is always a splice."
+    },
+    {
+      "prompt": "The novelist Zadie Smith ____ whose debut 'White Teeth' became a bestseller in 2000, has since published six more books.\n\nA) Smith,\nB) Smith;\nC) Smith:\nD) Smith",
+      "steps": [
+        "Find the structure. 'whose debut White Teeth became a bestseller in 2000' is a non-essential relative clause describing Smith. It's already closed off by a comma after '2000'.",
+        "For a non-essential modifier, you need commas on BOTH sides. One comma is already on the right; the blank needs a matching comma on the left.",
+        "Semicolon (B) and colon (C) can't set off a non-essential modifier — and the left side ('The novelist Zadie Smith') isn't a complete sentence anyway.",
+        "No punctuation (D) would strand one comma on the right with nothing on the left, breaking the pair."
+      ],
+      "answer": "A) Smith,",
+      "takeaway": "Non-essential modifiers need matching punctuation on both sides — usually a pair of commas."
+    }
+  ],
+  "hintTemplates": [
+    "Cover the blank and ask: is the LEFT side a complete sentence? Is the RIGHT side a complete sentence? Label both before picking a mark.",
+    "A comma alone can never join two independent clauses. If both sides are full sentences and there's no FANBOYS word, you need a semicolon, colon, or dash.",
+    "Colons only work if the LEFT side is a complete sentence. The right side can be a list, a phrase, or another clause — the left side is what matters."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

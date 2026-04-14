@@ -1,0 +1,54 @@
+{
+  "taxonomyKey": "radical_equations",
+  "skillLabel": "Radical equations",
+  "domain": "Advanced Math",
+  "conceptBlurb": "Radical equations contain a variable under a root sign, like $\\sqrt{x+3}$ or $\\sqrt[3]{2x-1}$. The standard play is to isolate the radical, then raise both sides to the matching power to kill it. Squaring both sides can create fake answers that don't actually work in the original equation. Those are called extraneous solutions, and the SAT loves to plant one. Always plug every answer back into the original equation before circling anything.",
+  "conceptExplanation": "A radical equation has a variable inside a root. Your goal is to get rid of the root. The tool is simple: raise both sides to the power that matches the root. Square root gets squared. Cube root gets cubed. Rational exponent $x^{1/2}$ gets raised to the 2nd power.\n\nThe four-step method works on almost every SAT radical problem:\n\n1. **Isolate the radical.** Get the root term alone on one side before doing anything else. If there's a $+5$ or a $-2x$ hanging around, move it first.\n2. **Square both sides.** (Or cube, if it's a cube root.) This removes the radical but usually leaves a quadratic.\n3. **Solve the resulting equation.** Factor, use the quadratic formula, or combine like terms.\n4. **Check every solution in the original equation.** This step is not optional.\n\nWhy check? Squaring is not reversible. The equation $x = 3$ has one solution. But $x^2 = 9$ has two: $x = 3$ and $x = -3$. When you square both sides of a radical equation, you sometimes introduce a root that satisfies the squared equation but not the original. That's an extraneous solution.\n\nA good rule of thumb: if the isolated radical equals a negative number, like $\\sqrt{x+1} = -4$, there are zero real solutions. Principal square roots are never negative. Don't waste time squaring — just write \"no solution.\"\n\nFor cube roots, extraneous solutions are rarer because cubing preserves sign. But on the SAT, any time you see a square root with a variable, assume at least one answer choice is a trap built from an extraneous root.",
+  "workedExamples": [
+    {
+      "prompt": "Solve for $x$: $\\sqrt{2x + 3} = x$",
+      "steps": [
+        "Square both sides: $2x + 3 = x^2$.",
+        "Rearrange: $x^2 - 2x - 3 = 0$.",
+        "Factor: $(x - 3)(x + 1) = 0$, so $x = 3$ or $x = -1$.",
+        "Check $x = 3$: $\\sqrt{2(3) + 3} = \\sqrt{9} = 3$. Valid.",
+        "Check $x = -1$: $\\sqrt{2(-1) + 3} = \\sqrt{1} = 1 \\neq -1$. Extraneous."
+      ],
+      "answer": "$x = 3$",
+      "takeaway": "Both algebraic roots passed the squared equation, but only $x=3$ survived the check — the other was extraneous."
+    },
+    {
+      "prompt": "Solve for $x$: $\\sqrt{x + 7} - 1 = x$",
+      "steps": [
+        "Isolate the radical: $\\sqrt{x + 7} = x + 1$.",
+        "Square both sides: $x + 7 = x^2 + 2x + 1$.",
+        "Rearrange: $x^2 + x - 6 = 0$, which factors to $(x + 3)(x - 2) = 0$.",
+        "Candidate solutions: $x = -3$ or $x = 2$.",
+        "Check $x = 2$: $\\sqrt{9} - 1 = 2$. Valid. Check $x = -3$: $\\sqrt{4} - 1 = 1 \\neq -3$. Extraneous."
+      ],
+      "answer": "$x = 2$",
+      "takeaway": "Isolate first, then square — and always verify against the original equation."
+    },
+    {
+      "prompt": "Solve for $x$: $\\sqrt[3]{3x - 5} = 2$",
+      "steps": [
+        "Cube both sides: $3x - 5 = 8$.",
+        "Add 5: $3x = 13$.",
+        "Divide by 3: $x = \\frac{13}{3}$.",
+        "Check: $\\sqrt[3]{3 \\cdot \\frac{13}{3} - 5} = \\sqrt[3]{8} = 2$. Valid."
+      ],
+      "answer": "$x = \\frac{13}{3}$",
+      "takeaway": "Cube roots don't produce extraneous solutions the way square roots do — cubing preserves sign."
+    }
+  ],
+  "hintTemplates": [
+    "Get the radical alone on one side before you square. Constants and $x$ terms outside the root come over first.",
+    "Square root on one side? Square both sides to cancel it. Cube root? Cube both sides. Match the power to the root.",
+    "After squaring you'll usually get a quadratic. Factor it or use the quadratic formula.",
+    "Plug every candidate solution back into the original equation. If it doesn't check, it's extraneous — throw it out.",
+    "If an isolated square root equals a negative number, there's no real solution. Don't even square."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

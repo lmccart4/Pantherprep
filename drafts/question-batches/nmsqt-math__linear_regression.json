@@ -1,0 +1,612 @@
+[
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A biologist fits a line of best fit to data relating daily rainfall $x$ (in mm) to plant growth $y$ (in mm). The regression equation is $y = 0.4x + 2$. What is the slope of the line?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$0.4$"
+      },
+      {
+        "key": "B",
+        "text": "$2$"
+      },
+      {
+        "key": "C",
+        "text": "$-0.4$"
+      },
+      {
+        "key": "D",
+        "text": "$2.4$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "In the form $y = mx + b$, the slope is the coefficient of $x$, which is $0.4$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A line of best fit for a scatterplot is given by $y = 1.8x + 6$. What is the y-intercept?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$1.8$"
+      },
+      {
+        "key": "B",
+        "text": "$-6$"
+      },
+      {
+        "key": "C",
+        "text": "$7.8$"
+      },
+      {
+        "key": "D",
+        "text": "$6$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "The y-intercept is the constant term $b$ in $y = mx + b$; here that is $6$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "The regression line $y = 2x + 7$ models the number of books $y$ on a library shelf after $x$ days. What does the y-intercept represent?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "The number of books added per day."
+      },
+      {
+        "key": "B",
+        "text": "The total number of books after 7 days."
+      },
+      {
+        "key": "C",
+        "text": "The number of books on the shelf at the start (day 0)."
+      },
+      {
+        "key": "D",
+        "text": "The number of days needed to reach 7 books."
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "The y-intercept $7$ is the predicted value of $y$ when $x = 0$, i.e., the starting count of books.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "F",
+    "type": "spr",
+    "stem": "A regression equation predicts a runner's heart rate $y$ (bpm) from running speed $x$ (mph) as $y = 12x + 70$. Predict the heart rate (in bpm) at a speed of $5$ mph.",
+    "correctAnswer": "130",
+    "explanation": "Substituting $x = 5$ gives $y = 12(5) + 70 = 60 + 70 = 130$ bpm.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A scatterplot of quiz scores vs. hours of sleep has a negative slope in its line of best fit. Which statement is consistent with a negative slope?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "As sleep increases, quiz scores tend to decrease."
+      },
+      {
+        "key": "B",
+        "text": "As sleep increases, quiz scores tend to increase."
+      },
+      {
+        "key": "C",
+        "text": "Sleep and quiz scores have no association."
+      },
+      {
+        "key": "D",
+        "text": "All students scored the same on the quiz."
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A negative slope means $y$ decreases as $x$ increases, so higher sleep corresponds to lower predicted scores.",
+    "katex": false,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A scatterplot shows the relationship between the weight of a package $x$ (in pounds) and shipping cost $y$ (in dollars). The line of best fit is $y = 0.75x + 3$. Which statement best describes the slope?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Every additional pound increases the predicted cost by about $\\$0.75$."
+      },
+      {
+        "key": "B",
+        "text": "The base cost of shipping is $\\$0.75$."
+      },
+      {
+        "key": "C",
+        "text": "Every additional pound increases the predicted cost by about $\\$3$."
+      },
+      {
+        "key": "D",
+        "text": "The predicted cost is $\\$0.75$ regardless of weight."
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "The slope $0.75$ is the change in predicted $y$ per one-unit increase in $x$, so each extra pound adds about $\\$0.75$ to the predicted cost.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "F",
+    "type": "spr",
+    "stem": "A regression line models a car's fuel remaining $y$ (gallons) after driving $x$ miles: $y = -0.04x + 14$. According to the model, how many gallons are predicted to remain after $100$ miles?",
+    "correctAnswer": "10",
+    "explanation": "Substituting $x = 100$ gives $y = -0.04(100) + 14 = -4 + 14 = 10$ gallons.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A line of best fit for data on a cafe's daily iced-coffee sales $y$ versus the daily high temperature $x$ (in $^\\circ$F) is $y = 4.2x - 160$. Which is the best interpretation of the slope in context?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "On a day with a $0^\\circ$F high, predicted sales are $4.2$ drinks."
+      },
+      {
+        "key": "B",
+        "text": "About $4.2$% of iced-coffee sales are explained by temperature."
+      },
+      {
+        "key": "C",
+        "text": "For each $1^\\circ$F increase in daily high temperature, predicted iced-coffee sales increase by about $4.2$ drinks."
+      },
+      {
+        "key": "D",
+        "text": "The average temperature is $4.2^\\circ$F."
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "The slope gives the predicted change in $y$ per one-unit increase in $x$, so $4.2$ means each extra degree corresponds to about $4.2$ more predicted drinks.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "Researchers modeled the number of minutes $y$ a phone battery lasts based on the percent brightness $x$ with $y = -3.5x + 620$. Which statement correctly interprets the slope?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "For every $1$% increase in brightness, predicted battery life decreases by about $3.5$ minutes."
+      },
+      {
+        "key": "B",
+        "text": "For every $1$% increase in brightness, predicted battery life increases by about $3.5$ minutes."
+      },
+      {
+        "key": "C",
+        "text": "At $0$% brightness, the battery lasts about $3.5$ minutes."
+      },
+      {
+        "key": "D",
+        "text": "The battery always lasts $3.5$ minutes."
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A slope of $-3.5$ means the predicted $y$ decreases by $3.5$ minutes for each one-unit (1%) increase in $x$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "The regression line for predicting a newborn's length $y$ (cm) from weight $x$ (kg) is $y = 6.1x + 32$. Which is the best interpretation of the y-intercept?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "The predicted length of a $0$-kg newborn, which is not meaningful in context."
+      },
+      {
+        "key": "B",
+        "text": "The average weight of the newborns in the dataset."
+      },
+      {
+        "key": "C",
+        "text": "The predicted weight of a newborn whose length is $0$ cm."
+      },
+      {
+        "key": "D",
+        "text": "The number of newborns in the dataset."
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "The y-intercept is the predicted $y$ when $x = 0$; here that corresponds to a $0$-kg baby, which lies outside any realistic range, so it has no meaningful interpretation.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A linear model predicts a city's monthly water use $y$ (in thousands of gallons) from the month's average temperature $x$ (in $^\\circ$F): $y = 1.6x + 48$. A particular month has an average temperature of $70^\\circ$F and actual water use of $172$ thousand gallons. What is the residual?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$-12$"
+      },
+      {
+        "key": "B",
+        "text": "$12$"
+      },
+      {
+        "key": "C",
+        "text": "$160$"
+      },
+      {
+        "key": "D",
+        "text": "$172$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Predicted $y = 1.6(70) + 48 = 112 + 48 = 160$. The residual is actual minus predicted: $172 - 160 = 12$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "M",
+    "type": "spr",
+    "stem": "A regression line predicts a student's final exam score $y$ from average homework score $x$: $y = 0.8x + 18$. Predict the final exam score for a student whose average homework score is $85$.",
+    "correctAnswer": "86",
+    "explanation": "Substituting $x = 85$ gives $y = 0.8(85) + 18 = 68 + 18 = 86$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A scatterplot shows city population $x$ (in thousands) and number of public libraries $y$. The line of best fit is $y = 0.03x + 1$. Which is the best interpretation of the slope in context?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "There are always $0.03$ libraries per city."
+      },
+      {
+        "key": "B",
+        "text": "For every additional $1{,}000$ people, the predicted number of libraries increases by about $0.03$."
+      },
+      {
+        "key": "C",
+        "text": "For every additional library, the predicted population increases by $30$ people."
+      },
+      {
+        "key": "D",
+        "text": "$3$% of people use a library."
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "The slope is the predicted change in $y$ per one-unit increase in $x$; since $x$ is in thousands, each extra $1{,}000$ people corresponds to about $0.03$ more predicted libraries.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "For a dataset relating hours of daylight $x$ to daily ice-cream sales $y$, the line of best fit is $y = 22x - 150$. Which is the best interpretation of the y-intercept in context?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "The typical daily ice-cream sales across the dataset."
+      },
+      {
+        "key": "B",
+        "text": "The predicted sales when there are $0$ hours of daylight, which is outside the realistic range and not meaningful."
+      },
+      {
+        "key": "C",
+        "text": "The predicted sales at the longest day of the year."
+      },
+      {
+        "key": "D",
+        "text": "The predicted number of daylight hours when sales are $0$."
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "The y-intercept is the predicted $y$ when $x = 0$, which here means zero daylight hours — not a real situation, so the intercept has no meaningful contextual interpretation.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "Two linear models were fit to a scatterplot. Model P has slope $0.2$ and Model Q has slope $2.5$, using the same units. Which statement best compares the two slopes?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Model Q predicts a larger change in $y$ per one-unit change in $x$ than Model P."
+      },
+      {
+        "key": "B",
+        "text": "Model P predicts a larger change in $y$ per one-unit change in $x$ than Model Q."
+      },
+      {
+        "key": "C",
+        "text": "Both models predict the same change in $y$ per one-unit change in $x$."
+      },
+      {
+        "key": "D",
+        "text": "Neither slope describes a relationship between $x$ and $y$."
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "A larger slope magnitude means a larger predicted change in $y$ per one-unit increase in $x$; since $2.5 > 0.2$, Model Q changes more steeply.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "M",
+    "type": "spr",
+    "stem": "A line of best fit models monthly electric bill $y$ (in dollars) as a function of average outdoor temperature $x$ (in $^\\circ$F): $y = -1.5x + 210$. A month has an average temperature of $60^\\circ$F. What is the predicted bill, in dollars?",
+    "correctAnswer": "120",
+    "explanation": "Substituting $x = 60$: $y = -1.5(60) + 210 = -90 + 210 = 120$ dollars.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A regression model predicts annual crop yield $y$ (tons per acre) from the amount of fertilizer $x$ (kg per acre) as $y = 0.08x + 3.2$, with $r^2 = 0.64$. Which statement is fully supported by this model?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Adding fertilizer causes yield to double."
+      },
+      {
+        "key": "B",
+        "text": "Yield is always exactly $0.08x + 3.2$ for every field."
+      },
+      {
+        "key": "C",
+        "text": "$64\\%$ of fields had yield above $3.2$ tons/acre."
+      },
+      {
+        "key": "D",
+        "text": "About $64\\%$ of the variation in yield is explained by fertilizer amount, and each additional kg/acre of fertilizer is associated with about $0.08$ more tons/acre of predicted yield."
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "$r^2 = 0.64$ means about $64\\%$ of the variation in $y$ is explained by the linear model, and the slope $0.08$ gives the predicted change in $y$ per unit $x$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A regression line fit to data on years of experience $x$ and hourly wage $y$ (dollars) is $y = 1.1x + 18$. The residual for one worker is $-3$. Which statement must be true about that worker?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Their actual wage is $\\$3$ more than the model predicts for their years of experience."
+      },
+      {
+        "key": "B",
+        "text": "They have $3$ fewer years of experience than average."
+      },
+      {
+        "key": "C",
+        "text": "The model's slope for this worker is $-3$."
+      },
+      {
+        "key": "D",
+        "text": "Their actual wage is $\\$3$ less than the model predicts for their years of experience."
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Residual $=$ actual $-$ predicted. A negative residual of $-3$ means the observed wage is $\\$3$ below the line's prediction.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A scatterplot of daily steps $x$ and resting heart rate $y$ (bpm) has regression equation $y = -0.0015x + 82$ with correlation coefficient $r = -0.76$. Which statement is best supported?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "People who walk more steps tend to have lower predicted resting heart rates, and the linear association is moderately strong and negative."
+      },
+      {
+        "key": "B",
+        "text": "People who walk more steps tend to have higher resting heart rates, and the relationship is strong."
+      },
+      {
+        "key": "C",
+        "text": "Walking causes a drop of about $76\\%$ in resting heart rate."
+      },
+      {
+        "key": "D",
+        "text": "There is no linear relationship between steps and heart rate."
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "The negative slope and $r = -0.76$ indicate a moderately strong negative linear association: more steps are associated with lower predicted resting heart rate.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving & Data Analysis",
+    "skill": "linear_regression",
+    "sourceSkill": "Linear regression",
+    "difficulty": "C",
+    "type": "spr",
+    "stem": "A regression line predicts the price $y$ (in thousands of dollars) of a used car from its age $x$ (in years): $y = -1.4x + 22$. Using this model, how much less, in thousands of dollars, is a $10$-year-old car predicted to cost compared to a $4$-year-old car?",
+    "correctAnswer": "8.4",
+    "explanation": "The predicted difference is the slope times the change in $x$: $|-1.4| \\cdot (10 - 4) = 1.4 \\cdot 6 = 8.4$ thousand dollars.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  }
+]

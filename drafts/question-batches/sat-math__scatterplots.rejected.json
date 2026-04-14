@@ -1,0 +1,27 @@
+[
+  {
+    "originalIndex": 17,
+    "original": {
+      "course": "sat-math",
+      "testType": "sat",
+      "section": "math",
+      "domain": "Problem Solving and Data Analysis",
+      "skill": "scatterplots",
+      "sourceSkill": "Scatterplots",
+      "difficulty": "C",
+      "type": "mc",
+      "stem": "A scatterplot of $x$ versus $y$ contains the three points $(1, 4)$, $(3, 10)$, and $(5, 14)$. If the line of best fit is found using the least-squares method, which of the following is the equation of the line of best fit?",
+      "choices": [
+        { "key": "A", "text": "$y = 2.5x + 1.5$" },
+        { "key": "B", "text": "$y = 3x + 1$" },
+        { "key": "C", "text": "$y = 2x + 3$" },
+        { "key": "D", "text": "$y = 2.5x + 2$" }
+      ],
+      "correctAnswer": "A",
+      "explanation": "$\\bar{x}=3$, $\\bar{y}=\\frac{28}{3}$. Slope $=\\frac{\\sum(x-\\bar{x})(y-\\bar{y})}{\\sum(x-\\bar{x})^2}=\\frac{(-2)(-\\frac{16}{3})+0+2\\cdot\\frac{14}{3}}{4+0+4}=\\frac{60/3}{8}=2.5$. Intercept: $\\bar{y}-2.5\\bar{x}=\\frac{28}{3}-7.5=1.5$.",
+      "katex": true,
+      "tags": ["parker-gen-2026-04-14"]
+    },
+    "reason": "Stated correct answer is wrong. The slope computation is correct (m = 2.5), but the intercept is b = ȳ - m·x̄ = 28/3 - 7.5 = 28/3 - 22.5/3 = 5.5/3 ≈ 1.833, not 1.5. The true least-squares line is y = 2.5x + 11/6, which matches none of the four choices (A gives 1.5, D gives 2). No defensible correct answer among the choices."
+  }
+]

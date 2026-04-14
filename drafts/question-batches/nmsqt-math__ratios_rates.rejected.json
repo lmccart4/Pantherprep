@@ -1,0 +1,27 @@
+[
+  {
+    "originalIndex": 18,
+    "original": {
+      "course": "nmsqt-math",
+      "testType": "nmsqt",
+      "section": "math",
+      "domain": "Problem Solving and Data Analysis",
+      "skill": "ratios_rates",
+      "sourceSkill": "Ratios and rates",
+      "difficulty": "C",
+      "type": "mc",
+      "stem": "A runner covers the first $6$ miles of a $10$-mile course at $8$ miles per hour and the remaining $4$ miles at $6$ miles per hour. What is the runner's average speed for the entire course, in miles per hour?",
+      "choices": [
+        { "key": "A", "text": "6.86" },
+        { "key": "B", "text": "7.00" },
+        { "key": "C", "text": "7.50" },
+        { "key": "D", "text": "7.20" }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Total time $= \\frac{6}{8} + \\frac{4}{6} = 0.75 + 0.667 = 1.4167$ hours. Average speed $= 10 / 1.4167 \\approx 7.20$ mph. (Averaging $8$ and $6$ to get $7$ is the trap.)",
+      "katex": true,
+      "tags": ["parker-gen-2026-04-14"]
+    },
+    "reason": "Stated answer D=7.20 is wrong. Correct computation: total time = 6/8 + 4/6 = 0.75 + 0.6667 = 1.4167 hr, average speed = 10 / 1.4167 ≈ 7.0588 mph (≈7.06). None of the four choices matches the true value; the closest (B=7.00) is actually the harmonic-mean trap answer for equal-distance legs (2/(1/8+1/6)≈6.857, choice A) and also a rounding of the true 7.06. The explanation's arithmetic (7.20) does not follow from 10/1.4167. Unfixable without changing the numbers/choices."
+  }
+]

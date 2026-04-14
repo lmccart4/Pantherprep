@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "probability",
+  "skillLabel": "Probability",
+  "domain": "Problem Solving and Data Analysis",
+  "conceptBlurb": "Probability measures how likely an event is, from $0$ (impossible) to $1$ (certain). For simple events, it is favorable outcomes divided by total outcomes. Compound problems hinge on one question: does the first event change the setup for the second? If yes, it is without replacement. If no, it is with replacement, and the events are independent.",
+  "conceptExplanation": "Every SAT probability question reduces to counting. Find the favorable outcomes, find the total outcomes, and divide.\n\n**Simple probability:**\n$$P(\\text{event}) = \\frac{\\text{favorable outcomes}}{\\text{total outcomes}}$$\n\n**Compound events (AND):** When two things must both happen, multiply. If the events are independent (with replacement, separate dice, etc.):\n$$P(A \\text{ and } B) = P(A) \\cdot P(B)$$\n\nWithout replacement, the second probability uses the updated pool. If a bag has $5$ red and $3$ blue and you draw two reds without replacement:\n$$P = \\frac{5}{8} \\cdot \\frac{4}{7}$$\n\nThe denominator shrinks because one marble is gone. The numerator shrinks because one red is gone.\n\n**Compound events (OR):** When either event counts, add — but subtract the overlap so you do not double-count.\n$$P(A \\text{ or } B) = P(A) + P(B) - P(A \\text{ and } B)$$\n\nThis is the most common trap. A question asks for the probability a card is a heart OR a face card. Face-card hearts (J, Q, K of hearts) satisfy both. If you just add $\\frac{13}{52} + \\frac{12}{52}$ you count those three cards twice.\n\n**Conditional probability from two-way tables:** The phrase \"given that\" restricts your total. You are no longer dividing by the full population — you divide by the row or column the condition names. If the question says \"given that the student is a junior,\" your denominator is the total number of juniors, not the total number of students.\n\nRead every probability question twice. Underline \"with replacement,\" \"without replacement,\" \"given that,\" and \"or.\" Those four phrases decide the entire approach.",
+  "workedExamples": [
+    {
+      "prompt": "A bag contains $4$ red marbles, $5$ green marbles, and $3$ blue marbles. Two marbles are drawn without replacement. What is the probability that both are green?",
+      "steps": [
+        "Total marbles: $4 + 5 + 3 = 12$.",
+        "First draw: $P(\\text{green}) = \\frac{5}{12}$.",
+        "After removing one green, $4$ greens remain out of $11$ total: $P(\\text{green}_2) = \\frac{4}{11}$.",
+        "Multiply: $\\frac{5}{12} \\cdot \\frac{4}{11} = \\frac{20}{132} = \\frac{5}{33}$."
+      ],
+      "answer": "$\\frac{5}{33}$",
+      "takeaway": "Without replacement shrinks both the numerator and denominator on the second draw."
+    },
+    {
+      "prompt": "A standard six-sided die is rolled once. What is the probability that the result is an even number OR greater than $4$?",
+      "steps": [
+        "Even numbers on a die: $\\{2, 4, 6\\}$, so $P(\\text{even}) = \\frac{3}{6}$.",
+        "Numbers greater than $4$: $\\{5, 6\\}$, so $P(>4) = \\frac{2}{6}$.",
+        "Overlap (even AND $>4$): $\\{6\\}$, so $P(\\text{both}) = \\frac{1}{6}$.",
+        "Apply the OR rule: $\\frac{3}{6} + \\frac{2}{6} - \\frac{1}{6} = \\frac{4}{6} = \\frac{2}{3}$."
+      ],
+      "answer": "$\\frac{2}{3}$",
+      "takeaway": "For \"A or B,\" subtract the overlap so outcomes satisfying both are not counted twice."
+    },
+    {
+      "prompt": "A survey asked $200$ students whether they play a sport and whether they play an instrument. The results: $80$ students play a sport and an instrument, $50$ play a sport only, $40$ play an instrument only, and $30$ play neither. Given that a student plays a sport, what is the probability that the student also plays an instrument?",
+      "steps": [
+        "Total sport players: $80 + 50 = 130$.",
+        "\"Given that\" means the denominator is now $130$, not $200$.",
+        "Of those sport players, $80$ also play an instrument.",
+        "$P(\\text{instrument} \\mid \\text{sport}) = \\frac{80}{130} = \\frac{8}{13}$."
+      ],
+      "answer": "$\\frac{8}{13}$",
+      "takeaway": "\"Given that\" restricts the denominator to the row or column named in the condition."
+    }
+  ],
+  "hintTemplates": [
+    "Decide first: is this with replacement or without? That choice controls whether the second probability uses the original totals or updated ones.",
+    "For \"A or B\" questions, find $P(A)$, $P(B)$, and the overlap $P(A \\text{ and } B)$, then apply $P(A) + P(B) - P(A \\text{ and } B)$.",
+    "When you see \"given that,\" rewrite the denominator. Your total is now just the group the condition describes — one row or one column of the table."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "volume",
+  "skillLabel": "Volume",
+  "domain": "Geometry and Trigonometry",
+  "conceptBlurb": "Volume questions test whether you can match a solid to its formula and plug in carefully. The SAT gives you every formula you need at the start of the math section, so memorization isn't the point—selection and substitution are. The #1 trap is using the diameter in place of the radius, especially in cylinders and spheres. Watch units too: if dimensions are in centimeters, the answer is in cubic centimeters.",
+  "conceptExplanation": "Volume is the amount of 3D space a solid takes up, measured in cubic units. The SAT reference sheet hands you the formulas, so your job is to (1) identify the solid, (2) pick the right formula, (3) plug in the right numbers.\n\n**The formulas you'll see:**\n\n- Rectangular prism (box): $V = \\ell w h$\n- Cylinder: $V = \\pi r^2 h$\n- Sphere: $V = \\frac{4}{3}\\pi r^3$\n- Cone: $V = \\frac{1}{3}\\pi r^2 h$\n- Pyramid: $V = \\frac{1}{3}\\ell w h$\n\nNotice the pattern: a cone is one-third of a cylinder with the same base and height, and a pyramid is one-third of a prism with the same base and height. If a question compares a cone to a cylinder, that factor of $\\frac{1}{3}$ is usually the whole point.\n\n**The radius trap.** SAT questions love to give you the diameter. If a cylinder has a diameter of 10, the radius is 5, and you square the 5, not the 10. Using $d$ instead of $r$ quadruples a cylinder's volume and multiplies a sphere's by eight. The wrong answer choice that this mistake produces will always be on the screen.\n\n**Proportional reasoning.** If a question doubles the radius of a sphere, volume scales by $2^3 = 8$. If it doubles the height of a cylinder, volume just doubles. Knowing which dimension lives under an exponent tells you how volume reacts.\n\n**Units.** If a box is $3 \\text{ ft} \\times 4 \\text{ ft} \\times 5 \\text{ ft}$, volume is $60 \\text{ ft}^3$. If the question then asks for gallons or liters, you'll be given a conversion factor—don't invent one.\n\n**Strategy:** underline the shape word (\"cylindrical tank,\" \"spherical ornament\"), circle whether you're given radius or diameter, then write the formula before you plug in. That forces you to slow down exactly where the trap lives.",
+  "workedExamples": [
+    {
+      "prompt": "A cylindrical water tank has a diameter of 8 feet and a height of 10 feet. What is the volume of the tank, in cubic feet?",
+      "steps": [
+        "Identify the solid: cylinder, so $V = \\pi r^2 h$.",
+        "The question gives diameter = 8, so the radius is $r = 4$ (not 8).",
+        "Plug in: $V = \\pi (4)^2 (10) = \\pi \\cdot 16 \\cdot 10$.",
+        "Simplify: $V = 160\\pi$ cubic feet."
+      ],
+      "answer": "$160\\pi$ cubic feet (about 502.7)",
+      "takeaway": "Diameter in, radius squared. Halving 8 to get 4 is the whole question."
+    },
+    {
+      "prompt": "A spherical ornament has a radius of 3 centimeters. A second spherical ornament has a radius of 6 centimeters. How many times greater is the volume of the second ornament than the first?",
+      "steps": [
+        "Sphere volume: $V = \\frac{4}{3}\\pi r^3$.",
+        "The radius doubles from 3 to 6, so volume scales by $2^3 = 8$.",
+        "Check with numbers: small sphere $= \\frac{4}{3}\\pi (27) = 36\\pi$; large sphere $= \\frac{4}{3}\\pi (216) = 288\\pi$.",
+        "Ratio: $\\frac{288\\pi}{36\\pi} = 8$."
+      ],
+      "answer": "8 times",
+      "takeaway": "When a linear dimension scales by $k$, volume scales by $k^3$."
+    },
+    {
+      "prompt": "A solid right cone has a base radius of 5 inches and a height of 12 inches. What is the volume of the cone, in cubic inches?",
+      "steps": [
+        "Cone volume: $V = \\frac{1}{3}\\pi r^2 h$.",
+        "Plug in $r = 5$ and $h = 12$: $V = \\frac{1}{3}\\pi (25)(12)$.",
+        "Multiply: $25 \\cdot 12 = 300$, so $V = \\frac{1}{3}\\pi (300)$.",
+        "Simplify: $V = 100\\pi$ cubic inches."
+      ],
+      "answer": "$100\\pi$ cubic inches (about 314.2)",
+      "takeaway": "Don't forget the $\\frac{1}{3}$ on cones and pyramids—it's the most-missed factor on volume problems."
+    }
+  ],
+  "hintTemplates": [
+    "What solid is this? Write the formula from the reference sheet before you touch any numbers.",
+    "Did the problem give you the diameter or the radius? If it's diameter, cut it in half before squaring or cubing.",
+    "Cones and pyramids have a $\\frac{1}{3}$ out front. If you didn't use it, check whether you should have."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

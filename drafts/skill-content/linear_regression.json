@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "linear_regression",
+  "skillLabel": "Linear regression",
+  "domain": "Problem Solving & Data Analysis",
+  "conceptBlurb": "A line of best fit is a straight line that models the trend in a scatterplot. It has the form $y = mx + b$, where $m$ is the slope and $b$ is the y-intercept. On the SAT, you need to interpret what the slope and intercept mean in the real-world context of the variables. You also need to use the equation to predict $y$ for a given $x$ within the range of the data.",
+  "conceptExplanation": "A linear regression equation looks like $y = mx + b$. The slope $m$ and intercept $b$ aren't just numbers — on the SAT, they always stand for something real.\n\n**Slope ($m$) = rate of change.** It tells you how much $y$ changes every time $x$ increases by 1. If the equation is $y = 2.3x + 15.4$ and $x$ is years while $y$ is population in thousands, then the slope means: *for each additional year, the population increases by 2.3 thousand people*. Always phrase slope as \"for every 1 unit of $x$, $y$ changes by $m$.\"\n\n**Y-intercept ($b$) = starting value.** It's the predicted value of $y$ when $x = 0$. In the same example, $b = 15.4$ means the population was 15.4 thousand at year 0 (whatever year 0 refers to in the problem). Sometimes $x = 0$ is outside the data range and the intercept doesn't have a practical meaning — the SAT will still ask about it.\n\n**Prediction.** To predict $y$ for a specific $x$, plug the value in and compute. If $y = 2.3x + 15.4$ and you want the prediction at $x = 10$, then $y = 2.3(10) + 15.4 = 38.4$.\n\n**Watch the units.** SAT regression questions love to hide unit conversions in the prompt (\"$x$ is measured in decades,\" \"$y$ is in hundreds of dollars\"). Read the axis labels and the sentence above the graph carefully. The slope's meaning always uses the exact units given.\n\nThe key move: translate the numbers back into the context every time. Never leave slope or intercept as bare numbers in an answer.",
+  "workedExamples": [
+    {
+      "prompt": "A scatterplot shows the relationship between the number of hours studied, $x$, and the score on a practice SAT, $y$. The line of best fit is $y = 42x + 860$. Which of the following is the best interpretation of the slope?",
+      "steps": [
+        "Identify the slope: $m = 42$.",
+        "Recall that slope means: for every 1-unit increase in $x$, $y$ changes by $m$.",
+        "Substitute the context: $x$ is hours studied, $y$ is practice SAT score.",
+        "Translate: for each additional hour studied, the predicted score increases by 42 points."
+      ],
+      "answer": "For every additional hour of studying, the predicted practice SAT score increases by about 42 points.",
+      "takeaway": "Slope is always \"for every 1 more $x$, $y$ changes by $m$\" — then swap in the real units."
+    },
+    {
+      "prompt": "A researcher fits the line $y = -1.8x + 94.5$ to data relating the age of a used car in years, $x$, to its resale value in thousands of dollars, $y$. According to the model, what is the predicted resale value of a 7-year-old car?",
+      "steps": [
+        "Substitute $x = 7$ into the equation: $y = -1.8(7) + 94.5$.",
+        "Compute the product: $-1.8 \\cdot 7 = -12.6$.",
+        "Add the intercept: $y = -12.6 + 94.5 = 81.9$.",
+        "Apply the units: $y$ is in thousands of dollars, so the predicted value is $\\$81{,}900$."
+      ],
+      "answer": "$\\$81{,}900$",
+      "takeaway": "To predict, just plug $x$ into the equation — then convert the result using the units given in the problem."
+    },
+    {
+      "prompt": "The line of best fit for a scatterplot relating temperature in degrees Celsius, $x$, to ice cream sales in dollars, $y$, at a beach stand is $y = 37.5x + 112$. What is the best interpretation of the y-intercept 112 in this context?",
+      "steps": [
+        "Recall that the y-intercept is the predicted $y$ when $x = 0$.",
+        "Set $x = 0$: at $0^{\\circ}\\text{C}$, the model predicts $y = 112$.",
+        "Apply units: $y$ is in dollars, so predicted sales are $\\$112$.",
+        "State in context: when the temperature is $0^{\\circ}\\text{C}$, the model predicts about $\\$112$ in ice cream sales."
+      ],
+      "answer": "When the temperature is $0^{\\circ}\\text{C}$, the model predicts ice cream sales of about $\\$112$.",
+      "takeaway": "The y-intercept is the predicted value of $y$ when $x = 0$ — always describe it in the units of $y$."
+    }
+  ],
+  "hintTemplates": [
+    "Identify the slope and the y-intercept in $y = mx + b$, then write what each variable represents in words before touching the answer choices.",
+    "For slope interpretations, use the template: \"for every 1 additional [units of $x$], $y$ changes by $m$ [units of $y$].\" Swap in the exact units from the problem.",
+    "For prediction questions, substitute the given $x$ into the equation and compute — then double-check whether the answer needs a unit conversion (thousands, hundreds, percent, etc.)."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

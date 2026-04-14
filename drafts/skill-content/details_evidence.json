@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "details_evidence",
+  "skillLabel": "Command of evidence",
+  "domain": "Information and Ideas",
+  "conceptBlurb": "Command-of-evidence questions test whether you can actually point to the spot in a passage that proves a claim. They usually come in pairs: first a question about what the author thinks or what happened, then a follow-up asking which lines best support your answer. The trap is picking lines that sound important but don't actually back up the specific claim. Your job is to match the evidence to the exact wording of the claim, not to the general topic.",
+  "conceptExplanation": "Command of evidence means finding the one sentence (or pair of sentences) that directly proves a specific point. On the digital SAT/PSAT, evidence questions usually look like this: you get a short passage, a claim or conclusion, and four answer choices that each quote a different line. Only one of those lines actually supports the claim. The other three are wrong for predictable reasons.\n\nHere is the process:\n\n1. **Lock down the claim.** Read it twice. Underline the key words. If the claim is \"the author is skeptical of the results,\" the evidence must show skepticism — not just mention results, not just mention the author.\n\n2. **Go back to the passage and find the spot that matches.** Don't pick from the answers first. Find it yourself, then see which answer choice quotes that spot.\n\n3. **Match wording, not topic.** The wrong answers usually quote lines that are about the same topic but don't prove the specific claim. Topic overlap is a trap. You need wording that actually makes the claim true.\n\n**Common wrong-answer traps:**\n- **On-topic but off-point** — the line talks about the right subject but doesn't prove the claim.\n- **Too strong or too weak** — the line supports a claim about certainty when the actual claim is about doubt, or vice versa.\n- **Background information** — the line sets up context but doesn't contain the author's actual position.\n- **Opposite evidence** — the line contradicts the claim (this one is rarer but it happens when you're skimming).\n\n**The test:** read your chosen line out loud as if it were proof. Does it make the claim true on its own? If you have to add \"and also...\" or \"which implies...\" to connect it, it's probably not the right line. The correct evidence should feel like a direct quote you'd use in an essay.",
+  "workedExamples": [
+    {
+      "prompt": "Passage: Marine biologist Dr. Elena Vasquez spent three years studying octopus behavior at the Monterey Bay Aquarium. She observed that octopuses frequently rearranged objects in their tanks, seemingly for no practical reason. Initially, Vasquez assumed these were random movements. However, after cataloging over 400 incidents, she concluded that the patterns showed deliberate preference — certain objects were consistently moved to specific locations. She now argues that octopuses may possess a rudimentary aesthetic sense.\n\nClaim: Dr. Vasquez's opinion about the octopuses' behavior changed over the course of her research. Which sentence best supports this claim?\n\nA) \"Marine biologist Dr. Elena Vasquez spent three years studying octopus behavior at the Monterey Bay Aquarium.\"\nB) \"She observed that octopuses frequently rearranged objects in their tanks, seemingly for no practical reason.\"\nC) \"Initially, Vasquez assumed these were random movements. However, after cataloging over 400 incidents, she concluded that the patterns showed deliberate preference.\"\nD) \"She now argues that octopuses may possess a rudimentary aesthetic sense.\"",
+      "steps": [
+        "Lock the claim: her opinion CHANGED. The evidence must show both a starting opinion and a different ending opinion.",
+        "Scan the choices. A is background (who she is). B is an observation, not an opinion. D is only her current view — no contrast with an earlier view.",
+        "C contains both halves: 'Initially... assumed these were random' (starting opinion) + 'However... she concluded that the patterns showed deliberate preference' (changed opinion). The word 'However' is the hinge that proves the change.",
+        "Test it: does C alone prove the claim that her opinion changed? Yes — the sentence literally says what she thought first and what she thinks now."
+      ],
+      "answer": "C",
+      "takeaway": "When a claim is about change, the evidence has to contain both states. One-state quotes can't prove a change."
+    },
+    {
+      "prompt": "Passage: The city of Rotterdam has invested heavily in floating architecture. Engineers there designed a pavilion made of three connected domes that rises and falls with the tide. Critics argued the project was expensive and impractical. But after a severe storm in 2022 flooded traditional waterfront buildings while leaving the floating pavilion undamaged, city planners began drafting proposals for floating schools and apartment complexes. Construction on the first floating school is expected to begin in 2027.\n\nClaim: The 2022 storm was a turning point for Rotterdam's attitude toward floating architecture. Which sentence best supports this claim?\n\nA) \"The city of Rotterdam has invested heavily in floating architecture.\"\nB) \"Critics argued the project was expensive and impractical.\"\nC) \"But after a severe storm in 2022 flooded traditional waterfront buildings while leaving the floating pavilion undamaged, city planners began drafting proposals for floating schools and apartment complexes.\"\nD) \"Construction on the first floating school is expected to begin in 2027.\"",
+      "steps": [
+        "Lock the claim: the 2022 storm CAUSED a shift in attitude. The evidence needs to link the storm to a change in what the city was doing or planning.",
+        "A is general background. B is criticism from before the storm — no link to the storm itself. D mentions a future date but doesn't tie it to the storm.",
+        "C directly connects the storm ('after a severe storm in 2022') to a new attitude ('city planners began drafting proposals for floating schools and apartment complexes'). That's the turning point.",
+        "Test it: does C prove the storm changed the city's approach? Yes — 'after X, they started doing Y' is textbook cause-and-effect evidence."
+      ],
+      "answer": "C",
+      "takeaway": "For cause-and-effect claims, look for a line that names both the cause and the effect in one place. Don't settle for a line that only mentions one side."
+    },
+    {
+      "prompt": "Passage: In her 2024 memoir, novelist Priya Kapoor describes her first year as a writer in unsparing terms. She recalls sending out forty-seven short stories and receiving forty-seven rejections. Her apartment was cold, her savings were gone, and she ate the same lentil soup for weeks at a time. Still, she wrote every morning from five to eight before heading to her job at a bookstore. Kapoor credits that routine, not her eventual success, as the proudest accomplishment of her life.\n\nClaim: Kapoor values discipline more than achievement. Which sentence best supports this claim?\n\nA) \"In her 2024 memoir, novelist Priya Kapoor describes her first year as a writer in unsparing terms.\"\nB) \"She recalls sending out forty-seven short stories and receiving forty-seven rejections.\"\nC) \"Her apartment was cold, her savings were gone, and she ate the same lentil soup for weeks at a time.\"\nD) \"Kapoor credits that routine, not her eventual success, as the proudest accomplishment of her life.\"",
+      "steps": [
+        "Lock the claim: she values discipline (the routine) MORE than achievement (success). The evidence needs a direct comparison between the two.",
+        "A describes the memoir's tone. B is about rejections. C is about hardship. None of these compare discipline to achievement.",
+        "D explicitly says she picks 'that routine, not her eventual success' as her proudest moment. That's the exact comparison the claim is making.",
+        "Test it: does D prove the claim on its own? Yes — 'X, not Y' is the author directly ranking one above the other."
+      ],
+      "answer": "D",
+      "takeaway": "When a claim involves 'more than' or 'over,' the right evidence usually has a direct contrast word: 'not,' 'rather than,' 'instead of.' That's the giveaway."
+    }
+  ],
+  "hintTemplates": [
+    "Underline the exact claim first. What specific thing does it say — a change, a cause, a preference, a contradiction? The evidence has to prove THAT specific thing, not just be on the same topic.",
+    "Before looking at the answer choices, go hunt in the passage yourself. Find the line you'd quote if you had to prove the claim in one sentence. Then match it to an answer.",
+    "Read your pick out loud as if it were proof. If you have to add 'which means...' or 'and also...' to make it fit the claim, it's the wrong line. The right evidence makes the claim true on its own."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

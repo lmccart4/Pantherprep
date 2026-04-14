@@ -1,0 +1,47 @@
+{
+  "taxonomyKey": "percentages",
+  "skillLabel": "Percentages",
+  "domain": "Problem Solving and Data Analysis",
+  "conceptBlurb": "Percentages show up everywhere on the SAT: percent-of, percent change, markup, discount, and tax. The core move is converting a percent to a decimal and multiplying. The most common trap is chaining two percent changes and applying the second one to the original amount instead of the new one. Master that single idea and you lock in most of these questions.",
+  "conceptExplanation": "A percent is just a fraction out of 100. To take $p\\%$ of a number, multiply by $\\frac{p}{100}$. So $25\\%$ of $80$ is $80 \\cdot 0.25 = 20$.\n\n**Percent increase and decrease.** If a value $V$ goes up by $p\\%$, the new value is:\n\n$$V_{\\text{new}} = V \\cdot \\left(1 + \\frac{p}{100}\\right)$$\n\nIf it goes down by $p\\%$:\n\n$$V_{\\text{new}} = V \\cdot \\left(1 - \\frac{p}{100}\\right)$$\n\nA $20\\%$ increase means multiply by $1.20$. A $15\\%$ decrease means multiply by $0.85$. Memorize the multiplier form — it's faster than adding and subtracting.\n\n**Percent change formula.** Given an old and new value:\n\n$$\\text{percent change} = \\frac{\\text{new} - \\text{old}}{\\text{old}} \\cdot 100\\%$$\n\nThe denominator is always the **original** amount, not the new one. Miss that and you flip the problem.\n\n**Chained percent changes.** When a price goes up $20\\%$ then down $15\\%$, each change applies to the current value, not the original. Multiply the factors:\n\n$$V \\cdot 1.20 \\cdot 0.85 = V \\cdot 1.02$$\n\nSo the net change is a $2\\%$ increase — not $5\\%$. The trap the SAT sets is expecting you to just add $+20 - 15 = +5$. That's wrong because the $15\\%$ is taken off the bigger, already-increased amount.\n\n**Markup and discount.** A $30\\%$ markup means multiply cost by $1.30$. A $30\\%$ discount off the marked price means multiply by $0.70$. If a store marks up $30\\%$ and then runs a $30\\%$ sale, you do not return to the original — you land at $1.30 \\cdot 0.70 = 0.91$, a $9\\%$ loss from the original cost.\n\nWhen in doubt, pick a friendly number like $100$, run the steps, and read the answer off directly.",
+  "workedExamples": [
+    {
+      "prompt": "A jacket originally priced at $80 is marked up by 25%, then put on sale for 20% off the new price. What is the final sale price?",
+      "steps": [
+        "Apply the markup: $80 \\cdot 1.25 = 100$.",
+        "Apply the discount to the new price: $100 \\cdot 0.80 = 80$.",
+        "The final price equals the original $80."
+      ],
+      "answer": "$80",
+      "takeaway": "Equal-percent up then down does not cancel out in general, but a $25\\%$ markup followed by a $20\\%$ discount happens to return to the start because $1.25 \\cdot 0.80 = 1$."
+    },
+    {
+      "prompt": "The population of a town increased from 12,500 to 13,750 over one year. What was the percent increase?",
+      "steps": [
+        "Find the change: $13{,}750 - 12{,}500 = 1{,}250$.",
+        "Divide by the original value: $\\frac{1{,}250}{12{,}500} = 0.10$.",
+        "Convert to a percent: $0.10 \\cdot 100\\% = 10\\%$."
+      ],
+      "answer": "10%",
+      "takeaway": "Percent change always divides by the original amount, never the new one."
+    },
+    {
+      "prompt": "A stock price rises 30% in January, then falls 20% in February. What is the net percent change over the two months?",
+      "steps": [
+        "Write each change as a multiplier: $+30\\%$ is $1.30$, $-20\\%$ is $0.80$.",
+        "Multiply the factors: $1.30 \\cdot 0.80 = 1.04$.",
+        "A multiplier of $1.04$ means a $4\\%$ net increase."
+      ],
+      "answer": "4% increase",
+      "takeaway": "Chain percent changes by multiplying their decimal multipliers — never add them."
+    }
+  ],
+  "hintTemplates": [
+    "Rewrite every percent as a decimal multiplier before you touch the numbers: $+p\\%$ becomes $1 + \\frac{p}{100}$, and $-p\\%$ becomes $1 - \\frac{p}{100}$.",
+    "For percent change, the denominator is the original amount. If the question asks 'percent increase from A to B', divide by A.",
+    "When two percent changes are chained, multiply the multipliers together. Adding the percents gives the wrong answer."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

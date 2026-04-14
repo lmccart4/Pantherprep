@@ -1,0 +1,41 @@
+{
+  "taxonomyKey": "quantitative_evidence",
+  "skillLabel": "Quantitative evidence",
+  "domain": "Information and Ideas",
+  "conceptBlurb": "Quantitative evidence questions give you a short passage and a table or graph. The passage makes a claim, and you have to pick the answer choice whose data actually supports that claim. The trap is answer choices with real-looking numbers that either come from the table but don't prove the point, or numbers that sound right but don't match the table at all. Your only job is to match the claim to data that makes the claim true.",
+  "conceptExplanation": "Every quantitative evidence question has the same shape: a passage makes a specific claim, a table or graph sits next to it, and four answer choices each quote numbers. Three choices are wrong for one of three reasons. You need to spot all three.\n\n**Type 1 — Wrong numbers.** The choice cites data that is not in the table, or misreads a row/column. Always find the exact cell in the table before trusting any number.\n\n**Type 2 — Right numbers, wrong claim.** The data is accurate, but it doesn't support what the passage actually argues. If the claim is \"Group A outperformed Group B,\" a choice that only gives Group A's score proves nothing — you need both.\n\n**Type 3 — Right numbers, opposite direction.** The data contradicts the claim. If the passage says a value increased, a choice showing it decreased is wrong even if the numbers match the table.\n\n**The process (every time):**\n\n1. Read the claim. Underline it. What exactly is the author arguing?\n2. Ask: what would the data need to show to prove this? Picture it before looking.\n3. Check each answer choice against the table cell-by-cell. Is the number in the table? Does it line up with the claim?\n4. Eliminate any choice that doesn't directly prove the claim, even if the math is correct.\n\n**Key habit:** Never pick a choice just because the numbers are in the table. Correct data + irrelevant comparison = wrong answer. The right choice is the one where the numbers and the claim match *and* the data actually pushes the claim forward. Read the claim, then hunt for the choice that makes it undeniable.",
+  "workedExamples": [
+    {
+      "prompt": "Passage: A 2024 study compared sleep duration among high school students across four grade levels. Researchers concluded that as students advanced through high school, average sleep duration on school nights decreased.\n\n| Grade | Avg sleep (hrs) | % getting 8+ hrs |\n|-------|-----------------|-------------------|\n| 9     | 7.8             | 42                |\n| 10    | 7.3             | 31                |\n| 11    | 6.9             | 22                |\n| 12    | 6.5             | 15                |\n\nWhich choice most effectively uses data from the table to support the researchers' conclusion?\n\nA) 42% of 9th graders got 8 or more hours of sleep on school nights.\nB) 12th graders averaged 6.5 hours of sleep per school night.\nC) Average sleep dropped from 7.8 hours in 9th grade to 6.5 hours in 12th grade.\nD) Only 15% of 12th graders got 8 or more hours of sleep.",
+      "steps": [
+        "Identify the claim: sleep duration decreased as students advanced through high school. The claim is about a trend, not a single grade.",
+        "Picture the evidence needed: two data points at minimum — one early grade and one later grade — showing sleep went down.",
+        "Check A: only 9th grade data. No comparison, no trend shown. Eliminate.",
+        "Check B: only 12th grade data. Same problem — one data point can't show a decrease. Eliminate.",
+        "Check D: only 12th grade, and it's the % column, not average sleep. The claim is about duration. Eliminate. Check C: gives both 9th grade (7.8) and 12th grade (6.5) averages. Numbers match the table. Shows the drop. This proves the trend."
+      ],
+      "answer": "C",
+      "takeaway": "When the claim is about a trend, you need at least two data points from the table, and they must be from the same column the claim refers to."
+    },
+    {
+      "prompt": "Passage: A researcher argued that switching a factory's lighting from fluorescent to LED reduced monthly electricity costs by more than $500.\n\n| Month      | Lighting type | Cost ($) |\n|------------|---------------|----------|\n| January    | Fluorescent   | 1,240    |\n| February   | Fluorescent   | 1,210    |\n| March      | LED           | 690      |\n| April      | LED           | 675      |\n\nWhich choice most effectively uses data from the table to support the researcher's claim?\n\nA) The factory's January fluorescent cost was $1,240, the highest of any month.\nB) After switching to LED, April's electricity cost was $675.\nC) The factory's electricity cost fell from $1,210 in February (fluorescent) to $690 in March (LED), a drop of $520.\nD) LED lighting cost $675 in April, down from $690 in March.",
+      "steps": [
+        "Identify the claim: switching to LED reduced monthly costs by MORE than $500. Two requirements — the switch must be shown, and the difference must exceed $500.",
+        "Check A: only fluorescent data, no LED comparison. Doesn't show a reduction at all. Eliminate.",
+        "Check B: only one LED month, no fluorescent comparison. Can't prove a reduction. Eliminate.",
+        "Check D: compares two LED months. Both are after the switch — doesn't show fluorescent vs. LED at all. Eliminate.",
+        "Check C: gives the last fluorescent month ($1,210) and the first LED month ($690). Subtraction: $1,210 - $690 = $520. That's more than $500, matches the table, and proves the switch caused the drop."
+      ],
+      "answer": "C",
+      "takeaway": "When a claim names a specific threshold ($500, 20%, double, etc.), the right answer must show numbers that clearly clear that bar — not just numbers that look related."
+    }
+  ],
+  "hintTemplates": [
+    "Underline the exact claim in the passage first. What is the author actually arguing — a comparison, a trend, a threshold? The right answer has to prove *that* claim, not a related one.",
+    "For every answer choice, find the number in the table before anything else. If the number isn't there, or it's in the wrong column, eliminate immediately — no matter how plausible the sentence sounds.",
+    "Watch for answer choices with real numbers from the table that don't actually support the claim (one data point when a trend is needed, wrong column, or data pointing the opposite direction). Correct numbers alone are not enough."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

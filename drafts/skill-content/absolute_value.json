@@ -1,0 +1,48 @@
+{
+  "taxonomyKey": "absolute_value",
+  "skillLabel": "Absolute value",
+  "domain": "Advanced Math",
+  "conceptBlurb": "Absolute value measures distance from zero, so it's always non-negative. When you solve $|ax+b|=c$, the inside can equal $c$ or $-c$ — that's two equations, two potential solutions. The graph of $y=|x-h|+k$ is a V with its vertex at $(h,k)$. On the SAT, the trap is forgetting the negative case and only reporting one answer.",
+  "conceptExplanation": "Absolute value $|x|$ is the distance from $x$ to $0$ on the number line. Distance is never negative, so $|x| \\geq 0$ for every real number $x$.\n\n**Solving equations.** To solve $|ax+b|=c$, first check that $c \\geq 0$. If $c < 0$, there's no solution — absolute value can't be negative. If $c \\geq 0$, split into two cases:\n$$ax+b = c \\quad \\text{or} \\quad ax+b = -c$$\nSolve each case separately. You usually get two solutions. The most common SAT mistake is only solving the positive case.\n\n**Solving inequalities.** Two patterns you need to memorize:\n- $|x| < c$ becomes $-c < x < c$ (a sandwich — one interval)\n- $|x| > c$ becomes $x < -c$ or $x > c$ (two separate pieces)\n\nSo $|2x-5| \\leq 7$ becomes $-7 \\leq 2x-5 \\leq 7$, and you solve the compound inequality in one shot.\n\n**The graph.** $y = |x-h| + k$ is a V-shape. The vertex sits at $(h,k)$. Notice the sign flip: $|x-3|$ has vertex at $x=3$, not $x=-3$. The V opens upward with slopes of $+1$ and $-1$ off the vertex. Multiplying by a constant, like $y = 2|x-h|+k$, makes the V steeper. A negative coefficient, like $y = -|x-h|+k$, flips the V upside down.\n\n**Translating word problems.** \"Within $d$ of a target $T$\" translates to $|x - T| \\leq d$. Tolerances, acceptable ranges, and temperature bounds all use this template. Identify the center $T$ and the radius $d$, then write the inequality.",
+  "workedExamples": [
+    {
+      "prompt": "Solve for $x$: $|3x - 7| = 11$.",
+      "steps": [
+        "Since $11 \\geq 0$, split into two cases: $3x - 7 = 11$ or $3x - 7 = -11$.",
+        "Case 1: $3x = 18$, so $x = 6$.",
+        "Case 2: $3x = -4$, so $x = -\\frac{4}{3}$.",
+        "Both check against the original equation."
+      ],
+      "answer": "$x = 6$ or $x = -\\frac{4}{3}$",
+      "takeaway": "Always split $|ax+b|=c$ into the positive and negative cases — don't stop after the first solution."
+    },
+    {
+      "prompt": "The function $f(x) = |x - 4| + 3$ has its minimum value at the point $(h, k)$. What is $h + k$?",
+      "steps": [
+        "$y = |x - h| + k$ has its vertex (minimum of an upward V) at $(h, k)$.",
+        "Matching $|x - 4| + 3$ to the template gives $h = 4$ and $k = 3$.",
+        "So $h + k = 4 + 3 = 7$."
+      ],
+      "answer": "$7$",
+      "takeaway": "Read the vertex straight off $y = |x-h|+k$ — watch the sign flip on $h$."
+    },
+    {
+      "prompt": "A machine fills bottles to a target of $500$ mL. A bottle passes inspection if it is within $8$ mL of the target. Which inequality describes the passing volumes $v$?",
+      "steps": [
+        "\"Within $8$ of $500$\" means the distance from $v$ to $500$ is at most $8$.",
+        "Distance from $v$ to $500$ is $|v - 500|$.",
+        "So the passing range is $|v - 500| \\leq 8$, which is $492 \\leq v \\leq 508$."
+      ],
+      "answer": "$|v - 500| \\leq 8$",
+      "takeaway": "\"Within $d$ of $T$\" always translates to $|x - T| \\leq d$."
+    }
+  ],
+  "hintTemplates": [
+    "If the equation looks like $|\\text{stuff}| = c$, isolate the absolute value first, then split into two cases — one where the inside equals $c$, one where it equals $-c$.",
+    "For inequalities, remember the two templates: $|x| < c$ becomes a sandwich $-c < x < c$, and $|x| > c$ becomes two separate pieces $x < -c$ or $x > c$.",
+    "For graphs of $y = a|x - h| + k$, the vertex is $(h, k)$ — watch the sign flip on $h$ — and the sign of $a$ tells you whether the V opens up or down."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

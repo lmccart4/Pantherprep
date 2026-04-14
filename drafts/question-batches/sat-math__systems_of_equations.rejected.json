@@ -1,0 +1,22 @@
+[
+  {
+    "originalIndex": 18,
+    "original": {
+      "course": "sat-math",
+      "testType": "sat",
+      "section": "math",
+      "domain": "Algebra",
+      "skill": "systems_of_equations",
+      "sourceSkill": "Systems of equations",
+      "difficulty": "C",
+      "type": "spr",
+      "stem": "In the system $\\begin{cases} y = x^2 - 6x + 13 \\\\ y = 2x - 3 \\end{cases}$, the two solutions are $(x_1, y_1)$ and $(x_2, y_2)$. What is the value of $x_1 + x_2$?",
+      "choices": [],
+      "correctAnswer": "8",
+      "explanation": "Setting equal: $x^2 - 6x + 13 = 2x - 3 \\Rightarrow x^2 - 8x + 16 = 0$. By Vieta's, the sum of roots is $8$ (here actually a double root at $x = 4$, so $x_1 + x_2 = 4 + 4 = 8$).",
+      "katex": true,
+      "tags": ["parker-gen-2026-04-14"]
+    },
+    "reason": "Stem contradicts reality: it asserts there are 'two solutions' $(x_1,y_1)$ and $(x_2,y_2)$, but setting the equations equal yields $x^2 - 8x + 16 = (x-4)^2 = 0$, a double root with only one intersection point $(4,5)$. The system has exactly one solution, so 'two solutions' is false and the question is ambiguous/misleading. Rejected rather than patched because rewriting the system would effectively be a new question."
+  }
+]

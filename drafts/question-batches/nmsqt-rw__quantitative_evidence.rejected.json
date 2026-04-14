@@ -1,0 +1,52 @@
+[
+  {
+    "originalIndex": 12,
+    "reason": "Question is internally broken. The stem asks which choice supports the committee chair's claim that the email drive had the highest average donation per donor, but the table makes that claim false: per-donor averages are text $10 ($4,200/420), bake sale $8 ($1,440/180), email $22 ($5,720/260), and alumni calls $30 ($2,850/95). Alumni calls actually lead. No option can legitimately 'support the claim.' The marked correct answer (A) says alumni calls are highest, which contradicts the claim rather than supports it, and option C's assertion that email's $22 is higher than alumni's $30 is arithmetically false. The author's explanation even acknowledges the chair's claim is incorrect. A 'support the claim' question cannot be fixed when the claim is false under the data — reject.",
+    "original": {
+      "course": "nmsqt-rw",
+      "testType": "nmsqt",
+      "section": "rw",
+      "domain": "Information and Ideas",
+      "skill": "quantitative_evidence",
+      "sourceSkill": "Quantitative evidence",
+      "difficulty": "M",
+      "type": "mc",
+      "stem": "A school fundraising committee compared donations collected through four channels during a weeklong campaign. The table shows dollars raised and the number of donors per channel.\n\n| Channel | Donors | Amount raised |\n|---|---|---|\n| Text campaign | 420 | $4,200 |\n| Bake sale | 180 | $1,440 |\n| Email drive | 260 | $5,720 |\n| Alumni calls | 95 | $2,850 |\n\nThe committee chair claims that the email drive produced the highest average donation per donor of any channel used. Which choice most effectively uses data from the table to support this claim?",
+      "choices": [
+        { "key": "A", "text": "Alumni calls averaged $30 per donor ($2,850 ÷ 95), the highest average donation in the table." },
+        { "key": "B", "text": "The email drive raised $5,720, the largest total in the table." },
+        { "key": "C", "text": "The email drive averaged $22 per donor ($5,720 ÷ 260), higher than the text campaign's $10, the bake sale's $8, and alumni calls' $30." },
+        { "key": "D", "text": "The text campaign reached the most donors at 420." }
+      ],
+      "correctAnswer": "A",
+      "explanation": "The claim is about the highest average donation per donor, but the correct per-donor averages are text $10, bake $8, email $22, alumni $30 — so alumni calls actually lead. Only option C identifies the true top average from the data, exposing the chair's claim as incorrect as stated; a supporting choice must reflect what the table shows, not the claim.",
+      "katex": false,
+      "tags": ["parker-gen-2026-04-14"]
+    }
+  },
+  {
+    "originalIndex": 19,
+    "reason": "Question is internally broken. The stem asks for a choice that supports the economist's argument that 'the average post-raise teen employment ratio fell by more than one percentage point.' The table shows pre-raise avg (33.0+28.5+36.2+30.7)/4 = 32.1% and post-raise avg (31.1+29.4+33.8+30.6)/4 = 31.225%, a decline of only 0.875 points. The argument is therefore false under the data. The marked correct answer (B) accurately computes the averages but REFUTES rather than supports the argument. No option in the question can legitimately support a claim the table contradicts. Reject.",
+    "original": {
+      "course": "nmsqt-rw",
+      "testType": "nmsqt",
+      "section": "rw",
+      "domain": "Information and Ideas",
+      "skill": "quantitative_evidence",
+      "sourceSkill": "Quantitative evidence",
+      "difficulty": "C",
+      "type": "mc",
+      "stem": "An economist analyzing state-level minimum wage changes compared the employment-to-population ratio of teenagers (ages 16–19) in four states two years before and two years after each state raised its minimum wage. The table shows the ratios.\n\n| State | Pre-raise ratio | Post-raise ratio |\n|---|---|---|\n| State A | 33.0% | 31.1% |\n| State B | 28.5% | 29.4% |\n| State C | 36.2% | 33.8% |\n| State D | 30.7% | 30.6% |\n\nThe economist argues that, in the states studied, the average post-raise teen employment ratio fell by more than one percentage point compared with the pre-raise average. Which choice most effectively uses data from the table to support this argument?",
+      "choices": [
+        { "key": "A", "text": "State C's teen employment ratio fell from 36.2% to 33.8%, the largest individual drop in the table." },
+        { "key": "B", "text": "The four-state pre-raise average was 32.1% ((33.0+28.5+36.2+30.7)/4), while the post-raise average was 31.225% ((31.1+29.4+33.8+30.6)/4) — a decline of about 0.875 percentage points, less than 1 point." },
+        { "key": "C", "text": "State A and State C saw declines, while State B saw a small increase and State D stayed roughly flat." },
+        { "key": "D", "text": "Every state in the table had a pre-raise teen employment ratio above 28%." }
+      ],
+      "correctAnswer": "B",
+      "explanation": "The argument stands or falls on whether the average change exceeds one percentage point; only option B computes both averages from the table and shows the actual decline is about 0.875 points, which refutes the 'more than one point' claim using the data itself.",
+      "katex": false,
+      "tags": ["parker-gen-2026-04-14"]
+    }
+  }
+]

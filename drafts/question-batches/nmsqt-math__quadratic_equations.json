@@ -1,0 +1,668 @@
+[
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "What are the solutions to $x^2 - 7x + 12 = 0$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$x = 2$ and $x = 6$"
+      },
+      {
+        "key": "B",
+        "text": "$x = -3$ and $x = -4$"
+      },
+      {
+        "key": "C",
+        "text": "$x = 3$ and $x = 4$"
+      },
+      {
+        "key": "D",
+        "text": "$x = 1$ and $x = 12$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Factor: $(x-3)(x-4)=0$, so $x=3$ or $x=4$. These are the only values that zero both factors.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "Which equation has solutions $x = -5$ and $x = 2$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$x^2 - 3x + 10 = 0$"
+      },
+      {
+        "key": "B",
+        "text": "$x^2 - 3x - 10 = 0$"
+      },
+      {
+        "key": "C",
+        "text": "$x^2 + 3x - 10 = 0$"
+      },
+      {
+        "key": "D",
+        "text": "$x^2 + 7x + 10 = 0$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "From roots $-5$ and $2$: $(x+5)(x-2)=x^2+3x-10$. The sum of roots is $-3$ (so coefficient of $x$ is $+3$) and product is $-10$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "What is the axis of symmetry of the parabola $y = (x - 6)^2 + 1$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$x = -6$"
+      },
+      {
+        "key": "B",
+        "text": "$x = 1$"
+      },
+      {
+        "key": "C",
+        "text": "$x = 6$"
+      },
+      {
+        "key": "D",
+        "text": "$x = -1$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "In vertex form $y=a(x-h)^2+k$, the axis of symmetry is $x=h$. Here $h=6$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "What is the sum of the solutions of $x^2 - 10x + 21 = 0$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$10$"
+      },
+      {
+        "key": "B",
+        "text": "$21$"
+      },
+      {
+        "key": "C",
+        "text": "$-10$"
+      },
+      {
+        "key": "D",
+        "text": "$-21$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "By Vieta's formulas, the sum of roots of $ax^2+bx+c=0$ is $-b/a = 10/1 = 10$. (Roots are $3$ and $7$.)",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "The equation $x^2 = 49$ has how many real solutions?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$2$"
+      },
+      {
+        "key": "B",
+        "text": "$0$"
+      },
+      {
+        "key": "C",
+        "text": "$1$"
+      },
+      {
+        "key": "D",
+        "text": "$4$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "Taking square roots gives $x = \\pm 7$, which are two distinct real numbers.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "What are the $x$-intercepts of $y = x^2 - 9$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$(-3,0)$ and $(3,0)$"
+      },
+      {
+        "key": "B",
+        "text": "$(-9,0)$ and $(9,0)$"
+      },
+      {
+        "key": "C",
+        "text": "$(0,9)$ only"
+      },
+      {
+        "key": "D",
+        "text": "$(0,-9)$ only"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "Set $y=0$: $x^2-9=0$, so $x^2=9$ and $x=\\pm 3$. The $x$-intercepts are $(-3,0)$ and $(3,0)$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "F",
+    "type": "spr",
+    "stem": "What is the positive solution to $x^2 - 25 = 0$?",
+    "choices": [],
+    "correctAnswer": "5",
+    "explanation": "$x^2 = 25$ gives $x = \\pm 5$. The positive solution is $5$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "What is the vertex of the parabola defined by $y = x^2 - 8x + 11$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$(-4, 11)$"
+      },
+      {
+        "key": "B",
+        "text": "$(8, 11)$"
+      },
+      {
+        "key": "C",
+        "text": "$(4, 27)$"
+      },
+      {
+        "key": "D",
+        "text": "$(4, -5)$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Completing the square: $y=(x-4)^2-16+11=(x-4)^2-5$. The vertex is $(4,-5)$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "If $2x^2 + 5x - 3 = 0$, what are the solutions for $x$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$x = 3$ and $x = -\\tfrac{1}{2}$"
+      },
+      {
+        "key": "B",
+        "text": "$x = -3$ and $x = -\\tfrac{1}{2}$"
+      },
+      {
+        "key": "C",
+        "text": "$x = 3$ and $x = \\tfrac{1}{2}$"
+      },
+      {
+        "key": "D",
+        "text": "$x = -3$ and $x = \\tfrac{1}{2}$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Factor: $(2x-1)(x+3)=0$, giving $x=\\tfrac{1}{2}$ or $x=-3$. Both satisfy the original equation.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "The quadratic $f(x) = x^2 + bx + 16$ has a double root. What is one possible value of $b$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$4$"
+      },
+      {
+        "key": "B",
+        "text": "$-4$"
+      },
+      {
+        "key": "C",
+        "text": "$8$"
+      },
+      {
+        "key": "D",
+        "text": "$16$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "A double root requires discriminant $b^2-4(1)(16)=0$, so $b^2=64$ and $b=\\pm 8$. Of the choices, only $8$ works.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "If the solutions of $x^2 + kx + 15 = 0$ are $x = -3$ and $x = -5$, what is the value of $k$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$-8$"
+      },
+      {
+        "key": "B",
+        "text": "$-15$"
+      },
+      {
+        "key": "C",
+        "text": "$15$"
+      },
+      {
+        "key": "D",
+        "text": "$8$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "By Vieta's, sum of roots $=-k$, so $-3+(-5)=-8=-k$, giving $k=8$. (Product $15$ matches the constant term.)",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "Which expression is equivalent to $x^2 + 10x + 18$ after completing the square?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$(x+5)^2 + 18$"
+      },
+      {
+        "key": "B",
+        "text": "$(x+10)^2 - 7$"
+      },
+      {
+        "key": "C",
+        "text": "$(x-5)^2 + 7$"
+      },
+      {
+        "key": "D",
+        "text": "$(x+5)^2 - 7$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Half of $10$ is $5$; $(x+5)^2=x^2+10x+25$, so $x^2+10x+18=(x+5)^2-7$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "The parabola $y = -2x^2 + 12x - 10$ has a maximum value. What is this maximum?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$3$"
+      },
+      {
+        "key": "B",
+        "text": "$8$"
+      },
+      {
+        "key": "C",
+        "text": "$-10$"
+      },
+      {
+        "key": "D",
+        "text": "$12$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "The vertex $x$-coordinate is $-b/(2a)=-12/(-4)=3$; substituting, $y=-2(9)+36-10=8$. Since $a<0$, this is the maximum.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "For what value of $c$ does $x^2 - 6x + c = 0$ have exactly one real solution?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$c = -9$"
+      },
+      {
+        "key": "B",
+        "text": "$c = 6$"
+      },
+      {
+        "key": "C",
+        "text": "$c = 9$"
+      },
+      {
+        "key": "D",
+        "text": "$c = 36$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Exactly one real solution means discriminant $=0$: $(-6)^2-4(1)(c)=0$, so $36-4c=0$ and $c=9$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A ball's height in feet is modeled by $h(t) = -16t^2 + 48t$, where $t$ is in seconds. At what time $t>0$ does the ball hit the ground?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$t = 1.5$ seconds"
+      },
+      {
+        "key": "B",
+        "text": "$t = 3$ seconds"
+      },
+      {
+        "key": "C",
+        "text": "$t = 16$ seconds"
+      },
+      {
+        "key": "D",
+        "text": "$t = 48$ seconds"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Set $h(t)=0$: $-16t(t-3)=0$, so $t=0$ or $t=3$. The positive time when it lands is $t=3$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "M",
+    "type": "spr",
+    "stem": "If $x^2 + 6x + 4 = 0$, what is the sum of the two solutions?",
+    "choices": [],
+    "correctAnswer": "-6",
+    "explanation": "By Vieta's, the sum of roots of $x^2+bx+c=0$ is $-b$. Here $b=6$, so the sum is $-6$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "The solutions to $3x^2 - 4x - 2 = 0$ can be written as $x = \\dfrac{2 \\pm \\sqrt{k}}{3}$. What is the value of $k$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$10$"
+      },
+      {
+        "key": "B",
+        "text": "$8$"
+      },
+      {
+        "key": "C",
+        "text": "$16$"
+      },
+      {
+        "key": "D",
+        "text": "$40$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "Using the quadratic formula, $x=\\dfrac{4\\pm\\sqrt{16+24}}{6}=\\dfrac{4\\pm\\sqrt{40}}{6}=\\dfrac{2\\pm\\sqrt{10}}{3}$. So $k=10$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "The quadratic $f(x) = x^2 + px + q$ has roots $r$ and $r+4$, and the product of the roots equals $21$. What is the value of $p$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$10$"
+      },
+      {
+        "key": "B",
+        "text": "$-4$"
+      },
+      {
+        "key": "C",
+        "text": "$-21$"
+      },
+      {
+        "key": "D",
+        "text": "$-10$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Product: $r(r+4)=21$, so $r^2+4r-21=0$ and $r=3$ (taking the positive root). Roots are $3$ and $7$; sum $=10=-p$, so $p=-10$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "If $x^2 - 6x + 11 = (x - a)^2 + b$ for all $x$, what is the value of $a + b$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$8$"
+      },
+      {
+        "key": "B",
+        "text": "$11$"
+      },
+      {
+        "key": "C",
+        "text": "$5$"
+      },
+      {
+        "key": "D",
+        "text": "$-3$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Completing the square: $x^2-6x+11=(x-3)^2+2$. So $a=3$, $b=2$, and $a+b=5$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "quadratic_equations",
+    "sourceSkill": "Quadratic equations",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "The equation $x^2 + (k-2)x + 9 = 0$ has no real solutions. Which of the following describes all possible values of $k$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$-4 < k < 8$"
+      },
+      {
+        "key": "B",
+        "text": "$k < -4$ or $k > 8$"
+      },
+      {
+        "key": "C",
+        "text": "$k > 0$"
+      },
+      {
+        "key": "D",
+        "text": "$-6 < k < 6$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "No real solutions means discriminant $<0$: $(k-2)^2-36<0$, so $(k-2)^2<36$ and $|k-2|<6$, giving $-4<k<8$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  }
+]

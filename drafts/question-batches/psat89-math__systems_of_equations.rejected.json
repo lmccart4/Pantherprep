@@ -1,0 +1,27 @@
+[
+  {
+    "originalIndex": 16,
+    "original": {
+      "course": "psat89-math",
+      "testType": "psat89",
+      "section": "math",
+      "domain": "Algebra",
+      "skill": "systems_of_equations",
+      "sourceSkill": "Systems of equations",
+      "difficulty": "C",
+      "type": "mc",
+      "stem": "For what value of $c$ does the system $3x - 2y = 8$ and $9x - 6y = c$ have no solution?",
+      "choices": [
+        { "key": "A", "text": "$c = 8$" },
+        { "key": "B", "text": "$c = 16$" },
+        { "key": "C", "text": "$c = 24$" },
+        { "key": "D", "text": "$c \\ne 24$" }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Multiplying the first equation by $3$ gives $9x - 6y = 24$. If $c = 24$ there are infinitely many solutions; any other value yields parallel lines with no solution.",
+      "katex": true,
+      "tags": ["parker-gen-2026-04-14"]
+    },
+    "reason": "Multiple defensible correct answers. The question asks for a value of c that produces no solution. Multiplying the first equation by 3 yields 9x - 6y = 24, so c = 24 gives infinitely many solutions and any other value of c gives no solution. That means choice A (c = 8) and choice B (c = 16) are both also correct answers to 'for what value of c does the system have no solution' — both produce a no-solution system. Only choice C (c = 24) is definitively wrong. The stem would need to be rewritten (e.g., 'which of the following values of c' with distractors that don't also produce no solutions, or 'for which value of c does the system have infinitely many solutions') to have a single correct answer."
+  }
+]

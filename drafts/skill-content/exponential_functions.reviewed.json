@@ -1,0 +1,49 @@
+{
+  "taxonomyKey": "exponential_functions",
+  "skillLabel": "Exponential functions",
+  "domain": "Advanced Math",
+  "conceptBlurb": "An exponential function has the form $y = a \\cdot b^x$, where $a$ is the starting value and $b$ is what you multiply by each step. If $b > 1$, the quantity grows; if $0 < b < 1$, it decays. SAT word problems hide this structure inside populations, bank accounts, and radioactive decay. The classic trap is mixing up the growth factor $1 + r$ with the growth rate $r$.",
+  "conceptExplanation": "Every exponential function on the SAT looks like $y = a \\cdot b^x$.\n\n- $a$ is the **initial value** — what you have at $x = 0$.\n- $b$ is the **growth factor** — what you multiply by during each step of $x$.\n- $x$ is usually time (years, hours, minutes).\n\n**Growth vs. decay.** If a quantity grows by $r$ percent per period, then $b = 1 + r$ (written as a decimal). A 4% annual growth rate means $b = 1.04$, not $0.04$. If a quantity decays by $r$ percent per period, then $b = 1 - r$. A 15% yearly decay means $b = 0.85$.\n\n**Setting up the function.** Read the problem for three things: the starting amount, the rate, and what \"one unit of $x$\" means. A bank account with \\$2{,}500 earning 3% annual interest becomes\n\n$$A = 2500 \\cdot (1.03)^t$$\n\nwhere $t$ is years. A 600 mg dose of medicine that loses 20% per hour becomes\n\n$$M = 600 \\cdot (0.80)^h.$$\n\n**Evaluating.** To find the value at a future time, plug in for $x$ and compute. To find when the value hits a target, set the expression equal to the target and solve — on the SAT, the solution is almost always a round number you can check by plugging in.\n\n**The trap.** Students see \"8% growth\" and write $b = 0.08$. That would mean the quantity shrinks to 8% of itself each period — nearly total collapse. Always ask: did the quantity get bigger or smaller? If it grew, $b$ must be greater than 1.\n\n**Units matter.** If interest compounds monthly but the question asks about years, the exponent is $12t$, not $t$.",
+  "workedExamples": [
+    {
+      "prompt": "A biologist observes that a bacterial colony starts at 4{,}000 cells and grows by 6% per hour. Which function models the number of cells $N$ after $t$ hours?",
+      "steps": [
+        "Identify the initial value: $a = 4000$.",
+        "Convert the 6% growth rate into a growth factor: $b = 1 + 0.06 = 1.06$.",
+        "Plug into $N = a \\cdot b^t$ to get $N = 4000 \\cdot (1.06)^t$."
+      ],
+      "answer": "$N = 4000 \\cdot (1.06)^t$",
+      "takeaway": "A percent growth rate $r$ becomes a factor of $1 + r$, never just $r$."
+    },
+    {
+      "prompt": "A radioactive isotope has a mass of 80 grams and decays by 25% every 10 years. What is the mass, in grams, after 30 years?",
+      "steps": [
+        "Let one unit of $x$ equal one 10-year period, so 30 years means $x = 3$.",
+        "The decay factor is $b = 1 - 0.25 = 0.75$, giving $M = 80 \\cdot (0.75)^x$.",
+        "Evaluate at $x = 3$: $M = 80 \\cdot (0.75)^3 = 80 \\cdot 0.421875$.",
+        "Multiply: $80 \\cdot 0.421875 = 33.75$."
+      ],
+      "answer": "$33.75$ grams",
+      "takeaway": "Match the exponent to the period the rate describes — not necessarily years."
+    },
+    {
+      "prompt": "Maya deposits \\$1{,}200 in an account earning 5% annual interest, compounded yearly. After how many years will the balance first exceed \\$1{,}800?",
+      "steps": [
+        "Set up $A = 1200 \\cdot (1.05)^t$ and solve $1200 \\cdot (1.05)^t > 1800$.",
+        "Divide both sides by 1200: $(1.05)^t > 1.5$.",
+        "Test integer values: $(1.05)^8 \\approx 1.477$ and $(1.05)^9 \\approx 1.551$.",
+        "Since $t = 8$ is still below 1.5 but $t = 9$ passes it, the balance first exceeds \\$1{,}800 at $t = 9$."
+      ],
+      "answer": "$9$ years",
+      "takeaway": "When the SAT asks \"when does it reach\" a target, divide out the initial value, then test integer exponents."
+    }
+  ],
+  "hintTemplates": [
+    "Identify the initial value $a$ and the per-period rate $r$ before writing anything down — those are the only two numbers you need from the problem.",
+    "Convert the rate into a growth factor: $b = 1 + r$ for growth, $b = 1 - r$ for decay. If $b$ ends up less than 1 for a growing quantity, you made the classic mistake.",
+    "Check what one unit of the exponent represents. If the rate is per month but the question is in years, your exponent needs a factor of 12."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

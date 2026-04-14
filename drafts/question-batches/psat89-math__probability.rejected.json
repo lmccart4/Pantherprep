@@ -1,0 +1,27 @@
+[
+  {
+    "originalIndex": 8,
+    "original": {
+      "course": "psat89-math",
+      "testType": "psat89",
+      "section": "math",
+      "domain": "Problem Solving and Data Analysis",
+      "skill": "probability",
+      "sourceSkill": "Probability",
+      "difficulty": "M",
+      "type": "mc",
+      "stem": "A two-way table shows that out of $80$ students surveyed, $30$ play a sport and $25$ play an instrument. If $10$ students do both, what is the probability a randomly chosen student plays a sport OR an instrument?",
+      "choices": [
+        { "key": "A", "text": "$\\frac{5}{16}$" },
+        { "key": "B", "text": "$\\frac{11}{16}$" },
+        { "key": "C", "text": "$\\frac{9}{16}$" },
+        { "key": "D", "text": "$\\frac{45}{80}$" }
+      ],
+      "correctAnswer": "C",
+      "explanation": "By inclusion-exclusion: $30 + 25 - 10 = 45$. So $P = \\frac{45}{80} = \\frac{9}{16}$. Subtracting the overlap avoids double-counting.",
+      "katex": true,
+      "tags": ["parker-gen-2026-04-14"]
+    },
+    "reason": "Two defensible correct answers: choice C ($\\frac{9}{16}$) and choice D ($\\frac{45}{80}$) are the same value in unreduced vs reduced form. A student who computes $\\frac{45}{80}$ and picks D is mathematically correct."
+  }
+]

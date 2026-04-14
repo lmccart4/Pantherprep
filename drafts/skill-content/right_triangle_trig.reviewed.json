@@ -1,0 +1,52 @@
+{
+  "taxonomyKey": "right_triangle_trig",
+  "skillLabel": "Right triangle trigonometry",
+  "domain": "Geometry and Trigonometry",
+  "conceptBlurb": "Right triangle trig connects the angles of a right triangle to the ratios of its sides. The three main ratios — sine, cosine, and tangent — are remembered as SOHCAHTOA. The Pythagorean theorem $a^2 + b^2 = c^2$ handles missing sides when you already know two. Two special triangles, the 45-45-90 and 30-60-90, show up constantly and let you skip trig entirely if you recognize them. If a question gives you an angle and a side, use trig; if it gives you two sides, use Pythagoras.",
+  "conceptExplanation": "Every right triangle has one 90-degree angle and two acute angles. Pick one of the acute angles and call it $\\theta$. Relative to $\\theta$, the three sides get names: the **opposite** side (across from $\\theta$), the **adjacent** side (next to $\\theta$, not the hypotenuse), and the **hypotenuse** (always across from the right angle, always the longest side).\n\nSOHCAHTOA gives you the three ratios:\n\n$$\\sin\\theta = \\frac{\\text{opposite}}{\\text{hypotenuse}}, \\quad \\cos\\theta = \\frac{\\text{adjacent}}{\\text{hypotenuse}}, \\quad \\tan\\theta = \\frac{\\text{opposite}}{\\text{adjacent}}$$\n\nTo find a missing **side**, pick the ratio that uses the side you want and the side you know, then solve. To find a missing **angle** from two sides, use the inverse: $\\theta = \\sin^{-1}(x)$, $\\cos^{-1}(x)$, or $\\tan^{-1}(x)$.\n\nThe **Pythagorean theorem**, $a^2 + b^2 = c^2$ (with $c$ the hypotenuse), is the move when you have two sides and need the third — no angle required.\n\n**Special right triangles** show up a lot. Memorize these ratios:\n\n- **45-45-90:** sides are in ratio $1 : 1 : \\sqrt{2}$. Both legs are equal; hypotenuse is leg $\\cdot \\sqrt{2}$.\n- **30-60-90:** sides are in ratio $1 : \\sqrt{3} : 2$. The short leg is opposite the 30°, the long leg ($\\text{short}\\cdot\\sqrt{3}$) is opposite the 60°, and the hypotenuse (short $\\cdot 2$) is opposite the 90°.\n\nTwo facts that SAT questions love:\n\n1. $\\sin\\theta = \\cos(90° - \\theta)$. Sine and cosine of complementary angles are equal. If $\\sin(x) = \\cos(y)$, then $x + y = 90°$.\n2. All right triangles with the same acute angle are similar, so the trig ratios only depend on the angle, not the size of the triangle.\n\nIf you see a 3-4-5, 5-12-13, or 8-15-17 triangle, you can skip Pythagoras — those are standard Pythagorean triples.",
+  "workedExamples": [
+    {
+      "prompt": "In a right triangle, one acute angle measures $30°$ and the hypotenuse has length $12$. What is the length of the side opposite the $30°$ angle?",
+      "steps": [
+        "Identify what you have and what you want: you know the hypotenuse ($12$) and the angle ($30°$), and you want the opposite side.",
+        "Sine uses opposite and hypotenuse, so use $\\sin(30°) = \\frac{\\text{opposite}}{12}$.",
+        "$\\sin(30°) = \\frac{1}{2}$, so $\\frac{1}{2} = \\frac{\\text{opposite}}{12}$.",
+        "Multiply both sides by $12$: opposite $= 6$.",
+        "Sanity check: this is a 30-60-90 triangle with hypotenuse $12$, so the short leg (opposite $30°$) should be $\\frac{12}{2} = 6$. Matches."
+      ],
+      "answer": "$6$",
+      "takeaway": "When the question gives you an angle and the hypotenuse, sine or cosine is the fastest tool. Recognizing a 30-60-90 lets you confirm the answer instantly."
+    },
+    {
+      "prompt": "A right triangle has legs of length $5$ and $12$. What is $\\sin\\theta$, where $\\theta$ is the angle opposite the leg of length $5$?",
+      "steps": [
+        "First find the hypotenuse with the Pythagorean theorem: $c^2 = 5^2 + 12^2 = 25 + 144 = 169$, so $c = 13$.",
+        "$\\theta$ is opposite the leg of length $5$, so the opposite side is $5$ and the hypotenuse is $13$.",
+        "$\\sin\\theta = \\frac{\\text{opposite}}{\\text{hypotenuse}} = \\frac{5}{13}$.",
+        "5-12-13 is a standard Pythagorean triple, so you could have skipped the arithmetic on the hypotenuse."
+      ],
+      "answer": "$\\sin\\theta = \\frac{5}{13}$",
+      "takeaway": "If you have two sides and need a trig ratio, find the third side first (Pythagoras or a known triple), then apply SOHCAHTOA."
+    },
+    {
+      "prompt": "If $\\sin(x) = \\cos(3x - 10°)$ and $x$ is the measure of an acute angle, what is the value of $x$?",
+      "steps": [
+        "Use the complementary angle identity: $\\sin(\\theta) = \\cos(90° - \\theta)$, which means if $\\sin(x) = \\cos(y)$, then $x + y = 90°$.",
+        "Set up: $x + (3x - 10°) = 90°$.",
+        "Combine: $4x - 10° = 90°$.",
+        "Add $10°$ to both sides: $4x = 100°$.",
+        "Divide by $4$: $x = 25°$."
+      ],
+      "answer": "$x = 25°$",
+      "takeaway": "Whenever you see $\\sin$ and $\\cos$ set equal, think complementary angles — the arguments must add to $90°$."
+    }
+  ],
+  "hintTemplates": [
+    "Label the sides relative to the angle you care about: opposite (across from it), adjacent (next to it, not the hypotenuse), and hypotenuse (across from the right angle). Then ask: do I know two sides, or one side and one angle? Two sides → Pythagoras or inverse trig. One side and one angle → SOHCAHTOA.",
+    "If you see a $30°$, $60°$, or $45°$ angle, check whether you can skip trig entirely. 45-45-90 sides are $1 : 1 : \\sqrt{2}$; 30-60-90 sides are $1 : \\sqrt{3} : 2$ (short leg opposite $30°$, long leg opposite $60°$, hypotenuse opposite $90°$).",
+    "If the problem sets $\\sin$ of one angle equal to $\\cos$ of another, use $\\sin(\\theta) = \\cos(90° - \\theta)$. The two angle expressions must add to $90°$ — set up that equation and solve."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

@@ -1,0 +1,56 @@
+{
+  "taxonomyKey": "inferences",
+  "skillLabel": "Inferences",
+  "domain": "Information and Ideas",
+  "conceptBlurb": "Inference questions ask you to finish a passage with a statement that must be true based on what you just read. The right answer is what the passage forces you to conclude, not what sounds reasonable in general. Every correct inference is backed by specific words in the text. If you have to bring in outside knowledge or assume one extra step, it's wrong.",
+  "conceptExplanation": "## What the test is actually asking\n\nInference questions usually end with *\"Which choice most logically completes the text?\"* You get a short passage (often research-flavored) and four options that could finish the final sentence or add the next conclusion. Your job is to pick the one statement the passage **guarantees** is true.\n\n## The one rule\n\nThe answer has to be **directly supported by specific text in the passage**. Not implied by the topic. Not true in real life. Supported by the sentences in front of you.\n\n## How wrong answers lie\n\nThere are four common traps, and every wrong answer is usually one of them:\n\n- **Too broad** — makes a claim about all cases when the passage only discussed one.\n- **Too narrow** — technically true but doesn't actually complete the logic of the passage.\n- **Outside info** — needs facts from outside the passage to be true, even if it sounds smart.\n- **Reversed** — flips the direction of the relationship (says X causes Y when the passage said Y causes X).\n\n## The move\n\n1. Read the passage and ask: *what is the author building toward?* Usually there's a setup (situation or finding) and then a near-miss (a question, a gap, a \"however\").\n2. In your own words, predict the missing piece before looking at answers. One short sentence.\n3. Match your prediction to the closest choice. Don't start with the choices — they're designed to sound tempting.\n4. For every option you're considering, point at the exact words in the passage that force it to be true. If you can't, it's wrong.\n\n## Fast gut-check\n\nIf an answer requires you to say \"well, probably...\" or \"in general...\" — it's out. The correct answer is the one you can defend by quoting the passage.",
+  "workedExamples": [
+    {
+      "prompt": "Passage: Marine biologist Dr. Elena Vasquez studied bottlenose dolphins in Shark Bay, Australia, where some dolphins carry sea sponges on their snouts while foraging on the seafloor. Vasquez found that sponge-carrying is passed from mother to daughter but rarely to sons, and that calves whose mothers use sponges begin using them at about age three. When Vasquez compared the diets of sponge-using and non-sponge-using dolphins in the same bay, she found almost no overlap in the fish species they ate.\n\nWhich choice most logically completes the text?\n\nA) Male dolphins in Shark Bay are biologically incapable of learning to use sponges as foraging tools.\n\nB) The use of sponges as foraging tools in Shark Bay dolphins appears to be a culturally transmitted behavior that shapes what individual dolphins eat.\n\nC) Sponge-using dolphins are more successful hunters than non-sponge-using dolphins in the same bay.\n\nD) Dr. Vasquez's study proves that all tool use in marine mammals is learned from mothers rather than fathers.",
+      "steps": [
+        "Identify what the passage gives us: sponge use passes mother -> daughter, calves start around age 3, and sponge-users vs. non-users eat different fish.",
+        "Predict the completion: the passage is building toward 'this behavior is learned (from mom) AND it affects diet.' That's the logical next sentence.",
+        "Check A: 'biologically incapable' — the passage says sons *rarely* learn it, not that they *can't*. Too strong. Outside info. Out.",
+        "Check B: 'culturally transmitted' matches mother-to-daughter learning; 'shapes what they eat' matches the diet difference. Both halves are directly supported. Keep.",
+        "Check C: 'more successful hunters' — the passage says they eat *different* fish, not that they catch more. Outside info. Out.",
+        "Check D: 'all tool use in marine mammals' — one study in one bay can't prove a claim about all marine mammals. Too broad. Out."
+      ],
+      "answer": "B",
+      "takeaway": "The correct inference stitches together every piece of evidence in the passage (learned from mom + different diets) without adding anything new. If an option adds even one new claim, it's wrong."
+    },
+    {
+      "prompt": "Passage: In a 2024 study, economists examined how remote work affected downtown restaurant revenue in twelve mid-sized US cities. They found that cities where more than 40 percent of office workers went fully remote saw downtown lunch revenue drop by an average of 31 percent between 2019 and 2023. However, the same cities saw residential neighborhood lunch revenue rise by 22 percent over the same period. Total citywide lunch revenue stayed roughly flat.\n\nWhich choice most logically completes the text?\n\nA) Remote work eliminated demand for lunch dining in the cities studied.\n\nB) Downtown restaurants in these cities will not recover until office workers return full-time.\n\nC) Remote work appears to have relocated lunch spending in these cities rather than reduced it overall.\n\nD) Residential neighborhood restaurants in the studied cities are now more profitable than downtown restaurants were before the pandemic.",
+      "steps": [
+        "Boil the passage down: downtown lunch -31%, neighborhood lunch +22%, citywide lunch roughly flat.",
+        "Predict: the pattern isn't that lunch died — it *moved*. That's the completion.",
+        "Check A: 'eliminated demand' contradicts 'citywide stayed roughly flat.' Out.",
+        "Check B: a prediction about the future that the passage doesn't support. Outside info. Out.",
+        "Check C: 'relocated rather than reduced overall' matches the three data points exactly. Keep.",
+        "Check D: 'more profitable now than downtown was before' — passage gives revenue change, not profitability, and doesn't compare absolute levels. Outside info. Out."
+      ],
+      "answer": "C",
+      "takeaway": "When a passage gives you numbers going in opposite directions plus a 'stayed flat' total, the answer is almost always 'shifted' or 'redistributed,' not 'eliminated' or 'grew.'"
+    },
+    {
+      "prompt": "Passage: Historian Amara Okafor argues that the popularity of public lending libraries in early 1800s Britain cannot be explained by literacy rates alone, since literacy had been rising steadily since the late 1700s while library use surged only after 1820. Okafor points out that 1820 coincided with the spread of cheap gas lighting in middle-class homes, which for the first time made reading at night practical for working families. She also notes that the first major wave of library construction followed, not preceded, the introduction of gas lamps.\n\nWhich choice most logically completes the text?\n\nA) Gas lighting was the only factor responsible for the rise of public libraries in 1800s Britain.\n\nB) Literacy rates in early 1800s Britain were lower than historians had previously believed.\n\nC) Okafor's evidence suggests that access to evening reading time, not literacy alone, helped drive the surge in library use.\n\nD) Public libraries in Britain would not have existed without the invention of gas lighting.",
+      "steps": [
+        "The passage sets up a puzzle (literacy rose steadily but library use jumped suddenly in 1820) and then offers a second factor (gas lighting → night reading).",
+        "Predict: the completion should say 'it wasn't just literacy — evening reading time mattered too.'",
+        "Check A: 'the only factor' — too strong. The passage says literacy *also* rose; it just says literacy alone can't explain the timing. Out.",
+        "Check B: the passage never questions the literacy data. Outside info. Out.",
+        "Check C: 'access to evening reading time, not literacy alone' matches Okafor's exact argument. Keep.",
+        "Check D: 'would not have existed' — the passage talks about a *surge*, not the existence of libraries. Too strong. Out."
+      ],
+      "answer": "C",
+      "takeaway": "Watch for 'alone,' 'only,' 'never,' and 'would not have existed.' The correct inference almost always uses softer language like 'helped,' 'appears to,' or 'in addition to.'"
+    }
+  ],
+  "hintTemplates": [
+    "Predict before you peek. In one sentence, what is the passage forcing you to conclude? Write it down, then find the choice closest to your prediction — don't let the four options reshape your thinking.",
+    "Point at the proof. For your top choice, find the exact words in the passage that make it true. If you can't underline a sentence that directly supports it, you're guessing — reconsider.",
+    "Kill the strong ones. Answers with 'always,' 'never,' 'only,' 'proves,' or 'all' are almost always wrong on inference questions. The correct answer usually hedges: 'appears to,' 'suggests,' 'helps explain.'"
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

@@ -1,0 +1,702 @@
+[
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "The heights (in inches) of five plants are $6, 9, 11, 14, 18$. What is the range of the data?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$6$"
+      },
+      {
+        "key": "B",
+        "text": "$11$"
+      },
+      {
+        "key": "C",
+        "text": "$14$"
+      },
+      {
+        "key": "D",
+        "text": "$12$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Range equals maximum minus minimum: $18 - 6 = 12$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A data set has minimum $4$, $Q_1 = 7$, median $10$, $Q_3 = 15$, maximum $22$. What is the interquartile range?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$8$"
+      },
+      {
+        "key": "B",
+        "text": "$5$"
+      },
+      {
+        "key": "C",
+        "text": "$18$"
+      },
+      {
+        "key": "D",
+        "text": "$12$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "IQR is $Q_3 - Q_1 = 15 - 7 = 8$. It ignores the min and max entirely.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "Data set $X$ has values clustered tightly around its mean, while data set $Y$ has values spread far from its mean. Both have the same mean. Which statement must be true?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$X$ has a larger standard deviation than $Y$."
+      },
+      {
+        "key": "B",
+        "text": "$X$ and $Y$ have the same standard deviation."
+      },
+      {
+        "key": "C",
+        "text": "$Y$ has a larger mean than $X$."
+      },
+      {
+        "key": "D",
+        "text": "$Y$ has a larger standard deviation than $X$."
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Standard deviation measures typical distance from the mean, so a more spread-out data set has a larger SD.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "Which measure of spread is most affected by a single extreme outlier?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Interquartile range"
+      },
+      {
+        "key": "B",
+        "text": "Median"
+      },
+      {
+        "key": "C",
+        "text": "Range"
+      },
+      {
+        "key": "D",
+        "text": "Mode"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Range depends entirely on the max and min, so one extreme value changes it dramatically. IQR resists outliers; median and mode are not measures of spread.",
+    "katex": false,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "The daily temperatures (in $^{\\circ}\\text{F}$) for a week were $62, 64, 63, 65, 64, 66, 63$. Without calculating, which description best fits the standard deviation of this data set?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Very large, because temperatures vary a lot."
+      },
+      {
+        "key": "B",
+        "text": "Very small, because the values are clustered close together."
+      },
+      {
+        "key": "C",
+        "text": "Negative."
+      },
+      {
+        "key": "D",
+        "text": "Exactly zero."
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "All values sit within $4^{\\circ}$ of each other, so typical distance from the mean is small. Standard deviation is never negative.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A quiz score data set has $Q_1 = 12$ and $Q_3 = 19$. What is the interquartile range?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$7$"
+      },
+      {
+        "key": "B",
+        "text": "$12$"
+      },
+      {
+        "key": "C",
+        "text": "$15.5$"
+      },
+      {
+        "key": "D",
+        "text": "$31$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "IQR is $Q_3 - Q_1 = 19 - 12 = 7$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "Every value in a data set is identical: $7, 7, 7, 7, 7$. What is the standard deviation?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$7$"
+      },
+      {
+        "key": "B",
+        "text": "$1$"
+      },
+      {
+        "key": "C",
+        "text": "Cannot be determined"
+      },
+      {
+        "key": "D",
+        "text": "$0$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Every value equals the mean, so each deviation is $0$ and the standard deviation is $0$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "Class $A$ scored $70, 72, 74, 76, 78$ on a test. Class $B$ scored $60, 68, 74, 80, 88$. Both classes have a mean of $74$. Which statement is true?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Class $B$ has a larger standard deviation than Class $A$."
+      },
+      {
+        "key": "B",
+        "text": "Class $A$ has a larger standard deviation than Class $B$."
+      },
+      {
+        "key": "C",
+        "text": "The two classes have equal standard deviations."
+      },
+      {
+        "key": "D",
+        "text": "Standard deviation cannot be compared without more data."
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "Class $B$'s scores are spread much farther from the mean than Class $A$'s tightly clustered scores, so Class $B$ has the larger SD.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A set of exam scores has minimum $55$, $Q_1 = 68$, median $75$, $Q_3 = 82$, and maximum $94$. If the maximum score of $94$ is replaced with $99$, which measure of spread will change?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Interquartile range only"
+      },
+      {
+        "key": "B",
+        "text": "Neither range nor interquartile range"
+      },
+      {
+        "key": "C",
+        "text": "Both range and interquartile range"
+      },
+      {
+        "key": "D",
+        "text": "Range only"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Replacing only the max changes the range (max $-$ min) but leaves $Q_1$ and $Q_3$ unchanged, so IQR is unaffected.",
+    "katex": false,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "Data set $P$: $10, 11, 12, 13, 14$. Data set $Q$: $10, 11, 12, 13, 14, 50$. Compared to set $P$, the standard deviation of set $Q$ is:",
+    "choices": [
+      {
+        "key": "A",
+        "text": "The same, because the other values are unchanged."
+      },
+      {
+        "key": "B",
+        "text": "Smaller, because there are more values."
+      },
+      {
+        "key": "C",
+        "text": "Larger, because $50$ is far from the others."
+      },
+      {
+        "key": "D",
+        "text": "Zero, because adding a value averages out the spread."
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "The value $50$ is a major outlier, increasing the typical distance from the mean and therefore the SD.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A researcher wants to describe the spread of household incomes in a neighborhood that includes a few very wealthy families. Which measure of spread is least distorted by those extreme incomes?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Range"
+      },
+      {
+        "key": "B",
+        "text": "Standard deviation"
+      },
+      {
+        "key": "C",
+        "text": "Mean absolute deviation"
+      },
+      {
+        "key": "D",
+        "text": "Interquartile range"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "IQR uses only the middle 50% of values, so it is resistant to extreme outliers. Range, SD, and MAD all incorporate every value, including the extremes.",
+    "katex": false,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "Two data sets each have mean $50$. Set $X$: $48, 49, 50, 51, 52$. Set $Y$: $40, 45, 50, 55, 60$. Which statement is true about their spread?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Set $X$ has a larger range and a larger SD."
+      },
+      {
+        "key": "B",
+        "text": "Set $Y$ has a larger range but a smaller SD."
+      },
+      {
+        "key": "C",
+        "text": "Both sets have identical ranges and SDs."
+      },
+      {
+        "key": "D",
+        "text": "Set $Y$ has a larger range and a larger SD."
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Set $Y$'s range is $20$ vs. $4$ for $X$, and its values sit farther from the mean, so its SD is also larger.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A data set of nine values has $Q_1 = 14$ and $Q_3 = 26$. A tenth value of $100$ is added. Which of the following best describes the impact on the IQR?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "The IQR increases dramatically."
+      },
+      {
+        "key": "B",
+        "text": "The IQR becomes zero."
+      },
+      {
+        "key": "C",
+        "text": "The IQR is largely unaffected."
+      },
+      {
+        "key": "D",
+        "text": "The IQR becomes negative."
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "IQR depends on the middle 50% of the data, so a single extreme outlier has little effect on $Q_1$ and $Q_3$.",
+    "katex": false,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "Every value in a data set is increased by $5$. Which measure of spread changes?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Range"
+      },
+      {
+        "key": "B",
+        "text": "None of them"
+      },
+      {
+        "key": "C",
+        "text": "Standard deviation"
+      },
+      {
+        "key": "D",
+        "text": "Interquartile range"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Adding a constant shifts every value equally, so distances between values are preserved. Range, SD, and IQR all stay the same.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "M",
+    "type": "spr",
+    "stem": "The ten lowest values in a data set are $12, 14, 15, 15, 17, 19, 20, 22, 25, 31$. What is the range of these ten values?",
+    "choices": [
+      {
+        "key": "A",
+        "text": ""
+      },
+      {
+        "key": "B",
+        "text": ""
+      },
+      {
+        "key": "C",
+        "text": ""
+      },
+      {
+        "key": "D",
+        "text": ""
+      }
+    ],
+    "correctAnswer": "19",
+    "explanation": "Range is $31 - 12 = 19$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A teacher compares two class sections. Section $1$ scores: $80, 82, 84, 86, 88$. Section $2$ scores: $60, 75, 84, 92, 109$. Which statement is supported by the data?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Section $1$ has a higher mean and a larger spread."
+      },
+      {
+        "key": "B",
+        "text": "Section $2$ has greater variability than Section $1$."
+      },
+      {
+        "key": "C",
+        "text": "Both sections have identical standard deviations."
+      },
+      {
+        "key": "D",
+        "text": "Section $1$ has the wider range."
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Section $2$'s range is $49$ vs. $8$ for Section $1$, and its values deviate far more from the center, indicating greater variability.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "Two data sets each contain $20$ values and share the same median and IQR. Set $A$ has range $40$ and set $B$ has range $120$. Which conclusion is best supported?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Set $A$ has a larger standard deviation than set $B$."
+      },
+      {
+        "key": "B",
+        "text": "Set $B$ has more extreme values in its tails than set $A$."
+      },
+      {
+        "key": "C",
+        "text": "The two sets must have the same mean."
+      },
+      {
+        "key": "D",
+        "text": "Set $A$ contains more outliers than set $B$."
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Same IQR means the middle 50% is similarly spread, but a much larger range in $B$ must come from values in the tails being farther from the center.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "Every value in a data set is multiplied by $3$. How does this affect the standard deviation and IQR?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Both are unchanged."
+      },
+      {
+        "key": "B",
+        "text": "SD is multiplied by $9$; IQR by $3$."
+      },
+      {
+        "key": "C",
+        "text": "Both are multiplied by $9$."
+      },
+      {
+        "key": "D",
+        "text": "Both are multiplied by $3$."
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Multiplying every value by a constant $k$ scales all distances between values by $|k|$, so SD and IQR are each multiplied by $3$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A company reports that two branches had the same mean weekly sales, but branch $X$ had a standard deviation of $\\$2{,}000$ while branch $Y$ had a standard deviation of $\\$8{,}000$. Which conclusion must be true?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Branch $Y$ sold more total product than branch $X$."
+      },
+      {
+        "key": "B",
+        "text": "Branch $Y$ had a higher median than branch $X$."
+      },
+      {
+        "key": "C",
+        "text": "Branch $X$ had more weeks of zero sales than branch $Y$."
+      },
+      {
+        "key": "D",
+        "text": "Branch $X$'s weekly sales were more consistent than branch $Y$'s."
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "A smaller SD with the same mean indicates weekly values were closer to the mean, i.e., more consistent. The other options don't follow from SD alone.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "nmsqt-math",
+    "testType": "nmsqt",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "statistics_spread",
+    "sourceSkill": "Measures of spread",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A data set of $15$ values has range $30$, IQR $10$, and standard deviation $6$. Every value in the data set is then doubled and increased by $4$. What are the new range, IQR, and SD?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Range $64$, IQR $24$, SD $16$"
+      },
+      {
+        "key": "B",
+        "text": "Range $30$, IQR $10$, SD $6$"
+      },
+      {
+        "key": "C",
+        "text": "Range $34$, IQR $14$, SD $10$"
+      },
+      {
+        "key": "D",
+        "text": "Range $60$, IQR $20$, SD $12$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Adding a constant doesn't change spread; multiplying by $2$ scales range, IQR, and SD each by $2$, giving $60$, $20$, and $12$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "originalIndex": 5,
+    "original": {
+      "course": "sat-math",
+      "testType": "sat",
+      "section": "math",
+      "domain": "Advanced Math",
+      "skill": "quadratic_equations",
+      "sourceSkill": "Quadratic equations",
+      "difficulty": "M",
+      "type": "mc",
+      "stem": "Which of the following is a solution to $2x^2 + 5x - 3 = 0$?",
+      "choices": [
+        { "key": "A", "text": "$x = -3$" },
+        { "key": "B", "text": "$x = \\tfrac{1}{2}$" },
+        { "key": "C", "text": "$x = 3$" },
+        { "key": "D", "text": "$x = -\\tfrac{1}{2}$" }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Factoring gives $(2x - 1)(x + 3) = 0$, so $x = \\tfrac{1}{2}$ or $x = -3$. Only $\\tfrac{1}{2}$ appears as an answer choice with the correct sign.",
+      "katex": true,
+      "tags": ["parker-gen-2026-04-14"]
+    },
+    "reason": "Two defensible correct answers. The equation $2x^2 + 5x - 3 = 0$ factors as $(2x-1)(x+3) = 0$, giving solutions $x = 1/2$ AND $x = -3$. Both B ($x = 1/2$) and A ($x = -3$) are valid answers to 'Which of the following is a solution?' The explanation's claim that only 1/2 appears is wrong — -3 is choice A."
+  }
+]

@@ -12,6 +12,8 @@
     "deploy:all": "npm run build && firebase deploy",
     "backfill:perflog": "tsx scripts/backfill-performance-log.mjs",
     "seed:pool": "tsx scripts/seed-question-pool.mjs",
+    "seed:skill-content": "node scripts/seed-skill-content.mjs",
+    "seed:generated-questions": "node scripts/seed-generated-questions.mjs",
     "audit:pool": "tsx scripts/audit-question-pool.mjs"
   },
   "dependencies": {

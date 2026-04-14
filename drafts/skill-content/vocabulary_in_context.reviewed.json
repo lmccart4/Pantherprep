@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "vocabulary_in_context",
+  "skillLabel": "Vocabulary in context",
+  "domain": "Craft and Structure",
+  "conceptBlurb": "Vocabulary in context questions ask what a word means in one specific sentence — not what it usually means. The 'most common' definition is often a trap. Your job is to read the sentence, figure out what idea the author is trying to get across, then test each answer choice by plugging it in. The right answer is the one that keeps the sentence saying the same thing.",
+  "conceptExplanation": "These questions look easy and ruin people. The SAT picks words that have multiple meanings, then builds the passage so the obvious meaning is wrong. If you see the word 'novel' and pick 'book,' you'll miss it — in context, it probably means 'new.' Same with 'check' (could mean restrain, not inspect), 'sound' (could mean reliable, not noise), or 'qualify' (could mean limit, not certify).\n\nThe strategy is simple and you should run it every time:\n\n1. **Read the sentence without the word.** Seriously. Cover the word and figure out what idea the author needs that slot to fill. Come up with your own word first.\n\n2. **Match your word to the closest answer choice.** Don't look at the choices before you have your own prediction — the wrong answers are designed to look tempting.\n\n3. **Substitute and re-read.** Plug each answer choice into the original sentence and read the whole thing again. The right answer keeps the sentence meaning the same. The wrong answers either change the meaning, contradict the surrounding sentences, or only match one narrow definition of the word.\n\n4. **Watch the tone.** If the passage is positive, the answer is usually positive. If the author is criticizing something, a neutral or negative word is more likely than a glowing one.\n\nThe biggest mistake students make is picking the most common dictionary meaning without checking the sentence. The second biggest is picking a word they don't know because it 'sounds smart.' Don't do that. If you can't substitute it confidently, it's not your answer.\n\nOne more thing: context means the sentences around the word, not just the sentence with the word in it. If the word is in line 12, read lines 10–14. The answer lives in what comes before and after.",
+  "workedExamples": [
+    {
+      "prompt": "Passage: 'The committee's decision to fund the new library was met with qualified support from residents. While most agreed the town needed better resources, many worried about the impact on property taxes.'\n\nAs used in the passage, 'qualified' most nearly means:\nA) certified\nB) limited\nC) skilled\nD) eligible",
+      "steps": [
+        "Cover the word 'qualified' and predict your own. The next sentence says people agreed BUT worried about taxes. So the support wasn't full — it came with conditions.",
+        "My prediction: 'partial' or 'hesitant.'",
+        "Check choices. A) certified — that's the 'qualified to do a job' meaning. Doesn't fit support. B) limited — matches 'partial.' C) skilled — same trap as A. D) eligible — doesn't fit at all.",
+        "Substitute B: 'met with limited support from residents.' Reads cleanly and matches the 'but' in the next sentence."
+      ],
+      "answer": "B) limited",
+      "takeaway": "'Qualified' has a common meaning (skilled/certified) and a less common one (restricted/limited). The SAT tests the less common one. Always check the sentence that follows."
+    },
+    {
+      "prompt": "Passage: 'Dr. Chen's research rests on a sound foundation of decades of peer-reviewed studies. Her critics, however, argue that recent data challenges even the most established conclusions.'\n\nAs used in the passage, 'sound' most nearly means:\nA) loud\nB) audible\nC) reliable\nD) healthy",
+      "steps": [
+        "Cover 'sound.' The sentence says her research rests on a foundation of peer-reviewed studies. What kind of foundation would that be? A trustworthy one.",
+        "My prediction: 'solid' or 'trustworthy.'",
+        "Check choices. A) loud and B) audible — the noise meaning, wrong. D) healthy — 'sound of body' is a phrase but you wouldn't say a 'healthy foundation.' C) reliable — matches my prediction.",
+        "Substitute C: 'rests on a reliable foundation of decades of peer-reviewed studies.' Makes sense. The other three sound weird."
+      ],
+      "answer": "C) reliable",
+      "takeaway": "Nouns can be traps too — 'sound' looks like a noise word, but here it's an adjective meaning trustworthy. Always figure out the part of speech first."
+    },
+    {
+      "prompt": "Passage: 'The new regulations were intended to check the rapid expansion of the tech industry, which had grown faster than lawmakers could respond. Still, critics argued the rules came too late.'\n\nAs used in the passage, 'check' most nearly means:\nA) inspect\nB) confirm\nC) restrain\nD) mark",
+      "steps": [
+        "Cover 'check.' Regulations were made to do something about rapid expansion that was out of control. What do you do to fast growth with rules? You slow it down.",
+        "My prediction: 'slow' or 'limit.'",
+        "Check choices. A) inspect — regulations don't inspect growth. B) confirm — opposite of what's happening. D) mark — doesn't fit. C) restrain — matches 'slow down.'",
+        "Substitute C: 'intended to restrain the rapid expansion.' Clean. The tone (too late, critics) also fits a restraining action."
+      ],
+      "answer": "C) restrain",
+      "takeaway": "'Check' almost never means 'check a box' or 'check the mail' on the SAT. It usually means restrain, stop, or hold back. Same with 'arrest' and 'curb.'"
+    }
+  ],
+  "hintTemplates": [
+    "Cover the word and predict your own replacement before you look at the answer choices. The wrong answers are written to match the word's common meaning, not its meaning here.",
+    "Plug each choice back into the sentence and read the full thing. The right answer keeps the sentence saying the same thing — the wrong answers change it, even slightly.",
+    "Read the sentence before and the sentence after. Context clues (but, however, because, still) tell you what direction the word is pointing — positive, negative, limiting, expanding."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

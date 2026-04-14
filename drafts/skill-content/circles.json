@@ -1,0 +1,51 @@
+{
+  "taxonomyKey": "circles",
+  "skillLabel": "Circles",
+  "domain": "Geometry and Trigonometry",
+  "conceptBlurb": "A circle in the coordinate plane is defined by its center $(h, k)$ and radius $r$. The standard form $(x-h)^2 + (y-k)^2 = r^2$ lets you read center and radius directly. The SAT often gives you general form $x^2 + y^2 + Dx + Ey + F = 0$, so you need to complete the square to convert. Watch the signs — if the equation says $(x-3)^2$, the center has $h = 3$, not $-3$.",
+  "conceptExplanation": "Every circle problem on the SAT comes down to two forms of the same equation.\n\n**Standard form:**\n$$(x - h)^2 + (y - k)^2 = r^2$$\n\nHere $(h, k)$ is the center and $r$ is the radius. The signs flip when you read the center: $(x - 5)^2$ means $h = 5$, and $(x + 2)^2$ means $h = -2$ because $x + 2 = x - (-2)$.\n\n**General form:**\n$$x^2 + y^2 + Dx + Ey + F = 0$$\n\nThis is what the test usually hands you. To find the center and radius, complete the square on the $x$ terms and the $y$ terms separately.\n\n**Completing the square (the one move you need):** Take the coefficient of $x$, divide by 2, square it, and add it to both sides. Do the same for $y$. For example, to complete $x^2 - 6x$, take $-6$, halve it to get $-3$, square to get $9$. Then $x^2 - 6x + 9 = (x - 3)^2$.\n\n**Radius vs. radius squared:** After completing the square, the right side equals $r^2$, not $r$. Students lose points by writing $r = 25$ when the equation says $r^2 = 25$, so $r = 5$.\n\n**Checking if a point is on the circle:** Plug the point into the left side of the standard form. If it equals $r^2$, the point is on the circle. Less than $r^2$ means inside, greater than $r^2$ means outside.\n\n**Distance and the circle:** The radius is just the distance from the center to any point on the circle, so the distance formula and $(x-h)^2 + (y-k)^2 = r^2$ are the same equation.",
+  "workedExamples": [
+    {
+      "prompt": "The equation of a circle in the $xy$-plane is $x^2 + y^2 - 8x + 10y + 16 = 0$. What is the radius of the circle?",
+      "steps": [
+        "Group the $x$ terms and $y$ terms: $(x^2 - 8x) + (y^2 + 10y) = -16$.",
+        "Complete the square on $x$: half of $-8$ is $-4$, squared is $16$. Add $16$ to both sides.",
+        "Complete the square on $y$: half of $10$ is $5$, squared is $25$. Add $25$ to both sides.",
+        "Rewrite: $(x - 4)^2 + (y + 5)^2 = -16 + 16 + 25 = 25$.",
+        "Since $r^2 = 25$, the radius is $r = 5$."
+      ],
+      "answer": "$r = 5$",
+      "takeaway": "Complete the square on $x$ and $y$ separately, then take the square root of the right side — not the right side itself."
+    },
+    {
+      "prompt": "A circle in the $xy$-plane has center $(-3, 7)$ and passes through the point $(1, 4)$. Which equation represents this circle?",
+      "steps": [
+        "Find the radius using the distance formula: $r = \\sqrt{(1 - (-3))^2 + (4 - 7)^2} = \\sqrt{16 + 9} = \\sqrt{25} = 5$.",
+        "Plug center $(h, k) = (-3, 7)$ and $r = 5$ into standard form.",
+        "Write $(x - (-3))^2 + (y - 7)^2 = 5^2$.",
+        "Simplify the sign: $(x + 3)^2 + (y - 7)^2 = 25$."
+      ],
+      "answer": "$(x + 3)^2 + (y - 7)^2 = 25$",
+      "takeaway": "The radius is the distance from the center to any point on the circle, and the signs in standard form flip from the center's coordinates."
+    },
+    {
+      "prompt": "The equation $(x - 2)^2 + (y + 6)^2 = 49$ defines a circle in the $xy$-plane. What are the coordinates of the center, and what is the length of the diameter?",
+      "steps": [
+        "Match to standard form $(x - h)^2 + (y - k)^2 = r^2$.",
+        "Read the center: $h = 2$ and $k = -6$ (because $y + 6 = y - (-6)$), so the center is $(2, -6)$.",
+        "Read $r^2 = 49$, so $r = 7$.",
+        "Diameter is $2r = 2(7) = 14$."
+      ],
+      "answer": "Center $(2, -6)$, diameter $14$",
+      "takeaway": "Flip the signs from inside the parentheses to get the center, and remember diameter is twice the radius."
+    }
+  ],
+  "hintTemplates": [
+    "If the equation is in general form ($x^2 + y^2 + \\ldots = 0$), complete the square on the $x$ terms and $y$ terms separately to convert to standard form.",
+    "The right side of standard form is $r^2$, not $r$ — take the square root before reporting the radius.",
+    "Watch the signs when reading the center: $(x - h)^2$ means the $x$-coordinate of the center is $+h$, and $(x + h)^2$ means it's $-h$."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

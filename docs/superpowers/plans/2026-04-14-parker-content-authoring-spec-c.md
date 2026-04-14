@@ -151,7 +151,7 @@ Tests simple and compound probability, including "with replacement" vs. "without
 Tests solving quadratics by factoring, completing the square, and the quadratic formula. Covers the relationship between roots, vertex, axis of symmetry, and discriminant. Questions ask for real solutions, the number of real solutions, or the vertex of a parabola given its equation.
 
 ### quadratic_formula
-Tests applied use of $x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$, especially when factoring doesn't work cleanly. Questions give a quadratic in standard form and ask for exact solutions or the sum/product of roots. Trap: sign errors on $b$ when the coefficient is negative.
+Tests applied use of $x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$, especially when factoring doesn't work cleanly. Questions give a quadratic in standard form and ask for exact solutions or the sum/product of roots. Trap: sign errors on $b$ when the coefficient is negative.
 
 ### radical_equations
 Tests solving equations with square roots, cube roots, or rational exponents. Key technique: isolate the radical, square both sides, solve the resulting polynomial, and *check for extraneous solutions*. Questions always include at least one case where squaring introduces a false solution.
@@ -310,10 +310,13 @@ import { join } from "node:path";
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes("--dry-run");
-const SOURCE_TAG =
-  args.find((a) => a.startsWith("--source="))?.split("=")[1] ??
-  args[args.indexOf("--source") + 1] ??
-  "parker-gen-2026-04-14";
+const SOURCE_TAG = (() => {
+  const eqForm = args.find((a) => a.startsWith("--source="))?.split("=")[1];
+  if (eqForm) return eqForm;
+  const idx = args.indexOf("--source");
+  if (idx >= 0 && idx + 1 < args.length) return args[idx + 1];
+  return "parker-gen-2026-04-14";
+})();
 
 const DRAFTS_DIR = "drafts/skill-content";
 
@@ -341,10 +344,11 @@ function validateSkillContent(data, filename) {
   }
 
   if (typeof data.conceptBlurb === "string") {
-    const sentences = data.conceptBlurb.split(/[.!?]+\s/).filter(Boolean);
-    if (sentences.length < 2 || sentences.length > 7) {
+    const sentenceMatches = data.conceptBlurb.match(/[.!?]+(?:\s|$)/g) ?? [];
+    const sentences = sentenceMatches.length;
+    if (sentences < 3 || sentences > 6) {
       errors.push(
-        `conceptBlurb should be 3-5 sentences (got ~${sentences.length})`
+        `conceptBlurb should be 3-5 sentences (got ${sentences}, max tolerated: 6)`
       );
     }
   }
@@ -438,18 +442,24 @@ async function main() {
 
   const now = admin.firestore.FieldValue.serverTimestamp();
   const colRef = db.collection("skillContent");
+  const BATCH_SIZE = 500;
   let written = 0;
 
-  for (const { data } of validDocs) {
-    const payload = {
-      ...data,
-      source: SOURCE_TAG,
-      generatedAt: now,
-      updatedAt: now,
-    };
-    await colRef.doc(data.taxonomyKey).set(payload, { merge: false });
-    written += 1;
-    console.log(`  Wrote skillContent/${data.taxonomyKey}`);
+  for (let i = 0; i < validDocs.length; i += BATCH_SIZE) {
+    const batch = db.batch();
+    const slice = validDocs.slice(i, i + BATCH_SIZE);
+    for (const { data } of slice) {
+      const payload = {
+        ...data,
+        source: SOURCE_TAG,
+        generatedAt: now,
+        updatedAt: now,
+      };
+      batch.set(colRef.doc(data.taxonomyKey), payload, { merge: false });
+    }
+    await batch.commit();
+    written += slice.length;
+    console.log(`  Wrote ${written}/${validDocs.length}`);
   }
 
   console.log(`\nseed-skill-content complete. Written: ${written}`);
@@ -584,10 +594,13 @@ import { join } from "node:path";
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes("--dry-run");
-const SOURCE_TAG =
-  args.find((a) => a.startsWith("--source="))?.split("=")[1] ??
-  args[args.indexOf("--source") + 1] ??
-  "parker-gen-2026-04-14";
+const SOURCE_TAG = (() => {
+  const eqForm = args.find((a) => a.startsWith("--source="))?.split("=")[1];
+  if (eqForm) return eqForm;
+  const idx = args.indexOf("--source");
+  if (idx >= 0 && idx + 1 < args.length) return args[idx + 1];
+  return "parker-gen-2026-04-14";
+})();
 const COURSE_FILTER =
   args.find((a) => a.startsWith("--course="))?.split("=")[1] ??
   (args.indexOf("--course") >= 0 ? args[args.indexOf("--course") + 1] : null);
@@ -727,26 +740,39 @@ async function main() {
 
   const now = admin.firestore.FieldValue.serverTimestamp();
   const colRef = db.collection("questionPool");
+  const BATCH_SIZE = 500;
   let written = 0;
   let skipped = 0;
 
+  // Filter out already-existing first, then batch the remainder
+  const toWrite = [];
   for (const { q } of validQuestions) {
     const key = `${q.course}|${q.skill}|${q.stem}`;
     if (existingKeys.has(key)) {
       skipped += 1;
       continue;
     }
-    const payload = {
-      ...q,
-      source: SOURCE_TAG,
-      reviewedBy: "parker-critic",
-      generatedAt: now,
-      createdAt: now,
-      updatedAt: now,
-    };
-    await colRef.add(payload);
-    written += 1;
-    if (written % 50 === 0) console.log(`  Wrote ${written}...`);
+    toWrite.push(q);
+  }
+
+  for (let i = 0; i < toWrite.length; i += BATCH_SIZE) {
+    const batch = db.batch();
+    const slice = toWrite.slice(i, i + BATCH_SIZE);
+    for (const q of slice) {
+      const payload = {
+        ...q,
+        source: SOURCE_TAG,
+        reviewedBy: "parker-critic",
+        generatedAt: now,
+        createdAt: now,
+        updatedAt: now,
+      };
+      const docRef = colRef.doc(); // auto-generated id
+      batch.set(docRef, payload);
+    }
+    await batch.commit();
+    written += slice.length;
+    console.log(`  Wrote ${written}/${toWrite.length}`);
   }
 
   console.log(`\nseed-generated-questions complete.`);

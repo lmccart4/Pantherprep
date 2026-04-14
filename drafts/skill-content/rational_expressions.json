@@ -1,0 +1,51 @@
+{
+  "taxonomyKey": "rational_expressions",
+  "skillLabel": "Rational expressions",
+  "domain": "Advanced Math",
+  "conceptBlurb": "A rational expression is a fraction with polynomials on top and bottom. Simplify by factoring both and canceling common factors. To add or subtract, you need a common denominator. Multiplying is straightforward, and dividing means flipping the second fraction. Always note which $x$ values make the denominator zero — those are restrictions, and they matter even after canceling.",
+  "conceptExplanation": "A rational expression looks like $\\frac{P(x)}{Q(x)}$ where $P$ and $Q$ are polynomials. The first move is almost always to factor everything.\n\n**Simplifying.** Factor the top and bottom, then cancel any factor that appears in both. For example, $\\frac{x^2 - 9}{x^2 - 5x + 6} = \\frac{(x-3)(x+3)}{(x-2)(x-3)} = \\frac{x+3}{x-2}$. The canceled factor $(x-3)$ is gone from the expression, but $x = 3$ is still a restriction because it made the original denominator zero.\n\n**Multiplying.** Multiply straight across, but factor first so you can cancel before multiplying. $$\\frac{x+2}{x-1} \\cdot \\frac{x-1}{x+5} = \\frac{x+2}{x+5}$$\n\n**Dividing.** Flip the second fraction, then multiply. $$\\frac{a}{b} \\div \\frac{c}{d} = \\frac{a}{b} \\cdot \\frac{d}{c}$$\n\n**Adding and subtracting.** You need a common denominator. Factor each denominator first so you can spot the least common denominator. Rewrite each fraction with that LCD, combine the numerators, then simplify.\n\n**Restrictions.** Any $x$ that makes an original denominator zero is excluded from the domain. This includes factors you cancel during simplification — the simplified form has a hole there, not a valid value. On the SAT, 'for what values of $x$ is the expression undefined?' is asking you to set the original denominator equal to zero and solve.\n\nWhen the SAT asks which expression is equivalent, the answer is almost always the fully factored and canceled form. If you're stuck, try plugging in a test value like $x = 0$ or $x = 2$ into both the original and each answer choice — they must match.",
+  "workedExamples": [
+    {
+      "prompt": "Simplify: $\\frac{x^2 + 2x - 15}{x^2 - 9}$",
+      "steps": [
+        "Factor the numerator: $x^2 + 2x - 15 = (x+5)(x-3)$",
+        "Factor the denominator: $x^2 - 9 = (x-3)(x+3)$",
+        "Rewrite: $\\frac{(x+5)(x-3)}{(x-3)(x+3)}$",
+        "Cancel the common factor $(x-3)$"
+      ],
+      "answer": "$\\frac{x+5}{x+3}$, with $x \\neq 3$ and $x \\neq -3$",
+      "takeaway": "Factor first, then cancel — and keep the original restrictions even after you cancel."
+    },
+    {
+      "prompt": "Write as a single fraction: $\\frac{3}{x-2} + \\frac{5}{x+1}$",
+      "steps": [
+        "The denominators share no common factors, so the LCD is $(x-2)(x+1)$",
+        "Rewrite each fraction: $\\frac{3(x+1)}{(x-2)(x+1)} + \\frac{5(x-2)}{(x-2)(x+1)}$",
+        "Combine numerators: $\\frac{3(x+1) + 5(x-2)}{(x-2)(x+1)}$",
+        "Distribute and combine like terms: $3x + 3 + 5x - 10 = 8x - 7$"
+      ],
+      "answer": "$\\frac{8x - 7}{(x-2)(x+1)}$",
+      "takeaway": "For addition, build the LCD first, then adjust each numerator before combining."
+    },
+    {
+      "prompt": "For what value of $x$ is $\\frac{x+4}{x^2 - 5x + 6}$ undefined?",
+      "steps": [
+        "An expression is undefined when the denominator equals zero",
+        "Factor the denominator: $x^2 - 5x + 6 = (x-2)(x-3)$",
+        "Set each factor to zero: $x - 2 = 0$ or $x - 3 = 0$"
+      ],
+      "answer": "$x = 2$ and $x = 3$",
+      "takeaway": "Undefined means denominator $= 0$ — factor it and solve."
+    }
+  ],
+  "hintTemplates": [
+    "Factor the numerator and denominator completely before doing anything else.",
+    "Adding or subtracting? Find the least common denominator by looking at the factored forms.",
+    "Dividing means multiplying by the reciprocal — flip the second fraction, then cancel.",
+    "Undefined values come from the original denominator equaling zero, not the simplified one.",
+    "Stuck on 'equivalent expression'? Plug in a simple test value like $x = 0$ or $x = 2$ and compare."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}
