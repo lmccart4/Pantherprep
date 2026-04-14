@@ -310,10 +310,13 @@ import { join } from "node:path";
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes("--dry-run");
-const SOURCE_TAG =
-  args.find((a) => a.startsWith("--source="))?.split("=")[1] ??
-  args[args.indexOf("--source") + 1] ??
-  "parker-gen-2026-04-14";
+const SOURCE_TAG = (() => {
+  const eqForm = args.find((a) => a.startsWith("--source="))?.split("=")[1];
+  if (eqForm) return eqForm;
+  const idx = args.indexOf("--source");
+  if (idx >= 0 && idx + 1 < args.length) return args[idx + 1];
+  return "parker-gen-2026-04-14";
+})();
 
 const DRAFTS_DIR = "drafts/skill-content";
 
@@ -584,10 +587,13 @@ import { join } from "node:path";
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes("--dry-run");
-const SOURCE_TAG =
-  args.find((a) => a.startsWith("--source="))?.split("=")[1] ??
-  args[args.indexOf("--source") + 1] ??
-  "parker-gen-2026-04-14";
+const SOURCE_TAG = (() => {
+  const eqForm = args.find((a) => a.startsWith("--source="))?.split("=")[1];
+  if (eqForm) return eqForm;
+  const idx = args.indexOf("--source");
+  if (idx >= 0 && idx + 1 < args.length) return args[idx + 1];
+  return "parker-gen-2026-04-14";
+})();
 const COURSE_FILTER =
   args.find((a) => a.startsWith("--course="))?.split("=")[1] ??
   (args.indexOf("--course") >= 0 ? args[args.indexOf("--course") + 1] : null);
