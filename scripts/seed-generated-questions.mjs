@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 // Seed script: reads drafts/question-batches/*.reviewed.json, validates each
-// question, appends to questionPool via auto-ID addDoc. Idempotent on re-run:
-// skips any (course, skill, source, stem) tuple already present.
+// question, appends to questionPool via batched auto-ID writes. Idempotent on
+// re-run: pre-fetches existing docs scoped to SOURCE_TAG, then skips any
+// (course, skill, stem) tuple already present in that source. Partial-failure
+// safe: committed batches are detected on rerun via the source-scoped dedup.
 //
 // This script is STRICTLY ADDITIVE. It never touches existing questions.
 // It never uses setDoc. It only adds new docs with Firestore-generated IDs.
