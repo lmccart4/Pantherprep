@@ -740,26 +740,39 @@ async function main() {
 
   const now = admin.firestore.FieldValue.serverTimestamp();
   const colRef = db.collection("questionPool");
+  const BATCH_SIZE = 500;
   let written = 0;
   let skipped = 0;
 
+  // Filter out already-existing first, then batch the remainder
+  const toWrite = [];
   for (const { q } of validQuestions) {
     const key = `${q.course}|${q.skill}|${q.stem}`;
     if (existingKeys.has(key)) {
       skipped += 1;
       continue;
     }
-    const payload = {
-      ...q,
-      source: SOURCE_TAG,
-      reviewedBy: "parker-critic",
-      generatedAt: now,
-      createdAt: now,
-      updatedAt: now,
-    };
-    await colRef.add(payload);
-    written += 1;
-    if (written % 50 === 0) console.log(`  Wrote ${written}...`);
+    toWrite.push(q);
+  }
+
+  for (let i = 0; i < toWrite.length; i += BATCH_SIZE) {
+    const batch = db.batch();
+    const slice = toWrite.slice(i, i + BATCH_SIZE);
+    for (const q of slice) {
+      const payload = {
+        ...q,
+        source: SOURCE_TAG,
+        reviewedBy: "parker-critic",
+        generatedAt: now,
+        createdAt: now,
+        updatedAt: now,
+      };
+      const docRef = colRef.doc(); // auto-generated id
+      batch.set(docRef, payload);
+    }
+    await batch.commit();
+    written += slice.length;
+    console.log(`  Wrote ${written}/${toWrite.length}`);
   }
 
   console.log(`\nseed-generated-questions complete.`);
