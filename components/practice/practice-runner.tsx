@@ -6,6 +6,8 @@ import { QuestionCard } from "@/components/test/question-card";
 import { PracticeResultsCard } from "./practice-results-card";
 import { saveProgress, loadProgress } from "@/lib/firestore";
 import { completeTestSession, type CompleteTestResult } from "@/lib/test-persistence";
+import { getAdaptiveProfile, type AdaptiveProfile } from "@/lib/adaptive/performance-service";
+import { computeMasteryDeltas, type MasteryDeltaRow } from "@/lib/mastery-delta";
 import type { Question } from "@/types/question";
 
 export interface PracticeRunnerProps {
@@ -17,6 +19,7 @@ export interface PracticeRunnerProps {
   testType: string;
   questions: Question[];
   fallbackNotes?: string[];
+  beforeProfile?: AdaptiveProfile | null;
   onComplete?: (result: CompleteTestResult) => void;
   onExit: () => void;
   onPracticeAgain?: () => void;
@@ -57,6 +60,7 @@ export function PracticeRunner(props: PracticeRunnerProps) {
     testType,
     questions: propQuestions,
     fallbackNotes,
+    beforeProfile: beforeProfileProp,
     onComplete,
     onExit,
     onPracticeAgain,
@@ -72,8 +76,10 @@ export function PracticeRunner(props: PracticeRunnerProps) {
   const [flagged, setFlagged] = useState<Set<number>>(new Set());
   const [saveError, setSaveError] = useState(false);
   const [resumable, setResumable] = useState<PracticeProgress | null>(null);
+  const [masteryDeltas, setMasteryDeltas] = useState<MasteryDeltaRow[]>([]);
   const startTimeRef = useRef<number>(0);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const beforeProfileRef = useRef<AdaptiveProfile | null>(beforeProfileProp ?? null);
 
   // --- On-mount: check for resumable progress ---
   useEffect(() => {
@@ -94,6 +100,14 @@ export function PracticeRunner(props: PracticeRunnerProps) {
       cancelled = true;
     };
   }, [uid, progressKey]);
+
+  // --- On-mount: stash the before-profile if caller didn't provide one ---
+  useEffect(() => {
+    if (beforeProfileRef.current || !uid) return;
+    getAdaptiveProfile(uid).then((p) => {
+      beforeProfileRef.current = p;
+    });
+  }, [uid]);
 
   // --- Auto-save (debounced) ---
   const scheduleAutoSave = useCallback(() => {
@@ -178,6 +192,23 @@ export function PracticeRunner(props: PracticeRunnerProps) {
         answers,
         timeSpent,
       });
+
+      // Compute per-skill mastery deltas from a fresh profile fetch.
+      // Non-fatal — if this fails, render results without the delta card.
+      let deltas: MasteryDeltaRow[] = [];
+      try {
+        const afterProfile = await getAdaptiveProfile(uid);
+        deltas = computeMasteryDeltas(
+          questions,
+          answers,
+          beforeProfileRef.current,
+          afterProfile
+        );
+      } catch (e) {
+        console.warn("mastery delta fetch failed:", e);
+      }
+      setMasteryDeltas(deltas);
+
       // Mark progress doc completed so the next mount treats it as stale
       const finalState: PracticeProgress = {
         questions,
@@ -334,13 +365,17 @@ export function PracticeRunner(props: PracticeRunnerProps) {
   // ============================================================
   if (screen === "results") {
     const timeSpent = Math.round((Date.now() - startTimeRef.current) / 1000);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const AnyResultsCard = PracticeResultsCard as any;
     return (
-      <PracticeResultsCard
+      <AnyResultsCard
         questions={questions}
         answers={answers}
         timeSpent={timeSpent}
         saveError={saveError}
         fallbackNotes={fallbackNotes}
+        masteryDeltas={masteryDeltas}
+        course={course}
         onPracticeAgain={onPracticeAgain}
         onExit={onExit}
       />
