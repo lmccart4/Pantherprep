@@ -204,7 +204,7 @@ function StudentView({ uid, email, course }: { uid: string; email: string; cours
         <StudentSkills profile={profile} course={course} />
       )}
       {tab === "past-tests" && <PastTestsView uid={uid} />}
-      {tab === "practice" && <StudentPractice profile={profile} uid={uid} email={email} course={course} />}
+      {tab === "practice" && <StudentPractice profile={profile} uid={uid} email={email} course={course} onRefetch={refresh} />}
     </div>
   );
 }
@@ -381,11 +381,13 @@ function StudentPractice({
   uid,
   email,
   course,
+  onRefetch,
 }: {
   profile: AdaptiveProfile;
   uid: string;
   email: string;
   course: Course;
+  onRefetch?: () => void;
 }) {
   const recs = profile?.recommendations || [];
   const [launching, setLaunching] = useState(false);
@@ -422,6 +424,7 @@ function StudentPractice({
 
   const handleExit = () => {
     setSession(null);
+    onRefetch?.();
   };
 
   // If a session is active, render the runner in place of the plan
@@ -434,6 +437,7 @@ function StudentPractice({
         testType={`${course}-adaptive-practice`}
         questions={session.questions}
         fallbackNotes={session.fallbackNotes}
+        beforeProfile={profile}
         onExit={handleExit}
         onPracticeAgain={handlePracticeAgain}
       />
