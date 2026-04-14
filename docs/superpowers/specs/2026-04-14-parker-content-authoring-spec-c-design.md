@@ -44,20 +44,20 @@ Generation runs as **parallel Claude Code subagent dispatches from a single Lach
 Lachlan (this session, orchestrator)
   │
   ├─ Reads seed inventory → builds work queue
-  │     • ~44 skill-level concept jobs (unique taxonomy keys)
-  │     • ~97 skill×course question jobs (one per skill per course)
+  │     • ~36 skill-level concept jobs (unique taxonomy keys)
+  │     • ~108 skill×course question jobs (one per skill per course)
   │
   ├─ Pre-fetches style anchors per skill×course from questionPool
   │     (3 mid-difficulty existing questions per combo, inlined into
   │      wave 2 subagent prompts; sibling-course fallback if <3 exist)
   │
-  ├─ Wave 1: ~44 parallel concept subagents, dispatched in batches of 8
+  ├─ Wave 1: ~36 parallel concept subagents, dispatched in batches of 8
   │     each writes: drafts/skill-content/{taxonomyKey}.json
   │
-  ├─ Wave 2: ~97 parallel question subagents, dispatched in batches of 8
+  ├─ Wave 2: ~108 parallel question subagents, dispatched in batches of 8
   │     each writes: drafts/question-batches/{course}__{taxonomyKey}.json
   │
-  ├─ Wave 3: ~141 parallel critic subagents (one per artifact)
+  ├─ Wave 3: ~144 parallel critic subagents (one per artifact)
   │     each writes: {name}.reviewed.json + {name}.rejected.json
   │
   ├─ Aggregate audit: scripts/audit-question-pool.mjs runs the new
@@ -75,7 +75,7 @@ Lachlan (this session, orchestrator)
 
 ### Key structural decisions
 
-- **Concept content is skill-level, not course-scoped.** The explanation of "linear regression" is the same for SAT, PSAT 10/11, PSAT 8/9, and NMSQT. One `skillContent/{taxonomyKey}` doc covers all courses. This is why wave 1 has ~44 jobs (unique taxonomy keys) and wave 2 has ~97 (skill × course).
+- **Concept content is skill-level, not course-scoped.** The explanation of "linear regression" is the same for SAT, PSAT 10/11, PSAT 8/9, and NMSQT. One `skillContent/{taxonomyKey}` doc covers all courses. This is why wave 1 has ~36 jobs (unique taxonomy keys) and wave 2 has ~108 (skill × course).
 - **"Staging" is JSON on disk, not a Firestore collection.** Every generated artifact lands in `drafts/` first. Luke reviews the filesystem, runs seed scripts when ready. No `questionPool_staging` collection.
 - **Append-only writes to `questionPool`.** The seed script uses `addDoc()` exclusively. Existing 588 questions are never touched. Grade integrity (per `.claude/rules/grade-data-integrity.md`) is preserved structurally.
 - **Idempotent reruns.** Every job checks for existing valid output before regenerating. A seed script rerun skips any `(course, skill, source, stem)` tuple already present. Explicit `--force` flag available to regenerate from scratch.
@@ -84,7 +84,7 @@ Lachlan (this session, orchestrator)
 
 ### New collection: `skillContent/{taxonomyKey}`
 
-One doc per unique taxonomy key (~44 total). Course-agnostic.
+One doc per unique taxonomy key (~36 total). Course-agnostic.
 
 ```ts
 interface SkillContent {
@@ -153,7 +153,7 @@ Spec C only sketches this layout. Building the Learn tab is a separate future sp
 
 Each subagent receives a self-contained brief. No exploration, no multi-file reading — just a tight task with all needed context inlined.
 
-### Concept subagent brief (~44 jobs, wave 1)
+### Concept subagent brief (~36 jobs, wave 1)
 
 ```
 You are generating skill-level learning content for a PSAT/SAT prep platform.
@@ -181,7 +181,7 @@ CONSTRAINTS:
 OUTPUT: write to drafts/skill-content/linear_regression.json. Nothing else.
 ```
 
-### Question subagent brief (~97 jobs, wave 2)
+### Question subagent brief (~108 jobs, wave 2)
 
 ```
 You are generating SAT/PSAT practice questions for the adaptive question pool.
@@ -223,7 +223,7 @@ OUTPUT: write to drafts/question-batches/nmsqt-math__linear_regression.json.
 Nothing else.
 ```
 
-### Critic subagent brief (~141 jobs, wave 3)
+### Critic subagent brief (~144 jobs, wave 3)
 
 ```
 You are reviewing a batch of generated [concept content | practice questions]
@@ -268,7 +268,7 @@ Each wave-2 subagent is given the exact integer counts for its course so there's
 ### Reference material sourcing (orchestrator responsibility)
 
 Before wave 1 dispatches:
-- **College Board skill descriptions:** Lachlan drafts `docs/superpowers/specs/college-board-skills.md` with ~44 short entries, one per taxonomy key, pulled from the official SAT/PSAT skill taxonomy pages. This file exists as a committed reference; subagent prompts inline the relevant entry verbatim.
+- **Skill description reference doc:** `docs/superpowers/specs/college-board-skills.md` — 36 short entries (2-3 sentences each), one per taxonomy key, summarizing what the skill tests and the question shapes that typically show up on the real exam. Written from existing SAT/PSAT knowledge, not literally copied from College Board PDFs. Committed reference; subagent prompts inline the relevant entry verbatim.
 
 Before wave 2 dispatches:
 - **Style anchors:** Orchestrator queries `questionPool` for each (course, skill) combo, picks 3 mid-difficulty questions, inlines them into the subagent prompt. Skills with fewer than 3 existing questions pull anchors from a sibling course (e.g., `nmsqt-math linear_regression` falls back to `sat-math linear_regression` anchors).
@@ -283,9 +283,9 @@ After all three waves complete, orchestrator builds one consolidated report. Del
 # Parker Content Generation — 2026-04-14
 
 ## Summary
-- Skill-level bundles: 44 generated, 44 passed critic
-- Question batches: 97 generated, 97 passed critic
-- Total new questions: 1,940 proposed → 1,902 approved → 38 rejected
+- Skill-level bundles: 36 generated, 36 passed critic
+- Question batches: 108 generated, 108 passed critic
+- Total new questions: 2,160 proposed → 2,120 approved → 40 rejected
 - Aggregate answer distribution check: 2 flagged groups (listed below)
 
 ## Rejected questions (38)
@@ -316,8 +316,8 @@ Grouped by reason, one line per question with pointer to source file:
   — within thresholds, flagged for borderline. Optional rerun.
 
 ## Files to review before seeding
-drafts/skill-content/*.json                 (44 files)
-drafts/question-batches/*.reviewed.json     (97 files)
+drafts/skill-content/*.json                 (36 files)
+drafts/question-batches/*.reviewed.json     (108 files)
 
 ## Commands
 # Rerun a specific batch
@@ -363,7 +363,7 @@ Added to `scripts/audit-question-pool.mjs`. For each `(course, skill)` group wit
 
 ### Waves and batching
 
-Dispatching 141 `Agent` calls in one message is technically possible but creates rate-limit risk and makes failures hard to isolate. Real plan: **3 waves, chunked batches of 8 parallel subagents per dispatch message**.
+Dispatching 144 `Agent` calls in one message is technically possible but creates rate-limit risk and makes failures hard to isolate. Real plan: **3 waves, chunked batches of 8 parallel subagents per dispatch message**.
 
 ```
 Wave 1 — Concept bundles: 44 jobs
@@ -372,7 +372,7 @@ Wave 1 — Concept bundles: 44 jobs
 Wave 2 — Question batches: 97 jobs
   13 batches of 8
 
-Wave 3 — Critic pass: 141 jobs (44 concept + 97 question)
+Wave 3 — Critic pass: 144 jobs (36 concept + 108 question)
   18 batches of 8
 
 Total dispatch messages: ~37. Wall clock: 30-60 minutes including
@@ -408,9 +408,9 @@ Fresh sessions can resume mid-pipeline: state file is the source of truth.
   "runId": "parker-gen-2026-04-14",
   "startedAt": "2026-04-14T14:30:00Z",
   "waves": {
-    "concept":   { "total": 44,  "done": 44,  "failed": [] },
-    "questions": { "total": 97,  "done": 96,  "failed": ["sat-math__linear_functions"] },
-    "critic":    { "total": 141, "done": 140, "failed": [] }
+    "concept":   { "total": 36,  "done": 36,  "failed": [] },
+    "questions": { "total": 108, "done": 107, "failed": ["sat-math__linear_functions"] },
+    "critic":    { "total": 144, "done": 143, "failed": [] }
   },
   "finishedAt": null
 }
@@ -424,7 +424,7 @@ Orchestration is **Lachlan, in a session, issuing `Agent` tool calls** following
 
 | File | Status | Purpose |
 |---|---|---|
-| `docs/superpowers/specs/college-board-skills.md` | create | ~44 verbatim skill descriptions, inlined into subagent prompts |
+| `docs/superpowers/specs/college-board-skills.md` | create | ~36 verbatim skill descriptions, inlined into subagent prompts |
 | `scripts/seed-skill-content.mjs` | create | Reads `drafts/skill-content/*.json`, writes `skillContent/{taxonomyKey}` |
 | `scripts/seed-generated-questions.mjs` | create | Reads `drafts/question-batches/*.reviewed.json`, appends to `questionPool` |
 | `scripts/audit-question-pool.mjs` | modify | Add aggregate A/B/C/D distribution check per (course, skill) |
@@ -439,7 +439,7 @@ No changes to `lib/`, `components/`, `app/`, or any existing shipping code. Pure
 No automated test framework (same as prior specs). Verification:
 
 1. **Dry-run seed scripts** before the full pipeline. Run `seed-skill-content.mjs --dry-run` and `seed-generated-questions.mjs --dry-run` with a single pre-authored sample JSON file to confirm the write path works without touching Firestore.
-2. **Small-scope first run.** Orchestrator supports `--only <course>__<taxonomyKey>` to run the full pipeline for a single skill×course. Run this once (e.g., `nmsqt-math__linear_regression`), review the output end-to-end, run the seed in dry-run mode, then live. This validates every stage before scaling to 141 jobs.
+2. **Small-scope first run.** Orchestrator supports `--only <course>__<taxonomyKey>` to run the full pipeline for a single skill×course. Run this once (e.g., `nmsqt-math__linear_regression`), review the output end-to-end, run the seed in dry-run mode, then live. This validates every stage before scaling to the full 288 dispatches.
 3. **Audit check.** Run `npm run audit:pool` after seeding. Confirm every (course, skill) group now has ≥20 questions and the A/B/C/D distribution falls within thresholds.
 4. **Live practice test.** Open a skill detail page for a newly-populated skill on pantherprep.web.app, run adaptive practice, confirm new questions appear in the session and score correctly.
 5. **Grade-integrity check.** Before and after the seed run, query `questionPool` by any existing non-Parker question ID and confirm the doc is byte-identical. No hand-authored content was touched.
@@ -453,7 +453,7 @@ Single branch, six tasks:
 3. Create `scripts/seed-generated-questions.mjs` with `--dry-run`, `--source`, `--course`, and idempotency checks
 4. Modify `scripts/audit-question-pool.mjs` to add the aggregate A/B/C/D distribution check
 5. Create `drafts/skill-content/` and `drafts/question-batches/` staging dirs; update `.gitignore`
-6. Orchestrate the full generation pipeline (3 waves, ~282 total subagent dispatches: 44 concept + 97 question + 141 critic), review, seed, verify
+6. Orchestrate the full generation pipeline (3 waves, ~288 total subagent dispatches: 36 concept + 108 question + 144 critic), review, seed, verify
 
 Tasks 1-5 are the code + reference deliverables. Task 6 is the orchestrator session itself, following this spec.
 
