@@ -91,7 +91,7 @@ async function main() {
   let files;
   try {
     files = readdirSync(DRAFTS_DIR).filter(
-      (f) => f.endsWith(".json") && !f.startsWith("_")
+      (f) => f.endsWith(".reviewed.json") && !f.startsWith("_")
     );
   } catch (e) {
     console.error(`Cannot read ${DRAFTS_DIR}:`, e.message);
