@@ -344,10 +344,11 @@ function validateSkillContent(data, filename) {
   }
 
   if (typeof data.conceptBlurb === "string") {
-    const sentences = data.conceptBlurb.split(/[.!?]+\s/).filter(Boolean);
-    if (sentences.length < 2 || sentences.length > 7) {
+    const sentenceMatches = data.conceptBlurb.match(/[.!?]+(?:\s|$)/g) ?? [];
+    const sentences = sentenceMatches.length;
+    if (sentences < 3 || sentences > 6) {
       errors.push(
-        `conceptBlurb should be 3-5 sentences (got ~${sentences.length})`
+        `conceptBlurb should be 3-5 sentences (got ${sentences}, max tolerated: 6)`
       );
     }
   }
@@ -441,18 +442,24 @@ async function main() {
 
   const now = admin.firestore.FieldValue.serverTimestamp();
   const colRef = db.collection("skillContent");
+  const BATCH_SIZE = 500;
   let written = 0;
 
-  for (const { data } of validDocs) {
-    const payload = {
-      ...data,
-      source: SOURCE_TAG,
-      generatedAt: now,
-      updatedAt: now,
-    };
-    await colRef.doc(data.taxonomyKey).set(payload, { merge: false });
-    written += 1;
-    console.log(`  Wrote skillContent/${data.taxonomyKey}`);
+  for (let i = 0; i < validDocs.length; i += BATCH_SIZE) {
+    const batch = db.batch();
+    const slice = validDocs.slice(i, i + BATCH_SIZE);
+    for (const { data } of slice) {
+      const payload = {
+        ...data,
+        source: SOURCE_TAG,
+        generatedAt: now,
+        updatedAt: now,
+      };
+      batch.set(colRef.doc(data.taxonomyKey), payload, { merge: false });
+    }
+    await batch.commit();
+    written += slice.length;
+    console.log(`  Wrote ${written}/${validDocs.length}`);
   }
 
   console.log(`\nseed-skill-content complete. Written: ${written}`);
