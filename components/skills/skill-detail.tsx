@@ -19,9 +19,10 @@ import {
 } from "@/lib/skill-mapping";
 import { getSkillDescription } from "@/lib/skill-descriptions";
 import { getQuestionsBySkill, type PracticeBatch } from "@/lib/practice-question-source";
-import type {
-  AdaptiveProfile,
-  StoredAnswer,
+import {
+  getAdaptiveProfile,
+  type AdaptiveProfile,
+  type StoredAnswer,
 } from "@/lib/adaptive/performance-service";
 
 interface SkillDetailProps {
@@ -63,11 +64,19 @@ function siblingsInDomain(course: string, domain: string, excludeKey: string): s
   return (taxonomy[domain] ?? []).filter((s) => s !== excludeKey);
 }
 
-export function SkillDetail({ uid, email, course, taxonomyKey, profile }: SkillDetailProps) {
+export function SkillDetail({
+  uid,
+  email,
+  course,
+  taxonomyKey,
+  profile: propProfile,
+}: SkillDetailProps) {
   const domain = findDomain(course, taxonomyKey);
 
   const label = skillLabel(taxonomyKey);
   const description = getSkillDescription(taxonomyKey);
+
+  const [profile, setProfile] = useState<AdaptiveProfile | null>(propProfile);
   const data = useMemo(() => getProfileSkillData(profile, taxonomyKey), [profile, taxonomyKey]);
 
   const [recentAnswers, setRecentAnswers] = useState<StoredAnswer[]>([]);
@@ -76,6 +85,10 @@ export function SkillDetail({ uid, email, course, taxonomyKey, profile }: SkillD
   const [session, setSession] = useState<PracticeBatch | null>(null);
   const [launching, setLaunching] = useState(false);
   const [launchError, setLaunchError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setProfile(propProfile);
+  }, [propProfile]);
 
   useEffect(() => {
     let cancelled = false;
@@ -142,6 +155,20 @@ export function SkillDetail({ uid, email, course, taxonomyKey, profile }: SkillD
     }
   };
 
+  const handleExit = async () => {
+    setSession(null);
+    try {
+      const [newProfile, newAnswers] = await Promise.all([
+        getAdaptiveProfile(uid),
+        getRecentAnswersForTaxonomyKey(uid, taxonomyKey, 100),
+      ]);
+      setProfile(newProfile);
+      setRecentAnswers(newAnswers);
+    } catch (e) {
+      console.warn("post-practice refetch failed:", e);
+    }
+  };
+
   // --- Practice mode ---
   if (session) {
     return (
@@ -154,7 +181,8 @@ export function SkillDetail({ uid, email, course, taxonomyKey, profile }: SkillD
         testType={`${course}-skill-practice`}
         questions={session.questions}
         fallbackNotes={session.fallbackNotes}
-        onExit={() => setSession(null)}
+        beforeProfile={profile}
+        onExit={handleExit}
         onPracticeAgain={handlePracticeAgain}
       />
     );
