@@ -1,254 +1,245 @@
 #!/usr/bin/env node
-// Seed the Firestore questionPool collection from annotated module page.tsx files.
-// Extracts quiz/challenge questions with domain/skill metadata.
+// Seed script: reads hardcoded questions.ts banks, transforms each question
+// into a PoolQuestion via the skill-mapping table, writes to Firestore
+// questionPool via admin SDK batched sets. Deterministic doc ids make
+// re-runs idempotent.
 //
-// Usage: node scripts/seed-question-pool.mjs [--dry-run]
-//
-// Requires: GOOGLE_APPLICATION_CREDENTIALS or firebase-admin default credentials
+// Usage:
+//   GOOGLE_CLOUD_PROJECT=pantherprep-a5a73 npm run seed:pool -- --dry-run
+//   GOOGLE_CLOUD_PROJECT=pantherprep-a5a73 npm run seed:pool -- --test-type=sat-math --dry-run
+//   GOOGLE_CLOUD_PROJECT=pantherprep-a5a73 npm run seed:pool -- --test-type=sat-math
+//   GOOGLE_CLOUD_PROJECT=pantherprep-a5a73 npm run seed:pool
 
-import { readFileSync, readdirSync, statSync } from "fs";
-import { join } from "path";
+import admin from "firebase-admin";
 
-const DRY_RUN = process.argv.includes("--dry-run");
-const BASE = join(import.meta.dirname, "../app/(authenticated)/courses");
+const args = process.argv.slice(2);
+const DRY_RUN = args.includes("--dry-run");
+const TEST_TYPE_ARG = args.find((a) => a.startsWith("--test-type="))?.split("=")[1];
 
-// ---- Firebase Admin Init (lazy, only when writing) ----
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+});
+const db = admin.firestore();
 
-let db;
-async function initFirebase() {
-  const { initializeApp, cert, applicationDefault } = await import("firebase-admin/app");
-  const { getFirestore } = await import("firebase-admin/firestore");
-  const credPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-  if (credPath) {
-    const cred = JSON.parse(readFileSync(credPath, "utf-8"));
-    initializeApp({ credential: cert(cred) });
-  } else {
-    // Use Application Default Credentials or just project ID
-    initializeApp({ projectId: "pantherprep-a5a73" });
-  }
-  db = getFirestore();
-}
+// --- Import source question banks via tsx's TS-aware resolver ---
+const diagnostics = {
+  "sat-math":     { module: await import("../app/(authenticated)/diagnostics/sat-math/questions.ts"),     key: "QUESTIONS" },
+  "sat-rw":       { module: await import("../app/(authenticated)/diagnostics/sat-rw/questions.ts"),       key: "QUESTIONS" },
+  "nmsqt-math":   { module: await import("../app/(authenticated)/diagnostics/nmsqt-math/questions.ts"),   key: "QUESTIONS" },
+  "nmsqt-rw":     { module: await import("../app/(authenticated)/diagnostics/nmsqt-rw/questions.ts"),     key: "QUESTIONS" },
+  "psat89-math":  { module: await import("../app/(authenticated)/diagnostics/psat89-math/questions.ts"),  key: "QUESTIONS" },
+  "psat89-rw":    { module: await import("../app/(authenticated)/diagnostics/psat89-rw/questions.ts"),    key: "QUESTIONS" },
+};
 
-// ---- Find all module page.tsx files ----
+const practiceBanks = {
+  "sat":    await import("../app/(authenticated)/practice-tests/sat/questions.ts"),
+  "nmsqt":  await import("../app/(authenticated)/practice-tests/nmsqt/questions.ts"),
+  "psat89": await import("../app/(authenticated)/practice-tests/psat89/questions.ts"),
+};
 
-function findPages(dir) {
-  const results = [];
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      results.push(...findPages(full));
-    } else if (entry === "page.tsx") {
-      results.push(full);
-    }
-  }
-  return results;
-}
+const { SKILL_MAP } = await import("./skill-mapping.ts");
 
-// ---- Difficulty mapping ----
-
+// --- Transform helpers ---
 function mapDifficulty(d) {
-  if (!d) return "M";
-  const lower = d.toLowerCase();
-  if (lower === "easy" || lower === "f") return "F";
-  if (lower === "hard" || lower === "c") return "C";
+  if (d === "easy") return "F";
+  if (d === "hard") return "C";
   return "M";
 }
 
-// ---- Extract questions from a module file ----
+function normalizeChoices(q) {
+  if (q.type === "spr") return [];
+  if (!q.options) return [];
+  const keys = ["A", "B", "C", "D", "E", "F"];
+  return q.options
+    .map((text, i) => ({ key: keys[i] ?? String(i), text }))
+    .filter((c) => c.text !== "");
+}
 
-function extractQuestions(filePath) {
-  const content = readFileSync(filePath, "utf-8");
-  const rel = filePath.replace(BASE + "/", "").replace("/page.tsx", "");
-  const [course, moduleNum] = rel.split("/");
-  const moduleId = `${course}/${moduleNum}`;
+function detectKatex(q) {
+  const haystack = [
+    q.stem ?? "",
+    q.explanation ?? "",
+    ...Object.values(q.explanations ?? {}),
+    q.passage ?? "",
+  ].join(" ");
+  return /\$[^$\n]+\$/.test(haystack);
+}
 
-  // Find quiz: [ ... ] and challenge: [ ... ] arrays
-  const questions = [];
-  const lines = content.split("\n");
+function makeDocId(sourceTestType, sourceId) {
+  return `${sourceTestType}__${sourceId}`;
+}
 
-  let inArray = false;
-  let arrayType = "";
-  let braceDepth = 0;
-  let bracketDepth = 0;
-  let currentObj = "";
-  let objDepth = 0;
+function transformQuestion(q, sourceTestType) {
+  const mapping = SKILL_MAP[q.skill];
+  if (!mapping) {
+    return { skipped: true, reason: "unmapped-skill", q };
+  }
 
-  for (const line of lines) {
-    // Detect quiz/challenge array start
-    if (!inArray && /^\s*(quiz|challenge):\s*\[/.test(line)) {
-      inArray = true;
-      arrayType = line.match(/(quiz|challenge)/)[1];
-      bracketDepth = 0;
-      braceDepth = 0;
-      currentObj = "";
-      objDepth = 0;
+  const course = `${q.testType}-${q.section}`;
+  const doc = {
+    sourceTestType,
+    sourceId: q.id,
+    course,
+    testType: q.testType,
+    section: q.section,
+    domain: mapping.domain,
+    skill: mapping.taxonomyKey,
+    sourceSkill: q.skill,
+    difficulty: mapDifficulty(q.difficulty),
+    type: q.type,
+    stem: q.stem,
+    choices: normalizeChoices(q),
+    correctAnswer: q.correctAnswer,
+    explanation: q.explanation,
+    katex: detectKatex(q),
+    tags: q.tags ?? [],
+  };
+  if (q.module != null) doc.module = q.module;
+  if (q.passage) doc.passage = q.passage;
+  if (q.explanations) doc.explanations = q.explanations;
+  return { skipped: false, doc };
+}
 
-      // Count brackets on this line
-      for (const ch of line) {
-        if (ch === "[") bracketDepth++;
-        if (ch === "]") bracketDepth--;
+// --- Build the list of questions to process ---
+function gatherQuestions() {
+  const list = [];
+
+  // Diagnostics
+  for (const [courseKey, { module, key }] of Object.entries(diagnostics)) {
+    if (TEST_TYPE_ARG && TEST_TYPE_ARG !== courseKey) continue;
+    const sourceTestType = `${courseKey}-diagnostic`;
+    const questions = module[key];
+    for (const q of questions) list.push({ q, sourceTestType });
+  }
+
+  // Practice tests — RW_QUESTIONS and MATH_QUESTIONS exported as named arrays
+  for (const [testType, mod] of Object.entries(practiceBanks)) {
+    for (const [section, arrName] of [["rw", "RW_QUESTIONS"], ["math", "MATH_QUESTIONS"]]) {
+      const courseKey = `${testType}-${section}`;
+      if (TEST_TYPE_ARG && TEST_TYPE_ARG !== courseKey && TEST_TYPE_ARG !== `${testType}-practice`) continue;
+      const sourceTestType = `${testType}-practice`;
+      const questions = mod[arrName];
+      if (!questions) continue;
+      for (const q of questions) list.push({ q, sourceTestType });
+    }
+  }
+
+  return list;
+}
+
+async function fetchExistingCreatedAt(docIds) {
+  if (docIds.length === 0) return new Map();
+  const map = new Map();
+  const colRef = db.collection("questionPool");
+  // Firestore getAll has a 500-doc limit per call
+  const chunkSize = 500;
+  for (let i = 0; i < docIds.length; i += chunkSize) {
+    const chunk = docIds.slice(i, i + chunkSize);
+    const refs = chunk.map((id) => colRef.doc(id));
+    const snaps = await db.getAll(...refs);
+    for (const snap of snaps) {
+      if (snap.exists) {
+        const data = snap.data();
+        if (data.createdAt) map.set(snap.id, data.createdAt);
       }
+    }
+  }
+  return map;
+}
+
+// --- Main ---
+async function main() {
+  console.log(`Seed starting. DRY_RUN=${DRY_RUN} TEST_TYPE=${TEST_TYPE_ARG ?? "(all)"}`);
+
+  const all = gatherQuestions();
+  console.log(`Gathered ${all.length} question(s) from source files.`);
+
+  const transformed = [];
+  const skipped = { unmappedSkill: [] };
+
+  for (const { q, sourceTestType } of all) {
+    const result = transformQuestion(q, sourceTestType);
+    if (result.skipped) {
+      skipped.unmappedSkill.push({ sourceTestType, id: q.id, skillString: q.skill });
       continue;
     }
-
-    if (!inArray) continue;
-
-    // Track brackets
-    for (const ch of line) {
-      if (ch === "[") bracketDepth++;
-      if (ch === "]") {
-        bracketDepth--;
-        if (bracketDepth <= 0) {
-          inArray = false;
-        }
-      }
-      if (ch === "{") {
-        braceDepth++;
-        if (braceDepth === 1) {
-          currentObj = "";
-          objDepth = 0;
-        }
-      }
-      if (ch === "}") {
-        braceDepth--;
-      }
-    }
-
-    if (braceDepth >= 1 || line.trim().startsWith("}")) {
-      currentObj += line + "\n";
-    }
-
-    // End of top-level object
-    if (braceDepth === 0 && currentObj.trim()) {
-      const obj = parseQuestionObject(currentObj);
-      if (obj && obj.domain && obj.skill) {
-        questions.push({
-          course,
-          moduleId,
-          domain: obj.domain,
-          skill: obj.skill,
-          difficulty: mapDifficulty(obj.difficulty),
-          questionText: obj.stem || obj.passage || "",
-          choices: (obj.choices || []).map((c, i) => ({
-            key: String.fromCharCode(65 + i),
-            text: c,
-          })),
-          correctAnswer: String.fromCharCode(65 + (obj.correct ?? 0)),
-          explanation: obj.explanation || "",
-          trapType: obj.trap || null,
-          katex: /\$/.test(obj.stem || "") || (obj.choices || []).some((c) => /\$/.test(c)),
-        });
-      }
-      currentObj = "";
-    }
-
-    if (!inArray) break;
+    transformed.push({
+      id: makeDocId(result.doc.sourceTestType, result.doc.sourceId),
+      doc: result.doc,
+    });
   }
 
-  return questions;
-}
-
-// ---- Parse a question object string to extract fields ----
-
-function parseQuestionObject(objStr) {
-  const result = {};
-
-  // Extract simple string fields
-  const simpleFields = ["stem", "explanation", "difficulty", "type", "trap", "domain", "skill"];
-  for (const field of simpleFields) {
-    // Match: field: "value" or field: 'value' (possibly multiline with continuation)
-    const regex = new RegExp(`${field}:\\s*(?:"([^"]*(?:\\\\.[^"]*)*)"|'([^']*(?:\\\\.[^']*)*)')`, "s");
-    const match = objStr.match(regex);
-    if (match) {
-      result[field] = match[1] ?? match[2];
-    }
-
-    // Also try multiline: field:\n "value" or field:\n 'value'
-    if (!result[field]) {
-      const multiRegex = new RegExp(`${field}:\\s*\\n\\s*(?:"([^"]*(?:\\\\.[^"]*)*)"|'([^']*(?:\\\\.[^']*)*)')`, "s");
-      const multiMatch = objStr.match(multiRegex);
-      if (multiMatch) {
-        result[field] = multiMatch[1] ?? multiMatch[2];
-      }
-    }
+  console.log(`Transformed: ${transformed.length}`);
+  console.log(`Skipped (unmapped skill): ${skipped.unmappedSkill.length}`);
+  if (skipped.unmappedSkill.length > 0) {
+    console.log(`First 10 unmapped skills:`);
+    skipped.unmappedSkill.slice(0, 10).forEach((s) => {
+      console.log(`  ${s.sourceTestType}/${s.id}: "${s.skillString}"`);
+    });
   }
 
-  // Extract passage (may be very long, multiline)
-  const passageMatch = objStr.match(/passage:\s*\n?\s*(?:"([\s\S]*?)(?<!\\)"|'([\s\S]*?)(?<!\\)')/);
-  if (passageMatch) {
-    result.passage = passageMatch[1] ?? passageMatch[2];
-  }
-
-  // Extract correct: N
-  const correctMatch = objStr.match(/correct:\s*(\d+)/);
-  if (correctMatch) {
-    result.correct = parseInt(correctMatch[1]);
-  }
-
-  // Extract choices array
-  const choicesMatch = objStr.match(/choices:\s*\[([\s\S]*?)\]/);
-  if (choicesMatch) {
-    const choicesStr = choicesMatch[1];
-    const choices = [];
-    // Match quoted strings within the choices array
-    const quoteRegex = /(?:"([^"]*(?:\\.[^"]*)*)"|'([^']*(?:\\.[^']*)*)')/g;
-    let m;
-    while ((m = quoteRegex.exec(choicesStr)) !== null) {
-      choices.push(m[1] ?? m[2]);
-    }
-    result.choices = choices;
-  }
-
-  return result;
-}
-
-// ---- Main ----
-
-async function main() {
-  console.log(`Extracting questions from module files...\n`);
-
-  const pages = findPages(BASE);
-  let allQuestions = [];
-
-  for (const page of pages) {
-    const questions = extractQuestions(page);
-    if (questions.length > 0) {
-      const rel = page.replace(BASE + "/", "").replace("/page.tsx", "");
-      console.log(`  ${rel}: ${questions.length} questions`);
-      allQuestions.push(...questions);
-    }
-  }
-
-  console.log(`\nTotal: ${allQuestions.length} questions extracted.`);
+  // Print a 3-doc sample for sanity
+  console.log(`\n--- Sample (first 3 transformed docs) ---`);
+  transformed.slice(0, 3).forEach((t) => {
+    console.log(JSON.stringify({ id: t.id, ...t.doc }, null, 2));
+  });
+  console.log(`--- End sample ---\n`);
 
   if (DRY_RUN) {
-    console.log("\n[DRY RUN] No data written. Sample:");
-    console.log(JSON.stringify(allQuestions.slice(0, 3), null, 2));
+    console.log(`DRY_RUN — no writes. Done.`);
     return;
   }
 
-  await initFirebase();
+  // Fetch existing createdAt values so we don't clobber them
+  const docIds = transformed.map((t) => t.id);
+  console.log(`Fetching existing createdAt values for ${docIds.length} docs...`);
+  const existingCreatedAt = await fetchExistingCreatedAt(docIds);
+  console.log(`Found ${existingCreatedAt.size} existing docs; rest will be fresh creates.`);
 
-  // Write to Firestore in batches of 500
-  console.log("\nWriting to Firestore questionPool collection...");
-  const BATCH_SIZE = 500;
+  // Batch writes (500 per batch — Firestore limit)
+  const now = admin.firestore.FieldValue.serverTimestamp();
+  const colRef = db.collection("questionPool");
+  const batchSize = 500;
   let written = 0;
 
-  for (let i = 0; i < allQuestions.length; i += BATCH_SIZE) {
+  for (let i = 0; i < transformed.length; i += batchSize) {
     const batch = db.batch();
-    const slice = allQuestions.slice(i, i + BATCH_SIZE);
-
-    for (const q of slice) {
-      const ref = db.collection("questionPool").doc();
-      batch.set(ref, q);
+    const slice = transformed.slice(i, i + batchSize);
+    for (const { id, doc } of slice) {
+      const payload = {
+        ...doc,
+        createdAt: existingCreatedAt.get(id) ?? now,
+        updatedAt: now,
+      };
+      batch.set(colRef.doc(id), payload);
     }
-
     await batch.commit();
     written += slice.length;
-    console.log(`  Written ${written}/${allQuestions.length}`);
+    console.log(`  Wrote ${written}/${transformed.length}`);
   }
 
-  console.log(`\nDone! Seeded ${written} questions to questionPool.`);
+  // Per-skill / per-course inventory summary
+  const perCourse = {};
+  const perSkill = {};
+  for (const { doc } of transformed) {
+    perCourse[doc.course] = (perCourse[doc.course] || 0) + 1;
+    const key = `${doc.course}/${doc.skill}`;
+    perSkill[key] = (perSkill[key] || 0) + 1;
+  }
+
+  console.log(`\nSeed complete.`);
+  console.log(`  Total written: ${written}`);
+  console.log(`  Per course:`);
+  for (const [c, n] of Object.entries(perCourse).sort()) {
+    console.log(`    ${c}: ${n}`);
+  }
+  console.log(`  Skills with < 3 questions (thin — flag for spec C):`);
+  for (const [k, n] of Object.entries(perSkill).sort()) {
+    if (n < 3) console.log(`    ⚠  ${k}: ${n}`);
+  }
 }
 
-main().catch(console.error);
+main().catch((e) => {
+  console.error("Seed failed:", e);
+  process.exit(1);
+});
