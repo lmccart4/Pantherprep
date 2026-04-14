@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { GlassCard } from "@/components/ui/glass-card";
 import {
   getTestHistory,
@@ -9,6 +10,7 @@ import {
 } from "@/lib/session-history";
 import type { StoredAnswer } from "@/lib/adaptive/performance-service";
 import { renderMath } from "@/lib/katex-render";
+import { sourceToTaxonomyKey } from "@/lib/skill-mapping";
 
 interface Props {
   uid: string;
@@ -392,9 +394,20 @@ function PastTestDetail({
                 <span>
                   Question {originalIdx + 1} / {answers.length}
                 </span>
-                <span>
-                  {a.domain} · {a.skill}
-                </span>
+                {(() => {
+                  const taxonomyKey = sourceToTaxonomyKey(a.skill);
+                  if (!taxonomyKey) {
+                    return <span>{a.domain} · {a.skill}</span>;
+                  }
+                  return (
+                    <Link
+                      href={`/skills/${a.course}/${taxonomyKey}`}
+                      className="transition hover:text-panther-red"
+                    >
+                      {a.domain} · {a.skill}
+                    </Link>
+                  );
+                })()}
               </div>
 
               <div className="mb-3 text-sm">
