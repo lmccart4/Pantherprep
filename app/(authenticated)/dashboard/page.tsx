@@ -2,12 +2,15 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { TopBar } from "@/components/layout/top-bar";
 import { GlassCard } from "@/components/ui/glass-card";
 import {
   useAdaptiveProfile,
 } from "@/hooks/use-adaptive";
+import { SkillRow } from "@/components/skills/skill-row";
+import { getProfileSkillData, sourceToTaxonomyKey } from "@/lib/skill-mapping";
 import { PastTestsView } from "@/components/dashboard/past-tests-view";
 import {
   MATH_SKILLS,
@@ -107,9 +110,6 @@ export default function DashboardPage() {
 function StudentView({ uid, email, course }: { uid: string; email: string; course: Course }) {
   const { profile, loading, error, refresh } = useAdaptiveProfile(uid);
   const [tab, setTab] = useState<Tab>("overview");
-  const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
-
-  const taxonomy = course.includes("math") ? MATH_SKILLS : RW_SKILLS;
 
   if (loading) {
     return (
@@ -199,14 +199,9 @@ function StudentView({ uid, email, course }: { uid: string; email: string; cours
       </div>
 
       {/* Tab content */}
-      {tab === "overview" && <StudentOverview profile={profile} />}
+      {tab === "overview" && <StudentOverview profile={profile} course={course} />}
       {tab === "skills" && (
-        <StudentSkills
-          profile={profile}
-          taxonomy={taxonomy}
-          selectedDomain={selectedDomain}
-          onSelectDomain={setSelectedDomain}
-        />
+        <StudentSkills profile={profile} course={course} />
       )}
       {tab === "past-tests" && <PastTestsView uid={uid} />}
       {tab === "practice" && <StudentPractice profile={profile} uid={uid} email={email} course={course} />}
@@ -216,7 +211,7 @@ function StudentView({ uid, email, course }: { uid: string; email: string; cours
 
 // ---- Student Overview Tab ----
 
-function StudentOverview({ profile }: { profile: AdaptiveProfile }) {
+function StudentOverview({ profile, course }: { profile: AdaptiveProfile; course: Course }) {
   const { totalAnswers, totalCorrect, streakDays, weeklyStats, recommendations, domains } = profile;
   const overallPct = totalAnswers > 0 ? Math.round((totalCorrect / totalAnswers) * 100) : 0;
 
@@ -290,18 +285,32 @@ function StudentOverview({ profile }: { profile: AdaptiveProfile }) {
         <h3 className="mb-4 text-base font-bold">Recommended Practice</h3>
         {recommendations?.length > 0 ? (
           <div className="flex flex-col gap-2">
-            {recommendations.slice(0, 5).map((rec: any, i: number) => (
-              <div key={i} className={`flex items-center gap-3 rounded-lg border p-3 text-sm ${
-                i === 0 ? "border-panther-red/20 bg-panther-red/5" : "border-border-primary bg-bg-primary"
-              }`}>
-                <span className={`font-bold ${i === 0 ? "text-panther-red" : "text-text-muted"}`}>#{rec.priority}</span>
-                <div className="flex-1">
-                  <span className="font-semibold">{skillLabel(rec.skill)}</span>
-                  <span className="ml-2 text-xs text-text-muted">({rec.domain})</span>
-                </div>
-                <span className="text-xs text-text-muted">{rec.reason}</span>
-              </div>
-            ))}
+            {recommendations.slice(0, 5).map((rec: Recommendation, i: number) => {
+              const taxonomyKey = sourceToTaxonomyKey(rec.skill);
+              const href = taxonomyKey ? `/skills/${course}/${taxonomyKey}` : `/skills/${course}`;
+              return (
+                <Link
+                  key={i}
+                  href={href}
+                  className="flex items-center gap-3 rounded-lg border border-border-primary bg-bg-primary p-3 transition hover:border-panther-red/30"
+                >
+                  <div
+                    className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                      i < 3 ? "bg-panther-red text-white" : "bg-bg-secondary text-text-muted"
+                    }`}
+                  >
+                    {rec.priority}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold">{skillLabel(rec.skill)}</div>
+                    <div className="text-xs text-text-muted">
+                      {rec.domain} &middot; {rec.reason}
+                    </div>
+                  </div>
+                  <span className="text-xs text-text-muted">›</span>
+                </Link>
+              );
+            })}
           </div>
         ) : (
           <p className="text-sm text-text-muted">Complete more practice to get personalized recommendations.</p>
@@ -315,111 +324,55 @@ function StudentOverview({ profile }: { profile: AdaptiveProfile }) {
 
 function StudentSkills({
   profile,
-  taxonomy,
-  selectedDomain,
-  onSelectDomain,
+  course,
 }: {
   profile: AdaptiveProfile;
-  taxonomy: Record<string, string[]>;
-  selectedDomain: string | null;
-  onSelectDomain: (d: string) => void;
+  course: Course;
 }) {
-  const domains = Object.keys(taxonomy);
-  const active = selectedDomain || domains[0];
-  const skills = taxonomy[active] || [];
+  const allSkills = useMemo(() => {
+    const taxonomy: Record<string, string[]> = course.includes("math") ? MATH_SKILLS : RW_SKILLS;
+    const out: Array<{ key: string; data: ReturnType<typeof getProfileSkillData> }> = [];
+    for (const skills of Object.values(taxonomy)) {
+      for (const key of skills as string[]) {
+        out.push({ key, data: getProfileSkillData(profile, key) });
+      }
+    }
+    return out;
+  }, [profile, course]);
+
+  const weakest = useMemo(() => {
+    // Sort by ascending mastery; untested (total=0) treated as weakest (negative infinity sentinel)
+    return [...allSkills]
+      .sort((a, b) => {
+        if (a.data.total === 0 && b.data.total > 0) return -1;
+        if (b.data.total === 0 && a.data.total > 0) return 1;
+        return a.data.mastery - b.data.mastery;
+      })
+      .slice(0, 6);
+  }, [allSkills]);
 
   return (
     <div>
-      <div className="mb-5 flex flex-wrap gap-2">
-        {domains.map((d) => (
-          <button
-            key={d}
-            onClick={() => onSelectDomain(d)}
-            className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
-              d === active
-                ? "bg-panther-red text-white"
-                : "border border-border-primary bg-bg-secondary text-text-muted hover:text-text-secondary"
-            }`}
-          >
-            {d}
-          </button>
-        ))}
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-text-muted">
+          Top skills to focus on
+        </h3>
+        <Link
+          href={`/skills/${course}`}
+          className="text-xs text-panther-red transition hover:text-panther-red/80"
+        >
+          See full catalog →
+        </Link>
       </div>
-
       <div className="flex flex-col gap-2">
-        {skills.map((skillKey) => {
-          const data = profile.skills?.[skillKey];
-          return <SkillRow key={skillKey} skillKey={skillKey} data={data} />;
-        })}
+        {weakest.map(({ key, data }) => (
+          <SkillRow key={key} taxonomyKey={key} data={data} course={course} />
+        ))}
       </div>
     </div>
   );
 }
 
-function SkillRow({ skillKey, data }: { skillKey: string; data: any }) {
-  const [expanded, setExpanded] = useState(false);
-  const mastery = data?.mastery ?? 0;
-  const total = data?.total ?? 0;
-  const correct = data?.correct ?? 0;
-
-  return (
-    <GlassCard className="cursor-pointer !p-3" onClick={() => setExpanded(!expanded)}>
-      <div className="flex items-center gap-3">
-        <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg text-sm font-bold ${masteryBg(mastery)} ${masteryColor(mastery)}`}>
-          {total > 0 ? Math.round(mastery * 100) : "\u2014"}
-        </div>
-        <div className="flex-1">
-          <div className="text-sm font-semibold">{skillLabel(skillKey)}</div>
-          <div className="mt-0.5 text-xs text-text-muted">
-            {total > 0 ? `${correct}/${total} correct` : "No data yet"}
-            {data?.nextReview && ` \u00B7 Review: ${data.nextReview}`}
-          </div>
-        </div>
-        <div className="hidden w-28 sm:block">
-          <div className="h-1.5 overflow-hidden rounded-full bg-border-primary">
-            <div className={`h-full rounded-full ${masteryBarColor(mastery)} transition-all duration-500`} style={{ width: `${mastery * 100}%` }} />
-          </div>
-        </div>
-        <span className="text-xs text-text-muted">{expanded ? "\u25B2" : "\u25BC"}</span>
-      </div>
-
-      {expanded && data && (
-        <div className="mt-3 border-t border-border-primary pt-3">
-          <div className="grid grid-cols-3 gap-3 text-xs">
-            <div>
-              <span className="text-text-muted">SM-2 Ease</span>
-              <div className="mt-0.5 font-semibold">{data.ease?.toFixed(2) ?? "\u2014"}</div>
-            </div>
-            <div>
-              <span className="text-text-muted">Interval</span>
-              <div className="mt-0.5 font-semibold">{data.interval ?? 0} days</div>
-            </div>
-            <div>
-              <span className="text-text-muted">Next Review</span>
-              <div className="mt-0.5 font-semibold">{data.nextReview ?? "\u2014"}</div>
-            </div>
-          </div>
-
-          {data.errorPatterns && Object.values(data.errorPatterns).some((v: any) => v > 0) && (
-            <div className="mt-3">
-              <span className="text-xs text-text-muted">Error Patterns</span>
-              <div className="mt-1.5 flex flex-wrap gap-1.5">
-                {Object.entries(data.errorPatterns)
-                  .filter(([, count]: [string, any]) => count > 0)
-                  .sort((a: any, b: any) => b[1] - a[1])
-                  .map(([cat, count]: [string, any]) => (
-                    <span key={cat} className="rounded-full bg-red-400/10 border border-red-400/20 px-2 py-0.5 text-[11px] text-red-400">
-                      {skillLabel(cat)}: {count}
-                    </span>
-                  ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </GlassCard>
-  );
-}
 
 // ---- Student Practice Tab ----
 
@@ -496,26 +449,32 @@ function StudentPractice({
 
       {recs.length > 0 ? (
         <div className="flex flex-col gap-2">
-          {recs.map((rec: Recommendation, i: number) => (
-            <div
-              key={i}
-              className="flex items-center gap-3 rounded-lg border border-border-primary bg-bg-primary p-3"
-            >
-              <div
-                className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                  i < 3 ? "bg-panther-red text-white" : "bg-bg-secondary text-text-muted"
-                }`}
+          {recs.map((rec: Recommendation, i: number) => {
+            const taxonomyKey = sourceToTaxonomyKey(rec.skill);
+            const href = taxonomyKey ? `/skills/${course}/${taxonomyKey}` : `/skills/${course}`;
+            return (
+              <Link
+                key={i}
+                href={href}
+                className="flex items-center gap-3 rounded-lg border border-border-primary bg-bg-primary p-3 transition hover:border-panther-red/30"
               >
-                {rec.priority}
-              </div>
-              <div className="flex-1">
-                <div className="text-sm font-semibold">{skillLabel(rec.skill)}</div>
-                <div className="text-xs text-text-muted">
-                  {rec.domain} &middot; {rec.reason}
+                <div
+                  className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                    i < 3 ? "bg-panther-red text-white" : "bg-bg-secondary text-text-muted"
+                  }`}
+                >
+                  {rec.priority}
                 </div>
-              </div>
-            </div>
-          ))}
+                <div className="flex-1">
+                  <div className="text-sm font-semibold">{skillLabel(rec.skill)}</div>
+                  <div className="text-xs text-text-muted">
+                    {rec.domain} &middot; {rec.reason}
+                  </div>
+                </div>
+                <span className="text-xs text-text-muted">›</span>
+              </Link>
+            );
+          })}
         </div>
       ) : (
         <p className="text-sm text-text-muted">
