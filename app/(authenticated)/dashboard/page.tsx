@@ -15,7 +15,9 @@ import {
   skillLabel,
 } from "@/lib/adaptive/adaptive-engine";
 import { getAllAdaptiveProfiles } from "@/lib/adaptive/performance-service";
-import type { AdaptiveProfile } from "@/lib/adaptive/performance-service";
+import type { AdaptiveProfile, Recommendation } from "@/lib/adaptive/performance-service";
+import { PracticeRunner } from "@/components/practice/practice-runner";
+import { getAdaptivePracticeSet, type PracticeBatch } from "@/lib/practice-question-source";
 import { getTeacherClasses } from "@/lib/firestore";
 
 type Course = "sat-math" | "sat-rw" | "nmsqt-math" | "nmsqt-rw" | "psat89-math" | "psat89-rw";
@@ -91,7 +93,7 @@ export default function DashboardPage() {
         {role === "teacher" ? (
           <TeacherView course={course} />
         ) : (
-          <StudentView uid={user.uid} course={course} />
+          <StudentView uid={user.uid} email={user.email ?? ""} course={course} />
         )}
       </div>
     </div>
@@ -102,7 +104,7 @@ export default function DashboardPage() {
 // STUDENT VIEW
 // ============================================================
 
-function StudentView({ uid, course }: { uid: string; course: Course }) {
+function StudentView({ uid, email, course }: { uid: string; email: string; course: Course }) {
   const { profile, loading, error, refresh } = useAdaptiveProfile(uid);
   const [tab, setTab] = useState<Tab>("overview");
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
@@ -207,7 +209,7 @@ function StudentView({ uid, course }: { uid: string; course: Course }) {
         />
       )}
       {tab === "past-tests" && <PastTestsView uid={uid} />}
-      {tab === "practice" && <StudentPractice profile={profile} />}
+      {tab === "practice" && <StudentPractice profile={profile} uid={uid} email={email} course={course} />}
     </div>
   );
 }
@@ -421,8 +423,69 @@ function SkillRow({ skillKey, data }: { skillKey: string; data: any }) {
 
 // ---- Student Practice Tab ----
 
-function StudentPractice({ profile }: { profile: AdaptiveProfile }) {
+function StudentPractice({
+  profile,
+  uid,
+  email,
+  course,
+}: {
+  profile: AdaptiveProfile;
+  uid: string;
+  email: string;
+  course: Course;
+}) {
   const recs = profile?.recommendations || [];
+  const [launching, setLaunching] = useState(false);
+  const [session, setSession] = useState<PracticeBatch | null>(null);
+  const [excludeIds, setExcludeIds] = useState<string[]>([]);
+
+  const launchAdaptive = async () => {
+    setLaunching(true);
+    try {
+      const batch = await getAdaptivePracticeSet(uid, course, 15);
+      if (batch.questions.length === 0) {
+        setLaunching(false);
+        return;
+      }
+      setSession(batch);
+    } finally {
+      setLaunching(false);
+    }
+  };
+
+  const handlePracticeAgain = async () => {
+    const newExclude = session
+      ? [...excludeIds, ...session.questions.map((q) => q.id)]
+      : excludeIds;
+    setExcludeIds(newExclude);
+    setLaunching(true);
+    try {
+      const batch = await getAdaptivePracticeSet(uid, course, 15);
+      setSession(batch);
+    } finally {
+      setLaunching(false);
+    }
+  };
+
+  const handleExit = () => {
+    setSession(null);
+  };
+
+  // If a session is active, render the runner in place of the plan
+  if (session) {
+    return (
+      <PracticeRunner
+        uid={uid}
+        email={email}
+        course={course}
+        testType={`${course}-adaptive-practice`}
+        questions={session.questions}
+        fallbackNotes={session.fallbackNotes}
+        onExit={handleExit}
+        onPracticeAgain={handlePracticeAgain}
+      />
+    );
+  }
 
   return (
     <GlassCard>
@@ -433,29 +496,44 @@ function StudentPractice({ profile }: { profile: AdaptiveProfile }) {
 
       {recs.length > 0 ? (
         <div className="flex flex-col gap-2">
-          {recs.map((rec: any, i: number) => (
-            <div key={i} className="flex items-center gap-3 rounded-lg border border-border-primary bg-bg-primary p-3">
-              <div className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                i < 3 ? "bg-panther-red text-white" : "bg-bg-secondary text-text-muted"
-              }`}>
+          {recs.map((rec: Recommendation, i: number) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 rounded-lg border border-border-primary bg-bg-primary p-3"
+            >
+              <div
+                className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                  i < 3 ? "bg-panther-red text-white" : "bg-bg-secondary text-text-muted"
+                }`}
+              >
                 {rec.priority}
               </div>
               <div className="flex-1">
                 <div className="text-sm font-semibold">{skillLabel(rec.skill)}</div>
-                <div className="text-xs text-text-muted">{rec.domain} &middot; {rec.reason}</div>
+                <div className="text-xs text-text-muted">
+                  {rec.domain} &middot; {rec.reason}
+                </div>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-sm text-text-muted">Complete some modules to generate recommendations.</p>
+        <p className="text-sm text-text-muted">
+          Complete some modules to generate recommendations.
+        </p>
       )}
 
       <button
-        disabled={recs.length === 0}
+        onClick={launchAdaptive}
+        disabled={recs.length === 0 || launching}
         className="mt-5 w-full rounded-lg bg-panther-red py-3.5 text-sm font-bold text-white transition hover:bg-panther-red/90 disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        Launch Adaptive Practice ({recs.reduce((s: number, r: any) => s + (r.questionCount || 0), 0)} questions)
+        {launching
+          ? "Loading..."
+          : `Launch Adaptive Practice (${recs.reduce(
+              (s: number, r: Recommendation) => s + (r.questionCount || 0),
+              0
+            )} questions)`}
       </button>
     </GlassCard>
   );
