@@ -460,7 +460,7 @@ function StudentPractice({
     setExcludeIds(newExclude);
     setLaunching(true);
     try {
-      const batch = await getAdaptivePracticeSet(uid, course, 15);
+      const batch = await getAdaptivePracticeSet(uid, course, 15, { excludeIds: newExclude });
       setSession(batch);
     } finally {
       setLaunching(false);

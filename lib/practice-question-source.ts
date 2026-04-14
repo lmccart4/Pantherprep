@@ -91,11 +91,18 @@ export async function getQuestionsBySkill(
 export async function getAdaptivePracticeSet(
   uid: string,
   course: string,
-  count: number = 15
+  count: number = 15,
+  opts: { excludeIds?: string[] } = {}
 ): Promise<PracticeBatch> {
-  const set = await generatePracticeSet(uid, course, count);
+  // Over-fetch so we can filter excluded ids and still hit the target count.
+  const overFetch = opts.excludeIds && opts.excludeIds.length > 0 ? count * 2 : count;
+  const set = await generatePracticeSet(uid, course, overFetch);
+  const excludeSet = new Set(opts.excludeIds ?? []);
+  const filtered = (set.questions ?? []).filter(
+    (q) => !excludeSet.has(q.sourceId)
+  );
   return {
-    questions: (set.questions ?? []).map(toQuestion),
+    questions: filtered.slice(0, count).map(toQuestion),
     fallbackNotes: [],
   };
 }
