@@ -319,6 +319,7 @@ export async function getQuestions(criteria: {
   skill?: string;
   difficulty?: string;
   limit?: number;
+  excludeIds?: string[];  // filtered client-side after fetch
 }): Promise<PoolQuestion[]> {
   try {
     const constraints = [where("course", "==", criteria.course)];
@@ -332,7 +333,16 @@ export async function getQuestions(criteria: {
       limit(criteria.limit || 50)
     );
     const snap = await getDocs(q);
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as PoolQuestion));
+    let results = snap.docs.map(
+      (d) => ({ id: d.id, ...d.data() } as unknown as PoolQuestion)
+    );
+
+    if (criteria.excludeIds && criteria.excludeIds.length > 0) {
+      const excludeSet = new Set(criteria.excludeIds);
+      results = results.filter((q) => !excludeSet.has(q.sourceId));
+    }
+
+    return results;
   } catch (e) {
     console.warn("getQuestions error:", e);
     return [];
