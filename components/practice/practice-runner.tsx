@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { QuestionCard } from "@/components/test/question-card";
+import { PracticeResultsCard } from "./practice-results-card";
 import { saveProgress, loadProgress } from "@/lib/firestore";
 import { completeTestSession, type CompleteTestResult } from "@/lib/test-persistence";
 import type { Question } from "@/types/question";
@@ -204,9 +205,6 @@ export function PracticeRunner(props: PracticeRunnerProps) {
   const isLocked = !!submitted[currentQ];
   const hasAnswer = answers[currentQ] != null && answers[currentQ] !== "";
 
-  const correctCount = questions.filter((qq, i) => isCorrect(qq, answers[i])).length;
-  const total = questions.length;
-
   // ============================================================
   // LANDING SCREEN
   // ============================================================
@@ -332,39 +330,20 @@ export function PracticeRunner(props: PracticeRunnerProps) {
   }
 
   // ============================================================
-  // RESULTS SCREEN (stub — replaced by Task 6)
+  // RESULTS SCREEN
   // ============================================================
   if (screen === "results") {
+    const timeSpent = Math.round((Date.now() - startTimeRef.current) / 1000);
     return (
-      <GlassCard className="mx-auto max-w-xl text-center">
-        <h2 className="mb-2 font-display text-3xl text-white">
-          {correctCount}/{total}
-        </h2>
-        <p className="mb-5 text-sm text-text-muted">
-          {total > 0 ? Math.round((correctCount / total) * 100) : 0}% correct
-        </p>
-        {saveError && (
-          <p className="mb-4 text-xs text-red-400">
-            Your score couldn&apos;t be saved. Please try again later.
-          </p>
-        )}
-        <div className="flex justify-center gap-3">
-          {onPracticeAgain && (
-            <button
-              onClick={onPracticeAgain}
-              className="rounded-radius-md bg-panther-red px-5 py-2.5 text-sm font-semibold text-white"
-            >
-              Practice again
-            </button>
-          )}
-          <button
-            onClick={onExit}
-            className="rounded-radius-md border border-border-default px-5 py-2.5 text-sm text-text-secondary"
-          >
-            Back
-          </button>
-        </div>
-      </GlassCard>
+      <PracticeResultsCard
+        questions={questions}
+        answers={answers}
+        timeSpent={timeSpent}
+        saveError={saveError}
+        fallbackNotes={fallbackNotes}
+        onPracticeAgain={onPracticeAgain}
+        onExit={onExit}
+      />
     );
   }
 
