@@ -66,6 +66,11 @@ function validateQuestion(q, filename, idx) {
       if (JSON.stringify(keys) !== JSON.stringify(["A", "B", "C", "D"])) {
         errors.push(`mc choice keys must be [A,B,C,D] in order`);
       }
+      q.choices.forEach((c, i) => {
+        if (typeof c.text !== "string" || c.text.trim() === "") {
+          errors.push(`choices[${i}] missing or empty text`);
+        }
+      });
       if (!["A", "B", "C", "D"].includes(q.correctAnswer)) {
         errors.push(`mc correctAnswer must be A|B|C|D (got "${q.correctAnswer}")`);
       }
@@ -169,15 +174,27 @@ async function main() {
   let written = 0;
   let skipped = 0;
 
-  // Filter out already-existing first, then batch the remainder
+  // Filter out already-existing first, then batch the remainder.
+  // Also dedup within this run — parallel subagents can produce duplicate
+  // (course, skill, stem) tuples that aren't yet in Firestore.
   const toWrite = [];
+  const seenThisRun = new Set();
+  let intraRunDupes = 0;
   for (const { q } of validQuestions) {
     const key = `${q.course}|${q.skill}|${q.stem}`;
     if (existingKeys.has(key)) {
       skipped += 1;
       continue;
     }
+    if (seenThisRun.has(key)) {
+      intraRunDupes += 1;
+      continue;
+    }
+    seenThisRun.add(key);
     toWrite.push(q);
+  }
+  if (intraRunDupes > 0) {
+    console.log(`Skipped ${intraRunDupes} intra-run duplicates.`);
   }
 
   for (let i = 0; i < toWrite.length; i += BATCH_SIZE) {
