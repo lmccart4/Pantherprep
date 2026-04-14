@@ -283,19 +283,34 @@ export async function getAllAdaptiveProfiles(uids?: string[]): Promise<AdaptiveP
 // ============================================================
 
 export interface PoolQuestion {
-  id: string;
-  course: string;
-  moduleId: string;
-  domain: string;
-  skill: string;
+  // Identity — Firestore doc id = `${sourceTestType}__${sourceId}`
+  sourceTestType: string;  // "sat-math-diagnostic" | "sat-practice" | etc.
+  sourceId: string;        // original id from questions.ts (e.g. "diag-sat-math-1")
+
+  // Routing / grouping
+  course: string;          // "sat-math" | "sat-rw" | "nmsqt-math" | ...
+  testType: "sat" | "nmsqt" | "psat89";
+  section: "math" | "rw";
+  domain: string;          // must match a key in MATH_SKILLS / RW_SKILLS
+  skill: string;           // snake_case taxonomy key
+  sourceSkill: string;     // original human label from the source question
   difficulty: "F" | "M" | "C";
-  questionText: string;
-  choices: { key: string; text: string }[];
+  module?: number;         // 1 or 2 when the source identifies a module
+
+  // Content
+  type: "mc" | "spr";
+  passage?: string;        // R&W passage text, omitted for math
+  stem: string;
+  choices: { key: string; text: string }[];  // empty for spr
   correctAnswer: string;
   explanation: string;
-  trapType?: string | null;
-  tags?: string[];
-  katex?: boolean;
+  explanations?: Record<string, string>;  // per-choice explanations when present
+
+  // Metadata
+  tags?: string[];         // ["diagnostic"] | ["practice-test"]
+  katex: boolean;          // true when stem/explanation contains `$...$`
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
 }
 
 export async function getQuestions(criteria: {
@@ -317,7 +332,7 @@ export async function getQuestions(criteria: {
       limit(criteria.limit || 50)
     );
     const snap = await getDocs(q);
-    return snap.docs.map((d) => ({ id: d.id, ...d.data() } as PoolQuestion));
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as PoolQuestion));
   } catch (e) {
     console.warn("getQuestions error:", e);
     return [];
