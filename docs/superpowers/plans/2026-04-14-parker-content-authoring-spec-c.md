@@ -151,7 +151,7 @@ Tests simple and compound probability, including "with replacement" vs. "without
 Tests solving quadratics by factoring, completing the square, and the quadratic formula. Covers the relationship between roots, vertex, axis of symmetry, and discriminant. Questions ask for real solutions, the number of real solutions, or the vertex of a parabola given its equation.
 
 ### quadratic_formula
-Tests applied use of $x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$, especially when factoring doesn't work cleanly. Questions give a quadratic in standard form and ask for exact solutions or the sum/product of roots. Trap: sign errors on $b$ when the coefficient is negative.
+Tests applied use of $x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$, especially when factoring doesn't work cleanly. Questions give a quadratic in standard form and ask for exact solutions or the sum/product of roots. Trap: sign errors on $b$ when the coefficient is negative.
 
 ### radical_equations
 Tests solving equations with square roots, cube roots, or rational exponents. Key technique: isolate the radical, square both sides, solve the resulting polynomial, and *check for extraneous solutions*. Questions always include at least one case where squaring introduces a false solution.
