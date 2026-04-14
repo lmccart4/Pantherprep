@@ -1,0 +1,27 @@
+[
+  {
+    "originalIndex": 17,
+    "original": {
+      "course": "psat89-math",
+      "testType": "psat89",
+      "section": "math",
+      "domain": "Algebra",
+      "skill": "linear_equations",
+      "sourceSkill": "Linear equations in one variable",
+      "difficulty": "C",
+      "type": "mc",
+      "stem": "If $3(2x - 1) - 4(x + 2) = 5x - 20$, what is the value of $x$?",
+      "choices": [
+        { "key": "A", "text": "$-11$" },
+        { "key": "B", "text": "9" },
+        { "key": "C", "text": "$-9$" },
+        { "key": "D", "text": "11" }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Expand: $6x - 3 - 4x - 8 = 5x - 20$, giving $2x - 11 = 5x - 20$. Subtract $2x$: $-11 = 3x - 20$, so $3x = 9$ and $x = 9$.",
+      "katex": true,
+      "tags": ["parker-gen-2026-04-14"]
+    },
+    "reason": "Incorrect answer. Solving 3(2x-1) - 4(x+2) = 5x - 20 gives 2x - 11 = 5x - 20, then 9 = 3x, so x = 3. The stated correct answer 'B' (9) is wrong, the explanation contains a false arithmetic step (3x=9 → x=9 instead of x=3), and the actual correct value (3) does not appear among the four choices. Not fixable without rewriting the question."
+  }
+]

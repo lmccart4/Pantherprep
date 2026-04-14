@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "statistics_spread",
+  "skillLabel": "Measures of spread",
+  "domain": "Problem Solving and Data Analysis",
+  "conceptBlurb": "Spread tells you how stretched out a data set is. The three measures the SAT cares about are range, standard deviation, and interquartile range (IQR). You won't have to compute standard deviation — you just need to reason about it. The big idea: range and standard deviation get pulled around by outliers, while IQR does not.",
+  "conceptExplanation": "Three measures of spread show up on the SAT. You need to know what each one does and — more importantly — how outliers affect them.\n\n**Range** is the simplest: $\\text{range} = \\max - \\min$. It only uses the two most extreme values, so one weird point can completely change it.\n\n**Standard deviation (SD)** measures the typical distance from the mean. You will not compute it on the SAT. What you need: a data set where points are bunched close to the mean has a *small* SD, and a data set where points are spread far from the mean has a *large* SD. Two sets with the same mean can have very different SDs.\n\n**Interquartile range (IQR)** is $Q_3 - Q_1$ — the spread of the middle 50% of the data. Because it ignores the top and bottom 25%, it doesn't care about extreme values at all.\n\n**Outlier behavior** is the whole game:\n\n- Removing an outlier almost always *decreases* range and standard deviation.\n- Removing an outlier usually does *not* change IQR much, because the outlier sits outside $Q_1$ and $Q_3$ anyway.\n- Adding an extreme value *increases* range and SD but leaves IQR roughly alone.\n\nThat's why the SAT describes IQR as *resistant* to outliers and SD/range as *sensitive* to outliers.\n\n**Comparing two data sets.** When a question shows two dot plots or histograms with the same mean, the one where dots cluster tightly near the center has the smaller SD. The one where dots fan out to the edges has the larger SD. You can eyeball it — no calculation required.\n\nQuick sanity check: if a question asks which measure is *least affected* by an outlier, the answer is IQR. If it asks which is *most affected*, pick range or SD.",
+  "workedExamples": [
+    {
+      "prompt": "Data set A: {10, 11, 12, 13, 14}. Data set B: {2, 8, 12, 16, 22}. Both have a mean of 12. Which set has the larger standard deviation?",
+      "steps": [
+        "Both sets have mean $\\bar{x} = 12$, so SD only depends on how far each value sits from 12.",
+        "In set A, values range from 10 to 14 — at most 2 away from the mean. Tight cluster.",
+        "In set B, values range from 2 to 22 — up to 10 away from the mean. Much more spread.",
+        "Larger typical distance from the mean means larger standard deviation."
+      ],
+      "answer": "Set B has the larger standard deviation.",
+      "takeaway": "Same mean, different spread. SD is about distance from the mean, not the mean itself."
+    },
+    {
+      "prompt": "A data set is {4, 5, 6, 7, 8, 9, 42}. The value 42 is removed. Which statistics change the most: range, standard deviation, or IQR?",
+      "steps": [
+        "Original range: $42 - 4 = 38$. After removing 42: $9 - 4 = 5$. Range drops hard.",
+        "Standard deviation: 42 was far from the mean, so it contributed a huge squared distance. Removing it shrinks SD a lot.",
+        "IQR uses $Q_1$ and $Q_3$ — the middle of the data. The outlier 42 sits above $Q_3$, so the quartiles barely move. IQR changes very little.",
+        "Range and SD change a lot; IQR stays nearly the same."
+      ],
+      "answer": "Range and standard deviation change the most. IQR is barely affected.",
+      "takeaway": "Outliers hammer range and SD. IQR is resistant because it ignores the tails."
+    },
+    {
+      "prompt": "Two classes take the same test. Class 1 scores cluster tightly between 78 and 86. Class 2 scores are spread out from 55 to 100. Both classes have the same median. Which class has a larger IQR?",
+      "steps": [
+        "IQR is the spread of the middle 50%. It's not about the extremes — it's about how wide the middle chunk is.",
+        "Class 1's entire range is already narrow (78 to 86), so the middle 50% must be even narrower. Small IQR.",
+        "Class 2's scores span 55 to 100. Even ignoring the top and bottom 25%, the middle 50% is wider than Class 1's entire data set.",
+        "So Class 2's middle 50% is wider — larger IQR."
+      ],
+      "answer": "Class 2 has the larger IQR.",
+      "takeaway": "Wider overall spread usually means wider IQR too — but the point is IQR measures the middle, not the extremes."
+    }
+  ],
+  "hintTemplates": [
+    "Ask yourself: does the question involve an outlier? If yes, remember that range and standard deviation react to outliers, but IQR doesn't.",
+    "You never have to compute standard deviation on the SAT. Just compare how tightly the data clusters around the mean — tighter cluster means smaller SD.",
+    "IQR = $Q_3 - Q_1$, the middle 50% of the data. If the question asks which measure is least affected by extreme values, IQR is almost always the answer."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

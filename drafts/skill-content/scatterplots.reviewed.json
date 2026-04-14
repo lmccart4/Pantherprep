@@ -1,0 +1,47 @@
+{
+  "taxonomyKey": "scatterplots",
+  "skillLabel": "Scatterplots",
+  "domain": "Problem Solving and Data Analysis",
+  "conceptBlurb": "A scatterplot is a graph of ordered pairs $(x, y)$ where each dot is one data point. The overall pattern of the dots tells you the correlation: positive (dots rise left to right), negative (dots fall left to right), or none (dots look random). If the dots hug a line, the correlation is strong; if they spread out, it's weak. A line of best fit runs through the middle of the cloud and lets you predict a $y$ value for any $x$.",
+  "conceptExplanation": "### What a scatterplot shows\n\nEach dot is one observation: an $x$ (input) and a $y$ (output). You're looking at the **shape** of the cloud, not any single point.\n\n### Correlation: direction + strength\n\n- **Positive correlation** — as $x$ increases, $y$ increases. Dots go up from left to right.\n- **Negative correlation** — as $x$ increases, $y$ decreases. Dots go down from left to right.\n- **No correlation** — dots look like a random blob.\n\nStrength is about how tightly the dots hug an imaginary line. Tight = strong. Spread out = weak.\n\n### Line of best fit\n\nA line of best fit (aka regression line or trend line) is the straight line that comes closest to all the dots at once. On the SAT you'll:\n\n1. **Estimate $y$ from $x$** — find $x$ on the horizontal axis, go up to the line, read $y$ off the vertical axis.\n2. **Pick the best line** — the correct line passes through the middle of the cloud with roughly equal numbers of dots above and below.\n3. **Read the slope and intercept** — if the line passes through $(0, 4)$ and $(2, 10)$, then slope $= \\frac{10 - 4}{2 - 0} = 3$ and the equation is $y = 3x + 4$.\n\n### Traps to avoid\n\n- Don't confuse correlation with causation. A strong trend doesn't prove $x$ causes $y$.\n- Don't chase outliers. The best-fit line ignores lone weird points — it follows the main cloud.\n- Don't extrapolate wildly. Predictions outside the data range (way past the last dot) get unreliable fast.\n- Read the axes. If the $x$-axis jumps by 5 and the $y$-axis by 100, the slope numbers will look huge.\n\n### Quick checklist\n\n- Direction? (up, down, flat)\n- Strength? (tight vs. spread)\n- Equation? Use two clean points on the line: $m = \\frac{y_2 - y_1}{x_2 - x_1}$, then $b$ from $y = mx + b$.",
+  "workedExamples": [
+    {
+      "prompt": "A scatterplot shows hours studied ($x$) vs. test score ($y$) for 20 students. The points cluster tightly around a line passing through $(0, 50)$ and $(5, 80)$. Based on the line of best fit, what test score is predicted for a student who studies 8 hours?",
+      "steps": [
+        "Find the slope using the two given points: $m = \\frac{80 - 50}{5 - 0} = \\frac{30}{5} = 6$.",
+        "The $y$-intercept is $50$ (the line passes through $(0, 50)$), so the line is $y = 6x + 50$.",
+        "Plug in $x = 8$: $y = 6(8) + 50 = 48 + 50 = 98$."
+      ],
+      "answer": "98",
+      "takeaway": "Grab two clean points on the line, compute slope, then plug in the $x$ you want."
+    },
+    {
+      "prompt": "A scatterplot shows 15 data points scattered in a loose cloud. As $x$ goes from 1 to 10, the $y$ values drift from around 20 down to around 12, but with lots of spread — some points sit 5 above or below where you'd expect. Which best describes the correlation?",
+      "steps": [
+        "Check direction: $y$ decreases as $x$ increases, so the correlation is negative.",
+        "Check strength: the points are spread out (5 units above or below the trend), so the fit is loose — this is a weak correlation.",
+        "Combine: weak negative."
+      ],
+      "answer": "Weak negative correlation",
+      "takeaway": "Direction comes from the trend; strength comes from how tight the cloud is around that trend."
+    },
+    {
+      "prompt": "A scatterplot of temperature (°F) vs. ice cream sales (dollars) has points clustered around a line passing through $(60, 100)$ and $(80, 300)$. Using the line of best fit, estimate the sales when the temperature is 70 °F.",
+      "steps": [
+        "Slope: $m = \\frac{300 - 100}{80 - 60} = \\frac{200}{20} = 10$.",
+        "Use point-slope with $(60, 100)$: $y - 100 = 10(x - 60)$, so $y = 10x - 500$.",
+        "Plug in $x = 70$: $y = 10(70) - 500 = 700 - 500 = 200$."
+      ],
+      "answer": "$200",
+      "takeaway": "When the two known points don't include $x = 0$, use point-slope or just plug the target $x$ into $y = mx + b$ after solving for $b$."
+    }
+  ],
+  "hintTemplates": [
+    "Pick two clean points on the line of best fit, then compute slope with $m = \\frac{y_2 - y_1}{x_2 - x_1}$.",
+    "Direction (positive/negative) comes from whether the cloud trends up or down. Strength (weak/strong) comes from how tightly the points hug that trend.",
+    "To predict a $y$ value, find your $x$ on the horizontal axis, go up to the line, then read straight across to the vertical axis — or plug $x$ into $y = mx + b$."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

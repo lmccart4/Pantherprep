@@ -1,0 +1,668 @@
+[
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "In the function $f(x) = 7 \\cdot 3^x$, what is the initial value (the value when $x = 0$)?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$0$"
+      },
+      {
+        "key": "B",
+        "text": "$3$"
+      },
+      {
+        "key": "C",
+        "text": "$21$"
+      },
+      {
+        "key": "D",
+        "text": "$7$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "At $x = 0$, $3^0 = 1$, so $f(0) = 7 \\cdot 1 = 7$. The coefficient $a$ in $a \\cdot b^x$ is always the initial value.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "Which function represents exponential decay?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$y = 12(1.4)^x$"
+      },
+      {
+        "key": "B",
+        "text": "$y = 12(0.8)^x$"
+      },
+      {
+        "key": "C",
+        "text": "$y = 12 + 0.8x$"
+      },
+      {
+        "key": "D",
+        "text": "$y = 12x^{0.8}$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Exponential decay requires the base $b$ to satisfy $0 < b < 1$. Only $0.8$ meets that condition.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A colony of bacteria triples every day. If there are $40$ bacteria now, which expression gives the count after $d$ days?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$40 \\cdot d^3$"
+      },
+      {
+        "key": "B",
+        "text": "$40 \\cdot 3^d$"
+      },
+      {
+        "key": "C",
+        "text": "$40 + 3d$"
+      },
+      {
+        "key": "D",
+        "text": "$3 \\cdot 40^d$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Multiplying by $3$ once per day gives $40 \\cdot 3^d$. The initial value stays as the coefficient; the growth factor sits under the exponent.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "What is the value of $f(2)$ if $f(x) = 5 \\cdot 4^x$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$40$"
+      },
+      {
+        "key": "B",
+        "text": "$80$"
+      },
+      {
+        "key": "C",
+        "text": "$100$"
+      },
+      {
+        "key": "D",
+        "text": "$400$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "$f(2) = 5 \\cdot 4^2 = 5 \\cdot 16 = 80$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A car's value is modeled by $V(t) = 18000(0.85)^t$, where $t$ is years since purchase. By what percent does the value decrease each year?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$8.5\\%$"
+      },
+      {
+        "key": "B",
+        "text": "$18\\%$"
+      },
+      {
+        "key": "C",
+        "text": "$15\\%$"
+      },
+      {
+        "key": "D",
+        "text": "$85\\%$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "For decay $y = a(1 - r)^t$, the base $0.85 = 1 - 0.15$, so the yearly decrease is $15\\%$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "The number of subscribers to a newsletter grows by $10\\%$ per month. If there are currently $600$ subscribers, which function models the subscribers after $m$ months?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$S(m) = 600(0.10)^m$"
+      },
+      {
+        "key": "B",
+        "text": "$S(m) = 600(0.90)^m$"
+      },
+      {
+        "key": "C",
+        "text": "$S(m) = 600 + 10m$"
+      },
+      {
+        "key": "D",
+        "text": "$S(m) = 600(1.10)^m$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Growth by $10\\%$ means multiplying by $1 + 0.10 = 1.10$ each month. The classic trap is using $0.10$ instead of $1.10$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "Which of the following best describes $g(x) = 100 \\cdot 2^x$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Linear with slope $2$"
+      },
+      {
+        "key": "B",
+        "text": "Linear with slope $100$"
+      },
+      {
+        "key": "C",
+        "text": "Exponential growth"
+      },
+      {
+        "key": "D",
+        "text": "Exponential decay"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "The base $b = 2 > 1$ with positive coefficient $a = 100$, so $g$ is exponential growth.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "F",
+    "type": "spr",
+    "stem": "If $h(x) = 2 \\cdot 5^x$, what is $h(3)$?",
+    "choices": [],
+    "correctAnswer": "250",
+    "explanation": "$h(3) = 2 \\cdot 5^3 = 2 \\cdot 125 = 250$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A radioactive sample contains $800$ grams and loses half its mass every $6$ years. How many grams remain after $18$ years?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$50$"
+      },
+      {
+        "key": "B",
+        "text": "$200$"
+      },
+      {
+        "key": "C",
+        "text": "$400$"
+      },
+      {
+        "key": "D",
+        "text": "$100$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "In $18$ years there are $18/6 = 3$ half-lives, so the mass becomes $800 \\cdot (1/2)^3 = 800/8 = 100$ grams.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A deposit of $\\$1{,}200$ earns $4\\%$ interest compounded annually. Which expression gives the balance after $t$ years?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$1200(1 + 0.04t)$"
+      },
+      {
+        "key": "B",
+        "text": "$1200(0.04)^t$"
+      },
+      {
+        "key": "C",
+        "text": "$1200(4)^t$"
+      },
+      {
+        "key": "D",
+        "text": "$1200(1.04)^t$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Annual compounding multiplies by $1 + r = 1.04$ each year, giving $1200(1.04)^t$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A town's population is modeled by $P(t) = 5000(1.02)^t$, where $t$ is years from today. Which statement is true?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "The population grows by $2$ people each year."
+      },
+      {
+        "key": "B",
+        "text": "The population grows by $2\\%$ each year."
+      },
+      {
+        "key": "C",
+        "text": "The population doubles every $2$ years."
+      },
+      {
+        "key": "D",
+        "text": "The population grows by $20\\%$ each year."
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "The growth factor $1.02 = 1 + 0.02$, so the population increases $2\\%$ per year — not $2$ people, not $20\\%$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "An investment of $\\$2{,}000$ doubles every $7$ years. Which expression represents its value after $21$ years?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$2000 \\cdot 2^{3}$"
+      },
+      {
+        "key": "B",
+        "text": "$2000 \\cdot 2^{21}$"
+      },
+      {
+        "key": "C",
+        "text": "$2000 \\cdot 3^{7}$"
+      },
+      {
+        "key": "D",
+        "text": "$2000 \\cdot 7^{3}$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "$21$ years contains $21/7 = 3$ doubling periods, so the value is $2000 \\cdot 2^3 = 16000$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A certain medicine decays in the bloodstream so that $25\\%$ is eliminated each hour. If the initial dose is $80$ mg, which function gives the amount remaining after $h$ hours?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$A(h) = 80(0.75)^h$"
+      },
+      {
+        "key": "B",
+        "text": "$A(h) = 80(0.25)^h$"
+      },
+      {
+        "key": "C",
+        "text": "$A(h) = 80(1.25)^h$"
+      },
+      {
+        "key": "D",
+        "text": "$A(h) = 80 - 0.25h$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "If $25\\%$ is removed, $75\\%$ remains each hour, so the base is $1 - 0.25 = 0.75$. Using $0.25$ would model what leaves, not what remains.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "The function $f(x) = a \\cdot b^x$ passes through $(0, 12)$ and $(1, 18)$. What is $b$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$1.2$"
+      },
+      {
+        "key": "B",
+        "text": "$\\dfrac{2}{3}$"
+      },
+      {
+        "key": "C",
+        "text": "$1.5$"
+      },
+      {
+        "key": "D",
+        "text": "$6$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "From $(0,12)$, $a = 12$. Then $12b = 18$, so $b = 18/12 = 1.5$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A plant's height in centimeters is given by $H(w) = 4(1.25)^w$, where $w$ is weeks after planting. Which of the following is the height, in cm, when $w = 2$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$6.25$"
+      },
+      {
+        "key": "B",
+        "text": "$5$"
+      },
+      {
+        "key": "C",
+        "text": "$25$"
+      },
+      {
+        "key": "D",
+        "text": "$10$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "$H(2) = 4 \\cdot (1.25)^2 = 4 \\cdot 1.5625 = 6.25$ cm.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "M",
+    "type": "spr",
+    "stem": "A rare coin is worth $\\$150$ and its value increases by $20\\%$ each year. What will the value be, in dollars, after $2$ years?",
+    "choices": [],
+    "correctAnswer": "216",
+    "explanation": "Value $= 150(1.20)^2 = 150 \\cdot 1.44 = 216$ dollars.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A bacteria culture grows according to $N(t) = 250(1.08)^{t}$, where $t$ is measured in hours. Which function gives the number of bacteria $d$ days after the start?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$N(d) = 250(1.08)^{d}$"
+      },
+      {
+        "key": "B",
+        "text": "$N(d) = 250(1.08 \\cdot d)^{24}$"
+      },
+      {
+        "key": "C",
+        "text": "$N(d) = 250(24 \\cdot 1.08)^d$"
+      },
+      {
+        "key": "D",
+        "text": "$N(d) = 250(1.08)^{24d}$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Each day contains $24$ hours, so replacing $t$ with $24d$ gives $250(1.08)^{24d}$. Only the exponent is rescaled, not the base.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "The function $f(x) = a \\cdot b^x$ satisfies $f(2) = 45$ and $f(4) = 405$. What is the value of $a$?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$3$"
+      },
+      {
+        "key": "B",
+        "text": "$9$"
+      },
+      {
+        "key": "C",
+        "text": "$5$"
+      },
+      {
+        "key": "D",
+        "text": "$15$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Dividing gives $b^2 = 405/45 = 9$, so $b = 3$. Then $a \\cdot 3^2 = 45$, so $a = 5$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "The population of a species of fish in a lake is modeled by $P(t) = 320(1.15)^t$, where $t$ is the number of years since $2020$. Based on this model, what is the predicted population in the year $2024$, rounded to the nearest whole fish?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$480$"
+      },
+      {
+        "key": "B",
+        "text": "$368$"
+      },
+      {
+        "key": "C",
+        "text": "$560$"
+      },
+      {
+        "key": "D",
+        "text": "$736$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "From $2020$ to $2024$ is $t = 4$ years, so $P(4) = 320(1.15)^4 = 320 \\cdot 1.74900625 \\approx 559.68$, which rounds to $560$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "psat89-math",
+    "testType": "psat89",
+    "section": "math",
+    "domain": "Advanced Math",
+    "skill": "exponential_functions",
+    "sourceSkill": "Exponential functions",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A savings account opened with $\\$500$ earns interest compounded annually. After $3$ years the balance is $\\$578.66$. What is the annual interest rate, to the nearest percent?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$3\\%$"
+      },
+      {
+        "key": "B",
+        "text": "$5\\%$"
+      },
+      {
+        "key": "C",
+        "text": "$6\\%$"
+      },
+      {
+        "key": "D",
+        "text": "$8\\%$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Solve $500(1+r)^3 = 578.66$, giving $(1+r)^3 \\approx 1.1573$, so $1+r \\approx 1.05$ and $r \\approx 5\\%$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  }
+]

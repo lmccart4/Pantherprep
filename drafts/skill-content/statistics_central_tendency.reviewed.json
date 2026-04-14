@@ -1,0 +1,49 @@
+{
+  "taxonomyKey": "statistics_central_tendency",
+  "skillLabel": "Central tendency",
+  "domain": "Problem Solving and Data Analysis",
+  "conceptBlurb": "Central tendency is how you describe the 'middle' of a data set using one number. The three measures are mean (average), median (middle value when sorted), and mode (most frequent value). The SAT loves to test how an outlier — one unusually large or small value — shifts each measure. Mean gets pulled hard toward outliers, median barely moves, and mode usually doesn't care at all.",
+  "conceptExplanation": "The **mean** is the sum of all values divided by the number of values: $\\bar{x} = \\frac{\\sum x_i}{n}$. It uses every data point, so one extreme value drags it in that direction.\n\nThe **median** is the middle value after you **sort the data**. If $n$ is odd, it's the single middle entry. If $n$ is even, it's the average of the two middle entries. Forgetting to sort first is the #1 trap on this skill — always sort before you find the median.\n\nThe **mode** is the value that appears most often. A set can have one mode, multiple modes, or no mode at all.\n\n### How outliers hit each measure\n\nSay you have test scores $\\{70, 72, 74, 76, 78\\}$. Mean and median are both $74$. Now change that $78$ to $158$ (a data-entry error). The new set is $\\{70, 72, 74, 76, 158\\}$:\n\n- **Mean:** jumps to $90$ — moved by $16$ points\n- **Median:** still $74$ — didn't move at all\n- **Mode:** no mode, still no mode\n\nThat's why when an SAT question asks which measure is **most affected** by an outlier, the answer is almost always the **mean**. When it asks which measure is **least affected** or **most resistant**, the answer is the **median**.\n\n### Quick checks\n\n- Always sort before finding the median. Always.\n- If $n$ is even, the median is $\\frac{x_{n/2} + x_{n/2+1}}{2}$.\n- If every value appears once, there is **no mode** — don't invent one.\n- A skewed data set pulls the mean toward the tail but leaves the median near the center. That's why home prices are reported as medians, not means.",
+  "workedExamples": [
+    {
+      "prompt": "A student's quiz scores are 82, 75, 90, 68, and 85. What is the mean of the scores?",
+      "steps": [
+        "Add all values: $82 + 75 + 90 + 68 + 85 = 400$",
+        "Divide by the number of values: $n = 5$",
+        "Mean: $\\bar{x} = \\frac{400}{5} = 80$"
+      ],
+      "answer": "80",
+      "takeaway": "Mean = sum divided by count. Don't overthink it — just add and divide."
+    },
+    {
+      "prompt": "The data set $\\{12, 7, 15, 9, 11, 14, 8\\}$ represents the number of books checked out from a library on seven different days. What is the median?",
+      "steps": [
+        "Sort the data first: $\\{7, 8, 9, 11, 12, 14, 15\\}$",
+        "Count the values: $n = 7$ (odd)",
+        "The middle position is $\\frac{n+1}{2} = 4$",
+        "The 4th value in the sorted list is $11$"
+      ],
+      "answer": "11",
+      "takeaway": "Sort before you pick the middle. The unsorted middle value was $9$ — the wrong answer the test is hoping you give."
+    },
+    {
+      "prompt": "A small company has 6 employees with annual salaries (in thousands): $\\{42, 45, 48, 50, 52, 350\\}$. The owner earns $\\$350{,}000$. Which measure of central tendency best represents a typical employee's salary, and why?",
+      "steps": [
+        "Compute the mean: $\\frac{42 + 45 + 48 + 50 + 52 + 350}{6} = \\frac{587}{6} \\approx 97.8$ thousand",
+        "Compute the median: sorted set is already sorted; $n=6$, so median $= \\frac{48 + 50}{2} = 49$ thousand",
+        "The mean ($\\approx \\$97{,}800$) is pulled way up by the one $\\$350{,}000$ outlier — no typical employee makes that",
+        "The median ($\\$49{,}000$) sits right in the middle of the other salaries"
+      ],
+      "answer": "Median, because the $\\$350{,}000$ salary is an outlier that inflates the mean.",
+      "takeaway": "When there's an outlier, the median is the honest answer. The mean is the one the outlier lies about."
+    }
+  ],
+  "hintTemplates": [
+    "Before you touch the median, sort the data from smallest to largest. Skipping this step is the single most common mistake on central-tendency questions.",
+    "If the question mentions an outlier or a value that looks way bigger or smaller than the rest, the mean is the measure that moves the most and the median is the one that barely budges.",
+    "For an even number of values, the median is the average of the two middle entries: $\\frac{x_{n/2} + x_{n/2+1}}{2}$. For an odd number, it's just the single middle entry at position $\\frac{n+1}{2}$."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

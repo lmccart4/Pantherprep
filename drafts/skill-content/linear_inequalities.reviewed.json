@@ -1,0 +1,49 @@
+{
+  "taxonomyKey": "linear_inequalities",
+  "skillLabel": "Linear inequalities",
+  "domain": "Algebra",
+  "conceptBlurb": "A linear inequality looks like a linear equation but uses $<$, $>$, $\\leq$, or $\\geq$ instead of $=$. You solve it the same way you solve an equation — isolate the variable — with one critical twist. When you multiply or divide both sides by a negative number, you must flip the inequality sign. The answer isn't a single number; it's a range, which you can write in interval notation or graph on a number line.",
+  "conceptExplanation": "A linear inequality in one variable has the form $ax + b < c$ (or with $>$, $\\leq$, $\\geq$). The goal is the same as with equations: get $x$ by itself on one side.\n\nMost of the work is identical to solving a linear equation. You can add or subtract the same thing from both sides, and you can multiply or divide both sides by any **positive** number, without changing the inequality.\n\nThe one rule that trips students up: **if you multiply or divide both sides by a negative number, flip the inequality sign.** So $-2x < 10$ becomes $x > -5$, not $x < -5$. This is the single most common mistake on SAT inequality questions, and it's usually the trap answer.\n\nOnce you've isolated $x$, you have a solution set — every number that makes the inequality true.\n\n**Writing the answer:**\n- **Inequality form:** $x \\geq 4$\n- **Interval notation:** $[4, \\infty)$. Use a square bracket $[$ or $]$ when the endpoint is included ($\\leq$ or $\\geq$), and a parenthesis $($ or $)$ when it isn't ($<$ or $>$). Infinity always gets a parenthesis.\n- **Graph:** A number line with a closed dot (filled in) at an included endpoint, an open dot at an excluded endpoint, and an arrow showing the direction.\n\nFor SAT questions, watch for two patterns. First, inequalities with variables on both sides — collect them on whichever side keeps the coefficient positive to avoid the flip entirely. Second, word problems that bury the inequality inside phrases like \"at most\" ($\\leq$), \"at least\" ($\\geq$), \"more than\" ($>$), or \"fewer than\" ($<$). Translate carefully before you solve.",
+  "workedExamples": [
+    {
+      "prompt": "Solve for $x$: $-3x + 7 \\geq 22$. Write the answer in interval notation.",
+      "steps": [
+        "Subtract $7$ from both sides: $-3x \\geq 15$.",
+        "Divide both sides by $-3$. Because you divided by a negative, flip the inequality: $x \\leq -5$.",
+        "Translate to interval notation. The endpoint $-5$ is included (because of $\\leq$), so use a square bracket. The solution extends to $-\\infty$."
+      ],
+      "answer": "$(-\\infty, -5]$",
+      "takeaway": "Dividing by a negative flips the sign — the trap answer is always the un-flipped version."
+    },
+    {
+      "prompt": "Which of the following is the solution to $5(x - 2) < 2x + 11$?",
+      "steps": [
+        "Distribute the $5$ on the left: $5x - 10 < 2x + 11$.",
+        "Subtract $2x$ from both sides: $3x - 10 < 11$.",
+        "Add $10$ to both sides: $3x < 21$.",
+        "Divide by $3$ (positive, no flip): $x < 7$."
+      ],
+      "answer": "$x < 7$",
+      "takeaway": "When variables appear on both sides, move them to the side that keeps the coefficient positive so you don't have to flip."
+    },
+    {
+      "prompt": "A gym membership costs a $40$ sign-up fee plus $25$ per month. Marcus has $190$ to spend. What is the greatest whole number of months $m$ he can afford?",
+      "steps": [
+        "Set up the inequality: total cost must be at most $190$, so $40 + 25m \\leq 190$.",
+        "Subtract $40$ from both sides: $25m \\leq 150$.",
+        "Divide by $25$: $m \\leq 6$.",
+        "Since $m$ must be a whole number of months, the greatest value is $6$."
+      ],
+      "answer": "$6$ months",
+      "takeaway": "Translate \"at most\" as $\\leq$ and \"at least\" as $\\geq$ — then solve like a normal inequality."
+    }
+  ],
+  "hintTemplates": [
+    "Solve it like an equation first. Do the same thing to both sides until $x$ is alone.",
+    "Watch the sign of what you're dividing by. Negative means flip the inequality — this is the #1 trap on the SAT.",
+    "For word problems, translate the key phrase before you solve. \"At most\" is $\\leq$, \"at least\" is $\\geq$, \"more than\" is $>$, \"fewer than\" is $<$."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

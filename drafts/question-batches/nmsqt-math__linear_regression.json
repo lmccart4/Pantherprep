@@ -12,22 +12,22 @@
     "choices": [
       {
         "key": "A",
-        "text": "$2$"
+        "text": "$0.4$"
       },
       {
         "key": "B",
-        "text": "$-0.4$"
+        "text": "$2$"
       },
       {
         "key": "C",
-        "text": "$0.4$"
+        "text": "$-0.4$"
       },
       {
         "key": "D",
         "text": "$2.4$"
       }
     ],
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "explanation": "In the form $y = mx + b$, the slope is the coefficient of $x$, which is $0.4$.",
     "katex": true,
     "tags": [
@@ -51,18 +51,18 @@
       },
       {
         "key": "B",
-        "text": "$6$"
-      },
-      {
-        "key": "C",
         "text": "$-6$"
       },
       {
-        "key": "D",
+        "key": "C",
         "text": "$7.8$"
+      },
+      {
+        "key": "D",
+        "text": "$6$"
       }
     ],
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "explanation": "The y-intercept is the constant term $b$ in $y = mx + b$; here that is $6$.",
     "katex": true,
     "tags": [
@@ -82,22 +82,22 @@
     "choices": [
       {
         "key": "A",
-        "text": "The number of books on the shelf at the start (day 0)."
-      },
-      {
-        "key": "B",
         "text": "The number of books added per day."
       },
       {
-        "key": "C",
+        "key": "B",
         "text": "The total number of books after 7 days."
+      },
+      {
+        "key": "C",
+        "text": "The number of books on the shelf at the start (day 0)."
       },
       {
         "key": "D",
         "text": "The number of days needed to reach 7 books."
       }
     ],
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "explanation": "The y-intercept $7$ is the predicted value of $y$ when $x = 0$, i.e., the starting count of books.",
     "katex": true,
     "tags": [
@@ -169,11 +169,11 @@
     "choices": [
       {
         "key": "A",
-        "text": "The base cost of shipping is $\\$0.75$."
+        "text": "Every additional pound increases the predicted cost by about $\\$0.75$."
       },
       {
         "key": "B",
-        "text": "Every additional pound increases the predicted cost by about $\\$0.75$."
+        "text": "The base cost of shipping is $\\$0.75$."
       },
       {
         "key": "C",
@@ -184,7 +184,7 @@
         "text": "The predicted cost is $\\$0.75$ regardless of weight."
       }
     ],
-    "correctAnswer": "B",
+    "correctAnswer": "A",
     "explanation": "The slope $0.75$ is the change in predicted $y$ per one-unit increase in $x$, so each extra pound adds about $\\$0.75$ to the predicted cost.",
     "katex": true,
     "tags": [
@@ -221,22 +221,22 @@
     "choices": [
       {
         "key": "A",
-        "text": "For each $1^\\circ$F increase in daily high temperature, predicted iced-coffee sales increase by about $4.2$ drinks."
-      },
-      {
-        "key": "B",
         "text": "On a day with a $0^\\circ$F high, predicted sales are $4.2$ drinks."
       },
       {
-        "key": "C",
+        "key": "B",
         "text": "About $4.2$% of iced-coffee sales are explained by temperature."
+      },
+      {
+        "key": "C",
+        "text": "For each $1^\\circ$F increase in daily high temperature, predicted iced-coffee sales increase by about $4.2$ drinks."
       },
       {
         "key": "D",
         "text": "The average temperature is $4.2^\\circ$F."
       }
     ],
-    "correctAnswer": "A",
+    "correctAnswer": "C",
     "explanation": "The slope gives the predicted change in $y$ per one-unit increase in $x$, so $4.2$ means each extra degree corresponds to about $4.2$ more predicted drinks.",
     "katex": true,
     "tags": [
@@ -256,11 +256,11 @@
     "choices": [
       {
         "key": "A",
-        "text": "For every $1$% increase in brightness, predicted battery life increases by about $3.5$ minutes."
+        "text": "For every $1$% increase in brightness, predicted battery life decreases by about $3.5$ minutes."
       },
       {
         "key": "B",
-        "text": "For every $1$% increase in brightness, predicted battery life decreases by about $3.5$ minutes."
+        "text": "For every $1$% increase in brightness, predicted battery life increases by about $3.5$ minutes."
       },
       {
         "key": "C",
@@ -271,7 +271,7 @@
         "text": "The battery always lasts $3.5$ minutes."
       }
     ],
-    "correctAnswer": "B",
+    "correctAnswer": "A",
     "explanation": "A slope of $-3.5$ means the predicted $y$ decreases by $3.5$ minutes for each one-unit (1%) increase in $x$.",
     "katex": true,
     "tags": [
@@ -291,22 +291,22 @@
     "choices": [
       {
         "key": "A",
-        "text": "The average weight of the newborns in the dataset."
+        "text": "The predicted length of a $0$-kg newborn, which is not meaningful in context."
       },
       {
         "key": "B",
-        "text": "The predicted weight of a newborn whose length is $0$ cm."
+        "text": "The average weight of the newborns in the dataset."
       },
       {
         "key": "C",
-        "text": "The number of newborns in the dataset."
+        "text": "The predicted weight of a newborn whose length is $0$ cm."
       },
       {
         "key": "D",
-        "text": "The predicted length of a $0$-kg newborn, which is not meaningful in context."
+        "text": "The number of newborns in the dataset."
       }
     ],
-    "correctAnswer": "D",
+    "correctAnswer": "A",
     "explanation": "The y-intercept is the predicted $y$ when $x = 0$; here that corresponds to a $0$-kg baby, which lies outside any realistic range, so it has no meaningful interpretation.",
     "katex": true,
     "tags": [
@@ -326,11 +326,11 @@
     "choices": [
       {
         "key": "A",
-        "text": "$12$"
+        "text": "$-12$"
       },
       {
         "key": "B",
-        "text": "$-12$"
+        "text": "$12$"
       },
       {
         "key": "C",
@@ -341,7 +341,7 @@
         "text": "$172$"
       }
     ],
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "explanation": "Predicted $y = 1.6(70) + 48 = 112 + 48 = 160$. The residual is actual minus predicted: $172 - 160 = 12$.",
     "katex": true,
     "tags": [
@@ -378,11 +378,11 @@
     "choices": [
       {
         "key": "A",
-        "text": "For every additional $1{,}000$ people, the predicted number of libraries increases by about $0.03$."
+        "text": "There are always $0.03$ libraries per city."
       },
       {
         "key": "B",
-        "text": "There are always $0.03$ libraries per city."
+        "text": "For every additional $1{,}000$ people, the predicted number of libraries increases by about $0.03$."
       },
       {
         "key": "C",
@@ -393,7 +393,7 @@
         "text": "$3$% of people use a library."
       }
     ],
-    "correctAnswer": "A",
+    "correctAnswer": "B",
     "explanation": "The slope is the predicted change in $y$ per one-unit increase in $x$; since $x$ is in thousands, each extra $1{,}000$ people corresponds to about $0.03$ more predicted libraries.",
     "katex": true,
     "tags": [
@@ -417,18 +417,18 @@
       },
       {
         "key": "B",
-        "text": "The predicted sales at the longest day of the year."
+        "text": "The predicted sales when there are $0$ hours of daylight, which is outside the realistic range and not meaningful."
       },
       {
         "key": "C",
-        "text": "The predicted sales when there are $0$ hours of daylight, which is outside the realistic range and not meaningful."
+        "text": "The predicted sales at the longest day of the year."
       },
       {
         "key": "D",
         "text": "The predicted number of daylight hours when sales are $0$."
       }
     ],
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "explanation": "The y-intercept is the predicted $y$ when $x = 0$, which here means zero daylight hours — not a real situation, so the intercept has no meaningful contextual interpretation.",
     "katex": true,
     "tags": [
@@ -448,22 +448,22 @@
     "choices": [
       {
         "key": "A",
-        "text": "Model P predicts a larger change in $y$ per one-unit change in $x$ than Model Q."
+        "text": "Model Q predicts a larger change in $y$ per one-unit change in $x$ than Model P."
       },
       {
         "key": "B",
-        "text": "Both models predict the same change in $y$ per one-unit change in $x$."
+        "text": "Model P predicts a larger change in $y$ per one-unit change in $x$ than Model Q."
       },
       {
         "key": "C",
-        "text": "Model Q predicts a larger change in $y$ per one-unit change in $x$ than Model P."
+        "text": "Both models predict the same change in $y$ per one-unit change in $x$."
       },
       {
         "key": "D",
         "text": "Neither slope describes a relationship between $x$ and $y$."
       }
     ],
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "explanation": "A larger slope magnitude means a larger predicted change in $y$ per one-unit increase in $x$; since $2.5 > 0.2$, Model Q changes more steeply.",
     "katex": true,
     "tags": [
@@ -539,18 +539,18 @@
       },
       {
         "key": "B",
-        "text": "Their actual wage is $\\$3$ less than the model predicts for their years of experience."
-      },
-      {
-        "key": "C",
         "text": "They have $3$ fewer years of experience than average."
       },
       {
-        "key": "D",
+        "key": "C",
         "text": "The model's slope for this worker is $-3$."
+      },
+      {
+        "key": "D",
+        "text": "Their actual wage is $\\$3$ less than the model predicts for their years of experience."
       }
     ],
-    "correctAnswer": "B",
+    "correctAnswer": "D",
     "explanation": "Residual $=$ actual $-$ predicted. A negative residual of $-3$ means the observed wage is $\\$3$ below the line's prediction.",
     "katex": true,
     "tags": [
@@ -570,22 +570,22 @@
     "choices": [
       {
         "key": "A",
-        "text": "People who walk more steps tend to have higher resting heart rates, and the relationship is strong."
+        "text": "People who walk more steps tend to have lower predicted resting heart rates, and the linear association is moderately strong and negative."
       },
       {
         "key": "B",
-        "text": "Walking causes a drop of about $76\\%$ in resting heart rate."
+        "text": "People who walk more steps tend to have higher resting heart rates, and the relationship is strong."
       },
       {
         "key": "C",
-        "text": "People who walk more steps tend to have lower predicted resting heart rates, and the linear association is moderately strong and negative."
+        "text": "Walking causes a drop of about $76\\%$ in resting heart rate."
       },
       {
         "key": "D",
         "text": "There is no linear relationship between steps and heart rate."
       }
     ],
-    "correctAnswer": "C",
+    "correctAnswer": "A",
     "explanation": "The negative slope and $r = -0.76$ indicate a moderately strong negative linear association: more steps are associated with lower predicted resting heart rate.",
     "katex": true,
     "tags": [

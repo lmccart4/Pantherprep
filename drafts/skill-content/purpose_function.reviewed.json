@@ -1,0 +1,53 @@
+{
+  "taxonomyKey": "purpose_function",
+  "skillLabel": "Purpose and function",
+  "domain": "Craft and Structure",
+  "conceptBlurb": "Purpose and function questions ask what a sentence, phrase, or paragraph *does* in the passage, not what it says. The right answer describes the job the text is performing: setting up a contrast, giving an example, raising an objection, qualifying a claim. Wrong answers usually just paraphrase the content. Your task is to zoom out and ask why the author put that piece there.",
+  "conceptExplanation": "Every purpose/function question is really asking one thing: what role does this piece play in the larger argument? The passage is a machine, and the sentence or phrase is a part. Your job is to name the part's function, not describe what it looks like.\n\nThe biggest trap is picking an answer that accurately summarizes the sentence. If the sentence says \"Most birds can fly, but penguins cannot,\" a bad answer choice will say \"It states that penguins cannot fly.\" That's true, but it's not the *function*. The function is something like \"It introduces an exception to a general rule\" or \"It sets up a counterexample the author will explain.\"\n\nHere's the move:\n\n1. Read the target sentence and the sentence before and after it. Context is everything.\n2. Ask: if I deleted this sentence, what would the passage lose? That missing thing is the function.\n3. Translate your answer into verb-first language: *introduces, illustrates, qualifies, challenges, supports, contrasts, concedes, transitions, emphasizes, defines.*\n4. Eliminate any choice that just paraphrases the content without naming a job.\n\nWatch for these common functions on the SAT:\n- **Providing evidence** for a claim made earlier\n- **Qualifying** a claim (adding an exception or limit)\n- **Raising a counterargument** the author will then address\n- **Shifting the topic** from one idea to the next\n- **Illustrating** an abstract idea with a concrete example\n- **Emphasizing** a point through repetition or contrast\n\nThe answer will almost always start with a verb. If an answer choice doesn't name an action the author is taking, it's probably wrong. Trust verbs. Trust function words. Don't get seduced by answer choices that feel familiar because they echo the passage's vocabulary.",
+  "workedExamples": [
+    {
+      "prompt": "Passage: For decades, researchers assumed that octopuses were largely solitary creatures. Recent underwater observations have complicated this view. In 2017, divers off the coast of Australia documented a site dubbed \"Octlantis,\" where gloomy octopuses were seen interacting, signaling, and even evicting one another from dens. The findings suggest that some octopus species maintain loose social networks previously unrecognized by marine biologists.\n\nQuestion: What is the function of the second sentence (\"Recent underwater observations have complicated this view.\")?",
+      "steps": [
+        "Identify what the sentence says: new observations make the old view harder to accept.",
+        "Look at what surrounds it. Sentence 1 states the old assumption (octopuses are solitary). Sentence 3 gives specific evidence (Octlantis).",
+        "Ask what the passage would lose without this sentence. Answer: the bridge between the old view and the new evidence.",
+        "Translate into verb-first language: it signals that a shift is coming and prepares the reader for contradicting evidence.",
+        "Eliminate answers that just restate the content (e.g., 'It says observations have been made')."
+      ],
+      "answer": "It signals a turn in the passage, introducing the idea that new evidence will challenge the long-standing assumption stated in the previous sentence.",
+      "takeaway": "Transition sentences almost always function as pivots. Name the pivot — don't paraphrase the sentence."
+    },
+    {
+      "prompt": "Passage: City planner Jane Jacobs argued that lively neighborhoods depend on what she called \"eyes on the street\" — the constant, informal surveillance of residents and shopkeepers going about their daily routines. Critics have sometimes dismissed the idea as nostalgic. But empirical studies of pedestrian traffic, shop density, and crime rates in mid-sized American cities consistently echo her claim: streets that invite casual foot traffic tend to be safer than those that do not.\n\nQuestion: The author uses the phrase \"But empirical studies... consistently echo her claim\" primarily to —",
+      "steps": [
+        "Locate the target phrase. It comes after a sentence noting that critics call Jacobs's idea nostalgic.",
+        "Ask what job the phrase does. 'But' signals a turn. 'Empirical studies' is a specific kind of evidence. 'Echo her claim' means the studies support Jacobs.",
+        "So the phrase is pushing back against the critics by introducing hard evidence for Jacobs's side.",
+        "Name the function in verb-first terms: it rebuts the critics and defends the original claim with data.",
+        "Reject choices that just describe what studies showed — the question asks about the phrase's role in the argument, not its content."
+      ],
+      "answer": "Counter the dismissive critics by offering empirical evidence that supports Jacobs's original argument.",
+      "takeaway": "When a sentence starts with 'But,' 'However,' or 'Yet,' its function is almost always to push back against what just came before."
+    },
+    {
+      "prompt": "Passage: The idea of a \"universal\" human facial expression for disgust has been a staple of psychology textbooks for fifty years. Researchers trained participants to identify the expression across dozens of cultures, and the results seemed airtight. However, a 2019 meta-analysis found that agreement rates were far lower than earlier studies reported — closer to 50 percent than the 85 percent often cited. The finding does not erase the concept of universal emotions, but it does force a more cautious version of the claim.\n\nQuestion: What is the function of the final sentence (\"The finding does not erase the concept... a more cautious version of the claim.\")?",
+      "steps": [
+        "Read the sentence carefully. It makes two moves: (1) it does NOT throw out the universal emotion idea, and (2) it says the idea now needs to be stated more carefully.",
+        "Look at context. The paragraph introduced a long-standing claim, then presented a study that weakened it.",
+        "Ask what job this last sentence does. It's telling the reader how to interpret the new finding — don't overreact, but do adjust.",
+        "Translate to verb-first: it qualifies the earlier claim and limits how far the new evidence should push you.",
+        "Avoid answers that say the sentence 'rejects' or 'proves' something. It does neither — it moderates."
+      ],
+      "answer": "Qualify the original claim by showing that the new evidence limits the claim without overturning it.",
+      "takeaway": "Sentences that end a paragraph often tell you how to weigh everything that came before. Look for words like 'does not erase,' 'still,' or 'nevertheless' — they usually signal qualification, not rejection."
+    }
+  ],
+  "hintTemplates": [
+    "Ask what the sentence *does*, not what it says. If your answer paraphrases the content, you're describing — not naming a function. Start your answer with a verb: introduces, qualifies, contrasts, illustrates, challenges.",
+    "Read the sentence before and after the target. The function almost always lives in how it connects to what's around it. If you deleted this sentence, what would the passage lose? That missing job is your answer.",
+    "Watch the transition words. 'But,' 'however,' and 'yet' usually mean the sentence is pushing back. 'For example' and 'for instance' mean it's illustrating. 'Still' and 'nevertheless' usually mean it's qualifying. Let those words point you at the function."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

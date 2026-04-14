@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "quadratic_formula",
+  "skillLabel": "Quadratic formula",
+  "domain": "Advanced Math",
+  "conceptBlurb": "The quadratic formula solves any equation in the form $ax^2 + bx + c = 0$. Use it when factoring is ugly or impossible. Plug $a$, $b$, and $c$ into $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$ and simplify. The $\\pm$ gives you two solutions. Watch your signs — a negative $b$ becomes a positive $-b$ out front.",
+  "conceptExplanation": "Any quadratic equation can be written in standard form $ax^2 + bx + c = 0$. Once it is, the quadratic formula gives you both solutions in one shot:\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\n**Step 1: Get to standard form.** Move every term to one side so the other side is $0$. If the equation is $3x^2 = 5x + 2$, rewrite it as $3x^2 - 5x - 2 = 0$. Now $a = 3$, $b = -5$, $c = -2$.\n\n**Step 2: Identify $a$, $b$, $c$ carefully.** The coefficients keep their signs. This is the #1 trap on the SAT. If $b = -5$, then $-b = 5$, and $b^2 = 25$ (squaring kills the negative).\n\n**Step 3: Compute the discriminant.** That's $b^2 - 4ac$, the part under the square root. Its sign tells you how many real solutions exist:\n- Positive → two real solutions\n- Zero → one repeated solution\n- Negative → no real solutions (SAT usually wants exact form, not \"no solution\")\n\n**Step 4: Simplify the radical.** Pull out perfect squares. $\\sqrt{72} = \\sqrt{36 \\cdot 2} = 6\\sqrt{2}$. Leave the answer in exact form unless the question asks for a decimal.\n\n**Sum and product shortcuts.** For $ax^2 + bx + c = 0$, the sum of the roots is $-\\frac{b}{a}$ and the product is $\\frac{c}{a}$. If the SAT asks for the sum or product of solutions, you don't need the formula at all — just read off $a$, $b$, $c$.\n\nWhen the question says \"exact solutions,\" keep the radical. When it says \"approximate,\" use a calculator after simplifying.",
+  "workedExamples": [
+    {
+      "prompt": "Solve $2x^2 - 4x - 3 = 0$. Give exact solutions.",
+      "steps": [
+        "Identify $a = 2$, $b = -4$, $c = -3$.",
+        "Plug in: $x = \\frac{-(-4) \\pm \\sqrt{(-4)^2 - 4(2)(-3)}}{2(2)} = \\frac{4 \\pm \\sqrt{16 + 24}}{4}$.",
+        "Simplify under the radical: $\\sqrt{40} = 2\\sqrt{10}$.",
+        "So $x = \\frac{4 \\pm 2\\sqrt{10}}{4} = \\frac{2 \\pm \\sqrt{10}}{2}$."
+      ],
+      "answer": "$x = \\frac{2 \\pm \\sqrt{10}}{2}$",
+      "takeaway": "Always simplify the radical and reduce the fraction at the end."
+    },
+    {
+      "prompt": "If $x^2 + 6x + 4 = 0$, what is the sum of the two solutions?",
+      "steps": [
+        "Recognize that for $ax^2 + bx + c = 0$, the sum of the roots is $-\\frac{b}{a}$.",
+        "Here $a = 1$ and $b = 6$, so the sum is $-\\frac{6}{1} = -6$.",
+        "No need to actually solve the quadratic."
+      ],
+      "answer": "$-6$",
+      "takeaway": "Sum of roots = $-\\frac{b}{a}$. Product of roots = $\\frac{c}{a}$. Use them when the question only asks for a sum or product."
+    },
+    {
+      "prompt": "Solve $3x^2 + 5x = 2$ for $x$.",
+      "steps": [
+        "Rewrite in standard form: $3x^2 + 5x - 2 = 0$. So $a = 3$, $b = 5$, $c = -2$.",
+        "Discriminant: $b^2 - 4ac = 25 - 4(3)(-2) = 25 + 24 = 49$.",
+        "$x = \\frac{-5 \\pm \\sqrt{49}}{6} = \\frac{-5 \\pm 7}{6}$.",
+        "Two solutions: $x = \\frac{2}{6} = \\frac{1}{3}$ or $x = \\frac{-12}{6} = -2$."
+      ],
+      "answer": "$x = \\frac{1}{3}$ or $x = -2$",
+      "takeaway": "If the discriminant is a perfect square, the quadratic factors — but the formula still works and is often faster to set up."
+    }
+  ],
+  "hintTemplates": [
+    "First, move everything to one side so the equation equals $0$. That gives you $a$, $b$, and $c$.",
+    "Watch the sign of $b$. If $b$ is negative, $-b$ becomes positive in the numerator, but $b^2$ is still positive either way.",
+    "If the question only asks for the sum or product of the solutions, skip the formula. Sum $= -\\frac{b}{a}$, product $= \\frac{c}{a}$.",
+    "Simplify the radical by pulling out perfect squares, then reduce the full fraction at the end."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

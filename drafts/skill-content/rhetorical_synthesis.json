@@ -1,0 +1,39 @@
+{
+  "taxonomyKey": "rhetorical_synthesis",
+  "skillLabel": "Rhetorical synthesis",
+  "domain": "Expression of Ideas",
+  "conceptBlurb": "Rhetorical synthesis questions give you a bulleted list of research notes and ask which sentence best accomplishes a specific goal. The goal is always stated out loud — compare two things, introduce a counterexample, emphasize scale, highlight a shared trait. Your job is not to pick the truest sentence or the most detailed one. It is to pick the sentence that does the exact rhetorical job the prompt names. Every wrong answer is usually true, but only one matches the goal.",
+  "conceptExplanation": "Rhetorical synthesis is the single most formulaic question type on the SAT Reading and Writing section. Every question follows the same shape: a short intro, 4-6 bulleted research notes, a stated rhetorical goal, and four answer choices that are all factually supported by the notes. The trap is that students read the notes, decide which sentence \"sounds best,\" and ignore the goal.\n\nDo not do that. The goal is the whole question.\n\n**Step 1: Read the goal first.** Skip the bullets. Jump straight to the sentence that says \"The student wants to...\" That sentence tells you exactly what job the correct answer has to do. Common goals:\n- **Compare** two things (both X and Y must appear, and the comparison word must be explicit — \"while,\" \"whereas,\" \"unlike,\" \"both\")\n- **Emphasize a difference** (the contrast has to be front and center)\n- **Introduce a subject** to someone who has never heard of it (basic facts only, no jargon)\n- **Present a counterexample** (the sentence must actually contradict a claim)\n- **Emphasize scale, size, or significance** (numbers, superlatives, \"largest,\" \"only,\" \"millions of\")\n\n**Step 2: Turn the goal into a checklist.** If the goal is \"compare the two species,\" the right answer must mention both species and use a comparison structure. Any answer that only mentions one species is wrong — even if every word in it is true.\n\n**Step 3: Eliminate.** Go through each choice and ask: does this sentence do the job? Most wrong answers are true but irrelevant. One or two will mention only half of what the goal asks for. Cross them out.\n\n**Step 4: Confirm with the notes.** Once you have a winner, double-check that every factual claim in it is supported by the bullets. Do not pick a sentence that adds information the notes don't contain, even if it sounds reasonable.\n\nThe pattern is so consistent that once you lock onto \"goal first, checklist second,\" these questions go from 30-second puzzles to 10-second autopilot.",
+  "workedExamples": [
+    {
+      "prompt": "While researching a topic, a student has taken the following notes:\n- The axolotl is a salamander native to lakes near Mexico City.\n- Unlike most amphibians, axolotls do not undergo metamorphosis — they keep their larval features as adults.\n- Axolotls can regrow entire limbs, parts of their heart, and sections of their spinal cord.\n- Most salamanders lose the ability to regrow limbs once they become adults.\n- Axolotls are critically endangered in the wild.\n\nThe student wants to emphasize a difference between axolotls and most other salamanders. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+      "steps": [
+        "Goal first: emphasize a DIFFERENCE between axolotls and most other salamanders. The right answer has to mention both axolotls and other salamanders, and contrast them.",
+        "Build the checklist: (1) mentions axolotls, (2) mentions other/most salamanders, (3) uses a contrast structure like 'while,' 'unlike,' or 'whereas,' (4) the contrast is factually in the notes.",
+        "Eliminate: a choice that only says 'Axolotls are critically endangered' fails — no other salamanders mentioned. A choice that says 'Axolotls live near Mexico City and can regrow limbs' fails — no comparison. A choice that says 'Axolotls are salamanders' fails — no difference stated.",
+        "The choice that works: 'While most salamanders lose the ability to regrow limbs as adults, axolotls can regenerate entire limbs throughout their lives.' Both groups named, explicit contrast word ('while'), difference drawn straight from bullets 3 and 4."
+      ],
+      "answer": "While most salamanders lose the ability to regrow limbs as adults, axolotls can regenerate entire limbs throughout their lives.",
+      "takeaway": "When the goal is 'emphasize a difference,' both sides of the comparison must appear in the sentence, joined by an explicit contrast word."
+    },
+    {
+      "prompt": "While researching a topic, a student has taken the following notes:\n- The Great Pacific Garbage Patch is a collection of marine debris in the North Pacific Ocean.\n- It covers an estimated 1.6 million square kilometers — roughly three times the size of France.\n- It contains an estimated 1.8 trillion pieces of plastic.\n- The debris is concentrated by ocean currents called gyres.\n- Most of the plastic is microplastic, smaller than 5 millimeters.\n\nThe student wants to emphasize the enormous scale of the Great Pacific Garbage Patch. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
+      "steps": [
+        "Goal first: emphasize the ENORMOUS SCALE of the garbage patch. The right answer needs numbers, size words, or superlatives that make the reader feel how big it is.",
+        "Checklist: (1) uses size or quantity language, (2) the numbers come from the notes, (3) scale is the main point of the sentence — not formation, not microplastic size, not currents.",
+        "Eliminate: 'The Great Pacific Garbage Patch is formed by ocean gyres that concentrate marine debris' — true, but describes formation, not scale. 'Most of the plastic in the Great Pacific Garbage Patch is microplastic smaller than 5 millimeters' — true, but that's the opposite of emphasizing bigness. 'The Great Pacific Garbage Patch is a collection of marine debris in the North Pacific' — true, but says nothing about scale.",
+        "The choice that works: 'Covering roughly 1.6 million square kilometers — about three times the size of France — the Great Pacific Garbage Patch contains an estimated 1.8 trillion pieces of plastic.' Two huge numbers, a relatable comparison (France), scale is the entire point of the sentence."
+      ],
+      "answer": "Covering roughly 1.6 million square kilometers — about three times the size of France — the Great Pacific Garbage Patch contains an estimated 1.8 trillion pieces of plastic.",
+      "takeaway": "When the goal is 'emphasize scale,' look for the answer stuffed with the biggest numbers and size comparisons from the notes — not the one with the most interesting fact."
+    }
+  ],
+  "hintTemplates": [
+    "Read the goal sentence before you read the bullets. The goal tells you exactly what job the right answer has to do — comparison, contrast, introduction, counterexample, or scale. Everything else is noise.",
+    "Turn the goal into a checklist. If it says 'compare two things,' the answer must name both things and use a contrast word ('while,' 'unlike,' 'whereas'). If it says 'emphasize scale,' the answer must have numbers or size language. A sentence that fails any checklist item is out, even if every word in it is true.",
+    "Every wrong answer is a true statement from the notes. Do not pick based on 'is this accurate' — pick based on 'does this do the stated job.' The SAT is testing whether you can match a sentence to a purpose, not whether you can spot false facts."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

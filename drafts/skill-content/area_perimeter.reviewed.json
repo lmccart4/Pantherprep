@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "area_perimeter",
+  "skillLabel": "Area and perimeter",
+  "domain": "Geometry and Trigonometry",
+  "conceptBlurb": "Area and perimeter questions test whether you can move between a shape's side lengths and the space it covers. Most SAT problems are two-step: use one measurement (perimeter, area, or a side) to solve for another, then plug that into a second formula. Composite figures usually work by subtraction — find the big area, subtract the cut-out. Keep the core formulas memorized and label everything you compute so you do not mix up sides and areas.",
+  "conceptExplanation": "You need four formulas cold. Rectangle: $A = \\ell w$ and $P = 2\\ell + 2w$. Triangle: $A = \\tfrac{1}{2} b h$ (the height must be perpendicular to the base). Circle: $A = \\pi r^2$ and $C = 2\\pi r$. Square: $A = s^2$ and $P = 4s$.\n\nMost SAT questions will not hand you the number you want. They give you a perimeter and ask for area, or an area and ask for a side, or a circumference and ask for the area of a sector. The move is almost always the same:\n\n1. Write the formula that contains the thing you are given.\n2. Solve for the missing dimension.\n3. Plug that dimension into the formula that gives you what the question wants.\n\nFor composite figures, break the figure into pieces you already know how to handle. A running track is a rectangle plus two semicircles. An L-shape is a big rectangle minus a small one. A shaded region is usually outer shape minus inner shape:\n\n$$A_{\\text{shaded}} = A_{\\text{outer}} - A_{\\text{inner}}$$\n\nWatch the units. If a problem gives you a diameter, cut it in half before plugging into $A = \\pi r^2$. If it gives you a perimeter of a square, divide by 4 to get the side. Mixing up diameter and radius is the single most common error on these questions — it changes the area by a factor of 4.\n\nFinally, when a problem says \"in terms of $\\pi$,\" do not multiply $\\pi$ out. Leave it symbolic. If it asks for a decimal, use $\\pi \\approx 3.14$ only at the very end.",
+  "workedExamples": [
+    {
+      "prompt": "A rectangle has a perimeter of $42$ inches. Its length is $3$ inches more than twice its width. What is the area of the rectangle, in square inches?",
+      "steps": [
+        "Let $w$ be the width. Then the length is $\\ell = 2w + 3$.",
+        "Perimeter: $2\\ell + 2w = 42$, so $2(2w+3) + 2w = 42$.",
+        "Simplify: $4w + 6 + 2w = 42 \\Rightarrow 6w = 36 \\Rightarrow w = 6$ inches.",
+        "Then $\\ell = 2(6) + 3 = 15$ inches.",
+        "Area: $A = \\ell w = 15 \\cdot 6 = 90$ square inches."
+      ],
+      "answer": "$90$ square inches",
+      "takeaway": "Translate the word relationship into an equation first, solve for one variable, then plug into the area formula."
+    },
+    {
+      "prompt": "A circle has a circumference of $18\\pi$ centimeters. What is the area of the circle, in terms of $\\pi$?",
+      "steps": [
+        "Circumference formula: $C = 2\\pi r$, so $2\\pi r = 18\\pi$.",
+        "Solve for the radius: $r = 9$ cm.",
+        "Area: $A = \\pi r^2 = \\pi (9)^2 = 81\\pi$ square centimeters."
+      ],
+      "answer": "$81\\pi$ square centimeters",
+      "takeaway": "If you are given circumference, solve for $r$ first — the radius is the bridge between every circle formula."
+    },
+    {
+      "prompt": "A square of side length $10$ has a circle inscribed inside it (the circle touches all four sides). What is the area of the region inside the square but outside the circle? Give your answer in terms of $\\pi$.",
+      "steps": [
+        "Square area: $A_{\\text{sq}} = 10^2 = 100$.",
+        "Inscribed circle has diameter equal to the square's side, so $d = 10$ and $r = 5$.",
+        "Circle area: $A_{\\text{circ}} = \\pi (5)^2 = 25\\pi$.",
+        "Shaded region: $A_{\\text{shaded}} = 100 - 25\\pi$."
+      ],
+      "answer": "$100 - 25\\pi$ square units",
+      "takeaway": "Composite shaded regions are almost always outer area minus inner area — do them in that order."
+    }
+  ],
+  "hintTemplates": [
+    "Identify the formula that contains what you are given, solve for the missing side first, then use that side in the formula the question actually asks for.",
+    "For a circle, check whether the problem gave you a radius, a diameter, or a circumference — convert to radius before using $A = \\pi r^2$.",
+    "For composite or shaded figures, compute the larger shape's area, then subtract the inner shape. Label each piece so you do not lose track."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

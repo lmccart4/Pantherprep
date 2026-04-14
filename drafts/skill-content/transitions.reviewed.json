@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "transitions",
+  "skillLabel": "Transitions",
+  "domain": "Expression of Ideas",
+  "conceptBlurb": "Transitions questions test whether you can read the logical relationship between two sentences and pick the word or phrase that fits it. The answer is never about style or flow — it's about logic. If sentence 2 contrasts sentence 1, you need a contrast word. If sentence 2 gives a reason or result, you need cause/effect. The trap is picking a transition that sounds smooth but expresses the wrong relationship.",
+  "conceptExplanation": "Every transitions question is a two-step process: (1) figure out how sentence 2 relates to sentence 1, then (2) pick the transition that matches. Do step 1 before you even look at the answer choices, or the wrong answers will pull you in.\n\nThere are five main relationship types on the SAT:\n\n**Contrast** — sentence 2 flips, pushes back, or qualifies sentence 1. Transitions: *however, nevertheless, in contrast, on the other hand, still, yet, conversely, despite this*.\n\n**Cause/Effect** — sentence 2 is the result of sentence 1, or sentence 1 explains why sentence 2 happened. Transitions: *therefore, thus, consequently, as a result, so, accordingly, hence*.\n\n**Addition/Continuation** — sentence 2 adds more evidence or extends the same idea. Transitions: *moreover, furthermore, in addition, also, similarly, likewise*.\n\n**Example/Specification** — sentence 2 gives a concrete instance of sentence 1. Transitions: *for example, for instance, specifically, in particular, to illustrate*.\n\n**Sequence/Time** — sentence 2 happens after or because of a timed process in sentence 1. Transitions: *then, next, subsequently, meanwhile, eventually, finally*.\n\nHow to avoid the trap: the wrong answers will include transitions from the wrong category that still sound fluent. *However* and *therefore* are both common — if you pick based on vibes, you'll miss half of them. Always ask: is sentence 2 *contradicting* sentence 1, *resulting from* it, *extending* it, or *illustrating* it? Name the relationship in your own words first. Then find the transition that matches. If two answers are from the same category, re-read the sentences — the SAT won't make both work.\n\nOne more tip: transitions like *similarly* and *likewise* sound like contrast but are addition (same direction). *In fact* is not contrast either — it's intensification. Know the categories cold.",
+  "workedExamples": [
+    {
+      "prompt": "Sea otters were once hunted nearly to extinction for their fur. ______, conservation efforts over the past 50 years have allowed populations along the California coast to rebound significantly.\n\nA) Therefore\nB) However\nC) For example\nD) Similarly",
+      "steps": [
+        "Name the relationship before looking at choices. Sentence 1: otters were nearly wiped out. Sentence 2: populations have rebounded. That's a flip — bad situation, then recovery.",
+        "Flip = contrast. I need a contrast transition.",
+        "Check choices: (A) Therefore = cause/effect, wrong. (C) For example = specification, wrong. (D) Similarly = addition/same direction, wrong — populations rebounding is the opposite of being hunted, not similar.",
+        "(B) However = contrast. Matches."
+      ],
+      "answer": "B) However",
+      "takeaway": "When the second sentence reverses the situation in the first, you need a contrast word. *Similarly* is a classic trap — it sounds smooth but points the same direction, not the opposite."
+    },
+    {
+      "prompt": "The new bridge was built with seismic dampers designed to absorb energy from earthquakes. ______, engineers expect it to remain standing even during a magnitude 7.0 event.\n\nA) Nevertheless\nB) For instance\nC) As a result\nD) In contrast",
+      "steps": [
+        "Relationship first. Sentence 1: bridge has earthquake-absorbing dampers. Sentence 2: engineers expect it to survive a big quake.",
+        "Sentence 2 is the *result* of sentence 1 — the dampers cause the expected survival. That's cause/effect.",
+        "Check choices: (A) Nevertheless = contrast, wrong. (B) For instance = example, wrong — sentence 2 isn't an example of dampers, it's a consequence. (D) In contrast = contrast, wrong.",
+        "(C) As a result = cause/effect. Matches."
+      ],
+      "answer": "C) As a result",
+      "takeaway": "If sentence 2 is what happens *because* of sentence 1, you need cause/effect. Don't let *for instance* fool you — it only works if sentence 2 is a specific example of the thing in sentence 1, not a downstream consequence."
+    },
+    {
+      "prompt": "Honeybees communicate the location of food sources through a complex \"waggle dance\" performed inside the hive. ______, the angle of the dance relative to vertical tells other bees which direction to fly relative to the sun.\n\nA) However\nB) Specifically\nC) Meanwhile\nD) In conclusion",
+      "steps": [
+        "Relationship first. Sentence 1: bees communicate food locations through a waggle dance (general claim). Sentence 2: the angle of the dance tells direction relative to the sun (a specific detail about how the dance works).",
+        "Sentence 2 zooms in on sentence 1 — it's a concrete specification of the general claim. That's example/specification.",
+        "Check choices: (A) However = contrast, wrong — sentence 2 isn't flipping anything. (C) Meanwhile = simultaneous time, wrong — these aren't two things happening at once. (D) In conclusion = wrapping up, wrong — this is the middle of an explanation.",
+        "(B) Specifically = specification. Matches."
+      ],
+      "answer": "B) Specifically",
+      "takeaway": "When sentence 2 zooms in on sentence 1 with a concrete detail or mechanism, use *specifically*, *for example*, or *in particular*. Don't confuse this with contrast just because the sentences look different on the surface."
+    }
+  ],
+  "hintTemplates": [
+    "Before looking at the answer choices, say out loud how sentence 2 relates to sentence 1. Is it contradicting, resulting from, adding to, or giving an example of the first sentence? Name the relationship first — then find the transition that matches.",
+    "Sort each answer into a category: contrast (however, nevertheless), cause/effect (therefore, as a result), addition (moreover, similarly), example (for instance, specifically), or sequence (then, meanwhile). If a choice is in the wrong category for the relationship you named, it's out — even if it sounds fluent.",
+    "Watch for traps. *Similarly* and *likewise* are addition, not contrast. *In fact* is intensification, not contrast. *For example* only works if sentence 2 is a concrete instance of sentence 1, not a consequence of it. Read the categories, not the vibes."
+  ],
+  "source": "parker-gen-2026-04-14",
+  "generatedAt": "2026-04-14T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

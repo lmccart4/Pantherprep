@@ -1,0 +1,668 @@
+[
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A survey of 60 commuters recorded their mode of transportation and whether they live in the city. 18 drive and live in the city; 12 drive and live outside the city; 15 take transit and live in the city; 15 take transit and live outside the city. How many commuters drive?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "33"
+      },
+      {
+        "key": "B",
+        "text": "27"
+      },
+      {
+        "key": "C",
+        "text": "18"
+      },
+      {
+        "key": "D",
+        "text": "30"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "The row total for drivers is $18 + 12 = 30$, regardless of where they live.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A pet store tracked 80 customers. 25 bought dog food only, 20 bought cat food only, 10 bought both, and 25 bought neither. How many customers bought cat food?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "20"
+      },
+      {
+        "key": "B",
+        "text": "35"
+      },
+      {
+        "key": "C",
+        "text": "30"
+      },
+      {
+        "key": "D",
+        "text": "10"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Customers who bought cat food include those who bought cat food only and those who bought both: $20 + 10 = 30$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A teacher surveyed 50 students. 30 said they like pizza, 25 said they like burgers, and 10 said they like both. How many students like pizza but NOT burgers?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "5"
+      },
+      {
+        "key": "B",
+        "text": "20"
+      },
+      {
+        "key": "C",
+        "text": "10"
+      },
+      {
+        "key": "D",
+        "text": "15"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Students who like pizza only are those who like pizza minus those who like both: $30 - 10 = 20$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A gym logged 100 members. 40 use weights only, 30 use cardio only, 20 use both, and 10 use neither. What fraction of members use cardio?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{3}{10}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{2}{5}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{7}{10}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{1}{2}$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Members using cardio = cardio only + both $= 30 + 20 = 50$. Fraction: $\\frac{50}{100} = \\frac{1}{2}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A poll asked 200 voters about two ballot measures. 80 supported Measure 1, 90 supported Measure 2, and 40 supported both. How many voters supported at least one measure?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "170"
+      },
+      {
+        "key": "B",
+        "text": "130"
+      },
+      {
+        "key": "C",
+        "text": "40"
+      },
+      {
+        "key": "D",
+        "text": "210"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "By inclusion-exclusion: $80 + 90 - 40 = 130$ voters supported at least one measure.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "At a conference of 240 attendees, 140 are engineers and 100 are designers. Among engineers, 35 attended the UX workshop; among designers, 65 attended. What fraction of attendees who went to the UX workshop are engineers?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{1}{4}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{13}{20}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{7}{48}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{7}{20}$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Total attending the workshop: $35 + 65 = 100$. Fraction who are engineers: $\\frac{35}{100} = \\frac{7}{20}$. The denominator is the workshop column total, not 240.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A high school surveyed 300 students about after-school activities. 180 play sports, 120 are in clubs, and 60 do both. A student is chosen at random from those who play sports. What is the probability that the student is also in a club?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{1}{5}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{1}{2}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{2}{3}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{1}{3}$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Conditional on playing sports (180), the number also in a club is 60. Probability: $\\frac{60}{180} = \\frac{1}{3}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A bakery tracked 400 orders by item (bread or pastry) and delivery method (pickup or delivery). 160 bread orders were pickup; 60 bread orders were delivery. 90 pastry orders were pickup; the rest were delivery. How many pastry orders were delivered?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "150"
+      },
+      {
+        "key": "B",
+        "text": "220"
+      },
+      {
+        "key": "C",
+        "text": "90"
+      },
+      {
+        "key": "D",
+        "text": "110"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Bread orders: $160 + 60 = 220$. Pastry orders: $400 - 220 = 180$. Pastry delivered: $180 - 90 = 90$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A university surveyed 500 graduates: 300 from the College of Arts and 200 from the College of Science. Among Arts graduates, 210 found jobs within 6 months; among Science graduates, 170 did. If a graduate who found a job within 6 months is chosen at random, what is the probability they are from the College of Science?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{17}{50}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{85}{100}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{17}{38}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{2}{5}$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Total employed: $210 + 170 = 380$. Science employed: 170. Probability: $\\frac{170}{380} = \\frac{17}{38}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A zoo surveyed 250 visitors about their favorite exhibit. 100 chose reptiles, 90 chose mammals, and 60 chose birds. Of those who chose reptiles, 40 were adults. Of those who chose mammals, 50 were adults. Of those who chose birds, 30 were adults. What fraction of adults chose mammals?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{5}{12}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{9}{25}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{5}{9}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{1}{5}$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "Total adults: $40 + 50 + 30 = 120$. Mammals adults: 50. Fraction: $\\frac{50}{120} = \\frac{5}{12}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A phone survey of 600 adults asked about coffee and tea consumption. 280 drink coffee daily, 220 drink tea daily, and 90 drink both daily. How many adults drink neither coffee nor tea daily?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "100"
+      },
+      {
+        "key": "B",
+        "text": "190"
+      },
+      {
+        "key": "C",
+        "text": "410"
+      },
+      {
+        "key": "D",
+        "text": "300"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "At least one: $280 + 220 - 90 = 410$. Neither: $600 - 410 = 190$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "spr",
+    "stem": "At a summer camp, 150 campers were surveyed about swimming and hiking. 80 swim, 70 hike, and 30 do both. How many campers do neither?",
+    "choices": [],
+    "correctAnswer": "30",
+    "explanation": "Using inclusion-exclusion: at least one $= 80 + 70 - 30 = 120$. Neither: $150 - 120 = 30$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A company surveyed 420 employees about remote work. Among the 180 managers, 108 prefer remote; among the 240 non-managers, 156 prefer remote. What fraction of employees who prefer remote work are managers?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{3}{5}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{3}{7}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{9}{22}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{13}{22}$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Total who prefer remote: $108 + 156 = 264$. Managers among them: 108. Fraction: $\\frac{108}{264} = \\frac{9}{22}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A school library tracked 500 checkouts by grade (freshman or senior) and genre (fiction or nonfiction). Freshmen checked out 140 fiction and 60 nonfiction. Seniors checked out 110 fiction and 190 nonfiction. Given that a checkout was nonfiction, what is the probability that it was by a senior?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{19}{50}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{19}{30}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{19}{25}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{3}{5}$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Total nonfiction: $60 + 190 = 250$. Senior nonfiction: 190. Probability: $\\frac{190}{250} = \\frac{19}{25}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A dentist's office scheduled 320 patients last month: 200 for cleanings and 120 for procedures. 150 cleaning patients and 90 procedure patients arrived on time. What fraction of on-time patients were there for a procedure?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{9}{32}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{3}{4}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{1}{4}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{3}{8}$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Total on-time: $150 + 90 = 240$. Procedure on-time: 90. Fraction: $\\frac{90}{240} = \\frac{3}{8}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A 2-by-2 table of 540 students cross-classifies course (chemistry or biology) and class (junior or senior). The row/column totals are: 300 juniors, 240 seniors, 290 chemistry, 250 biology. If 130 juniors take chemistry, what fraction of seniors take biology?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{17}{24}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{2}{3}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{7}{12}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{1}{3}$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Junior biology $= 300 - 130 = 170$. Senior biology $= 250 - 170 = 80$. Fraction of seniors taking biology: $\\frac{80}{240} = \\frac{1}{3}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A study of 800 voters categorized each by age group (under 40 or 40+) and party (X or Y). Of voters under 40, 60% are party X. Of voters 40+, 35% are party X. If there are 300 voters under 40, what fraction of party X voters are 40 or older?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{35}{100}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{36}{71}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{7}{16}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{35}{71}$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Under-40 party X: $0.60 \\cdot 300 = 180$. 40+ voters: $800 - 300 = 500$; 40+ party X: $0.35 \\cdot 500 = 175$. Total party X: $180 + 175 = 355$. Fraction 40+: $\\frac{175}{355} = \\frac{35}{71}$. The trap is using 500 (all 40+) as the denominator, giving $\\frac{35}{100}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A clinic tested 500 patients for two markers, A and B. 40% tested positive for A, 30% tested positive for B, and 12% tested positive for both. Among patients who tested positive for A, what fraction did NOT test positive for B?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{3}{5}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{7}{10}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{14}{25}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{28}{40}$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Of the $40\\%$ who tested positive for A, $12\\%$ of all patients tested positive for both, so within the A group the share also positive for B is $\\frac{12}{40} = \\frac{3}{10}$. Not positive for B: $1 - \\frac{3}{10} = \\frac{7}{10}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A two-way table classifies 810 smartphone users by operating system (X or Y) and by whether they upgraded in the last year. 540 use system X. Among X users, $\\frac{2}{3}$ upgraded. Among Y users, $\\frac{1}{3}$ upgraded. What fraction of users who did NOT upgrade use system Y?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\frac{1}{3}$"
+      },
+      {
+        "key": "B",
+        "text": "$\\frac{1}{2}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\frac{2}{5}$"
+      },
+      {
+        "key": "D",
+        "text": "$\\frac{9}{19}$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "X users not upgraded: $\\frac{1}{3} \\cdot 540 = 180$. Y users: $810 - 540 = 270$; Y not upgraded: $\\frac{2}{3} \\cdot 270 = 180$. Total not upgraded: $180 + 180 = 360$. Y fraction: $\\frac{180}{360} = \\frac{1}{2}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving and Data Analysis",
+    "skill": "two_way_tables",
+    "sourceSkill": "Two-way tables",
+    "difficulty": "C",
+    "type": "spr",
+    "stem": "A survey of 720 commuters classified each by vehicle (car or bike) and commute length (short or long). 450 drive a car, and $\\frac{2}{5}$ of car drivers have a long commute. Overall, 330 commuters have a long commute. How many bike commuters have a short commute?",
+    "choices": [],
+    "correctAnswer": "120",
+    "explanation": "Car long commute: $\\frac{2}{5} \\cdot 450 = 180$. Bike total: $720 - 450 = 270$. Bike long: $330 - 180 = 150$. Bike short: $270 - 150 = 120$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-14"
+    ]
+  }
+]
