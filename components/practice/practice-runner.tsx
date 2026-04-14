@@ -365,10 +365,8 @@ export function PracticeRunner(props: PracticeRunnerProps) {
   // ============================================================
   if (screen === "results") {
     const timeSpent = Math.round((Date.now() - startTimeRef.current) / 1000);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const AnyResultsCard = PracticeResultsCard as any;
     return (
-      <AnyResultsCard
+      <PracticeResultsCard
         questions={questions}
         answers={answers}
         timeSpent={timeSpent}

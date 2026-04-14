@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import { GlassCard } from "@/components/ui/glass-card";
 import { QuestionCard } from "@/components/test/question-card";
 import type { Question } from "@/types/question";
+import type { MasteryDeltaRow } from "@/lib/mastery-delta";
 
 interface PracticeResultsCardProps {
   questions: Question[];
@@ -10,6 +13,8 @@ interface PracticeResultsCardProps {
   timeSpent: number;  // seconds
   saveError: boolean;
   fallbackNotes?: string[];
+  masteryDeltas?: MasteryDeltaRow[];
+  course?: string;
   onPracticeAgain?: () => void;
   onExit: () => void;
 }
@@ -40,9 +45,13 @@ export function PracticeResultsCard({
   timeSpent,
   saveError,
   fallbackNotes,
+  masteryDeltas,
+  course,
   onPracticeAgain,
   onExit,
 }: PracticeResultsCardProps) {
+  const [showAllDeltas, setShowAllDeltas] = useState(false);
+
   const correctCount = questions.filter((q, i) => isCorrect(q, answers[i])).length;
   const total = questions.length;
   const percent = total > 0 ? Math.round((correctCount / total) * 100) : 0;
@@ -96,6 +105,105 @@ export function PracticeResultsCard({
           </button>
         </div>
       </GlassCard>
+
+      {/* Session performance (mastery delta breakdown) */}
+      {masteryDeltas && masteryDeltas.length > 0 && (
+        <GlassCard>
+          <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-muted">
+            Session performance
+          </div>
+          <div className="flex flex-col divide-y divide-border-primary">
+            {(showAllDeltas ? masteryDeltas : masteryDeltas.slice(0, 5)).map((row) => {
+              const accPct =
+                row.sessionTotal > 0
+                  ? Math.round((row.sessionCorrect / row.sessionTotal) * 100)
+                  : 0;
+              const accBar =
+                accPct >= 80
+                  ? "bg-emerald-400"
+                  : accPct >= 60
+                  ? "bg-lime-400"
+                  : accPct >= 40
+                  ? "bg-amber-400"
+                  : accPct >= 20
+                  ? "bg-orange-400"
+                  : "bg-red-400";
+              const deltaColor =
+                row.deltaPp > 0
+                  ? "text-emerald-400"
+                  : row.deltaPp < 0
+                  ? "text-red-400"
+                  : "text-text-muted";
+              const deltaSign = row.deltaPp > 0 ? "+" : "";
+              const bigJump = row.deltaPp >= 10;
+
+              const nameNode = course ? (
+                <Link
+                  href={`/skills/${course}/${row.taxonomyKey}`}
+                  className="text-sm font-semibold text-text-primary transition hover:text-panther-red"
+                >
+                  {row.skillLabel}
+                </Link>
+              ) : (
+                <span className="text-sm font-semibold text-text-primary">
+                  {row.skillLabel}
+                </span>
+              );
+
+              return (
+                <div key={row.taxonomyKey} className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:gap-4">
+                  <div className="min-w-0 flex-1">
+                    {nameNode}
+                    <div className="mt-0.5 text-xs text-text-muted">
+                      {row.sessionTotal > 0 ? (
+                        <>
+                          <span className="font-mono">{row.sessionCorrect}/{row.sessionTotal}</span>
+                          <span className="ml-2">this session</span>
+                        </>
+                      ) : (
+                        <span>All questions skipped</span>
+                      )}
+                    </div>
+                  </div>
+                  {row.sessionTotal > 0 && (
+                    <div className="hidden w-28 overflow-hidden rounded-full bg-bg-secondary sm:block">
+                      <div className={`h-1.5 ${accBar}`} style={{ width: `${Math.max(accPct, 3)}%` }} />
+                    </div>
+                  )}
+                  <div className="text-right text-xs">
+                    {row.beforeTested ? (
+                      <>
+                        <div className="text-text-secondary">
+                          Mastery now <span className="font-semibold">{row.afterPercent}%</span>
+                        </div>
+                        <div className={deltaColor}>
+                          {deltaSign}
+                          {row.deltaPp}pp {bigJump && <span className="ml-1">↑ big jump</span>}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-text-secondary">
+                        Starting fresh — <span className="font-semibold">{row.afterPercent}%</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {masteryDeltas.length > 5 && (
+            <button
+              onClick={() => setShowAllDeltas(!showAllDeltas)}
+              className="mt-3 text-xs text-panther-red transition hover:text-panther-red/80"
+            >
+              {showAllDeltas
+                ? "Show fewer"
+                : `+${masteryDeltas.length - 5} more skill${masteryDeltas.length - 5 === 1 ? "" : "s"}`}
+            </button>
+          )}
+        </GlassCard>
+      )}
 
       {/* Skill breakdown (only if multi-skill) */}
       {showBreakdown && (
