@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 interface TopBarProps {
@@ -11,6 +12,8 @@ interface TopBarProps {
 
 export function TopBar({ backHref, backLabel, className }: TopBarProps) {
   const { user, role, signOut } = useAuth();
+  const pathname = usePathname();
+  const skillsActive = pathname?.startsWith("/skills") ?? false;
 
   // Truncate long displayNames on narrow viewports so the top-right trio
   // (role badge + name + sign-out) doesn't collide with the wordmark.
@@ -40,6 +43,18 @@ export function TopBar({ backHref, backLabel, className }: TopBarProps) {
           className="truncate font-display text-lg tracking-[0.04em] text-white sm:text-[1.4rem]"
         >
           Panther<span className="text-panther-red">Prep</span>
+        </a>
+        <span className="hidden h-4 w-px bg-white/15 sm:inline-block" aria-hidden />
+        <a
+          href="/skills"
+          className={cn(
+            "hidden shrink-0 text-sm font-medium transition-colors sm:inline-block",
+            skillsActive
+              ? "text-white"
+              : "text-text-muted hover:text-text-secondary"
+          )}
+        >
+          Skills
         </a>
       </div>
 
