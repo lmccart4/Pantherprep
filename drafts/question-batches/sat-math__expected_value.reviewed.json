@@ -1,0 +1,702 @@
+[
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A spinner has three equal sections labeled $1$, $3$, and $5$. What is the expected value of one spin?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$9$"
+      },
+      {
+        "key": "B",
+        "text": "$3$"
+      },
+      {
+        "key": "C",
+        "text": "$1$"
+      },
+      {
+        "key": "D",
+        "text": "$5$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "Equal sections → plain average: $\\frac{1+3+5}{3} = 3$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A fair six-sided die is rolled. What is the expected value of the outcome?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$4$"
+      },
+      {
+        "key": "B",
+        "text": "$6$"
+      },
+      {
+        "key": "C",
+        "text": "$3$"
+      },
+      {
+        "key": "D",
+        "text": "$3.5$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "$\\frac{1+2+3+4+5+6}{6} = \\frac{21}{6} = 3.5$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A coin is flipped. Heads pays $\\$10$; tails pays $\\$0$. What is the expected payout?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\$10$"
+      },
+      {
+        "key": "B",
+        "text": "$\\$5$"
+      },
+      {
+        "key": "C",
+        "text": "$\\$2.50$"
+      },
+      {
+        "key": "D",
+        "text": "$\\$0$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "$10 \\cdot \\frac{1}{2} + 0 \\cdot \\frac{1}{2} = 5$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A spinner has four equal sections with point values $2$, $4$, $6$, and $8$. What is the expected value of one spin?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$20$"
+      },
+      {
+        "key": "B",
+        "text": "$4$"
+      },
+      {
+        "key": "C",
+        "text": "$5$"
+      },
+      {
+        "key": "D",
+        "text": "$6$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "$\\frac{2+4+6+8}{4} = 5$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "F",
+    "type": "mc",
+    "stem": "A random variable $X$ takes the value $10$ with probability $0.2$ and the value $0$ with probability $0.8$. Find $E(X)$.",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$8$"
+      },
+      {
+        "key": "B",
+        "text": "$10$"
+      },
+      {
+        "key": "C",
+        "text": "$5$"
+      },
+      {
+        "key": "D",
+        "text": "$2$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "$E(X) = 10 \\cdot 0.2 + 0 \\cdot 0.8 = 2$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A game costs $\\$3$ to play. You win $\\$12$ with probability $\\frac{1}{4}$ and nothing otherwise. What is the expected profit per play?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\$9$"
+      },
+      {
+        "key": "B",
+        "text": "$\\$3$"
+      },
+      {
+        "key": "C",
+        "text": "$-\\$3$"
+      },
+      {
+        "key": "D",
+        "text": "$\\$0$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Win profit: $12 - 3 = 9$. Lose profit: $-3$. $E = 9 \\cdot \\frac{1}{4} + (-3) \\cdot \\frac{3}{4} = 2.25 - 2.25 = 0$. A fair game.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A fundraiser sells $200$ raffle tickets for $\\$5$ each. One ticket wins a $\\$400$ prize. What is the expected profit for a person who buys one ticket?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$-\\$5$"
+      },
+      {
+        "key": "B",
+        "text": "$-\\$1$"
+      },
+      {
+        "key": "C",
+        "text": "$-\\$3$"
+      },
+      {
+        "key": "D",
+        "text": "$\\$2$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "Win: $400 - 5 = 395$, probability $\\frac{1}{200}$. Lose: $-5$, probability $\\frac{199}{200}$. $E = \\frac{395}{200} - \\frac{995}{200} = -\\frac{600}{200} = -3$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A random variable has the distribution: $P(X=0)=0.5$, $P(X=2)=0.3$, $P(X=5)=0.2$. Find $E(X)$.",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$2.33$"
+      },
+      {
+        "key": "B",
+        "text": "$3.5$"
+      },
+      {
+        "key": "C",
+        "text": "$1.6$"
+      },
+      {
+        "key": "D",
+        "text": "$1$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "$E = 0(0.5) + 2(0.3) + 5(0.2) = 0 + 0.6 + 1 = 1.6$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A bag contains $3$ red balls, $2$ blue balls, and $5$ green balls. Red balls are worth $10$ points, blue are $5$, green are $0$. One ball is drawn at random. What is the expected point value?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$4$"
+      },
+      {
+        "key": "B",
+        "text": "$5$"
+      },
+      {
+        "key": "C",
+        "text": "$3$"
+      },
+      {
+        "key": "D",
+        "text": "$7.5$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "$10 \\cdot \\frac{3}{10} + 5 \\cdot \\frac{2}{10} + 0 \\cdot \\frac{5}{10} = 3 + 1 + 0 = 4$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A quiz has $10$ multiple-choice questions, each with $4$ options. A student guesses every question. What is the expected number of correct answers?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$0.25$"
+      },
+      {
+        "key": "B",
+        "text": "$4$"
+      },
+      {
+        "key": "C",
+        "text": "$10$"
+      },
+      {
+        "key": "D",
+        "text": "$2.5$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Per question: probability $\\frac{1}{4}$, expected correct $= 0.25$. Over $10$ questions: $10 \\cdot 0.25 = 2.5$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A single fair die is rolled. You win the number of dollars that shows (so rolling a $4$ wins $\\$4$). What is the expected dollar amount?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\$6$"
+      },
+      {
+        "key": "B",
+        "text": "$\\$3$"
+      },
+      {
+        "key": "C",
+        "text": "$\\$4$"
+      },
+      {
+        "key": "D",
+        "text": "$\\$3.50$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "Expected value of a die roll is $3.5$, so expected dollars is $\\$3.50$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "An insurance policy pays out $\\$1000$ with probability $0.01$ and nothing otherwise. What is the expected payout?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\$10$"
+      },
+      {
+        "key": "B",
+        "text": "$\\$1$"
+      },
+      {
+        "key": "C",
+        "text": "$\\$100$"
+      },
+      {
+        "key": "D",
+        "text": "$\\$1000$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "$1000 \\cdot 0.01 + 0 \\cdot 0.99 = 10$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A spinner has a $20\\%$ chance of landing on red, $30\\%$ chance of blue, and $50\\%$ chance of green. Red pays $\\$5$, blue pays $\\$10$, green pays $\\$0$. What is the expected payout?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\$8$"
+      },
+      {
+        "key": "B",
+        "text": "$\\$15$"
+      },
+      {
+        "key": "C",
+        "text": "$\\$5$"
+      },
+      {
+        "key": "D",
+        "text": "$\\$4$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "$5(0.2) + 10(0.3) + 0(0.5) = 1 + 3 + 0 = 4$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A carnival game costs $\\$2$ to play. You win $\\$5$ with probability $\\frac{1}{3}$, nothing otherwise. What is the expected profit per game?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$-\\$2$"
+      },
+      {
+        "key": "B",
+        "text": "$-\\$\\frac{1}{3}$"
+      },
+      {
+        "key": "C",
+        "text": "$\\$0$"
+      },
+      {
+        "key": "D",
+        "text": "$\\$1$"
+      }
+    ],
+    "correctAnswer": "B",
+    "explanation": "$E = (5-2) \\cdot \\frac{1}{3} + (-2) \\cdot \\frac{2}{3} = 1 - \\frac{4}{3} = -\\frac{1}{3}$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A box contains $10$ cards: $4$ win $\\$3$ each, $6$ win $\\$0$. You draw one card. What is the expected payout?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\$1.20$"
+      },
+      {
+        "key": "B",
+        "text": "$\\$0$"
+      },
+      {
+        "key": "C",
+        "text": "$\\$1.50$"
+      },
+      {
+        "key": "D",
+        "text": "$\\$3$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "$3 \\cdot \\frac{4}{10} + 0 \\cdot \\frac{6}{10} = 1.20$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A game has three outcomes: win $\\$8$ with probability $0.25$, win $\\$2$ with probability $0.25$, win $\\$0$ with probability $0.5$. What is the expected winnings?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$\\$5$"
+      },
+      {
+        "key": "B",
+        "text": "$\\$3.33$"
+      },
+      {
+        "key": "C",
+        "text": "$\\$2.50$"
+      },
+      {
+        "key": "D",
+        "text": "$\\$10$"
+      }
+    ],
+    "correctAnswer": "C",
+    "explanation": "$8(0.25) + 2(0.25) + 0(0.5) = 2 + 0.5 + 0 = 2.50$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "M",
+    "type": "mc",
+    "stem": "A random variable $X$ has $P(X=-2)=0.4$ and $P(X=3)=0.6$. Find $E(X)$.",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$2.5$"
+      },
+      {
+        "key": "B",
+        "text": "$0.2$"
+      },
+      {
+        "key": "C",
+        "text": "$0.5$"
+      },
+      {
+        "key": "D",
+        "text": "$1$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "$E(X) = -2(0.4) + 3(0.6) = -0.8 + 1.8 = 1$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A charity is deciding between two games. Game A has expected profit $\\$2$ per play; Game B has expected profit $\\$5$ per play. If they plan to run $100$ plays, which game is expected to raise more money, and by how much?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "Game B, by $\\$300$"
+      },
+      {
+        "key": "B",
+        "text": "They are equal"
+      },
+      {
+        "key": "C",
+        "text": "Game A, by $\\$300$"
+      },
+      {
+        "key": "D",
+        "text": "Game B, by $\\$500$"
+      }
+    ],
+    "correctAnswer": "A",
+    "explanation": "Game B per play: $\\$5$; Game A: $\\$2$. Difference per play: $\\$3$. Over $100$ plays: $\\$300$ more for Game B.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A dart game: hitting the bullseye ($10\\%$ chance) scores $50$ points, hitting the inner ring ($30\\%$ chance) scores $20$ points, and missing ($60\\%$ chance) scores $0$. Expected score per throw?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$14$"
+      },
+      {
+        "key": "B",
+        "text": "$70$"
+      },
+      {
+        "key": "C",
+        "text": "$23.3$"
+      },
+      {
+        "key": "D",
+        "text": "$11$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "$50(0.1) + 20(0.3) + 0(0.6) = 5 + 6 + 0 = 11$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  },
+  {
+    "course": "sat-math",
+    "testType": "sat",
+    "section": "math",
+    "domain": "Problem Solving & Data",
+    "skill": "expected_value",
+    "sourceSkill": "Expected value",
+    "difficulty": "C",
+    "type": "mc",
+    "stem": "A lottery ticket costs $\\$2$. There is a $\\frac{1}{1000}$ chance of winning $\\$1500$, a $\\frac{1}{100}$ chance of winning $\\$10$, and otherwise no win. What is the expected profit per ticket?",
+    "choices": [
+      {
+        "key": "A",
+        "text": "$-\\$2$"
+      },
+      {
+        "key": "B",
+        "text": "$\\$1.50$"
+      },
+      {
+        "key": "C",
+        "text": "$\\$0$"
+      },
+      {
+        "key": "D",
+        "text": "$-\\$0.40$"
+      }
+    ],
+    "correctAnswer": "D",
+    "explanation": "$E(\\text{winnings}) = 1500 \\cdot 0.001 + 10 \\cdot 0.01 + 0 \\cdot 0.989 = 1.50 + 0.10 = 1.60$. Profit $= 1.60 - 2 = -0.40$.",
+    "katex": true,
+    "tags": [
+      "parker-gen-2026-04-15"
+    ]
+  }
+]

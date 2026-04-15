@@ -1,0 +1,40 @@
+{
+  "taxonomyKey": "organization",
+  "skillLabel": "Organization and logical flow",
+  "domain": "Expression of Ideas",
+  "conceptBlurb": "Organization questions ask where a sentence belongs in a paragraph, or which order of sentences makes the paragraph flow logically. The correct answer keeps topic-first, support-middle, and conclusion-last structure intact, and makes sure every pronoun and transition has a clear antecedent. The trap is choices that sound fine on their own but break the logical chain — introducing 'however' with nothing to contrast, or referencing 'the study' before the study has been mentioned.",
+  "conceptExplanation": "**What organization questions look like.** You'll see a short passage (usually one paragraph) with numbered sentences. The question asks either:\n- *Where should sentence X be placed?*\n- *Which order of sentences produces the most logical paragraph?*\n\n**The guiding principles.**\n\n1. **Topic sentence first.** The first sentence usually announces what the paragraph is about. It's typically broad and doesn't rely on any prior reference.\n2. **Support in the middle.** Examples, evidence, and elaboration come after the topic sentence.\n3. **Conclusion or transition at the end.** The last sentence wraps up the paragraph or gestures toward the next one.\n4. **Pronouns need antecedents.** If sentence C says 'this finding' or 'the researchers,' the thing it refers to has to appear BEFORE sentence C in the paragraph.\n5. **Transitions have to point somewhere.** 'However,' 'therefore,' 'as a result,' 'in contrast' — these words only make sense if the sentence before them sets up what they're contrasting, concluding, or continuing.\n\n**The reliable method.**\n1. Read each sentence and ask: does it reference anything ('this,' 'these,' 'the team,' 'such findings')?\n2. For each reference, find the sentence where the thing was introduced. That sentence has to come BEFORE any sentence that refers to it.\n3. Look at any transition words. Does the sentence that comes right before provide the contrast or cause the transition demands?\n4. Build the order from these constraints. Usually only one arrangement satisfies all of them.\n\n**Common wrong-answer patterns:**\n- An answer that puts a 'however' sentence immediately after the topic sentence, before any claim to contrast.\n- An answer that uses a pronoun before its antecedent has been introduced.\n- An answer that puts the conclusion in the middle of the paragraph.\n\n**A note on rhetorical goal questions.** Some organization questions ask which version *best accomplishes* a stated goal (\"emphasize the surprise of the finding,\" \"introduce the main claim,\" etc.). In those cases, match the goal to the version that most directly does what the stem asks — not the version that's prettiest.",
+  "workedExamples": [
+    {
+      "prompt": "A student is writing a paragraph and has drafted these sentences in no particular order:\n\n1. The team found that the new catalyst reduced the reaction time by 40%.\n2. However, independent labs have not yet replicated the result.\n3. A research group at Delft University announced a breakthrough in solar cell efficiency last year.\n4. Until replication occurs, most chemists are treating the announcement with cautious interest.\n\nWhich order produces the most logical paragraph?",
+      "steps": [
+        "Sentence 3 introduces the broad topic (the Delft announcement) and doesn't reference anything earlier. It has to go first.",
+        "Sentence 1 describes the specific finding the team reported. It builds on sentence 3 and must come after it.",
+        "Sentence 2 starts with 'However' and contrasts the finding with the lack of replication. It has to follow sentence 1, which is the thing being contrasted.",
+        "Sentence 4 wraps up the caution mentioned in sentence 2 and has to come last.",
+        "Order: 3, 1, 2, 4."
+      ],
+      "answer": "3, 1, 2, 4",
+      "takeaway": "Start with the sentence that doesn't reference anything earlier. Then follow the chain of references and transitions."
+    },
+    {
+      "prompt": "Where should this sentence be added to the paragraph below?\n\n'As a result, the technology is still considered experimental.'\n\nParagraph: [1] Solid-state batteries promise longer life and better safety than current lithium-ion cells. [2] Several prototypes have achieved over 2,000 charge cycles in laboratory conditions. [3] However, the manufacturing process is currently too slow for mass production, and material costs remain high. [4] Automakers and electronics companies are watching the field closely.",
+      "steps": [
+        "The new sentence begins with 'As a result,' so the thing before it must provide a cause.",
+        "Sentence 3 lists reasons the technology struggles (slow manufacturing, high costs). That's the cause.",
+        "The new sentence should go AFTER sentence 3 — so between [3] and [4].",
+        "Check: does sentence 4 still flow? 'Automakers... are watching the field closely' reads naturally after 'the technology is still considered experimental.' Yes."
+      ],
+      "answer": "After sentence 3.",
+      "takeaway": "'As a result' always needs the cause immediately before it. Find the cause first, then place the effect."
+    }
+  ],
+  "hintTemplates": [
+    "Find the one sentence that doesn't reference anything earlier in the paragraph — that sentence almost always comes first.",
+    "Every pronoun ('this,' 'it,' 'these,' 'they') and every definite reference ('the team,' 'the finding') has to come AFTER the sentence that introduces the thing it points to.",
+    "Transition words ('however,' 'as a result,' 'in contrast,' 'therefore') have to point at something specific. Make sure the preceding sentence really sets up the contrast or cause that the transition claims."
+  ],
+  "source": "parker-gen-2026-04-15",
+  "generatedAt": "2026-04-15T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

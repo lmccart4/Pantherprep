@@ -1,0 +1,40 @@
+{
+  "taxonomyKey": "parallelism",
+  "skillLabel": "Parallel structure",
+  "domain": "Standard English Conventions",
+  "conceptBlurb": "Parallel structure means items in a list, a comparison, or a paired construction share the same grammatical form. If the first item is a gerund ('running'), the rest should be gerunds. If the first is an infinitive ('to run'), the rest should be infinitives. The SAT loves to slip a noun into a list of verbs, or a gerund into a list of infinitives, and the wrong answers are usually the ones that sound smooth but break the pattern.",
+  "conceptExplanation": "**The core rule.** Whenever you have a list of items — joined by *and*, *or*, or *nor* — every item should share the same grammatical form.\n\n**Forms to match.**\n- **Nouns** with nouns: *She enjoys hiking, swimming, and biking.* (All gerunds acting as nouns.)\n- **Infinitives** with infinitives: *He wanted to run, to jump, and to throw.* (All *to* + verb.)\n- **Adjectives** with adjectives: *The room was bright, clean, and spacious.*\n- **Verb phrases** with verb phrases: *She writes poems, edits essays, and teaches workshops.*\n- **Prepositional phrases** with prepositional phrases: *The book sits on the shelf, in the library, and beside the window.*\n\n**The fix when items don't match.** Rewrite the odd one out to match the pattern the rest of the list follows.\n\nBad: *She likes to swim, biking, and hiking.*\nGood: *She likes to swim, to bike, and to hike.* OR *She likes swimming, biking, and hiking.*\n\n**Parallelism with correlative conjunctions.** Pairs like *both…and, either…or, neither…nor, not only…but also* demand parallel grammatical structures on each side.\n\nBad: *She is both a talented writer and teaches history.*\nGood: *She is both a talented writer AND a dedicated teacher.*\n\nBad: *The committee decided not only to raise funds but also promoting the event.*\nGood: *The committee decided not only to raise funds but also to promote the event.*\n\n**Parallelism in comparisons.** When you use *like, as, more than, less than, rather than*, the things being compared have to be grammatically similar.\n\nBad: *Running in the morning is better than to run at night.*\nGood: *Running in the morning is better than running at night.*\n\n**Parallelism in lists of clauses.** Longer lists work the same way — each clause should start with the same grammatical element.\n\nBad: *The coach praised the team for their effort, because they communicated well, and winning the championship.*\nGood: *The coach praised the team for their effort, for their communication, and for their championship win.* (All *for*-phrases.)\n\n**Method.**\n1. Find the list or comparison.\n2. Pick the grammatical form of the FIRST item — that's the template.\n3. Check every other item. Does it match the template?\n4. If one doesn't, the correct answer will rewrite it to match.",
+  "workedExamples": [
+    {
+      "prompt": "Choose the option that best completes the sentence:\n\n'To prepare for the marathon, Daniel trained four days a week, kept a strict diet, and ______.'\n\nA) was getting enough sleep\nB) sleeping was important to him\nC) sleep was a priority\nD) slept eight hours each night",
+      "steps": [
+        "Identify the pattern in the first two items: 'trained four days a week' (verb phrase) and 'kept a strict diet' (verb phrase). Each starts with a past-tense verb.",
+        "The third item has to match — a past-tense verb phrase.",
+        "A) 'was getting' is progressive, not parallel with 'trained'/'kept.' B) Starts with a gerund, then becomes a clause — breaks the pattern. C) Starts with 'sleep' as a noun — not a verb phrase.",
+        "D) 'slept eight hours each night' — past-tense verb phrase. Matches. Correct."
+      ],
+      "answer": "D) slept eight hours each night",
+      "takeaway": "When the first two items of a list are past-tense verb phrases, the third item has to be a past-tense verb phrase too."
+    },
+    {
+      "prompt": "Choose the option that best completes the sentence:\n\n'The professor advised her students not only to attend every lecture but also ______.'\n\nA) that they should take detailed notes\nB) they needed to take detailed notes\nC) to take detailed notes\nD) taking detailed notes",
+      "steps": [
+        "'Not only X but also Y' is a correlative pair — X and Y must be grammatically parallel.",
+        "X is 'to attend every lecture' — an infinitive phrase.",
+        "Y needs to be an infinitive phrase too.",
+        "A) is a noun clause ('that...'). B) is an independent clause. D) is a gerund phrase.",
+        "Only C) 'to take detailed notes' is an infinitive phrase. Correct."
+      ],
+      "answer": "C) to take detailed notes",
+      "takeaway": "'Not only… but also' is a correlative pair. Whatever form you use on one side, you have to use on the other."
+    }
+  ],
+  "hintTemplates": [
+    "Find the list or the correlative pair. Pick the grammatical form of the FIRST item — that's the template. Every other item has to match it.",
+    "For 'not only X but also Y,' 'both X and Y,' and 'either X or Y,' X and Y must be the same grammatical form — two nouns, two verb phrases, two infinitives, etc.",
+    "When comparing two actions with 'rather than,' 'more than,' or 'like,' both actions have to take the same form: running vs. running, to run vs. to run."
+  ],
+  "source": "parker-gen-2026-04-15",
+  "generatedAt": "2026-04-15T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

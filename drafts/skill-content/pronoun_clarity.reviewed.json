@@ -1,0 +1,40 @@
+{
+  "taxonomyKey": "pronoun_clarity",
+  "skillLabel": "Pronoun clarity and agreement",
+  "domain": "Standard English Conventions",
+  "conceptBlurb": "A pronoun has to agree with its antecedent in number (singular or plural) and it has to refer to that antecedent unambiguously. The SAT tests two things: wrong number (using 'they' for a singular noun like 'team') and vague reference (using 'it' or 'this' when two or three things could be what you mean). The fix is to make the pronoun match and to swap vague pronouns for specific nouns when context doesn't pin them down.",
+  "conceptExplanation": "**Rule 1: Agreement in number.** A singular antecedent takes a singular pronoun; a plural antecedent takes a plural pronoun.\n- *Each student brought HIS OR HER own laptop.* (not 'their' — *each* is singular)\n- *The researchers published THEIR results.* (plural)\n\nSingular antecedents that trip students up:\n- *Each, every, everyone, someone, anyone, nobody, neither, either* → singular → *he/she, his/her, it*\n- Collective nouns (*team, committee, company*) → usually singular on the SAT → *it*\n\n**Rule 2: Clear reference.** Every pronoun must have one obvious antecedent — the noun it's pointing to. If a reader has to guess, the sentence is wrong.\n\nAmbiguous: *When Maya met Sofia, she was nervous.* (Who was nervous? Unclear.)\nFixed: *When Maya met Sofia, Maya was nervous.*\n\nVague *it/this/that*: *The team missed the deadline. This was a problem.* (*This* what? The missed deadline? Something else?)\nFixed: *The team missed the deadline. This lapse was a problem.*\n\n**Rule 3: Person agreement.** Don't shift from *you* to *one* to *a person* in the same sentence.\n- Wrong: *When YOU study for a test, ONE should take breaks.*\n- Right: *When YOU study for a test, YOU should take breaks.*\n\n**Trap: 'they' as a generic singular.** In casual writing, people use *they* for a singular unknown person (*A student should bring their laptop*). The SAT usually treats this as an error — it wants *his or her* for a clearly singular antecedent. Default to matching the antecedent exactly.\n\n**Common wrong-answer setups:**\n- A plural pronoun paired with a singular antecedent: *The company announced their earnings.* Wrong — *the company* is singular, so *its earnings*.\n- A vague *this* or *it* with nothing specific to point to. If you can't circle one word in the passage that *this* refers to, the sentence is wrong.\n- A sentence with two possible antecedents and a pronoun that could mean either. The correct version names the antecedent outright.\n\n**Method.**\n1. For every pronoun in the answer choices, find the antecedent it refers to.\n2. Check that the pronoun agrees in number (and person) with that antecedent.\n3. Check that no other noun in the sentence could also be the antecedent. If two nouns could be the target, the pronoun is ambiguous.",
+  "workedExamples": [
+    {
+      "prompt": "Choose the option that makes the sentence grammatically correct:\n\n'The debate team, which has won every tournament for three years, ______ next competition is in Chicago.'\n\nA) their\nB) its\nC) there\nD) them",
+      "steps": [
+        "Identify the antecedent: 'the debate team.'",
+        "'Team' is a collective noun — on the SAT, collective nouns are singular and take singular pronouns.",
+        "Singular possessive pronoun for a non-person: 'its.'",
+        "A) 'their' is plural — wrong. C) 'there' is a location — wrong. D) 'them' is object form, not possessive — wrong.",
+        "Correct: B."
+      ],
+      "answer": "B) its",
+      "takeaway": "Collective nouns like 'team,' 'family,' and 'committee' are singular. Their matching pronouns are 'it' and 'its,' not 'they' and 'their.'"
+    },
+    {
+      "prompt": "Which revision fixes the ambiguous pronoun reference in the sentence below?\n\n'When the curator showed the painting to the critic, she praised the brushwork.'\n\nA) (keep as is)\nB) When the curator showed the painting to the critic, the critic praised the brushwork.\nC) When the curator showed the painting to the critic, they praised the brushwork.\nD) When the curator showed the painting to the critic, it praised the brushwork.",
+      "steps": [
+        "In the original sentence, 'she' could refer to either 'curator' or 'critic' — both are female nouns. Ambiguous.",
+        "Check each fix. A) keeps the ambiguity. C) introduces 'they' with no clear plural antecedent. D) 'it' can't praise.",
+        "B) replaces the vague pronoun with the specific noun 'the critic,' removing the ambiguity.",
+        "Correct: B."
+      ],
+      "answer": "B) When the curator showed the painting to the critic, the critic praised the brushwork.",
+      "takeaway": "When a pronoun could refer to two different antecedents, the clean fix is to name the specific antecedent instead of using the pronoun."
+    }
+  ],
+  "hintTemplates": [
+    "For every pronoun, find the exact noun it points to. If you have to guess, the sentence is ambiguous and the answer is wrong.",
+    "Collective nouns (team, company, committee, family) are singular on the SAT. They take 'it'/'its,' not 'they'/'their.'",
+    "'Each,' 'every,' 'everyone,' 'anyone,' 'nobody,' and 'neither' are singular. Their pronouns should be 'he or she' / 'his or her' / 'it' — not 'they' or 'their.'"
+  ],
+  "source": "parker-gen-2026-04-15",
+  "generatedAt": "2026-04-15T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

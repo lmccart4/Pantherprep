@@ -1,0 +1,49 @@
+{
+  "taxonomyKey": "unit_circle",
+  "skillLabel": "Unit circle and radians",
+  "domain": "Geometry & Trig",
+  "conceptBlurb": "The unit circle is a circle of radius $1$ centered at the origin. Any point on it has coordinates $(\\cos\\theta, \\sin\\theta)$, where $\\theta$ is the angle measured counterclockwise from the positive $x$-axis. Radians are the natural angle unit for this picture: $360°$ equals $2\\pi$ radians. On the SAT, unit-circle problems test either radian–degree conversion or the exact values of $\\sin$, $\\cos$, and $\\tan$ at standard angles like $0$, $\\pi/6$, $\\pi/4$, $\\pi/3$, and $\\pi/2$.",
+  "conceptExplanation": "**Radians as a length.** An angle of $\\theta$ radians subtends an arc of length $\\theta$ on a unit circle. Since a full circle has circumference $2\\pi$, a full turn equals $2\\pi$ radians — equivalent to $360°$.\n\n**Conversion.**\n$$\\text{radians} = \\text{degrees} \\cdot \\frac{\\pi}{180}, \\qquad \\text{degrees} = \\text{radians} \\cdot \\frac{180}{\\pi}$$\n\nSo $90° = \\frac{\\pi}{2}$, $180° = \\pi$, $270° = \\frac{3\\pi}{2}$, and $360° = 2\\pi$.\n\n**The unit-circle definition.** Place the standard angle $\\theta$ in standard position (vertex at origin, initial side along positive $x$-axis). Where the terminal side meets the unit circle, the coordinates are $(\\cos\\theta, \\sin\\theta)$. So:\n$$\\cos\\theta = x, \\qquad \\sin\\theta = y, \\qquad \\tan\\theta = \\frac{y}{x}$$\n\nThis definition works for every angle, including negative angles and angles beyond $360°$.\n\n**The four standard reference angles** (memorize these):\n\n| $\\theta$ | $0$ | $\\pi/6$ | $\\pi/4$ | $\\pi/3$ | $\\pi/2$ |\n|---|---|---|---|---|---|\n| $\\sin$ | $0$ | $1/2$ | $\\sqrt{2}/2$ | $\\sqrt{3}/2$ | $1$ |\n| $\\cos$ | $1$ | $\\sqrt{3}/2$ | $\\sqrt{2}/2$ | $1/2$ | $0$ |\n| $\\tan$ | $0$ | $1/\\sqrt{3}$ | $1$ | $\\sqrt{3}$ | undef |\n\n**Signs by quadrant.** $\\cos\\theta$ matches the sign of the $x$-coordinate; $\\sin\\theta$ matches the sign of the $y$-coordinate. In Q1 both are positive, Q2 $\\sin>0$ and $\\cos<0$, Q3 both negative, Q4 $\\cos>0$ and $\\sin<0$.\n\n**Reference angle trick.** For any angle not in the first quadrant, find the acute angle it makes with the $x$-axis — that's the reference angle. Look up $\\sin$ and $\\cos$ for the reference angle in the table, then apply the sign for the quadrant. For example, $\\sin(5\\pi/6)$ has reference angle $\\pi/6$ and lies in Q2, so it equals $+1/2$.",
+  "workedExamples": [
+    {
+      "prompt": "Convert $135°$ to radians.",
+      "steps": [
+        "Multiply by $\\frac{\\pi}{180}$: $135 \\cdot \\frac{\\pi}{180} = \\frac{135\\pi}{180}$.",
+        "Simplify: $\\frac{135}{180} = \\frac{3}{4}$.",
+        "So $135° = \\frac{3\\pi}{4}$ radians."
+      ],
+      "answer": "$\\frac{3\\pi}{4}$",
+      "takeaway": "To convert degrees to radians, multiply by $\\pi/180$. Simplify the fraction before you add the $\\pi$."
+    },
+    {
+      "prompt": "Find the exact value of $\\cos\\!\\left(\\frac{2\\pi}{3}\\right)$.",
+      "steps": [
+        "$\\frac{2\\pi}{3}$ corresponds to $120°$, which lies in Q2.",
+        "Reference angle: $\\pi - \\frac{2\\pi}{3} = \\frac{\\pi}{3}$ (that is, $60°$).",
+        "$\\cos(\\pi/3) = \\frac{1}{2}$, and cosine is negative in Q2.",
+        "So $\\cos\\!\\left(\\frac{2\\pi}{3}\\right) = -\\frac{1}{2}$."
+      ],
+      "answer": "$-\\frac{1}{2}$",
+      "takeaway": "For angles outside Q1, find the reference angle, look up the value for that reference angle, then apply the correct sign for the quadrant."
+    },
+    {
+      "prompt": "On the unit circle, the point $P$ has coordinates $(\\frac{\\sqrt{2}}{2}, -\\frac{\\sqrt{2}}{2})$. What angle $\\theta$ (in radians) does $P$ correspond to, measured counterclockwise from the positive $x$-axis? Give the smallest positive value.",
+      "steps": [
+        "On the unit circle, $(\\cos\\theta, \\sin\\theta) = P$, so $\\cos\\theta = \\frac{\\sqrt{2}}{2}$ and $\\sin\\theta = -\\frac{\\sqrt{2}}{2}$.",
+        "Positive cosine and negative sine → Q4.",
+        "The reference angle where both values equal $\\sqrt{2}/2$ is $\\pi/4$.",
+        "In Q4, the angle measured counterclockwise is $2\\pi - \\pi/4 = \\frac{7\\pi}{4}$."
+      ],
+      "answer": "$\\frac{7\\pi}{4}$",
+      "takeaway": "Use the signs of $\\cos\\theta$ and $\\sin\\theta$ to pick the quadrant, then use the reference angle to land on the right specific angle."
+    }
+  ],
+  "hintTemplates": [
+    "To switch between degrees and radians, multiply by $\\pi/180$ (degrees to radians) or $180/\\pi$ (radians to degrees).",
+    "Memorize the first quadrant values for $\\sin$ and $\\cos$ at $0$, $\\pi/6$, $\\pi/4$, $\\pi/3$, and $\\pi/2$. Every other angle is a sign flip away.",
+    "On the unit circle, $\\cos\\theta$ is the $x$-coordinate and $\\sin\\theta$ is the $y$-coordinate. The quadrant tells you the signs."
+  ],
+  "source": "parker-gen-2026-04-15",
+  "generatedAt": "2026-04-15T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

@@ -1,0 +1,40 @@
+{
+  "taxonomyKey": "verb_tense",
+  "skillLabel": "Verb tense and consistency",
+  "domain": "Standard English Conventions",
+  "conceptBlurb": "Verb tense has to fit the time frame of the sentence and stay consistent across related actions. The SAT tests two patterns: choosing the right tense for the context (past, present, present perfect, past perfect) and keeping tense consistent within a sentence or paragraph. The trap is shifting from past to present for no reason — if the passage is narrating events that already happened, every related verb should stay past.",
+  "conceptExplanation": "**The main tenses to know.**\n\n- **Simple present** (*she writes*) — habits, current states, general truths. *Water boils at 100°C.*\n- **Simple past** (*she wrote*) — a completed action at a specific past time. *She wrote the letter yesterday.*\n- **Present perfect** (*she has written*) — an action that started in the past and continues into the present, OR a past action with present relevance. *She has written three novels.* (And is still alive and could write more.)\n- **Past perfect** (*she had written*) — an action that was completed BEFORE another past action. *By the time the editor called, she had written three drafts.*\n- **Future** (*she will write*) — something that hasn't happened yet.\n\n**When to use which perfect.**\n\n- **Present perfect** is for actions that link past to present. Use it with time markers like *since*, *for*, *so far*, *until now*, *already*, *yet*.\n  - *She has lived in Boston since 2015.* (Started in the past, still true now.)\n\n- **Past perfect** is for the earlier of two past events. Use it with *by the time, before, after, when* to make the sequence clear.\n  - *By the time the movie started, we had already finished our popcorn.* (Two past events: starting, finishing. Finishing happened first → past perfect.)\n\n**Consistency within a sentence.** When two related actions happen in the same time frame, use matching tenses.\n\nWrong: *The reporter interviewed the witness and then writes an article.* (past → present — inconsistent)\nRight: *The reporter interviewed the witness and then wrote an article.* (past → past)\n\n**Consistency within a paragraph.** If a paragraph narrates events that already happened, keep every action in past tense unless there's a specific reason to shift. A sudden shift to present tense signals that the thing is still true now, not just back then — if that's not what you mean, stay in past.\n\n**Common SAT traps.**\n- **Unnecessary shift to present.** A historical passage that's been in past tense suddenly uses *is* or *writes*. Unless the sentence is stating a lasting fact, this is an error.\n- **Past perfect without a second past action.** You don't use *had written* just because something was far in the past — you use it because another past action came after it.\n- **'Have seen' vs 'saw'.** *I saw that movie yesterday* (specific past time) vs. *I have seen that movie* (no specific time, still relevant).\n\n**Method.**\n1. Identify the time frame of the sentence — past, present, or future.\n2. Decide if the action is a single completed event, a habit, or a state continuing into now.\n3. Pick the tense that matches BOTH the time frame and the aspect.\n4. Check that it's consistent with the tense of nearby verbs.",
+  "workedExamples": [
+    {
+      "prompt": "Choose the option that makes the sentence grammatically correct:\n\n'By the time the storm reached the coast, the evacuation crews ______ all of the elderly residents from the seaside neighborhoods.'\n\nA) have already moved\nB) had already moved\nC) were already moving\nD) already moved",
+      "steps": [
+        "Two past events: (1) the storm reaching the coast, (2) the crews moving the residents.",
+        "Which came first? The moving came BEFORE the storm arrived — the sentence uses 'by the time' to signal that.",
+        "The earlier past action needs past perfect: 'had moved.'",
+        "A) 'have moved' is present perfect — wrong time frame. C) 'were moving' is past progressive — doesn't show the action was completed before the storm. D) 'already moved' is simple past — doesn't establish the sequence.",
+        "Correct: B."
+      ],
+      "answer": "B) had already moved",
+      "takeaway": "'By the time X happened' signals two past events, with the second clause happening FIRST. Use past perfect ('had moved') for the earlier one."
+    },
+    {
+      "prompt": "Choose the option that makes the sentence grammatically correct:\n\n'Archaeologists excavating the site in 1987 discovered pottery fragments, tools, and what ______ to be a ceremonial altar.'\n\nA) appears\nB) will appear\nC) appeared\nD) has appeared",
+      "steps": [
+        "The opening clause is in past tense: 'excavating the site in 1987 discovered.'",
+        "The related verb for 'what ___ to be' should match: past tense.",
+        "A) 'appears' is present — inconsistent. B) 'will appear' is future — wrong. D) 'has appeared' is present perfect — doesn't fit a specific past event in 1987.",
+        "C) 'appeared' is simple past — matches. Correct."
+      ],
+      "answer": "C) appeared",
+      "takeaway": "If the main clause is in past tense and the time frame is locked ('in 1987'), keep every related verb in past tense."
+    }
+  ],
+  "hintTemplates": [
+    "Find the time frame of the sentence (past, present, future) and make sure every related verb matches. Unexplained tense shifts are almost always wrong.",
+    "Use past perfect ('had done') only when you have TWO past events and you need to show which happened first. A single past event takes simple past.",
+    "Present perfect ('has done') means a past action still matters now. Use it with 'since,' 'for,' 'so far,' and 'yet' — not with specific past times like 'yesterday' or 'in 1987.'"
+  ],
+  "source": "parker-gen-2026-04-15",
+  "generatedAt": "2026-04-15T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

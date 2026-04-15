@@ -108,7 +108,7 @@ export async function completeTestSession(
       score,
       total,
       percentage: total > 0 ? Math.round((score / total) * 100) : 0,
-      scaledScore,
+      ...(typeof scaledScore === "number" ? { scaledScore } : {}),
       timeSpent,
       testSessionId,
     },

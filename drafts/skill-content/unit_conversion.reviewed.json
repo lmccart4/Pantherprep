@@ -1,0 +1,50 @@
+{
+  "taxonomyKey": "unit_conversion",
+  "skillLabel": "Unit conversion",
+  "domain": "Problem Solving & Data",
+  "conceptBlurb": "Unit conversion problems ask you to rewrite a quantity in different units — miles to kilometers, minutes to seconds, dollars per hour to cents per minute. The reliable method is dimensional analysis: multiply by conversion fractions arranged so the units you don't want cancel and the units you do want survive. Most SAT unit-conversion traps come from mishandling compound units like miles per hour, not from the arithmetic itself.",
+  "conceptExplanation": "A conversion factor is a fraction equal to $1$, built from an equivalence you know. Because $1 \\text{ ft} = 12 \\text{ in}$, both $\\frac{12 \\text{ in}}{1 \\text{ ft}}$ and $\\frac{1 \\text{ ft}}{12 \\text{ in}}$ equal $1$, so you can multiply any quantity by one of them without changing its value — only its units.\n\n**Dimensional analysis — the method.**\n1. Write the starting quantity with its units: $60 \\text{ mi/hr}$.\n2. Write the target units you want at the end.\n3. Build a chain of conversion factors so each unwanted unit cancels (one copy in the numerator, one in the denominator).\n4. Multiply the numbers across the top and across the bottom, then simplify.\n\n**Compound units.** Units like $\\text{mi/hr}$, $\\text{g/cm}^3$, and $\\text{\\$/hr}$ have two parts — a top unit and a bottom unit. To convert a compound unit, you usually need two conversion chains: one for the numerator and one for the denominator.\n\nExample: convert $60 \\text{ mi/hr}$ to $\\text{ft/sec}$.\n$$60 \\cdot \\frac{\\text{mi}}{\\text{hr}} \\cdot \\frac{5280 \\text{ ft}}{1 \\text{ mi}} \\cdot \\frac{1 \\text{ hr}}{3600 \\text{ sec}} = \\frac{60 \\cdot 5280}{3600} \\text{ ft/sec} = 88 \\text{ ft/sec}$$\n\nNotice how $\\text{mi}$ cancels top-to-bottom, and $\\text{hr}$ cancels bottom-to-top. What's left — $\\text{ft/sec}$ — is exactly what you wanted.\n\n**Common SAT conversions to memorize:**\n- $1 \\text{ mi} = 5280 \\text{ ft}$\n- $1 \\text{ hr} = 60 \\text{ min} = 3600 \\text{ sec}$\n- $1 \\text{ km} = 1000 \\text{ m}$, $1 \\text{ m} = 100 \\text{ cm}$\n- $1 \\text{ kg} = 1000 \\text{ g}$, $1 \\text{ g} = 1000 \\text{ mg}$\n- $1 \\text{ L} = 1000 \\text{ mL}$\n\n**The common trap.** Students often flip a conversion factor upside down because they multiply when they should divide. The fix is simple: always write units on every number and make sure the unwanted unit really cancels before touching the calculator.",
+  "workedExamples": [
+    {
+      "prompt": "A car travels at $30 \\text{ m/s}$. What is its speed in $\\text{km/hr}$?",
+      "steps": [
+        "Start with $30 \\frac{\\text{m}}{\\text{s}}$ and chain factors to cancel $\\text{m}$ and $\\text{s}$: $30 \\cdot \\frac{\\text{m}}{\\text{s}} \\cdot \\frac{1 \\text{ km}}{1000 \\text{ m}} \\cdot \\frac{3600 \\text{ s}}{1 \\text{ hr}}$.",
+        "Meters cancel top and bottom; seconds cancel top and bottom. Remaining units: $\\text{km/hr}$. ✓",
+        "Multiply: $\\frac{30 \\cdot 3600}{1000} = \\frac{108000}{1000} = 108$.",
+        "Answer: $108 \\text{ km/hr}$."
+      ],
+      "answer": "$108 \\text{ km/hr}$",
+      "takeaway": "To convert $\\text{m/s}$ to $\\text{km/hr}$, multiply by $3.6$. Dimensional analysis gets you there without needing to memorize the shortcut."
+    },
+    {
+      "prompt": "An aquarium pump moves water at $4 \\text{ gallons per minute}$. How many liters does it move in one hour? (Use $1 \\text{ gal} = 3.785 \\text{ L}$.)",
+      "steps": [
+        "Set up the chain: $4 \\cdot \\frac{\\text{gal}}{\\text{min}} \\cdot \\frac{3.785 \\text{ L}}{1 \\text{ gal}} \\cdot \\frac{60 \\text{ min}}{1 \\text{ hr}}$.",
+        "Gallons cancel; minutes cancel; leaves $\\text{L/hr}$.",
+        "Multiply: $4 \\cdot 3.785 \\cdot 60 = 908.4$.",
+        "Answer: $908.4 \\text{ L/hr}$."
+      ],
+      "answer": "$908.4 \\text{ liters per hour}$",
+      "takeaway": "When a compound unit has two parts, you often need two conversion factors — one for each side."
+    },
+    {
+      "prompt": "A recipe calls for $250 \\text{ mL}$ of milk. The cook only has a measuring cup marked in fluid ounces. If $1 \\text{ fl oz} \\approx 29.6 \\text{ mL}$, how many fluid ounces does the recipe need (to the nearest tenth)?",
+      "steps": [
+        "Want fluid ounces, have mL. Build the factor so mL cancels: $250 \\text{ mL} \\cdot \\frac{1 \\text{ fl oz}}{29.6 \\text{ mL}}$.",
+        "mL cancels top and bottom, leaving fl oz.",
+        "Divide: $250 \\div 29.6 \\approx 8.45$.",
+        "Round to one decimal: $8.4 \\text{ fl oz}$."
+      ],
+      "answer": "$8.4 \\text{ fl oz}$",
+      "takeaway": "When you want the target unit in the numerator, put it in the numerator of the conversion factor. Unit cancellation forces the correct orientation."
+    }
+  ],
+  "hintTemplates": [
+    "Write the starting quantity with its units on the left, your target units on the right, and build a chain of conversion fractions so every unit you don't want cancels.",
+    "Each conversion factor should be arranged so the unit you're getting rid of appears once on top and once on the bottom — that's what makes it cancel.",
+    "For compound units like $\\text{mi/hr}$ or $\\text{\\$/gal}$, plan on using two separate conversion chains — one to convert the numerator and one to convert the denominator."
+  ],
+  "source": "parker-gen-2026-04-15",
+  "generatedAt": "2026-04-15T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

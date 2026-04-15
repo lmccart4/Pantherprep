@@ -1,0 +1,40 @@
+{
+  "taxonomyKey": "subject_verb_agreement",
+  "skillLabel": "Subject-verb agreement",
+  "domain": "Standard English Conventions",
+  "conceptBlurb": "A verb has to match its subject in number: singular subjects take singular verbs, plural subjects take plural verbs. The trap is that the SAT hides the subject behind prepositional phrases, relative clauses, or inverted word order, and the nearby noun you're tempted to use as the subject is usually the wrong one. Find the real subject, strip out the interrupters, and then match.",
+  "conceptExplanation": "**The core rule.** Singular subject → singular verb. Plural subject → plural verb.\n- *The dog barks.* (singular subject, singular verb)\n- *The dogs bark.* (plural subject, plural verb)\n\nIn present tense, most verbs add an *-s* for third-person singular. Memorize that and half of agreement is done.\n\n**Trap 1: Prepositional phrases between subject and verb.** The SAT puts a phrase between the subject and the verb so the nearest noun — which is NOT the subject — tempts you.\n\n- *The box of apples sits on the counter.* (Subject: *box,* singular. Ignore *of apples.*)\n- *The collection of rare coins was donated to the museum.* (Subject: *collection.*)\n\n**How to find the real subject.** Cross out every prepositional phrase in the sentence. The noun that's left is almost always the subject.\n\n**Trap 2: Inverted word order.** Sometimes the subject comes after the verb — in questions, sentences starting with *there is / there are,* and stylistic inversions.\n\n- *There are three books on the shelf.* (Real subject: *books,* plural, so *are.*)\n- *Here comes the bus.* (Real subject: *bus,* singular, so *comes.*)\n\n**Trap 3: Collective nouns.** Words like *team, family, jury, committee, audience* are usually singular on the SAT because the group acts as a unit.\n- *The team is practicing.*\n- *The committee meets every Friday.*\n\n**Trap 4: Indefinite pronouns.** These are almost always singular: *each, every, everyone, someone, anybody, nobody, neither, either, none.*\n- *Each of the players is ready.* (Subject: *each*, not *players*.)\n- *Neither of the answers is correct.*\n\nA few are plural: *both, few, many, several.*\n- *Both of the answers are correct.*\n\n**Trap 5: Compound subjects with 'and' vs 'or'.**\n- Two subjects joined by *and* are usually plural: *Maria and Jamal are studying.*\n- Two subjects joined by *or* or *nor* take a verb that matches the CLOSER subject: *Neither the coach nor the players were surprised.* (Closer subject: *players,* plural.)\n\n**Method for every agreement question:**\n1. Find the verb the question is asking about.\n2. Ask: what is the subject of THIS verb?\n3. Cross out any prepositional phrases, relative clauses, or interrupters between subject and verb.\n4. Decide if the subject is singular or plural.\n5. Pick the matching verb form.",
+  "workedExamples": [
+    {
+      "prompt": "Choose the option that makes the sentence grammatically correct:\n\n'The variety of birds that visit the feeder each morning ______ a source of delight for Ms. Park.'\n\nA) are\nB) were\nC) is\nD) have been",
+      "steps": [
+        "Find the subject of the blank verb. The verb describes 'a source of delight' — so the subject is what is (or is not) a source of delight.",
+        "Subject: 'variety' — singular. 'Of birds that visit the feeder each morning' is a prepositional phrase plus relative clause. Cross it out.",
+        "'The variety ______ a source of delight.' Singular subject, so the verb must be singular.",
+        "A) 'are' is plural. B) 'were' is plural past. D) 'have been' is plural present perfect. Only C) 'is' is singular present.",
+        "Correct: C."
+      ],
+      "answer": "C) is",
+      "takeaway": "Strip out prepositional phrases ('of birds') to find the real subject. 'Variety' is singular even when the things in the variety are plural."
+    },
+    {
+      "prompt": "Choose the option that makes the sentence grammatically correct:\n\n'Neither the manager nor the employees ______ aware of the scheduling conflict.'\n\nA) was\nB) were\nC) is\nD) has been",
+      "steps": [
+        "The subject is a compound joined by 'nor': 'Neither the manager nor the employees.'",
+        "With 'or' / 'nor,' match the verb to the CLOSER subject. The closer subject is 'employees' — plural.",
+        "Need a plural verb. A) 'was' singular. C) 'is' singular. D) 'has been' singular. B) 'were' plural.",
+        "Correct: B."
+      ],
+      "answer": "B) were",
+      "takeaway": "With 'or'/'nor' compound subjects, the verb agrees with the closer subject — not with the whole compound."
+    }
+  ],
+  "hintTemplates": [
+    "Find the verb the question is testing. Then ask: 'Who or what is doing this?' That noun is the subject — not the closest word to the verb.",
+    "Cross out prepositional phrases and relative clauses between the subject and verb. The real subject is whatever's left.",
+    "Collective nouns (team, family, committee) are singular on the SAT. Indefinite pronouns like 'each,' 'every,' 'neither,' and 'every one' are singular too."
+  ],
+  "source": "parker-gen-2026-04-15",
+  "generatedAt": "2026-04-15T00:00:00.000Z",
+  "reviewedBy": "parker-critic"
+}

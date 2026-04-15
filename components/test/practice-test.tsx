@@ -257,7 +257,6 @@ export function PracticeTest({
       questions: allQ,
       answers: answersByIndex,
       timeSpent,
-      scaledScore: undefined,
     }).catch((err) => {
       console.error("completeTestSession failed:", err);
       setSaveError(true);
