@@ -18,6 +18,7 @@ import { getUserRole } from "@/lib/auth-utils";
 import { GlassCard } from "@/components/ui/glass-card";
 import { TopBar } from "@/components/layout/top-bar";
 import { PastTestsView } from "@/components/dashboard/past-tests-view";
+import { SkillsCard } from "@/components/home/skills-card";
 import type { TestType } from "@/types/question";
 import { TESTS, COURSE_ROUTES } from "@/lib/test-types";
 import type { StudentProfile, Session, ClassDoc } from "@/types/firestore";
@@ -265,6 +266,8 @@ export default function HomePage() {
               </GlassCard>
             ))}
           </div>
+
+          <SkillsCard role={role as "student" | "teacher" | "admin" | null} />
 
           {/* Recent Sessions */}
           {sessions.length > 0 && (

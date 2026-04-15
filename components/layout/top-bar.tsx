@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -45,7 +46,7 @@ export function TopBar({ backHref, backLabel, className }: TopBarProps) {
           Panther<span className="text-panther-red">Prep</span>
         </a>
         <span className="hidden h-4 w-px bg-white/15 sm:inline-block" aria-hidden />
-        <a
+        <Link
           href="/skills"
           className={cn(
             "hidden shrink-0 text-sm font-medium transition-colors sm:inline-block",
@@ -55,7 +56,7 @@ export function TopBar({ backHref, backLabel, className }: TopBarProps) {
           )}
         >
           Skills
-        </a>
+        </Link>
       </div>
 
       <div className="flex shrink-0 items-center gap-2 sm:gap-3">
