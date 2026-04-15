@@ -19,6 +19,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { TopBar } from "@/components/layout/top-bar";
 import { PastTestsView } from "@/components/dashboard/past-tests-view";
 import type { TestType } from "@/types/question";
+import { TESTS, COURSE_ROUTES } from "@/lib/test-types";
 import type { StudentProfile, Session, ClassDoc } from "@/types/firestore";
 
 type View = "home" | "test-detail" | "dashboard" | "class-detail" | "student-detail";
@@ -55,17 +56,6 @@ const LEVELS = [
   { name: "Alpha Panther", min: 2500 },
 ];
 
-const TESTS: Record<TestType, { name: string; desc: string; color: string }> = {
-  sat: { name: "SAT", desc: "College readiness", color: "#C8102E" },
-  nmsqt: { name: "PSAT/NMSQT", desc: "National Merit", color: "#d4a017" },
-  psat89: { name: "PSAT 8/9", desc: "Grades 8–9", color: "#06b6d4" },
-};
-
-const COURSE_ROUTES: Record<TestType, { rw: string; math: string }> = {
-  sat: { rw: "/courses/sat-rw", math: "/courses/sat-math" },
-  nmsqt: { rw: "/courses/nmsqt-rw", math: "/courses/nmsqt-math" },
-  psat89: { rw: "/courses/psat89-rw", math: "/courses/psat89-math" },
-};
 
 export default function HomePage() {
   const { user, role } = useAuth();
