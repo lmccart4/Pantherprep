@@ -7,9 +7,10 @@ import { WelcomeScreen } from "./welcome-screen";
 import { WarmupQuiz } from "./warmup-quiz";
 import { LessonViewer } from "./lesson-viewer";
 import { QuizEngine } from "./quiz-engine";
-import { CompleteScreen } from "./complete-screen";
+import { CompleteScreen, type PracticeSkillLink } from "./complete-screen";
 import { useAuth } from "@/hooks/use-auth";
 import adaptiveBridge from "@/lib/adaptive/adaptive-bridge";
+import { computeWeakSkills, type SkillResult } from "@/lib/weak-skills";
 
 interface ModuleShellProps {
   config: ModuleConfig;
@@ -49,6 +50,7 @@ export function ModuleShell({ config, activities, visuals, nextModuleHref, nextM
   const [screenIdx, setScreenIdx] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [scores, setScores] = useState<Scores>({});
+  const [skillResults, setSkillResults] = useState<SkillResult[]>([]);
   const bridgeInitRef = useRef(false);
 
   const { user } = useAuth();
@@ -89,6 +91,9 @@ export function ModuleShell({ config, activities, visuals, nextModuleHref, nextM
 
   // Adaptive tracking callback for quiz questions
   const handleQuizAnswer = useCallback((question: QuizQuestion, selectedIndex: number, correct: boolean) => {
+    if (question.skill) {
+      setSkillResults((prev) => [...prev, { skill: question.skill as string, correct }]);
+    }
     if (!adaptiveBridge.initialized) return;
     adaptiveBridge.startQuestion();
     adaptiveBridge.recordAnswer({
@@ -199,6 +204,18 @@ export function ModuleShell({ config, activities, visuals, nextModuleHref, nextM
             value: `${scores.challenge.score}/${scores.challenge.total}`,
             color: scores.challenge.score / scores.challenge.total >= 0.8 ? "var(--color-accent-green)" : undefined,
           });
+
+        const routeCourse = `${config.testType}-${config.section}`;
+        const practiceSkills: PracticeSkillLink[] = computeWeakSkills(skillResults, {
+          minAttempts: 2,
+          threshold: 0.75,
+          limit: 3,
+        }).map((s) => ({
+          course: routeCourse,
+          taxonomyKey: s.taxonomyKey,
+          blurb: `${s.correct}/${s.total} correct · ${Math.round(s.pct * 100)}%`,
+        }));
+
         return (
           <CompleteScreen
             title={config.title}
@@ -206,6 +223,7 @@ export function ModuleShell({ config, activities, visuals, nextModuleHref, nextM
             description={config.completionDescription}
             stats={stats}
             takeaways={config.takeaways}
+            practiceSkills={practiceSkills}
             courseHref={courseHref}
             nextHref={nextModuleHref}
             nextLabel={nextModuleLabel}

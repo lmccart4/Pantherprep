@@ -12,6 +12,7 @@ import { QuestionNavigator } from "@/components/test/question-navigator";
 import { ProgressBar } from "@/components/test/progress-bar";
 import { ScoreCircle } from "@/components/test/score-circle";
 import { DomainBreakdown } from "@/components/test/domain-breakdown";
+import { WeakSkillsCallout } from "@/components/skills/weak-skills-callout";
 import { ReferenceSheet } from "@/components/test/reference-sheet";
 import { TopBar } from "@/components/layout/top-bar";
 import type { Question, TestType } from "@/types/question";
@@ -719,6 +720,26 @@ export function PracticeTest({
                 )}
               </div>
             </div>
+
+            {/* Weak Skills CTA — Spec F */}
+            <WeakSkillsCallout
+              course={`${testType}-rw`}
+              accentColor={accentColor}
+              title="Practice Your R&W Weak Areas"
+              results={rwQuestions.map((q) => ({
+                skill: q.skill,
+                correct: isCorrect(q, answers[qid(q)]),
+              }))}
+            />
+            <WeakSkillsCallout
+              course={`${testType}-math`}
+              accentColor={accentColor}
+              title="Practice Your Math Weak Areas"
+              results={mathQuestions.map((q) => ({
+                skill: q.skill,
+                correct: isCorrect(q, answers[qid(q)]),
+              }))}
+            />
           </>
         )}
 
@@ -731,6 +752,15 @@ export function PracticeTest({
               </h3>
               <DomainBreakdown stats={rwDomainStats} />
             </GlassCard>
+            <WeakSkillsCallout
+              course={`${testType}-rw`}
+              accentColor={accentColor}
+              title="Practice Your R&W Weak Areas"
+              results={rwQuestions.map((q) => ({
+                skill: q.skill,
+                correct: isCorrect(q, answers[qid(q)]),
+              }))}
+            />
             <GlassCard>
               <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
                 Question Review
@@ -762,6 +792,15 @@ export function PracticeTest({
               </h3>
               <DomainBreakdown stats={mathDomainStats} />
             </GlassCard>
+            <WeakSkillsCallout
+              course={`${testType}-math`}
+              accentColor={accentColor}
+              title="Practice Your Math Weak Areas"
+              results={mathQuestions.map((q) => ({
+                skill: q.skill,
+                correct: isCorrect(q, answers[qid(q)]),
+              }))}
+            />
             <GlassCard>
               <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
                 Question Review

@@ -14,6 +14,7 @@ import { ScoreCircle } from "@/components/test/score-circle";
 import { DomainBreakdown } from "@/components/test/domain-breakdown";
 import { ReferenceSheet } from "@/components/test/reference-sheet";
 import { TopBar } from "@/components/layout/top-bar";
+import { WeakSkillsCallout } from "@/components/skills/weak-skills-callout";
 import type { Question, TestType, Section } from "@/types/question";
 
 type Screen = "landing" | "test" | "interstitial" | "results";
@@ -670,6 +671,16 @@ export function DiagnosticTest({
           </h3>
           <DomainBreakdown stats={results.domainStats} />
         </GlassCard>
+
+        {/* Weak Skills CTA — Spec F */}
+        <WeakSkillsCallout
+          course={`${testType}-${section}`}
+          accentColor={accentColor}
+          results={questions.map((q, i) => ({
+            skill: q.skill,
+            correct: isCorrect(q, answers[i]),
+          }))}
+        />
 
         {/* Post-Test Reflection */}
         <div className="mb-8 rounded-2xl border border-white/10 bg-[rgba(15,15,22,.75)] p-6 backdrop-blur-[20px]">
