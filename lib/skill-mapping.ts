@@ -302,11 +302,19 @@ export function getProfileSkillData(
 /**
  * Single-item reverse lookup: given a source label from a recommendation or
  * past-test answer row, return its taxonomy key (for routing). Returns null
- * if the source label isn't in the map — caller can fall back to the catalog.
+ * if the label can't be resolved either as a known source label or as a
+ * taxonomy key directly.
+ *
+ * Course module quizzes (module-shell.tsx) pass raw taxonomy keys like
+ * "linear_equations" on `question.skill`, whereas diagnostics/practice-tests
+ * pass human-readable source labels like "Linear equations in 1 variable".
+ * Accept both shapes.
  */
 export function sourceToTaxonomyKey(sourceLabel: string): string | null {
   const mapping = SKILL_MAP[sourceLabel];
-  return mapping?.taxonomyKey ?? null;
+  if (mapping) return mapping.taxonomyKey;
+  if (TAXONOMY_TO_SOURCES[sourceLabel]) return sourceLabel;
+  return null;
 }
 
 /**
