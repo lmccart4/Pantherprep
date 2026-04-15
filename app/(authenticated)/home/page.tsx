@@ -267,7 +267,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <SkillsCard role={role as "student" | "teacher" | "admin" | null} />
+          <SkillsCard role={role} />
 
           {/* Recent Sessions */}
           {sessions.length > 0 && (
