@@ -152,26 +152,26 @@ cd ~/pantherprep && git add lib/skill-mapping.ts && git commit -m "Add getSkillC
 
 ---
 
-## Task 3 — Inspect AdaptiveProfile.Recommendation shape
+## Task 3 — AdaptiveProfile.Recommendation shape (RESOLVED 2026-04-15)
 
-Goal: verify the exact field names on `AdaptiveProfile.recommendations[i]` before writing the two components that read from it. This prevents a round of type-check failures in Tasks 4 and 6.
+Inspection completed in-session by Lachlan before subagent dispatch. Exact shape from `lib/adaptive/performance-service.ts:199-206`:
 
-**Files:**
-- Read-only: `lib/adaptive/performance-service.ts`
+```ts
+export interface Recommendation {
+  skill: string;              // ← skill key (NOT "taxonomyKey")
+  domain: string;
+  reason: string;
+  priority: number;
+  suggestedDifficulty: "F" | "M" | "C";
+  questionCount: number;
+}
+```
 
-- [ ] **Step 1:** Open `lib/adaptive/performance-service.ts`. Find the `Recommendation` type (or `AdaptiveProfile.recommendations` type). Record the exact field names:
-  - Which field is the skill key? (likely `taxonomyKey`, possibly `skillKey` or `skill`)
-  - Which field is the course slug? (possibly `course`, possibly a composite of `testType` + `section`, possibly absent entirely)
+**Key findings applied to the plan below:**
+1. **Skill-key field is `skill`**, not `taxonomyKey`. Task 7's `SkillsCard` must use `r.skill` when calling `skillLabel()`.
+2. **No `course` discriminator field** exists on `Recommendation`. Task 4's per-tile "N recommended to review" chips are impossible without refetching per-course data. **Applying Fallback A:** render a single aggregate chip above the grid — "{N} skills recommended to review across all tests" — instead of per-tile chips. The code block in Task 4 below is already the Fallback A version, not the per-tile version.
 
-- [ ] **Step 2:** If **no course-discriminator field exists** on `Recommendation`, per-tile adaptive-stat chips in Task 4 cannot be rendered by direct lookup. Two fallbacks:
-  - Fallback A: show a single aggregate chip ("{N} recommended across all tests") on a header above the grid instead of per-tile. Simpler.
-  - Fallback B: derive course from the taxonomy key — but since the same skill appears in all 3 math courses (or all 3 rw courses), the mapping is 1-to-many, so this doesn't work cleanly. Skip this fallback.
-
-  Go with Fallback A if no course field exists. Update the plan at Task 4 step 1 accordingly before writing that component.
-
-- [ ] **Step 3:** Record findings inline in this plan document (edit this task with the actual field names before moving on) or just note them in your working memory for Task 4/6.
-
-No commit — this is an inspection task.
+No commit for this task — the corrections are baked into Tasks 4 and 7.
 
 ---
 
@@ -182,7 +182,7 @@ Goal: the 6-tile client component that renders at `/skills`.
 **Files:**
 - Create: `components/skills/skill-root-picker.tsx`
 
-- [ ] **Step 1:** Create `components/skills/skill-root-picker.tsx`. The code below assumes `Recommendation.taxonomyKey` exists (standard name in the codebase). If Task 3 turned up a different shape or no per-course field, replace the `recsByCourse` accumulator with the Fallback A pattern from Task 3 step 2.
+- [ ] **Step 1:** Create `components/skills/skill-root-picker.tsx`. Uses the **aggregate chip (Fallback A)** pattern — the `Recommendation` type has no `course` field so per-tile chips aren't possible (see Task 3 findings).
 
 ```tsx
 "use client";
@@ -208,18 +208,7 @@ export function SkillRootPicker() {
       .catch(() => setProfile(null));
   }, [user?.uid]);
 
-  // Per-course recommendation count. If the Recommendation type doesn't
-  // carry a course field, replace this with a single aggregate count
-  // rendered above the grid (Fallback A in Task 3).
-  const recsByCourse: Record<string, number> = {};
-  if (profile?.recommendations) {
-    for (const rec of profile.recommendations) {
-      const course = (rec as { course?: string }).course;
-      if (course) {
-        recsByCourse[course] = (recsByCourse[course] ?? 0) + 1;
-      }
-    }
-  }
+  const totalRecs = profile?.recommendations?.length ?? 0;
 
   return (
     <div className="min-h-screen">
@@ -228,15 +217,20 @@ export function SkillRootPicker() {
         <h1 className="mb-2 font-display text-3xl tracking-[0.02em] text-white sm:text-4xl">
           Skill Library
         </h1>
-        <p className="mb-8 max-w-2xl text-sm text-text-muted sm:text-base">
+        <p className="mb-6 max-w-2xl text-sm text-text-muted sm:text-base">
           Browse concept explanations and practice questions by topic, independent of any test.
           Start with your weakest areas or explore anything that looks interesting.
         </p>
 
+        {totalRecs > 0 && (
+          <div className="mb-6 inline-block rounded-full border border-panther-red/40 bg-panther-red/10 px-4 py-2 text-sm text-panther-light-red">
+            {totalRecs} skill{totalRecs === 1 ? "" : "s"} recommended to review
+          </div>
+        )}
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {TEST_COURSES.map((tile) => {
             const count = getSkillCountForCourse(tile.course);
-            const recs = recsByCourse[tile.course] ?? 0;
             return (
               <Link key={tile.course} href={`/skills/${tile.course}`} className="group block">
                 <GlassCard
@@ -253,20 +247,7 @@ export function SkillRootPicker() {
                     {tile.title}
                   </div>
                   <div className="text-sm text-text-muted">{tile.subtitle}</div>
-                  <div className="mt-4 flex items-center gap-3 text-xs">
-                    <span className="text-text-secondary">{count} skills</span>
-                    {recs > 0 && (
-                      <span
-                        className="rounded-full px-2 py-0.5"
-                        style={{
-                          backgroundColor: `${tile.color}20`,
-                          color: tile.color,
-                        }}
-                      >
-                        {recs} recommended to review
-                      </span>
-                    )}
-                  </div>
+                  <div className="mt-4 text-xs text-text-secondary">{count} skills</div>
                 </GlassCard>
               </Link>
             );
@@ -277,6 +258,8 @@ export function SkillRootPicker() {
   );
 }
 ```
+
+Note on the `text-panther-light-red` utility: this class is used in the existing top-bar role-badge styling, confirmed present in the Tailwind theme. If the build fails on it, substitute with `text-red-200` as a drop-in.
 
 - [ ] **Step 2:** Type-check:
 
@@ -387,7 +370,7 @@ Goal: the home-page card with 4 copy variants driven by `role` + `adaptiveProfil
 **Files:**
 - Create: `components/home/skills-card.tsx`
 
-- [ ] **Step 1:** Create `components/home/skills-card.tsx`. Same caveat as Task 4 re: the `Recommendation` field name — the code below assumes `r.taxonomyKey`. If Task 3 turned up a different name, replace it.
+- [ ] **Step 1:** Create `components/home/skills-card.tsx`. The code uses `r.skill` (the actual field name on `Recommendation`, confirmed in Task 3).
 
 ```tsx
 "use client";
@@ -421,10 +404,7 @@ function pickSubtitle(
   }
   const named = recs
     .slice(0, 2)
-    .map((r) => {
-      const key = (r as { taxonomyKey?: string }).taxonomyKey;
-      return key ? skillLabel(key) : "";
-    })
+    .map((r) => (r.skill ? skillLabel(r.skill) : ""))
     .filter(Boolean);
   if (named.length === 0) {
     return `You have ${recs.length} skills that could use work. Start with your weakest areas.`;
