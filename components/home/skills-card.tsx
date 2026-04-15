@@ -31,6 +31,7 @@ function pickSubtitle(
     .slice(0, 2)
     .map((r) => (r.skill ? skillLabel(r.skill) : ""))
     .filter(Boolean);
+  // Defensive: fires only when every top-rec has an empty `skill` string.
   if (named.length === 0) {
     return `You have ${recs.length} skills that could use work. Start with your weakest areas.`;
   }
