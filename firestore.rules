@@ -83,6 +83,12 @@ service cloud.firestore {
       allow write: if isPapsUser() && isStaff(request.auth.uid);
     }
 
+    // Skill Content — concept bundles authored by Parker (read-only for clients)
+    match /skillContent/{skillId} {
+      allow read: if isPapsUser();
+      allow write: if false;
+    }
+
     // Helper: check if user has staff-level access (teacher or admin) via
     // the students collection. Both roles get read access to any student's
     // performanceLog + adaptiveProfile for dashboards and drill-downs.
