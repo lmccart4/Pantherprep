@@ -22,6 +22,7 @@ import type {
   StoredAnswer,
 } from "@/lib/adaptive/performance-service";
 import type { Timestamp } from "firebase/firestore";
+import { MATH_SKILLS, RW_SKILLS } from "@/lib/adaptive/adaptive-engine";
 
 // ============================================================
 // SKILL MAP — source string → taxonomy key + domain
@@ -362,4 +363,12 @@ export async function getRecentAnswersForTaxonomyKey(
     console.warn("getRecentAnswersForTaxonomyKey error:", e);
     return [];
   }
+}
+
+// Count of taxonomy skills available for a given course slug. Used by
+// the /skills root picker to render "N skills" on each tile. Static at
+// build time — derived from MATH_SKILLS / RW_SKILLS in adaptive-engine.ts.
+export function getSkillCountForCourse(course: string): number {
+  const taxonomy = course.includes("math") ? MATH_SKILLS : RW_SKILLS;
+  return Object.values(taxonomy).reduce((sum, skills) => sum + skills.length, 0);
 }
