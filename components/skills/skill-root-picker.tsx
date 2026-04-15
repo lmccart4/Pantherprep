@@ -21,6 +21,8 @@ export function SkillRootPicker() {
       .catch(() => setProfile(null));
   }, [user?.uid]);
 
+  if (!user) return null;
+
   const totalRecs = profile?.recommendations?.length ?? 0;
 
   return (
