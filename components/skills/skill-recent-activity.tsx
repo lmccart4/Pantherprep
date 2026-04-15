@@ -18,7 +18,9 @@ export function SkillRecentActivity({ answers }: SkillRecentActivityProps) {
         <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
           Recent activity
         </div>
-        <p className="text-xs text-text-muted">No practice yet.</p>
+        <p className="text-xs text-text-muted">
+          No sessions yet &mdash; tap Practice below to start building your history.
+        </p>
       </div>
     );
   }

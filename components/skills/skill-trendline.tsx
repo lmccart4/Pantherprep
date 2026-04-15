@@ -51,6 +51,7 @@ function tierBg(pct: number, total: number): string {
 export function SkillTrendline({ answers }: SkillTrendlineProps) {
   const buckets = bucketByDay(answers);
   const maxBarHeight = 40;
+  const hasData = buckets.some((b) => b.total > 0);
 
   return (
     <div>
@@ -75,6 +76,11 @@ export function SkillTrendline({ answers }: SkillTrendlineProps) {
         <span>{buckets[0]?.date.slice(5) ?? ""}</span>
         <span>{buckets[buckets.length - 1]?.date.slice(5) ?? ""}</span>
       </div>
+      {!hasData && (
+        <p className="mt-2 text-xs text-text-muted">
+          No data yet &mdash; start a practice session to see your trend.
+        </p>
+      )}
     </div>
   );
 }
