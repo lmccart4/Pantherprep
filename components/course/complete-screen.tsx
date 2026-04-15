@@ -65,20 +65,6 @@ export function CompleteScreen({
         </div>
       )}
 
-      {takeaways && takeaways.length > 0 && (
-        <div className="mb-10 w-full max-w-[600px] rounded-[18px] border border-[rgba(255,255,255,.05)] bg-[rgba(15,15,22,.75)] p-6 text-left shadow-[0_4px_32px_rgba(0,0,0,.2)] backdrop-blur-[20px]">
-          <div className="mb-4 flex items-center gap-2 text-[1.1rem] font-bold" style={{ color: accentColor }}>
-            <span>📋</span> Key Takeaways
-          </div>
-          {takeaways.map((t, i) => (
-            <div key={i} className="flex items-start gap-3 py-2.5 text-[.93rem] leading-[1.6] text-[#b8b8c8]">
-              <span className="mt-0.5 flex-shrink-0"><AnimatedCheck size={18} /></span>
-              <span>{t}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
       {practiceSkills && practiceSkills.length > 0 && (
         <div
           className="mb-10 w-full max-w-[600px] rounded-[18px] border p-6 text-left"
@@ -124,6 +110,20 @@ export function CompleteScreen({
               </Link>
             ))}
           </div>
+        </div>
+      )}
+
+      {takeaways && takeaways.length > 0 && (
+        <div className="mb-10 w-full max-w-[600px] rounded-[18px] border border-[rgba(255,255,255,.05)] bg-[rgba(15,15,22,.75)] p-6 text-left shadow-[0_4px_32px_rgba(0,0,0,.2)] backdrop-blur-[20px]">
+          <div className="mb-4 flex items-center gap-2 text-[1.1rem] font-bold" style={{ color: accentColor }}>
+            <span>📋</span> Key Takeaways
+          </div>
+          {takeaways.map((t, i) => (
+            <div key={i} className="flex items-start gap-3 py-2.5 text-[.93rem] leading-[1.6] text-[#b8b8c8]">
+              <span className="mt-0.5 flex-shrink-0"><AnimatedCheck size={18} /></span>
+              <span>{t}</span>
+            </div>
+          ))}
         </div>
       )}
 
