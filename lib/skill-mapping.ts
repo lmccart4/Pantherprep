@@ -368,6 +368,10 @@ export async function getRecentAnswersForTaxonomyKey(
 // Count of taxonomy skills available for a given course slug. Used by
 // the /skills root picker to render "N skills" on each tile. Static at
 // build time — derived from MATH_SKILLS / RW_SKILLS in adaptive-engine.ts.
+// Assumes the math taxonomy is shared across sat-math / nmsqt-math / psat89-math
+// and the rw taxonomy is shared across sat-rw / nmsqt-rw / psat89-rw (true today).
+// If the taxonomies diverge by test family later, this function needs to take
+// the full course slug into account instead of just the section suffix.
 export function getSkillCountForCourse(course: string): number {
   const taxonomy = course.includes("math") ? MATH_SKILLS : RW_SKILLS;
   return Object.values(taxonomy).reduce((sum, skills) => sum + skills.length, 0);
