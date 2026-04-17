@@ -119,7 +119,7 @@ export function SkillCatalog({
         <select
           value={course}
           onChange={(e) => router.push(`/skills/${e.target.value}`)}
-          className="rounded-radius-sm border border-border-default bg-bg-surface px-3 py-1.5 text-xs text-text-secondary outline-none focus:border-panther-red"
+          className=" border border-border-default bg-bg-surface px-3 py-1.5 text-xs text-text-secondary outline-none focus:border-panther-red"
         >
           {COURSES.map((c) => (
             <option key={c.value} value={c.value}>
@@ -130,7 +130,7 @@ export function SkillCatalog({
       </div>
 
       {/* Title */}
-      <h1 className="mb-1 font-display text-3xl tracking-[0.02em] text-white sm:text-[2.4rem]">
+      <h1 className="mb-1 font-display text-3xl tracking-[0.02em] text-ink sm:text-[2.4rem]">
         Skill Catalog
       </h1>
       <p className="mb-6 text-sm text-text-muted">
@@ -146,7 +146,7 @@ export function SkillCatalog({
           <select
             value={selectedClassId ?? "__all__"}
             onChange={(e) => onClassChange?.(e.target.value)}
-            className="rounded-radius-sm border border-border-default bg-bg-surface px-3 py-1.5 text-text-secondary outline-none focus:border-panther-red"
+            className=" border border-border-default bg-bg-surface px-3 py-1.5 text-text-secondary outline-none focus:border-panther-red"
           >
             <option value="__all__">All my classes (combined)</option>
             {classes!.map((c) => (
@@ -176,7 +176,7 @@ export function SkillCatalog({
               onClick={() => setTierFilter(t)}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition ${
                 t === tierFilter
-                  ? "bg-panther-red text-white"
+                  ? "bg-panther-red text-ink"
                   : "border border-border-primary bg-bg-secondary text-text-muted hover:text-text-secondary"
               }`}
             >
@@ -195,7 +195,7 @@ export function SkillCatalog({
               onClick={() => setActiveDomain(d)}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
                 d === activeDomain
-                  ? "bg-panther-red text-white"
+                  ? "bg-panther-red text-ink"
                   : "border border-border-primary bg-bg-secondary text-text-muted hover:text-text-secondary"
               }`}
             >

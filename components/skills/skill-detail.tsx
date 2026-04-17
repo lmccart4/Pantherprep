@@ -219,10 +219,10 @@ export function SkillDetail({
         {/* Left column */}
         <div className="flex flex-col gap-4">
           <GlassCard>
-            <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
+            <div className="mb-2 kicker">
               {domain}
             </div>
-            <h1 className="mb-3 font-display text-3xl leading-tight tracking-[0.02em] text-white">
+            <h1 className="mb-3 font-display text-3xl leading-tight tracking-[0.02em] text-ink">
               {label}
             </h1>
             <p className="mb-5 text-sm leading-relaxed text-text-secondary">{description}</p>
@@ -242,7 +242,7 @@ export function SkillDetail({
             <button
               onClick={handlePractice}
               disabled={launching}
-              className="w-full rounded-radius-md bg-panther-red py-3 text-sm font-semibold text-white transition hover:bg-panther-red/90 disabled:opacity-40"
+              className="w-full  bg-panther-red py-3 text-sm font-semibold text-ink transition hover:bg-panther-red/90 disabled:opacity-40"
             >
               {launching ? "Loading…" : "Practice this skill →"}
             </button>
@@ -253,7 +253,7 @@ export function SkillDetail({
 
           {errorPatterns.length > 0 && (
             <GlassCard>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
+              <div className="mb-2 kicker">
                 Error patterns
               </div>
               <div className="flex flex-wrap gap-2">
@@ -283,7 +283,7 @@ export function SkillDetail({
           </GlassCard>
 
           <GlassCard>
-            <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-muted">
+            <div className="mb-3 kicker">
               By difficulty
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs">
@@ -317,7 +317,7 @@ export function SkillDetail({
       {/* Related skills */}
       {siblings.length > 0 && (
         <div className="mt-6">
-          <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-muted">
+          <div className="mb-3 kicker">
             Related skills in {domain}
           </div>
           <div className="flex flex-col gap-2">

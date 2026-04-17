@@ -361,7 +361,7 @@ function PastTestDetail({
             onClick={() => setFilter(f)}
             className={`rounded-full px-3 py-1 text-xs font-semibold capitalize transition ${
               f === filter
-                ? "bg-panther-red text-white"
+                ? "bg-panther-red text-ink"
                 : "border border-border-primary bg-bg-secondary text-text-muted"
             }`}
           >

@@ -240,7 +240,7 @@ export function ModuleShell({ config, activities, visuals, nextModuleHref, nextM
       <TopBar backHref={courseHref} backLabel="Back to Course" />
 
       {/* Progress dots */}
-      <div className="fixed left-1/2 top-3 z-50 flex -translate-x-1/2 gap-2 rounded-full border border-border-default bg-[rgba(18,18,18,.85)] px-3.5 py-1.5 backdrop-blur-lg">
+      <div className="fixed left-1/2 top-3 z-50 flex -translate-x-1/2 gap-2 rounded-full border border-border-default bg-[rgba(18,18,18,.85)] px-3.5 py-1.5 ">
         {config.screens.map((s, i) => (
           <div
             key={s.id}

@@ -277,7 +277,7 @@ export function MiniDiagnostic({ questions, accentColor, onComplete }: MiniDiagn
         <div className="mt-5 text-center">
           <button
             onClick={scoreDiag}
-            className="cursor-pointer rounded-xl border-none px-8 py-3 text-sm font-bold text-white transition-all hover:scale-[1.04] hover:brightness-110"
+            className="cursor-pointer rounded-xl border-none px-8 py-3 text-sm font-bold text-ink transition-all hover:scale-[1.04] hover:brightness-110"
             style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
           >
             Score My Diagnostic &rarr;
@@ -433,7 +433,7 @@ export function MiniDiagnostic({ questions, accentColor, onComplete }: MiniDiagn
         <div className="mt-6 flex justify-end">
           <button
             onClick={onComplete}
-            className="cursor-pointer rounded-xl border-none px-7 py-3 text-sm font-bold text-white transition-all hover:scale-[1.03] hover:brightness-110"
+            className="cursor-pointer rounded-xl border-none px-7 py-3 text-sm font-bold text-ink transition-all hover:scale-[1.03] hover:brightness-110"
             style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
           >
             Continue to Error Classification &rarr;

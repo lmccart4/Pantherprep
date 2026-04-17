@@ -156,7 +156,7 @@ export function RoutingSimulator({
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <div
-        className="rounded-2xl border border-white/10 p-6 sm:p-8"
+        className="rounded-2xl border border-ink/20 p-6 sm:p-8"
         style={{
           background: "rgba(15,15,22,.75)",
           backdropFilter: "blur(20px)",
@@ -171,10 +171,10 @@ export function RoutingSimulator({
           >
             Interactive
           </div>
-          <h2 className="mb-2 text-xl font-bold text-white sm:text-2xl">
+          <h2 className="mb-2 text-xl font-bold text-ink sm:text-2xl">
             Routing Simulator
           </h2>
-          <p className="text-sm leading-relaxed text-white/60">
+          <p className="text-sm leading-relaxed text-ink/60">
             Slide to see how your Module 1 performance affects your{" "}
             {testLabel} {sectionLabel} scoring potential. Notice how the score
             ceiling changes dramatically around the routing threshold.
@@ -190,7 +190,7 @@ export function RoutingSimulator({
             color: "rgba(255,255,255,.75)",
           }}
         >
-          <strong className="text-white">How adaptive routing works:</strong>{" "}
+          <strong className="text-ink">How adaptive routing works:</strong>{" "}
           The {testLabel} {sectionLabel} section has two modules of{" "}
           {maxQuestions} questions each. Module 1 is the same difficulty for
           everyone. Your score on Module 1 determines whether you get the{" "}
@@ -204,12 +204,12 @@ export function RoutingSimulator({
 
         {/* Slider area */}
         <div className="mb-6">
-          <div className="mb-2 text-center text-xs text-white/40">
+          <div className="mb-2 text-center text-xs text-ink/40">
             Module 1 Correct Answers
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-xs text-white/40">0</span>
+            <span className="text-xs text-ink/40">0</span>
             <input
               type="range"
               min={0}
@@ -224,9 +224,9 @@ export function RoutingSimulator({
                 } as React.CSSProperties
               }
             />
-            <span className="text-xs text-white/40">{maxQuestions}</span>
+            <span className="text-xs text-ink/40">{maxQuestions}</span>
             <div
-              className="flex h-10 w-10 items-center justify-center rounded-lg text-lg font-bold text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-lg text-lg font-bold text-ink"
               style={{ background: "rgba(255,255,255,.08)" }}
             >
               {value}
@@ -234,7 +234,7 @@ export function RoutingSimulator({
           </div>
 
           {/* Threshold marker */}
-          <div className="mt-1 flex items-center gap-1 text-xs text-white/30">
+          <div className="mt-1 flex items-center gap-1 text-xs text-ink/30">
             <span>Threshold: ~{threshold} correct (~60%)</span>
           </div>
         </div>
@@ -247,14 +247,14 @@ export function RoutingSimulator({
           <div className="mb-1 text-base font-bold" style={{ color: info.color }}>
             {value}/{maxQuestions} correct &rarr; {info.route}
           </div>
-          <div className="text-sm text-white/50">
+          <div className="text-sm text-ink/50">
             Estimated score range: {info.floor}&ndash;{info.ceil}
           </div>
         </div>
 
         {/* Score meter */}
         <div className="mb-6">
-          <div className="mb-1 flex justify-between text-xs text-white/30">
+          <div className="mb-1 flex justify-between text-xs text-ink/30">
             <span>Score Floor</span>
             <span>
               {info.floor}&ndash;{info.ceil}
@@ -273,7 +273,7 @@ export function RoutingSimulator({
               }}
             />
           </div>
-          <div className="mt-1 flex justify-between text-xs text-white/20">
+          <div className="mt-1 flex justify-between text-xs text-ink/20">
             <span>{scoreFloor}</span>
             <span>{ceilings.hard}</span>
           </div>
@@ -287,7 +287,7 @@ export function RoutingSimulator({
             color: "rgba(255,255,255,.7)",
           }}
         >
-          <strong className="text-white">The Module 1 Imperative:</strong>{" "}
+          <strong className="text-ink">The Module 1 Imperative:</strong>{" "}
           Accuracy on the first {maxQuestions} questions matters more than speed.
           Getting routed to the harder Module 2 is the single most important
           factor in your {sectionLabel} score.
@@ -298,7 +298,7 @@ export function RoutingSimulator({
           <button
             onClick={handleComplete}
             disabled={acknowledged}
-            className="rounded-xl px-8 py-3 text-sm font-semibold text-white transition-all duration-200 hover:brightness-110 disabled:opacity-50"
+            className="rounded-xl px-8 py-3 text-sm font-semibold text-ink transition-all duration-200 hover:brightness-110 disabled:opacity-50"
             style={{
               background: acknowledged
                 ? "rgba(255,255,255,.1)"
@@ -331,7 +331,7 @@ export function RoutingSimulator({
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: #0f0f16;
+          background: var(--color-paper-card);
           border: 3px solid var(--accent);
           cursor: pointer;
           box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
@@ -340,7 +340,7 @@ export function RoutingSimulator({
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: #0f0f16;
+          background: var(--color-paper-card);
           border: 3px solid var(--accent);
           cursor: pointer;
           box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);

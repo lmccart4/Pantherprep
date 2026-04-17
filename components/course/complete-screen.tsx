@@ -91,10 +91,10 @@ export function CompleteScreen({
               <Link
                 key={`${s.course}-${s.taxonomyKey}`}
                 href={`/skills/${s.course}/${s.taxonomyKey}`}
-                className="group flex items-center justify-between gap-4 rounded-xl border border-white/10 bg-[rgba(8,8,12,.5)] px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-white/25 hover:bg-[rgba(15,15,22,.7)]"
+                className="group flex items-center justify-between gap-4 rounded-xl border border-ink/20 bg-[rgba(8,8,12,.5)] px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-ink/20 hover:bg-[rgba(15,15,22,.7)]"
               >
                 <div className="min-w-0">
-                  <div className="truncate text-[15px] font-semibold text-white">
+                  <div className="truncate text-[15px] font-semibold text-ink">
                     {s.label ?? skillLabel(s.taxonomyKey)}
                   </div>
                   {s.blurb && (
@@ -114,7 +114,7 @@ export function CompleteScreen({
       )}
 
       {takeaways && takeaways.length > 0 && (
-        <div className="mb-10 w-full max-w-[600px] rounded-[18px] border border-[rgba(255,255,255,.05)] bg-[rgba(15,15,22,.75)] p-6 text-left shadow-[0_4px_32px_rgba(0,0,0,.2)] backdrop-blur-[20px]">
+        <div className="mb-10 w-full max-w-[600px] rounded-[18px] border border-[rgba(255,255,255,.05)] bg-[rgba(15,15,22,.75)] p-6 text-left shadow-[0_4px_32px_rgba(0,0,0,.2)] -[20px]">
           <div className="mb-4 flex items-center gap-2 text-[1.1rem] font-bold" style={{ color: accentColor }}>
             <span>📋</span> Key Takeaways
           </div>
@@ -138,7 +138,7 @@ export function CompleteScreen({
           {nextHref && (
             <a
               href={nextHref}
-              className="cursor-pointer rounded-xl border-none px-6 py-3 text-[.95rem] font-bold text-white no-underline transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
+              className="cursor-pointer rounded-xl border-none px-6 py-3 text-[.95rem] font-bold text-ink no-underline transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
               style={{
                 background: `linear-gradient(135deg, ${accentColor}, #a855f7)`,
               }}

@@ -29,7 +29,7 @@ export function SkillRootPicker() {
     <div className="min-h-screen">
       <TopBar backHref="/home" backLabel="Home" />
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-        <h1 className="mb-2 font-display text-3xl tracking-[0.02em] text-white sm:text-4xl">
+        <h1 className="mb-2 font-display text-3xl tracking-[0.02em] text-ink sm:text-4xl">
           Skill Library
         </h1>
         <p className="mb-6 max-w-2xl text-sm text-text-muted sm:text-base">

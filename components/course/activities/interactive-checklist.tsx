@@ -38,7 +38,7 @@ export function InteractiveChecklist({
       <div className="w-full max-w-xl">
         {/* Glass card */}
         <div
-          className="rounded-2xl border border-white/5 p-6 shadow-lg backdrop-blur-2xl"
+          className="rounded-2xl border border-ink/20 p-6 shadow-lg "
           style={{ background: "rgba(15, 15, 22, 0.75)" }}
         >
           {/* Header */}
@@ -88,7 +88,7 @@ export function InteractiveChecklist({
           </ul>
 
           {/* Progress bar */}
-          <div className="mt-5 h-1.5 w-full overflow-hidden rounded-full bg-white/5">
+          <div className="mt-5 h-1.5 w-full overflow-hidden rounded-full bg-paper-card">
             <div
               className="h-full rounded-full transition-all duration-300"
               style={{
@@ -105,7 +105,7 @@ export function InteractiveChecklist({
             type="button"
             onClick={onComplete}
             disabled={!canContinue}
-            className="rounded-xl px-8 py-3 text-sm font-semibold text-white transition-all disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-xl px-8 py-3 text-sm font-semibold text-ink transition-all disabled:cursor-not-allowed disabled:opacity-40"
             style={{
               background: canContinue ? accentColor : "rgba(255,255,255,0.08)",
             }}

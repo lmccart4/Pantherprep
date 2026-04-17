@@ -32,7 +32,7 @@ export function GrowthTrajectory({
             return (
               <div
                 key={i}
-                className="flex items-center justify-center text-[11px] font-bold text-white transition-all duration-300"
+                className="flex items-center justify-center text-[11px] font-bold text-ink transition-all duration-300"
                 style={{
                   width: `${widthPct}%`,
                   backgroundColor: t.color,

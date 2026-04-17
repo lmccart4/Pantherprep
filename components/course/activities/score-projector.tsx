@@ -405,7 +405,7 @@ export function ScoreProjector({
       <div className="mt-8 text-center">
         <button
           onClick={onComplete}
-          className="rounded-xl px-8 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+          className="rounded-xl px-8 py-3 text-sm font-semibold text-ink transition-all hover:scale-[1.02] active:scale-[0.98]"
           style={{ backgroundColor: accentColor }}
         >
           Continue

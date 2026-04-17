@@ -19,7 +19,7 @@ export function ModuleCard({
   description,
   tags = [],
   href,
-  accentColor = "#d62828",
+  accentColor = "var(--color-accent)",
   isBoss = false,
   completed = false,
 }: ModuleCardProps) {
@@ -27,7 +27,7 @@ export function ModuleCard({
     <a
       href={href}
       className={cn(
-        "group flex items-center gap-4 rounded-radius-lg border bg-bg-card p-5 transition-all duration-200",
+        "group flex items-center gap-4  border bg-bg-card p-5 transition-all duration-200",
         "hover:-translate-y-0.5 hover:shadow-md",
         completed
           ? "border-green-500/30 hover:border-green-500/50"
@@ -39,7 +39,7 @@ export function ModuleCard({
       {/* Module number / completion indicator */}
       <div
         className={cn(
-          "flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+          "flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-ink"
         )}
         style={{ backgroundColor: completed ? "#16a34a" : isBoss ? "#f59e0b" : accentColor }}
       >
@@ -55,7 +55,7 @@ export function ModuleCard({
       {/* Info */}
       <div className="flex-1">
         <div className="mb-0.5 flex items-center gap-2">
-          <h4 className="text-sm font-semibold text-white group-hover:text-text-primary">
+          <h4 className="text-sm font-semibold text-ink group-hover:text-text-primary">
             {title}
           </h4>
           {completed && (

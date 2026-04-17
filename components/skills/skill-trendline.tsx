@@ -55,7 +55,7 @@ export function SkillTrendline({ answers }: SkillTrendlineProps) {
 
   return (
     <div>
-      <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
+      <div className="mb-2 kicker">
         14-day trend
       </div>
       <div className="flex items-end gap-1" style={{ height: `${maxBarHeight}px` }}>

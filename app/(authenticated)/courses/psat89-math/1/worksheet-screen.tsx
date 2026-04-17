@@ -136,7 +136,7 @@ export function WorksheetScreen({ onComplete }: WorksheetScreenProps) {
   const clDone = clState.filter(Boolean).length;
 
   const glass = "rounded-[18px] border border-[rgba(255,255,255,.05)] shadow-[0_4px_32px_rgba(0,0,0,.2),inset_0_1px_0_rgba(255,255,255,.03)]";
-  const glassBg = "bg-[rgba(15,15,22,.75)] backdrop-blur-[20px]";
+  const glassBg = "bg-[rgba(15,15,22,.75)] -[20px]";
   const inputCls = "rounded-lg border border-[rgba(255,255,255,.06)] bg-[rgba(8,8,12,.5)] px-3 py-2 text-sm text-[#eaeaef] transition-all focus:border-[rgba(6,182,212,.3)] focus:outline-none";
 
   return (
@@ -159,7 +159,7 @@ export function WorksheetScreen({ onComplete }: WorksheetScreenProps) {
         style={{ borderColor: "rgba(6,182,212,.15)", boxShadow: "0 4px 32px rgba(0,0,0,.2), 0 0 30px rgba(6,182,212,.15)" }}
       >
         <div
-          className="px-6 py-3.5 text-[15px] font-bold tracking-[0.02em] text-white"
+          className="px-6 py-3.5 text-[15px] font-bold tracking-[0.02em] text-ink"
           style={{ background: `linear-gradient(135deg, ${ACCENT}, rgba(6,182,212,.8))` }}
         >
           Full Baseline Protocol
@@ -317,7 +317,7 @@ export function WorksheetScreen({ onComplete }: WorksheetScreenProps) {
         <div className="mt-4 flex flex-wrap gap-2.5">
           <button
             onClick={addEntry}
-            className="cursor-pointer rounded-xl border-none px-4.5 py-2.5 text-[13px] font-bold text-white transition-all hover:scale-[1.03]"
+            className="cursor-pointer rounded-xl border-none px-4.5 py-2.5 text-[13px] font-bold text-ink transition-all hover:scale-[1.03]"
             style={{ background: MATH }}
           >
             + Add Entry
@@ -370,7 +370,7 @@ export function WorksheetScreen({ onComplete }: WorksheetScreenProps) {
       <div className="mt-6 flex justify-end">
         <button
           onClick={onComplete}
-          className="cursor-pointer rounded-xl border-none px-7 py-3 text-sm font-bold text-white transition-all hover:scale-[1.03] hover:brightness-110"
+          className="cursor-pointer rounded-xl border-none px-7 py-3 text-sm font-bold text-ink transition-all hover:scale-[1.03] hover:brightness-110"
           style={{ background: `linear-gradient(135deg, ${ACCENT}, #a855f7)` }}
         >
           Finish Module &rarr;

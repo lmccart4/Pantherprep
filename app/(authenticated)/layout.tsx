@@ -15,7 +15,7 @@ function AuthGate({ children }: { children: React.ReactNode }) {
           <img
             src="/apple-touch-icon.png"
             alt="Loading..."
-            className="h-full w-full rounded-xl object-contain"
+            className="h-full w-full object-contain"
           />
         </div>
       </div>

@@ -22,16 +22,16 @@ export function QuestionNavigator({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-text-muted">
+        <span className="kicker">
           Questions
         </span>
         <button
           onClick={() => onToggleFlag(current)}
           className={cn(
-            "rounded-radius-sm px-2.5 py-1 text-xs font-medium transition-colors",
+            " px-2.5 py-1 text-xs font-medium transition-colors",
             flagged.has(current)
               ? "bg-accent-amber-soft text-accent-amber"
-              : "bg-white/5 text-text-muted hover:text-text-secondary"
+              : "bg-paper-card text-text-muted hover:text-text-secondary"
           )}
         >
           {flagged.has(current) ? "Unflag" : "Flag"}
@@ -50,9 +50,9 @@ export function QuestionNavigator({
               aria-label={`Go to question ${i + 1}${isFlagged ? " (flagged)" : ""}${isAnswered ? " (answered)" : ""}`}
               aria-current={isCurrent ? "true" : undefined}
               className={cn(
-                "flex h-9 w-9 items-center justify-center rounded-radius-sm text-xs font-semibold transition-all duration-150",
-                isCurrent && "bg-panther-red text-white shadow-md",
-                !isCurrent && isAnswered && "bg-white/10 text-text-primary",
+                "flex h-9 w-9 items-center justify-center  text-xs font-semibold transition-all duration-150",
+                isCurrent && "bg-panther-red text-ink shadow-md",
+                !isCurrent && isAnswered && "bg-paper-card text-text-primary",
                 !isCurrent && !isAnswered && "border border-border-default text-text-muted hover:border-border-light",
                 isFlagged && !isCurrent && "ring-1 ring-accent-amber"
               )}

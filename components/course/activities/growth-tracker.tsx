@@ -329,7 +329,7 @@ export function GrowthTracker({
       <div className="mt-6 flex justify-end">
         <button
           onClick={onComplete}
-          className="cursor-pointer rounded-xl border-none px-7 py-3 text-sm font-bold text-white transition-all hover:scale-[1.03] hover:brightness-110"
+          className="cursor-pointer rounded-xl border-none px-7 py-3 text-sm font-bold text-ink transition-all hover:scale-[1.03] hover:brightness-110"
           style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
         >
           Continue

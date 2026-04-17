@@ -54,7 +54,7 @@ export function ChecklistCard({
 
   return (
     <div
-      className="rounded-[18px] border bg-glass p-6 shadow-[0_4px_32px_rgba(0,0,0,.2),inset_0_1px_0_rgba(255,255,255,.03)] backdrop-blur-[20px]"
+      className="rounded-[18px] border bg-glass p-6 shadow-[0_4px_32px_rgba(0,0,0,.2),inset_0_1px_0_rgba(255,255,255,.03)] -[20px]"
       style={{
         borderColor: allDone ? `${accentColor}33` : "var(--color-glass-border, rgba(255,255,255,.05))",
         boxShadow: allDone

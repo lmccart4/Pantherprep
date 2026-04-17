@@ -241,19 +241,17 @@ export function PracticeRunner(props: PracticeRunnerProps) {
   // ============================================================
   if (screen === "landing") {
     return (
-      <GlassCard className="mx-auto max-w-xl">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
-          Practice
-        </div>
-        <h2 className="mb-2 font-display text-3xl tracking-[0.02em] text-white">
+      <GlassCard raised className="mx-auto max-w-xl">
+        <div className="kicker mb-2">Practice</div>
+        <h2 className="mb-2 font-display text-3xl leading-tight text-ink">
           {skillLabel ?? "Adaptive Practice"}
         </h2>
-        <p className="mb-6 text-sm text-text-secondary">
+        <p className="mb-6 text-sm italic text-ink-2">
           {questions.length} questions &middot; untimed &middot; immediate feedback after each question
         </p>
 
         {fallbackNotes && fallbackNotes.length > 0 && (
-          <div className="mb-5 rounded-radius-md border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-xs text-amber-300">
+          <div className="mb-5 border-2 border-amber bg-amber-soft px-4 py-3 text-xs text-ink">
             {fallbackNotes.map((note, i) => (
               <p key={i}>{note}</p>
             ))}
@@ -262,20 +260,20 @@ export function PracticeRunner(props: PracticeRunnerProps) {
 
         {resumable ? (
           <div className="flex flex-col gap-3">
-            <p className="text-sm text-text-secondary">
+            <p className="text-sm italic text-ink-2">
               You have an in-progress session on question {resumable.currentQ + 1} of{" "}
               {resumable.questions.length}.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={handleResume}
-                className="flex-1 rounded-radius-md bg-panther-red px-5 py-3 text-sm font-semibold text-white transition hover:bg-panther-red/90"
+                className="flex-1 border-2 border-ink bg-accent px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
               >
                 Resume
               </button>
               <button
                 onClick={handleStartFresh}
-                className="flex-1 rounded-radius-md border border-border-default px-5 py-3 text-sm text-text-secondary transition hover:border-border-light"
+                className="flex-1 border-2 border-ink bg-paper-card px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
               >
                 Start over
               </button>
@@ -286,13 +284,13 @@ export function PracticeRunner(props: PracticeRunnerProps) {
             <button
               onClick={handleStartFresh}
               disabled={questions.length === 0}
-              className="flex-1 rounded-radius-md bg-panther-red px-5 py-3 text-sm font-semibold text-white transition hover:bg-panther-red/90 disabled:opacity-40"
+              className="flex-1 border-2 border-ink bg-accent px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink disabled:opacity-40"
             >
               Start Practice
             </button>
             <button
               onClick={onExit}
-              className="rounded-radius-md border border-border-default px-5 py-3 text-sm text-text-muted transition hover:text-text-secondary"
+              className="border-2 border-ink bg-paper-card px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
             >
               Back
             </button>
@@ -310,24 +308,24 @@ export function PracticeRunner(props: PracticeRunnerProps) {
       <div className="mx-auto max-w-2xl">
         {/* Progress bar */}
         <div className="mb-6 flex items-center gap-3">
-          <span className="text-xs font-semibold uppercase tracking-wider text-text-muted">
+          <span className="kicker text-ink-3">
             Question {currentQ + 1} / {questions.length}
           </span>
-          <div className="h-1 flex-1 overflow-hidden rounded-full bg-bg-secondary">
+          <div className="relative h-[2px] flex-1 bg-rule-hair">
             <div
-              className="h-full bg-panther-red transition-[width] duration-300"
+              className="absolute inset-y-0 left-0 bg-ink transition-[width] duration-300"
               style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
             />
           </div>
           <button
             onClick={onExit}
-            className="text-xs text-text-muted transition hover:text-text-secondary"
+            className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-3 transition-colors hover:text-accent"
           >
             Exit
           </button>
         </div>
 
-        <GlassCard>
+        <GlassCard raised>
           <QuestionCard
             question={q}
             selectedAnswer={answers[currentQ]}
@@ -342,14 +340,14 @@ export function PracticeRunner(props: PracticeRunnerProps) {
               <button
                 onClick={handleCheck}
                 disabled={!hasAnswer}
-                className="rounded-radius-md bg-panther-red px-6 py-3 text-sm font-semibold text-white transition hover:bg-panther-red/90 disabled:opacity-40"
+                className="border-2 border-ink bg-accent px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink disabled:opacity-40"
               >
                 Check
               </button>
             ) : (
               <button
                 onClick={handleNext}
-                className="rounded-radius-md bg-panther-red px-6 py-3 text-sm font-semibold text-white transition hover:bg-panther-red/90"
+                className="border-2 border-ink bg-accent px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
               >
                 {currentQ < questions.length - 1 ? "Next question" : "Finish session"}
               </button>

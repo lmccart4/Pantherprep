@@ -76,7 +76,7 @@ export function BossBattle({ questions, title, accentColor, onComplete }: BossBa
         </p>
         <button
           onClick={() => onComplete(score, questions.length)}
-          className="cursor-pointer rounded-lg border-none px-8 py-3 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
+          className="cursor-pointer rounded-lg border-none px-8 py-3 text-sm font-bold text-ink transition-all hover:-translate-y-0.5 hover:brightness-110"
           style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
         >
           Continue →
@@ -174,7 +174,7 @@ export function BossBattle({ questions, title, accentColor, onComplete }: BossBa
         <div className="flex justify-center">
           <button
             onClick={next}
-            className="cursor-pointer rounded-lg border-none px-6 py-2.5 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
+            className="cursor-pointer rounded-lg border-none px-6 py-2.5 text-sm font-bold text-ink transition-all hover:-translate-y-0.5 hover:brightness-110"
             style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
           >
             {idx < questions.length - 1 ? "Next Attack →" : "Finish Battle →"}

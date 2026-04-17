@@ -78,7 +78,7 @@ export function LessonViewer({ slides, accentColor, visuals, onComplete, lastSli
         )}
         <button
           onClick={() => (isLast ? onComplete() : setIdx(idx + 1))}
-          className="cursor-pointer rounded-lg border-none px-6 py-2.5 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
+          className="cursor-pointer rounded-lg border-none px-6 py-2.5 text-sm font-bold text-ink transition-all hover:-translate-y-0.5 hover:brightness-110"
           style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
         >
           {isLast ? (lastSlideLabel ?? "Continue") : "Next"} →

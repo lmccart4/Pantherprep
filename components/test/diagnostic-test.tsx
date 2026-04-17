@@ -320,7 +320,7 @@ export function DiagnosticTest({
           <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: accentColor }}>
             Diagnostic Test
           </div>
-          <h1 className="mb-2 font-display text-4xl tracking-[0.02em] text-white sm:text-[2.4rem]">
+          <h1 className="mb-2 font-display text-4xl tracking-[0.02em] text-ink sm:text-[2.4rem]">
             {title}
           </h1>
           <p className="mb-8 text-text-secondary">
@@ -331,43 +331,43 @@ export function DiagnosticTest({
             <div className="grid grid-cols-1 gap-4 text-sm xs:grid-cols-2 sm:grid-cols-2">
               <div>
                 <span className="text-xs uppercase tracking-wider text-text-muted">Questions</span>
-                <p className="text-lg font-semibold text-white">
+                <p className="text-lg font-semibold text-ink">
                   {questions.length > 0 ? questions.length : "~44"}
                 </p>
               </div>
               <div>
                 <span className="text-xs uppercase tracking-wider text-text-muted">Time Limit</span>
-                <p className="text-lg font-semibold leading-tight text-white">
+                <p className="text-lg font-semibold leading-tight text-ink">
                   {section === "math" ? "70" : "64"} min
                   <span className="block text-xs font-normal text-text-muted">2 modules</span>
                 </p>
               </div>
               <div>
                 <span className="text-xs uppercase tracking-wider text-text-muted">Score Range</span>
-                <p className="text-lg font-semibold text-white">
+                <p className="text-lg font-semibold text-ink">
                   {SCORE_RANGES[testType].min}&ndash;{SCORE_RANGES[testType].max}
                 </p>
               </div>
               <div>
                 <span className="text-xs uppercase tracking-wider text-text-muted">Format</span>
-                <p className="text-lg font-semibold text-white">
+                <p className="text-lg font-semibold text-ink">
                   {section === "math" ? "MC + SPR" : "Multiple Choice"}
                 </p>
               </div>
               <div>
                 <span className="text-xs uppercase tracking-wider text-text-muted">Domains</span>
-                <p className="text-lg font-semibold text-white">{domains.length}</p>
+                <p className="text-lg font-semibold text-ink">{domains.length}</p>
               </div>
             </div>
           </GlassCard>
 
           <div className="mb-4">
-            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-text-muted">
+            <h3 className="mb-2 kicker">
               Domains Covered
             </h3>
             <div className="flex flex-wrap gap-2">
               {domains.map((d) => (
-                <span key={d} className="rounded-full bg-white/5 px-3 py-1 text-xs text-text-secondary">
+                <span key={d} className="rounded-full bg-paper-card px-3 py-1 text-xs text-text-secondary">
                   {d}
                 </span>
               ))}
@@ -378,14 +378,14 @@ export function DiagnosticTest({
             <button
               onClick={handleStart}
               disabled={loading}
-              className="rounded-radius-md px-8 py-3 text-sm font-semibold text-white transition-all hover:brightness-110"
+              className=" px-8 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
               style={{ backgroundColor: accentColor }}
             >
               {loading ? "Loading..." : "Start Diagnostic"}
             </button>
             <button
               onClick={handleResume}
-              className="rounded-radius-md border border-border-default px-6 py-3 text-sm text-text-secondary transition-colors hover:border-border-light"
+              className=" border border-border-default px-6 py-3 text-sm text-text-secondary transition-colors hover:border-border-light"
             >
               Resume Saved
             </button>
@@ -417,7 +417,7 @@ export function DiagnosticTest({
                 {title}
               </span>
               {hasModules && (
-                <span className="rounded-full bg-white/10 px-3 py-0.5 text-xs font-medium text-text-secondary">
+                <span className="rounded-full bg-paper-card px-3 py-0.5 text-xs font-medium text-text-secondary">
                   Module {currentModule} of 2
                 </span>
               )}
@@ -448,7 +448,7 @@ export function DiagnosticTest({
                     ? handleEndModule1
                     : handleFinish
                 }
-                className="rounded-radius-sm border border-border-default px-4 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-accent-red hover:text-accent-red"
+                className=" border border-border-default px-4 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-accent-red hover:text-accent-red"
               >
                 {hasModules && currentModule === 1 ? "End Module 1" : "Finish"}
               </button>
@@ -474,7 +474,7 @@ export function DiagnosticTest({
               <button
                 onClick={() => setCurrentQ((p) => Math.max(moduleStartIdx, p - 1))}
                 disabled={currentQ === moduleStartIdx}
-                className="rounded-radius-sm border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light disabled:opacity-30"
+                className=" border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light disabled:opacity-30"
               >
                 Previous
               </button>
@@ -483,7 +483,7 @@ export function DiagnosticTest({
                 {!submitted[currentQ] && answers[currentQ] != null && (
                   <button
                     onClick={handleSubmit}
-                    className="rounded-radius-sm px-5 py-2 text-sm font-semibold text-white transition-all hover:brightness-110"
+                    className=" px-5 py-2 text-sm font-semibold text-ink transition-all hover:brightness-110"
                     style={{ backgroundColor: accentColor }}
                   >
                     Submit
@@ -493,14 +493,14 @@ export function DiagnosticTest({
                 {currentQ < moduleEndIdx ? (
                   <button
                     onClick={() => setCurrentQ((p) => Math.min(moduleEndIdx, p + 1))}
-                    className="rounded-radius-sm border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light"
+                    className=" border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light"
                   >
                     Next
                   </button>
                 ) : hasModules && currentModule === 1 ? (
                   <button
                     onClick={handleEndModule1}
-                    className="rounded-radius-sm px-5 py-2 text-sm font-semibold text-white"
+                    className=" px-5 py-2 text-sm font-semibold text-ink"
                     style={{ backgroundColor: accentColor }}
                   >
                     End Module 1
@@ -508,7 +508,7 @@ export function DiagnosticTest({
                 ) : (
                   <button
                     onClick={handleFinish}
-                    className="rounded-radius-sm px-5 py-2 text-sm font-semibold text-white"
+                    className=" px-5 py-2 text-sm font-semibold text-ink"
                     style={{ backgroundColor: accentColor }}
                   >
                     Finish Test
@@ -522,7 +522,7 @@ export function DiagnosticTest({
           <div className="hidden w-64 shrink-0 lg:block">
             <GlassCard className="sticky top-20">
               {hasModules && (
-                <div className="mb-3 text-center text-xs font-semibold uppercase tracking-wider text-text-muted">
+                <div className="mb-3 text-center kicker">
                   Module {currentModule} of 2
                 </div>
               )}
@@ -555,7 +555,7 @@ export function DiagnosticTest({
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="mb-2 font-display text-2xl tracking-[0.02em] text-white">
+          <h2 className="mb-2 font-display text-2xl tracking-[0.02em] text-ink">
             End of Module 1
           </h2>
           <p className="mb-8 text-text-secondary">
@@ -564,7 +564,7 @@ export function DiagnosticTest({
           </p>
           <button
             onClick={handleStartModule2}
-            className="rounded-radius-md px-8 py-3 text-sm font-semibold text-white transition-all hover:brightness-110"
+            className=" px-8 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
             style={{ backgroundColor: accentColor }}
           >
             Start Module 2
@@ -582,7 +582,7 @@ export function DiagnosticTest({
         <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: accentColor }}>
           Diagnostic Complete
         </div>
-        <h1 className="mb-8 font-display text-[2.2rem] tracking-[0.02em] text-white">
+        <h1 className="mb-8 font-display text-[2.2rem] tracking-[0.02em] text-ink">
           {title} Results
         </h1>
 
@@ -594,7 +594,7 @@ export function DiagnosticTest({
 
         {/* Scaled Score */}
         <GlassCard className="mb-8 text-center">
-          <div className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">
+          <div className="kicker mb-2">
             Your Score
           </div>
           <div className="font-display text-[3.5rem] font-bold leading-none" style={{ color: accentColor }}>
@@ -622,7 +622,7 @@ export function DiagnosticTest({
             ["Accuracy", `${results.percentage}%`],
           ].map(([label, value]) => (
             <GlassCard key={label as string} className="text-center">
-              <div className="text-2xl font-bold text-white">{value}</div>
+              <div className="text-2xl font-bold text-ink">{value}</div>
               <div className="text-xs text-text-muted">{label}</div>
             </GlassCard>
           ))}
@@ -666,7 +666,7 @@ export function DiagnosticTest({
 
         {/* Domain Breakdown */}
         <GlassCard className="mb-8">
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+          <h3 className="mb-4 kicker">
             Performance by Domain
           </h3>
           <DomainBreakdown stats={results.domainStats} />
@@ -683,26 +683,26 @@ export function DiagnosticTest({
         />
 
         {/* Post-Test Reflection */}
-        <div className="mb-8 rounded-2xl border border-white/10 bg-[rgba(15,15,22,.75)] p-6 backdrop-blur-[20px]">
+        <div className="mb-8 rounded-2xl border border-ink/20 bg-[rgba(15,15,22,.75)] p-6 -[20px]">
           <div className="mb-5 flex items-center gap-2">
-            <svg className="h-5 w-5 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-5 w-5 text-ink/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
             </svg>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white/70">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-ink/70">
               Post-Test Reflection
             </h3>
           </div>
           <div className="flex flex-col gap-5">
             {(REFLECTION_PROMPTS[`${testType}-${section}`] ?? []).map((prompt, idx) => (
               <div key={idx}>
-                <label className="mb-1.5 block text-sm text-white/70">{prompt}</label>
+                <label className="mb-1.5 block text-sm text-ink/70">{prompt}</label>
                 <textarea
                   value={reflections[idx] ?? ""}
                   onChange={(e) =>
                     setReflections((prev) => ({ ...prev, [idx]: e.target.value }))
                   }
                   rows={2}
-                  className="w-full resize-y rounded-lg border border-white/10 bg-[rgba(10,10,16,.8)] px-3 py-2 text-sm text-white placeholder-white/30 outline-none transition-colors focus:border-white/25"
+                  className="w-full resize-y rounded-lg border border-ink/20 bg-[rgba(10,10,16,.8)] px-3 py-2 text-sm text-ink placeholder-white/30 outline-none transition-colors focus:border-ink/20"
                   placeholder="Type your reflection..."
                 />
               </div>
@@ -712,7 +712,7 @@ export function DiagnosticTest({
 
         {/* Question Review */}
         <GlassCard>
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+          <h3 className="mb-4 kicker">
             Question Review
           </h3>
           <div className="flex flex-col gap-6">
@@ -735,7 +735,7 @@ export function DiagnosticTest({
         <div className="mt-8 flex justify-center gap-4">
           <a
             href="/home"
-            className="rounded-radius-md border border-border-default px-6 py-3 text-sm text-text-secondary transition-colors hover:border-border-light"
+            className=" border border-border-default px-6 py-3 text-sm text-text-secondary transition-colors hover:border-border-light"
           >
             Back to Home
           </a>
@@ -750,7 +750,7 @@ export function DiagnosticTest({
               setCurrentModule(1);
               setTimerKey((k) => k + 1);
             }}
-            className="rounded-radius-md px-6 py-3 text-sm font-semibold text-white transition-all hover:brightness-110"
+            className=" px-6 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
             style={{ backgroundColor: accentColor }}
           >
             Retake Diagnostic

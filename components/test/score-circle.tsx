@@ -25,7 +25,7 @@ export function ScoreCircle({ correct, total, label, className }: ScoreCirclePro
     pct >= 80
       ? "#22c55e"
       : pct >= 60
-        ? "#d62828"
+        ? "var(--color-accent)"
         : pct >= 40
           ? "#f59e0b"
           : "#ef4444";

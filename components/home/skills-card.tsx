@@ -70,7 +70,7 @@ export function SkillsCard({ role }: SkillsCardProps) {
         </div>
         <Link
           href="/skills"
-          className="w-full shrink-0 rounded-lg bg-panther-red px-5 py-3 text-center text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-panther-red/90 sm:w-auto"
+          className="w-full shrink-0 rounded-lg bg-panther-red px-5 py-3 text-center text-sm font-semibold text-ink transition-all hover:-translate-y-0.5 hover:bg-panther-red/90 sm:w-auto"
         >
           Open skill library →
         </Link>

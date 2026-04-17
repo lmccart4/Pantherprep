@@ -71,19 +71,17 @@ export function PracticeResultsCard({
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-4">
       {/* Summary */}
-      <GlassCard className="text-center">
-        <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
-          Practice Results
-        </div>
-        <h2 className="mb-2 font-display text-[3rem] leading-none text-white">
+      <GlassCard raised className="text-center">
+        <div className="kicker mb-2">Practice Results</div>
+        <h2 className="mb-2 font-display text-[3rem] leading-none text-ink">
           {correctCount}/{total}
         </h2>
-        <p className="text-sm text-text-muted">
+        <p className="font-mono text-xs uppercase tracking-[0.14em] text-ink-3">
           {percent}% &middot; {formatDuration(timeSpent)}
         </p>
 
         {saveError && (
-          <p className="mt-4 rounded-radius-sm border border-accent-red/20 bg-accent-red-soft px-4 py-2 text-xs text-accent-red">
+          <p className="mt-4 border-2 border-accent bg-accent-soft px-4 py-2 text-xs text-accent">
             Your score couldn&apos;t be saved. Please refresh and try again.
           </p>
         )}
@@ -92,14 +90,14 @@ export function PracticeResultsCard({
           {onPracticeAgain && (
             <button
               onClick={onPracticeAgain}
-              className="rounded-radius-md bg-panther-red px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-panther-red/90"
+              className="border-2 border-ink bg-accent px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition hover:bg-ink hover:text-paper"
             >
               Practice again
             </button>
           )}
           <button
             onClick={onExit}
-            className="rounded-radius-md border border-border-default px-5 py-2.5 text-sm text-text-secondary transition hover:border-border-light"
+            className="border-2 border-ink px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.14em] text-ink transition hover:bg-ink hover:text-paper"
           >
             Back
           </button>
@@ -109,7 +107,7 @@ export function PracticeResultsCard({
       {/* Session performance (mastery delta breakdown) */}
       {masteryDeltas && masteryDeltas.length > 0 && (
         <GlassCard>
-          <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-muted">
+          <div className="mb-3 kicker">
             Session performance
           </div>
           <div className="flex flex-col divide-y divide-border-primary">
@@ -208,7 +206,7 @@ export function PracticeResultsCard({
       {/* Skill breakdown (only if multi-skill) */}
       {showBreakdown && (
         <GlassCard>
-          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-muted">
+          <h3 className="mb-3 kicker">
             Skill Breakdown
           </h3>
           <div className="flex flex-col gap-2">
@@ -260,7 +258,7 @@ export function PracticeResultsCard({
 
       {/* Per-question review */}
       <GlassCard>
-        <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-text-muted">
+        <h3 className="mb-4 kicker">
           Question Review
         </h3>
         <div className="flex flex-col gap-6">

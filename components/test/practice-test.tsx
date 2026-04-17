@@ -302,14 +302,14 @@ export function PracticeTest({
           <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: accentColor }}>
             Full Practice Test
           </div>
-          <h1 className="mb-2 font-display text-[2.4rem] tracking-[0.02em] text-white">{title}</h1>
+          <h1 className="mb-2 font-display text-[2.4rem] tracking-[0.02em] text-ink">{title}</h1>
           <p className="mb-8 text-text-secondary">
             A complete {testType === "sat" ? "SAT" : testType === "nmsqt" ? "PSAT/NMSQT" : "PSAT 8/9"} practice test
             with all 4 modules.
           </p>
 
           <GlassCard className="mb-6">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">Test Structure</h3>
+            <h3 className="mb-3 kicker">Test Structure</h3>
             <div className="flex flex-col gap-2 text-sm">
               {[
                 [`R&W Module 1`, `${rwTime[0]} min`],
@@ -331,15 +331,15 @@ export function PracticeTest({
 
           {/* Mode selection */}
           <div className="mb-6">
-            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-text-muted">Test Mode</h3>
+            <h3 className="mb-2 kicker">Test Mode</h3>
             <div className="flex gap-3">
               {(["timed", "practice"] as Mode[]).map((m) => (
                 <button
                   key={m}
                   onClick={() => setMode(m)}
-                  className={`rounded-radius-md border px-5 py-2.5 text-sm capitalize transition-all ${
+                  className={` border px-5 py-2.5 text-sm capitalize transition-all ${
                     mode === m
-                      ? "border-transparent text-white"
+                      ? "border-transparent text-ink"
                       : "border-border-default text-text-muted hover:border-border-light"
                   }`}
                   style={mode === m ? { backgroundColor: accentColor } : undefined}
@@ -352,7 +352,7 @@ export function PracticeTest({
 
           {/* Check mode */}
           <div className="mb-8">
-            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-text-muted">Review Answers</h3>
+            <h3 className="mb-2 kicker">Review Answers</h3>
             <div className="flex gap-3">
               {(
                 [
@@ -363,9 +363,9 @@ export function PracticeTest({
                 <button
                   key={c}
                   onClick={() => setCheckMode(c)}
-                  className={`rounded-radius-md border px-5 py-2.5 text-sm transition-all ${
+                  className={` border px-5 py-2.5 text-sm transition-all ${
                     checkMode === c
-                      ? "border-transparent text-white"
+                      ? "border-transparent text-ink"
                       : "border-border-default text-text-muted hover:border-border-light"
                   }`}
                   style={checkMode === c ? { backgroundColor: accentColor } : undefined}
@@ -379,7 +379,7 @@ export function PracticeTest({
           <button
             onClick={handleStart}
             disabled={loading}
-            className="rounded-radius-md px-8 py-3 text-sm font-semibold text-white transition-all hover:brightness-110"
+            className=" px-8 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
             style={{ backgroundColor: accentColor }}
           >
             {loading ? "Loading..." : "Begin Test"}
@@ -396,7 +396,7 @@ export function PracticeTest({
     return (
       <div className="flex min-h-screen items-center justify-center px-6">
         <GlassCard className="max-w-lg text-center">
-          <h2 className="mb-2 font-display text-[1.8rem] text-white">
+          <h2 className="mb-2 font-display text-[1.8rem] text-ink">
             {sec?.name} — Module {moduleIdx + 1}
           </h2>
           <p className="mb-4 text-sm text-text-secondary">
@@ -407,7 +407,7 @@ export function PracticeTest({
           )}
           <button
             onClick={handleResumeFromBreak}
-            className="rounded-radius-md px-8 py-3 text-sm font-semibold text-white transition-all hover:brightness-110"
+            className=" px-8 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
             style={{ backgroundColor: accentColor }}
           >
             Begin Module
@@ -455,7 +455,7 @@ export function PracticeTest({
               )}
               <button
                 onClick={handleAdvanceModule}
-                className="rounded-radius-sm border border-border-default px-4 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-accent-red hover:text-accent-red"
+                className=" border border-border-default px-4 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-accent-red hover:text-accent-red"
               >
                 {isLastQuestion ? "Next Module" : "End Module"}
               </button>
@@ -478,7 +478,7 @@ export function PracticeTest({
               <button
                 onClick={() => setQuestionIdx((p) => Math.max(0, p - 1))}
                 disabled={questionIdx === 0}
-                className="rounded-radius-sm border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light disabled:opacity-30"
+                className=" border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light disabled:opacity-30"
               >
                 Previous
               </button>
@@ -487,7 +487,7 @@ export function PracticeTest({
                 {!submitted[qId] && answers[qId] != null && (
                   <button
                     onClick={handleSubmit}
-                    className="rounded-radius-sm px-5 py-2 text-sm font-semibold text-white transition-all hover:brightness-110"
+                    className=" px-5 py-2 text-sm font-semibold text-ink transition-all hover:brightness-110"
                     style={{ backgroundColor: accentColor }}
                   >
                     Submit
@@ -497,14 +497,14 @@ export function PracticeTest({
                 {!isLastQuestion ? (
                   <button
                     onClick={() => setQuestionIdx((p) => p + 1)}
-                    className="rounded-radius-sm border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light"
+                    className=" border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light"
                   >
                     Next
                   </button>
                 ) : (
                   <button
                     onClick={handleAdvanceModule}
-                    className="rounded-radius-sm px-5 py-2 text-sm font-semibold text-white"
+                    className=" px-5 py-2 text-sm font-semibold text-ink"
                     style={{ backgroundColor: accentColor }}
                   >
                     Next Module
@@ -570,7 +570,7 @@ export function PracticeTest({
         <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: accentColor }}>
           Practice Test Complete
         </div>
-        <h1 className="mb-8 font-display text-[2.2rem] tracking-[0.02em] text-white">{title} Results</h1>
+        <h1 className="mb-8 font-display text-[2.2rem] tracking-[0.02em] text-ink">{title} Results</h1>
 
         {saveError && (
           <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">
@@ -580,7 +580,7 @@ export function PracticeTest({
 
         {/* Composite Score */}
         <GlassCard className="mb-8 text-center">
-          <div className="text-5xl font-bold text-white">{composite}</div>
+          <div className="text-5xl font-bold text-ink">{composite}</div>
           <div className="mt-1 text-sm text-text-muted">Composite Score ({scaleMin * 2}–{(scaleMin + scaleRange) * 2})</div>
           <div className="mt-4 flex justify-center gap-8">
             <div>
@@ -602,7 +602,7 @@ export function PracticeTest({
                 ? "border-green-500/30 bg-green-500/10 text-green-300"
                 : composite >= 1400
                 ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
-                : "border-white/10 bg-[rgba(15,15,22,.75)] text-text-secondary"
+                : "border-ink/20 bg-[rgba(15,15,22,.75)] text-text-secondary"
             }`}
           >
             <div className="mb-1 font-semibold">
@@ -650,7 +650,7 @@ export function PracticeTest({
               onClick={() => setReviewTab(tab)}
               className={`border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
                 reviewTab === tab
-                  ? "border-current text-white"
+                  ? "border-current text-ink"
                   : "border-transparent text-text-muted hover:text-text-secondary"
               }`}
               style={reviewTab === tab ? { color: accentColor } : undefined}
@@ -676,7 +676,7 @@ export function PracticeTest({
                 ["Accuracy", `${overallAccuracy}%`],
               ].map(([label, value]) => (
                 <GlassCard key={label as string} className="text-center">
-                  <div className="text-2xl font-bold text-white">{value}</div>
+                  <div className="text-2xl font-bold text-ink">{value}</div>
                   <div className="text-xs text-text-muted">{label}</div>
                 </GlassCard>
               ))}
@@ -684,7 +684,7 @@ export function PracticeTest({
 
             {/* Strengths & Focus Areas */}
             <div className="mb-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-green-500/20 bg-[rgba(15,15,22,.75)] p-5 backdrop-blur-[20px]">
+              <div className="rounded-2xl border border-green-500/20 bg-[rgba(15,15,22,.75)] p-5 -[20px]">
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-green-400">Strengths</h3>
                 {strengths.length > 0 ? (
                   <ul className="flex flex-col gap-2">
@@ -701,7 +701,7 @@ export function PracticeTest({
                   <p className="text-sm text-text-muted">Keep practicing to build strengths!</p>
                 )}
               </div>
-              <div className="rounded-2xl border border-amber-500/20 bg-[rgba(15,15,22,.75)] p-5 backdrop-blur-[20px]">
+              <div className="rounded-2xl border border-amber-500/20 bg-[rgba(15,15,22,.75)] p-5 -[20px]">
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-amber-400">Focus Areas</h3>
                 {focusAreas.length > 0 ? (
                   <ul className="flex flex-col gap-2">
@@ -746,7 +746,7 @@ export function PracticeTest({
         {reviewTab === "rw" && (
           <>
             <GlassCard className="mb-6">
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+              <h3 className="mb-4 kicker">
                 R&W Domain Breakdown
               </h3>
               <DomainBreakdown stats={rwDomainStats} />
@@ -761,7 +761,7 @@ export function PracticeTest({
               }))}
             />
             <GlassCard>
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+              <h3 className="mb-4 kicker">
                 Question Review
               </h3>
               <div className="flex flex-col gap-6">
@@ -786,7 +786,7 @@ export function PracticeTest({
         {reviewTab === "math" && (
           <>
             <GlassCard className="mb-6">
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+              <h3 className="mb-4 kicker">
                 Math Domain Breakdown
               </h3>
               <DomainBreakdown stats={mathDomainStats} />
@@ -801,7 +801,7 @@ export function PracticeTest({
               }))}
             />
             <GlassCard>
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+              <h3 className="mb-4 kicker">
                 Question Review
               </h3>
               <div className="flex flex-col gap-6">
@@ -828,7 +828,7 @@ export function PracticeTest({
             {REFLECTION_PROMPTS[testType].map((prompt, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl border border-white/10 bg-[rgba(15,15,22,.75)] p-5 backdrop-blur-[20px]"
+                className="rounded-2xl border border-ink/20 bg-[rgba(15,15,22,.75)] p-5 -[20px]"
               >
                 <label className="mb-2 block text-sm font-medium text-text-secondary">
                   {prompt}
@@ -840,7 +840,7 @@ export function PracticeTest({
                   }
                   placeholder="Type your reflection here..."
                   rows={3}
-                  className="w-full resize-y rounded-xl border border-white/10 bg-[rgba(10,10,16,.6)] px-4 py-3 text-sm text-white placeholder-text-muted outline-none transition-colors focus:border-white/20"
+                  className="w-full resize-y rounded-xl border border-ink/20 bg-[rgba(10,10,16,.6)] px-4 py-3 text-sm text-ink placeholder-text-muted outline-none transition-colors focus:border-ink/20"
                 />
               </div>
             ))}
@@ -851,13 +851,13 @@ export function PracticeTest({
         <div className="mt-8 flex justify-center gap-4">
           <a
             href="/home"
-            className="rounded-radius-md border border-border-default px-6 py-3 text-sm text-text-secondary transition-colors hover:border-border-light"
+            className=" border border-border-default px-6 py-3 text-sm text-text-secondary transition-colors hover:border-border-light"
           >
             Back to Home
           </a>
           <button
             onClick={handleRetake}
-            className="rounded-radius-md px-6 py-3 text-sm font-semibold text-white transition-all hover:brightness-110"
+            className=" px-6 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
             style={{ backgroundColor: accentColor }}
           >
             Retake Test

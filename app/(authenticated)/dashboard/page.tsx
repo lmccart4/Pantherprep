@@ -84,7 +84,7 @@ export default function DashboardPage() {
               onClick={() => setCourse(c.value)}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
                 course === c.value
-                  ? "bg-panther-red text-white"
+                  ? "bg-panther-red text-ink"
                   : "bg-bg-secondary text-text-muted hover:text-text-secondary border border-border-primary"
               }`}
             >
@@ -136,19 +136,19 @@ function StudentView({ uid, email, course }: { uid: string; email: string; cours
         <div className="mx-auto w-full max-w-2xl">
           <GlassCard className="text-center">
             <div className="mb-4 text-5xl">&#128202;</div>
-            <h2 className="mb-2 font-display text-2xl text-white">No Adaptive Data Yet</h2>
+            <h2 className="mb-2 font-display text-2xl text-ink">No Adaptive Data Yet</h2>
             <p className="mb-6 text-sm text-text-muted">
               Take a diagnostic or a few practice modules and your mastery map will populate here.
             </p>
             <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              <a href="/diagnostics/sat-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">SAT Math</a>
-              <a href="/diagnostics/sat-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">SAT R&amp;W</a>
-              <a href="/diagnostics/nmsqt-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">NMSQT Math</a>
-              <a href="/diagnostics/nmsqt-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">NMSQT R&amp;W</a>
-              <a href="/diagnostics/psat89-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">PSAT 8/9 Math</a>
-              <a href="/diagnostics/psat89-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-white">PSAT 8/9 R&amp;W</a>
+              <a href="/diagnostics/sat-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">SAT Math</a>
+              <a href="/diagnostics/sat-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">SAT R&amp;W</a>
+              <a href="/diagnostics/nmsqt-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">NMSQT Math</a>
+              <a href="/diagnostics/nmsqt-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">NMSQT R&amp;W</a>
+              <a href="/diagnostics/psat89-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">PSAT 8/9 Math</a>
+              <a href="/diagnostics/psat89-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">PSAT 8/9 R&amp;W</a>
             </div>
-            <button onClick={refresh} className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold text-text-muted transition hover:text-text-primary">
+            <button onClick={refresh} className="rounded-full border border-ink/20 bg-paper-card px-5 py-2 text-xs font-semibold text-text-muted transition hover:text-text-primary">
               Check again
             </button>
           </GlassCard>
@@ -296,7 +296,7 @@ function StudentOverview({ profile, course }: { profile: AdaptiveProfile; course
                 >
                   <div
                     className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                      i < 3 ? "bg-panther-red text-white" : "bg-bg-secondary text-text-muted"
+                      i < 3 ? "bg-panther-red text-ink" : "bg-bg-secondary text-text-muted"
                     }`}
                   >
                     {rec.priority}
@@ -354,7 +354,7 @@ function StudentSkills({
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-text-muted">
+        <h3 className="kicker">
           Top skills to focus on
         </h3>
         <Link
@@ -464,7 +464,7 @@ function StudentPractice({
               >
                 <div
                   className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                    i < 3 ? "bg-panther-red text-white" : "bg-bg-secondary text-text-muted"
+                    i < 3 ? "bg-panther-red text-ink" : "bg-bg-secondary text-text-muted"
                   }`}
                 >
                   {rec.priority}
@@ -489,7 +489,7 @@ function StudentPractice({
       <button
         onClick={launchAdaptive}
         disabled={recs.length === 0 || launching}
-        className="mt-5 w-full rounded-lg bg-panther-red py-3.5 text-sm font-bold text-white transition hover:bg-panther-red/90 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="mt-5 w-full rounded-lg bg-panther-red py-3.5 text-sm font-bold text-ink transition hover:bg-panther-red/90 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {launching
           ? "Loading..."
@@ -711,7 +711,7 @@ function TeacherView({ course }: { course: Course }) {
                 key={s}
                 onClick={() => setSortBy(s)}
                 className={`rounded-full px-2.5 py-1 text-[11px] font-semibold capitalize transition ${
-                  s === sortBy ? "bg-panther-red text-white" : "border border-border-primary bg-bg-secondary text-text-muted"
+                  s === sortBy ? "bg-panther-red text-ink" : "border border-border-primary bg-bg-secondary text-text-muted"
                 }`}
               >
                 {s}
@@ -845,7 +845,7 @@ function TeacherStudentDrillDown({
             onClick={() => setDrillTab(t)}
             className={`rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
               drillTab === t
-                ? "bg-panther-red text-white"
+                ? "bg-panther-red text-ink"
                 : "bg-bg-secondary text-text-muted hover:text-text-primary"
             }`}
           >

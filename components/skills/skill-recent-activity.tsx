@@ -15,7 +15,7 @@ export function SkillRecentActivity({ answers }: SkillRecentActivityProps) {
   if (recent.length === 0) {
     return (
       <div>
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
+        <div className="mb-2 kicker">
           Recent activity
         </div>
         <p className="text-xs text-text-muted">
@@ -27,7 +27,7 @@ export function SkillRecentActivity({ answers }: SkillRecentActivityProps) {
 
   return (
     <div>
-      <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
+      <div className="mb-2 kicker">
         Recent activity
       </div>
       <div className="flex gap-2">
@@ -55,7 +55,7 @@ export function SkillRecentActivity({ answers }: SkillRecentActivityProps) {
           onClick={() => setSelected(null)}
         >
           <div
-            className="max-h-[80vh] w-full max-w-xl overflow-y-auto rounded-radius-md border border-border-default bg-bg-card p-6"
+            className="max-h-[80vh] w-full max-w-xl overflow-y-auto  border border-border-default bg-bg-card p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-start justify-between gap-3">
@@ -95,7 +95,7 @@ export function SkillRecentActivity({ answers }: SkillRecentActivityProps) {
               </div>
             )}
             {selected.explanation && (
-              <div className="rounded-radius-sm border border-border-default bg-bg-surface p-3 text-xs text-text-secondary">
+              <div className=" border border-border-default bg-bg-surface p-3 text-xs text-text-secondary">
                 <div className="mb-1 font-semibold text-text-muted">Explanation</div>
                 {renderMath(selected.explanation)}
               </div>

@@ -44,7 +44,7 @@ export function WarmupQuiz({ questions, accentColor, onComplete }: WarmupQuizPro
     return (
       <div className="flex min-h-screen flex-col items-center justify-center px-5 py-10 text-center">
         <span
-          className="mb-4 inline-block rounded-full px-3.5 py-1 text-[11px] font-bold uppercase tracking-[2px] text-white"
+          className="mb-4 inline-block rounded-full px-3.5 py-1 text-[11px] font-bold uppercase tracking-[2px] text-ink"
           style={{ backgroundColor: accentColor }}
         >
           Warm-Up Complete
@@ -55,7 +55,7 @@ export function WarmupQuiz({ questions, accentColor, onComplete }: WarmupQuizPro
         <p className="mb-6 text-[.9rem] text-text-muted">{msg}</p>
         <button
           onClick={() => onComplete(score, questions.length)}
-          className="cursor-pointer rounded-lg border-none px-8 py-3 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
+          className="cursor-pointer rounded-lg border-none px-8 py-3 text-sm font-bold text-ink transition-all hover:-translate-y-0.5 hover:brightness-110"
           style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
         >
           Continue to Lesson →
@@ -132,7 +132,7 @@ export function WarmupQuiz({ questions, accentColor, onComplete }: WarmupQuizPro
         <div className="flex justify-center">
           <button
             onClick={next}
-            className="cursor-pointer rounded-lg border-none px-6 py-2.5 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
+            className="cursor-pointer rounded-lg border-none px-6 py-2.5 text-sm font-bold text-ink transition-all hover:-translate-y-0.5 hover:brightness-110"
             style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
           >
             {idx < questions.length - 1 ? "Next Question →" : "See Results →"}

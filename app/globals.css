@@ -1,113 +1,114 @@
 @import "tailwindcss";
 
+/* ================================================================
+   CAMPUS PRESS — editorial broadsheet redesign of PantherPrep
+   Drop this in at app/globals.css (replacing the current file).
+   All @theme tokens below feed Tailwind v4's utility generator —
+   e.g. `bg-paper` `text-ink` `border-rule-hair` all Just Work.
+   ================================================================ */
+
 @theme {
-  /* ── Colors ── */
-  --color-bg-deep: #08080c;
-  --color-bg-card: #0f0f16;
-  --color-bg-card-hover: #1c1c2c;
-  --color-bg-surface: #141420;
+  /* ── Paper palette ── */
+  --color-paper: #f7f2e3;       /* primary ivory background */
+  --color-paper-2: #ede5cf;      /* secondary manila */
+  --color-paper-card: #fefaee;   /* elevated (cards, modals) */
 
-  --color-border-default: #1c1c2c;
-  --color-border-light: #2a2a3e;
+  /* ── Ink scale ── */
+  --color-ink: #1a2233;          /* primary type, rules, borders */
+  --color-ink-2: #3a4358;        /* secondary type */
+  --color-ink-3: #6a7284;        /* tertiary / meta */
+  --color-ink-4: #a8adb8;        /* subdued / placeholder */
 
-  --color-text-primary: #eaeaef;
-  --color-text-secondary: #9898a8;
-  --color-text-muted: #5a5a6e;
+  /* ── Accent: single editorial red ── */
+  --color-accent: #bb4430;       /* kickers, stamps, italic emphasis */
+  --color-accent-fg: #fefaee;    /* text on accent fill */
+  --color-accent-soft: rgba(187, 68, 48, 0.08);
 
-  --color-panther-red: #d62828;
-  --color-panther-dark-red: #a31d1d;
-  --color-panther-light-red: #e85d5d;
-  --color-panther-red-glow: rgba(214, 40, 40, 0.15);
-  --color-panther-red-soft: rgba(214, 40, 40, 0.03);
-  --color-panther-red-alt: #c8102e;
+  /* ── Scored-state only ── */
+  --color-green: #7a9c6a;
+  --color-green-soft: rgba(122, 156, 106, 0.08);
+  --color-amber: #b8892d;
+  --color-amber-soft: rgba(184, 137, 45, 0.09);
+  --color-danger: #bb4430;       /* alias of accent */
+  --color-danger-soft: rgba(187, 68, 48, 0.07);
 
-  --color-accent-green: #22c55e;
-  --color-accent-green-soft: rgba(34, 197, 94, 0.07);
-  --color-accent-red: #ef4444;
-  --color-accent-red-soft: rgba(239, 68, 68, 0.07);
-  --color-accent-amber: #f59e0b;
-  --color-accent-amber-soft: rgba(245, 158, 11, 0.07);
-  --color-accent-blue: #3b82f6;
-  --color-accent-blue-glow: rgba(59, 130, 246, 0.12);
-  --color-accent-purple: #a855f7;
-  --color-accent-purple-soft: rgba(168, 85, 247, 0.07);
-  --color-accent-cyan: #06b6d4;
+  /* ── Rules ── */
+  --color-rule-hair: #d8cfb5;    /* hairline on paper */
+  --color-rule-strong: #1a2233;  /* same as ink */
 
-  --color-glass: rgba(15, 15, 22, 0.75);
-  --color-glass-border: rgba(255, 255, 255, 0.05);
+  /* Panther compatibility aliases — keep existing code compiling.
+     Map the old tokens onto the new palette so any file that still
+     uses bg-panther-red etc. renders in the new system instead of
+     shipping a contrast/color regression. Remove after migration. */
+  --color-bg-deep: var(--color-paper);
+  --color-bg-card: var(--color-paper-card);
+  --color-bg-card-hover: var(--color-paper-2);
+  --color-bg-surface: var(--color-paper-2);
+  --color-border-default: var(--color-rule-hair);
+  --color-border-light: var(--color-ink-3);
+  --color-text-primary: var(--color-ink);
+  --color-text-secondary: var(--color-ink-2);
+  --color-text-muted: var(--color-ink-3);
+  --color-panther-red: var(--color-accent);
+  --color-panther-red-soft: var(--color-accent-soft);
+  --color-panther-light-red: var(--color-accent);
+  --color-panther-dark-red: #8a3222;
+  --color-panther-red-glow: rgba(187, 68, 48, 0.12);
+  --color-panther-red-alt: var(--color-accent);
+  --color-accent-green: var(--color-green);
+  --color-accent-green-soft: var(--color-green-soft);
+  --color-accent-red: var(--color-accent);
+  --color-accent-red-soft: var(--color-accent-soft);
+  --color-accent-amber: var(--color-amber);
+  --color-accent-amber-soft: var(--color-amber-soft);
+  --color-accent-blue: var(--color-ink);          /* retire blue */
+  --color-accent-blue-glow: rgba(26,34,51,0.08);
+  --color-accent-purple: var(--color-accent);     /* retire purple */
+  --color-accent-purple-soft: var(--color-accent-soft);
+  --color-accent-cyan: var(--color-ink-2);        /* retire cyan */
+  --color-glass: var(--color-paper-card);
+  --color-glass-border: var(--color-rule-hair);
 
-  /* ── Fonts ── */
-  --font-body: "Manrope", sans-serif;
-  --font-display: "Cormorant Garamond", serif;
-  --font-mono: "JetBrains Mono", monospace;
+  /* ── Fonts ──
+     Load these Google Fonts in app/layout.tsx via next/font.
+     See README §Typography for the exact <Font /> setup. */
+  --font-body: "Source Serif 4", Georgia, serif;
+  --font-display: "DM Serif Display", "Playfair Display", serif;
+  --font-head: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-hand: "Caveat", "Source Serif 4", cursive;   /* used only in note panel */
 
-  /* ── Border Radius ── */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  /* ── Border radius ──
+     Editorial grammar is rule-based, not chip-based. Keep radii near 0.
+     A few rounded areas (pill status) stay but corners are the exception. */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 2px;
+  --radius-pill: 999px;
 
-  /* ── Shadows ── */
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  /* ── Shadows ──
+     The prototype uses hard offset "stamp" shadows instead of soft glows. */
+  --shadow-stamp-sm: 3px 3px 0 var(--color-ink);
+  --shadow-stamp-md: 5px 5px 0 var(--color-ink);
+  --shadow-stamp-lg: 10px 10px 0 var(--color-ink);
+  --shadow-md: var(--shadow-stamp-sm);   /* alias so existing shadow-md usages still read as "pressy" */
 
-  /* ── Animations ── */
+  /* ── Animation ── */
   --animate-fade-in: fade-in 0.4s ease-out forwards;
   --animate-pulse-opacity: pulse-opacity 1.5s ease-in-out infinite;
   --animate-card-rise: card-rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   --animate-shimmer-sweep: shimmer-sweep 0.6s ease forwards;
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes pulse-opacity {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-
-  @keyframes card-rise {
-    from {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes shimmer-sweep {
-    to { left: 125%; }
-  }
-
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20% { transform: translateX(-4px); }
-    40% { transform: translateX(4px); }
-    60% { transform: translateX(-3px); }
-    80% { transform: translateX(3px); }
-  }
-
-  @keyframes celebrateBounce {
-    0% { transform: scale(0) rotate(-15deg); }
-    60% { transform: scale(1.15) rotate(5deg); }
-    100% { transform: scale(1) rotate(0deg); }
-  }
+  @keyframes fade-in { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+  @keyframes pulse-opacity { 0%,100% { opacity:1; } 50% { opacity:0.55; } }
+  @keyframes card-rise { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+  @keyframes shimmer-sweep { to { left: 125%; } }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
 }
 
-/* ── Base Styles ── */
+/* ── Base styles ── */
 @layer base {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html {
     -webkit-font-smoothing: antialiased;
@@ -115,57 +116,122 @@
   }
 
   body {
-    background-color: var(--color-bg-deep);
-    color: var(--color-text-primary);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
     font-family: var(--font-body);
+    font-feature-settings: "kern","liga","onum";
+    font-size: 16px;
+    line-height: 1.55;
     min-height: 100vh;
   }
 
-  /* Noise texture overlay */
+  /* Paper grain — replaces the old noise layer. Low opacity so it reads
+     as "printed on stock" not "photoshop filter". */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.018;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.15;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(106,114,132,0.07) 1px, transparent 1px),
+      radial-gradient(circle at 70% 80%, rgba(187,68,48,0.04) 1px, transparent 1px);
+    background-size: 3px 3px, 5px 5px;
+    mix-blend-mode: multiply;
   }
+
+  /* Editorial type defaults */
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.015em; color: var(--color-ink); }
+  h1 { font-size: clamp(48px, 6vw, 88px); line-height: 0.95; }
+  h2 { font-size: clamp(32px, 3.5vw, 52px); line-height: 1.05; }
+  h3 { font-size: clamp(22px, 2vw, 30px); line-height: 1.15; }
+  em { font-style: italic; color: var(--color-accent); font-weight: inherit; }
+  strong { font-weight: 700; }
 
   /* Scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-border-default);
-    border-radius: 3px;
-  }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--color-paper); }
+  ::-webkit-scrollbar-thumb { background: var(--color-rule-hair); border: 1px solid var(--color-paper); }
 
-  /* Selection */
-  ::selection {
-    background: rgba(214, 40, 40, 0.3);
-    color: var(--color-text-primary);
+  ::selection { background: rgba(187, 68, 48, 0.22); color: var(--color-ink); }
+
+  /* Focus rings — editorial red, offset, square */
+  *:focus-visible {
+    outline: 2.5px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 1px;
   }
 }
 
-/* ── Utility Classes ── */
+/* ── Editorial utilities ──
+   Tiny helpers used across the prototype. Keep these thin; real components
+   should own their styling. */
 @layer utilities {
-  .glass {
-    background: var(--color-glass);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--color-glass-border);
+
+  /* Running-head label (monospace all-caps). Replaces old "uppercase text-muted" idiom. */
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-accent);
   }
 
-  .glass-card {
-    background: var(--color-glass);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--color-glass-border);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  /* Single hairline horizontal rule. Use between masthead ↔ nav, and between sections. */
+  .hr-hair { height: 1px; background: var(--color-rule-hair); }
+  .hr-ink  { height: 1.5px; background: var(--color-ink); }
+  .hr-triple {
+    height: 11px;
+    background:
+      linear-gradient(to bottom, var(--color-ink) 2px, transparent 2px 5px, var(--color-ink) 5px 7px, transparent 7px 10px, var(--color-ink) 10px 11px);
   }
+
+  /* Paper card — flat, ruled, with a hard stamp shadow on key surfaces */
+  .card-paper {
+    background: var(--color-paper-card);
+    border: 2px solid var(--color-ink);
+  }
+  .card-paper-raised {
+    background: var(--color-paper-card);
+    border: 2px solid var(--color-ink);
+    box-shadow: var(--shadow-stamp-md);
+  }
+
+  /* Stamp — ERRATUM / DELIVERED / DRAFT angled label. */
+  .stamp {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border: 1.5px solid currentColor;
+    transform: rotate(-2.5deg);
+    text-transform: uppercase;
+  }
+  .stamp-red   { color: var(--color-accent); background: var(--color-accent-soft); }
+  .stamp-green { color: var(--color-green);  background: var(--color-green-soft); }
+  .stamp-amber { color: var(--color-amber);  background: var(--color-amber-soft); }
+
+  /* Italic display phrase — for big editorial statements ("didn't land.") */
+  .ital-red { font-style: italic; color: var(--color-accent); font-weight: 500; }
+
+  /* Skip link */
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 10px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding: 10px 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    z-index: 500;
+  }
+  .skip-link:focus-visible { top: 10px; }
 }

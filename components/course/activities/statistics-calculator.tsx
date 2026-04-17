@@ -105,7 +105,7 @@ export function StatisticsCalculator({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="e.g. 10, 12, 14, 15, 16"
-            className="w-full rounded-lg border bg-[#08080c] px-4 py-2.5 font-mono text-sm text-text-primary outline-none transition-colors focus:border-current"
+            className="w-full rounded-lg border bg-[var(--color-paper)] px-4 py-2.5 font-mono text-sm text-text-primary outline-none transition-colors focus:border-current"
             style={{ borderColor: "rgba(255,255,255,.1)" }}
             onFocus={(e) =>
               (e.currentTarget.style.borderColor = accentColor)
@@ -125,7 +125,7 @@ export function StatisticsCalculator({
           <button
             onClick={calculate}
             disabled={!input.trim()}
-            className="rounded-lg px-6 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110 disabled:opacity-40"
+            className="rounded-lg px-6 py-2.5 text-sm font-bold text-ink transition-all hover:brightness-110 disabled:opacity-40"
             style={{ background: accentColor }}
           >
             Calculate
@@ -205,7 +205,7 @@ export function StatisticsCalculator({
       <div className="mt-8 flex justify-center">
         <button
           onClick={() => onComplete()}
-          className="rounded-lg px-8 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
+          className="rounded-lg px-8 py-3 text-sm font-bold text-ink transition-all hover:brightness-110"
           style={{ background: accentColor }}
         >
           Continue

@@ -63,7 +63,7 @@ export default function SATRWCourse() {
       <TopBar backHref="/home" backLabel="Home" />
       <div className="mx-auto max-w-3xl px-6 py-10">
         <div className="mb-1 h-1 w-12 rounded-full" style={{ backgroundColor: ACCENT }} />
-        <h1 className="mb-2 font-display text-[2.2rem] tracking-[0.02em] text-white">
+        <h1 className="mb-2 font-display text-[2.2rem] tracking-[0.02em] text-ink">
           SAT Reading & Writing
         </h1>
         <p className="mb-6 text-text-secondary">
@@ -73,8 +73,8 @@ export default function SATRWCourse() {
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[["18", "Modules"], ["5", "Units"], ["17", "Question Types"], ["200+", "Practice Qs"]].map(
             ([val, label]) => (
-              <div key={label} className="rounded-radius-md border border-border-default bg-bg-card px-4 py-3 text-center">
-                <div className="text-lg font-bold text-white">{val}</div>
+              <div key={label} className=" border border-border-default bg-bg-card px-4 py-3 text-center">
+                <div className="text-lg font-bold text-ink">{val}</div>
                 <div className="text-xs text-text-muted">{label}</div>
               </div>
             )
@@ -84,7 +84,7 @@ export default function SATRWCourse() {
         <div className="flex flex-col gap-8">
           {UNITS.map((unit) => (
             <div key={unit.phase}>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-muted">
+              <h3 className="mb-3 kicker">
                 {unit.phase}
               </h3>
               <div className="flex flex-col gap-2">

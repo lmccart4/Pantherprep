@@ -9,7 +9,7 @@ interface GlassCardProps {
 export function GlassCard({ children, className = "", accentColor }: GlassCardProps) {
   return (
     <div
-      className={`rounded-[18px] border border-glass-border bg-glass p-7 shadow-[0_4px_32px_rgba(0,0,0,.2),inset_0_1px_0_rgba(255,255,255,.03)] backdrop-blur-[20px] ${className}`}
+      className={`rounded-[18px] border border-glass-border bg-glass p-7 shadow-[0_4px_32px_rgba(0,0,0,.2),inset_0_1px_0_rgba(255,255,255,.03)] -[20px] ${className}`}
       style={accentColor ? { boxShadow: `0 4px 32px rgba(0,0,0,.2), 0 0 40px ${accentColor}15, inset 0 1px 0 rgba(255,255,255,.03)` } : undefined}
     >
       {children}

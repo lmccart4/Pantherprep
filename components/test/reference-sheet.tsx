@@ -31,13 +31,13 @@ export function ReferenceSheet({ className }: ReferenceSheetProps) {
     <div className={className}>
       <button
         onClick={() => setOpen(!open)}
-        className="rounded-radius-sm border border-border-default px-3 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-border-light hover:text-text-secondary"
+        className=" border border-border-default px-3 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-border-light hover:text-text-secondary"
       >
         {open ? "Hide" : "Show"} Reference
       </button>
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-radius-lg border border-border-default bg-bg-card p-4 shadow-md">
-          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-muted">
+        <div className="absolute right-0 top-full z-50 mt-2 w-80  border border-border-default bg-bg-card p-4 shadow-md">
+          <h4 className="mb-3 kicker">
             Math Reference Sheet
           </h4>
           <div className="flex flex-col gap-2">

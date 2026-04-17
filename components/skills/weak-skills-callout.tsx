@@ -53,10 +53,10 @@ export function WeakSkillsCallout({
           <Link
             key={s.taxonomyKey}
             href={`/skills/${course}/${s.taxonomyKey}`}
-            className="group flex items-center justify-between gap-4 rounded-xl border border-white/10 bg-[rgba(8,8,12,.5)] px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-white/25 hover:bg-[rgba(15,15,22,.7)]"
+            className="group flex items-center justify-between gap-4 rounded-xl border border-ink/20 bg-[rgba(8,8,12,.5)] px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-ink/20 hover:bg-[rgba(15,15,22,.7)]"
           >
             <div className="min-w-0">
-              <div className="line-clamp-2 text-[15px] font-semibold leading-snug text-white">
+              <div className="line-clamp-2 text-[15px] font-semibold leading-snug text-ink">
                 {skillLabel(s.taxonomyKey)}
               </div>
               <div className="mt-0.5 text-[13px] text-text-muted">

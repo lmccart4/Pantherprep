@@ -39,7 +39,7 @@ export function DomainBreakdown({ stats, className }: DomainBreakdownProps) {
                 {s.correct}/{s.total} ({pct}%)
               </span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-white/5">
+            <div className="h-2 overflow-hidden rounded-full bg-paper-card">
               <div
                 className="h-full rounded-full transition-[width] duration-500 ease-out"
                 style={{ width: `${pct}%`, backgroundColor: color }}

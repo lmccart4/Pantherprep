@@ -30,7 +30,7 @@ export function AnimatedSkull({ size = 48, className }: AnimatedSkullProps) {
         cy={22}
         rx={4}
         ry={4.5}
-        fill="#08080c"
+        fill="var(--color-paper)"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.2, duration: 0.2 }}
@@ -41,15 +41,15 @@ export function AnimatedSkull({ size = 48, className }: AnimatedSkullProps) {
         cy={22}
         rx={4}
         ry={4.5}
-        fill="#08080c"
+        fill="var(--color-paper)"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.25, duration: 0.2 }}
       />
       {/* Nose */}
-      <path d="M22 28L24 31L26 28" fill="#08080c" />
+      <path d="M22 28L24 31L26 28" fill="var(--color-paper)" />
       {/* Teeth */}
-      <path d="M18 36V40M22 36V40M26 36V40M30 36V40" stroke="#08080c" strokeWidth={2} />
+      <path d="M18 36V40M22 36V40M26 36V40M30 36V40" stroke="var(--color-paper)" strokeWidth={2} />
     </motion.svg>
   );
 }

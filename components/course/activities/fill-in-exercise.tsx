@@ -98,7 +98,7 @@ export function FillInExercise({
                 {!a?.checked && (
                   <button
                     onClick={() => checkAnswer(i)}
-                    className="cursor-pointer rounded-lg border-none px-4 py-2 text-sm font-bold text-white"
+                    className="cursor-pointer rounded-lg border-none px-4 py-2 text-sm font-bold text-ink"
                     style={{ backgroundColor: accentColor }}
                   >
                     Check
@@ -124,7 +124,7 @@ export function FillInExercise({
         <div className="mt-8 flex justify-center">
           <button
             onClick={() => onComplete(correct, total)}
-            className="cursor-pointer rounded-lg border-none px-8 py-3 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
+            className="cursor-pointer rounded-lg border-none px-8 py-3 text-sm font-bold text-ink transition-all hover:-translate-y-0.5 hover:brightness-110"
             style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
           >
             Continue →

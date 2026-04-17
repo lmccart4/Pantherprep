@@ -210,13 +210,21 @@ export default function HomePage() {
       <div className="min-h-screen">
         <TopBar />
         <div className="mx-auto max-w-[1200px] px-6 py-8">
+          {/* Triple rule under masthead */}
+          <div className="mb-6">
+            <div className="h-[2px] bg-ink" />
+            <div className="mt-1 h-[4px] bg-ink" />
+            <div className="mt-1 h-[2px] bg-ink" />
+          </div>
+
           {/* Welcome + Gamification Bar */}
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="font-display text-3xl tracking-[0.02em] text-white sm:text-[2.2rem]">
-                Welcome, {user?.displayName?.split(" ")[0]}
+              <div className="kicker mb-1">Edition for {user?.displayName?.split(" ")[0] ?? "you"}</div>
+              <h2 className="font-display text-4xl tracking-[-0.015em] text-ink sm:text-5xl">
+                Welcome, <em className="italic text-accent">{user?.displayName?.split(" ")[0]}</em>
               </h2>
-              <p className="text-base text-text-secondary">
+              <p className="mt-1 text-base italic text-ink-2">
                 {role === "student"
                   ? "Choose a test to start practicing."
                   : "Pick a section to review your classes and adaptive insights."}
@@ -227,15 +235,15 @@ export default function HomePage() {
             {role === "student" && (
               <div className="flex items-center gap-5">
                 <div className="text-right">
-                  <div className="text-xs font-semibold uppercase tracking-wider text-text-muted">Level</div>
-                  <div className="text-sm font-bold text-white">{currentLevel.name}</div>
+                  <div className="kicker">Level</div>
+                  <div className="text-sm font-bold text-ink">{currentLevel.name}</div>
                 </div>
                 <div className="w-32">
                   <div className="mb-1 flex justify-between text-xs text-text-muted">
                     <span>{profile?.xp ?? 0} XP</span>
                     {nextLevel && <span>{nextLevel.min} XP</span>}
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-white/5">
+                  <div className="h-2 overflow-hidden rounded-full bg-paper-card">
                     <div
                       className="h-full rounded-full bg-panther-red transition-[width] duration-500"
                       style={{ width: `${Math.round(xpProgress * 100)}%` }}
@@ -255,17 +263,16 @@ export default function HomePage() {
             {(Object.entries(TESTS) as [TestType, typeof TESTS.sat][]).map(([key, test]) => (
               <GlassCard
                 key={key}
+                raised
                 className="cursor-pointer"
                 onClick={() => handleSelectTest(key)}
               >
-                <div
-                  className="mb-3 h-1 w-12 rounded-full"
-                  style={{ backgroundColor: test.color }}
-                />
-                <h3 className="mb-1.5 font-display text-[1.7rem] tracking-[0.02em] text-white">
+                <div className="kicker mb-2">{test.name.split(" ")[0]} Edition</div>
+                <div className="mb-3 h-[2px] w-12 bg-ink" />
+                <h3 className="mb-2 font-display text-[1.7rem] tracking-[-0.01em] text-ink">
                   {test.name}
                 </h3>
-                <p className="text-sm leading-relaxed text-text-secondary">{test.desc}</p>
+                <p className="text-sm leading-relaxed text-ink-2">{test.desc}</p>
               </GlassCard>
             ))}
           </div>
@@ -276,7 +283,7 @@ export default function HomePage() {
           {sessions.length > 0 && (
             <div className="mb-10">
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-text-muted">
+                <h3 className="kicker">
                   Recent Activity
                 </h3>
                 <button
@@ -290,10 +297,10 @@ export default function HomePage() {
                 {sessions.slice(0, 5).map((s) => (
                   <div
                     key={s.id}
-                    className="flex items-center justify-between rounded-radius-md border border-border-default bg-bg-card px-4 py-3"
+                    className="flex items-center justify-between  border border-border-default bg-bg-card px-4 py-3"
                   >
                     <div>
-                      <span className="text-sm font-medium text-white">{s.testType}</span>
+                      <span className="text-sm font-medium text-ink">{s.testType}</span>
                       {s.domain && (
                         <span className="ml-2 text-xs text-text-muted">{s.domain}</span>
                       )}
@@ -312,7 +319,7 @@ export default function HomePage() {
           {/* Student: Join Class */}
           {role === "student" && (
             <div className="mb-10">
-              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">
+              <h3 className="mb-3 kicker">
                 Class
               </h3>
               {showJoin ? (
@@ -324,11 +331,11 @@ export default function HomePage() {
                       onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
                       placeholder="Enter class code"
                       maxLength={6}
-                      className="w-32 rounded-radius-sm border border-border-default bg-bg-surface px-3 py-2 font-mono text-sm uppercase text-white outline-none focus:border-panther-red"
+                      className="w-32  border border-border-default bg-bg-surface px-3 py-2 font-mono text-sm uppercase text-ink outline-none focus:border-panther-red"
                     />
                     <button
                       onClick={handleJoinClass}
-                      className="rounded-radius-sm bg-panther-red px-4 py-2 text-sm font-semibold text-white"
+                      className=" bg-panther-red px-4 py-2 text-sm font-semibold text-ink"
                     >
                       Join
                     </button>
@@ -345,13 +352,13 @@ export default function HomePage() {
                 <div className="flex gap-3">
                   <button
                     onClick={() => setShowJoin(true)}
-                    className="rounded-radius-md border border-border-default px-5 py-2.5 text-sm text-text-secondary transition-colors hover:border-border-light"
+                    className=" border border-border-default px-5 py-2.5 text-sm text-text-secondary transition-colors hover:border-border-light"
                   >
                     Join a Class
                   </button>
                   <a
                     href="/dashboard"
-                    className="rounded-radius-md border border-panther-red/30 bg-panther-red/10 px-5 py-2.5 text-sm text-panther-red transition-colors hover:bg-panther-red/20"
+                    className=" border border-panther-red/30 bg-panther-red/10 px-5 py-2.5 text-sm text-panther-red transition-colors hover:bg-panther-red/20"
                   >
                     Adaptive Dashboard
                   </a>
@@ -364,12 +371,12 @@ export default function HomePage() {
           {(role === "teacher" || role === "admin") && (
             <div className="mb-10">
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-text-muted">
+                <h3 className="kicker">
                   My Classes
                 </h3>
                 <button
                   onClick={() => setShowCreate(true)}
-                  className="rounded-radius-sm bg-panther-red px-4 py-1.5 text-xs font-semibold text-white"
+                  className=" bg-panther-red px-4 py-1.5 text-xs font-semibold text-ink"
                 >
                   Create Class
                 </button>
@@ -383,11 +390,11 @@ export default function HomePage() {
                       value={newClassName}
                       onChange={(e) => setNewClassName(e.target.value)}
                       placeholder="Class name"
-                      className="flex-1 rounded-radius-sm border border-border-default bg-bg-surface px-3 py-2 text-sm text-white outline-none focus:border-panther-red"
+                      className="flex-1  border border-border-default bg-bg-surface px-3 py-2 text-sm text-ink outline-none focus:border-panther-red"
                     />
                     <button
                       onClick={handleCreateClass}
-                      className="rounded-radius-sm bg-panther-red px-4 py-2 text-sm font-semibold text-white"
+                      className=" bg-panther-red px-4 py-2 text-sm font-semibold text-ink"
                     >
                       Create
                     </button>
@@ -406,7 +413,7 @@ export default function HomePage() {
                     onClick={() => handleSelectClass(cls)}
                   >
                     <div className="mb-2 flex items-center justify-between">
-                      <h4 className="font-semibold text-white">{cls.name}</h4>
+                      <h4 className="font-semibold text-ink">{cls.name}</h4>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -418,7 +425,7 @@ export default function HomePage() {
                       </button>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="rounded-radius-sm bg-bg-surface px-3 py-1 font-mono text-lg tracking-widest text-white">
+                      <span className=" bg-bg-surface px-3 py-1 font-mono text-lg tracking-widest text-ink">
                         {cls.code}
                       </span>
                       <span className="text-xs text-text-muted">
@@ -435,7 +442,7 @@ export default function HomePage() {
               <div className="mt-4 flex gap-3">
                 <a
                   href="/dashboard"
-                  className="rounded-radius-md border border-panther-red/30 bg-panther-red/10 px-5 py-2.5 text-sm font-semibold text-panther-red transition-colors hover:bg-panther-red/20"
+                  className=" border border-panther-red/30 bg-panther-red/10 px-5 py-2.5 text-sm font-semibold text-panther-red transition-colors hover:bg-panther-red/20"
                 >
                   Open Adaptive Dashboard →
                 </a>
@@ -446,14 +453,14 @@ export default function HomePage() {
           {/* Badges */}
           {profile && profile.badges.length > 0 && (
             <div>
-              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">
+              <h3 className="mb-3 kicker">
                 Badges
               </h3>
               <div className="flex flex-wrap gap-2">
                 {profile.badges.map((b) => (
                   <span
                     key={b}
-                    className="rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-text-secondary"
+                    className="rounded-full bg-paper-card px-3 py-1 text-xs font-medium text-text-secondary"
                   >
                     {b}
                   </span>
@@ -486,7 +493,7 @@ export default function HomePage() {
           </button>
 
           <div className="mb-1 h-1 w-12 rounded-full" style={{ backgroundColor: test.color }} />
-          <h1 className="mb-2 font-display text-[2.4rem] tracking-[0.02em] text-white">{test.name}</h1>
+          <h1 className="mb-2 font-display text-[2.4rem] tracking-[0.02em] text-ink">{test.name}</h1>
           <p className="mb-8 text-text-secondary">{test.desc}</p>
 
           {/* Actions Grid */}
@@ -494,19 +501,19 @@ export default function HomePage() {
             {/* Diagnostics */}
             <a href={`/diagnostics/${selectedTest}-math`}>
               <GlassCard className="cursor-pointer">
-                <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
+                <div className="mb-1 kicker">
                   Diagnostic
                 </div>
-                <h3 className="text-lg font-semibold text-white">Math Diagnostic</h3>
+                <h3 className="text-lg font-semibold text-ink">Math Diagnostic</h3>
                 <p className="text-sm text-text-secondary">Assess your current math level</p>
               </GlassCard>
             </a>
             <a href={`/diagnostics/${selectedTest}-rw`}>
               <GlassCard className="cursor-pointer">
-                <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
+                <div className="mb-1 kicker">
                   Diagnostic
                 </div>
-                <h3 className="text-lg font-semibold text-white">R&W Diagnostic</h3>
+                <h3 className="text-lg font-semibold text-ink">R&W Diagnostic</h3>
                 <p className="text-sm text-text-secondary">Assess your reading & writing level</p>
               </GlassCard>
             </a>
@@ -514,10 +521,10 @@ export default function HomePage() {
             {/* Practice Test */}
             <a href={`/practice-tests/${selectedTest}`} className="sm:col-span-2">
               <GlassCard className="cursor-pointer">
-                <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
+                <div className="mb-1 kicker">
                   Full Practice Test
                 </div>
-                <h3 className="text-lg font-semibold text-white">{test.name} Full-Length Test</h3>
+                <h3 className="text-lg font-semibold text-ink">{test.name} Full-Length Test</h3>
                 <p className="text-sm text-text-secondary">
                   Complete test with R&W and Math sections — timed or practice mode
                 </p>
@@ -527,19 +534,19 @@ export default function HomePage() {
             {/* Courses */}
             <a href={routes.math}>
               <GlassCard className="cursor-pointer">
-                <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
+                <div className="mb-1 kicker">
                   Course
                 </div>
-                <h3 className="text-lg font-semibold text-white">Math Course</h3>
+                <h3 className="text-lg font-semibold text-ink">Math Course</h3>
                 <p className="text-sm text-text-secondary">Structured lessons and practice</p>
               </GlassCard>
             </a>
             <a href={routes.rw}>
               <GlassCard className="cursor-pointer">
-                <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
+                <div className="mb-1 kicker">
                   Course
                 </div>
-                <h3 className="text-lg font-semibold text-white">R&W Course</h3>
+                <h3 className="text-lg font-semibold text-ink">R&W Course</h3>
                 <p className="text-sm text-text-secondary">Reading & writing skill building</p>
               </GlassCard>
             </a>
@@ -580,14 +587,14 @@ export default function HomePage() {
           </button>
 
           <div className="mb-6">
-            <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
+            <div className="mb-1 kicker">
               Class
             </div>
-            <h1 className="mb-2 font-display text-[2.2rem] tracking-[0.02em] text-white">
+            <h1 className="mb-2 font-display text-[2.2rem] tracking-[0.02em] text-ink">
               {selectedClass.name}
             </h1>
             <div className="flex items-center gap-4 text-sm text-text-secondary">
-              <span className="rounded-radius-sm bg-bg-surface px-3 py-1 font-mono tracking-widest text-white">
+              <span className=" bg-bg-surface px-3 py-1 font-mono tracking-widest text-ink">
                 {selectedClass.code}
               </span>
               <span>Share this code for students to join</span>
@@ -597,24 +604,24 @@ export default function HomePage() {
           {/* Class stats */}
           <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <GlassCard className="text-center">
-              <div className="text-2xl font-bold text-white">{totalStudents}</div>
+              <div className="text-2xl font-bold text-ink">{totalStudents}</div>
               <div className="text-xs text-text-muted">Students</div>
             </GlassCard>
             <GlassCard className="text-center">
-              <div className="text-2xl font-bold text-white">{studentsWithActivity}</div>
+              <div className="text-2xl font-bold text-ink">{studentsWithActivity}</div>
               <div className="text-xs text-text-muted">Active</div>
             </GlassCard>
             <GlassCard className="text-center">
-              <div className="text-2xl font-bold text-white">{allSessions.length}</div>
+              <div className="text-2xl font-bold text-ink">{allSessions.length}</div>
               <div className="text-xs text-text-muted">Sessions</div>
             </GlassCard>
             <GlassCard className="text-center">
-              <div className="text-2xl font-bold text-white">{classAvg}%</div>
+              <div className="text-2xl font-bold text-ink">{classAvg}%</div>
               <div className="text-xs text-text-muted">Class Avg</div>
             </GlassCard>
           </div>
 
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">
+          <h3 className="mb-3 kicker">
             Students
           </h3>
 
@@ -623,7 +630,7 @@ export default function HomePage() {
           ) : totalStudents === 0 ? (
             <GlassCard>
               <p className="text-sm text-text-muted">
-                No students yet. Share the class code <span className="font-mono text-white">{selectedClass.code}</span> so students can join.
+                No students yet. Share the class code <span className="font-mono text-ink">{selectedClass.code}</span> so students can join.
               </p>
             </GlassCard>
           ) : (
@@ -644,7 +651,7 @@ export default function HomePage() {
                   >
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <div>
-                        <h4 className="font-semibold text-white hover:text-panther-red">{row.displayName}</h4>
+                        <h4 className="font-semibold text-ink hover:text-panther-red">{row.displayName}</h4>
                         {row.email && (
                           <p className="text-xs text-text-muted">{row.email}</p>
                         )}
@@ -685,10 +692,10 @@ export default function HomePage() {
                           return (
                             <div
                               key={s.id}
-                              className="flex items-center justify-between rounded-radius-sm border border-border-default bg-bg-card px-3 py-2"
+                              className="flex items-center justify-between  border border-border-default bg-bg-card px-3 py-2"
                             >
                               <div className="min-w-0 flex-1">
-                                <div className="truncate text-sm text-white">
+                                <div className="truncate text-sm text-ink">
                                   {formatTestType(s.testType)}
                                 </div>
                                 <div className="text-[0.7rem] text-text-muted">{when}</div>
@@ -769,10 +776,10 @@ export default function HomePage() {
           </button>
 
           <div className="mb-6">
-            <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-text-muted">
+            <div className="mb-1 kicker">
               Student
             </div>
-            <h1 className="mb-1 font-display text-[2.2rem] tracking-[0.02em] text-white">
+            <h1 className="mb-1 font-display text-[2.2rem] tracking-[0.02em] text-ink">
               {s.displayName}
             </h1>
             {s.email && <p className="text-sm text-text-secondary">{s.email}</p>}
@@ -781,25 +788,25 @@ export default function HomePage() {
           {/* Overall stats */}
           <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <GlassCard className="text-center">
-              <div className="text-2xl font-bold text-white">{totalS}</div>
+              <div className="text-2xl font-bold text-ink">{totalS}</div>
               <div className="text-xs text-text-muted">Sessions</div>
             </GlassCard>
             <GlassCard className="text-center">
-              <div className="text-2xl font-bold text-white">{overallAvg}%</div>
+              <div className="text-2xl font-bold text-ink">{overallAvg}%</div>
               <div className="text-xs text-text-muted">Avg Accuracy</div>
             </GlassCard>
             <GlassCard className="text-center">
-              <div className="text-2xl font-bold text-white">{s.profile?.xp ?? 0}</div>
+              <div className="text-2xl font-bold text-ink">{s.profile?.xp ?? 0}</div>
               <div className="text-xs text-text-muted">XP</div>
             </GlassCard>
             <GlassCard className="text-center">
-              <div className="text-2xl font-bold text-white">{s.profile?.streak ?? 0}</div>
+              <div className="text-2xl font-bold text-ink">{s.profile?.streak ?? 0}</div>
               <div className="text-xs text-text-muted">Day Streak</div>
             </GlassCard>
           </div>
 
           {/* Adaptive Mastery */}
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">
+          <h3 className="mb-3 kicker">
             Adaptive Mastery
           </h3>
           {studentAdaptiveLoading ? (
@@ -837,7 +844,7 @@ export default function HomePage() {
                   {domainEntries.map(([domain, data]) => (
                     <GlassCard key={domain} className="!p-4">
                       <div className="mb-2 flex justify-between">
-                        <span className="text-sm font-semibold text-white">{domain}</span>
+                        <span className="text-sm font-semibold text-ink">{domain}</span>
                         <span className={`font-bold ${masteryColor(data.mastery || 0)}`}>
                           {Math.round((data.mastery || 0) * 100)}%
                         </span>
@@ -868,7 +875,7 @@ export default function HomePage() {
 
               {studentAdaptive.recommendations && studentAdaptive.recommendations.length > 0 && (
                 <GlassCard>
-                  <h4 className="mb-2 text-sm font-semibold text-white">Recommended Next Steps</h4>
+                  <h4 className="mb-2 text-sm font-semibold text-ink">Recommended Next Steps</h4>
                   <div className="flex flex-col gap-1.5">
                     {studentAdaptive.recommendations.slice(0, 5).map((rec, i) => {
                       const isMath = Object.keys(MATH_SKILLS).includes(rec.domain);
@@ -882,7 +889,7 @@ export default function HomePage() {
                           className="flex items-center gap-2.5 rounded-md border border-border-default bg-bg-card p-2.5 text-sm transition hover:border-panther-red/30"
                         >
                           <span className="w-6 font-bold text-panther-red">#{rec.priority}</span>
-                          <span className="font-semibold text-white">{rec.skill}</span>
+                          <span className="font-semibold text-ink">{rec.skill}</span>
                           <span className="flex-1 text-xs text-text-muted">{rec.reason}</span>
                           <span className="text-xs text-text-muted">›</span>
                         </Link>
@@ -924,30 +931,30 @@ export default function HomePage() {
           Back
         </button>
 
-        <h1 className="mb-6 font-display text-[2rem] tracking-[0.02em] text-white">Dashboard</h1>
+        <h1 className="mb-6 font-display text-[2rem] tracking-[0.02em] text-ink">Dashboard</h1>
 
         {/* Stats */}
         <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <GlassCard className="text-center">
-            <div className="text-2xl font-bold text-white">{totalSessions}</div>
+            <div className="text-2xl font-bold text-ink">{totalSessions}</div>
             <div className="text-xs text-text-muted">Sessions</div>
           </GlassCard>
           <GlassCard className="text-center">
-            <div className="text-2xl font-bold text-white">{avgAccuracy}%</div>
+            <div className="text-2xl font-bold text-ink">{avgAccuracy}%</div>
             <div className="text-xs text-text-muted">Avg Accuracy</div>
           </GlassCard>
           <GlassCard className="text-center">
-            <div className="text-2xl font-bold text-white">{profile?.xp ?? 0}</div>
+            <div className="text-2xl font-bold text-ink">{profile?.xp ?? 0}</div>
             <div className="text-xs text-text-muted">Total XP</div>
           </GlassCard>
           <GlassCard className="text-center">
-            <div className="text-2xl font-bold text-white">{profile?.streak ?? 0}</div>
+            <div className="text-2xl font-bold text-ink">{profile?.streak ?? 0}</div>
             <div className="text-xs text-text-muted">Day Streak</div>
           </GlassCard>
         </div>
 
         {/* Session History */}
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">
+        <h3 className="mb-3 kicker">
           Session History
         </h3>
         {sessions.length === 0 ? (
@@ -957,10 +964,10 @@ export default function HomePage() {
             {sessions.map((s) => (
               <div
                 key={s.id}
-                className="flex items-center justify-between rounded-radius-md border border-border-default bg-bg-card px-4 py-3"
+                className="flex items-center justify-between  border border-border-default bg-bg-card px-4 py-3"
               >
                 <div>
-                  <span className="text-sm font-medium text-white">{s.testType}</span>
+                  <span className="text-sm font-medium text-ink">{s.testType}</span>
                   <span className="ml-2 text-xs text-text-muted">{s.mode}</span>
                 </div>
                 <div className="flex items-center gap-4">

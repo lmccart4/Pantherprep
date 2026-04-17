@@ -163,7 +163,7 @@ export function QuizEngine({
               </span>
               <span className="flex-1">{renderMath(ch)}</span>
               {isTrap && q!.trap && (
-                <span className="rounded bg-[rgba(249,115,22,.15)] px-2 py-0.5 text-[.72rem] font-bold text-[#f97316]">
+                <span className="rounded bg-[rgba(249,115,22,.15)] px-2 py-0.5 text-[.72rem] font-bold text-[var(--color-accent)]">
                   TRAP: {q!.trap}
                 </span>
               )}
@@ -182,7 +182,7 @@ export function QuizEngine({
           {selected === q!.correct ? "Correct! " : "Incorrect. "}
           {renderMath(q!.explanation)}
           {showTraps && confirmed && q!.trapDesc && selected === q!.trapAnswer && (
-            <div className="mt-2 rounded bg-[rgba(249,115,22,.08)] p-2 text-[.82rem] text-[#f97316]">
+            <div className="mt-2 rounded bg-[rgba(249,115,22,.08)] p-2 text-[.82rem] text-[var(--color-accent)]">
               🪤 Trap: {q!.trapDesc}
             </div>
           )}
@@ -194,7 +194,7 @@ export function QuizEngine({
         <div className="flex justify-center">
           <button
             onClick={next}
-            className="cursor-pointer rounded-lg border-none px-6 py-2.5 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
+            className="cursor-pointer rounded-lg border-none px-6 py-2.5 text-sm font-bold text-ink transition-all hover:-translate-y-0.5 hover:brightness-110"
             style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
           >
             {idx < questions.length - 1 ? "Next Question →" : "See Results →"}

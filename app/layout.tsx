@@ -1,27 +1,35 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
-import { ParticlesWrapper } from "@/components/layout/particles-wrapper";
-import { TopStripe } from "@/components/layout/top-stripe";
+import { Source_Serif_4, DM_Serif_Display, JetBrains_Mono, Caveat } from "next/font/google";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 
-const manrope = Manrope({
+const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-body",
   display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
+const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "700"],
   variable: "--font-mono",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-hand",
   display: "swap",
 });
 
@@ -40,7 +48,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#CC0000",
+  themeColor: "#bb4430",
 };
 
 export default function RootLayout({
@@ -49,10 +57,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${cormorant.variable} ${jetbrains.variable}`}>
-      <body className="font-body">
-        <TopStripe />
-        <ParticlesWrapper />
+    <html
+      lang="en"
+      className={`${sourceSerif.variable} ${dmSerif.variable} ${jetbrains.variable} ${caveat.variable}`}
+    >
+      <body>
         <main className="relative z-[1]">{children}</main>
       </body>
     </html>

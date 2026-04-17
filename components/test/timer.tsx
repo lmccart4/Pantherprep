@@ -42,10 +42,10 @@ export function Timer({ initialSeconds, onExpire, paused = false, className }: T
   return (
     <span
       className={cn(
-        "font-mono text-lg tabular-nums",
-        !isWarning && !isDanger && "text-text-primary",
-        isWarning && "text-amber-400",
-        isDanger && "animate-pulse text-red-500",
+        "font-mono text-lg font-bold tabular-nums tracking-wider",
+        !isWarning && !isDanger && "text-ink",
+        isWarning && "text-amber",
+        isDanger && "animate-pulse text-accent",
         className
       )}
     >

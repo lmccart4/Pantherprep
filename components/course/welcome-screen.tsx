@@ -75,7 +75,7 @@ export function WelcomeScreen({ moduleNum, title, subtitle, accentColor, screens
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-5 py-10 text-center">
       <span
-        className="mb-4 inline-block rounded-full px-3.5 py-1 text-[11px] font-bold uppercase tracking-[2px] text-white"
+        className="mb-4 inline-block rounded-full px-3.5 py-1 text-[11px] font-bold uppercase tracking-[2px] text-ink"
         style={{ backgroundColor: accentColor }}
       >
         Module {moduleNum}
@@ -94,7 +94,7 @@ export function WelcomeScreen({ moduleNum, title, subtitle, accentColor, screens
         {summarizeScreens(screens).map((s) => (
           <div
             key={s.id}
-            className="rounded-[14px] border border-white/[0.06] bg-white/[0.03] p-4 text-center backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.12] hover:bg-white/[0.05]"
+            className="rounded-[14px] border border-white/[0.06] bg-white/[0.03] p-4 text-center  transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.12] hover:bg-white/[0.05]"
           >
             {s.icon && (
               <div className="mb-2 text-[1.8rem] leading-none">{resolveIcon(s.icon)}</div>
@@ -106,7 +106,7 @@ export function WelcomeScreen({ moduleNum, title, subtitle, accentColor, screens
 
       <button
         onClick={onStart}
-        className="cursor-pointer rounded-[10px] border-none px-9 py-3.5 text-base font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
+        className="cursor-pointer rounded-[10px] border-none px-9 py-3.5 text-base font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
         style={{ background: `linear-gradient(135deg, ${accentColor}, #a855f7)` }}
       >
         Start Module
