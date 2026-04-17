@@ -71,7 +71,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "transition",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "transitions",
     },
     {
       passage:
@@ -89,7 +89,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "synthesis",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -107,7 +107,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "expression",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -120,7 +120,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "transition",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "transitions",
     },
     {
       stem: "Which choice expresses the idea most concisely without losing essential information?",
@@ -136,7 +136,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "concision",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -154,7 +154,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "synthesis",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -172,7 +172,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "expression",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -190,7 +190,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "transition",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "transitions",
     },
     /* ═══ PHASE 2: ESCALATION ═══ */
     {
@@ -209,7 +209,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "synthesis",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       stem: "Which choice expresses the idea most concisely without losing essential information?",
@@ -225,7 +225,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "concision",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -243,7 +243,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "expression",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -256,7 +256,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "transition",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "transitions",
     },
     {
       passage:
@@ -274,7 +274,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "synthesis",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -292,7 +292,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "strategy",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -310,7 +310,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "expression",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -328,7 +328,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "transition",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "transitions",
     },
     /* ═══ PHASE 3: FINAL STAND ═══ */
     {
@@ -347,7 +347,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "synthesis",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       stem: "Which choice expresses the idea most concisely without losing essential information?",
@@ -363,7 +363,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "concision",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -381,7 +381,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "transition",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "transitions",
     },
     {
       passage:
@@ -399,7 +399,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "expression",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -417,7 +417,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "synthesis",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -435,7 +435,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "strategy",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -453,7 +453,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "transition",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "transitions",
     },
     {
       passage:
@@ -471,7 +471,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "synthesis",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -489,7 +489,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "expression",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
   ],
 

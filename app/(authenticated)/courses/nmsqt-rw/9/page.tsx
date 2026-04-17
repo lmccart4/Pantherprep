@@ -208,7 +208,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "Synthesis",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -226,7 +226,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "Synthesis",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -244,7 +244,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "Synthesis",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -262,7 +262,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "Synthesis",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -275,7 +275,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "WIC",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "vocabulary_in_context",
     },
     {
       passage:
@@ -288,7 +288,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "WIC",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "vocabulary_in_context",
     },
     {
       passage:
@@ -306,7 +306,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "Synthesis",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -324,7 +324,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "Transitions",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "transitions",
     },
     {
       passage:
@@ -337,7 +337,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "Conventions",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "punctuation_boundaries",
     },
     {
       passage:
@@ -350,7 +350,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "WIC",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "vocabulary_in_context",
     },
     {
       passage:
@@ -363,7 +363,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "WIC",
       difficulty: "easy",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "vocabulary_in_context",
     },
     {
       passage:
@@ -381,7 +381,7 @@ const MODULE_CONFIG: ModuleConfig = {
       type: "Synthesis",
       difficulty: "medium",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
   ],
 
@@ -401,7 +401,7 @@ const MODULE_CONFIG: ModuleConfig = {
         "Dual goal: compare environmental impact + introduce complication. (B) does both.",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -418,7 +418,7 @@ const MODULE_CONFIG: ModuleConfig = {
         "Dual goal: medical promise + ethical debate. (B) includes both.",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
     {
       passage:
@@ -435,7 +435,7 @@ const MODULE_CONFIG: ModuleConfig = {
         "Dual goal: success story + limited applicability. (C) presents both.",
       difficulty: "hard",
       domain: "Expression of Ideas",
-      skill: "organization",
+      skill: "rhetorical_synthesis",
     },
   ],
 

@@ -487,8 +487,8 @@ export const MATH_SKILLS: Record<string, string[]> = {
 
 export const RW_SKILLS: Record<string, string[]> = {
   "Information & Ideas": ["central_ideas", "details_evidence", "inferences", "quantitative_evidence", "text_structure"],
-  "Craft & Structure": ["vocabulary_in_context", "purpose_function", "cross_text_connections", "point_of_view"],
-  "Expression of Ideas": ["transitions", "rhetorical_synthesis", "organization"],
+  "Craft & Structure": ["vocabulary_in_context", "purpose_function", "cross_text_connections"],
+  "Expression of Ideas": ["transitions", "rhetorical_synthesis"],
   "Standard English Conventions": ["subject_verb_agreement", "pronoun_clarity", "modifiers", "parallelism", "verb_tense", "punctuation_boundaries", "comma_usage", "colon_usage", "possessives"],
 };
 
