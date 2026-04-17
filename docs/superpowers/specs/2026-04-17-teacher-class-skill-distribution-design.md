@@ -26,7 +26,7 @@ When a teacher or admin views `/skills/[course]`, the tier filter reflects **cla
 2. Fetch strategy branches on role:
    - **student** — unchanged. Load own `AdaptiveProfile` via `getAdaptiveProfile(uid)`.
    - **teacher** — load `classes` where `teacherUid == uid`. Render a class picker. For the selected class (or "All my classes"), load `AdaptiveProfile` docs for every `uid` in the combined `students` arrays. Parallel `getDoc` calls.
-   - **admin** — query `adaptiveProfiles` collection, capped at 500 docs. Log a console warning if the cap is hit. No class picker.
+   - **admin** — call `getAllAdaptiveProfiles()` with no args (existing helper; falls back to a 200-doc collection scan). Log a console warning if results hit the cap. No class picker.
 3. Aggregate client-side: a new `getAggregatedSkillData(profiles: AdaptiveProfile[], key: string) → AggregatedSkillData` returns the same shape `getProfileSkillData` already returns (`{ total, correct, mastery }`) so downstream consumers don't change. Sum `correct` and `total` across profiles; `mastery = correct / total` (or 0 when total === 0).
 4. `tierOf(data)` is unchanged — same 0.5 / 0.8 thresholds apply to class-aggregated mastery.
 
@@ -43,7 +43,7 @@ When a teacher or admin views `/skills/[course]`, the tier filter reflects **cla
 
 ### Firestore rules
 
-Teachers must be able to read `adaptiveProfiles/{uid}` docs for every `uid` that appears in a `classes` doc where `teacherUid == request.auth.uid`. Admins read all. Rule change lives in `firestore.rules`; student reads of their own profile are unchanged.
+Existing rules in `firestore.rules` already grant staff (users with `role == "teacher"` or `role == "admin"` in the `students` collection) read access to any `adaptiveProfile/{uid}` doc via the `isStaff()` helper. No rule changes required.
 
 ### Aggregation helper shape
 
@@ -65,7 +65,7 @@ The existing student path continues to call `getProfileSkillData(profile, key)` 
 
 - **Empty class** (no students, or none have profiles) → rows render with all-zero distribution, muted `"No student data yet"` note under the skill. Tier filter falls back to showing all skills regardless of tier.
 - **Students with no attempts on a given skill** → "untouched" bucket. Not counted toward any tier; shown as grey segment in distribution bar.
-- **Admin with many students** → hard cap 500 profiles, warn in console above cap. Real pagination is a followup.
+- **Admin with many students** → existing 200-doc cap in `getAllAdaptiveProfiles()`; warn in console if the returned count equals the cap. Real pagination is a followup.
 - **Stale profiles** → existing write path (`completeTestSession → recomputeProfile`) is the source of truth. No new write path introduced.
 - **Class roster churn** — student removed from class after page load: no action, next navigation refreshes.
 - **Boundary mastery values** — 0.5 exactly → Developing; 0.8 exactly → Proficient. Matches existing `tierOf` behavior.
@@ -90,9 +90,9 @@ The existing student path continues to call `getProfileSkillData(profile, key)` 
 - `components/skills/skill-catalog-page.tsx` — role-aware fetch logic (profiles[] vs single profile).
 - `components/skills/skill-row.tsx` — distribution bar variant for teacher/admin view.
 - `components/home/skills-card.tsx` — updated teacher/admin subtitle copy.
-- `lib/firestore.ts` — helper to batch-load adaptive profiles for a list of uids (and admin-wide query, capped).
-- `firestore.rules` — teacher/admin read access to `adaptiveProfiles`.
-- Tests alongside helpers.
+- (No new Firestore helper — `getAllAdaptiveProfiles(uids?)` already covers both paths.)
+- (No rules changes — `isStaff()` already grants read.)
+- `scripts/tests/skill-aggregation.test.mjs` — `tsx`-runnable assertion script for the aggregation helper.
 
 ## Out of scope / followups
 
