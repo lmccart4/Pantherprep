@@ -16,6 +16,7 @@ import {
   generatePracticeSet,
   MATH_SKILLS,
   RW_SKILLS,
+  filterSkillsForCourse,
 } from "@/lib/adaptive/adaptive-engine";
 import type { Question } from "@/types/question";
 
@@ -123,7 +124,8 @@ function findDomainForSkill(skillKey: string, course: string): string | null {
 
 function getSkillsInDomain(domain: string, course: string): string[] {
   const taxonomy = course.includes("math") ? MATH_SKILLS : RW_SKILLS;
-  return (taxonomy as Record<string, string[]>)[domain] ?? [];
+  const skills = (taxonomy as Record<string, string[]>)[domain] ?? [];
+  return filterSkillsForCourse(skills, course);
 }
 
 /**

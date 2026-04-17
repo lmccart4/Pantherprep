@@ -8,6 +8,7 @@ import { SkillRow } from "./skill-row";
 import {
   MATH_SKILLS,
   RW_SKILLS,
+  filterSkillsForCourse,
 } from "@/lib/adaptive/adaptive-engine";
 import {
   getProfileSkillData,
@@ -64,10 +65,15 @@ export function SkillCatalog({
 }: SkillCatalogProps) {
   const router = useRouter();
   const isStaff = role === "teacher" || role === "admin";
-  const taxonomy: Record<string, string[]> = useMemo(
-    () => (course.includes("math") ? MATH_SKILLS : RW_SKILLS),
-    [course]
-  );
+  const taxonomy: Record<string, string[]> = useMemo(() => {
+    const base = course.includes("math") ? MATH_SKILLS : RW_SKILLS;
+    return Object.fromEntries(
+      Object.entries(base).map(([domain, skills]) => [
+        domain,
+        filterSkillsForCourse(skills, course),
+      ])
+    );
+  }, [course]);
   const domains = Object.keys(taxonomy);
   const [activeDomain, setActiveDomain] = useState<string>(domains[0] ?? "");
   const [tierFilter, setTierFilter] = useState<TierFilter>("all");

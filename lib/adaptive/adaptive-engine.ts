@@ -327,7 +327,10 @@ export async function generatePracticeSet(
     };
   }
 
-  const recs = profile.recommendations;
+  // Filter recommendations to skills that are actually in scope for this test.
+  // A PSAT 8/9 student shouldn't be served trig practice just because mastery
+  // data exists from prior SAT prep; College Board won't test it on their form.
+  const recs = profile.recommendations.filter((r) => isSkillInScope(r.skill, course));
   const focusSkills = recs.slice(0, 3).map((r) => r.skill);
 
   const allocations: { skill: string; domain: string; difficulty: string; count: number }[] = [];
@@ -347,7 +350,7 @@ export async function generatePracticeSet(
 
   if (remaining > 0 && profile.skills) {
     const strongSkills = Object.entries(profile.skills)
-      .filter(([, s]) => s.mastery > 0.7)
+      .filter(([key, s]) => s.mastery > 0.7 && isSkillInScope(key, course))
       .sort((a, b) => b[1].mastery - a[1].mastery)
       .slice(0, 3);
 
@@ -477,9 +480,9 @@ function calcStreak(allAnswers: StoredAnswer[]): number {
 
 export const MATH_SKILLS: Record<string, string[]> = {
   Algebra: ["linear_equations", "linear_inequalities", "systems_of_equations", "linear_functions", "absolute_value"],
-  "Advanced Math": ["quadratic_equations", "quadratic_formula", "polynomial_operations", "exponential_functions", "radical_equations", "rational_expressions"],
-  "Problem Solving & Data": ["ratios_rates", "percentages", "unit_conversion", "scatterplots", "linear_regression", "probability", "statistics_central_tendency", "statistics_spread", "two_way_tables", "expected_value"],
-  "Geometry & Trig": ["area_perimeter", "volume", "triangles", "circles", "coordinate_geometry", "right_triangle_trig", "unit_circle"],
+  "Advanced Math": ["quadratic_equations", "quadratic_formula", "polynomial_operations", "equivalent_expressions", "function_notation", "completing_the_square", "exponential_functions", "radical_equations", "rational_expressions"],
+  "Problem Solving & Data": ["ratios_rates", "percentages", "unit_conversion", "scatterplots", "linear_regression", "probability", "statistics_central_tendency", "statistics_spread", "two_way_tables", "expected_value", "margin_of_error", "evaluating_statistical_claims"],
+  "Geometry & Trig": ["area_perimeter", "volume", "triangles", "circles", "circle_equations_xy", "coordinate_geometry", "right_triangle_trig", "unit_circle"],
 };
 
 export const RW_SKILLS: Record<string, string[]> = {
@@ -488,6 +491,75 @@ export const RW_SKILLS: Record<string, string[]> = {
   "Expression of Ideas": ["transitions", "rhetorical_synthesis", "organization"],
   "Standard English Conventions": ["subject_verb_agreement", "pronoun_clarity", "modifiers", "parallelism", "verb_tense", "punctuation_boundaries", "comma_usage", "colon_usage", "possessives"],
 };
+
+// ============================================================
+// SKILL SCOPE — per-test inclusion flags
+// ------------------------------------------------------------
+// Source: College Board Assessment Framework for the Digital SAT Suite,
+// §3.4.1 (R&W) + §4.4.1 (Math). Tables A33–A37 carry the per-test columns.
+// R&W skills are identical across all three tests; only Math varies.
+// Any skill not listed here defaults to all three tests in-scope.
+// ============================================================
+
+export type TestProgram = "sat" | "nmsqt" | "p89";
+
+export interface SkillMeta {
+  inScope: Record<TestProgram, boolean>;
+}
+
+const ALL: SkillMeta = { inScope: { sat: true, nmsqt: true, p89: true } };
+const SAT_AND_NMSQT: SkillMeta = { inScope: { sat: true, nmsqt: true, p89: false } };
+const SAT_ONLY: SkillMeta = { inScope: { sat: true, nmsqt: false, p89: false } };
+
+export const SKILL_META: Record<string, SkillMeta> = {
+  // Advanced Math — rational + radical excluded from PSAT 8/9
+  radical_equations: SAT_AND_NMSQT,
+  rational_expressions: SAT_AND_NMSQT,
+
+  // Problem Solving & Data — margin of error excluded from P89; eval claims SAT-only
+  margin_of_error: SAT_AND_NMSQT,
+  evaluating_statistical_claims: SAT_ONLY,
+
+  // Geometry & Trig — trig excluded from P89; circle equations SAT-only
+  right_triangle_trig: SAT_AND_NMSQT,
+  unit_circle: SAT_ONLY,
+  circle_equations_xy: SAT_ONLY,
+};
+
+export function getSkillMeta(key: string): SkillMeta {
+  return SKILL_META[key] ?? ALL;
+}
+
+export function getTestProgram(course: string): TestProgram {
+  if (course.startsWith("psat89")) return "p89";
+  if (course.startsWith("nmsqt")) return "nmsqt";
+  return "sat";
+}
+
+export function isSkillInScope(skill: string, course: string): boolean {
+  return getSkillMeta(skill).inScope[getTestProgram(course)];
+}
+
+export function filterSkillsForCourse(skills: string[], course: string): string[] {
+  const test = getTestProgram(course);
+  return skills.filter((s) => getSkillMeta(s).inScope[test]);
+}
+
+/**
+ * Domain → skills map, filtered to just the skills in scope for the given
+ * course. Every UI site that iterates the full taxonomy should call this
+ * instead of reading MATH_SKILLS / RW_SKILLS directly, so out-of-scope skills
+ * (e.g. trig on PSAT 8/9) stay hidden from that cohort.
+ */
+export function getCourseTaxonomy(course: string): Record<string, string[]> {
+  const base = course.includes("math") ? MATH_SKILLS : RW_SKILLS;
+  return Object.fromEntries(
+    Object.entries(base).map(([domain, skills]) => [
+      domain,
+      filterSkillsForCourse(skills, course),
+    ])
+  );
+}
 
 export function skillLabel(key: string): string {
   return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());

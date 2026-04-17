@@ -15,6 +15,7 @@ import { PastTestsView } from "@/components/dashboard/past-tests-view";
 import {
   MATH_SKILLS,
   RW_SKILLS,
+  getCourseTaxonomy,
   skillLabel,
 } from "@/lib/adaptive/adaptive-engine";
 import { getAllAdaptiveProfiles } from "@/lib/adaptive/performance-service";
@@ -330,7 +331,7 @@ function StudentSkills({
   course: Course;
 }) {
   const allSkills = useMemo(() => {
-    const taxonomy: Record<string, string[]> = course.includes("math") ? MATH_SKILLS : RW_SKILLS;
+    const taxonomy: Record<string, string[]> = getCourseTaxonomy(course);
     const out: Array<{ key: string; data: ReturnType<typeof getProfileSkillData> }> = [];
     for (const skills of Object.values(taxonomy)) {
       for (const key of skills as string[]) {
@@ -514,7 +515,7 @@ function TeacherView({ course }: { course: Course }) {
   const [selectedStudent, setSelectedStudent] = useState<AdaptiveProfile | null>(null);
   const [sortBy, setSortBy] = useState<"name" | "mastery" | "activity" | "streak">("name");
 
-  const taxonomy = course.includes("math") ? MATH_SKILLS : RW_SKILLS;
+  const taxonomy = getCourseTaxonomy(course);
 
   useEffect(() => {
     loadData();
