@@ -11,9 +11,14 @@ import {
 } from "@/lib/adaptive/adaptive-engine";
 import {
   getProfileSkillData,
+  getAggregatedSkillData,
+  getSkillTierCounts,
   type AggregatedSkillData,
+  type SkillTierCounts,
 } from "@/lib/skill-mapping";
 import type { AdaptiveProfile } from "@/lib/adaptive/performance-service";
+import type { ClassDoc } from "@/types/firestore";
+import type { UserRole } from "@/contexts/auth-context";
 
 type TierFilter = "all" | "weak" | "medium" | "strong";
 
@@ -26,9 +31,20 @@ const COURSES: { value: string; label: string }[] = [
   { value: "psat89-rw", label: "PSAT 8/9 R&W" },
 ];
 
+const STAFF_TIER_LABELS: Record<TierFilter, string> = {
+  all: "All",
+  weak: "Struggling",
+  medium: "Developing",
+  strong: "Proficient",
+};
+
 interface SkillCatalogProps {
   course: string;
-  profile: AdaptiveProfile | null;
+  profiles: AdaptiveProfile[];
+  role: UserRole;
+  classes?: (ClassDoc & { id: string })[];
+  selectedClassId?: string;
+  onClassChange?: (id: string) => void;
 }
 
 function tierOf(data: AggregatedSkillData): TierFilter {
@@ -38,8 +54,16 @@ function tierOf(data: AggregatedSkillData): TierFilter {
   return "weak";
 }
 
-export function SkillCatalog({ course, profile }: SkillCatalogProps) {
+export function SkillCatalog({
+  course,
+  profiles,
+  role,
+  classes,
+  selectedClassId,
+  onClassChange,
+}: SkillCatalogProps) {
   const router = useRouter();
+  const isStaff = role === "teacher" || role === "admin";
   const taxonomy: Record<string, string[]> = useMemo(
     () => (course.includes("math") ? MATH_SKILLS : RW_SKILLS),
     [course]
@@ -48,15 +72,25 @@ export function SkillCatalog({ course, profile }: SkillCatalogProps) {
   const [activeDomain, setActiveDomain] = useState<string>(domains[0] ?? "");
   const [tierFilter, setTierFilter] = useState<TierFilter>("all");
 
-  const skillsInDomain = taxonomy[activeDomain] ?? [];
+  const skillsInDomain = useMemo(
+    () => taxonomy[activeDomain] ?? [],
+    [taxonomy, activeDomain]
+  );
+
   const aggregated = useMemo(
     () =>
-      skillsInDomain.map((key) => ({
-        key,
-        data: getProfileSkillData(profile, key),
-      })),
-    [skillsInDomain, profile]
+      skillsInDomain.map((key) => {
+        const data = isStaff
+          ? getAggregatedSkillData(profiles, key)
+          : getProfileSkillData(profiles[0] ?? null, key);
+        const distribution: SkillTierCounts | undefined = isStaff
+          ? getSkillTierCounts(profiles, key)
+          : undefined;
+        return { key, data, distribution };
+      }),
+    [skillsInDomain, profiles, isStaff]
   );
+
   const filtered = useMemo(
     () =>
       aggregated.filter(({ data }) => {
@@ -67,6 +101,7 @@ export function SkillCatalog({ course, profile }: SkillCatalogProps) {
   );
 
   const courseLabel = COURSES.find((c) => c.value === course)?.label ?? course;
+  const teacherHasNoClasses = role === "teacher" && (classes?.length ?? 0) === 0;
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -99,45 +134,79 @@ export function SkillCatalog({ course, profile }: SkillCatalogProps) {
         Skill Catalog
       </h1>
       <p className="mb-6 text-sm text-text-muted">
-        Browse every skill for {courseLabel}. Click a skill to see details and practice.
+        {isStaff
+          ? `Class-wide mastery for ${courseLabel}. Click any skill to see details.`
+          : `Browse every skill for ${courseLabel}. Click a skill to see details and practice.`}
       </p>
 
-      {/* Mastery tier filter */}
-      <div className="mb-4 flex flex-wrap gap-2">
-        {(["all", "weak", "medium", "strong"] as TierFilter[]).map((t) => (
-          <button
-            key={t}
-            onClick={() => setTierFilter(t)}
-            className={`rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition ${
-              t === tierFilter
-                ? "bg-panther-red text-white"
-                : "border border-border-primary bg-bg-secondary text-text-muted hover:text-text-secondary"
-            }`}
+      {/* Teacher class picker */}
+      {role === "teacher" && !teacherHasNoClasses && (
+        <div className="mb-4 flex items-center gap-2 text-xs text-text-muted">
+          <span>Class:</span>
+          <select
+            value={selectedClassId ?? "__all__"}
+            onChange={(e) => onClassChange?.(e.target.value)}
+            className="rounded-radius-sm border border-border-default bg-bg-surface px-3 py-1.5 text-text-secondary outline-none focus:border-panther-red"
           >
-            {t}
-          </button>
-        ))}
-      </div>
+            <option value="__all__">All my classes (combined)</option>
+            {classes!.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {/* Empty state: teacher with no classes */}
+      {teacherHasNoClasses && (
+        <GlassCard className="mb-6">
+          <p className="text-sm text-text-muted">
+            You don’t have any classes yet. Create one from the dashboard to see class-wide skill distribution here.
+          </p>
+        </GlassCard>
+      )}
+
+      {/* Mastery tier filter */}
+      {!teacherHasNoClasses && (
+        <div className="mb-4 flex flex-wrap gap-2">
+          {(["all", "weak", "medium", "strong"] as TierFilter[]).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTierFilter(t)}
+              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition ${
+                t === tierFilter
+                  ? "bg-panther-red text-white"
+                  : "border border-border-primary bg-bg-secondary text-text-muted hover:text-text-secondary"
+              }`}
+            >
+              {isStaff ? STAFF_TIER_LABELS[t] : t}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Domain tab strip */}
-      <div className="mb-5 flex flex-wrap gap-2">
-        {domains.map((d) => (
-          <button
-            key={d}
-            onClick={() => setActiveDomain(d)}
-            className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
-              d === activeDomain
-                ? "bg-panther-red text-white"
-                : "border border-border-primary bg-bg-secondary text-text-muted hover:text-text-secondary"
-            }`}
-          >
-            {d}
-          </button>
-        ))}
-      </div>
+      {!teacherHasNoClasses && (
+        <div className="mb-5 flex flex-wrap gap-2">
+          {domains.map((d) => (
+            <button
+              key={d}
+              onClick={() => setActiveDomain(d)}
+              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
+                d === activeDomain
+                  ? "bg-panther-red text-white"
+                  : "border border-border-primary bg-bg-secondary text-text-muted hover:text-text-secondary"
+              }`}
+            >
+              {d}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Skill rows */}
-      {filtered.length === 0 ? (
+      {!teacherHasNoClasses && (filtered.length === 0 ? (
         <GlassCard>
           <p className="text-sm text-text-muted">
             No skills match the current filter.{" "}
@@ -151,11 +220,17 @@ export function SkillCatalog({ course, profile }: SkillCatalogProps) {
         </GlassCard>
       ) : (
         <div className="flex flex-col gap-2">
-          {filtered.map(({ key, data }) => (
-            <SkillRow key={key} taxonomyKey={key} data={data} course={course} />
+          {filtered.map(({ key, data, distribution }) => (
+            <SkillRow
+              key={key}
+              taxonomyKey={key}
+              data={data}
+              course={course}
+              distribution={distribution}
+            />
           ))}
         </div>
-      )}
+      ))}
     </div>
   );
 }

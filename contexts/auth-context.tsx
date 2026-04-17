@@ -15,6 +15,8 @@ import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { isPapsEmail, isAllowedUser, getUserRole } from "@/lib/auth-utils";
 import type { AppUser, UserRole } from "@/types/auth";
 
+export type { UserRole } from "@/types/auth";
+
 interface AuthContextValue {
   user: AppUser | null;
   firebaseUser: User | null;
