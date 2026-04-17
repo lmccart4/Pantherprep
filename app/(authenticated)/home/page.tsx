@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import {
   getStudentProfile,
@@ -14,6 +15,8 @@ import {
 } from "@/lib/firestore";
 import { getAdaptiveProfile } from "@/lib/adaptive/performance-service";
 import type { AdaptiveProfile } from "@/lib/adaptive/performance-service";
+import { sourceToTaxonomyKey } from "@/lib/skill-mapping";
+import { MATH_SKILLS } from "@/lib/adaptive/adaptive-engine";
 import { getUserRole } from "@/lib/auth-utils";
 import { GlassCard } from "@/components/ui/glass-card";
 import { TopBar } from "@/components/layout/top-bar";
@@ -867,16 +870,24 @@ export default function HomePage() {
                 <GlassCard>
                   <h4 className="mb-2 text-sm font-semibold text-white">Recommended Next Steps</h4>
                   <div className="flex flex-col gap-1.5">
-                    {studentAdaptive.recommendations.slice(0, 5).map((rec, i) => (
-                      <div
-                        key={i}
-                        className="flex items-center gap-2.5 rounded-md border border-border-default bg-bg-card p-2.5 text-sm"
-                      >
-                        <span className="w-6 font-bold text-panther-red">#{rec.priority}</span>
-                        <span className="font-semibold text-white">{rec.skill}</span>
-                        <span className="flex-1 text-xs text-text-muted">{rec.reason}</span>
-                      </div>
-                    ))}
+                    {studentAdaptive.recommendations.slice(0, 5).map((rec, i) => {
+                      const isMath = Object.keys(MATH_SKILLS).includes(rec.domain);
+                      const recCourse = isMath ? "sat-math" : "sat-rw";
+                      const taxonomyKey = sourceToTaxonomyKey(rec.skill) || rec.skill;
+                      const href = `/skills/${recCourse}/${taxonomyKey}`;
+                      return (
+                        <Link
+                          key={i}
+                          href={href}
+                          className="flex items-center gap-2.5 rounded-md border border-border-default bg-bg-card p-2.5 text-sm transition hover:border-panther-red/30"
+                        >
+                          <span className="w-6 font-bold text-panther-red">#{rec.priority}</span>
+                          <span className="font-semibold text-white">{rec.skill}</span>
+                          <span className="flex-1 text-xs text-text-muted">{rec.reason}</span>
+                          <span className="text-xs text-text-muted">›</span>
+                        </Link>
+                      );
+                    })}
                   </div>
                 </GlassCard>
               )}

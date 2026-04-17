@@ -745,7 +745,7 @@ function TeacherView({ course }: { course: Course }) {
 
       {/* STUDENT DRILL-DOWN */}
       {tab === "students" && selectedStudent && (
-        <TeacherStudentDrillDown profile={selectedStudent} onBack={() => setSelectedStudent(null)} />
+        <TeacherStudentDrillDown profile={selectedStudent} course={course} onBack={() => setSelectedStudent(null)} />
       )}
 
       {/* ALERTS */}
@@ -820,9 +820,11 @@ function TeacherView({ course }: { course: Course }) {
 
 function TeacherStudentDrillDown({
   profile,
+  course,
   onBack,
 }: {
   profile: AdaptiveProfile;
+  course: Course;
   onBack: () => void;
 }) {
   const [drillTab, setDrillTab] = useState<"mastery" | "past-tests">("mastery");
@@ -895,13 +897,22 @@ function TeacherStudentDrillDown({
             <h3 className="mb-3 text-base font-bold">Recommended Next Steps</h3>
             {profile.recommendations?.length > 0 ? (
               <div className="flex flex-col gap-1.5">
-                {profile.recommendations.slice(0, 5).map((rec: any, i: number) => (
-                  <div key={i} className="flex items-center gap-2.5 rounded-md border border-border-primary bg-bg-primary p-2.5 text-sm">
-                    <span className="w-6 font-bold text-panther-red">#{rec.priority}</span>
-                    <span className="font-semibold">{skillLabel(rec.skill)}</span>
-                    <span className="flex-1 text-xs text-text-muted">{rec.reason}</span>
-                  </div>
-                ))}
+                {profile.recommendations.slice(0, 5).map((rec: any, i: number) => {
+                  const taxonomyKey = sourceToTaxonomyKey(rec.skill) || rec.skill;
+                  const href = `/skills/${course}/${taxonomyKey}`;
+                  return (
+                    <Link
+                      key={i}
+                      href={href}
+                      className="flex items-center gap-2.5 rounded-md border border-border-primary bg-bg-primary p-2.5 text-sm transition hover:border-panther-red/30"
+                    >
+                      <span className="w-6 font-bold text-panther-red">#{rec.priority}</span>
+                      <span className="font-semibold">{skillLabel(rec.skill)}</span>
+                      <span className="flex-1 text-xs text-text-muted">{rec.reason}</span>
+                      <span className="text-xs text-text-muted">›</span>
+                    </Link>
+                  );
+                })}
               </div>
             ) : (
               <p className="text-sm text-text-muted">No recommendations yet.</p>
