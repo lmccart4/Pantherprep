@@ -30,22 +30,24 @@ export function TopBar({ backHref, backLabel, className }: TopBarProps) {
   return (
     <header className={cn("sticky top-0 z-40 bg-paper", className)}>
       <div className="relative mx-auto flex max-w-[1240px] items-end justify-between px-6 pt-5 pb-3">
-        <div className="hidden shrink-0 font-mono text-[10px] font-bold uppercase leading-tight tracking-[0.14em] text-ink-3 sm:block">
-          <div>{today}</div>
-          <div className="text-ink-4">Vol. 2 &middot; No. 17</div>
+        <div className="flex shrink-0 flex-col gap-1 font-mono text-[10px] font-bold uppercase leading-tight tracking-[0.14em] text-ink-3">
+          {backHref ? (
+            <Link
+              href={backHref}
+              className="flex items-center gap-1.5 text-ink-3 transition-colors hover:text-accent"
+            >
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="rotate-180">
+                <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span>{backLabel ?? "Back"}</span>
+            </Link>
+          ) : (
+            <div className="hidden sm:block">
+              <div>{today}</div>
+              <div className="text-ink-4">Vol. 2 &middot; No. 17</div>
+            </div>
+          )}
         </div>
-
-        {backHref && (
-          <Link
-            href={backHref}
-            className="flex shrink-0 items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-3 transition-colors hover:text-accent"
-          >
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="rotate-180">
-              <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span>{backLabel ?? "Back"}</span>
-          </Link>
-        )}
 
         <Link
           href="/home"
@@ -94,10 +96,10 @@ export function TopBar({ backHref, backLabel, className }: TopBarProps) {
         <div className="flex items-center justify-between py-2">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[11px] font-bold uppercase tracking-[0.14em]">
             <NavLink href="/home" active={pathname === "/home"}>Home</NavLink>
-            <NavLink href="/diagnostics/sat-math" active={pathname?.startsWith("/diagnostics")}>Diagnostic</NavLink>
+            <NavLink href="/diagnostics" active={pathname?.startsWith("/diagnostics")}>Diagnostic</NavLink>
             <NavLink href="/skills" active={skillsActive}>Skills Library</NavLink>
             <NavLink href="/dashboard" active={pathname?.startsWith("/dashboard")}>Progress</NavLink>
-            <NavLink href="/practice-tests/sat" active={pathname?.startsWith("/practice-tests")}>Practice Test</NavLink>
+            <NavLink href="/practice-tests" active={pathname?.startsWith("/practice-tests")}>Practice Test</NavLink>
           </div>
         </div>
       </nav>
