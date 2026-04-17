@@ -352,6 +352,49 @@ export function getAggregatedSkillData(
   };
 }
 
+export interface SkillTierCounts {
+  strong: number;    // mastery >= 0.8
+  medium: number;    // 0.5 <= mastery < 0.8
+  weak: number;      // total > 0 && mastery < 0.5
+  untouched: number; // total === 0 (no attempts on any source label for this key)
+}
+
+/**
+ * Per-profile tier classification for a single taxonomy key. Thresholds match
+ * the existing student-side tierOf() in skill-catalog.tsx (0.5 / 0.8).
+ * Untouched = profile has no attempts on any source label mapping to the key.
+ */
+export function getSkillTierCounts(
+  profiles: AdaptiveProfile[],
+  taxonomyKey: string
+): SkillTierCounts {
+  const counts: SkillTierCounts = { strong: 0, medium: 0, weak: 0, untouched: 0 };
+  const sourceLabels = TAXONOMY_TO_SOURCES[taxonomyKey] ?? [];
+  if (sourceLabels.length === 0) return counts;
+
+  for (const profile of profiles) {
+    let correct = 0;
+    let total = 0;
+    if (profile?.skills) {
+      for (const label of sourceLabels) {
+        const entry = profile.skills[label];
+        if (!entry) continue;
+        correct += entry.correct ?? 0;
+        total += entry.total ?? 0;
+      }
+    }
+    if (total === 0) {
+      counts.untouched += 1;
+      continue;
+    }
+    const mastery = correct / total;
+    if (mastery >= 0.8) counts.strong += 1;
+    else if (mastery >= 0.5) counts.medium += 1;
+    else counts.weak += 1;
+  }
+  return counts;
+}
+
 /**
  * Single-item reverse lookup: given a source label from a recommendation or
  * past-test answer row, return its taxonomy key (for routing). Returns null

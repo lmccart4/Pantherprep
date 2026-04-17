@@ -66,4 +66,32 @@ const KEY = "linear_equations";
   assert.equal(agg.total, 0);
 }
 
+// ---- getSkillTierCounts ----
+import { getSkillTierCounts } from "../../lib/skill-mapping.ts";
+
+// Case 6: mixed class — 1 strong (>=0.8), 1 medium (>=0.5 && <0.8), 1 weak (<0.5, with attempts), 1 untouched
+{
+  const strong   = profile({ "Linear equations": [9, 10] });  // 0.9
+  const medium   = profile({ "Linear equations": [6, 10] });  // 0.6
+  const weak     = profile({ "Linear equations": [2, 10] });  // 0.2
+  const untouched = profile({ "Percentages":     [5, 5] });    // no data on this key
+  const counts = getSkillTierCounts([strong, medium, weak, untouched], KEY);
+  assert.deepEqual(counts, { strong: 1, medium: 1, weak: 1, untouched: 1 });
+}
+
+// Case 7: boundaries. mastery === 0.8 → strong. mastery === 0.5 → medium. mastery === 0.499 → weak.
+{
+  const at08  = profile({ "Linear equations": [8, 10] });
+  const at05  = profile({ "Linear equations": [5, 10] });
+  const below = profile({ "Linear equations": [499, 1000] });
+  const counts = getSkillTierCounts([at08, at05, below], KEY);
+  assert.deepEqual(counts, { strong: 1, medium: 1, weak: 1, untouched: 0 });
+}
+
+// Case 8: empty array
+{
+  const counts = getSkillTierCounts([], KEY);
+  assert.deepEqual(counts, { strong: 0, medium: 0, weak: 0, untouched: 0 });
+}
+
 console.log("skill-aggregation.test.mjs OK");
