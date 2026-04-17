@@ -301,6 +301,58 @@ export function getProfileSkillData(
 }
 
 /**
+ * Aggregate a taxonomy skill across multiple profiles. Used by the staff
+ * (teacher/admin) view of /skills to compute class-wide mastery. Sums correct
+ * and total across every source label that maps to the taxonomy key, across
+ * every profile passed in. Returns the same AggregatedSkillData shape that
+ * getProfileSkillData returns, so downstream rendering code (tierOf, SkillRow)
+ * works unchanged.
+ *
+ * Unlike getProfileSkillData, this helper does not attempt to aggregate
+ * ease/interval/nextReview/lastSeen/errorPatterns across students — those
+ * are per-student spaced-repetition fields with no meaningful class aggregate.
+ * They are returned as empty defaults.
+ */
+export function getAggregatedSkillData(
+  profiles: AdaptiveProfile[],
+  taxonomyKey: string
+): AggregatedSkillData {
+  const sourceLabels = TAXONOMY_TO_SOURCES[taxonomyKey] ?? [];
+  const empty: AggregatedSkillData = {
+    correct: 0,
+    total: 0,
+    mastery: 0,
+    ease: 2.5,
+    interval: 0,
+    nextReview: "",
+    errorPatterns: {},
+    lastSeen: null,
+    sourceLabels,
+  };
+  if (sourceLabels.length === 0 || profiles.length === 0) return empty;
+
+  let correct = 0;
+  let total = 0;
+  for (const profile of profiles) {
+    if (!profile?.skills) continue;
+    for (const label of sourceLabels) {
+      const entry = profile.skills[label];
+      if (!entry) continue;
+      correct += entry.correct ?? 0;
+      total += entry.total ?? 0;
+    }
+  }
+
+  if (total === 0) return empty;
+  return {
+    ...empty,
+    correct,
+    total,
+    mastery: correct / total,
+  };
+}
+
+/**
  * Single-item reverse lookup: given a source label from a recommendation or
  * past-test answer row, return its taxonomy key (for routing). Returns null
  * if the label can't be resolved either as a known source label or as a
