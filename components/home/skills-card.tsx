@@ -17,8 +17,11 @@ function pickSubtitle(
   profile: AdaptiveProfile | null,
   loaded: boolean
 ): string {
-  if (role === "teacher" || role === "admin") {
-    return "Browse the student skill library — preview the concept bundles and practice pools students see.";
+  if (role === "admin") {
+    return "Platform-wide skill distribution across all students.";
+  }
+  if (role === "teacher") {
+    return "See how your class is doing on every skill. Click any skill for a breakdown.";
   }
   if (!loaded || !profile) {
     return "49 skills across SAT, PSAT/NMSQT, and PSAT 8/9. Start a topic without taking a full test.";
@@ -31,7 +34,6 @@ function pickSubtitle(
     .slice(0, 2)
     .map((r) => (r.skill ? skillLabel(r.skill) : ""))
     .filter(Boolean);
-  // Defensive: fires only when every top-rec has an empty `skill` string.
   if (named.length === 0) {
     return `You have ${recs.length} skills that could use work. Start with your weakest areas.`;
   }
