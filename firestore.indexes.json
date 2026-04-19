@@ -83,6 +83,56 @@
         { "fieldPath": "skill", "order": "ASCENDING" },
         { "fieldPath": "difficulty", "order": "ASCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "coachNotes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "threadUid", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "coachNotes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "role", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "coachNotes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "threadUid", "order": "ASCENDING" },
+        { "fieldPath": "linkedSkill", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "coachDrafts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "expiresAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "coachDrafts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "threadUid", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "draftedAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "coachTriggerQueue",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "processed", "order": "ASCENDING" },
+        { "fieldPath": "queuedAt", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
