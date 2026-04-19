@@ -22,6 +22,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { TopBar } from "@/components/layout/top-bar";
 import { PastTestsView } from "@/components/dashboard/past-tests-view";
 import { SkillsCard } from "@/components/home/skills-card";
+import { CoachsNoteBlock } from "@/components/home/coachs-note-block";
 import type { TestType } from "@/types/question";
 import { TESTS, COURSE_ROUTES } from "@/lib/test-types";
 import type { StudentProfile, Session, ClassDoc } from "@/types/firestore";
@@ -278,6 +279,12 @@ export default function HomePage() {
           </div>
 
           <SkillsCard role={role} />
+
+          {role === "student" && (
+            <section className="mb-10">
+              <CoachsNoteBlock />
+            </section>
+          )}
 
           {/* Recent Sessions */}
           {sessions.length > 0 && (
