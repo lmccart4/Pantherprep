@@ -6,6 +6,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { QuestionCard } from "@/components/test/question-card";
 import type { Question } from "@/types/question";
 import type { MasteryDeltaRow } from "@/lib/mastery-delta";
+import { PlanResultsFooter } from "./plan-results-footer";
 
 interface PracticeResultsCardProps {
   questions: Question[];
@@ -15,6 +16,7 @@ interface PracticeResultsCardProps {
   fallbackNotes?: string[];
   masteryDeltas?: MasteryDeltaRow[];
   course?: string;
+  planId?: string | null;
   onPracticeAgain?: () => void;
   onExit: () => void;
 }
@@ -47,6 +49,7 @@ export function PracticeResultsCard({
   fallbackNotes,
   masteryDeltas,
   course,
+  planId,
   onPracticeAgain,
   onExit,
 }: PracticeResultsCardProps) {
@@ -269,6 +272,8 @@ export function PracticeResultsCard({
           ))}
         </div>
       </GlassCard>
+
+      <PlanResultsFooter planId={planId ?? null} />
     </div>
   );
 }
