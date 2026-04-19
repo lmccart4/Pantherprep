@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { subscribeThread } from "@/lib/coach-chat";
 
 interface TopBarProps {
   backHref?: string;
@@ -17,6 +19,12 @@ export function TopBar({ backHref, backLabel, className }: TopBarProps) {
   const skillsActive = pathname?.startsWith("/skills") ?? false;
 
   const shortName = user?.displayName?.split(" ")[0] ?? "";
+  const [unreadCoach, setUnreadCoach] = useState(0);
+
+  useEffect(() => {
+    if (!user?.uid) return;
+    return subscribeThread(user.uid, (t) => setUnreadCoach(t?.unreadCountStudent ?? 0));
+  }, [user?.uid]);
 
   const today = new Date()
     .toLocaleDateString("en-US", {
@@ -99,6 +107,14 @@ export function TopBar({ backHref, backLabel, className }: TopBarProps) {
             <NavLink href="/diagnostics" active={pathname?.startsWith("/diagnostics")}>Diagnostic</NavLink>
             <NavLink href="/skills" active={skillsActive}>Skills Library</NavLink>
             <NavLink href="/dashboard" active={pathname?.startsWith("/dashboard")}>Progress</NavLink>
+            <NavLink href="/coach-chat" active={pathname?.startsWith("/coach-chat")}>
+              Coach Chat
+              {unreadCoach > 0 && (
+                <span className="ml-1 inline-block bg-accent px-1.5 text-[9px] text-accent-fg">
+                  {unreadCoach}
+                </span>
+              )}
+            </NavLink>
             <NavLink href="/practice-tests" active={pathname?.startsWith("/practice-tests")}>Practice Test</NavLink>
           </div>
         </div>
