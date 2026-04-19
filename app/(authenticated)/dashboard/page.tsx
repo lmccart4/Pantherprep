@@ -12,6 +12,7 @@ import {
 import { SkillRow } from "@/components/skills/skill-row";
 import { getProfileSkillData, sourceToTaxonomyKey } from "@/lib/skill-mapping";
 import { PastTestsView } from "@/components/dashboard/past-tests-view";
+import { DraftsTab } from "@/components/dashboard/drafts-tab";
 import {
   MATH_SKILLS,
   RW_SKILLS,
@@ -26,7 +27,7 @@ import { getTeacherClasses } from "@/lib/firestore";
 
 type Course = "sat-math" | "sat-rw" | "nmsqt-math" | "nmsqt-rw" | "psat89-math" | "psat89-rw";
 type Tab = "overview" | "skills" | "past-tests" | "practice";
-type TeacherTab = "overview" | "students" | "alerts" | "heatmap";
+type TeacherTab = "overview" | "students" | "alerts" | "heatmap" | "drafts";
 
 const COURSES: { value: Course; label: string }[] = [
   { value: "sat-math", label: "SAT Math" },
@@ -704,6 +705,7 @@ function TeacherView({ course }: { course: Course }) {
     { key: "students", label: "Students" },
     { key: "alerts", label: `Alerts (${alerts.length})` },
     { key: "heatmap", label: "Skill Heatmap" },
+    { key: "drafts", label: "Drafts" },
   ];
 
   return (
@@ -953,6 +955,18 @@ function TeacherView({ course }: { course: Course }) {
             </section>
           ))}
         </div>
+      )}
+
+      {/* DRAFTS */}
+      {tab === "drafts" && (
+        <DraftsTab
+          studentLookup={Object.fromEntries(
+            profiles.map((p) => [
+              p.uid,
+              (p as AdaptiveProfile & { displayName?: string }).displayName ?? p.uid.slice(0, 8),
+            ])
+          )}
+        />
       )}
     </div>
   );
