@@ -106,6 +106,7 @@ export function TopBar({ backHref, backLabel, className }: TopBarProps) {
             <NavLink href="/home" active={pathname === "/home"}>Home</NavLink>
             <NavLink href="/diagnostics" active={pathname?.startsWith("/diagnostics")}>Diagnostic</NavLink>
             <NavLink href="/skills" active={skillsActive}>Skills Library</NavLink>
+            <NavLink href="/study-plan" active={pathname?.startsWith("/study-plan")}>Study Plan</NavLink>
             <NavLink href="/dashboard" active={pathname?.startsWith("/dashboard")}>Progress</NavLink>
             <NavLink href="/coach-chat" active={pathname?.startsWith("/coach-chat")}>
               Coach Chat
