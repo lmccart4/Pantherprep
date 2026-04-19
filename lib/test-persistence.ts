@@ -98,7 +98,24 @@ export async function completeTestSession(
   // 2. Recompute the adaptive profile so the dashboard reflects the new data
   await recomputeProfile(uid);
 
-  // 3. Write the lightweight session summary
+  // 3. Queue a Coach Chat trigger for Parker. Fire-and-forget; failure here
+  //    should never block the session write (that would cost the student
+  //    their score). The drain-queue cron picks it up within 5 min.
+  try {
+    const { db } = await import("@/lib/firebase");
+    const { collection, addDoc, serverTimestamp } = await import("firebase/firestore");
+    await addDoc(collection(db, "coachTriggerQueue"), {
+      uid,
+      trigger: "post_session",
+      sessionId: testSessionId,
+      queuedAt: serverTimestamp(),
+      processed: false,
+    });
+  } catch (e) {
+    console.warn("coachTriggerQueue (post_session) write failed:", e);
+  }
+
+  // 4. Write the lightweight session summary
   await saveSession(
     {
       uid,
