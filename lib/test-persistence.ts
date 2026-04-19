@@ -115,6 +115,20 @@ export async function completeTestSession(
     console.warn("coachTriggerQueue (post_session) write failed:", e);
   }
 
+  // 3b. Mark study plan day complete if any session skills overlap.
+  //     Fire-and-forget; failure here never blocks the session write.
+  try {
+    const skillsInSession = Array.from(
+      new Set(questions.map((q) => q.skill).filter(Boolean))
+    ) as string[];
+    if (skillsInSession.length > 0) {
+      const { markDayCompletedIfMatches } = await import("@/lib/study-plan/client-regen");
+      await markDayCompletedIfMatches(uid, course, skillsInSession);
+    }
+  } catch (e) {
+    console.warn("study plan auto-complete failed:", e);
+  }
+
   // 4. Write the lightweight session summary
   await saveSession(
     {
