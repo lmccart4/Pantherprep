@@ -38,27 +38,15 @@ const COURSES: { value: Course; label: string }[] = [
 ];
 
 function masteryColor(m: number): string {
-  if (m >= 0.8) return "text-emerald-400";
-  if (m >= 0.6) return "text-lime-400";
-  if (m >= 0.4) return "text-amber-400";
-  if (m >= 0.2) return "text-orange-400";
-  return "text-red-400";
-}
-
-function masteryBg(m: number): string {
-  if (m >= 0.8) return "bg-emerald-400/15";
-  if (m >= 0.6) return "bg-lime-400/12";
-  if (m >= 0.4) return "bg-amber-400/12";
-  if (m >= 0.2) return "bg-orange-400/12";
-  return "bg-red-400/12";
+  if (m >= 0.8) return "text-green";
+  if (m >= 0.5) return "text-amber";
+  return "text-accent";
 }
 
 function masteryBarColor(m: number): string {
-  if (m >= 0.8) return "bg-emerald-400";
-  if (m >= 0.6) return "bg-lime-400";
-  if (m >= 0.4) return "bg-amber-400";
-  if (m >= 0.2) return "bg-orange-400";
-  return "bg-red-400";
+  if (m >= 0.8) return "bg-green";
+  if (m >= 0.5) return "bg-amber";
+  return "bg-accent";
 }
 
 // ============================================================
@@ -72,26 +60,31 @@ export default function DashboardPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-bg-primary text-text-primary">
+    <div className="min-h-screen bg-paper text-ink">
       <TopBar backHref="/home" backLabel="Home" />
 
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        {/* Course selector */}
-        <div className="mb-6 flex flex-wrap items-center gap-2">
-          <span className="mr-2 text-sm text-text-muted">Course:</span>
-          {COURSES.map((c) => (
-            <button
-              key={c.value}
-              onClick={() => setCourse(c.value)}
-              className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
-                course === c.value
-                  ? "bg-panther-red text-ink"
-                  : "bg-bg-secondary text-text-muted hover:text-text-secondary border border-border-primary"
-              }`}
-            >
-              {c.label}
-            </button>
-          ))}
+      <div className="mx-auto max-w-[1240px] px-6 py-8">
+        {/* Course selector — newspaper style */}
+        <div className="mb-8 flex flex-wrap items-center gap-2">
+          <span className="mr-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+            Course
+          </span>
+          {COURSES.map((c) => {
+            const active = course === c.value;
+            return (
+              <button
+                key={c.value}
+                onClick={() => setCourse(c.value)}
+                className={`border-2 border-ink px-3 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] transition-colors ${
+                  active
+                    ? "bg-ink text-paper"
+                    : "bg-paper-card text-ink hover:bg-ink hover:text-paper"
+                }`}
+              >
+                {c.label}
+              </button>
+            );
+          })}
         </div>
 
         {role === "teacher" ? (
@@ -116,8 +109,8 @@ function StudentView({ uid, email, course }: { uid: string; email: string; cours
     return (
       <div className="flex items-center justify-center py-32">
         <div className="text-center">
-          <div className="mb-3 text-3xl animate-pulse text-panther-red">&#9672;</div>
-          <p className="text-sm text-text-muted">Loading adaptive profile...</p>
+          <div className="kicker mb-3">Loading</div>
+          <p className="font-body text-[14px] italic text-ink-3">Loading adaptive profile…</p>
         </div>
       </div>
     );
@@ -125,34 +118,52 @@ function StudentView({ uid, email, course }: { uid: string; email: string; cours
 
   if (error) {
     return (
-      <GlassCard className="mx-auto max-w-md text-center">
-        <p className="text-red-400">{error}</p>
-      </GlassCard>
+      <div className="mx-auto max-w-md border-2 border-accent bg-accent-soft p-6 text-center shadow-[5px_5px_0_var(--color-ink)]">
+        <div className="mb-2 kicker">Error</div>
+        <p className="font-body text-[14px] italic text-accent">{error}</p>
+      </div>
     );
   }
 
   if (!profile) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="mx-auto w-full max-w-2xl">
-          <GlassCard className="text-center">
-            <div className="mb-4 text-5xl">&#128202;</div>
-            <h2 className="mb-2 font-display text-2xl text-ink">No Adaptive Data Yet</h2>
-            <p className="mb-6 text-sm text-text-muted">
-              Take a diagnostic or a few practice modules and your mastery map will populate here.
-            </p>
-            <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              <a href="/diagnostics/sat-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">SAT Math</a>
-              <a href="/diagnostics/sat-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">SAT R&amp;W</a>
-              <a href="/diagnostics/nmsqt-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">NMSQT Math</a>
-              <a href="/diagnostics/nmsqt-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">NMSQT R&amp;W</a>
-              <a href="/diagnostics/psat89-math" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">PSAT 8/9 Math</a>
-              <a href="/diagnostics/psat89-rw" className="rounded-lg border border-border-primary bg-bg-secondary px-3 py-2.5 text-xs font-semibold text-text-secondary transition hover:border-panther-red/40 hover:text-ink">PSAT 8/9 R&amp;W</a>
-            </div>
-            <button onClick={refresh} className="rounded-full border border-ink/20 bg-paper-card px-5 py-2 text-xs font-semibold text-text-muted transition hover:text-text-primary">
-              Check again
-            </button>
-          </GlassCard>
+        <div className="mx-auto w-full max-w-2xl border-2 border-ink bg-paper-card p-8 text-center shadow-[5px_5px_0_var(--color-ink)]">
+          <div className="kicker mb-3">Empty state</div>
+          <h2 className="mb-3 font-display text-[clamp(32px,4vw,48px)] leading-tight text-ink">
+            No adaptive data{" "}
+            <em className="text-accent" style={{ fontStyle: "italic" }}>
+              yet
+            </em>
+            .
+          </h2>
+          <p className="mb-6 font-body text-[15px] italic leading-[1.55] text-ink-2">
+            Take a diagnostic or a few practice modules and your mastery map will populate here.
+          </p>
+          <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {[
+              ["/diagnostics/sat-math", "SAT Math"],
+              ["/diagnostics/sat-rw", "SAT R&W"],
+              ["/diagnostics/nmsqt-math", "NMSQT Math"],
+              ["/diagnostics/nmsqt-rw", "NMSQT R&W"],
+              ["/diagnostics/psat89-math", "PSAT 8/9 Math"],
+              ["/diagnostics/psat89-rw", "PSAT 8/9 R&W"],
+            ].map(([href, label]) => (
+              <a
+                key={href}
+                href={href}
+                className="border-2 border-ink bg-paper-card px-3 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+          <button
+            onClick={refresh}
+            className="border-2 border-ink bg-accent px-5 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink hover:text-paper"
+          >
+            Check again →
+          </button>
         </div>
       </div>
     );
@@ -167,36 +178,50 @@ function StudentView({ uid, email, course }: { uid: string; email: string; cours
 
   return (
     <div>
-      {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">
-            <span className="text-panther-red">&#9672;</span> Adaptive Dashboard
-          </h1>
-          <p className="mt-1 text-sm text-text-muted">
-            {profile.totalAnswers} answers tracked &middot; {profile.streakDays} day streak
-          </p>
+      {/* Masthead */}
+      <div className="mb-8 border-b-2 border-ink pb-6">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <div className="kicker mb-3">● Adaptive engine · Live · {profile.totalAnswers} answers tracked</div>
+            <h1 className="font-display text-[clamp(44px,5vw,72px)] leading-[0.95] text-ink">
+              The{" "}
+              <em className="text-accent" style={{ fontStyle: "italic" }}>
+                adaptive
+              </em>{" "}
+              desk.
+            </h1>
+            <p className="mt-3 max-w-xl font-body text-[15px] italic leading-[1.55] text-ink-2">
+              Everything the engine knows about you, laid out the way a coach would write it up —
+              so the next move is obvious.
+            </p>
+          </div>
+          <button
+            onClick={refresh}
+            className="border-2 border-ink bg-paper-card px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            Refresh →
+          </button>
         </div>
-        <button onClick={refresh} className="rounded-lg border border-border-primary bg-bg-secondary px-4 py-2 text-sm text-panther-red transition hover:border-panther-red">
-          Refresh
-        </button>
       </div>
 
-      {/* Tabs */}
-      <div className="mb-6 flex gap-0 border-b border-border-primary">
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`px-5 py-3 text-xs font-semibold uppercase tracking-wider transition ${
-              tab === t.key
-                ? "border-b-2 border-panther-red text-panther-red"
-                : "border-b-2 border-transparent text-text-muted hover:text-text-secondary"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      {/* Tabs — editorial section nav */}
+      <div className="mb-8 flex flex-wrap gap-0 border-b-2 border-ink">
+        {tabs.map((t) => {
+          const active = tab === t.key;
+          return (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`font-mono text-[11px] font-bold uppercase tracking-[0.18em] transition-colors ${
+                active
+                  ? "bg-ink px-4 py-3 text-paper"
+                  : "px-4 py-3 text-ink-2 hover:text-accent"
+              }`}
+            >
+              {t.label}
+            </button>
+          );
+        })}
       </div>
 
       {/* Tab content */}
@@ -218,105 +243,162 @@ function StudentOverview({ profile, course }: { profile: AdaptiveProfile; course
 
   return (
     <div>
-      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <StatCard label="Overall Accuracy" value={`${overallPct}%`} color={masteryColor(overallPct / 100)} />
-        <StatCard label="Questions Answered" value={String(totalAnswers)} color="text-sky-400" />
-        <StatCard label="Day Streak" value={String(streakDays)} color="text-amber-500" />
-        <StatCard label="This Week" value={`${weeklyStats?.answersThisWeek || 0}`} color="text-indigo-400" />
+      {/* Scoreboard */}
+      <div className="mb-8 grid grid-cols-2 gap-0 border-2 border-ink bg-paper-card shadow-[5px_5px_0_var(--color-ink)] sm:grid-cols-4">
+        <StatCard label="Overall accuracy" value={`${overallPct}%`} color={masteryColor(overallPct / 100)} />
+        <StatCard label="Questions answered" value={String(totalAnswers)} />
+        <StatCard label="Day streak" value={String(streakDays)} color="text-amber" />
+        <StatCard label="This week" value={`${weeklyStats?.answersThisWeek || 0}`} />
       </div>
 
       {/* Weekly momentum */}
       {weeklyStats && (
-        <GlassCard className="mb-6">
-          <h3 className="mb-4 text-base font-bold">Weekly Momentum</h3>
-          <div className="flex flex-wrap gap-6">
-            {weeklyStats.improvingDomains?.length > 0 && (
-              <div>
-                <span className="text-xs font-semibold text-emerald-400">&#9650; Improving</span>
-                <div className="mt-1 text-xs text-text-muted">{weeklyStats.improvingDomains.join(", ")}</div>
-              </div>
-            )}
-            {weeklyStats.decliningDomains?.length > 0 && (
-              <div>
-                <span className="text-xs font-semibold text-red-400">&#9660; Needs Attention</span>
-                <div className="mt-1 text-xs text-text-muted">{weeklyStats.decliningDomains.join(", ")}</div>
-              </div>
-            )}
-            {weeklyStats.dominantErrorCategory && (
-              <div>
-                <span className="text-xs font-semibold text-amber-400">Top Error Pattern</span>
-                <div className="mt-1 text-xs text-text-muted">{skillLabel(weeklyStats.dominantErrorCategory)}</div>
-              </div>
-            )}
+        <section className="mb-10">
+          <div className="mb-4 flex items-baseline justify-between border-b-2 border-ink pb-3">
+            <h2 className="font-display text-[clamp(26px,3vw,36px)] leading-tight text-ink">
+              Weekly{" "}
+              <em className="text-accent" style={{ fontStyle: "italic" }}>
+                momentum
+              </em>
+            </h2>
+            <div className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+              Derived · last 7 days
+            </div>
           </div>
-        </GlassCard>
+          <div className="grid gap-0 border-2 border-ink bg-paper-card sm:grid-cols-3">
+            <div className="border-rule-hair p-5 sm:border-r">
+              <div className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-green">
+                ▲ Improving
+              </div>
+              <div className="font-body text-[14px] italic text-ink">
+                {weeklyStats.improvingDomains?.length
+                  ? weeklyStats.improvingDomains.join(", ")
+                  : "—"}
+              </div>
+            </div>
+            <div className="border-t border-rule-hair p-5 sm:border-l-0 sm:border-r sm:border-t-0">
+              <div className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                ▼ Needs attention
+              </div>
+              <div className="font-body text-[14px] italic text-ink">
+                {weeklyStats.decliningDomains?.length
+                  ? weeklyStats.decliningDomains.join(", ")
+                  : "—"}
+              </div>
+            </div>
+            <div className="border-t border-rule-hair p-5 sm:border-t-0">
+              <div className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-amber">
+                ◆ Top error pattern
+              </div>
+              <div className="font-body text-[14px] italic text-ink">
+                {weeklyStats.dominantErrorCategory
+                  ? skillLabel(weeklyStats.dominantErrorCategory)
+                  : "—"}
+              </div>
+            </div>
+          </div>
+        </section>
       )}
 
-      {/* Domain mastery */}
-      <GlassCard className="mb-6">
-        <h3 className="mb-4 text-base font-bold">Domain Mastery</h3>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Domain spread */}
+      <section className="mb-10">
+        <div className="mb-4 flex items-baseline justify-between border-b-2 border-ink pb-3">
+          <h2 className="font-display text-[clamp(26px,3vw,36px)] leading-tight text-ink">
+            Domain{" "}
+            <em className="text-accent" style={{ fontStyle: "italic" }}>
+              spread
+            </em>
+          </h2>
+          <div className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+            {Object.keys(domains || {}).length} domains
+          </div>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Object.entries(domains || {}).map(([domain, data]: [string, any]) => {
             const m = data?.mastery ?? 0;
             return (
-              <div key={domain} className="rounded-lg border border-border-primary bg-bg-primary p-4">
-                <div className="mb-2 flex items-start justify-between">
-                  <span className="text-sm font-semibold">{domain}</span>
-                  <span className={`text-lg font-bold ${masteryColor(m)}`}>{Math.round(m * 100)}%</span>
+              <div
+                key={domain}
+                className="border-2 border-ink bg-paper-card p-5"
+              >
+                <div className="mb-2 flex items-baseline justify-between">
+                  <span className="font-display text-[18px] leading-tight text-ink">
+                    {domain}
+                  </span>
+                  <span className={`font-display text-[22px] leading-none ${masteryColor(m)}`}>
+                    {Math.round(m * 100)}%
+                  </span>
                 </div>
-                <div className="mb-2 h-2 overflow-hidden rounded-full bg-border-primary">
-                  <div className={`h-full rounded-full ${masteryBarColor(m)} transition-all duration-500`} style={{ width: `${m * 100}%` }} />
+                <div className="mb-2 h-[5px] w-full border border-ink bg-paper">
+                  <div
+                    className={`h-full ${masteryBarColor(m)}`}
+                    style={{ width: `${m * 100}%` }}
+                  />
                 </div>
-                <div className="text-xs text-text-muted">
+                <div className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
                   {data?.totalCorrect ?? 0}/{data?.totalAnswers ?? 0} correct
                 </div>
                 {data?.weakestSkills?.length > 0 && (
-                  <div className="mt-1 text-[11px] text-red-400">
-                    Focus: {data.weakestSkills.map(skillLabel).join(", ")}
+                  <div className="mt-2 border-t border-dashed border-rule-hair pt-2 font-body text-[12px] italic text-accent">
+                    Focus · {data.weakestSkills.map(skillLabel).join(", ")}
                   </div>
                 )}
               </div>
             );
           })}
         </div>
-      </GlassCard>
+      </section>
 
       {/* Recommendations */}
-      <GlassCard>
-        <h3 className="mb-4 text-base font-bold">Recommended Practice</h3>
-        {recommendations?.length > 0 ? (
-          <div className="flex flex-col gap-2">
-            {recommendations.slice(0, 5).map((rec: Recommendation, i: number) => {
+      <section>
+        <div className="mb-4 flex items-baseline justify-between border-b-2 border-ink pb-3">
+          <h2 className="font-display text-[clamp(26px,3vw,36px)] leading-tight text-ink">
+            Recommended{" "}
+            <em className="text-accent" style={{ fontStyle: "italic" }}>
+              practice
+            </em>
+          </h2>
+          <div className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+            Ranked · impact-weighted
+          </div>
+        </div>
+        <div className="border-2 border-ink bg-paper-card">
+          {recommendations?.length > 0 ? (
+            recommendations.slice(0, 5).map((rec: Recommendation, i: number) => {
               const taxonomyKey = sourceToTaxonomyKey(rec.skill);
               const href = taxonomyKey ? `/skills/${course}/${taxonomyKey}` : `/skills/${course}`;
               return (
                 <Link
                   key={i}
                   href={href}
-                  className="flex items-center gap-3 rounded-lg border border-border-primary bg-bg-primary p-3 transition hover:border-panther-red/30"
+                  className={`group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-paper-2 ${
+                    i > 0 ? "border-t border-dashed border-rule-hair" : ""
+                  }`}
                 >
-                  <div
-                    className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                      i < 3 ? "bg-panther-red text-ink" : "bg-bg-secondary text-text-muted"
-                    }`}
-                  >
-                    {rec.priority}
+                  <div className="font-display text-[28px] leading-none text-accent">
+                    {String(i + 1).padStart(2, "0")}
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm font-semibold">{skillLabel(rec.skill)}</div>
-                    <div className="text-xs text-text-muted">
-                      {rec.domain} &middot; {rec.reason}
+                    <div className="font-display text-[17px] leading-tight text-ink">
+                      {skillLabel(rec.skill)}
+                    </div>
+                    <div className="font-body text-[13px] italic text-ink-2">
+                      {rec.domain} · {rec.reason}
                     </div>
                   </div>
-                  <span className="text-xs text-text-muted">›</span>
+                  <span className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-accent transition-transform group-hover:translate-x-0.5">
+                    Drill →
+                  </span>
                 </Link>
               );
-            })}
-          </div>
-        ) : (
-          <p className="text-sm text-text-muted">Complete more practice to get personalized recommendations.</p>
-        )}
-      </GlassCard>
+            })
+          ) : (
+            <p className="p-5 font-body text-[14px] italic text-ink-3">
+              Complete more practice to get personalized recommendations.
+            </p>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
@@ -626,29 +708,40 @@ function TeacherView({ course }: { course: Course }) {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">
-            <span className="text-panther-red">&#9672;</span> Teacher Dashboard
-          </h1>
-          <p className="mt-1 text-sm text-text-muted">
-            {profiles.length} students &middot; {alerts.filter((a) => a.severity === "high").length} high-priority alerts
-          </p>
+      {/* Masthead — editorial header */}
+      <div className="mb-6">
+        <div className="kicker mb-2">The Faculty Desk &middot; Vol. 2</div>
+        <div className="flex items-end justify-between gap-4 border-b-2 border-ink pb-4">
+          <div>
+            <h1 className="font-display text-4xl font-bold leading-none tracking-[-0.01em] text-ink sm:text-5xl">
+              Teacher <em className="italic text-accent" style={{ fontStyle: "italic" }}>Dashboard</em>
+            </h1>
+            <p className="mt-2 font-body text-sm text-ink-2">
+              <span className="font-mono text-xs tracking-wider text-ink">{profiles.length}</span> students on roll
+              <span className="mx-2 text-ink-4">|</span>
+              <span className="font-mono text-xs tracking-wider text-accent">{alerts.filter((a) => a.severity === "high").length}</span> high-priority alerts
+            </p>
+          </div>
+          <button
+            onClick={loadData}
+            className="shrink-0 border-2 border-ink bg-paper-card px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            Refresh
+          </button>
         </div>
-        <button onClick={loadData} className="rounded-lg border border-border-primary bg-bg-secondary px-4 py-2 text-sm text-panther-red transition hover:border-panther-red">
-          Refresh
-        </button>
+        <div className="h-[2px] bg-ink" style={{ marginTop: 2 }} />
       </div>
 
-      <div className="mb-6 flex gap-0 border-b border-border-primary">
+      {/* Section tabs — newspaper section nav */}
+      <div className="mb-6 flex flex-wrap gap-0 border-b-2 border-ink">
         {teacherTabs.map((t) => (
           <button
             key={t.key}
             onClick={() => { setTab(t.key); setSelectedStudent(null); }}
-            className={`px-5 py-3 text-xs font-semibold tracking-wider transition ${
+            className={`font-mono text-[11px] font-bold uppercase tracking-[0.18em] transition-colors ${
               tab === t.key
-                ? "border-b-2 border-panther-red text-panther-red"
-                : "border-b-2 border-transparent text-text-muted hover:text-text-secondary"
+                ? "bg-ink px-4 py-3 text-paper"
+                : "px-4 py-3 text-ink-2 hover:text-accent"
             }`}
           >
             {t.label}
@@ -659,45 +752,55 @@ function TeacherView({ course }: { course: Course }) {
       {/* CLASS OVERVIEW */}
       {tab === "overview" && classStats && (
         <div>
-          <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
-            <StatCard label="Students" value={String(classStats.totalStudents)} color="text-sky-400" />
-            <StatCard label="Active This Week" value={String(classStats.activeThisWeek)} color="text-emerald-400" />
-            <StatCard label="Avg Mastery" value={`${Math.round(classStats.avgMastery * 100)}%`} color={masteryColor(classStats.avgMastery)} />
-            <StatCard label="Avg Accuracy" value={`${Math.round(classStats.avgAccuracy * 100)}%`} color={masteryColor(classStats.avgAccuracy)} />
-            <StatCard label="Answers This Week" value={String(classStats.totalAnswersThisWeek)} color="text-indigo-400" />
+          <div className="mb-6 grid grid-cols-2 gap-0 border-2 border-ink bg-paper-card sm:grid-cols-5">
+            <EditorialStat label="Students" value={String(classStats.totalStudents)} />
+            <EditorialStat label="Active / Week" value={String(classStats.activeThisWeek)} />
+            <EditorialStat label="Avg Mastery" value={`${Math.round(classStats.avgMastery * 100)}%`} accent={classStats.avgMastery < 0.5} />
+            <EditorialStat label="Avg Accuracy" value={`${Math.round(classStats.avgAccuracy * 100)}%`} accent={classStats.avgAccuracy < 0.5} />
+            <EditorialStat label="Answers / Week" value={String(classStats.totalAnswersThisWeek)} />
           </div>
 
-          <GlassCard className="mb-4">
-            <h3 className="mb-4 text-base font-bold">Class Domain Performance</h3>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {Object.entries(taxonomy).map(([domain, skills]) => {
+          <div className="mb-6 border-2 border-ink bg-paper-card p-7">
+            <div className="kicker mb-1">By the Numbers</div>
+            <h3 className="mb-5 font-display text-2xl font-bold leading-tight text-ink">Class Domain Performance</h3>
+            <div className="grid gap-0 sm:grid-cols-2 lg:grid-cols-4">
+              {Object.entries(taxonomy).map(([domain, skills], idx, arr) => {
                 const skillData = skills.map((s) => classSkillMastery[s]).filter(Boolean);
                 const avgM = skillData.length > 0 ? skillData.reduce((s, d) => s + d.avgMastery, 0) / skillData.length : 0;
+                const isLastCol = (idx + 1) % 4 === 0 || idx === arr.length - 1;
                 return (
-                  <div key={domain} className="rounded-lg border border-border-primary bg-bg-primary p-3">
-                    <div className="mb-2 flex justify-between">
-                      <span className="text-sm font-semibold">{domain}</span>
-                      <span className={`font-bold ${masteryColor(avgM)}`}>{Math.round(avgM * 100)}%</span>
+                  <div key={domain} className={`flex flex-col gap-3 p-4 ${!isLastCol ? "lg:border-r lg:border-rule-hair" : ""} border-t border-rule-hair first:border-t-0 lg:border-t-0`}>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="font-body text-sm font-semibold text-ink">{domain}</span>
+                      <span className={`font-mono text-lg font-bold ${avgM < 0.5 ? "text-accent" : "text-ink"}`}>{Math.round(avgM * 100)}%</span>
                     </div>
-                    <div className="h-1.5 overflow-hidden rounded-full bg-border-primary">
-                      <div className={`h-full rounded-full ${masteryBarColor(avgM)}`} style={{ width: `${avgM * 100}%` }} />
+                    <div className="h-[6px] border border-ink bg-paper">
+                      <div className={`h-full ${avgM < 0.5 ? "bg-accent" : "bg-ink"}`} style={{ width: `${avgM * 100}%` }} />
                     </div>
                   </div>
                 );
               })}
             </div>
-          </GlassCard>
+          </div>
 
           {alerts.filter((a) => a.severity === "high").length > 0 && (
-            <GlassCard className="!border-red-400/30">
-              <h3 className="mb-3 text-base font-bold text-red-400">High Priority Alerts</h3>
-              {alerts.filter((a) => a.severity === "high").slice(0, 5).map((alert, i) => (
-                <div key={i} className="mb-1.5 flex items-center gap-2.5 rounded-md border-l-[3px] border-l-red-400 bg-red-400/5 px-3 py-2 text-sm">
-                  <span className="font-semibold text-red-400">{alert.uid}</span>
-                  <span className="flex-1 text-text-muted">{alert.message}</span>
+            <div className="border-2 border-ink bg-paper-card p-7 shadow-[5px_5px_0_var(--color-ink)]">
+              <div className="mb-4 flex items-baseline justify-between border-b border-ink pb-3">
+                <div>
+                  <div className="kicker mb-1">Errata</div>
+                  <h3 className="font-display text-2xl font-bold leading-tight text-accent">High Priority Alerts</h3>
                 </div>
-              ))}
-            </GlassCard>
+                <span className="stamp stamp-red">Review</span>
+              </div>
+              <ul className="divide-y divide-rule-hair">
+                {alerts.filter((a) => a.severity === "high").slice(0, 5).map((alert, i) => (
+                  <li key={i} className="flex items-center gap-3 py-2.5 font-body text-sm">
+                    <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-accent">{alert.uid}</span>
+                    <span className="flex-1 text-ink-2">{alert.message}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
       )}
@@ -705,14 +808,14 @@ function TeacherView({ course }: { course: Course }) {
       {/* STUDENTS */}
       {tab === "students" && !selectedStudent && (
         <div>
-          <div className="mb-4 flex items-center gap-2">
-            <span className="mr-1 text-xs text-text-muted">Sort by:</span>
+          <div className="mb-4 flex flex-wrap items-center gap-3">
+            <span className="kicker">Sort By</span>
             {(["name", "mastery", "activity", "streak"] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => setSortBy(s)}
-                className={`rounded-full px-2.5 py-1 text-[11px] font-semibold capitalize transition ${
-                  s === sortBy ? "bg-panther-red text-ink" : "border border-border-primary bg-bg-secondary text-text-muted"
+                className={`border-2 border-ink px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] transition-colors ${
+                  s === sortBy ? "bg-ink text-paper" : "bg-paper-card text-ink hover:bg-ink hover:text-paper"
                 }`}
               >
                 {s}
@@ -720,26 +823,45 @@ function TeacherView({ course }: { course: Course }) {
             ))}
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            {sortedProfiles.map((p) => {
-              const dm = Object.values(p.domains || {}).map((d: any) => d.mastery || 0);
-              const avgM = dm.length > 0 ? dm.reduce((s, v) => s + v, 0) / dm.length : 0;
-              const accuracy = p.totalAnswers > 0 ? p.totalCorrect / p.totalAnswers : 0;
-              return (
-                <div
-                  key={p.uid}
-                  onClick={() => setSelectedStudent(p)}
-                  className="grid cursor-pointer grid-cols-3 items-center gap-2 rounded-lg border border-border-primary bg-bg-secondary p-3 text-sm transition hover:border-panther-red/30 sm:grid-cols-6"
-                >
-                  <span className="col-span-2 font-semibold sm:col-span-1">{p.uid}</span>
-                  <span className={masteryColor(avgM)}>{Math.round(avgM * 100)}%</span>
-                  <span className="hidden text-text-muted sm:block">{Math.round(accuracy * 100)}% acc</span>
-                  <span className="hidden text-text-muted sm:block">{p.weeklyStats?.answersThisWeek || 0}/wk</span>
-                  <span className="hidden text-amber-400 sm:block">{p.streakDays || 0} streak</span>
-                  <span className="text-right text-panther-red">View &rarr;</span>
-                </div>
-              );
-            })}
+          {/* Editorial broadsheet roster */}
+          <div className="border-2 border-ink bg-paper-card">
+            {/* Header row */}
+            <div className="hidden grid-cols-6 gap-2 border-b-2 border-ink px-4 py-2 sm:grid">
+              <span className="kicker">Student</span>
+              <span className="kicker text-right">Mastery</span>
+              <span className="kicker text-right">Accuracy</span>
+              <span className="kicker text-right">Per Week</span>
+              <span className="kicker text-right">Streak</span>
+              <span className="kicker text-right">&nbsp;</span>
+            </div>
+            <div>
+              {sortedProfiles.map((p, i) => {
+                const dm = Object.values(p.domains || {}).map((d: any) => d.mastery || 0);
+                const avgM = dm.length > 0 ? dm.reduce((s, v) => s + v, 0) / dm.length : 0;
+                const accuracy = p.totalAnswers > 0 ? p.totalCorrect / p.totalAnswers : 0;
+                const struggling = avgM < 0.4 && p.totalAnswers > 10;
+                return (
+                  <div
+                    key={p.uid}
+                    onClick={() => setSelectedStudent(p)}
+                    className={`grid cursor-pointer grid-cols-3 items-center gap-2 px-4 py-3 transition-colors hover:bg-paper sm:grid-cols-6 ${i > 0 ? "border-t border-rule-hair" : ""}`}
+                  >
+                    <span className={`col-span-2 font-display text-base font-bold sm:col-span-1 ${struggling ? "text-accent" : "text-ink"}`}>
+                      {p.uid}
+                    </span>
+                    <span className={`text-right font-mono text-sm font-bold ${struggling ? "text-accent" : "text-ink"}`}>
+                      {Math.round(avgM * 100)}%
+                    </span>
+                    <span className="hidden text-right font-mono text-sm text-ink-2 sm:inline">{Math.round(accuracy * 100)}%</span>
+                    <span className="hidden text-right font-mono text-sm text-ink-2 sm:inline">{p.weeklyStats?.answersThisWeek || 0}</span>
+                    <span className="hidden text-right font-mono text-sm text-ink-2 sm:inline">{p.streakDays || 0}d</span>
+                    <span className="text-right font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                      Read <span aria-hidden>&rarr;</span>
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
@@ -751,57 +873,76 @@ function TeacherView({ course }: { course: Course }) {
 
       {/* ALERTS */}
       {tab === "alerts" && (
-        <GlassCard>
-          <h3 className="mb-4 text-base font-bold">Intervention Alerts</h3>
+        <div className="border-2 border-ink bg-paper-card p-7">
+          <div className="kicker mb-1">Intervention Desk</div>
+          <h3 className="mb-5 font-display text-2xl font-bold leading-tight text-ink">Open Alerts</h3>
           {alerts.length === 0 ? (
-            <p className="text-sm text-text-muted">No alerts — all students are on track.</p>
+            <p className="font-body text-base italic text-ink-2">No alerts — all students are on track.</p>
           ) : (
-            <div className="flex flex-col gap-1.5">
-              {alerts.map((alert, i) => (
-                <div key={i} className={`flex items-center gap-2.5 rounded-md border-l-[3px] bg-bg-primary px-3 py-2.5 text-sm ${
-                  alert.severity === "high" ? "border-l-red-400" : alert.severity === "medium" ? "border-l-amber-400" : "border-l-slate-500"
-                }`}>
-                  <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase ${
-                    alert.severity === "high" ? "bg-red-400/15 text-red-400" : alert.severity === "medium" ? "bg-amber-400/12 text-amber-400" : "bg-slate-500/15 text-slate-500"
-                  }`}>
-                    {alert.severity}
-                  </span>
-                  <span className="rounded bg-indigo-400/10 px-1.5 py-0.5 text-[10px] text-indigo-400">
-                    {alert.type.replace("_", " ")}
-                  </span>
-                  <span className="font-semibold">{alert.uid}</span>
-                  <span className="flex-1 text-text-muted">{alert.message}</span>
-                </div>
-              ))}
-            </div>
+            <ul className="divide-y divide-rule-hair border-t-2 border-ink">
+              {alerts.map((alert, i) => {
+                const sevClass =
+                  alert.severity === "high"
+                    ? "text-accent"
+                    : alert.severity === "medium"
+                    ? "text-amber"
+                    : "text-ink-3";
+                const stampClass =
+                  alert.severity === "high"
+                    ? "stamp stamp-red"
+                    : alert.severity === "medium"
+                    ? "stamp stamp-amber"
+                    : "stamp";
+                return (
+                  <li key={i} className="flex flex-wrap items-center gap-3 py-3">
+                    <span className={stampClass} style={{ transform: "rotate(-1deg)" }}>
+                      {alert.severity}
+                    </span>
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+                      {alert.type.replace("_", " ")}
+                    </span>
+                    <span className={`font-display text-base font-bold ${sevClass}`}>{alert.uid}</span>
+                    <span className="flex-1 font-body text-sm text-ink-2">{alert.message}</span>
+                  </li>
+                );
+              })}
+            </ul>
           )}
-        </GlassCard>
+        </div>
       )}
 
       {/* SKILL HEATMAP */}
       {tab === "heatmap" && (
-        <GlassCard>
-          <h3 className="mb-2 text-base font-bold">Class Skill Mastery Heatmap</h3>
-          <p className="mb-4 text-sm text-text-muted">
-            Average mastery across all students. Red = class weakness. Green = strength.
+        <div className="border-2 border-ink bg-paper-card p-7">
+          <div className="kicker mb-1">The Forecast</div>
+          <h3 className="mb-1 font-display text-2xl font-bold leading-tight text-ink">Class Skill Mastery</h3>
+          <p className="mb-6 font-body text-sm italic text-ink-2">
+            Average mastery across all students. <em className="text-accent">Red indicates class weakness.</em>
           </p>
           {Object.entries(taxonomy).map(([domain, skills]) => (
-            <div key={domain} className="mb-5">
-              <h4 className="mb-2 text-sm font-semibold text-panther-red">{domain}</h4>
-              <div className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-4">
-                {skills.map((skillKey) => {
+            <section key={domain} className="mb-6 last:mb-0">
+              <div className="mb-3 flex items-baseline justify-between border-b border-ink pb-1">
+                <h4 className="font-display text-lg font-bold text-ink">{domain}</h4>
+                <span className="kicker">Section</span>
+              </div>
+              <div className="grid grid-cols-1 gap-0 border border-ink sm:grid-cols-2 lg:grid-cols-4">
+                {skills.map((skillKey, idx) => {
                   const data = classSkillMastery[skillKey];
                   const m = data?.avgMastery ?? 0;
+                  const weak = m < 0.5 && data;
                   return (
-                    <div key={skillKey} className={`rounded-md border p-2.5 ${masteryBg(m)} border-border-primary`}>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs">{skillLabel(skillKey)}</span>
-                        <span className={`text-sm font-bold ${masteryColor(m)}`}>
+                    <div
+                      key={skillKey}
+                      className={`border-rule-hair p-3 ${idx > 0 ? "border-t sm:border-t sm:[&:nth-child(2n+1)]:border-l-0 sm:border-l lg:[&:nth-child(4n+1)]:border-l-0 lg:border-l" : ""} ${weak ? "bg-accent-soft" : ""}`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="font-body text-xs leading-snug text-ink">{skillLabel(skillKey)}</span>
+                        <span className={`font-mono text-sm font-bold ${weak ? "text-accent" : "text-ink"}`}>
                           {data ? `${Math.round(m * 100)}%` : "\u2014"}
                         </span>
                       </div>
                       {data && (
-                        <div className="mt-1 text-[11px] text-text-muted">
+                        <div className="mt-1 font-mono text-[10px] tracking-wider text-ink-3">
                           {data.studentCount} students &middot; {data.correct}/{data.total} correct
                         </div>
                       )}
@@ -809,9 +950,9 @@ function TeacherView({ course }: { course: Course }) {
                   );
                 })}
               </div>
-            </div>
+            </section>
           ))}
-        </GlassCard>
+        </div>
       )}
     </div>
   );
@@ -832,22 +973,27 @@ function TeacherStudentDrillDown({
   const dm = Object.values(profile.domains || {}).map((d: any) => d.mastery || 0);
   const avgM = dm.length > 0 ? dm.reduce((s, v) => s + v, 0) / dm.length : 0;
 
+  const struggling = avgM < 0.4 && profile.totalAnswers > 10;
+
   return (
     <div>
-      <button onClick={onBack} className="mb-4 text-sm font-semibold text-panther-red hover:underline">
+      <button
+        onClick={onBack}
+        className="mb-4 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3 transition-colors hover:text-accent"
+      >
         &larr; Back to Students
       </button>
 
-      {/* Sub-tab strip */}
-      <div className="mb-4 flex gap-2">
+      {/* Sub-tab strip — newspaper section */}
+      <div className="mb-5 flex gap-0 border-b-2 border-ink">
         {(["mastery", "past-tests"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setDrillTab(t)}
-            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
+            className={`font-mono text-[11px] font-bold uppercase tracking-[0.18em] transition-colors ${
               drillTab === t
-                ? "bg-panther-red text-ink"
-                : "bg-bg-secondary text-text-muted hover:text-text-primary"
+                ? "bg-ink px-4 py-2.5 text-paper"
+                : "px-4 py-2.5 text-ink-2 hover:text-accent"
             }`}
           >
             {t === "mastery" ? "Mastery" : "Past Tests"}
@@ -857,68 +1003,87 @@ function TeacherStudentDrillDown({
 
       {drillTab === "mastery" && (
         <>
-          <GlassCard className="mb-4">
-            <div className="flex items-start justify-between">
-              <div>
-                <h2 className="mb-1 text-xl font-bold">{profile.uid}</h2>
-                <p className="text-sm text-text-muted">
-                  {profile.totalAnswers} answers &middot; {profile.streakDays || 0} streak &middot;
-                  Last active: {profile.lastActiveDate || "Unknown"}
+          {/* Student broadsheet header */}
+          <div className="mb-6 border-2 border-ink bg-paper-card p-7 shadow-[5px_5px_0_var(--color-ink)]">
+            <div className="kicker mb-2">Student Profile</div>
+            <div className="flex items-start justify-between gap-6">
+              <div className="min-w-0 flex-1">
+                <h2 className={`mb-2 font-display text-4xl font-bold leading-none tracking-[-0.01em] ${struggling ? "text-accent" : "text-ink"}`}>
+                  {profile.uid}
+                </h2>
+                <p className="font-body text-sm text-ink-2">
+                  <span className="font-mono text-xs tracking-wider text-ink">{profile.totalAnswers}</span> answers
+                  <span className="mx-2 text-ink-4">|</span>
+                  <span className="font-mono text-xs tracking-wider text-ink">{profile.streakDays || 0}</span> day streak
+                  <span className="mx-2 text-ink-4">|</span>
+                  Last active <span className="font-mono text-xs tracking-wider text-ink">{profile.lastActiveDate || "—"}</span>
                 </p>
               </div>
-              <div className="text-right">
-                <div className={`text-3xl font-bold ${masteryColor(avgM)}`}>{Math.round(avgM * 100)}%</div>
-                <div className="text-xs text-text-muted">Overall Mastery</div>
+              <div className="shrink-0 border-l-2 border-ink pl-6 text-right">
+                <div className={`font-display text-5xl font-bold leading-none ${struggling ? "text-accent" : "text-ink"}`}>
+                  {Math.round(avgM * 100)}<span className="text-3xl">%</span>
+                </div>
+                <div className="kicker mt-1">Overall Mastery</div>
               </div>
             </div>
-          </GlassCard>
-
-          <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {Object.entries(profile.domains || {}).map(([domain, data]: [string, any]) => (
-              <GlassCard key={domain} className="!p-4">
-                <div className="mb-2 flex justify-between">
-                  <span className="text-sm font-semibold">{domain}</span>
-                  <span className={`font-bold ${masteryColor(data.mastery || 0)}`}>{Math.round((data.mastery || 0) * 100)}%</span>
-                </div>
-                <div className="mb-2 h-1.5 overflow-hidden rounded-full bg-border-primary">
-                  <div className={`h-full rounded-full ${masteryBarColor(data.mastery || 0)}`} style={{ width: `${(data.mastery || 0) * 100}%` }} />
-                </div>
-                <div className="text-xs text-text-muted">{data.totalCorrect}/{data.totalAnswers} correct</div>
-                {data.weakestSkills?.length > 0 && (
-                  <div className="mt-1 text-[11px] text-red-400">Weak: {data.weakestSkills.map(skillLabel).join(", ")}</div>
-                )}
-                {data.strongestSkills?.length > 0 && (
-                  <div className="mt-0.5 text-[11px] text-emerald-400">Strong: {data.strongestSkills.map(skillLabel).join(", ")}</div>
-                )}
-              </GlassCard>
-            ))}
           </div>
 
-          <GlassCard>
-            <h3 className="mb-3 text-base font-bold">Recommended Next Steps</h3>
+          <div className="mb-6 grid grid-cols-1 gap-0 border-2 border-ink bg-paper-card sm:grid-cols-2 lg:grid-cols-4">
+            {Object.entries(profile.domains || {}).map(([domain, data]: [string, any], idx, arr) => {
+              const mastery = data.mastery || 0;
+              const weak = mastery < 0.5;
+              const isLastCol = (idx + 1) % 4 === 0 || idx === arr.length - 1;
+              return (
+                <div
+                  key={domain}
+                  className={`flex flex-col gap-2 p-4 ${!isLastCol ? "lg:border-r lg:border-rule-hair" : ""} ${idx > 0 ? "border-t border-rule-hair lg:border-t-0" : ""}`}
+                >
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="font-body text-sm font-semibold text-ink">{domain}</span>
+                    <span className={`font-mono text-lg font-bold ${weak ? "text-accent" : "text-ink"}`}>{Math.round(mastery * 100)}%</span>
+                  </div>
+                  <div className="h-[6px] border border-ink bg-paper">
+                    <div className={`h-full ${weak ? "bg-accent" : "bg-ink"}`} style={{ width: `${mastery * 100}%` }} />
+                  </div>
+                  <div className="font-mono text-[10px] tracking-wider text-ink-3">{data.totalCorrect}/{data.totalAnswers} correct</div>
+                  {data.weakestSkills?.length > 0 && (
+                    <div className="font-body text-[11px] italic text-accent">Weak: {data.weakestSkills.map(skillLabel).join(", ")}</div>
+                  )}
+                  {data.strongestSkills?.length > 0 && (
+                    <div className="font-body text-[11px] text-ink-2">Strong: {data.strongestSkills.map(skillLabel).join(", ")}</div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="border-2 border-ink bg-paper-card p-7">
+            <div className="kicker mb-1">The Assignment</div>
+            <h3 className="mb-5 font-display text-2xl font-bold leading-tight text-ink">Recommended Next Steps</h3>
             {profile.recommendations?.length > 0 ? (
-              <div className="flex flex-col gap-1.5">
+              <ol className="divide-y divide-rule-hair border-t-2 border-ink">
                 {profile.recommendations.slice(0, 5).map((rec: any, i: number) => {
                   const taxonomyKey = sourceToTaxonomyKey(rec.skill) || rec.skill;
                   const href = `/skills/${course}/${taxonomyKey}`;
                   return (
-                    <Link
-                      key={i}
-                      href={href}
-                      className="flex items-center gap-2.5 rounded-md border border-border-primary bg-bg-primary p-2.5 text-sm transition hover:border-panther-red/30"
-                    >
-                      <span className="w-6 font-bold text-panther-red">#{rec.priority}</span>
-                      <span className="font-semibold">{skillLabel(rec.skill)}</span>
-                      <span className="flex-1 text-xs text-text-muted">{rec.reason}</span>
-                      <span className="text-xs text-text-muted">›</span>
-                    </Link>
+                    <li key={i}>
+                      <Link
+                        href={href}
+                        className="flex items-center gap-3 py-3 font-body text-sm transition-colors hover:bg-paper"
+                      >
+                        <span className="w-10 font-mono text-base font-bold text-accent">#{rec.priority}</span>
+                        <span className="font-display text-base font-bold text-ink">{skillLabel(rec.skill)}</span>
+                        <span className="flex-1 text-xs italic text-ink-2">{rec.reason}</span>
+                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">Read &rarr;</span>
+                      </Link>
+                    </li>
                   );
                 })}
-              </div>
+              </ol>
             ) : (
-              <p className="text-sm text-text-muted">No recommendations yet.</p>
+              <p className="font-body text-base italic text-ink-2">No recommendations yet.</p>
             )}
-          </GlassCard>
+          </div>
         </>
       )}
 
@@ -931,11 +1096,21 @@ function TeacherStudentDrillDown({
 // SHARED
 // ============================================================
 
-function StatCard({ label, value, color }: { label: string; value: string; color: string }) {
+function StatCard({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
     <GlassCard className="text-center !p-4">
       <div className={`text-2xl font-bold tracking-tight ${color}`}>{value}</div>
       <div className="mt-1 text-[11px] uppercase tracking-wider text-text-muted">{label}</div>
     </GlassCard>
+  );
+}
+
+// Editorial stat cell — broadsheet "by the numbers" style, used across teacher overview.
+function EditorialStat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className="flex flex-col items-center justify-center border-rule-hair p-4 text-center [&:not(:first-child)]:border-l [&:nth-child(3)]:border-t sm:[&:nth-child(3)]:border-t-0">
+      <div className={`font-display text-3xl font-bold leading-none tracking-[-0.01em] ${accent ? "text-accent" : "text-ink"}`}>{value}</div>
+      <div className="kicker mt-2">{label}</div>
+    </div>
   );
 }

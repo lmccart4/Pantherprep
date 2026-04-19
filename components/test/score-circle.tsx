@@ -12,63 +12,45 @@ interface ScoreCircleProps {
 export function ScoreCircle({ correct, total, label, className }: ScoreCircleProps) {
   const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
 
-  const colorClass =
+  const accentClass =
     pct >= 80
-      ? "text-accent-green"
+      ? "text-green"
       : pct >= 60
-        ? "text-panther-red"
-        : pct >= 40
-          ? "text-accent-amber"
-          : "text-accent-red";
+      ? "text-ink"
+      : pct >= 40
+      ? "text-amber"
+      : "text-accent";
 
-  const strokeColor =
+  const barClass =
     pct >= 80
-      ? "#22c55e"
+      ? "bg-green"
       : pct >= 60
-        ? "var(--color-accent)"
-        : pct >= 40
-          ? "#f59e0b"
-          : "#ef4444";
-
-  const radius = 54;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (pct / 100) * circumference;
+      ? "bg-ink"
+      : pct >= 40
+      ? "bg-amber"
+      : "bg-accent";
 
   return (
     <div className={cn("flex flex-col items-center gap-2", className)}>
-      <div className="relative h-36 w-36 animate-[card-rise_0.5s_ease-out_forwards]">
-        <svg className="h-full w-full -rotate-90" viewBox="0 0 120 120">
-          <circle
-            cx="60"
-            cy="60"
-            r={radius}
-            fill="none"
-            stroke="rgba(255,255,255,0.05)"
-            strokeWidth="8"
-          />
-          <circle
-            cx="60"
-            cy="60"
-            r={radius}
-            fill="none"
-            stroke={strokeColor}
-            strokeWidth="8"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            className="transition-[stroke-dashoffset] duration-700 ease-out"
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className={cn("text-3xl font-bold", colorClass)}>{pct}%</span>
-          <span className="text-xs text-text-muted">
-            {correct}/{total}
-          </span>
-        </div>
-      </div>
       {label && (
-        <span className="text-sm font-medium text-text-secondary">{label}</span>
+        <span className="kicker">{label}</span>
       )}
+      <div className="flex items-baseline gap-1">
+        <span className={cn("font-display text-[4rem] leading-none font-bold", accentClass)}>
+          {pct}
+        </span>
+        <span className={cn("font-display text-2xl leading-none", accentClass)}>%</span>
+      </div>
+      <div className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+        {correct} / {total} correct
+      </div>
+      {/* Horizontal progress bar — replaces the SVG ring */}
+      <div className="mt-1 h-1.5 w-32 bg-rule-hair">
+        <div
+          className={cn("h-full transition-[width] duration-700 ease-out", barClass)}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
     </div>
   );
 }

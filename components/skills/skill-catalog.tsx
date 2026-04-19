@@ -109,50 +109,69 @@ export function SkillCatalog({
   const courseLabel = COURSES.find((c) => c.value === course)?.label ?? course;
   const teacherHasNoClasses = role === "teacher" && (classes?.length ?? 0) === 0;
 
+  const totalSkills = aggregated.length;
+  const totalDomains = domains.length;
+
   return (
-    <div className="mx-auto max-w-4xl">
-      {/* Breadcrumb + course switcher */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="text-xs text-text-muted">
-          <Link href="/dashboard" className="hover:text-text-secondary">
-            Dashboard
-          </Link>
-          {" / "}
-          <span className="text-text-secondary">Skills</span>
-          {" / "}
-          <span className="text-text-primary">{courseLabel}</span>
-        </div>
-        <select
-          value={course}
-          onChange={(e) => router.push(`/skills/${e.target.value}`)}
-          className=" border border-border-default bg-bg-surface px-3 py-1.5 text-xs text-text-secondary outline-none focus:border-panther-red"
-        >
-          {COURSES.map((c) => (
-            <option key={c.value} value={c.value}>
-              {c.label}
-            </option>
-          ))}
-        </select>
+    <div className="mx-auto max-w-[1240px]">
+      {/* Breadcrumb */}
+      <div className="mb-5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+        <Link href="/dashboard" className="hover:text-accent">Dashboard</Link>
+        <span className="mx-2 text-ink-4">/</span>
+        <span>Skills</span>
+        <span className="mx-2 text-ink-4">/</span>
+        <span className="text-ink">{courseLabel}</span>
       </div>
 
-      {/* Title */}
-      <h1 className="mb-1 font-display text-3xl tracking-[0.02em] text-ink sm:text-[2.4rem]">
-        Skill Catalog
-      </h1>
-      <p className="mb-6 text-sm text-text-muted">
-        {isStaff
-          ? `Class-wide mastery for ${courseLabel}. Click any skill to see details.`
-          : `Browse every skill for ${courseLabel}. Click a skill to see details and practice.`}
-      </p>
+      {/* Masthead */}
+      <header className="mb-8 border-b-2 border-ink pb-6">
+        <div className="flex flex-wrap items-start justify-between gap-6">
+          <div className="max-w-2xl">
+            <div className="mb-3 flex flex-wrap items-baseline gap-3">
+              <span className="bg-accent px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent-fg">
+                Skills Library
+              </span>
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+                {totalSkills} skills · {totalDomains} domains · {courseLabel}
+              </span>
+            </div>
+            <h1 className="font-display text-[clamp(44px,5vw,72px)] leading-[0.95] text-ink">
+              The full{" "}
+              <em className="text-accent" style={{ fontStyle: "italic" }}>
+                index
+              </em>
+              .
+            </h1>
+            <p className="mt-4 max-w-xl font-body text-[15px] italic leading-[1.55] text-ink-2">
+              {isStaff
+                ? `Class-wide mastery for ${courseLabel}. Click any tile to open the skill article and drill set.`
+                : `Every skill ${courseLabel} tests, grouped by domain and ranked by your mastery. Click any tile to open its article and drill set.`}
+            </p>
+          </div>
+          <select
+            value={course}
+            onChange={(e) => router.push(`/skills/${e.target.value}`)}
+            className="border-2 border-ink bg-paper-card px-3 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-ink outline-none"
+          >
+            {COURSES.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </header>
 
       {/* Teacher class picker */}
       {role === "teacher" && !teacherHasNoClasses && (
-        <div className="mb-4 flex items-center gap-2 text-xs text-text-muted">
-          <span>Class:</span>
+        <div className="mb-6 flex items-center gap-3">
+          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+            Class
+          </span>
           <select
             value={selectedClassId ?? "__all__"}
             onChange={(e) => onClassChange?.(e.target.value)}
-            className=" border border-border-default bg-bg-surface px-3 py-1.5 text-text-secondary outline-none focus:border-panther-red"
+            className="border-2 border-ink bg-paper-card px-3 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-ink outline-none"
           >
             <option value="__all__">All my classes (combined)</option>
             {classes!.map((c) => (
@@ -166,66 +185,88 @@ export function SkillCatalog({
 
       {/* Empty state: teacher with no classes */}
       {teacherHasNoClasses && (
-        <GlassCard className="mb-6">
-          <p className="text-sm text-text-muted">
-            You don’t have any classes yet. Create one from the dashboard to see class-wide skill distribution here.
+        <div className="card-paper mb-6 p-6">
+          <p className="font-body text-[15px] italic text-ink-2">
+            You don&rsquo;t have any classes yet. Create one from the dashboard to see class-wide skill distribution here.
           </p>
-        </GlassCard>
+        </div>
       )}
 
       {/* Mastery tier filter */}
       {!teacherHasNoClasses && (
-        <div className="mb-4 flex flex-wrap gap-2">
-          {(["all", "weak", "medium", "strong"] as TierFilter[]).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTierFilter(t)}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition ${
-                t === tierFilter
-                  ? "bg-panther-red text-ink"
-                  : "border border-border-primary bg-bg-secondary text-text-muted hover:text-text-secondary"
-              }`}
-            >
-              {isStaff ? STAFF_TIER_LABELS[t] : t}
-            </button>
-          ))}
+        <div className="mb-5 flex flex-wrap gap-2">
+          {(["all", "weak", "medium", "strong"] as TierFilter[]).map((t) => {
+            const active = t === tierFilter;
+            const label = isStaff ? STAFF_TIER_LABELS[t] : t;
+            return (
+              <button
+                key={t}
+                onClick={() => setTierFilter(t)}
+                className={`border-2 border-ink px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] transition-colors ${
+                  active
+                    ? "bg-ink text-paper"
+                    : "bg-paper-card text-ink hover:bg-ink hover:text-paper"
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
       )}
 
       {/* Domain tab strip */}
       {!teacherHasNoClasses && (
-        <div className="mb-5 flex flex-wrap gap-2">
-          {domains.map((d) => (
-            <button
-              key={d}
-              onClick={() => setActiveDomain(d)}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
-                d === activeDomain
-                  ? "bg-panther-red text-ink"
-                  : "border border-border-primary bg-bg-secondary text-text-muted hover:text-text-secondary"
-              }`}
-            >
-              {d}
-            </button>
-          ))}
+        <div className="mb-6 flex flex-wrap gap-2 border-b border-rule-hair pb-4">
+          {domains.map((d) => {
+            const active = d === activeDomain;
+            return (
+              <button
+                key={d}
+                onClick={() => setActiveDomain(d)}
+                className={`border-2 border-ink px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] transition-colors ${
+                  active
+                    ? "bg-accent text-accent-fg"
+                    : "bg-paper-card text-ink hover:bg-ink hover:text-paper"
+                }`}
+              >
+                {d}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Domain section heading */}
+      {!teacherHasNoClasses && activeDomain && (
+        <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
+          <h2 className="font-display text-[clamp(26px,3vw,40px)] leading-tight text-ink">
+            {activeDomain}{" "}
+            <em className="text-accent" style={{ fontStyle: "italic" }}>
+              · {filtered.length} {filtered.length === 1 ? "skill" : "skills"}
+            </em>
+          </h2>
+          <div className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+            {tierFilter === "all" ? "All tiers" : `Filter · ${isStaff ? STAFF_TIER_LABELS[tierFilter] : tierFilter}`}
+          </div>
         </div>
       )}
 
       {/* Skill rows */}
       {!teacherHasNoClasses && (filtered.length === 0 ? (
-        <GlassCard>
-          <p className="text-sm text-text-muted">
+        <div className="card-paper p-6">
+          <p className="font-body text-[15px] italic text-ink-2">
             No skills match the current filter.{" "}
             <button
               onClick={() => setTierFilter("all")}
-              className="text-panther-red hover:underline"
+              className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-accent hover:underline"
             >
-              Clear filters
+              Clear filters →
             </button>
           </p>
-        </GlassCard>
+        </div>
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map(({ key, data, distribution }) => (
             <SkillRow
               key={key}

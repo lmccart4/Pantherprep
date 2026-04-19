@@ -314,78 +314,81 @@ export function DiagnosticTest({
   // ── Landing Screen ──
   if (screen === "landing") {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-paper">
         <TopBar backHref="/home" backLabel="Home" />
         <div className="mx-auto max-w-2xl px-6 py-12">
-          <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: accentColor }}>
-            Diagnostic Test
-          </div>
-          <h1 className="mb-2 font-display text-4xl tracking-[0.02em] text-ink sm:text-[2.4rem]">
+          <div className="kicker mb-3">Diagnostic Test</div>
+          <h1 className="mb-3 font-display text-4xl leading-tight text-ink sm:text-[2.6rem]">
             {title}
           </h1>
-          <p className="mb-8 text-text-secondary">
+          <p className="mb-8 font-body text-base italic text-ink-2">
             Assess your current skill level to build a personalized study plan.
           </p>
 
-          <GlassCard className="mb-6">
-            <div className="grid grid-cols-1 gap-4 text-sm xs:grid-cols-2 sm:grid-cols-2">
+          <GlassCard raised className="mb-6">
+            <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 sm:grid-cols-2">
               <div>
-                <span className="text-xs uppercase tracking-wider text-text-muted">Questions</span>
-                <p className="text-lg font-semibold text-ink">
+                <span className="kicker">Questions</span>
+                <p className="mt-1 font-display text-2xl text-ink">
                   {questions.length > 0 ? questions.length : "~44"}
                 </p>
               </div>
               <div>
-                <span className="text-xs uppercase tracking-wider text-text-muted">Time Limit</span>
-                <p className="text-lg font-semibold leading-tight text-ink">
-                  {section === "math" ? "70" : "64"} min
-                  <span className="block text-xs font-normal text-text-muted">2 modules</span>
+                <span className="kicker">Time Limit</span>
+                <p className="mt-1 font-display text-2xl leading-tight text-ink">
+                  {section === "math" ? "70" : "64"}
+                  <span className="ml-1 font-mono text-sm font-bold uppercase tracking-[0.14em] text-ink-3">
+                    min
+                  </span>
+                  <span className="block font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-3">
+                    2 modules
+                  </span>
                 </p>
               </div>
               <div>
-                <span className="text-xs uppercase tracking-wider text-text-muted">Score Range</span>
-                <p className="text-lg font-semibold text-ink">
+                <span className="kicker">Score Range</span>
+                <p className="mt-1 font-display text-2xl text-ink">
                   {SCORE_RANGES[testType].min}&ndash;{SCORE_RANGES[testType].max}
                 </p>
               </div>
               <div>
-                <span className="text-xs uppercase tracking-wider text-text-muted">Format</span>
-                <p className="text-lg font-semibold text-ink">
-                  {section === "math" ? "MC + SPR" : "Multiple Choice"}
+                <span className="kicker">Format</span>
+                <p className="mt-1 font-display text-2xl text-ink">
+                  {section === "math" ? "MC + SPR" : "MC"}
                 </p>
               </div>
               <div>
-                <span className="text-xs uppercase tracking-wider text-text-muted">Domains</span>
-                <p className="text-lg font-semibold text-ink">{domains.length}</p>
+                <span className="kicker">Domains</span>
+                <p className="mt-1 font-display text-2xl text-ink">{domains.length}</p>
               </div>
             </div>
           </GlassCard>
 
-          <div className="mb-4">
-            <h3 className="mb-2 kicker">
-              Domains Covered
-            </h3>
+          <div className="mb-6">
+            <h3 className="mb-3 kicker">Domains Covered</h3>
             <div className="flex flex-wrap gap-2">
               {domains.map((d) => (
-                <span key={d} className="rounded-full bg-paper-card px-3 py-1 text-xs text-text-secondary">
+                <span
+                  key={d}
+                  className="border-2 border-ink bg-paper-card px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink"
+                >
                   {d}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="mt-8 flex gap-3">
+          <div className="mt-8 flex flex-wrap gap-3">
             <button
               onClick={handleStart}
               disabled={loading}
-              className=" px-8 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
-              style={{ backgroundColor: accentColor }}
+              className="border-2 border-ink bg-accent px-8 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink disabled:opacity-40"
             >
-              {loading ? "Loading..." : "Start Diagnostic"}
+              {loading ? "Loading..." : "Start Diagnostic →"}
             </button>
             <button
               onClick={handleResume}
-              className=" border border-border-default px-6 py-3 text-sm text-text-secondary transition-colors hover:border-border-light"
+              className="border-2 border-ink bg-paper-card px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
             >
               Resume Saved
             </button>
@@ -408,17 +411,15 @@ export function DiagnosticTest({
     }
 
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-paper">
         {/* Test Header */}
-        <div className="glass sticky top-0 z-40 border-b border-border-default px-6 py-3">
-          <div className="mx-auto flex max-w-5xl items-center justify-between">
+        <div className="sticky top-0 z-40 border-b-2 border-ink bg-paper-card px-6 py-3">
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <span className="text-sm font-semibold" style={{ color: accentColor }}>
-                {title}
-              </span>
+              <span className="font-display text-lg italic text-ink">{title}</span>
               {hasModules && (
-                <span className="rounded-full bg-paper-card px-3 py-0.5 text-xs font-medium text-text-secondary">
-                  Module {currentModule} of 2
+                <span className="border-2 border-ink bg-paper px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink">
+                  Mod {currentModule}/2
                 </span>
               )}
               <ProgressBar
@@ -427,28 +428,20 @@ export function DiagnosticTest({
                 className="w-48"
               />
             </div>
-            <div className="flex items-center gap-4">
-              {section === "math" && (
-                <div className="relative">
-                  <ReferenceSheet />
-                </div>
-              )}
+            <div className="flex items-center gap-3">
+              {section === "math" && <ReferenceSheet />}
               <Timer
                 key={timerKey}
                 initialSeconds={timeMinutes * 60}
                 onExpire={
-                  hasModules && currentModule === 1
-                    ? handleEndModule1
-                    : handleFinish
+                  hasModules && currentModule === 1 ? handleEndModule1 : handleFinish
                 }
               />
               <button
                 onClick={
-                  hasModules && currentModule === 1
-                    ? handleEndModule1
-                    : handleFinish
+                  hasModules && currentModule === 1 ? handleEndModule1 : handleFinish
                 }
-                className=" border border-border-default px-4 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-accent-red hover:text-accent-red"
+                className="border-2 border-ink bg-paper-card px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
               >
                 {hasModules && currentModule === 1 ? "End Module 1" : "Finish"}
               </button>
@@ -460,31 +453,32 @@ export function DiagnosticTest({
         <div className="mx-auto flex max-w-5xl gap-6 px-6 py-6">
           {/* Main Question */}
           <div className="flex-1">
-            <QuestionCard
-              question={q}
-              questionNumber={currentQ + 1}
-              selectedAnswer={answers[currentQ]}
-              onAnswer={handleAnswer}
-              showExplanation={!!showExplanations[currentQ]}
-              locked={!!submitted[currentQ]}
-            />
+            <GlassCard raised>
+              <QuestionCard
+                question={q}
+                questionNumber={currentQ + 1}
+                selectedAnswer={answers[currentQ]}
+                onAnswer={handleAnswer}
+                showExplanation={!!showExplanations[currentQ]}
+                locked={!!submitted[currentQ]}
+              />
+            </GlassCard>
 
             {/* Navigation buttons */}
             <div className="mt-6 flex items-center justify-between">
               <button
                 onClick={() => setCurrentQ((p) => Math.max(moduleStartIdx, p - 1))}
                 disabled={currentQ === moduleStartIdx}
-                className=" border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light disabled:opacity-30"
+                className="border-2 border-ink bg-paper-card px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper disabled:opacity-30"
               >
-                Previous
+                ← Previous
               </button>
 
               <div className="flex gap-3">
                 {!submitted[currentQ] && answers[currentQ] != null && (
                   <button
                     onClick={handleSubmit}
-                    className=" px-5 py-2 text-sm font-semibold text-ink transition-all hover:brightness-110"
-                    style={{ backgroundColor: accentColor }}
+                    className="border-2 border-ink bg-ink px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-paper transition-colors hover:bg-accent hover:text-accent-fg"
                   >
                     Submit
                   </button>
@@ -493,25 +487,23 @@ export function DiagnosticTest({
                 {currentQ < moduleEndIdx ? (
                   <button
                     onClick={() => setCurrentQ((p) => Math.min(moduleEndIdx, p + 1))}
-                    className=" border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light"
+                    className="border-2 border-ink bg-accent px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
                   >
-                    Next
+                    Next →
                   </button>
                 ) : hasModules && currentModule === 1 ? (
                   <button
                     onClick={handleEndModule1}
-                    className=" px-5 py-2 text-sm font-semibold text-ink"
-                    style={{ backgroundColor: accentColor }}
+                    className="border-2 border-ink bg-accent px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
                   >
-                    End Module 1
+                    End Module 1 →
                   </button>
                 ) : (
                   <button
                     onClick={handleFinish}
-                    className=" px-5 py-2 text-sm font-semibold text-ink"
-                    style={{ backgroundColor: accentColor }}
+                    className="border-2 border-ink bg-accent px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
                   >
-                    Finish Test
+                    Finish Test →
                   </button>
                 )}
               </div>
@@ -520,7 +512,7 @@ export function DiagnosticTest({
 
           {/* Side Navigator */}
           <div className="hidden w-64 shrink-0 lg:block">
-            <GlassCard className="sticky top-20">
+            <div className="sticky top-20 border-2 border-ink bg-paper-card p-4">
               {hasModules && (
                 <div className="mb-3 text-center kicker">
                   Module {currentModule} of 2
@@ -534,7 +526,7 @@ export function DiagnosticTest({
                 onJump={(localIdx) => setCurrentQ(localIdx + moduleStartIdx)}
                 onToggleFlag={(localIdx) => handleToggleFlag(localIdx + moduleStartIdx)}
               />
-            </GlassCard>
+            </div>
           </div>
         </div>
       </div>
@@ -544,31 +536,25 @@ export function DiagnosticTest({
   // ── Module Interstitial ──
   if (screen === "interstitial") {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-paper">
         <TopBar backHref="/home" backLabel="Home" />
         <div className="mx-auto flex max-w-xl flex-col items-center px-6 py-24 text-center">
-          <div
-            className="mb-6 flex h-20 w-20 items-center justify-center rounded-full"
-            style={{ backgroundColor: `${accentColor}20` }}
-          >
-            <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke={accentColor} strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <h2 className="mb-2 font-display text-2xl tracking-[0.02em] text-ink">
-            End of Module 1
-          </h2>
-          <p className="mb-8 text-text-secondary">
-            Great work! Take a moment to breathe, then click below to begin Module 2.
-            You will have {timeMinutes} minutes for the next module.
-          </p>
-          <button
-            onClick={handleStartModule2}
-            className=" px-8 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
-            style={{ backgroundColor: accentColor }}
-          >
-            Start Module 2
-          </button>
+          <GlassCard raised className="w-full">
+            <div className="kicker mb-3 text-green">Module 1 Complete</div>
+            <h2 className="mb-3 font-display text-3xl leading-tight text-ink">
+              End of <em className="text-accent not-italic">—</em> Module <span className="font-mono text-2xl font-bold">01</span>
+            </h2>
+            <p className="mb-8 font-body text-base italic text-ink-2">
+              Great work. Take a moment to breathe, then begin Module 2. You will have{" "}
+              <span className="font-mono not-italic text-ink">{timeMinutes}</span> minutes.
+            </p>
+            <button
+              onClick={handleStartModule2}
+              className="border-2 border-ink bg-accent px-8 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
+            >
+              Start Module 02 →
+            </button>
+          </GlassCard>
         </div>
       </div>
     );
@@ -576,35 +562,30 @@ export function DiagnosticTest({
 
   // ── Results Screen ──
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-paper">
       <TopBar backHref="/home" backLabel="Home" />
       <div className="mx-auto max-w-3xl px-6 py-12">
-        <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: accentColor }}>
-          Diagnostic Complete
-        </div>
-        <h1 className="mb-8 font-display text-[2.2rem] tracking-[0.02em] text-ink">
-          {title} Results
+        <div className="kicker mb-3 text-green">● Diagnostic Complete</div>
+        <h1 className="mb-8 font-display text-[2.4rem] leading-tight text-ink">
+          {title} <em className="text-accent">Results</em>
         </h1>
 
         {saveError && (
-          <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">
+          <div className="mb-6 border-2 border-amber bg-amber-soft px-4 py-3 font-body text-sm italic text-ink">
             Your score couldn&apos;t be saved. Check your connection and try reloading if you need to review this session.
           </div>
         )}
 
-        {/* Scaled Score */}
-        <GlassCard className="mb-8 text-center">
-          <div className="kicker mb-2">
-            Your Score
-          </div>
-          <div className="font-display text-[3.5rem] font-bold leading-none" style={{ color: accentColor }}>
+        {/* Scaled Score — hero card */}
+        <GlassCard raised className="mb-8 text-center">
+          <div className="kicker mb-3">Your Score</div>
+          <div className="font-display text-[5rem] font-bold leading-none text-ink">
             {scaledScore}
           </div>
-          <div className="mt-1 text-sm text-text-secondary">
-            out of {scoreMax}
-          </div>
-          <div className="mt-1 text-xs text-text-muted">
-            Range: {scoreMin}&ndash;{scoreMax}
+          <div className="mt-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-ink-3">
+            out of <span className="text-ink">{scoreMax}</span>
+            <span className="mx-2 text-ink-4">·</span>
+            range <span className="text-ink">{scoreMin}&ndash;{scoreMax}</span>
           </div>
         </GlassCard>
 
@@ -614,17 +595,22 @@ export function DiagnosticTest({
         </div>
 
         {/* Stats Grid */}
-        <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mb-8 grid grid-cols-2 gap-0 border-2 border-ink sm:grid-cols-4">
           {[
-            ["Correct", results.correct],
-            ["Incorrect", results.total - results.correct - results.skipped],
-            ["Skipped", results.skipped],
-            ["Accuracy", `${results.percentage}%`],
-          ].map(([label, value]) => (
-            <GlassCard key={label as string} className="text-center">
-              <div className="text-2xl font-bold text-ink">{value}</div>
-              <div className="text-xs text-text-muted">{label}</div>
-            </GlassCard>
+            ["Correct", results.correct, "text-green"],
+            ["Incorrect", results.total - results.correct - results.skipped, "text-accent"],
+            ["Skipped", results.skipped, "text-ink-3"],
+            ["Accuracy", `${results.percentage}%`, "text-ink"],
+          ].map(([label, value, tone], i) => (
+            <div
+              key={label as string}
+              className={`bg-paper-card p-5 text-center ${
+                i > 0 ? "border-t-2 border-ink sm:border-l-2 sm:border-t-0" : ""
+              }`}
+            >
+              <div className={`font-display text-3xl font-bold ${tone as string}`}>{value}</div>
+              <div className="kicker mt-1">{label}</div>
+            </div>
           ))}
         </div>
 
@@ -632,43 +618,37 @@ export function DiagnosticTest({
         {(strengths.length > 0 || focusAreas.length > 0) && (
           <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {strengths.length > 0 && (
-              <GlassCard>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-green-400">
-                  Strengths
-                </h3>
+              <div className="border-2 border-green bg-green-soft p-5">
+                <h3 className="kicker mb-3 text-green">● Strengths</h3>
                 <ul className="flex flex-col gap-2">
                   {strengths.map((d) => (
-                    <li key={d} className="flex items-center gap-2 text-sm text-text-primary">
-                      <span className="h-2 w-2 shrink-0 rounded-full bg-green-400" />
+                    <li key={d} className="flex items-center gap-2 font-body text-sm text-ink">
+                      <span className="h-2 w-2 shrink-0 bg-green" />
                       {d}
                     </li>
                   ))}
                 </ul>
-              </GlassCard>
+              </div>
             )}
             {focusAreas.length > 0 && (
-              <GlassCard>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-amber-400">
-                  Focus Areas
-                </h3>
+              <div className="border-2 border-amber bg-amber-soft p-5">
+                <h3 className="kicker mb-3 text-amber">● Focus Areas</h3>
                 <ul className="flex flex-col gap-2">
                   {focusAreas.map((d) => (
-                    <li key={d} className="flex items-center gap-2 text-sm text-text-primary">
-                      <span className="h-2 w-2 shrink-0 rounded-full bg-amber-400" />
+                    <li key={d} className="flex items-center gap-2 font-body text-sm text-ink">
+                      <span className="h-2 w-2 shrink-0 bg-amber" />
                       {d}
                     </li>
                   ))}
                 </ul>
-              </GlassCard>
+              </div>
             )}
           </div>
         )}
 
         {/* Domain Breakdown */}
         <GlassCard className="mb-8">
-          <h3 className="mb-4 kicker">
-            Performance by Domain
-          </h3>
+          <h3 className="mb-4 kicker">Performance by Domain</h3>
           <DomainBreakdown stats={results.domainStats} />
         </GlassCard>
 
@@ -683,26 +663,21 @@ export function DiagnosticTest({
         />
 
         {/* Post-Test Reflection */}
-        <div className="mb-8 rounded-2xl border border-ink/20 bg-[rgba(15,15,22,.75)] p-6 -[20px]">
-          <div className="mb-5 flex items-center gap-2">
-            <svg className="h-5 w-5 text-ink/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-            </svg>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-ink/70">
-              Post-Test Reflection
-            </h3>
-          </div>
+        <div className="mb-8 border-2 border-ink bg-paper-card p-6">
+          <div className="mb-5 kicker">● Post-Test Reflection</div>
           <div className="flex flex-col gap-5">
             {(REFLECTION_PROMPTS[`${testType}-${section}`] ?? []).map((prompt, idx) => (
               <div key={idx}>
-                <label className="mb-1.5 block text-sm text-ink/70">{prompt}</label>
+                <label className="mb-2 block font-body text-sm italic text-ink-2">
+                  {prompt}
+                </label>
                 <textarea
                   value={reflections[idx] ?? ""}
                   onChange={(e) =>
                     setReflections((prev) => ({ ...prev, [idx]: e.target.value }))
                   }
                   rows={2}
-                  className="w-full resize-y rounded-lg border border-ink/20 bg-[rgba(10,10,16,.8)] px-3 py-2 text-sm text-ink placeholder-white/30 outline-none transition-colors focus:border-ink/20"
+                  className="w-full resize-y border-2 border-rule-hair bg-paper px-3 py-2 font-body text-sm text-ink outline-none transition-colors focus:border-ink focus:shadow-[3px_3px_0_var(--color-ink)]"
                   placeholder="Type your reflection..."
                 />
               </div>
@@ -712,12 +687,13 @@ export function DiagnosticTest({
 
         {/* Question Review */}
         <GlassCard>
-          <h3 className="mb-4 kicker">
-            Question Review
-          </h3>
+          <h3 className="mb-4 kicker">Question Review</h3>
           <div className="flex flex-col gap-6">
             {questions.map((q, i) => (
-              <div key={q.id} className="border-t border-border-default pt-4 first:border-0 first:pt-0">
+              <div
+                key={q.id}
+                className="border-t-2 border-rule-hair pt-5 first:border-0 first:pt-0"
+              >
                 <QuestionCard
                   question={q}
                   questionNumber={i + 1}
@@ -732,12 +708,12 @@ export function DiagnosticTest({
         </GlassCard>
 
         {/* Actions */}
-        <div className="mt-8 flex justify-center gap-4">
+        <div className="mt-8 flex justify-center gap-3">
           <a
             href="/home"
-            className=" border border-border-default px-6 py-3 text-sm text-text-secondary transition-colors hover:border-border-light"
+            className="border-2 border-ink bg-paper-card px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
           >
-            Back to Home
+            ← Home
           </a>
           <button
             onClick={() => {
@@ -750,10 +726,9 @@ export function DiagnosticTest({
               setCurrentModule(1);
               setTimerKey((k) => k + 1);
             }}
-            className=" px-6 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
-            style={{ backgroundColor: accentColor }}
+            className="border-2 border-ink bg-accent px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
           >
-            Retake Diagnostic
+            Retake Diagnostic →
           </button>
         </div>
       </div>

@@ -295,54 +295,74 @@ export function PracticeTest({
 
   // -- Landing Screen --
   if (screen === "landing") {
+    const totalMin = rwTime[0] + rwTime[1] + mathTime[0] + mathTime[1];
+    const modules: [string, string, number][] = [
+      ["R&W", "01", rwTime[0]],
+      ["R&W", "02", rwTime[1]],
+      ["Math", "01", mathTime[0]],
+      ["Math", "02", mathTime[1]],
+    ];
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-paper">
         <TopBar backHref="/home" backLabel="Home" />
         <div className="mx-auto max-w-2xl px-6 py-12">
-          <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: accentColor }}>
-            Full Practice Test
-          </div>
-          <h1 className="mb-2 font-display text-[2.4rem] tracking-[0.02em] text-ink">{title}</h1>
-          <p className="mb-8 text-text-secondary">
-            A complete {testType === "sat" ? "SAT" : testType === "nmsqt" ? "PSAT/NMSQT" : "PSAT 8/9"} practice test
-            with all 4 modules.
+          <div className="kicker mb-3">Full Practice Test</div>
+          <h1 className="mb-3 font-display text-[2.6rem] leading-tight text-ink">
+            {title}
+          </h1>
+          <p className="mb-8 font-body text-base italic text-ink-2">
+            A complete{" "}
+            {testType === "sat" ? "SAT" : testType === "nmsqt" ? "PSAT/NMSQT" : "PSAT 8/9"}{" "}
+            practice test — all four modules, scored end-to-end.
           </p>
 
-          <GlassCard className="mb-6">
-            <h3 className="mb-3 kicker">Test Structure</h3>
-            <div className="flex flex-col gap-2 text-sm">
-              {[
-                [`R&W Module 1`, `${rwTime[0]} min`],
-                [`R&W Module 2`, `${rwTime[1]} min`],
-                [`Math Module 1`, `${mathTime[0]} min`],
-                [`Math Module 2`, `${mathTime[1]} min`],
-              ].map(([mod, time]) => (
-                <div key={mod} className="flex justify-between">
-                  <span className="text-text-secondary">{mod}</span>
-                  <span className="text-text-muted">{time}</span>
+          {/* Module cards — paper-card grid */}
+          <div className="mb-6 grid grid-cols-2 gap-0 border-2 border-ink">
+            {modules.map(([sect, mod, min], i) => (
+              <div
+                key={i}
+                className={`bg-paper-card p-5 ${
+                  i % 2 === 1 ? "border-l-2 border-ink" : ""
+                } ${i >= 2 ? "border-t-2 border-ink" : ""}`}
+              >
+                <div className="kicker">{sect}</div>
+                <div className="mt-1 flex items-baseline gap-2">
+                  <span className="font-display text-3xl font-bold leading-none text-ink">
+                    {mod}
+                  </span>
+                  <span className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-ink-3">
+                    {min} min
+                  </span>
                 </div>
-              ))}
-              <div className="mt-2 flex justify-between border-t border-border-default pt-2 font-semibold">
-                <span className="text-text-primary">Total</span>
-                <span className="text-text-primary">{rwTime[0] + rwTime[1] + mathTime[0] + mathTime[1]} min</span>
               </div>
-            </div>
-          </GlassCard>
+            ))}
+          </div>
+
+          <div className="mb-8 flex items-baseline justify-between border-t-2 border-b-2 border-ink py-3">
+            <span className="kicker">Total Time</span>
+            <span className="font-display text-2xl font-bold text-ink">
+              {totalMin}
+              <span className="ml-1 font-mono text-sm font-bold uppercase tracking-[0.14em] text-ink-3">
+                min
+              </span>
+            </span>
+          </div>
 
           {/* Mode selection */}
           <div className="mb-6">
             <h3 className="mb-2 kicker">Test Mode</h3>
-            <div className="flex gap-3">
-              {(["timed", "practice"] as Mode[]).map((m) => (
+            <div className="flex gap-0 border-2 border-ink">
+              {(["timed", "practice"] as Mode[]).map((m, i) => (
                 <button
                   key={m}
                   onClick={() => setMode(m)}
-                  className={` border px-5 py-2.5 text-sm capitalize transition-all ${
+                  className={`flex-1 px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.14em] transition-colors ${
+                    i === 1 ? "border-l-2 border-ink" : ""
+                  } ${
                     mode === m
-                      ? "border-transparent text-ink"
-                      : "border-border-default text-text-muted hover:border-border-light"
+                      ? "bg-ink text-paper"
+                      : "bg-paper-card text-ink hover:bg-paper-2"
                   }`}
-                  style={mode === m ? { backgroundColor: accentColor } : undefined}
                 >
                   {m}
                 </button>
@@ -353,22 +373,23 @@ export function PracticeTest({
           {/* Check mode */}
           <div className="mb-8">
             <h3 className="mb-2 kicker">Review Answers</h3>
-            <div className="flex gap-3">
+            <div className="flex gap-0 border-2 border-ink">
               {(
                 [
                   ["each", "After Each Question"],
                   ["end", "At the End"],
                 ] as [CheckMode, string][]
-              ).map(([c, label]) => (
+              ).map(([c, label], i) => (
                 <button
                   key={c}
                   onClick={() => setCheckMode(c)}
-                  className={` border px-5 py-2.5 text-sm transition-all ${
+                  className={`flex-1 px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.14em] transition-colors ${
+                    i === 1 ? "border-l-2 border-ink" : ""
+                  } ${
                     checkMode === c
-                      ? "border-transparent text-ink"
-                      : "border-border-default text-text-muted hover:border-border-light"
+                      ? "bg-ink text-paper"
+                      : "bg-paper-card text-ink hover:bg-paper-2"
                   }`}
-                  style={checkMode === c ? { backgroundColor: accentColor } : undefined}
                 >
                   {label}
                 </button>
@@ -379,10 +400,9 @@ export function PracticeTest({
           <button
             onClick={handleStart}
             disabled={loading}
-            className=" px-8 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
-            style={{ backgroundColor: accentColor }}
+            className="border-2 border-ink bg-accent px-8 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink disabled:opacity-40"
           >
-            {loading ? "Loading..." : "Begin Test"}
+            {loading ? "Loading..." : "Begin Test →"}
           </button>
         </div>
       </div>
@@ -394,23 +414,30 @@ export function PracticeTest({
     const sec = sections[sectionIdx];
     const modQs = sec?.modules[moduleIdx] ?? [];
     return (
-      <div className="flex min-h-screen items-center justify-center px-6">
-        <GlassCard className="max-w-lg text-center">
-          <h2 className="mb-2 font-display text-[1.8rem] text-ink">
-            {sec?.name} — Module {moduleIdx + 1}
+      <div className="flex min-h-screen items-center justify-center bg-paper px-6">
+        <GlassCard raised className="max-w-lg text-center">
+          <div className="kicker mb-3">Next Up</div>
+          <h2 className="mb-3 font-display text-[2rem] leading-tight text-ink">
+            {sec?.name} <em className="text-accent">—</em> Module{" "}
+            <span className="font-mono text-2xl font-bold">
+              {String(moduleIdx + 1).padStart(2, "0")}
+            </span>
           </h2>
-          <p className="mb-4 text-sm text-text-secondary">
-            {modQs.length} questions · {sec?.time[moduleIdx]} minutes
+          <p className="mb-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-ink-3">
+            <span className="text-ink">{modQs.length}</span> questions
+            <span className="mx-2 text-ink-4">·</span>
+            <span className="text-ink">{sec?.time[moduleIdx]}</span> minutes
           </p>
           {sectionIdx === 1 && moduleIdx === 0 && (
-            <p className="mb-4 text-xs text-text-muted">Calculator allowed for all Math questions.</p>
+            <p className="mb-4 font-body text-sm italic text-ink-2">
+              Calculator allowed for all Math questions.
+            </p>
           )}
           <button
             onClick={handleResumeFromBreak}
-            className=" px-8 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
-            style={{ backgroundColor: accentColor }}
+            className="mt-4 border-2 border-ink bg-accent px-8 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
           >
-            Begin Module
+            Begin Module →
           </button>
         </GlassCard>
       </div>
@@ -431,21 +458,21 @@ export function PracticeTest({
     const qId = qid(currentQ);
 
     return (
-      <div className="min-h-screen">
-        <div className="glass sticky top-0 z-40 border-b border-border-default px-6 py-3">
-          <div className="mx-auto flex max-w-5xl items-center justify-between">
+      <div className="min-h-screen bg-paper">
+        <div className="sticky top-0 z-40 border-b-2 border-ink bg-paper-card px-6 py-3">
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <span className="text-sm font-semibold" style={{ color: accentColor }}>
-                {currentSection?.short} Mod {moduleIdx + 1}
+              <span className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-ink">
+                {currentSection?.short}
+                <span className="mx-2 text-ink-4">·</span>
+                <span className="text-accent">
+                  MOD {String(moduleIdx + 1).padStart(2, "0")}
+                </span>
               </span>
               <ProgressBar current={questionIdx} total={currentModule.length} className="w-48" />
             </div>
-            <div className="flex items-center gap-4">
-              {sectionIdx === 1 && (
-                <div className="relative">
-                  <ReferenceSheet />
-                </div>
-              )}
+            <div className="flex items-center gap-3">
+              {sectionIdx === 1 && <ReferenceSheet />}
               {mode === "timed" && (
                 <Timer
                   key={timerKey}
@@ -455,7 +482,7 @@ export function PracticeTest({
               )}
               <button
                 onClick={handleAdvanceModule}
-                className=" border border-border-default px-4 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-accent-red hover:text-accent-red"
+                className="border-2 border-ink bg-paper-card px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
               >
                 {isLastQuestion ? "Next Module" : "End Module"}
               </button>
@@ -465,30 +492,31 @@ export function PracticeTest({
 
         <div className="mx-auto flex max-w-5xl gap-6 px-6 py-6">
           <div className="flex-1">
-            <QuestionCard
-              question={currentQ}
-              questionNumber={questionIdx + 1}
-              selectedAnswer={answers[qId]}
-              onAnswer={handleAnswer}
-              showExplanation={!!explanations[qId]}
-              locked={!!submitted[qId]}
-            />
+            <GlassCard raised>
+              <QuestionCard
+                question={currentQ}
+                questionNumber={questionIdx + 1}
+                selectedAnswer={answers[qId]}
+                onAnswer={handleAnswer}
+                showExplanation={!!explanations[qId]}
+                locked={!!submitted[qId]}
+              />
+            </GlassCard>
 
             <div className="mt-6 flex items-center justify-between">
               <button
                 onClick={() => setQuestionIdx((p) => Math.max(0, p - 1))}
                 disabled={questionIdx === 0}
-                className=" border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light disabled:opacity-30"
+                className="border-2 border-ink bg-paper-card px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper disabled:opacity-30"
               >
-                Previous
+                ← Previous
               </button>
 
               <div className="flex gap-3">
                 {!submitted[qId] && answers[qId] != null && (
                   <button
                     onClick={handleSubmit}
-                    className=" px-5 py-2 text-sm font-semibold text-ink transition-all hover:brightness-110"
-                    style={{ backgroundColor: accentColor }}
+                    className="border-2 border-ink bg-ink px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-paper transition-colors hover:bg-accent hover:text-accent-fg"
                   >
                     Submit
                   </button>
@@ -497,17 +525,16 @@ export function PracticeTest({
                 {!isLastQuestion ? (
                   <button
                     onClick={() => setQuestionIdx((p) => p + 1)}
-                    className=" border border-border-default px-5 py-2 text-sm text-text-secondary transition-colors hover:border-border-light"
+                    className="border-2 border-ink bg-accent px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
                   >
-                    Next
+                    Next →
                   </button>
                 ) : (
                   <button
                     onClick={handleAdvanceModule}
-                    className=" px-5 py-2 text-sm font-semibold text-ink"
-                    style={{ backgroundColor: accentColor }}
+                    className="border-2 border-ink bg-accent px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
                   >
-                    Next Module
+                    Next Module →
                   </button>
                 )}
               </div>
@@ -515,7 +542,7 @@ export function PracticeTest({
           </div>
 
           <div className="hidden w-64 shrink-0 lg:block">
-            <GlassCard className="sticky top-20">
+            <div className="sticky top-20 border-2 border-ink bg-paper-card p-4">
               <QuestionNavigator
                 total={currentModule.length}
                 current={questionIdx}
@@ -524,7 +551,7 @@ export function PracticeTest({
                 onJump={setQuestionIdx}
                 onToggleFlag={handleToggleFlag}
               />
-            </GlassCard>
+            </div>
           </div>
         </div>
       </div>
@@ -564,32 +591,45 @@ export function PracticeTest({
   const focusAreas = allDomainStats.filter((d) => d.total > 0 && (d.correct / d.total) < 0.7);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-paper">
       <TopBar backHref="/home" backLabel="Home" />
       <div className="mx-auto max-w-3xl px-6 py-12">
-        <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: accentColor }}>
-          Practice Test Complete
-        </div>
-        <h1 className="mb-8 font-display text-[2.2rem] tracking-[0.02em] text-ink">{title} Results</h1>
+        <div className="kicker mb-3 text-green">● Practice Test Complete</div>
+        <h1 className="mb-8 font-display text-[2.4rem] leading-tight text-ink">
+          {title} <em className="text-accent">Results</em>
+        </h1>
 
         {saveError && (
-          <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">
+          <div className="mb-6 border-2 border-amber bg-amber-soft px-4 py-3 font-body text-sm italic text-ink">
             Your score couldn&apos;t be saved. Check your connection and try reloading if you need to review this session.
           </div>
         )}
 
-        {/* Composite Score */}
-        <GlassCard className="mb-8 text-center">
-          <div className="text-5xl font-bold text-ink">{composite}</div>
-          <div className="mt-1 text-sm text-text-muted">Composite Score ({scaleMin * 2}–{(scaleMin + scaleRange) * 2})</div>
-          <div className="mt-4 flex justify-center gap-8">
-            <div>
-              <div className="text-2xl font-bold" style={{ color: accentColor }}>{rwScaled}</div>
-              <div className="text-xs text-text-muted">R&W ({scaleMin}–{scaleMin + scaleRange})</div>
+        {/* Composite Score — hero */}
+        <GlassCard raised className="mb-8 text-center">
+          <div className="kicker mb-3">Composite Score</div>
+          <div className="font-display text-[5.5rem] font-bold leading-none text-ink">
+            {composite}
+          </div>
+          <div className="mt-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-ink-3">
+            out of <span className="text-ink">{(scaleMin + scaleRange) * 2}</span>
+            <span className="mx-2 text-ink-4">·</span>
+            range <span className="text-ink">{scaleMin * 2}&ndash;{(scaleMin + scaleRange) * 2}</span>
+          </div>
+          <div className="mt-6 grid grid-cols-2 gap-0 border-2 border-ink">
+            <div className="bg-paper p-4">
+              <div className="kicker mb-1">R&W</div>
+              <div className="font-display text-3xl font-bold text-ink">{rwScaled}</div>
+              <div className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-3">
+                {scaleMin}&ndash;{scaleMin + scaleRange}
+              </div>
             </div>
-            <div>
-              <div className="text-2xl font-bold" style={{ color: accentColor }}>{mathScaled}</div>
-              <div className="text-xs text-text-muted">Math ({scaleMin}–{scaleMin + scaleRange})</div>
+            <div className="border-l-2 border-ink bg-paper p-4">
+              <div className="kicker mb-1">Math</div>
+              <div className="font-display text-3xl font-bold text-ink">{mathScaled}</div>
+              <div className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-3">
+                {scaleMin}&ndash;{scaleMin + scaleRange}
+              </div>
             </div>
           </div>
         </GlassCard>
@@ -597,63 +637,66 @@ export function PracticeTest({
         {/* NMSQT National Merit Banner */}
         {testType === "nmsqt" && (
           <div
-            className={`mb-8 rounded-2xl border px-6 py-4 text-sm ${
+            className={`mb-8 border-2 px-6 py-4 ${
               composite >= 1480
-                ? "border-green-500/30 bg-green-500/10 text-green-300"
+                ? "border-green bg-green-soft"
                 : composite >= 1400
-                ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
-                : "border-ink/20 bg-[rgba(15,15,22,.75)] text-text-secondary"
+                ? "border-amber bg-amber-soft"
+                : "border-ink bg-paper-card"
             }`}
           >
-            <div className="mb-1 font-semibold">
-              Selection Index: {composite}
+            <div className="kicker mb-1">
+              Selection Index: <span className="text-ink">{composite}</span>
             </div>
-            {composite >= 1480
-              ? "Your Selection Index is in the range typically needed for National Merit Semifinalist status!"
-              : composite >= 1400
-              ? "Your Selection Index is approaching the competitive range for National Merit recognition."
-              : "National Merit Semifinalist cutoffs are typically around 1480+. Keep working toward your goal!"}
+            <p className="font-body text-sm italic text-ink-2">
+              {composite >= 1480
+                ? "Your Selection Index is in the range typically needed for National Merit Semifinalist status."
+                : composite >= 1400
+                ? "Your Selection Index is approaching the competitive range for National Merit recognition."
+                : "National Merit Semifinalist cutoffs are typically around 1480+. Keep working toward your goal."}
+            </p>
           </div>
         )}
 
         {/* PSAT 8/9 Readiness Assessment */}
         {testType === "psat89" && (
           <div
-            className={`mb-8 rounded-2xl border px-6 py-4 text-sm ${
+            className={`mb-8 border-2 px-6 py-4 ${
               overallAccuracy >= 80
-                ? "border-green-500/30 bg-green-500/10 text-green-300"
+                ? "border-green bg-green-soft"
                 : overallAccuracy >= 60
-                ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
-                : "border-blue-500/30 bg-blue-500/10 text-blue-300"
+                ? "border-amber bg-amber-soft"
+                : "border-ink bg-paper-card"
             }`}
           >
-            <div className="mb-1 font-semibold">
+            <div className="kicker mb-1">
               {overallAccuracy >= 80
-                ? "Excellent Foundation!"
+                ? "● Excellent Foundation"
                 : overallAccuracy >= 60
-                ? "Solid Start!"
-                : "Building Blocks"}
+                ? "● Solid Start"
+                : "● Building Blocks"}
             </div>
-            {overallAccuracy >= 80
-              ? "You show strong readiness for the PSAT/NMSQT."
-              : overallAccuracy >= 60
-              ? "You have a good foundation to build on."
-              : "Focus on strengthening foundational skills before moving to PSAT/NMSQT prep."}
+            <p className="font-body text-sm italic text-ink-2">
+              {overallAccuracy >= 80
+                ? "You show strong readiness for the PSAT/NMSQT."
+                : overallAccuracy >= 60
+                ? "You have a good foundation to build on."
+                : "Focus on strengthening foundational skills before moving to PSAT/NMSQT prep."}
+            </p>
           </div>
         )}
 
         {/* Review Tabs */}
-        <div className="mb-6 flex gap-2 border-b border-border-default">
+        <div className="mb-6 flex border-b-2 border-ink">
           {(["overview", "rw", "math", "reflect"] as ReviewTab[]).map((tab) => (
             <button
               key={tab}
               onClick={() => setReviewTab(tab)}
-              className={`border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
+              className={`-mb-0.5 border-b-4 px-4 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.14em] transition-colors ${
                 reviewTab === tab
-                  ? "border-current text-ink"
-                  : "border-transparent text-text-muted hover:text-text-secondary"
+                  ? "border-accent text-ink"
+                  : "border-transparent text-ink-3 hover:text-ink"
               }`}
-              style={reviewTab === tab ? { color: accentColor } : undefined}
             >
               {tab === "overview" ? "Overview" : tab === "rw" ? "Reading & Writing" : tab === "math" ? "Math" : "Reflect"}
             </button>
@@ -663,59 +706,80 @@ export function PracticeTest({
         {/* Overview Tab */}
         {reviewTab === "overview" && (
           <>
-            <div className="mb-8 flex justify-center gap-8">
+            <div className="mb-8 flex justify-center gap-12">
               <ScoreCircle correct={rwCorrect} total={rwQuestions.length} label="R&W" />
               <ScoreCircle correct={mathCorrect} total={mathQuestions.length} label="Math" />
             </div>
 
-            <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div className="mb-8 grid grid-cols-2 gap-0 border-2 border-ink sm:grid-cols-4">
               {[
-                ["Total Correct", totalCorrect],
-                ["Total Questions", allQuestions.length],
-                ["Skipped", allQuestions.length - Object.keys(answers).filter((k) => answers[k]).length],
-                ["Accuracy", `${overallAccuracy}%`],
-              ].map(([label, value]) => (
-                <GlassCard key={label as string} className="text-center">
-                  <div className="text-2xl font-bold text-ink">{value}</div>
-                  <div className="text-xs text-text-muted">{label}</div>
-                </GlassCard>
+                ["Correct", totalCorrect, "text-green"],
+                ["Total", allQuestions.length, "text-ink"],
+                [
+                  "Skipped",
+                  allQuestions.length - Object.keys(answers).filter((k) => answers[k]).length,
+                  "text-ink-3",
+                ],
+                ["Accuracy", `${overallAccuracy}%`, "text-ink"],
+              ].map(([label, value, tone], i) => (
+                <div
+                  key={label as string}
+                  className={`bg-paper-card p-5 text-center ${
+                    i > 0 ? "border-t-2 border-ink sm:border-l-2 sm:border-t-0" : ""
+                  }`}
+                >
+                  <div className={`font-display text-3xl font-bold ${tone as string}`}>
+                    {value}
+                  </div>
+                  <div className="kicker mt-1">{label}</div>
+                </div>
               ))}
             </div>
 
             {/* Strengths & Focus Areas */}
             <div className="mb-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-green-500/20 bg-[rgba(15,15,22,.75)] p-5 -[20px]">
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-green-400">Strengths</h3>
+              <div className="border-2 border-green bg-green-soft p-5">
+                <h3 className="kicker mb-3 text-green">● Strengths</h3>
                 {strengths.length > 0 ? (
                   <ul className="flex flex-col gap-2">
                     {strengths.map((d) => (
-                      <li key={d.domain} className="flex items-center justify-between text-sm">
-                        <span className="text-text-secondary">{d.domain}</span>
-                        <span className="font-medium text-green-400">
+                      <li
+                        key={d.domain}
+                        className="flex items-center justify-between border-t-2 border-rule-hair pt-2 text-sm first:border-0 first:pt-0"
+                      >
+                        <span className="font-body text-ink">{d.domain}</span>
+                        <span className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-green">
                           {d.total > 0 ? Math.round((d.correct / d.total) * 100) : 0}%
                         </span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-sm text-text-muted">Keep practicing to build strengths!</p>
+                  <p className="font-body text-sm italic text-ink-2">
+                    Keep practicing to build strengths.
+                  </p>
                 )}
               </div>
-              <div className="rounded-2xl border border-amber-500/20 bg-[rgba(15,15,22,.75)] p-5 -[20px]">
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-amber-400">Focus Areas</h3>
+              <div className="border-2 border-amber bg-amber-soft p-5">
+                <h3 className="kicker mb-3 text-amber">● Focus Areas</h3>
                 {focusAreas.length > 0 ? (
                   <ul className="flex flex-col gap-2">
                     {focusAreas.map((d) => (
-                      <li key={d.domain} className="flex items-center justify-between text-sm">
-                        <span className="text-text-secondary">{d.domain}</span>
-                        <span className="font-medium text-amber-400">
+                      <li
+                        key={d.domain}
+                        className="flex items-center justify-between border-t-2 border-rule-hair pt-2 text-sm first:border-0 first:pt-0"
+                      >
+                        <span className="font-body text-ink">{d.domain}</span>
+                        <span className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-amber">
                           {d.total > 0 ? Math.round((d.correct / d.total) * 100) : 0}%
                         </span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-sm text-text-muted">Great job — no weak areas detected!</p>
+                  <p className="font-body text-sm italic text-ink-2">
+                    No weak areas detected.
+                  </p>
                 )}
               </div>
             </div>
@@ -746,9 +810,7 @@ export function PracticeTest({
         {reviewTab === "rw" && (
           <>
             <GlassCard className="mb-6">
-              <h3 className="mb-4 kicker">
-                R&W Domain Breakdown
-              </h3>
+              <h3 className="mb-4 kicker">R&W Domain Breakdown</h3>
               <DomainBreakdown stats={rwDomainStats} />
             </GlassCard>
             <WeakSkillsCallout
@@ -761,12 +823,13 @@ export function PracticeTest({
               }))}
             />
             <GlassCard>
-              <h3 className="mb-4 kicker">
-                Question Review
-              </h3>
+              <h3 className="mb-4 kicker">Question Review</h3>
               <div className="flex flex-col gap-6">
                 {rwQuestions.map((q, i) => (
-                  <div key={q.id} className="border-t border-border-default pt-4 first:border-0 first:pt-0">
+                  <div
+                    key={q.id}
+                    className="border-t-2 border-rule-hair pt-5 first:border-0 first:pt-0"
+                  >
                     <QuestionCard
                       question={q}
                       questionNumber={i + 1}
@@ -786,9 +849,7 @@ export function PracticeTest({
         {reviewTab === "math" && (
           <>
             <GlassCard className="mb-6">
-              <h3 className="mb-4 kicker">
-                Math Domain Breakdown
-              </h3>
+              <h3 className="mb-4 kicker">Math Domain Breakdown</h3>
               <DomainBreakdown stats={mathDomainStats} />
             </GlassCard>
             <WeakSkillsCallout
@@ -801,12 +862,13 @@ export function PracticeTest({
               }))}
             />
             <GlassCard>
-              <h3 className="mb-4 kicker">
-                Question Review
-              </h3>
+              <h3 className="mb-4 kicker">Question Review</h3>
               <div className="flex flex-col gap-6">
                 {mathQuestions.map((q, i) => (
-                  <div key={q.id} className="border-t border-border-default pt-4 first:border-0 first:pt-0">
+                  <div
+                    key={q.id}
+                    className="border-t-2 border-rule-hair pt-5 first:border-0 first:pt-0"
+                  >
                     <QuestionCard
                       question={q}
                       questionNumber={i + 1}
@@ -826,11 +888,8 @@ export function PracticeTest({
         {reviewTab === "reflect" && (
           <div className="flex flex-col gap-5">
             {REFLECTION_PROMPTS[testType].map((prompt, idx) => (
-              <div
-                key={idx}
-                className="rounded-2xl border border-ink/20 bg-[rgba(15,15,22,.75)] p-5 -[20px]"
-              >
-                <label className="mb-2 block text-sm font-medium text-text-secondary">
+              <div key={idx} className="border-2 border-ink bg-paper-card p-5">
+                <label className="mb-2 block font-body text-sm italic text-ink-2">
                   {prompt}
                 </label>
                 <textarea
@@ -840,7 +899,7 @@ export function PracticeTest({
                   }
                   placeholder="Type your reflection here..."
                   rows={3}
-                  className="w-full resize-y rounded-xl border border-ink/20 bg-[rgba(10,10,16,.6)] px-4 py-3 text-sm text-ink placeholder-text-muted outline-none transition-colors focus:border-ink/20"
+                  className="w-full resize-y border-2 border-rule-hair bg-paper px-4 py-3 font-body text-sm text-ink outline-none transition-colors focus:border-ink focus:shadow-[3px_3px_0_var(--color-ink)]"
                 />
               </div>
             ))}
@@ -848,19 +907,18 @@ export function PracticeTest({
         )}
 
         {/* Actions */}
-        <div className="mt-8 flex justify-center gap-4">
+        <div className="mt-8 flex justify-center gap-3">
           <a
             href="/home"
-            className=" border border-border-default px-6 py-3 text-sm text-text-secondary transition-colors hover:border-border-light"
+            className="border-2 border-ink bg-paper-card px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink hover:text-paper"
           >
-            Back to Home
+            ← Home
           </a>
           <button
             onClick={handleRetake}
-            className=" px-6 py-3 text-sm font-semibold text-ink transition-all hover:brightness-110"
-            style={{ backgroundColor: accentColor }}
+            className="border-2 border-ink bg-accent px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink"
           >
-            Retake Test
+            Retake Test →
           </button>
         </div>
       </div>

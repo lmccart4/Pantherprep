@@ -43,12 +43,10 @@ const COURSE_LABELS: Record<string, string> = {
 };
 
 function masteryColor(m: number, total: number): string {
-  if (total === 0) return "text-text-muted";
-  if (m >= 0.8) return "text-emerald-400";
-  if (m >= 0.6) return "text-lime-400";
-  if (m >= 0.4) return "text-amber-400";
-  if (m >= 0.2) return "text-orange-400";
-  return "text-red-400";
+  if (total === 0) return "text-ink-3";
+  if (m >= 0.8) return "text-green";
+  if (m >= 0.5) return "text-amber";
+  return "text-accent";
 }
 
 function findDomain(course: string, taxonomyKey: string): string | null {
@@ -195,132 +193,190 @@ export function SkillDetail({
 
   const siblings = siblingsInDomain(course, domain, taxonomyKey).slice(0, 5);
 
+  const masteryPct = data.total > 0 ? Math.round(data.mastery * 100) : null;
+  const accuracy =
+    data.total > 0 ? Math.round((data.correct / data.total) * 100) : null;
+
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-auto max-w-[1240px]">
       {/* Breadcrumb */}
-      <div className="mb-4 text-xs text-text-muted">
-        <Link href="/dashboard" className="hover:text-text-secondary">
+      <div className="mb-5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+        <Link href="/dashboard" className="hover:text-accent">
           Dashboard
         </Link>
-        {" / "}
-        <Link href={`/skills/${course}`} className="hover:text-text-secondary">
+        <span className="mx-2 text-ink-4">/</span>
+        <Link href={`/skills/${course}`} className="hover:text-accent">
           Skills
         </Link>
-        {" / "}
-        <Link href={`/skills/${course}`} className="hover:text-text-secondary">
+        <span className="mx-2 text-ink-4">/</span>
+        <Link href={`/skills/${course}`} className="hover:text-accent">
           {COURSE_LABELS[course] ?? course}
         </Link>
-        {" / "}
-        <span className="text-text-primary">{label}</span>
+        <span className="mx-2 text-ink-4">/</span>
+        <span className="text-accent">{label}</span>
       </div>
 
-      {/* Two-column main */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-[2fr_3fr]">
+      {/* Masthead row: title + stat block */}
+      <div className="mb-8 grid gap-8 border-b-2 border-ink pb-8 md:grid-cols-[3fr_2fr]">
+        <div>
+          <div className="kicker mb-3">{domain}</div>
+          <h1 className="font-display text-[clamp(44px,5vw,72px)] leading-[0.95] text-ink">
+            {label.split(" ").slice(0, -1).join(" ")}{" "}
+            <em className="text-accent" style={{ fontStyle: "italic" }}>
+              {label.split(" ").slice(-1)[0]}
+            </em>
+            .
+          </h1>
+          <p className="mt-4 border-l-2 border-accent pl-4 font-body text-[15px] italic leading-[1.55] text-ink-2">
+            {description}
+          </p>
+        </div>
+        <div className="border-2 border-ink bg-paper-card p-5 shadow-[5px_5px_0_var(--color-ink)]">
+          <div className="grid grid-cols-2 gap-5">
+            <div>
+              <div className="kicker mb-2">Your mastery</div>
+              <div className={`font-display text-[40px] leading-none ${masteryColor(data.mastery, data.total)}`}>
+                {masteryPct != null ? `${masteryPct}%` : "—"}
+              </div>
+              <div className="mt-1 font-body text-[12px] italic text-ink-3">
+                {data.total > 0 ? `${data.correct}/${data.total} all-time` : "no data yet"}
+              </div>
+            </div>
+            <div>
+              <div className="kicker mb-2">Attempts</div>
+              <div className="font-display text-[40px] leading-none text-ink">
+                {data.total}
+              </div>
+              <div className="mt-1 font-body text-[12px] italic text-ink-3">
+                {data.total > 0 ? "tracked to date" : "—"}
+              </div>
+            </div>
+            <div>
+              <div className="kicker mb-2">Accuracy</div>
+              <div className="font-display text-[40px] leading-none text-ink">
+                {accuracy != null ? `${accuracy}%` : "—"}
+              </div>
+              <div className="mt-1 font-body text-[12px] italic text-ink-3">
+                {data.nextReview ? `next review ${data.nextReview}` : "—"}
+              </div>
+            </div>
+            <div>
+              <div className="kicker mb-2">Action</div>
+              <button
+                onClick={handlePractice}
+                disabled={launching}
+                className="w-full border-2 border-ink bg-accent px-3 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-ink hover:text-paper disabled:opacity-40"
+              >
+                {launching ? "Loading…" : "Practice →"}
+              </button>
+              {launchError && (
+                <p className="mt-2 font-body text-[11px] italic text-accent">{launchError}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Two-column detail */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-[2fr_3fr]">
         {/* Left column */}
-        <div className="flex flex-col gap-4">
-          <GlassCard>
-            <div className="mb-2 kicker">
-              {domain}
-            </div>
-            <h1 className="mb-3 font-display text-3xl leading-tight tracking-[0.02em] text-ink">
-              {label}
-            </h1>
-            <p className="mb-5 text-sm leading-relaxed text-text-secondary">{description}</p>
-
-            <div className="mb-4 flex items-baseline gap-3">
-              <div className={`font-display text-[4rem] leading-none ${masteryColor(data.mastery, data.total)}`}>
-                {data.total > 0 ? Math.round(data.mastery * 100) + "%" : "—"}
-              </div>
-              <div className="text-xs text-text-muted">
-                {data.total > 0 ? `${data.correct}/${data.total} all-time` : "No data yet"}
-                {data.nextReview && (
-                  <div className="mt-1">Next review: {data.nextReview}</div>
-                )}
-              </div>
-            </div>
-
-            <button
-              onClick={handlePractice}
-              disabled={launching}
-              className="w-full  bg-panther-red py-3 text-sm font-semibold text-ink transition hover:bg-panther-red/90 disabled:opacity-40"
-            >
-              {launching ? "Loading…" : "Practice this skill →"}
-            </button>
-            {launchError && (
-              <p className="mt-3 text-xs text-amber-300">{launchError}</p>
-            )}
-          </GlassCard>
-
+        <div className="flex flex-col gap-6">
           {errorPatterns.length > 0 && (
-            <GlassCard>
-              <div className="mb-2 kicker">
-                Error patterns
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {errorPatterns.map(([cat, count]) => (
-                  <span
+            <div className="card-paper p-5">
+              <div className="mb-3 kicker">Error patterns</div>
+              <div className="flex flex-col">
+                {errorPatterns.map(([cat, count], i) => (
+                  <div
                     key={cat}
-                    className="rounded-full border border-red-400/20 bg-red-400/10 px-3 py-1 text-[11px] text-red-400"
+                    className={`flex items-baseline justify-between border-b border-dashed border-rule-hair py-2 ${
+                      i === errorPatterns.length - 1 ? "border-b-0" : ""
+                    }`}
                   >
-                    {skillLabel(cat)} ×{count as number}
-                  </span>
+                    <span className="font-body text-[14px] text-ink">
+                      {skillLabel(cat)}
+                    </span>
+                    <span className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-accent">
+                      × {count as number}
+                    </span>
+                  </div>
                 ))}
               </div>
-            </GlassCard>
+            </div>
           )}
+
+          <div className="card-paper p-5">
+            <div className="mb-3 kicker">By difficulty</div>
+            <div className="grid grid-cols-3 gap-0 border-2 border-ink">
+              <div className="border-r-2 border-ink bg-paper-card px-3 py-3">
+                <div className="kicker mb-1" style={{ color: "var(--color-green)" }}>
+                  Easy
+                </div>
+                <div className="font-display text-[22px] leading-none text-green">
+                  {difficultyBreakdown.F.correct}
+                  <span className="font-mono text-[11px] text-ink-3">
+                    /{difficultyBreakdown.F.total}
+                  </span>
+                </div>
+              </div>
+              <div className="border-r-2 border-ink bg-paper-card px-3 py-3">
+                <div className="kicker mb-1" style={{ color: "var(--color-amber)" }}>
+                  Medium
+                </div>
+                <div className="font-display text-[22px] leading-none text-amber">
+                  {difficultyBreakdown.M.correct}
+                  <span className="font-mono text-[11px] text-ink-3">
+                    /{difficultyBreakdown.M.total}
+                  </span>
+                </div>
+              </div>
+              <div className="bg-paper-card px-3 py-3">
+                <div className="kicker mb-1">Hard</div>
+                <div className="font-display text-[22px] leading-none text-accent">
+                  {difficultyBreakdown.C.correct}
+                  <span className="font-mono text-[11px] text-ink-3">
+                    /{difficultyBreakdown.C.total}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Right column */}
-        <div className="flex flex-col gap-4">
-          <GlassCard>
+        <div className="flex flex-col gap-6">
+          <div className="card-paper p-5">
             {recentLoading ? (
-              <p className="text-xs text-text-muted">Loading trend…</p>
+              <p className="font-body text-[13px] italic text-ink-3">Loading trend…</p>
             ) : recentError ? (
-              <p className="text-xs text-amber-300">Couldn&apos;t load recent activity.</p>
+              <p className="font-body text-[13px] italic text-accent">
+                Couldn&apos;t load recent activity.
+              </p>
             ) : (
               <SkillTrendline answers={recentAnswers} />
             )}
-          </GlassCard>
+          </div>
 
-          <GlassCard>
-            <div className="mb-3 kicker">
-              By difficulty
-            </div>
-            <div className="grid grid-cols-3 gap-2 text-xs">
-              <div className="rounded-md bg-emerald-400/10 px-3 py-2">
-                <div className="text-[10px] uppercase text-text-muted">Easy</div>
-                <div className="mt-1 font-semibold text-emerald-400">
-                  {difficultyBreakdown.F.correct}/{difficultyBreakdown.F.total}
-                </div>
-              </div>
-              <div className="rounded-md bg-amber-400/10 px-3 py-2">
-                <div className="text-[10px] uppercase text-text-muted">Medium</div>
-                <div className="mt-1 font-semibold text-amber-400">
-                  {difficultyBreakdown.M.correct}/{difficultyBreakdown.M.total}
-                </div>
-              </div>
-              <div className="rounded-md bg-red-400/10 px-3 py-2">
-                <div className="text-[10px] uppercase text-text-muted">Hard</div>
-                <div className="mt-1 font-semibold text-red-400">
-                  {difficultyBreakdown.C.correct}/{difficultyBreakdown.C.total}
-                </div>
-              </div>
-            </div>
-          </GlassCard>
-
-          <GlassCard>
+          <div className="card-paper p-5">
             <SkillRecentActivity answers={recentAnswers} />
-          </GlassCard>
+          </div>
         </div>
       </div>
 
       {/* Related skills */}
       {siblings.length > 0 && (
-        <div className="mt-6">
-          <div className="mb-3 kicker">
-            Related skills in {domain}
+        <section className="mt-10">
+          <div className="mb-4 flex items-baseline justify-between border-b-2 border-ink pb-3">
+            <h2 className="font-display text-[clamp(24px,2.5vw,34px)] leading-tight text-ink">
+              Related skills{" "}
+              <em className="text-accent" style={{ fontStyle: "italic" }}>
+                · {domain}
+              </em>
+            </h2>
+            <div className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+              {siblings.length} nearby
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
             {siblings
               .map((key) => ({ key, data: getProfileSkillData(profile, key) }))
               .sort((a, b) => a.data.mastery - b.data.mastery)
@@ -333,7 +389,7 @@ export function SkillDetail({
                 />
               ))}
           </div>
-        </div>
+        </section>
       )}
     </div>
   );

@@ -13,36 +13,42 @@ interface DomainBreakdownProps {
   className?: string;
 }
 
-const DOMAIN_COLORS: Record<string, string> = {
-  "Algebra": "#60a5fa",
-  "Advanced Math": "#a78bfa",
-  "Problem-Solving & Data Analysis": "#34d399",
-  "Geometry & Trigonometry": "#fb923c",
-  "Craft and Structure": "#60a5fa",
-  "Information and Ideas": "#a78bfa",
-  "Standard English Conventions": "#34d399",
-  "Expression of Ideas": "#fb923c",
-};
-
 export function DomainBreakdown({ stats, className }: DomainBreakdownProps) {
   return (
-    <div className={cn("flex flex-col gap-4", className)}>
-      {stats.map((s) => {
+    <div className={cn("flex flex-col", className)}>
+      {stats.map((s, i) => {
         const pct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
-        const color = DOMAIN_COLORS[s.domain] ?? "#9898a8";
+        const tone =
+          pct >= 80
+            ? "text-green"
+            : pct >= 60
+            ? "text-ink"
+            : pct >= 40
+            ? "text-amber"
+            : "text-accent";
 
         return (
-          <div key={s.domain} className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-text-secondary">{s.domain}</span>
-              <span className="font-mono text-xs text-text-muted">
-                {s.correct}/{s.total} ({pct}%)
+          <div
+            key={s.domain}
+            className={cn(
+              "flex flex-col gap-2 py-3",
+              i > 0 && "border-t-2 border-rule-hair"
+            )}
+          >
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="font-body text-sm text-ink">{s.domain}</span>
+              <span className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-ink-3">
+                <span className="text-ink">
+                  {s.correct}/{s.total}
+                </span>
+                <span className="mx-1.5 text-ink-4">·</span>
+                <span className={tone}>{pct}%</span>
               </span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-paper-card">
+            <div className="h-1.5 w-full bg-rule-hair">
               <div
-                className="h-full rounded-full transition-[width] duration-500 ease-out"
-                style={{ width: `${pct}%`, backgroundColor: color }}
+                className="h-full bg-ink transition-[width] duration-500 ease-out"
+                style={{ width: `${pct}%` }}
               />
             </div>
           </div>

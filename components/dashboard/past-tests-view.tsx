@@ -106,36 +106,45 @@ export function PastTestsView({ uid }: Props) {
   }
 
   return (
-    <GlassCard>
-      <h3 className="mb-4 text-base font-bold">Past Tests</h3>
-      <div className="flex flex-col gap-1.5">
-        {sessions.map((s) => {
-          const pct = s.percentage ?? 0;
-          return (
-            <div
-              key={s.id}
-              onClick={() => {
-                if (s.testSessionId) {
-                  setMode({ kind: "detail", testSessionId: s.testSessionId });
-                }
-              }}
-              className={`grid grid-cols-5 items-center gap-2 rounded-lg border border-border-primary bg-bg-secondary p-3 text-sm transition ${
-                s.testSessionId ? "cursor-pointer hover:border-panther-red/30" : "opacity-60"
-              }`}
-            >
-              <span className="col-span-2 font-semibold">{formatTestType(s.testType)}</span>
-              <span className="text-text-muted">{formatDate(s.createdAt)}</span>
-              <span className="text-text-muted">
-                {s.score}/{s.total} ({pct}%)
-              </span>
-              <span className="text-right text-panther-red">
-                {s.testSessionId ? "Review →" : "Legacy"}
-              </span>
-            </div>
-          );
-        })}
+    <div className="border-2 border-ink bg-paper-card p-7">
+      <div className="kicker mb-1">The Archive</div>
+      <h3 className="mb-5 font-display text-2xl font-bold leading-tight text-ink">Past Tests</h3>
+      <div className="border-t-2 border-ink">
+        <div className="hidden grid-cols-5 gap-2 border-b border-rule-hair px-1 py-2 sm:grid">
+          <span className="kicker col-span-2">Test</span>
+          <span className="kicker">Date</span>
+          <span className="kicker">Score</span>
+          <span className="kicker text-right">&nbsp;</span>
+        </div>
+        <div className="divide-y divide-rule-hair">
+          {sessions.map((s) => {
+            const pct = s.percentage ?? 0;
+            return (
+              <div
+                key={s.id}
+                onClick={() => {
+                  if (s.testSessionId) {
+                    setMode({ kind: "detail", testSessionId: s.testSessionId });
+                  }
+                }}
+                className={`grid grid-cols-5 items-center gap-2 px-1 py-3 transition-colors ${
+                  s.testSessionId ? "cursor-pointer hover:bg-paper" : "opacity-60"
+                }`}
+              >
+                <span className="col-span-2 font-display text-base font-bold text-ink">{formatTestType(s.testType)}</span>
+                <span className="font-mono text-xs text-ink-2">{formatDate(s.createdAt)}</span>
+                <span className="font-mono text-sm text-ink">
+                  {s.score}/{s.total} <span className="text-ink-3">({pct}%)</span>
+                </span>
+                <span className="text-right font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                  {s.testSessionId ? "Review →" : "Legacy"}
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </GlassCard>
+    </div>
   );
 }
 
@@ -244,27 +253,27 @@ function PastTestDetail({
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="rounded-full bg-bg-secondary px-3 py-1 text-xs font-semibold text-text-muted hover:text-text-primary"
+          className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3 transition-colors hover:text-accent"
         >
           ← Back to Past Tests
         </button>
       </div>
 
       {summary && (
-        <GlassCard>
-          <div className="mb-1 text-xs uppercase tracking-wide text-text-muted">
-            {formatTestType(summary.testType)}
-          </div>
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="text-2xl font-bold">
-              {summary.score}/{summary.total}
+        <div className="border-2 border-ink bg-paper-card p-6 shadow-[5px_5px_0_var(--color-ink)]">
+          <div className="kicker mb-2">{formatTestType(summary.testType)}</div>
+          <div className="flex flex-wrap items-baseline gap-4">
+            <div className="font-display text-4xl font-bold leading-none text-ink">
+              {summary.score}<span className="text-ink-3">/{summary.total}</span>
             </div>
-            <div className="text-sm text-text-muted">
-              {summary.percentage ?? 0}% &middot; {formatDate(summary.createdAt)}
-              {summary.scaledScore != null && ` · Scaled ${summary.scaledScore}`}
+            <div className="font-body text-sm text-ink-2">
+              <span className="font-mono text-ink">{summary.percentage ?? 0}%</span> &middot; {formatDate(summary.createdAt)}
+              {summary.scaledScore != null && (
+                <> &middot; Scaled <span className="font-mono text-ink">{summary.scaledScore}</span></>
+              )}
             </div>
           </div>
-        </GlassCard>
+        </div>
       )}
 
       {answers.length > 0 && (
@@ -354,24 +363,18 @@ function PastTestDetail({
         </GlassCard>
       )}
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-0 border-b-2 border-ink">
         {(["all", "wrong", "skipped"] as DetailFilter[]).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`rounded-full px-3 py-1 text-xs font-semibold capitalize transition ${
+            className={`font-mono text-[11px] font-bold uppercase tracking-[0.18em] transition-colors ${
               f === filter
-                ? "bg-panther-red text-ink"
-                : "border border-border-primary bg-bg-secondary text-text-muted"
+                ? "bg-ink px-4 py-2.5 text-paper"
+                : "px-4 py-2.5 text-ink-2 hover:text-accent"
             }`}
           >
-            {f} (
-            {f === "all"
-              ? answers.length
-              : f === "wrong"
-              ? wrongCount
-              : skippedCount}
-            )
+            {f} ({f === "all" ? answers.length : f === "wrong" ? wrongCount : skippedCount})
           </button>
         ))}
       </div>

@@ -15,28 +15,21 @@ interface SkillRowProps {
   distribution?: SkillTierCounts;
 }
 
-function tierColor(mastery: number, total: number): string {
-  if (total === 0) return "border-l-slate-500";
-  if (mastery >= 0.8) return "border-l-emerald-400";
-  if (mastery >= 0.6) return "border-l-lime-400";
-  if (mastery >= 0.4) return "border-l-amber-400";
-  if (mastery >= 0.2) return "border-l-orange-400";
-  return "border-l-red-400";
-}
-
-function tierTextColor(mastery: number, total: number): string {
-  if (total === 0) return "text-text-muted";
-  if (mastery >= 0.8) return "text-emerald-400";
-  if (mastery >= 0.6) return "text-lime-400";
-  if (mastery >= 0.4) return "text-amber-400";
-  if (mastery >= 0.2) return "text-orange-400";
-  return "text-red-400";
+function tierMeta(mastery: number, total: number): { bar: string; text: string; label: string } {
+  if (total === 0) return { bar: "bg-ink-4", text: "text-ink-3", label: "Untested" };
+  if (mastery >= 0.8) return { bar: "bg-green", text: "text-green", label: "Mastered" };
+  if (mastery >= 0.5) return { bar: "bg-amber", text: "text-amber", label: "On track" };
+  return { bar: "bg-accent", text: "text-accent", label: "Needs work" };
 }
 
 function DistributionBar({ counts }: { counts: SkillTierCounts }) {
   const total = counts.strong + counts.medium + counts.weak + counts.untouched;
   if (total === 0) {
-    return <div className="text-xs text-text-muted">No student data yet</div>;
+    return (
+      <div className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-3">
+        No student data yet
+      </div>
+    );
   }
   const pct = (n: number) => `${(n / total) * 100}%`;
   const tooltip =
@@ -44,14 +37,14 @@ function DistributionBar({ counts }: { counts: SkillTierCounts }) {
     `${counts.strong} proficient · ${counts.untouched} untouched`;
   return (
     <div
-      className="flex h-2 w-28 overflow-hidden rounded-full bg-bg-surface"
+      className="flex h-[6px] w-full border border-ink"
       title={tooltip}
       aria-label={tooltip}
     >
-      {counts.weak > 0      && <div className="bg-red-400"     style={{ width: pct(counts.weak) }} />}
-      {counts.medium > 0    && <div className="bg-amber-400"   style={{ width: pct(counts.medium) }} />}
-      {counts.strong > 0    && <div className="bg-emerald-400" style={{ width: pct(counts.strong) }} />}
-      {counts.untouched > 0 && <div className="bg-slate-500"   style={{ width: pct(counts.untouched) }} />}
+      {counts.weak > 0 && <div className="bg-accent" style={{ width: pct(counts.weak) }} />}
+      {counts.medium > 0 && <div className="bg-amber" style={{ width: pct(counts.medium) }} />}
+      {counts.strong > 0 && <div className="bg-green" style={{ width: pct(counts.strong) }} />}
+      {counts.untouched > 0 && <div className="bg-ink-4" style={{ width: pct(counts.untouched) }} />}
     </div>
   );
 }
@@ -61,6 +54,7 @@ export function SkillRow({ taxonomyKey, data, course, distribution }: SkillRowPr
   const label = skillLabel(taxonomyKey);
   const hasData = data.total > 0;
   const percent = hasData ? Math.round(data.mastery * 100) : null;
+  const meta = tierMeta(data.mastery, data.total);
 
   const isStaffView = !!distribution;
   const totalStudents = distribution
@@ -70,29 +64,42 @@ export function SkillRow({ taxonomyKey, data, course, distribution }: SkillRowPr
   return (
     <Link
       href={href}
-      className={`flex items-center gap-3 rounded-lg border border-border-primary bg-bg-secondary border-l-[3px] ${tierColor(
-        data.mastery,
-        data.total
-      )} px-4 py-3 text-sm transition hover:border-panther-red/30`}
+      className="group flex flex-col gap-3 border-2 border-ink bg-paper-card p-4 transition-transform hover:-translate-y-0.5 hover:shadow-[5px_5px_0_var(--color-ink)]"
     >
-      <div className="min-w-0 flex-1">
-        <div className="truncate font-semibold text-text-primary">{label}</div>
-        <div className="truncate text-xs text-text-muted">
-          {isStaffView
-            ? `${totalStudents} student${totalStudents === 1 ? "" : "s"}`
-            : hasData
-              ? `${data.correct}/${data.total} correct`
-              : "No data yet"}
-        </div>
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="font-display text-[18px] leading-tight text-ink">{label}</h3>
+        {isStaffView ? null : (
+          <div className={`font-display text-[22px] leading-none ${meta.text}`}>
+            {percent != null ? `${percent}%` : "—"}
+          </div>
+        )}
       </div>
+
       {isStaffView ? (
-        <DistributionBar counts={distribution!} />
-      ) : (
-        <div className={`w-14 text-right font-mono ${tierTextColor(data.mastery, data.total)}`}>
-          {percent != null ? `${percent}%` : "—"}
+        <div className="flex flex-col gap-2">
+          <DistributionBar counts={distribution!} />
+          <div className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+            {totalStudents} student{totalStudents === 1 ? "" : "s"}
+          </div>
         </div>
+      ) : (
+        <>
+          <div className="h-[5px] w-full border border-ink bg-paper">
+            <div
+              className={`h-full ${meta.bar}`}
+              style={{ width: hasData ? `${Math.max(4, Math.round(data.mastery * 100))}%` : "0%" }}
+            />
+          </div>
+          <div className="flex items-baseline justify-between border-t border-dashed border-rule-hair pt-2">
+            <div className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-3">
+              {hasData ? `${data.total} attempts` : "No data yet"}
+            </div>
+            <div className={`font-body text-[12px] italic ${meta.text}`}>
+              {meta.label}
+            </div>
+          </div>
+        </>
       )}
-      <span className="text-text-muted">›</span>
     </Link>
   );
 }

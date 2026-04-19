@@ -107,55 +107,48 @@ export function PracticeResultsCard({
       {/* Session performance (mastery delta breakdown) */}
       {masteryDeltas && masteryDeltas.length > 0 && (
         <GlassCard>
-          <div className="mb-3 kicker">
-            Session performance
-          </div>
-          <div className="flex flex-col divide-y divide-border-primary">
-            {(showAllDeltas ? masteryDeltas : masteryDeltas.slice(0, 5)).map((row) => {
+          <div className="mb-3 kicker">Session performance</div>
+          <div className="flex flex-col">
+            {(showAllDeltas ? masteryDeltas : masteryDeltas.slice(0, 5)).map((row, idx) => {
               const accPct =
                 row.sessionTotal > 0
                   ? Math.round((row.sessionCorrect / row.sessionTotal) * 100)
                   : 0;
-              const accBar =
-                accPct >= 80
-                  ? "bg-emerald-400"
-                  : accPct >= 60
-                  ? "bg-lime-400"
-                  : accPct >= 40
-                  ? "bg-amber-400"
-                  : accPct >= 20
-                  ? "bg-orange-400"
-                  : "bg-red-400";
               const deltaColor =
                 row.deltaPp > 0
-                  ? "text-emerald-400"
+                  ? "text-green"
                   : row.deltaPp < 0
-                  ? "text-red-400"
-                  : "text-text-muted";
+                  ? "text-accent"
+                  : "text-ink-3";
               const deltaSign = row.deltaPp > 0 ? "+" : "";
               const bigJump = row.deltaPp >= 10;
 
               const nameNode = course ? (
                 <Link
                   href={`/skills/${course}/${row.taxonomyKey}`}
-                  className="text-sm font-semibold text-text-primary transition hover:text-panther-red"
+                  className="font-display text-base text-ink transition hover:text-accent"
                 >
                   {row.skillLabel}
                 </Link>
               ) : (
-                <span className="text-sm font-semibold text-text-primary">
-                  {row.skillLabel}
-                </span>
+                <span className="font-display text-base text-ink">{row.skillLabel}</span>
               );
 
               return (
-                <div key={row.taxonomyKey} className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:gap-4">
+                <div
+                  key={row.taxonomyKey}
+                  className={`flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:gap-4 ${
+                    idx > 0 ? "border-t-2 border-rule-hair" : ""
+                  }`}
+                >
                   <div className="min-w-0 flex-1">
                     {nameNode}
-                    <div className="mt-0.5 text-xs text-text-muted">
+                    <div className="mt-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-3">
                       {row.sessionTotal > 0 ? (
                         <>
-                          <span className="font-mono">{row.sessionCorrect}/{row.sessionTotal}</span>
+                          <span className="text-ink">
+                            {row.sessionCorrect}/{row.sessionTotal}
+                          </span>
                           <span className="ml-2">this session</span>
                         </>
                       ) : (
@@ -164,15 +157,18 @@ export function PracticeResultsCard({
                     </div>
                   </div>
                   {row.sessionTotal > 0 && (
-                    <div className="hidden w-28 overflow-hidden rounded-full bg-bg-secondary sm:block">
-                      <div className={`h-1.5 ${accBar}`} style={{ width: `${Math.max(accPct, 3)}%` }} />
+                    <div className="hidden h-1.5 w-28 bg-rule-hair sm:block">
+                      <div
+                        className="h-full bg-ink"
+                        style={{ width: `${Math.max(accPct, 3)}%` }}
+                      />
                     </div>
                   )}
-                  <div className="text-right text-xs">
+                  <div className="text-right font-mono text-[11px] font-bold uppercase tracking-[0.14em]">
                     {row.beforeTested ? (
                       <>
-                        <div className="text-text-secondary">
-                          Mastery now <span className="font-semibold">{row.afterPercent}%</span>
+                        <div className="text-ink-3">
+                          Mastery <span className="text-ink">{row.afterPercent}%</span>
                         </div>
                         <div className={deltaColor}>
                           {deltaSign}
@@ -180,8 +176,8 @@ export function PracticeResultsCard({
                         </div>
                       </>
                     ) : (
-                      <div className="text-text-secondary">
-                        Starting fresh — <span className="font-semibold">{row.afterPercent}%</span>
+                      <div className="text-ink-3">
+                        Fresh — <span className="text-ink">{row.afterPercent}%</span>
                       </div>
                     )}
                   </div>
@@ -193,7 +189,7 @@ export function PracticeResultsCard({
           {masteryDeltas.length > 5 && (
             <button
               onClick={() => setShowAllDeltas(!showAllDeltas)}
-              className="mt-3 text-xs text-panther-red transition hover:text-panther-red/80"
+              className="mt-3 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-accent transition hover:text-ink"
             >
               {showAllDeltas
                 ? "Show fewer"
@@ -206,34 +202,29 @@ export function PracticeResultsCard({
       {/* Skill breakdown (only if multi-skill) */}
       {showBreakdown && (
         <GlassCard>
-          <h3 className="mb-3 kicker">
-            Skill Breakdown
-          </h3>
-          <div className="flex flex-col gap-2">
+          <h3 className="mb-3 kicker">Skill Breakdown</h3>
+          <div className="flex flex-col">
             {Array.from(bySkill.entries())
               .sort((a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total)
-              .map(([sk, row]) => {
+              .map(([sk, row], idx) => {
                 const pct = row.total > 0 ? row.correct / row.total : 0;
-                const bar =
-                  pct >= 0.8
-                    ? "bg-emerald-400"
-                    : pct >= 0.6
-                    ? "bg-lime-400"
-                    : pct >= 0.4
-                    ? "bg-amber-400"
-                    : "bg-red-400";
                 return (
-                  <div key={sk} className="flex items-center gap-3 text-xs">
-                    <span className="w-40 truncate text-text-secondary" title={sk}>
+                  <div
+                    key={sk}
+                    className={`flex items-center gap-3 py-2 text-xs ${
+                      idx > 0 ? "border-t-2 border-rule-hair" : ""
+                    }`}
+                  >
+                    <span className="w-40 truncate font-body text-ink" title={sk}>
                       {sk}
                     </span>
-                    <div className="flex-1 overflow-hidden rounded-full bg-bg-secondary">
+                    <div className="h-1.5 flex-1 bg-rule-hair">
                       <div
-                        className={`h-1.5 ${bar}`}
+                        className="h-full bg-ink"
                         style={{ width: `${Math.max(pct * 100, 3)}%` }}
                       />
                     </div>
-                    <span className="w-12 text-right font-mono text-text-muted">
+                    <span className="w-14 text-right font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-ink">
                       {row.correct}/{row.total}
                     </span>
                   </div>
@@ -245,25 +236,27 @@ export function PracticeResultsCard({
 
       {/* Fallback notes */}
       {fallbackNotes && fallbackNotes.length > 0 && (
-        <GlassCard>
-          <p className="text-xs text-amber-300">
-            {fallbackNotes.map((note, i) => (
-              <span key={i} className="block">
-                {note}
-              </span>
-            ))}
-          </p>
-        </GlassCard>
+        <div className="border-2 border-amber bg-amber-soft p-4">
+          <div className="mb-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-amber">
+            Note
+          </div>
+          {fallbackNotes.map((note, i) => (
+            <p key={i} className="font-body text-sm italic text-ink">
+              {note}
+            </p>
+          ))}
+        </div>
       )}
 
       {/* Per-question review */}
       <GlassCard>
-        <h3 className="mb-4 kicker">
-          Question Review
-        </h3>
+        <h3 className="mb-4 kicker">Question Review</h3>
         <div className="flex flex-col gap-6">
           {questions.map((q, i) => (
-            <div key={i} className="border-b border-border-default pb-5 last:border-0 last:pb-0">
+            <div
+              key={i}
+              className="border-t-2 border-rule-hair pt-5 first:border-0 first:pt-0"
+            >
               <QuestionCard
                 question={q}
                 selectedAnswer={answers[i]}

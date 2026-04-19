@@ -40,44 +40,48 @@ function bucketByDay(answers: StoredAnswer[], days = 14): DayBucket[] {
 }
 
 function tierBg(pct: number, total: number): string {
-  if (total === 0) return "bg-slate-700";
-  if (pct >= 0.8) return "bg-emerald-400";
-  if (pct >= 0.6) return "bg-lime-400";
-  if (pct >= 0.4) return "bg-amber-400";
-  if (pct >= 0.2) return "bg-orange-400";
-  return "bg-red-400";
+  if (total === 0) return "bg-ink-4";
+  if (pct >= 0.8) return "bg-green";
+  if (pct >= 0.5) return "bg-amber";
+  return "bg-accent";
 }
 
 export function SkillTrendline({ answers }: SkillTrendlineProps) {
   const buckets = bucketByDay(answers);
-  const maxBarHeight = 40;
+  const maxBarHeight = 48;
   const hasData = buckets.some((b) => b.total > 0);
 
   return (
     <div>
-      <div className="mb-2 kicker">
-        14-day trend
+      <div className="mb-3 flex items-baseline justify-between">
+        <div className="kicker">14-day trend</div>
+        <div className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-3">
+          {hasData ? `${answers.length} answers` : "No activity"}
+        </div>
       </div>
-      <div className="flex items-end gap-1" style={{ height: `${maxBarHeight}px` }}>
+      <div
+        className="flex items-end gap-[3px] border-b-2 border-ink pb-1"
+        style={{ height: `${maxBarHeight}px` }}
+      >
         {buckets.map((b, i) => {
           const pct = b.total > 0 ? b.correct / b.total : 0;
-          const heightPct = b.total > 0 ? Math.max(pct * 100, 8) : 4;
+          const heightPct = b.total > 0 ? Math.max(pct * 100, 10) : 3;
           return (
             <div
               key={i}
-              className={`flex-1 rounded-t ${tierBg(pct, b.total)}`}
+              className={`flex-1 ${tierBg(pct, b.total)}`}
               style={{ height: `${heightPct}%`, opacity: b.total > 0 ? 1 : 0.35 }}
               title={b.total > 0 ? `${b.date}: ${b.correct}/${b.total}` : `${b.date}: no activity`}
             />
           );
         })}
       </div>
-      <div className="mt-1 flex justify-between text-[10px] text-text-muted">
+      <div className="mt-2 flex justify-between font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-3">
         <span>{buckets[0]?.date.slice(5) ?? ""}</span>
         <span>{buckets[buckets.length - 1]?.date.slice(5) ?? ""}</span>
       </div>
       {!hasData && (
-        <p className="mt-2 text-xs text-text-muted">
+        <p className="mt-3 font-body text-[13px] italic text-ink-3">
           No data yet &mdash; start a practice session to see your trend.
         </p>
       )}
